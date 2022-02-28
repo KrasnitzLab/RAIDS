@@ -1,6 +1,6 @@
 # Accurate inference of genetic ancestry from cancer-derived sequencing #
 
-The **_aics_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome).
+The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome).
 
 ## Authors ##
 
@@ -17,13 +17,13 @@ package is required.
      ## Load required package
      library(devtools)
 
-     ## Install the latest version of aics
-     devtools::install_github('adeschen/aics')
+     ## Install the latest version of aicsPaper
+     devtools::install_github('belleau/aicsPaper')
 
 
 ## Bugs/Feature requests ##
 
 If you have any bugs or feature requests, 
-[let us know](https://github.com/adeschen/aics/issues). 
+[let us know](https://github.com/belleau/aicsPaper/issues). 
 
 Thanks!

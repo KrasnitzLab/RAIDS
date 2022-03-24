@@ -1,0 +1,32 @@
+Package: aicsPaper
+Type: Package
+Title: Accurate Inference of Genetic Ancestry from Cancer Sequencing
+Description: This package implements specialized algorithms that enable
+    genetic ancestry inference from various cancer sequencing sources (RNA,
+    Exome and Whole-Genome sequencing). This package also implements a
+    simulation algorithm that generates synthetic cancer-derived data.
+Version: 0.50.0
+Date: 2022-02-28
+Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
+    role=c("cre", "aut"), comment = c(ORCID = "0000-0002-0802-1071")),
+    person("Astrid", "Deschênes", email="adeschen@hotmail.com",
+    role=c("aut"), comment = c(ORCID = "0000-0001-7846-6749")),
+    person("Alexander", "Krasnitz", email="krasnitz@cshl.edu",
+    role=c("aut")))
+License: TODO
+Encoding: UTF-8
+NeedsCompilation: no
+VignetteBuilder: knitr
+Depends: R (>= 4.0),
+    GenomicRanges,
+    gdsfmt,
+    EnsDb.Hsapiens.v86,
+    AnnotationDbi,
+    ensembldb,
+    SNPRelate,
+    GENESIS
+Suggests: testthat,
+    knitr,
+    rmarkdown,
+    BiocStyle
+RoxygenNote: 7.1.1

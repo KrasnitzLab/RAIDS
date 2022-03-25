@@ -2,6 +2,12 @@
 
 The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome).
 
+
+## Citation ##
+
+>  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
+
+
 ## Authors ##
 
 [Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),

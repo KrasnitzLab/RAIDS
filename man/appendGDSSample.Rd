@@ -11,15 +11,16 @@ appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL)
 \item{gds}{a \code{gds}.}
 
 \item{pedDF}{a \code{data.frame} with the sample info. Must have the column
-sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
-is Name.ID and the row.name is Name.ID too.}
+sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
+of pedDF is Name.ID and the row.name is Name.ID too.}
 
 \item{listSamples}{a \code{array} with the sample from pedDF$Name.ID to keep}
 }
 \description{
-This function append the fields related to the samples. The fields
-append are sample.id and the \code{data.frame} sample.annot. If the samples
-are in the section study the field related to the study must be fill.
+This function append the fields related to the samples.
+The fields append are sample.id and the \code{data.frame} sample.annot.
+If the samples are in the section study the field related to the
+study must be fill.
 }
 \examples{
 

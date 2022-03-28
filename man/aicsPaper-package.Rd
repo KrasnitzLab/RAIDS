@@ -14,6 +14,15 @@ Exome and Whole-Genome sequencing).
 \details{
 The aicsPaper package also implements simulation algorithm that generates
 synthetic cancer-derived data.
+
+This code and analysis pipeline was designed and developed for the
+following publication:
+}
+\references{
+Belleau, P, Deschênes A, Tuveson DA, Krasnitz A. Accurate and robust
+inference of genetic ancestry from cancer-derived molecular data across
+genomic platforms. bioRxiv 2022.02.01.478737
+[link to bioRxiv](https://doi.org/10.1101/2022.02.01.478737)
 }
 \seealso{
 \itemize{

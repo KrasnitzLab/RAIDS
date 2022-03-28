@@ -2,6 +2,8 @@
 
 The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome).
 
+The **_aicsPaper_** package also implements simulation algorithm that generates synthetic cancer-derived data.
+
 This code and analysis pipeline was designed and developed for the following publication:
 
 >  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
@@ -12,6 +14,7 @@ This code and analysis pipeline was designed and developed for the following pub
 [Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),
 [Astrid Desch&ecirc;nes](http://ca.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes") and
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
+
 
 ## Citing ##
 
@@ -41,5 +44,6 @@ package is required.
 
 If you have any bugs or feature requests, 
 [let us know](https://github.com/belleau/aicsPaper/issues). 
+
 
 Thanks!

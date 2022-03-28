@@ -277,9 +277,8 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
+#' @importFrom utils read.csv2
 #' @keywords internal
-
-
 generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
 
     # File with the description of the SNP keep
@@ -338,10 +337,9 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom utils read.csv2
 #' @keywords internal
-
-
-appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP ){
+appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
@@ -407,9 +405,9 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP ){
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
+#' @importFrom stats qbinom
+#' @importFrom utils read.csv
 #' @keywords internal
-
-
 generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                                                 listSamples,listPos, offset,
                                                 minCov = 10, minProb = 0.999, seqError = 0.001){
@@ -558,6 +556,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom utils write.table
 #' @keywords internal
 
 gds2tfam <- function(gds, listSample, pedOUT){
@@ -606,9 +605,9 @@ gds2tfam <- function(gds, listSample, pedOUT){
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom utils write.table
 #' @keywords internal
-
-gds2tped <- function(gds, listSample, listSNP, pedOUT){
+gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 
     sampleGDS <- index.gdsn(gds, "sample.id")
     sampleId <-read.gdsn(sampleGDS)
@@ -681,11 +680,9 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT){
 #' @importFrom SNPRelate snpgdsIBDKING
 #'
 #' @keywords internal
-
-runIBDKING <- function(gds,
-                       sampleId = NULL,
+runIBDKING <- function(gds, sampleId = NULL,
                        snp.id = NULL,
-                       maf=0.05){
+                       maf=0.05) {
 
     ibd.robust <- snpgdsIBDKING(gds,
                                  sample.id=sampleId,

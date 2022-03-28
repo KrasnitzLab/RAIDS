@@ -24,6 +24,8 @@ Depends: R (>= 4.0),
     AnnotationDbi,
     ensembldb,
     SNPRelate,
+    stats,
+    utils,
     GENESIS
 Suggests: testthat,
     knitr,

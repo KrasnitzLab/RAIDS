@@ -29,5 +29,5 @@ Suggests: testthat,
     knitr,
     rmarkdown,
     BiocStyle
-biocViews: Genetics, Software
+biocViews: Genetics, Software, Sequencing, WholeGenome
 RoxygenNote: 7.1.2

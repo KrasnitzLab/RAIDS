@@ -26,7 +26,8 @@ genomic platforms. bioRxiv 2022.02.01.478737
 }
 \seealso{
 \itemize{
-    \item \code{\link{TODO}} {for TODO}
+    \item \code{\link{addRef2GDS1KG}} {for TODO}
+    \item \code{\link{generateGDS1KG}} {for TODO}
 }
 }
 \author{

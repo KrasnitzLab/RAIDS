@@ -167,7 +167,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples = NULL, studyDF){
 
     if(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF) ){
-        stop(paste0("studyDF incomplete in addStudyGDSSample\n"))
+        stop("studyDF incomplete in addStudyGDSSample\n")
     }
 
     if(!(is.null(listSamples))){
@@ -312,7 +312,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
             rm(matSample)
             print(paste0(listMat1k[pos], " ", i))
         }else{
-            stop(paste0("Missing samples genotype in ", listSamples[i]))
+            stop("Missing samples genotype in ", listSamples[i])
         }
     }
 }
@@ -373,7 +373,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP ){
             rm(matSample)
             print(paste0(listMat1k[pos], " ", i))
         }else{
-            stop(paste0("Missing 1k samples ", listSample[i]))
+            stop("Missing 1k samples ", listSample[i])
         }
     }
 }
@@ -532,7 +532,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             rm(g)
             print(paste0(listMat[pos], " ", i, " ", Sys.time()))
         }else{
-            stop(paste0("Missing samples ", listSamples[i]))
+            stop("Missing samples ", listSamples[i])
         }
     }
 }
@@ -802,7 +802,7 @@ addGDSStudyPruning <- function(gds, PATHPRUNED,
         pos <- which(listSampleNames == listSamples[i])
         print(paste0(listSamples[i], " ", Sys.time()))
         if( length(pos) != 1){
-            stop(paste0("Missing samples ", listSamples[i]))
+            stop("Missing samples ", listSamples[i])
         }
         pruned <- readRDS(file.path(PATHPRUNED, listPruning[pos]))
 

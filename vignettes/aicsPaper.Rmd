@@ -1,0 +1,102 @@
+---
+title: "Accurate Inference of Genetic Ancestry from Cancer Sequencing"
+author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+output:
+  BiocStyle::html_document:
+    toc: true
+bibliography: aicsBiblio.bibtex
+vignette: >
+  %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
+  %\VignettePackage{aicsPaper}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo = FALSE, results = 'hide', warning=FALSE, message=FALSE}
+BiocStyle::markdown()
+
+suppressPackageStartupMessages({
+  library(knitr)
+  library(aicsPaper)
+})
+
+set.seed(121444)
+```
+
+<br />
+**Package**: `r Rpackage("aicsPaper")`<br />
+**Authors**: `r packageDescription("aicsPaper")[["Author"]]`<br />
+**Version**: `r packageDescription("aicsPaper")$Version`<br />
+**Compiled date**: `r Sys.Date()`<br />
+**License**: `r packageDescription("aicsPaper")[["License"]]`<br />
+
+
+# Licensing 
+
+The `r Githubpkg("belleau/aicsPaper")` package and the underlying 
+`r Githubpkg("belleau/aicsPaper")` code are distributed under the 
+TODO 
+
+<br>
+<br>
+
+# Citing
+
+If you use this package for a publication, we would ask you to cite the 
+following:
+
+> Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
+
+<br>
+<br>
+
+# Introduction
+
+Multiple methods have been implemented to infer ancestry from germline DNA 
+sequence [@Price2006; @Pritchard2000; @Alexander2009]. However, genotyping of 
+DNA from matched normal specimens is not part of standard clinical practice
+and is not performed routinely outside academic clinical centers. 
+In sum, matched germline DNA sequence is often missing for cancer-derived 
+molecular data. In such cases, having the possibility to infer ancestry 
+from tumor-derived data would be beneficial.
+
+The **aicsPaper** package implements an inference procedure that has been
+specifically developed to accurately infer genetic ancestry from 
+cancer-derived sequencing. The covered cancer-derived sequencing are, more 
+specifically, tumor exomes, targeted gene panels and RNA sequences.
+
+
+<br>
+<br>
+
+# Installation
+
+To install the latest version accessible on the 
+[aicsPaper Github Website](https://github.com/belleau/aicsPaper "aicsPaper Github Site"), 
+the `r CRANpkg("devtools")` package is required.
+
+```{r installDemo01, eval=FALSE}
+## Load required package
+library(devtools)
+
+## Install the latest version of aicsPaper
+devtools::install_github('belleau/aicsPaper')
+```
+
+<br>
+<br>
+
+# Session info
+
+Here is the output of `sessionInfo()` on the system on which this document was 
+compiled:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+<br>
+<br>
+
+# References
+

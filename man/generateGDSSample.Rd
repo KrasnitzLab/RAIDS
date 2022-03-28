@@ -2,16 +2,17 @@
 % Please edit documentation in R/gdsWrapper.R
 \name{generateGDSSample}
 \alias{generateGDSSample}
-\title{This function initialise the sample information in the gds file.
-The information is extract from data.frame pedDF}
+\title{Initialization of the section related to the sample
+information in the \code{gds} file.}
 \usage{
 generateGDSSample(gds, pedDF, listSamples = NULL)
 }
 \arguments{
 \item{gds}{a \code{gds}.}
 
-\item{pedDF}{a \code{data.frame} with the sample info. Must have the column
-sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
+\item{pedDF}{a \code{data.frame} containing the information related to the
+sample. It must have those columns: "sample.id", "Name.ID", "sex",
+"pop.group", "superPop" and "batch". The unique id of pedDF
 is Name.ID and the row.name is Name.ID too.}
 
 \item{listSamples}{a \code{array} with the sample from pedDF to keep}
@@ -20,7 +21,9 @@ is Name.ID and the row.name is Name.ID too.}
 the a \code{array} with the sample from pedDF keept
 }
 \description{
-TODO
+This function initializesthe section related to the sample
+information in the \code{gds} file. The information is extracted from
+the \code{data.frame} \code{pedDF} passed to the function.
 }
 \examples{
 
@@ -28,6 +31,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

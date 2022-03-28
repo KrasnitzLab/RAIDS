@@ -14,11 +14,11 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @export
-
-prepPed1KG <- function(pedFile, PATHGENO = file.path("data", "sampleGeno"), batch.v = 0){
+prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
+                        batch.v=0) {
 
     # TODO validate
 
@@ -30,9 +30,9 @@ prepPed1KG <- function(pedFile, PATHGENO = file.path("data", "sampleGeno"), batc
             sex=c(ped1KG$Gender),
             pop.group=c(ped1KG$Population),
             superPop=rep(NA, length(c(ped1KG$Population))),
-            batch=c(rep(batch.v,nrow(ped1KG))), #
-            stringsAsFactors = FALSE
-        )
+            batch=c(rep(batch.v,nrow(ped1KG))),
+            stringsAsFactors=FALSE
+    )
 
 
     # TODO The population versus super.population is hardcode

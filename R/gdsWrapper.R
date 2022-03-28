@@ -1,12 +1,15 @@
-#' @title This function initialise the sample information in the gds file.
-#' The information is extract from data.frame pedDF
+#' @title Initialization of the section related to the sample
+#' information in the \code{gds} file.
 #'
-#' @description TODO
+#' @description This function initializesthe section related to the sample
+#' information in the \code{gds} file. The information is extracted from
+#' the \code{data.frame} \code{pedDF} passed to the function.
 #'
 #' @param gds a \code{gds}.
 #'
-#' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
+#' @param pedDF a \code{data.frame} containing the information related to the
+#' sample. It must have those columns: "sample.id", "Name.ID", "sex",
+#' "pop.group", "superPop" and "batch". The unique id of pedDF
 #' is Name.ID and the row.name is Name.ID too.
 #'
 #' @param listSamples a \code{array} with the sample from pedDF to keep
@@ -17,25 +20,24 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
-
-
-generateGDSSample <- function(gds, pedDF, listSamples = NULL){
+generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
     }
     add.gdsn(gds, "sample.id", pedDF[, "Name.ID"])
 
-    samp.annot <- data.frame(sex = pedDF[, "sex"],
-                             pop.group = pedDF[, "pop.group"],
-                             superPop = pedDF[, "superPop"],
-                             batch=pedDF[, "batch"],
-                             stringsAsFactors = FALSE)
+    ## Create a data.frame containing the information form the samples
+    samp.annot <- data.frame(sex=pedDF[, "sex"],
+                                pop.group=pedDF[, "pop.group"],
+                                superPop=pedDF[, "superPop"],
+                                batch=pedDF[, "batch"],
+                                stringsAsFactors=FALSE)
 
-
+    ## Add the data.frame to the gds object
     add.gdsn(gds, "sample.annot", samp.annot)
 
     return(pedDF[, "sample.id"])
@@ -62,8 +64,6 @@ generateGDSSample <- function(gds, pedDF, listSamples = NULL){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
-
-
 addGDSRef <- function(gds, filePart){
 
     part <- readRDS( filePart)
@@ -83,15 +83,16 @@ addGDSRef <- function(gds, filePart){
 #' @title This function append the fields related to the samples. If the
 #' samples are part of a study you must uses the addStudyGDSSample
 #'
-#' @description This function append the fields related to the samples. The fields
-#' append are sample.id and the \code{data.frame} sample.annot. If the samples
-#' are in the section study the field related to the study must be fill.
+#' @description This function append the fields related to the samples.
+#' The fields append are sample.id and the \code{data.frame} sample.annot.
+#' If the samples are in the section study the field related to the
+#' study must be fill.
 #'
 #' @param gds a \code{gds}.
 #'
 #' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
-#' is Name.ID and the row.name is Name.ID too.
+#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
+#' of pedDF is Name.ID and the row.name is Name.ID too.
 #'
 #' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
 #'
@@ -105,9 +106,7 @@ addGDSRef <- function(gds, filePart){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @keywords internal
-
-
-appendGDSSample <- function(gds, pedDF, batch=1, listSamples = NULL){
+appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
@@ -119,10 +118,10 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples = NULL){
 
 
     samp.annot <- data.frame(sex = pedDF[, "sex"],
-                             pop.group = pedDF[, "pop.group"],
-                             superPop = pedDF[, "superPop"],
-                             batch=rep(batch,nrow(pedDF)),
-                             stringsAsFactors = FALSE)
+                                pop.group=pedDF[, "pop.group"],
+                                superPop=pedDF[, "superPop"],
+                                batch=rep(batch, nrow(pedDF)),
+                                stringsAsFactors=FALSE)
 
     print("Annot")
     curAnnot <- index.gdsn(gds, "sample.annot/sex")

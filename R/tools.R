@@ -29,7 +29,7 @@ groupChrPruning <- function(PATHPRUNED,
         if(file.exists(fileChr)){
             prunedList[[i]] <- readRDS(fileChr)
         }else{
-            stop(paste0("RPoblem with the file ", fileChr))
+            stop("RPoblem with the file ", fileChr)
         }
 
 

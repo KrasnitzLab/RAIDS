@@ -31,7 +31,8 @@
 #'
 #' @seealso
 #' \itemize{
-#'     \item \code{\link{TODO}} {for TODO}
+#'     \item \code{\link{addRef2GDS1KG}} {for TODO}
+#'     \item \code{\link{generateGDS1KG}} {for TODO}
 #' }
 #'
 #' @encoding UTF-8

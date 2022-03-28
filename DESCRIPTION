@@ -29,4 +29,5 @@ Suggests: testthat,
     knitr,
     rmarkdown,
     BiocStyle
+biocViews: Genetics, Software
 RoxygenNote: 7.1.2

@@ -4,7 +4,11 @@ Title: Accurate Inference of Genetic Ancestry from Cancer Sequencing
 Description: This package implements specialized algorithms that enable
     genetic ancestry inference from various cancer sequencing sources (RNA,
     Exome and Whole-Genome sequencing). This package also implements a
-    simulation algorithm that generates synthetic cancer-derived data.
+    simulation algorithm that generates synthetic cancer-derived data. 
+    This code and analysis pipeline was designed and developed for the
+    following publication: Belleau, P et al. Accurate and robust inference of 
+    genetic ancestry from cancer-derived molecular data across 
+    genomic platforms. bioRxiv 2022.02.01.478737.
 Version: 0.50.0
 Date: 2022-02-28
 Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
@@ -13,7 +17,7 @@ Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("aut"), comment = c(ORCID = "0000-0001-7846-6749")),
     person("Alexander", "Krasnitz", email="krasnitz@cshl.edu",
     role=c("aut")))
-License: TODO
+License: Artistic-2.0
 Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
@@ -24,9 +28,12 @@ Depends: R (>= 4.0),
     AnnotationDbi,
     ensembldb,
     SNPRelate,
+    stats,
+    utils,
     GENESIS
 Suggests: testthat,
     knitr,
     rmarkdown,
     BiocStyle
-RoxygenNote: 7.1.1
+biocViews: Genetics, Software, Sequencing, WholeGenome
+RoxygenNote: 7.1.2

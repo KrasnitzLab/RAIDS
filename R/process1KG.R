@@ -14,11 +14,11 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
-#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom utils read.delim
 #' @export
-
-prepPed1KG <- function(pedFile, PATHGENO = file.path("data", "sampleGeno"), batch.v = 0){
+prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
+                        batch.v=0) {
 
     # TODO validate
 
@@ -30,9 +30,9 @@ prepPed1KG <- function(pedFile, PATHGENO = file.path("data", "sampleGeno"), batc
             sex=c(ped1KG$Gender),
             pop.group=c(ped1KG$Population),
             superPop=rep(NA, length(c(ped1KG$Population))),
-            batch=c(rep(batch.v,nrow(ped1KG))), #
-            stringsAsFactors = FALSE
-        )
+            batch=c(rep(batch.v,nrow(ped1KG))),
+            stringsAsFactors=FALSE
+    )
 
 
     # TODO The population versus super.population is hardcode
@@ -70,11 +70,11 @@ prepPed1KG <- function(pedFile, PATHGENO = file.path("data", "sampleGeno"), batc
 #' @param cutOff a single \code{numeric} value, the cut off
 #' for the frequency in at least one super population.
 #'
-#' @param fileSNV
+#' @param fileSNV TODO
 #'
-#' @param fileLSNP
+#' @param fileLSNP TODO
 #'
-#' @param fileFREQ
+#' @param fileFREQ TODO
 #'
 #' @return NULL
 #'
@@ -116,15 +116,15 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 #' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
 #' The directory sampleGeno must contain matFreqSNV.txt.bz2
 #'
-#' @param fileNamePED
+#' @param fileNamePED TODO
 #'
-#' @param fileListSNP
+#' @param fileListSNP TODO
 #'
-#' @param fileSNPSel
+#' @param fileSNPSel TODO
 #'
-#' @param fileNameGDS
+#' @param fileNameGDS TODO
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to the sample.ids
+#' @param listSamples a \code{vector} of \code{string} corresponding to the sample.ids
 #' if NULL all the samples
 #'
 #' @return TODO a \code{vector} of \code{numeric}
@@ -138,10 +138,6 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #'
 #' @export
-
-
-
-
 generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
                            fileNamePED,
                            fileListSNP,
@@ -187,15 +183,15 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @description TODO
 #'
-#' @param gds
+#' @param gds TODO
 #'
-#' @param maf
+#' @param maf TODO
 #'
-#' @param thresh
+#' @param thresh TODO
 #'
-#' @param fileIBD
+#' @param fileIBD  TODO
 #'
-#' @param filePart
+#' @param filePart TODO
 #'
 #' @return TODO a \code{vector} of \code{numeric}
 #'
@@ -208,7 +204,6 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #' @importFrom GENESIS pcairPartition
 #'
 #' @export
-
 identifyRelative <- function(gds,
                              maf = 0.05,
                              thresh = 2^(-11/2),
@@ -271,25 +266,27 @@ addRef2GDS1KG <- function(fileNameGDS,
 #'
 #' @param gds an object of class \code{gds} opened
 #'
-#' @param method
+#' @param method TODO
 #'
-#' @param listSamples
+#' @param listSamples TODO
 #'
-#' @param slide.max.bp.v
+#' @param slide.max.bp.v TODO
 #'
-#' @param ld.threshold.v
+#' @param ld.threshold.v TODO
 #'
-#' @param np
+#' @param np TODO . Default: \code{NULL}.
 #'
-#' @param verbose.v
+#' @param verbose.v a \code{logical} specifying if the function must provide
+#' more information about the process. Default: \code{FALSE}.
 #'
-#' @param chr
+#' @param chr TODO
 #'
-#' @param minAF
+#' @param minAF TODO
 #'
-#' @param outPref
+#' @param outPref TODO
 #'
-#' @param keepObj
+#' @param keepObj a \code{logical} specifying if the function must save the
+#' the processed information into a RDS object. Default: \code{FALSE}.
 #'
 #' @return TODO a \code{vector} of \code{numeric}
 #'
@@ -302,16 +299,16 @@ addRef2GDS1KG <- function(fileNameGDS,
 #' @export
 
 pruning1KG.Chr <- function(gds,
-                           method="corr",
-                           listSamples=NULL,
-                           slide.max.bp.v = 5e5,
-                           ld.threshold.v=sqrt(0.1),
-                           np = 1,
-                           verbose.v=FALSE,
-                           chr = NULL,
-                           minAF = NULL,
-                           outPref = "pruned_1KG",
-                           keepObj = FALSE){
+                            method="corr",
+                            listSamples=NULL,
+                            slide.max.bp.v=5e5,
+                            ld.threshold.v=sqrt(0.1),
+                            np=1,
+                            verbose.v=FALSE,
+                            chr=NULL,
+                            minAF = NULL,
+                            outPref = "pruned_1KG",
+                            keepObj = FALSE){
 
     filePruned <- file.path(paste0(outPref, ".rds"))
     fileObj <- file.path(paste0(outPref, "Obj.rds"))
@@ -367,18 +364,18 @@ pruning1KG.Chr <- function(gds,
 #' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
 #' The directory sampleGeno must contain matFreqSNV.txt.bz2
 #'
-#' @param fileNamePED
+#' @param fileNamePED TODO
 #'
-#' @param fileNameGDS
+#' @param fileNameGDS TODO
 #'
-#' @param batch
+#' @param batch TODO
 #'
-#' @param studyDesc
+#' @param studyDesc TODO
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to the sample.ids
-#' if NULL all samples
+#' @param listSamples A \code{vector} of \code{string} corresponding to
+#' the sample.ids. if NULL all samples
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return None
 #'
 #' @examples
 #'
@@ -412,7 +409,7 @@ appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 
 
     # Create the GDS file
-    gds <- snpgdsOpen(fileNameGDS, readonly = FALSE)
+    gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
     snpCHR <- index.gdsn(gds, "snp.chromosome")
     snpPOS <- index.gdsn(gds, "snp.position")
@@ -424,14 +421,19 @@ appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 
     print(paste0("Start ", Sys.time()))
 
-    listSampleGDS <- addStudyGDSSample(gds, pedDF=pedStudy, batch=batch, listSamples = listSamples, studyDF = studyDF)
+    listSampleGDS <- addStudyGDSSample(gds, pedDF=pedStudy, batch=batch,
+                                        listSamples=listSamples,
+                                        studyDF=studyDF)
 
 
     print(paste0("Sample info DONE ", Sys.time()))
 
     generateGDS1KGgenotypeFromSNPPileup(gds, PATHGENO,
-                                        listSamples = listSamples, listPos = listPos, offset = -1,
-                                        minCov = 10, minProb = 0.999, seqError = 0.001)
+                                            listSamples=listSamples,
+                                            listPos=listPos, offset=-1,
+                                            minCov=10, minProb=0.999,
+                                            seqError=0.001)
+
     print(paste0("Genotype DONE ", Sys.time()))
 
     closefn.gds(gds)

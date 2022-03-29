@@ -17,19 +17,19 @@ appendStudy2GDS1KG(
 \item{PATHGENO}{TODO a PATH to the directory genotype file of 1KG
 The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
-\item{fileNamePED}{}
+\item{fileNamePED}{TODO}
 
-\item{fileNameGDS}{}
+\item{fileNameGDS}{TODO}
 
-\item{batch}{}
+\item{batch}{TODO}
 
-\item{studyDesc}{}
+\item{studyDesc}{TODO}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to the sample.ids
-if NULL all samples}
+\item{listSamples}{A \code{vector} of \code{string} corresponding to
+the sample.ids. if NULL all samples}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+None
 }
 \description{
 TODO

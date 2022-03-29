@@ -47,8 +47,9 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #' @title The function add an array sample.ref to the gds file.It define base
 #' on a list of unrelated samples.
 #'
-#' @description This function create the field sample.ref which is 1 when the sample
-#' are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart$unrels
+#' @description This function create the field sample.ref which is 1 when
+#' the samples are a reference and 0 otherwise. The sample.ref is fill based
+#' on the file filePart$unrels
 #' from  in GENESIS TODO
 #'
 #' @param gds a \code{gds} object.
@@ -61,7 +62,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
 addGDSRef <- function(gds, filePart) {
@@ -134,15 +135,16 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 
 }
 
-#' @title This function create the gds file fields related to the study and the sample in it.
+#' @title This function create the gds file fields related to the study and
+#' the sample in it.
 #'
 #' @description TODO
 #'
 #' @param gds a \code{gds} object.
 #'
 #' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
-#' is Name.ID and the row.name is Name.ID too.
+#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
+#' pedDF is Name.ID and the row.name is Name.ID too.
 #'
 #' @param batch a \code{integer} corresponding
 #'
@@ -157,7 +159,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @keywords internal
 addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
@@ -221,7 +223,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
 
@@ -257,7 +259,8 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each samples with the genotype.
+#' @param PATHGENO TODO a PATH to a directory with the a file for each samples
+#' with the genotype.
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
 #'
@@ -271,11 +274,11 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @importFrom utils read.csv2
 #' @keywords internal
-generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
+generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
@@ -320,7 +323,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each samples with the genotype.
+#' @param PATHGENO TODO a PATH to a directory with the a file for each
+#' samples with the genotype.
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
 #'
@@ -333,7 +337,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils read.csv2
 #' @keywords internal
@@ -374,13 +378,15 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
     }
 }
 
-#' @title TODO This function append the genotype and the file related to the pileup
+#' @title TODO This function append the genotype and the file related to the
+#' pileup
 #'
 #' @description TODO
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each samples with the genotype.
+#' @param PATHGENO TODO a PATH to a directory with the a file for each
+#' samples with the genotype.
 #'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
@@ -401,7 +407,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
@@ -463,10 +469,10 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             z <- z[order(z[,1], z[,2], z[,3]),]
 
             matAll <- data.frame(Chromosome=z[z[,3]==1, 1],
-                                 Position=z[z[,3]==1, 2],
-                                 File1R=cumsum(z[,4])[z[,3]==1],
-                                 File1A=cumsum(z[,5])[z[,3]==1],
-                                 count=cumsum(z[,6])[z[,3]==1])
+                                    Position=z[z[,3]==1, 2],
+                                    File1R=cumsum(z[,4])[z[,3]==1],
+                                    File1A=cumsum(z[,5])[z[,3]==1],
+                                    count=cumsum(z[,6])[z[,3]==1])
             rm(z)
 
             if(i == 1) {
@@ -605,7 +611,7 @@ gds2tfam <- function(gds, listSample, pedOUT){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
 #' @keywords internal
@@ -677,7 +683,7 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsIBDKING
 #'
@@ -704,7 +710,8 @@ runIBDKING <- function(gds, sampleId = NULL,
 #'
 #' @param method the parameter method in SNPRelate::snpgdsLDpruning
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to the sample.ids
+#' @param listSamples A \code{vector} of \code{string} corresponding to
+#' the sample.ids
 #' use in LDpruning
 #'
 #' @param listKeep the list of snp.id keep
@@ -723,7 +730,7 @@ runIBDKING <- function(gds, sampleId = NULL,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen snpgdsLDpruning
 #' @importFrom gdsfmt closefn.gds
@@ -764,7 +771,8 @@ runLDPruning <- function(gds,
 #'
 #' @param PATHPRUNED TODO
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to the sample.ids
+#' @param listSamples A \code{vector} of \code{string} corresponding to
+#' the sample.ids
 #'
 #' @param prefFile \code{string} with the prefix of the pruned file
 #'
@@ -774,7 +782,7 @@ runLDPruning <- function(gds,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @keywords internal
 
@@ -785,7 +793,7 @@ addGDSStudyPruning <- function(gds, PATHPRUNED, listSamples, prefFile) {
     listPruning <- dir(PATHPRUNED, pattern = ".+.rds")
 
     # remove the .Obj.rds files if they are there
-    listPruning <- listPruning[grep("\\.Obj\\.rds$", listPruning, perl = TRUE, invert = TRUE)]
+    listPruning <- listPruning[grep("\\.Obj\\.rds$", listPruning, perl=TRUE, invert=TRUE)]
 
     # remove prefFIle and .rds from the fle name
     listSampleNames <- gsub(paste0("^", prefFile), "", gsub(".rds$", "", listPruning))

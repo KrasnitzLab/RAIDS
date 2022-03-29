@@ -2,7 +2,8 @@
 % Please edit documentation in R/gdsWrapper.R
 \name{generateGDS1KGgenotypeFromSNPPileup}
 \alias{generateGDS1KGgenotypeFromSNPPileup}
-\title{TODO This function append the genotype and the file related to the pileup}
+\title{TODO This function append the genotype and the file related to the
+pileup}
 \usage{
 generateGDS1KGgenotypeFromSNPPileup(
   gds,
@@ -18,7 +19,8 @@ generateGDS1KGgenotypeFromSNPPileup(
 \arguments{
 \item{gds}{a \code{gds} object.}
 
-\item{PATHGENO}{TODO a PATH to a directory with the a file for each samples with the genotype.}
+\item{PATHGENO}{TODO a PATH to a directory with the a file for each
+samples with the genotype.}
 
 \item{listSamples}{a \code{array} with the sample to keep}
 
@@ -41,6 +43,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

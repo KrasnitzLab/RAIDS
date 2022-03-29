@@ -13,8 +13,9 @@ addGDSRef(gds, filePart)
 \item{filePart}{a \code{list} from the function pcairPartition in GENESIS}
 }
 \description{
-This function create the field sample.ref which is 1 when the sample
-are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart$unrels
+This function create the field sample.ref which is 1 when
+the samples are a reference and 0 otherwise. The sample.ref is fill based
+on the file filePart$unrels
 from  in GENESIS TODO
 }
 \examples{
@@ -23,6 +24,6 @@ from  in GENESIS TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

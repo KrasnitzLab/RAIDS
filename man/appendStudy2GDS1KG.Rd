@@ -9,7 +9,7 @@ appendStudy2GDS1KG(
   fileNamePED,
   fileNameGDS,
   batch = 1,
-  studyDesc,
+  studyDF,
   listSamples = NULL
 )
 }
@@ -23,7 +23,7 @@ The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
 \item{batch}{TODO}
 
-\item{studyDesc}{TODO}
+\item{studyDF}{TODO}
 
 \item{listSamples}{A \code{vector} of \code{string} corresponding to
 the sample.ids. if NULL all samples}

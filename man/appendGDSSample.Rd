@@ -17,7 +17,7 @@ of pedDF is Name.ID and the row.name is Name.ID too.}
 \item{listSamples}{a \code{array} with the sample from pedDF$Name.ID to keep}
 }
 \value{
-None
+The integer \code{0} when successful.
 }
 \description{
 This function append the fields related to the samples.

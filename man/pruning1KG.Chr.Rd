@@ -44,7 +44,7 @@ more information about the process. Default: \code{FALSE}.}
 the processed information into a RDS object. Default: \code{FALSE}.}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+\code{NULL} invisibly.
 }
 \description{
 TODO

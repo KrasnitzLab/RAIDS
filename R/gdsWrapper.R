@@ -56,8 +56,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #'
 #' @param filePart a \code{list} from the function pcairPartition in GENESIS
 #'
-#' @return An object of class
-#' \code{\link[gdsfmt:gdsn.class]{gdsfmt::gdsn.class}} of the new node.
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -77,6 +76,7 @@ addGDSRef <- function(gds, filePart) {
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
     add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
 
+    return(0L)
 }
 
 
@@ -97,7 +97,7 @@ addGDSRef <- function(gds, filePart) {
 #' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
 #'
 #'
-#' @return None
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -134,6 +134,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
     append.gdsn(curAnnot, samp.annot$batch, check=TRUE)
     print("Annot done")
 
+    return(0L)
 }
 
 #' @title This function create the gds file fields related to the study and
@@ -218,7 +219,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' frequence information TODO describe the file
 #'
 #'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -250,6 +251,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
     add.gdsn(gds, "snp.AMR_AF", as.numeric(mapSNVSel$AMR_AF), storage = "packedreal24")
     add.gdsn(gds, "snp.SAS_AF", as.numeric(mapSNVSel$SAS_AF), storage = "packedreal24")
 
+    return(0L)
 }
 
 
@@ -265,11 +267,9 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSamples a \code{array} with the sample to keep
 #'
-#'
-#'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -316,6 +316,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
             stop("Missing samples genotype in ", listSamples[i])
         }
     }
+
+    return(0L)
 }
 
 #' @title This function append the field genotype in the gds file
@@ -332,7 +334,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 #' @param listSamples  a \code{array} with the sample to keep
 #'
 #'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -377,6 +379,8 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
             stop("Missing 1k samples ", listSample[i])
         }
     }
+
+    return(0L)
 }
 
 #' @title TODO This function append the genotype and the file related to the
@@ -402,7 +406,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @param seqError  a \code{array} with the sample to keep
 #'
 #'
-#' @return None
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -542,6 +546,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             stop("Missing samples ", listSamples[i])
         }
     }
+
+    return(0L)
 }
 
 

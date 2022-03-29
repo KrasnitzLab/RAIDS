@@ -55,5 +55,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }

@@ -92,15 +92,15 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 
     mapSNVSel <- read.csv2(fileSNV)
     listSNP <- which(rowSums(mapSNVSel[,c("EAS_AF",
-                                          "EUR_AF",
-                                          "AFR_AF",
-                                          "AMR_AF",
-                                          "SAS_AF")] >= cutOff &
-                                 mapSNVSel[,c("EAS_AF",
-                                              "EUR_AF",
-                                              "AFR_AF",
-                                              "AMR_AF",
-                                              "SAS_AF")] <= 1 - cutOff)>0)
+                                            "EUR_AF",
+                                            "AFR_AF",
+                                            "AMR_AF",
+                                            "SAS_AF")] >= cutOff &
+                                    mapSNVSel[,c("EAS_AF",
+                                                "EUR_AF",
+                                                "AFR_AF",
+                                                "AMR_AF",
+                                                "SAS_AF")] <= 1 - cutOff)>0)
 
     mapSNVSel <- mapSNVSel[listSNP,]
 

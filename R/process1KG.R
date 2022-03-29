@@ -15,7 +15,7 @@
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
+#' @importFrom utils read.delim
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0) {

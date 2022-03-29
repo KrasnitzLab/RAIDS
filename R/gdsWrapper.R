@@ -162,7 +162,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #' @keywords internal
 addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 
-    if(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) {
+    if(! c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) {
         stop("studyDF incomplete in addStudyGDSSample\n")
     }
 

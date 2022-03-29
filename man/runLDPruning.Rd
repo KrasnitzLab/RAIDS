@@ -20,7 +20,8 @@ runLDPruning(
 
 \item{method}{the parameter method in SNPRelate::snpgdsLDpruning}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to the sample.ids
+\item{listSamples}{A \code{vector} of \code{string} corresponding to
+the sample.ids
 use in LDpruning}
 
 \item{listKeep}{the list of snp.id keep}
@@ -45,6 +46,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

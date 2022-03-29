@@ -2,7 +2,8 @@
 % Please edit documentation in R/gdsWrapper.R
 \name{addStudyGDSSample}
 \alias{addStudyGDSSample}
-\title{This function create the gds file fields related to the study and the sample in it.}
+\title{This function create the gds file fields related to the study and
+the sample in it.}
 \usage{
 addStudyGDSSample(gds, pedDF, batch = 1, listSamples = NULL, studyDF)
 }
@@ -10,8 +11,8 @@ addStudyGDSSample(gds, pedDF, batch = 1, listSamples = NULL, studyDF)
 \item{gds}{a \code{gds} object.}
 
 \item{pedDF}{a \code{data.frame} with the sample info. Must have the column
-sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of pedDF
-is Name.ID and the row.name is Name.ID too.}
+sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
+pedDF is Name.ID and the row.name is Name.ID too.}
 
 \item{batch}{a \code{integer} corresponding}
 
@@ -29,6 +30,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

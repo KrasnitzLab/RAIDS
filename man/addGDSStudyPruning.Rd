@@ -11,7 +11,8 @@ addGDSStudyPruning(gds, PATHPRUNED, listSamples, prefFile)
 
 \item{PATHPRUNED}{TODO}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to the sample.ids}
+\item{listSamples}{A \code{vector} of \code{string} corresponding to
+the sample.ids}
 
 \item{prefFile}{\code{string} with the prefix of the pruned file}
 }
@@ -24,6 +25,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

@@ -16,6 +16,9 @@ of pedDF is Name.ID and the row.name is Name.ID too.}
 
 \item{listSamples}{a \code{array} with the sample from pedDF$Name.ID to keep}
 }
+\value{
+None
+}
 \description{
 This function append the fields related to the samples.
 The fields append are sample.id and the \code{data.frame} sample.annot.
@@ -28,6 +31,6 @@ study must be fill.
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

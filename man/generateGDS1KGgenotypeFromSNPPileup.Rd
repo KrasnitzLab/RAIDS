@@ -34,6 +34,9 @@ samples with the genotype.}
 
 \item{seqError}{a \code{array} with the sample to keep}
 }
+\value{
+None
+}
 \description{
 TODO
 }

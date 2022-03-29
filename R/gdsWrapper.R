@@ -56,7 +56,8 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #'
 #' @param filePart a \code{list} from the function pcairPartition in GENESIS
 #'
-#' @return NULL
+#' @return An object of class
+#' \code{\link[gdsfmt:gdsn.class]{gdsfmt::gdsn.class}} of the new node.
 #'
 #' @examples
 #'
@@ -96,13 +97,13 @@ addGDSRef <- function(gds, filePart) {
 #' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
 #'
 #'
-#' @return NULL
+#' @return None
 #'
 #' @examples
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @keywords internal
 appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
@@ -153,7 +154,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #' @param studyDF a \code{data.frame} with at least the column study.id,
 #' study.desc and study.platform
 #'
-#' @return NULL
+#' @return TODO
 #'
 #' @examples
 #'
@@ -401,7 +402,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @param seqError  a \code{array} with the sample to keep
 #'
 #'
-#' @return NULL
+#' @return None
 #'
 #' @examples
 #'
@@ -562,7 +563,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
 #' @keywords internal
@@ -776,7 +777,7 @@ runLDPruning <- function(gds,
 #'
 #' @param prefFile \code{string} with the prefix of the pruned file
 #'
-#' @return NULL
+#' @return None
 #'
 #' @examples
 #'

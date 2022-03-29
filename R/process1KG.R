@@ -25,13 +25,13 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     ped1KG <- read.delim(pedFile)
 
     pedAll <- data.frame(
-            sample.id=c(ped1KG$Individual.ID),
-            Name.ID=c(ped1KG$Individual.ID),
-            sex=c(ped1KG$Gender),
-            pop.group=c(ped1KG$Population),
-            superPop=rep(NA, length(c(ped1KG$Population))),
-            batch=c(rep(batch.v,nrow(ped1KG))),
-            stringsAsFactors=FALSE
+                sample.id=c(ped1KG$Individual.ID),
+                Name.ID=c(ped1KG$Individual.ID),
+                sex=c(ped1KG$Gender),
+                pop.group=c(ped1KG$Population),
+                superPop=rep(NA, length(c(ped1KG$Population))),
+                batch=c(rep(batch.v,nrow(ped1KG))),
+                stringsAsFactors=FALSE
     )
 
 
@@ -82,7 +82,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @export
 
@@ -133,7 +133,7 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #'
@@ -199,7 +199,7 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom GENESIS pcairPartition
 #'
@@ -241,7 +241,7 @@ identifyRelative <- function(gds,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
 #'
@@ -294,7 +294,7 @@ addRef2GDS1KG <- function(fileNameGDS,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
 
@@ -381,7 +381,7 @@ pruning1KG.Chr <- function(gds,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #'

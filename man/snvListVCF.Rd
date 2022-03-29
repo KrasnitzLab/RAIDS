@@ -8,11 +8,11 @@ for at least one super population}
 snvListVCF(gds, fileOUT, offset = 0, freqCutoff = NULL)
 }
 \arguments{
-\item{fileOUT}{}
+\item{fileOUT}{TODO}
 
-\item{PATHPRUNED}{}
+\item{PATHPRUNED}{TODO}
 
-\item{filePref}{}
+\item{filePref}{TODO}
 }
 \value{
 TODO a \code{vector} of \code{numeric}
@@ -26,6 +26,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

@@ -118,10 +118,18 @@ In R:
     
         File: fileGDS (15.4G)
         +    [  ] *
+        # The id for the genotype
         |--+ sample.id   { Str8 2548, 19.9K }
+        # data.frame for the annotation of sample
+        # for all genotype good for the reference 
+        # samples but sn other data.frame will be 
+        # define to describe the samples 
+        # in the studies
         |--+ sample.annot   [ data.frame ] *
         |  |--+ sex   { Str8 2548, 5.0K }
+        # population 
         |  |--+ pop.group   { Str8 2548, 10.0K }
+        # The 5 super populations in 
         |  |--+ superPop   { Str8 2548, 10.0K }
         |  \--+ batch   { Float64 2548, 19.9K }
         |--+ snp.id   { Str8 24542710, 223.5M }
@@ -137,3 +145,4 @@ In R:
         |--+ genotype   { Bit2 24542710x2548, 14.6G }
         \--+ sample.ref   { Bit1 2548, 319B }
     
+

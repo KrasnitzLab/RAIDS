@@ -356,7 +356,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP ){
     for(i in seq_len(length(listSample))){
         pos <- which(listSample1k == listSample[i])
         if( length(pos) == 1){
-            matSample <- read.csv2( file.path(PATH1KG, "data", "sampleGeno", listMat1k[pos]),
+            matSample <- read.csv2( file.path(PATHGENO, listMat1k[pos]),
                                     row.names = NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
 

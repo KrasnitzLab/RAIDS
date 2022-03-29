@@ -16,6 +16,9 @@ for the frequency in at least one super population.}
 
 \item{fileFREQ}{TODO}
 }
+\value{
+The integer \code{0} when successful.
+}
 \description{
 TODO
 }

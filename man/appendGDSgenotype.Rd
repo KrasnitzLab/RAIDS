@@ -16,6 +16,9 @@ samples with the genotype.}
 
 \item{listSamples}{a \code{array} with the sample to keep}
 }
+\value{
+The integer \code{0} when successful.
+}
 \description{
 TODO
 }

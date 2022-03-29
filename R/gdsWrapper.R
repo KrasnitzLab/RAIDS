@@ -56,8 +56,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #'
 #' @param filePart a \code{list} from the function pcairPartition in GENESIS
 #'
-#' @return An object of class
-#' \code{\link[gdsfmt:gdsn.class]{gdsfmt::gdsn.class}} of the new node.
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -77,6 +76,7 @@ addGDSRef <- function(gds, filePart) {
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
     add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
 
+    return(0L)
 }
 
 
@@ -97,7 +97,7 @@ addGDSRef <- function(gds, filePart) {
 #' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
 #'
 #'
-#' @return None
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -134,6 +134,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
     append.gdsn(curAnnot, samp.annot$batch, check=TRUE)
     print("Annot done")
 
+    return(0L)
 }
 
 #' @title This function create the gds file fields related to the study and
@@ -218,7 +219,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' frequence information TODO describe the file
 #'
 #'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -250,6 +251,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
     add.gdsn(gds, "snp.AMR_AF", as.numeric(mapSNVSel$AMR_AF), storage = "packedreal24")
     add.gdsn(gds, "snp.SAS_AF", as.numeric(mapSNVSel$SAS_AF), storage = "packedreal24")
 
+    return(0L)
 }
 
 
@@ -265,11 +267,9 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSamples a \code{array} with the sample to keep
 #'
-#'
-#'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -316,6 +316,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
             stop("Missing samples genotype in ", listSamples[i])
         }
     }
+
+    return(0L)
 }
 
 #' @title This function append the field genotype in the gds file
@@ -332,7 +334,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 #' @param listSamples  a \code{array} with the sample to keep
 #'
 #'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -377,6 +379,8 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
             stop("Missing 1k samples ", listSample[i])
         }
     }
+
+    return(0L)
 }
 
 #' @title TODO This function append the genotype and the file related to the
@@ -402,7 +406,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @param seqError  a \code{array} with the sample to keep
 #'
 #'
-#' @return None
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -490,7 +494,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                 var.Count <- add.gdsn(gds, "Total.count",
                                         matAll$count,
                                         valdim=c( nrow(listPos), 1),
-                                      storage="sp.int16")
+                                        storage="sp.int16")
 
             } else{
 
@@ -503,9 +507,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             cutOffA <- data.frame(count = unlist(vapply(as.integer(names(listCount)),
                                                         FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
                                                         FUN.VALUE = numeric(1), minProb=minProb, eProb= 2 * seqError )),
-                                  allele = unlist(vapply(as.integer(names(listCount)),
-                                                         FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
-                                                         FUN.VALUE = numeric(1), minProb=minProb, eProb=seqError)))
+                        allele = unlist(vapply(as.integer(names(listCount)),
+                                    FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
+                                    FUN.VALUE = numeric(1), minProb=minProb, eProb=seqError)))
             row.names(cutOffA) <- names(listCount)
             # Initialize the genotype array at -1
 
@@ -519,11 +523,12 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 
             # The difference  depth - (nb Ref + nb Alt) can be realisticly explain by sequencing error
             listCov <- listCov[(matAllC$count -
-                                    (matAllC$File1R +
-                                         matAllC$File1A)) < cutOffA[as.character(matAllC$count), "count"]]
+                                (matAllC$File1R + matAllC$File1A)) <
+                                cutOffA[as.character(matAllC$count), "count"]]
 
             matAllC <- matAll[listCov,]
             rm(matAll)
+
             g <- as.matrix(rep(-1, nrow(listPos)))
             # The sample is homozygote if the other known allele have a coverage of 0
             g[listCov][which(matAllC$File1A == 0)] <- 0
@@ -542,6 +547,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             stop("Missing samples ", listSamples[i])
         }
     }
+
+    return(0L)
 }
 
 
@@ -689,15 +696,11 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' @importFrom SNPRelate snpgdsIBDKING
 #'
 #' @keywords internal
-runIBDKING <- function(gds, sampleId = NULL,
-                       snp.id = NULL,
-                       maf=0.05) {
+runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 
-    ibd.robust <- snpgdsIBDKING(gds,
-                                 sample.id=sampleId,
+    ibd.robust <- snpgdsIBDKING(gds, sample.id=sampleId,
                                  snp.id=snp.id,
-                                 maf=maf,
-                                 type="KING-robust")
+                                 maf=maf, type="KING-robust")
     return(ibd.robust)
 
 }
@@ -738,19 +741,15 @@ runIBDKING <- function(gds, sampleId = NULL,
 #'
 #' @keywords internal
 
-runLDPruning <- function(gds,
-                         method="corr",
-                         listSamples=NULL,
-                         listKeep=NULL,
-                         slide.max.bp.v = 5e5,
-                         ld.threshold.v=sqrt(0.1),
-                         np = 1,
-                         verbose.v=FALSE){
+runLDPruning <- function(gds, method="corr",
+                            listSamples=NULL,
+                            listKeep=NULL,
+                            slide.max.bp.v = 5e5,
+                            ld.threshold.v=sqrt(0.1),
+                            np=1, verbose.v=FALSE) {
 
     # validate the para
     # showfile.gds(closeall=FALSE, verbose=TRUE)
-
-
 
     snpset <- snpgdsLDpruning(gds, method="corr",
                                 sample.id=listSamples,
@@ -786,18 +785,18 @@ runLDPruning <- function(gds,
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @keywords internal
-
-
 addGDSStudyPruning <- function(gds, PATHPRUNED, listSamples, prefFile) {
 
     # The list of the pruned SNP
     listPruning <- dir(PATHPRUNED, pattern = ".+.rds")
 
     # remove the .Obj.rds files if they are there
-    listPruning <- listPruning[grep("\\.Obj\\.rds$", listPruning, perl=TRUE, invert=TRUE)]
+    listPruning <- listPruning[grep("\\.Obj\\.rds$", listPruning,
+                                        perl=TRUE, invert=TRUE)]
 
     # remove prefFIle and .rds from the fle name
-    listSampleNames <- gsub(paste0("^", prefFile), "", gsub(".rds$", "", listPruning))
+    listSampleNames <- gsub(paste0("^", prefFile), "",
+                                gsub(".rds$", "", listPruning))
 
     # Get the snp.id
     snp.id <- read.gdsn(index.gdsn(gds, "snp.id"))

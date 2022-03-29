@@ -76,7 +76,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param fileFREQ TODO
 #'
-#' @return NULL
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -106,6 +106,8 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 
     saveRDS(listSNP, fileLSNP)
     saveRDS(mapSNVSel, fileFREQ)
+
+    return(0L)
 }
 
 
@@ -124,7 +126,8 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 #'
 #' @param fileNameGDS TODO
 #'
-#' @param listSamples a \code{vector} of \code{string} corresponding to the sample.ids
+#' @param listSamples a \code{vector} of \code{string} corresponding to
+#' the sample.ids
 #' if NULL all the samples
 #'
 #' @return TODO a \code{vector} of \code{numeric}
@@ -139,11 +142,9 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
 #'
 #' @export
 generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
-                           fileNamePED,
-                           fileListSNP,
-                           fileSNPSel,
-                           fileNameGDS,
-                           listSamples = NULL){
+                            fileNamePED, fileListSNP,
+                            fileSNPSel, fileNameGDS,
+                            listSamples=NULL) {
 
     # check if file fileGDS
     # It must not exists
@@ -193,7 +194,7 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @param filePart TODO
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return \code{NULL} invisibly.
 #'
 #' @examples
 #'
@@ -204,11 +205,8 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #' @importFrom GENESIS pcairPartition
 #'
 #' @export
-identifyRelative <- function(gds,
-                             maf = 0.05,
-                             thresh = 2^(-11/2),
-                             fileIBD,
-                             filePart){
+identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
+                             fileIBD, filePart) {
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
@@ -216,11 +214,12 @@ identifyRelative <- function(gds,
     colnames(matKING) <- ibd.robust$sample.id
     row.names(matKING) <- ibd.robust$sample.id
 
-    part <- pcairPartition(kinobj = matKING, divobj = matKING,
-                                kin.thresh = thresh, div.thresh = -1 *thresh)
+    part <- pcairPartition(kinobj=matKING, divobj=matKING,
+                                kin.thresh=thresh, div.thresh=-1*thresh)
 
     saveRDS(ibd.robust, fileIBD)
     saveRDS(part, filePart)
+
 }
 
 
@@ -235,7 +234,7 @@ identifyRelative <- function(gds,
 #'
 #' @param filePart file save by identifyRelative
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return None.
 #'
 #' @examples
 #'
@@ -246,7 +245,6 @@ identifyRelative <- function(gds,
 #' @importFrom SNPRelate snpgdsOpen
 #'
 #' @export
-
 addRef2GDS1KG <- function(fileNameGDS,
                              filePart){
 
@@ -288,7 +286,7 @@ addRef2GDS1KG <- function(fileNameGDS,
 #' @param keepObj a \code{logical} specifying if the function must save the
 #' the processed information into a RDS object. Default: \code{FALSE}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return \code{NULL} invisibly.
 #'
 #' @examples
 #'
@@ -341,11 +339,11 @@ pruning1KG.Chr <- function(gds,
     }
 
     snpset <- runLDPruning(gds,
-                           method,
-                           listSamples=listSamples,
-                           listKeep=listKeep,
-                           slide.max.bp.v = slide.max.bp.v,
-                           ld.threshold.v=ld.threshold.v)
+                            method,
+                            listSamples=listSamples,
+                            listKeep=listKeep,
+                            slide.max.bp.v = slide.max.bp.v,
+                            ld.threshold.v=ld.threshold.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
     saveRDS(pruned, filePruned)

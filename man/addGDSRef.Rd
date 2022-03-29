@@ -13,8 +13,7 @@ addGDSRef(gds, filePart)
 \item{filePart}{a \code{list} from the function pcairPartition in GENESIS}
 }
 \value{
-An object of class
-\code{\link[gdsfmt:gdsn.class]{gdsfmt::gdsn.class}} of the new node.
+The integer \code{0} when successful.
 }
 \description{
 This function create the field sample.ref which is 1 when

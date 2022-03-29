@@ -537,7 +537,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             # The sample is heterozygote if explain the coverage of the minor allele by
             # sequencing error is not realistic.
             g[listCov][which(matAllC$File1A >= cutOffA[as.character(matAllC$count), "allele"] &
-                                 matAllC$File1R >= cutOffA[as.character(matAllC$count), "allele"])] <- 1
+                        matAllC$File1R >= cutOffA[as.character(matAllC$count), "allele"])] <- 1
 
             #g <- as.matrix(g)
             append.gdsn(var.geno, g)
@@ -699,8 +699,8 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 
     ibd.robust <- snpgdsIBDKING(gds, sample.id=sampleId,
-                                 snp.id=snp.id,
-                                 maf=maf, type="KING-robust")
+                                    snp.id=snp.id,
+                                    maf=maf, type="KING-robust")
     return(ibd.robust)
 
 }

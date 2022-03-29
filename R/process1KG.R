@@ -159,7 +159,7 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 
 
     # Create the GDS file
-    newGDS <- createfn.gds(fileGDS)
+    newGDS <- createfn.gds(fileNameGDS)
     put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
 
 
@@ -370,7 +370,7 @@ pruning1KG.Chr <- function(gds,
 #'
 #' @param batch TODO
 #'
-#' @param studyDesc TODO
+#' @param studyDF TODO
 #'
 #' @param listSamples A \code{vector} of \code{string} corresponding to
 #' the sample.ids. if NULL all samples
@@ -392,7 +392,7 @@ appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
                                fileNamePED,
                                fileNameGDS,
                                batch = 1,
-                               studyDesc,
+                               studyDF,
                                listSamples = NULL){
 
     # check if file fileGDS

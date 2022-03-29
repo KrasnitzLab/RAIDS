@@ -195,7 +195,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
                                 sample.type=pedDF[, "Sample.Type"],
                                 diagnosis=pedDF[, "Diagnosis"],
                                 source=pedDF[, "Source"],
-                                study.id=rep(study.id, nrow(pedDF)),
+                                study.id=rep(studyDF$study.id, nrow(pedDF)),
                                 stringsAsFactors=FALSE)
 
     add.gdsn(gds, "study.annot", study.annot)

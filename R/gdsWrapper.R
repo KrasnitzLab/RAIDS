@@ -64,18 +64,16 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
-addGDSRef <- function(gds, filePart){
+addGDSRef <- function(gds, filePart) {
 
-    part <- readRDS( filePart)
-
+    part <- readRDS(filePart)
 
     sampleGDS <- index.gdsn(gds, "sample.id")
-    df <- data.frame(sample.id = read.gdsn(sampleGDS),
-                     sample.ref = 0,
-                     stringsAsFactors = FALSE)
+    df <- data.frame(sample.id=read.gdsn(sampleGDS),
+                        sample.ref=0, stringsAsFactors=FALSE)
 
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
-    add.gdsn(gds, "sample.ref", df$sample.ref, storage = "bit1")
+    add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
 
 }
 
@@ -162,15 +160,13 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @keywords internal
+addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 
-
-addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples = NULL, studyDF){
-
-    if(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF) ){
+    if(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) {
         stop("studyDF incomplete in addStudyGDSSample\n")
     }
 
-    if(!(is.null(listSamples))){
+    if(!(is.null(listSamples))) {
         pedDF <- pedDF[listSamples,]
     } else{
         listSamples <- pedDF$Name.ID
@@ -180,27 +176,27 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples = NULL, studyDF){
 
     samplePres <- read.gdsn(sampleGDS)
     print(paste0("appendGDSSample ", Sys.time()))
-    appendGDSSample(gds, pedDF, batch=batch, listSamples = listSamples)
+    appendGDSSample(gds, pedDF, batch=batch, listSamples=listSamples)
     print(paste0("appendGDSSample DONE ", Sys.time()))
 
     add.gdsn(gds, "study.offset", length(samplePres))
 
-    df <- data.frame(study.id = studyDF$study.id,
-                     study.desc = studyDF$study.desc,
-                     study.platform = studyDF$study.platform,
-                     stringsAsFactors = FALSE)
+    df <- data.frame(study.id=studyDF$study.id,
+                        study.desc=studyDF$study.desc,
+                        study.platform=studyDF$study.platform,
+                        stringsAsFactors=FALSE)
 
 
     add.gdsn(gds, "study.list", df)
 
 
-    study.annot <- data.frame(data.id = pedDF[, "sample.id"],
-                              case.id = pedDF[, "Case.ID"],
-                              sample.type = pedDF[, "Sample.Type"],
-                              diagnosis = pedDF[, "Diagnosis"],
-                              source = pedDF[, "Source"],
-                              study.id = rep(study.id, nrow(pedDF)),
-                              stringsAsFactors = FALSE)
+    study.annot <- data.frame(data.id=pedDF[, "sample.id"],
+                                case.id=pedDF[, "Case.ID"],
+                                sample.type=pedDF[, "Sample.Type"],
+                                diagnosis=pedDF[, "Diagnosis"],
+                                source=pedDF[, "Source"],
+                                study.id=rep(study.id, nrow(pedDF)),
+                                stringsAsFactors=FALSE)
 
     add.gdsn(gds, "study.annot", study.annot)
     print(paste0("study.annot DONE ", Sys.time()))
@@ -294,9 +290,11 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples){
             matSample <- read.csv2( file.path(PATHGENO, listMat1k[pos]),
                                     row.names = NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
-            if(i == 1){
+            if(i == 1) {
                 var.geno <- add.gdsn(gds, "genotype",
-                                     valdim=c( nrow(matSample), length(listSamples)), storage="bit2")
+                                valdim=c(nrow(matSample),
+                                            length(listSamples)),
+                                            storage="bit2")
             }
 
             # Not faster but harder to read
@@ -409,8 +407,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @importFrom utils read.csv
 #' @keywords internal
 generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
-                                                listSamples,listPos, offset,
-                                                minCov = 10, minProb = 0.999, seqError = 0.001){
+    listSamples,listPos, offset, minCov=10, minProb=0.999, seqError=0.001) {
 
 
 
@@ -421,10 +418,10 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 
     g <- as.matrix(rep(-1, nrow(listPos)))
 
-    for(i in seq_len(length(listSamples))){
+    for(i in seq_len(length(listSamples))) {
         pos <- which(listSampleFile == listSamples[i])
         print(paste0(listSamples[i], " ", Sys.time()))
-        if( length(pos) == 1){
+        if(length(pos) == 1){
 
             matSample <- read.csv(file.path(PATHGENO, listMat[pos]))
 
@@ -445,44 +442,48 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             # below same as the merge above but faster
 
             z <- cbind(c(listPos$snp.chromosome,
-                         matSample$Chromosome,
-                         matSample$Chromosome),
-                       c(listPos$snp.position,
-                         matSample$Position,
-                         matSample$Position),
-                       c(rep(1,nrow(listPos)),
-                         rep(0,nrow(matSample)),
-                         rep(2,nrow(matSample))),
-                       c(rep(0,nrow(listPos)),
-                         matSample[, "File1R"],
-                         -1 * matSample[, "File1R"]),
-                       c(rep(0,nrow(listPos)),
-                         matSample[, "File1A"],
-                         -1 * matSample[, "File1A"]),
-                       c(rep(0,nrow(listPos)),
-                         matSample[, "count"],
-                         -1 * matSample[, "count"]))
+                            matSample$Chromosome,
+                            matSample$Chromosome),
+                        c(listPos$snp.position,
+                            matSample$Position,
+                            matSample$Position),
+                        c(rep(1,nrow(listPos)),
+                            rep(0,nrow(matSample)),
+                            rep(2,nrow(matSample))),
+                        c(rep(0,nrow(listPos)),
+                            matSample[, "File1R"],
+                            -1 * matSample[, "File1R"]),
+                        c(rep(0,nrow(listPos)),
+                            matSample[, "File1A"],
+                            -1 * matSample[, "File1A"]),
+                        c(rep(0,nrow(listPos)),
+                            matSample[, "count"],
+                            -1 * matSample[, "count"]))
             rm(matSample)
             z <- z[order(z[,1], z[,2], z[,3]),]
 
-            matAll <- data.frame(Chromosome = z[z[,3]==1, 1],
-                                 Position = z[z[,3]==1, 2],
-                                 File1R = cumsum(z[,4])[z[,3]==1],
-                                 File1A = cumsum(z[,5])[z[,3]==1],
-                                 count = cumsum(z[,6])[z[,3]==1])
+            matAll <- data.frame(Chromosome=z[z[,3]==1, 1],
+                                 Position=z[z[,3]==1, 2],
+                                 File1R=cumsum(z[,4])[z[,3]==1],
+                                 File1A=cumsum(z[,5])[z[,3]==1],
+                                 count=cumsum(z[,6])[z[,3]==1])
             rm(z)
-            if(i == 1){
+
+            if(i == 1) {
                 var.geno <- index.gdsn(gds, "genotype")
 
                 var.Ref <- add.gdsn(gds, "Ref.count",
-                                    matAll$File1R,
-                                    valdim=c( nrow(listPos), 1), storage="sp.int16")
+                                        matAll$File1R,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
                 var.Alt <- add.gdsn(gds, "Alt.count",
-                                    matAll$File1A,
-                                    valdim=c( nrow(listPos), 1), storage="sp.int16")
+                                        matAll$File1A,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
                 var.Count <- add.gdsn(gds, "Total.count",
-                                      matAll$count,
-                                      valdim=c( nrow(listPos), 1), storage="sp.int16")
+                                        matAll$count,
+                                        valdim=c( nrow(listPos), 1),
+                                      storage="sp.int16")
 
             } else{
 
@@ -507,6 +508,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 
 
             matAllC <- matAll[listCov,]
+
 
             # The difference  depth - (nb Ref + nb Alt) can be realisticly explain by sequencing error
             listCov <- listCov[(matAllC$count -
@@ -569,17 +571,17 @@ gds2tfam <- function(gds, listSample, pedOUT){
     sampleANNO <-read.gdsn(sampleGDS)
 
     pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
-                          id = sampleId[listS],
-                          fa=rep("0",length(listSample)),
-                          mo=rep("0",length(listSample)),
-                          sex=sampleANNO$sex[listS],
-                          pheno=rep(0,length(listSample)),
-                          stringsAsFactors = FALSE)
+                            id=sampleId[listS],
+                            fa=rep("0",length(listSample)),
+                            mo=rep("0",length(listSample)),
+                            sex=sampleANNO$sex[listS],
+                            pheno=rep(0,length(listSample)),
+                            stringsAsFactors=FALSE)
 
     write.table(pedFile, pedOUT,
-                quote=FALSE, sep="\t",
-                row.names = FALSE,
-                col.names = FALSE)
+                    quote=FALSE, sep="\t",
+                    row.names=FALSE,
+                    col.names=FALSE)
 
 }
 
@@ -648,9 +650,9 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
     #tped <- do.call(cbind, tped)
 
     write.table(tped, pedOUT,
-                quote=FALSE, sep="\t",
-                row.names = FALSE,
-                col.names = FALSE)
+                    quote=FALSE, sep="\t",
+                    row.names=FALSE,
+                    col.names=FALSE)
 
 }
 
@@ -743,12 +745,12 @@ runLDPruning <- function(gds,
 
 
     snpset <- snpgdsLDpruning(gds, method="corr",
-                              sample.id = listSamples,
-                              snp.id = listKeep,
-                              slide.max.bp = slide.max.bp.v,
-                              ld.threshold = ld.threshold.v,
-                              num.thread=np,
-                              verbose = verbose.v)
+                                sample.id=listSamples,
+                                snp.id=listKeep,
+                                slide.max.bp=slide.max.bp.v,
+                                ld.threshold=ld.threshold.v,
+                                num.thread=np,
+                                verbose=verbose.v)
     # closefn.gds(gds)
     return(snpset)
 }
@@ -777,8 +779,7 @@ runLDPruning <- function(gds,
 #' @keywords internal
 
 
-addGDSStudyPruning <- function(gds, PATHPRUNED,
-                               listSamples, prefFile){
+addGDSStudyPruning <- function(gds, PATHPRUNED, listSamples, prefFile) {
 
     # The list of the pruned SNP
     listPruning <- dir(PATHPRUNED, pattern = ".+.rds")
@@ -807,9 +808,8 @@ addGDSStudyPruning <- function(gds, PATHPRUNED,
         g <- pruned %in% snp.id
         if(i == 1){
 
-            var.Pruned <- add.gdsn(gds, "pruned.study",
-                                g,
-                                valdim=c( length(snp.id), 1), storage="sp.int8")
+            var.Pruned <- add.gdsn(gds, "pruned.study", g,
+                            valdim=c( length(snp.id), 1), storage="sp.int8")
 
 
         } else{

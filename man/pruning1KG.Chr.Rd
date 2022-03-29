@@ -21,25 +21,27 @@ pruning1KG.Chr(
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
-\item{method}{}
+\item{method}{TODO}
 
-\item{listSamples}{}
+\item{listSamples}{TODO}
 
-\item{slide.max.bp.v}{}
+\item{slide.max.bp.v}{TODO}
 
-\item{ld.threshold.v}{}
+\item{ld.threshold.v}{TODO}
 
-\item{np}{}
+\item{np}{TODO . Default: \code{NULL}.}
 
-\item{verbose.v}{}
+\item{verbose.v}{a \code{logical} specifying if the function must provide
+more information about the process. Default: \code{FALSE}.}
 
-\item{chr}{}
+\item{chr}{TODO}
 
-\item{minAF}{}
+\item{minAF}{TODO}
 
-\item{outPref}{}
+\item{outPref}{TODO}
 
-\item{keepObj}{}
+\item{keepObj}{a \code{logical} specifying if the function must save the
+the processed information into a RDS object. Default: \code{FALSE}.}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

@@ -17,15 +17,15 @@ generateGDS1KG(
 \item{PATHGENO}{TODO a PATH to the directory genotype file of 1KG
 The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
-\item{fileNamePED}{}
+\item{fileNamePED}{TODO}
 
-\item{fileListSNP}{}
+\item{fileListSNP}{TODO}
 
-\item{fileSNPSel}{}
+\item{fileSNPSel}{TODO}
 
-\item{fileNameGDS}{}
+\item{fileNameGDS}{TODO}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to the sample.ids
+\item{listSamples}{a \code{vector} of \code{string} corresponding to the sample.ids
 if NULL all the samples}
 }
 \value{

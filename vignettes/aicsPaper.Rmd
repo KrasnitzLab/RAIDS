@@ -34,8 +34,9 @@ set.seed(121444)
 # Licensing 
 
 The `r Githubpkg("belleau/aicsPaper")` package and the underlying 
-`r Githubpkg("belleau/aicsPaper")` code are distributed under the 
-TODO 
+`r Githubpkg("belleau/aicsPaper")` code are distributed under  
+the Artistic license 2.0. You are free to use and 
+redistribute this software.  
 
 <br>
 <br>

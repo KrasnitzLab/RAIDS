@@ -1,8 +1,10 @@
+<!-- badges: start -->
+[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+<!-- badges: end -->
+
 # Accurate inference of genetic ancestry from cancer-derived sequencing #
 
-The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome).
-
-The **_aicsPaper_** package also implements simulation algorithm that generates synthetic cancer-derived data.
+The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome). The package also implements simulation algorithm that generates synthetic cancer-derived data.
 
 **This code and analysis pipeline was designed and developed for the following publication:**
 
@@ -33,6 +35,16 @@ package is required.
 
      ## Install the latest version of aicsPaper
      devtools::install_github('belleau/aicsPaper')
+
+
+## License ##
+
+This package and the underlying **_aicsPaper_** code are distributed under 
+the Artistic license 2.0. You are free to use and redistribute this software. 
+
+For more information on Artistic 2.0 License see
+[http://opensource.org/licenses/Artistic-2.0](http://opensource.org/licenses/Artistic-2.0)
+
 
 
 ## Maintainer

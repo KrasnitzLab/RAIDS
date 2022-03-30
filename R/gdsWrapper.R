@@ -497,7 +497,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                 }
                 fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
                 if(file.exists(fileGDSSample) ){
-                    gdsSample <- snpgdsOpen(fileGDSSample)
+                    gdsSample <- openfn.gds(fileGDSSample)
                 } else{
                     gdsSample <- createfn.gds(fileGDSSample)
 

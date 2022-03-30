@@ -16,6 +16,9 @@ the sample.ids}
 
 \item{prefFile}{\code{string} with the prefix of the pruned file}
 }
+\value{
+None
+}
 \description{
 TODO
 }

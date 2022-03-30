@@ -12,6 +12,9 @@ generateGDSSNPinfo(gds, fileFREQ)
 \item{fileFREQ}{string with the path and the fileNames to a files with
 frequence information TODO describe the file}
 }
+\value{
+The integer \code{0} when successful.
+}
 \description{
 TODO
 }

@@ -13,7 +13,7 @@ addRef2GDS1KG(fileNameGDS, filePart)
 \item{filePart}{file save by identifyRelative}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+None.
 }
 \description{
 This function create the field sample.ref which is 1 when the sample
@@ -26,5 +26,5 @@ from  in GENESIS TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }

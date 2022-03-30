@@ -7,11 +7,11 @@
 groupChrPruning(PATHPRUNED, filePref, fileOUT)
 }
 \arguments{
-\item{PATHPRUNED}{}
+\item{PATHPRUNED}{TODO}
 
-\item{filePref}{}
+\item{filePref}{TODO}
 
-\item{fileOUT}{}
+\item{fileOUT}{TODO}
 }
 \value{
 TODO a \code{vector} of \code{numeric}
@@ -25,6 +25,6 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
 \keyword{internal}

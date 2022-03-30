@@ -12,6 +12,9 @@ addGDSRef(gds, filePart)
 
 \item{filePart}{a \code{list} from the function pcairPartition in GENESIS}
 }
+\value{
+The integer \code{0} when successful.
+}
 \description{
 This function create the field sample.ref which is 1 when
 the samples are a reference and 0 otherwise. The sample.ref is fill based

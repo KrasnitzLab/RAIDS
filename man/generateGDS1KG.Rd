@@ -25,7 +25,8 @@ The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
 \item{fileNameGDS}{TODO}
 
-\item{listSamples}{a \code{vector} of \code{string} corresponding to the sample.ids
+\item{listSamples}{a \code{vector} of \code{string} corresponding to
+the sample.ids
 if NULL all the samples}
 }
 \value{
@@ -40,5 +41,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }

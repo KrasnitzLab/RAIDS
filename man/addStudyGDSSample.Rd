@@ -21,6 +21,9 @@ pedDF is Name.ID and the row.name is Name.ID too.}
 \item{studyDF}{a \code{data.frame} with at least the column study.id,
 study.desc and study.platform}
 }
+\value{
+TODO
+}
 \description{
 TODO
 }

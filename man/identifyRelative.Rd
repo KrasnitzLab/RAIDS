@@ -18,7 +18,7 @@ identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 \item{filePart}{TODO}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+\code{NULL} invisibly.
 }
 \description{
 TODO
@@ -29,5 +29,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }

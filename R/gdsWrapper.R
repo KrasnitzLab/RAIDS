@@ -394,6 +394,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @param PATHGENO TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
+#'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
 #' @param listPos  a \code{array}
@@ -406,6 +407,10 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' @param seqError  a \code{array} with the sample to keep
 #'
+#' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
+#'
+#' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
+#' to the samples with coverage info is keep
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -419,7 +424,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @importFrom utils read.csv
 #' @keywords internal
 generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
-    listSamples,listPos, offset, minCov=10, minProb=0.999, seqError=0.001) {
+    listSamples,listPos, offset, minCov=10, minProb=0.999, seqError=0.001, KEEPCOV = TRUE, PATHGDSSAMPLE=NULL) {
 
 
 
@@ -432,7 +437,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSampleFile == listSamples[i])
-        print(paste0(listSamples[i], " ", Sys.time()))
+        print(paste0(listSamples[i], " ", Sys.time(), " ", i))
         if(length(pos) == 1){
 
             matSample <- read.csv(file.path(PATHGENO, listMat[pos]))
@@ -481,27 +486,44 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                                     count=cumsum(z[,6])[z[,3]==1])
             rm(z)
 
+
+            if(KEEPCOV){
+                if(is.null(PATHGDSSAMPLE)){
+                    stop("KEEPCOV is TRUE and PATHGDSSAMPLE is NULL in generateGDS1KGgenotypeFromSNPPileup\n")
+                } else{
+                    if(! dir.exists(PATHGDSSAMPLE)){
+                        dir.create(PATHGDSSAMPLE)
+                    }
+                }
+                fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
+                if(file.exists(fileGDSSample) ){
+                    gdsSample <- snpgdsOpen(fileGDSSample)
+                } else{
+                    gdsSample <- createfn.gds(fileGDSSample)
+
+                    id <- add.gdsn(gdsSample, "sample.id",
+                                   listSamples[i])
+                }
+
+                var.Ref <- add.gdsn(gdsSample, "Ref.count",
+                                    matAll$File1R,
+                                    valdim=c( nrow(listPos), 1),
+                                    storage="sp.int16")
+                var.Alt <- add.gdsn(gdsSample, "Alt.count",
+                                    matAll$File1A,
+                                    valdim=c( nrow(listPos), 1),
+                                    storage="sp.int16")
+                var.Count <- add.gdsn(gdsSample, "Total.count",
+                                      matAll$count,
+                                      valdim=c( nrow(listPos), 1),
+                                      storage="sp.int16")
+
+                closefn.gds(gdsSample)
+
+            }
+
             if(i == 1) {
                 var.geno <- index.gdsn(gds, "genotype")
-
-                var.Ref <- add.gdsn(gds, "Ref.count",
-                                        matAll$File1R,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-                var.Alt <- add.gdsn(gds, "Alt.count",
-                                        matAll$File1A,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-                var.Count <- add.gdsn(gds, "Total.count",
-                                        matAll$count,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-
-            } else{
-
-                append.gdsn(var.Ref,matAll$File1R)
-                append.gdsn(var.Alt, matAll$File1A)
-                append.gdsn(var.Count, matAll$count)
             }
 
             listCount <- table(matAll$count[matAll$count >= minCov])

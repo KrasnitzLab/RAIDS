@@ -13,7 +13,9 @@ generateGDS1KGgenotypeFromSNPPileup(
   offset,
   minCov = 10,
   minProb = 0.999,
-  seqError = 0.001
+  seqError = 0.001,
+  KEEPCOV = TRUE,
+  PATHGDSSAMPLE = NULL
 )
 }
 \arguments{
@@ -33,6 +35,11 @@ samples with the genotype.}
 \item{minProb}{a \code{array} with the sample to keep}
 
 \item{seqError}{a \code{array} with the sample to keep}
+
+\item{KEEPCOV}{TODO a \code{logical} if it is keeping the coverage}
+
+\item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
+to the samples with coverage info is keep}
 }
 \value{
 The integer \code{0} when successful.

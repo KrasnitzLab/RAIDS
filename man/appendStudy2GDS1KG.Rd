@@ -10,7 +10,9 @@ appendStudy2GDS1KG(
   fileNameGDS,
   batch = 1,
   studyDF,
-  listSamples = NULL
+  listSamples = NULL,
+  KEEPCOV = TRUE,
+  PATHSAMPLEGDS = NULL
 )
 }
 \arguments{
@@ -27,6 +29,11 @@ The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
 \item{listSamples}{A \code{vector} of \code{string} corresponding to
 the sample.ids. if NULL all samples}
+
+\item{KEEPCOV}{TODO a \code{logical} if it is keeping the coverage}
+
+\item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
+to the samples with coverage info is keep}
 }
 \value{
 None

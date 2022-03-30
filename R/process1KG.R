@@ -95,12 +95,12 @@ generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
                                           "EUR_AF",
                                           "AFR_AF",
                                           "AMR_AF",
-                                          "SAS_AF")] >= cutOff &
+                                          "SAS_AF")] >= (cutOff - 1e-10) &
                                  mapSNVSel[,c("EAS_AF",
                                               "EUR_AF",
                                               "AFR_AF",
                                               "AMR_AF",
-                                              "SAS_AF")] <= 1 - cutOff)>0)
+                                              "SAS_AF")] <= (1 - cutOff + 1e-10) ) >0)
 
     mapSNVSel <- mapSNVSel[listSNP,]
 

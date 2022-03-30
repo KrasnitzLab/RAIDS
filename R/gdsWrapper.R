@@ -73,6 +73,7 @@ addGDSRef <- function(gds, filePart) {
     df <- data.frame(sample.id=read.gdsn(sampleGDS),
                         sample.ref=0, stringsAsFactors=FALSE)
 
+    # The order of part$unrels is not the same than df$sample.id
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
     add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
 

@@ -77,6 +77,10 @@ In R:
 
 
 
+## Split the VCF by sample
+
+TODO
+
 ## Generate the base GDS file with 1KG
 
     library(aicsPaper)

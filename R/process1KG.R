@@ -122,11 +122,16 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #' for the frequency in at least one super population. Default: \code{0.01}.
 #'
 #' @param fileSNV  a \code{character} string representing the path and
-#' file name of the bulk SNP information file from 1KG. The file must exist.
+#' file name of the bulk SNP information file from 1KG. The file must be in
+#' text format. The file must exist.
 #'
-#' @param fileLSNP TODO
+#' @param fileLSNP a \code{character} string representing the path and
+#' file name of the RDS file that will contain the indexes of the retained
+#' SNPs. The file extension must be '.rds'.
 #'
-#' @param fileFREQ TODO
+#' @param fileFREQ a \code{character} string representing the path and
+#' file name of the RDS file that will contain the filtered SNP information.
+#' The file extension must be '.rds'.
 #'
 #' @return The integer \code{0} when successful.
 #'

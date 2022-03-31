@@ -18,11 +18,10 @@
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @keywords internal
-
 snvListVCF <- function(gds,
-                       fileOUT,
-                       offset=0,
-                       freqCutoff=NULL){
+                        fileOUT,
+                        offset=0,
+                        freqCutoff=NULL){
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
@@ -74,13 +73,11 @@ snvListVCF <- function(gds,
 
     cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOUT)
     cat(paste0('##FILTER=<ID=PASS,Description="All filters passed">',
-               "\n"),
-        file = fileOUT, append=TRUE)
-    cat(paste0('##INFO=<ID=AF,Number=A,Type=Float,Description="Estimated allele frequency in the range (0,1)">',
-               "\n"),
-        file = fileOUT, append=TRUE)
-    cat('#',
-        file = fileOUT, append=TRUE)
+               "\n"), file = fileOUT, append=TRUE)
+    cat(paste0('##INFO=<ID=AF,Number=A,Type=Float,',
+                'Description="Estimated allele frequency in the range (0,1)">',
+                "\n"), file = fileOUT, append=TRUE)
+    cat('#', file = fileOUT, append=TRUE)
 
     write.table(df, file=fileOUT, sep="\t",
                     append=TRUE,

@@ -30,8 +30,8 @@ Depends: R (>= 4.0),
     SNPRelate,
     stats,
     utils,
-    S4Vectors,
     GENESIS
+Imports: S4Vectors
 Suggests: testthat,
     knitr,
     rmarkdown,

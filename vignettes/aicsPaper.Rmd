@@ -201,7 +201,9 @@ fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
 fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
 fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 
-
+## Filter the intermediate SNP file (fileSNV parameter)
+## Create a RDS with filter SNPs (fileFREQ parameter)
+## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
 generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
                       fileLSNP = fileLSNP.v,
                       fileFREQ = fileFREQ.v)

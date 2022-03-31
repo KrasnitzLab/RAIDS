@@ -32,7 +32,7 @@ the sample.ids. if NULL all samples}
 
 \item{KEEPCOV}{TODO a \code{logical} if it is keeping the coverage}
 
-\item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
+\item{PATHSAMPLEGDS}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
 }
 \value{

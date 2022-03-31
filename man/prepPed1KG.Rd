@@ -13,13 +13,15 @@ file name of the pedigree file from 1KG. The file must exist.}
 \item{PATHGENO}{a \code{character} string representing the path where
 the 1K genotyping files for each sample are located. Only the samples with
 associated genotyping files are retained in the creation of the final
-\code{data.frame}. Default: \code{"./data/sampleGeno"}.}
+\code{data.frame}. The name of the genotyping files must correspond to
+the individual identification (Individual.ID) in the pedigree file.
+Default: \code{"./data/sampleGeno"}.}
 
 \item{batch.v}{a\code{integer} that uniquely identifies the source of the
 pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.}
 }
 \value{
-a \code{data.frame} containing the needed pedigree information
+A \code{data.frame} containing the needed pedigree information
 from 1K.
 }
 \description{
@@ -31,7 +33,16 @@ sample be available in a specified directory.
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## Demo pedigree file
+pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+
+## Create a data.frame containing the information of the retained
+## samples (samples with existing genotyping files)
+prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
+
 
 }
 \author{

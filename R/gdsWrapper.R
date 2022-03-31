@@ -419,7 +419,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn write.gdsn
+#' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
 #' @keywords internal

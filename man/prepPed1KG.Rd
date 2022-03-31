@@ -2,22 +2,32 @@
 % Please edit documentation in R/process1KG.R
 \name{prepPed1KG}
 \alias{prepPed1KG}
-\title{Prepare the ped file for 1KG}
+\title{Prepare the pedigree file using pedigree information from 1KG}
 \usage{
-prepPed1KG(pedFile, PATHGENO = file.path("data", "sampleGeno"), batch.v = 0)
+prepPed1KG(pedFile, PATHGENO = file.path("data", "sampleGeno"), batch.v = 0L)
 }
 \arguments{
-\item{pedFile}{TODO a \code{string} path and file name of ped file from 1KG}
+\item{pedFile}{a \code{character} string representing the path and
+file name of the pedigree file from 1KG. The file must exist.}
 
-\item{PATHGENO}{TODO}
+\item{PATHGENO}{a \code{character} string representing the path where
+the 1K genotyping files for each sample are located. Only the samples with
+associated genotyping files are retained in the creation of the final
+\code{data.frame}. Default: \code{"./data/sampleGeno"}.}
 
-\item{batch.v}{TODO}
+\item{batch.v}{a\code{integer} that uniquely identifies the source of the
+pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+a \code{data.frame} containing the needed pedigree information
+from 1K.
 }
 \description{
-TODO
+Using the pedigree file from 1KG, this function extracts
+needed information and formats it into a \code{data.frame} so in can
+be used in following steps of the ancestry inference process. The
+function also requires that the genotyping files associated to each
+sample be available in a specified directory.
 }
 \examples{
 

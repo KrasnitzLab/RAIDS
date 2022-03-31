@@ -30,6 +30,7 @@ Depends: R (>= 4.0),
     SNPRelate,
     stats,
     utils,
+    S4Vectors,
     GENESIS
 Suggests: testthat,
     knitr,

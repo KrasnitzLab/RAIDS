@@ -53,3 +53,38 @@ test_that("prepPed1KG() must return error when PATHGENO is not existing", {
                                 batch.v=0L), error_message)
 })
 
+
+test_that("prepPed1KG() must return error when pedigree file is not existing", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+
+    error_message <- paste0("The file \'", pedDemoFile, "\' does not exist.")
+
+    expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
+                            batch.v=0L), error_message)
+})
+
+
+#############################################################################
+### Tests generateMapSnvSel() results
+#############################################################################
+
+context("generateMapSnvSel() results")
+
+test_that("generateMapSnvSel() must return error when SNP file is not existing", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    snpFile <- file.path(data.dir, "SNP_TOTO.txt")
+
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+
+    error_message <- paste0("The file \'", snpFile, "\' does not exist.")
+
+    expect_error(generateMapSnvSel(cutOff=0.01, fileSNV=snpFile,
+                    fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+})

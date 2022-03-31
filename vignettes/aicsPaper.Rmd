@@ -98,14 +98,24 @@ devtools::install_github('belleau/aicsPaper')
 
 ## Formatting the information from 1000 Genomes (1KG)
 
-### Create a predigree file in RDS format
+### Download the required files from 1K
 
 First, the pedigree file with the description of the 1KG samples
 needs to be downloaded from the 1KG ftp site:
 
 > ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
 
-Then, the function __prepPed1KG()__ is used to create the pedigree file 
+The genotyping file for the 1KG samples also needs to be downloaded:
+
+TODO
+
+### Split the 1K genotyping file per sample
+
+TODO
+
+### Create a predigree file in RDS format
+
+The function __prepPed1KG()__ is used to create the pedigree file 
 in RDS format:
 
 ```{r prepPed1KG, eval=FALSE, echo=TRUE}
@@ -116,10 +126,13 @@ library(aicsPaper)
 ## In this example, the file is in the current directory
 filePED1KGOri <- "20130606_g1k.ped"
 
-## Extract needed information from the pedigree file from 1KG
-ped <- prepPed1KG(filePED1KGOri)
+## Extract needed information from the pedigree file from 1KG into a data.frame
+## Only the samples with genotyping information (file present in PATHGENO)
+## are retained to create the final data.frame
+ped <- prepPed1KG(pedFile=filePED1KGOri, 
+                    PATHGENO=file.path("data", "sampleGeno"))
 
-## Save the pedigree information in a RDS file 
+## Save the pedigree information data.frame as a RDS file 
 ## In this example, the file is saved here ./data/metadata/ped1KG.rds
 filePED1KG <- file.path("data", "metadata","ped1KG.rds")
 saveRDS(ped,  filePED1KG)

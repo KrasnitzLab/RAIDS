@@ -110,14 +110,19 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 }
 
 
-#' @title Generate the mapSNVSel file
+#' @title Generate the filter SNP information file in RDS format
 #'
-#' @description TODO
+#' @description The function applies a cut-off filter to the SNP information
+#' file to retain only the SNP that have a frequency superior or equal to the
+#' specified cut-off in at least one super population. The information about
+#' the retained SNPs is saved in a RDS format file. A RDS file containing the
+#' indexes of the retained SNP is also created.
 #'
 #' @param cutOff a single \code{numeric} value, the cut-off
 #' for the frequency in at least one super population. Default: \code{0.01}.
 #'
-#' @param fileSNV TODO
+#' @param fileSNV  a \code{character} string representing the path and
+#' file name of the bulk SNP information file from 1KG. The file must exist.
 #'
 #' @param fileLSNP TODO
 #'
@@ -130,28 +135,44 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
+#' @importFrom S4Vectors isSingleNumber
 #' @export
-
 generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
-    # test fileSNV
+    ## The cut-off must be a single number
+    if (!isSingleNumber(cutOff)) {
+        stop("The cutOff must be a single numeric value.")
+    }
 
+    ## Validate that the bulk SNP file exists
+    if (! file.exists(fileSNV)) {
+        stop("The file \'", fileSNV, "\' does not exist." )
+    }
+
+    ## Read the bulk SNP information file
     mapSNVSel <- read.csv2(fileSNV)
+
+    ## Identify SNPs that have a frequency equal or superior to the cut-off
+    ## in at least one super population
     listSNP <- which( rowSums( mapSNVSel[,c("EAS_AF",
-                                            "EUR_AF",
-                                            "AFR_AF",
-                                            "AMR_AF",
-                                            "SAS_AF")] >= (cutOff - 1e-10) &
-                                   mapSNVSel[,c("EAS_AF",
                                                 "EUR_AF",
                                                 "AFR_AF",
                                                 "AMR_AF",
-                                                "SAS_AF")] <= (1 - cutOff + 1e-10) ) >0)
+                                                "SAS_AF")] >= (cutOff -
+                                                                    1e-10) &
+                                   mapSNVSel[,c("EAS_AF",
+                                                    "EUR_AF",
+                                                    "AFR_AF",
+                                                    "AMR_AF",
+                                                    "SAS_AF")] <= (1 - cutOff +
+                                                                 1e-10)) > 0)
 
+    ## Filter the data.frame
     mapSNVSel <- mapSNVSel[listSNP,]
 
+    ## Save the indexes of the retained SNPs in RDS
     saveRDS(listSNP, fileLSNP)
+    ## Save the filtered SNP information file in RDS
     saveRDS(mapSNVSel, fileFREQ)
 
     return(0L)
@@ -253,7 +274,7 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
-                             fileIBD, filePart) {
+                                fileIBD, filePart) {
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
@@ -436,16 +457,14 @@ pruning1KG.Chr <- function(gds,
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #'
 #' @export
-
-
-appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
-                               fileNamePED,
-                               fileNameGDS,
-                               batch = 1,
-                               studyDF,
-                               listSamples = NULL,
-                               KEEPCOV = TRUE,
-                               PATHSAMPLEGDS = NULL){
+appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
+                                fileNamePED,
+                                fileNameGDS,
+                                batch=1,
+                                studyDF,
+                                listSamples=NULL,
+                                KEEPCOV=TRUE,
+                                PATHSAMPLEGDS=NULL){
 
     # check if file fileGDS
     # It must not exists

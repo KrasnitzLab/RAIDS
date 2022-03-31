@@ -88,3 +88,37 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
     expect_error(generateMapSnvSel(cutOff=0.01, fileSNV=snpFile,
                     fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
 })
+
+
+test_that("generateMapSnvSel() must return error when cutOff file is a character string", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+
+    error_message <- "The cutOff must be a single numeric value."
+
+    expect_error(generateMapSnvSel(cutOff="CANADA", fileSNV=snpFile,
+                            fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+})
+
+
+test_that("generateMapSnvSel() must return error when cutOff file is a array of numbers", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+
+    error_message <- "The cutOff must be a single numeric value."
+
+    expect_error(generateMapSnvSel(cutOff=c(0.01, 0.02), fileSNV=snpFile,
+                            fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+})

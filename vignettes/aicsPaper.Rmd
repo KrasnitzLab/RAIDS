@@ -109,7 +109,7 @@ The genotyping file for the 1KG samples also needs to be downloaded:
 
 TODO
 
-### Split the 1K genotyping file per sample
+### Split the 1K genotyping file to one file per sample
 
 TODO
 
@@ -137,6 +137,74 @@ ped <- prepPed1KG(pedFile=filePED1KGOri,
 filePED1KG <- file.path("data", "metadata","ped1KG.rds")
 saveRDS(ped,  filePED1KG)
     
+```
+
+
+<br>
+<br>
+
+### Prepare intermediate SNP info file based on 1KG VCF for GDS
+
+Some intermediate file containing the SNP information from 1KG need to be
+generated so the information can ultimately be imported in a GDS file 
+from Bioconductor [gdsfmt](https://bioconductor.org/packages/gdsfmt/).
+
+The intermediate SNP file contains the SNP position as well as the frequency 
+in each super population.
+
+```{r intermediateVCF, echo=T, eval=FALSE}
+
+## This is not done in R
+## The python script is in the 'scriptsPy' directory
+    
+    for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
+    do
+      chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
+      python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
+    done
+    for i in `seq 1 22`
+    do
+      cat matFreq.chr${i}.txt >matFreqSNV.txt
+      bzip2 matFreqSNV.txt
+    done
+    
+```
+
+The intermediary SNP info file is called '__matFreqSNV.txt__'.
+
+<br>
+<br>
+
+### Filter intermediate SNP info file
+
+The intermediate SNP file is filtered to only retain the SNPs with frequency 
+higher then a specific cut-off (here >=0.01) for at least one super 
+population. 
+
+The filter SNP file is saved in RDS format ('__fileLSNP__' parameter). A 
+second file containing the index of the retained SNPs is also 
+created ('__fileLSNP__' parameter)
+
+The function __generateMapSnvSel()__ is used to filter the SNP file and 
+generated the needed RDS files:
+
+```{r filterVCF, echo=T, eval=FALSE}
+## Load required package
+library(aicsPaper)
+
+## The path to the intermediate SNP info file
+fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
+
+## The paths and names of the two output files
+## One file contains the index of retained SNPs ("listSNP.rds")
+## One file contains the filter SNP information ("mapSNVSel.rds")
+fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
+fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
+
+
+generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
+                      fileLSNP = fileLSNP.v,
+                      fileFREQ = fileFREQ.v)
 ```
 
 

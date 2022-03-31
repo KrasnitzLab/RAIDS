@@ -154,18 +154,17 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
     ## Identify SNPs that have a frequency equal or superior to the cut-off
     ## in at least one super population
-    listSNP <- which( rowSums( mapSNVSel[,c("EAS_AF",
+    listSNP <- which(rowSums(mapSNVSel[,c("EAS_AF",
+                                            "EUR_AF",
+                                            "AFR_AF",
+                                            "AMR_AF",
+                                            "SAS_AF")] >= (cutOff - 1e-10) &
+                                mapSNVSel[,c("EAS_AF",
                                                 "EUR_AF",
                                                 "AFR_AF",
                                                 "AMR_AF",
-                                                "SAS_AF")] >= (cutOff -
-                                                                    1e-10) &
-                                   mapSNVSel[,c("EAS_AF",
-                                                    "EUR_AF",
-                                                    "AFR_AF",
-                                                    "AMR_AF",
-                                                    "SAS_AF")] <= (1 - cutOff +
-                                                                 1e-10)) > 0)
+                                                "SAS_AF")] <= (1 - cutOff +
+                                                                1e-10)) > 0)
 
     ## Filter the data.frame
     mapSNVSel <- mapSNVSel[listSNP,]
@@ -311,10 +310,8 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
-#'
 #' @export
-addRef2GDS1KG <- function(fileNameGDS,
-                             filePart){
+addRef2GDS1KG <- function(fileNameGDS, filePart){
 
 
 
@@ -363,7 +360,6 @@ addRef2GDS1KG <- function(fileNameGDS,
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
-
 pruning1KG.Chr <- function(gds,
                             method="corr",
                             listSamples=NULL,
@@ -453,9 +449,7 @@ pruning1KG.Chr <- function(gds,
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
-#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
-#'
+#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
 #' @export
 appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 fileNamePED,
@@ -485,8 +479,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     snpCHR <- index.gdsn(gds, "snp.chromosome")
     snpPOS <- index.gdsn(gds, "snp.position")
 
-    listPos <- data.frame(snp.chromosome = read.gdsn(snpCHR),
-                          snp.position = read.gdsn(snpPOS))
+    listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
+                            snp.position=read.gdsn(snpPOS))
 
 
 

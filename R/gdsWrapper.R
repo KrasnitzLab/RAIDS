@@ -167,7 +167,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #' @keywords internal
 addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 
-    if(! c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) {
+    if( sum(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) != 3 ) {
         stop("studyDF incomplete in addStudyGDSSample\n")
     }
 
@@ -497,11 +497,11 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                 }
                 fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
                 if(file.exists(fileGDSSample) ){
-                    gdsSample <- openfn.gds(fileGDSSample)
+                    gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
                 } else{
                     gdsSample <- createfn.gds(fileGDSSample)
 
-                    id <- add.gdsn(gdsSample, "sample.id",
+                    id <- add.gdsn(gdsSample, "sampleStudy",
                                    listSamples[i])
                 }
 
@@ -790,14 +790,12 @@ runLDPruning <- function(gds, method="corr",
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class \code{gds} opened for the sample
 #'
-#' @param PATHPRUNED TODO
+#' @param pruned TODO
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to
-#' the sample.ids
-#'
-#' @param prefFile \code{string} with the prefix of the pruned file
+#' @param sample.id A \code{string} corresponding to
+#' the sample.id
 #'
 #' @return None
 #'
@@ -808,45 +806,16 @@ runLDPruning <- function(gds, method="corr",
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @keywords internal
-addGDSStudyPruning <- function(gds, PATHPRUNED, listSamples, prefFile) {
-
-    # The list of the pruned SNP
-    listPruning <- dir(PATHPRUNED, pattern = ".+.rds")
-
-    # remove the .Obj.rds files if they are there
-    listPruning <- listPruning[grep("\\.Obj\\.rds$", listPruning,
-                                        perl=TRUE, invert=TRUE)]
-
-    # remove prefFIle and .rds from the fle name
-    listSampleNames <- gsub(paste0("^", prefFile), "",
-                                gsub(".rds$", "", listPruning))
-
-    # Get the snp.id
-    snp.id <- read.gdsn(index.gdsn(gds, "snp.id"))
+addGDSStudyPruning <- function(gds, pruned, sample.id) {
 
 
-    # Loop on the samples
-    for(i in seq_len(length(listSamples))){
-
-        pos <- which(listSampleNames == listSamples[i])
-        print(paste0(listSamples[i], " ", Sys.time()))
-        if( length(pos) != 1){
-            stop("Missing samples ", listSamples[i])
-        }
-        pruned <- readRDS(file.path(PATHPRUNED, listPruning[pos]))
-
-        # list snp.id keep after pruning
-        g <- pruned %in% snp.id
-        if(i == 1){
-
-            var.Pruned <- add.gdsn(gds, "pruned.study", g,
-                            valdim=c( length(snp.id), 1), storage="sp.int8")
-
-
-        } else{
-            append.gdsn(var.Pruned,g)
-        }
-
-        print(paste0(listSamples[i], " ", i, " ", Sys.time()))
+    if("pruned.study" %in% ls.gdsn(gds)){
+        delete.gdsn(index.gdsn(gds, "pruned.study"))
     }
+
+    var.Pruned <- add.gdsn(gds, "pruned.study", pruned)
+
+    sync.gds(gds)
+
+    return(0L)
 }

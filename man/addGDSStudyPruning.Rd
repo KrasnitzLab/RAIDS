@@ -4,17 +4,15 @@
 \alias{addGDSStudyPruning}
 \title{fill the pruned.study in the gds file}
 \usage{
-addGDSStudyPruning(gds, PATHPRUNED, listSamples, prefFile)
+addGDSStudyPruning(gds, pruned, sample.id)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an object of class \code{gds} opened for the sample}
 
-\item{PATHPRUNED}{TODO}
+\item{pruned}{TODO}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to
-the sample.ids}
-
-\item{prefFile}{\code{string} with the prefix of the pruned file}
+\item{sample.id}{A \code{string} corresponding to
+the sample.id}
 }
 \value{
 None

@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
-[![codecov](https://codecov.io/gh/adeschen/aicsPaper/branch/main/graph/badge.svg?token=JTTO1CH8AZ)](https://codecov.io/gh/adeschen/aicsPaper)
+[![codecov](https://codecov.io/gh/belleau/aicsPaper/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/aicsPaper)
 <!-- badges: end -->
 
 # Accurate inference of genetic ancestry from cancer-derived sequencing #

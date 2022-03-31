@@ -1,14 +1,24 @@
-#' @title Prepare the ped file for 1KG
+#' @title Prepare the pedigree file using pedigree information from 1KG
 #'
-#' @description TODO
+#' @description Using the pedigree file from 1KG, this function extracts
+#' needed information and formats it into a \code{data.frame} so in can
+#' be used in following steps of the ancestry inference process. The
+#' function also requires that the genotyping files associated to each
+#' sample be available in a specified directory.
 #'
-#' @param pedFile TODO a \code{string} path and file name of ped file from 1KG
+#' @param pedFile a \code{character} string representing the path and
+#' file name of the pedigree file from 1KG. The file must exist.
 #'
-#' @param PATHGENO TODO
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. Only the samples with
+#' associated genotyping files are retained in the creation of the final
+#' \code{data.frame}. Default: \code{"./data/sampleGeno"}.
 #'
-#' @param batch.v TODO
+#' @param batch.v a\code{integer} that uniquely identifies the source of the
+#' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return a \code{data.frame} containing the needed pedigree information
+#' from 1K.
 #'
 #' @examples
 #'
@@ -16,43 +26,69 @@
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom utils read.delim
+#' @importFrom S4Vectors isSingleInteger
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
-                        batch.v=0) {
+                        batch.v=0L) {
 
-    # TODO validate
+    ## Validate that the batch is an integer
+    if (! isSingleInteger(batch.v)) {
+        stop("The batch.v must be an integer.")
+    }
 
+    ## Validate that the pedigree file exists
+    if (! file.exists(pedFile)) {
+        stop("The file \'", pedFile, "\' does not exist." )
+    }
+
+    ## Validate that the path for the genotyping files exists
+    if (! file.exists(pedFile)) {
+        stop("The path \'", PATHGENO, "\' does not exist." )
+    }
+
+    ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)
 
+    ## Create a data.frame containing the needed information
     pedAll <- data.frame(
                 sample.id=c(ped1KG$Individual.ID),
                 Name.ID=c(ped1KG$Individual.ID),
                 sex=c(ped1KG$Gender),
                 pop.group=c(ped1KG$Population),
                 superPop=rep(NA, length(c(ped1KG$Population))),
-                batch=c(rep(batch.v,nrow(ped1KG))),
+                batch=c(rep(batch.v, nrow(ped1KG))),
                 stringsAsFactors=FALSE
     )
 
-
-    # TODO The population versus super.population is hardcode
-    # change to parameters
+    ## Create a list with all populations associated to each super-population
+    ## TODO The population versus super.population is hard-coded
+    ## TODO change to parameters
     listSuperPop1000G <- list()
     listSuperPop1000G[['EAS']] <- c("CHB", "JPT", "CHS", "CDX", "KHV")
     listSuperPop1000G[['EUR']] <- c("CEU", "TSI", "FIN", "GBR", "IBS")
-    listSuperPop1000G[['AFR']] <- c("YRI", "LWK", "GWD", "MSL", "ESN", "ASW", "ACB")
+    listSuperPop1000G[['AFR']] <- c("YRI", "LWK", "GWD", "MSL", "ESN",
+                                        "ASW", "ACB")
     listSuperPop1000G[['AMR']] <- c("MXL", "PUR", "CLM", "PEL")
     listSuperPop1000G[['SAS']] <- c("GIH", "PJL", "BEB", "STU", "ITU")
-    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
+
+    ## Identify the super-population associated to each sample in
+    ## the data.frame
+    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
     for(sp in listSuperPop){
-        pedAll[which(pedAll$pop.group %in% listSuperPop1000G[[sp]]), "superPop"] <-
-            sp
+        pedAll[which(pedAll$pop.group %in% listSuperPop1000G[[sp]]),
+                "superPop"] <- sp
     }
+
+    ## Assign row names to the data.frame
     row.names(pedAll) <- pedAll$sample.id
+
+    ## Change column format for Sex information
+    ## TODO: could be done when the data.frame is created
     pedAll$sex <- as.character(pedAll$sex)
 
 
+    ## Only retained samples with existing genotyping file
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 

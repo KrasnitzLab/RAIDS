@@ -501,7 +501,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                 } else{
                     gdsSample <- createfn.gds(fileGDSSample)
 
-                    id <- add.gdsn(gdsSample, "sample.id",
+                    id <- add.gdsn(gdsSample, "sampleStudy",
                                    listSamples[i])
                 }
 

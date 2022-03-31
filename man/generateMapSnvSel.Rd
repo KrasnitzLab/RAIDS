@@ -7,8 +7,8 @@
 generateMapSnvSel(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ)
 }
 \arguments{
-\item{cutOff}{a single \code{numeric} value, the cut off
-for the frequency in at least one super population.}
+\item{cutOff}{a single \code{numeric} value, the cut-off
+for the frequency in at least one super population. Default: \code{0.01}.}
 
 \item{fileSNV}{TODO}
 

@@ -12,17 +12,28 @@
 #' @param PATHGENO a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. Only the samples with
 #' associated genotyping files are retained in the creation of the final
-#' \code{data.frame}. Default: \code{"./data/sampleGeno"}.
+#' \code{data.frame}. The name of the genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
 #'
 #' @param batch.v a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
-#' @return a \code{data.frame} containing the needed pedigree information
+#' @return A \code{data.frame} containing the needed pedigree information
 #' from 1K.
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## Demo pedigree file
+#' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+#'
+#' ## Create a data.frame containing the information of the retained
+#' ## samples (samples with existing genotyping files)
+#' prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
+#'
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom utils read.delim
@@ -42,7 +53,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     }
 
     ## Validate that the path for the genotyping files exists
-    if (! file.exists(pedFile)) {
+    if (! file.exists(PATHGENO)) {
         stop("The path \'", PATHGENO, "\' does not exist." )
     }
 
@@ -103,8 +114,8 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @description TODO
 #'
-#' @param cutOff a single \code{numeric} value, the cut off
-#' for the frequency in at least one super population.
+#' @param cutOff a single \code{numeric} value, the cut-off
+#' for the frequency in at least one super population. Default: \code{0.01}.
 #'
 #' @param fileSNV TODO
 #'
@@ -122,7 +133,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @export
 
-generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
+generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
     # test fileSNV
 
@@ -411,7 +422,7 @@ pruning1KG.Chr <- function(gds,
 #'
 #' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
 #'
-#' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
+#' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
 #' @return None

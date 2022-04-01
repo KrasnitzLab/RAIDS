@@ -84,7 +84,7 @@ test_that("prepPed1KG() must return the expected output", {
     row.names(expected) <- expected$sample.id
 
     expect_equal(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
-                            batch.v=0L), expected)
+                                batch.v=0L), expected)
 })
 
 
@@ -124,7 +124,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
     error_message <- "The cutOff must be a single numeric value."
 
     expect_error(generateMapSnvSel(cutOff="CANADA", fileSNV=snpFile,
-                            fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+                        fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
 })
 
 
@@ -141,5 +141,5 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
     error_message <- "The cutOff must be a single numeric value."
 
     expect_error(generateMapSnvSel(cutOff=c(0.01, 0.02), fileSNV=snpFile,
-                            fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+                        fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
 })

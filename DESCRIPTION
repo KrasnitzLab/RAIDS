@@ -22,7 +22,6 @@ Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
 Depends: R (>= 4.0),
-    GenomicRanges,
     gdsfmt,
     EnsDb.Hsapiens.v86,
     AnnotationDbi,
@@ -31,7 +30,8 @@ Depends: R (>= 4.0),
     stats,
     utils,
     GENESIS
-Imports: S4Vectors
+Imports: S4Vectors,
+    GenomicRanges
 Suggests: testthat,
     knitr,
     rmarkdown,

@@ -106,7 +106,6 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     pedAll <- pedAll[listSample1k, ]
 
     return(pedAll)
-
 }
 
 
@@ -137,7 +136,28 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Needed package
+#' library(withr)
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## Demo SNV information file used as input
+#' snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+#'
+#' ## Temporary output files
+#' ## The first file contains the indexes of the retained SNPs
+#' ## The second file contains the filter SNP information
+#' snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
+#' filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+#'
+#' ## Create a data.frame containing the information of the retained
+#' ## samples (samples with existing genotyping files)
+#' generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+#'     fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+#'
+#' ## Remove temporary files
+#' deferred_run()
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
@@ -183,11 +203,18 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 }
 
 
-#' @title Generate the base GDS file from 1KG
+#' @title Generate the GDS file that will contain the information from 1KG
 #'
-#' @description TODO
+#' @description This function generates the GDS file that will contain the
+#' information from 1KG. The function also add the samples information, the
+#' SNP information and the genotyping information into the GDS file.
 #'
-#' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
+#'
 #' The directory sampleGeno must contain matFreqSNV.txt.bz2
 #'
 #' @param fileNamePED TODO
@@ -198,22 +225,30 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @param fileNameGDS TODO
 #'
-#' @param listSamples a \code{vector} of \code{string} corresponding to
-#' the sample.ids
-#' if NULL all the samples
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to samples (must be the sample.ids) that will be retained and added to the
+#' GDS file. When \code{NULL}, all the samples are retained.
+#' Default: \code{NULL}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return None.
+#'
+#' @details
+#'
+#' More information about GDS file format can be found here:
+#' [Bioconductor gdsfmt](https://bioconductor.org/packages/gdsfmt/)
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
-#'
 #' @export
-generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
+generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
                             fileSNPSel, fileNameGDS,
                             listSamples=NULL) {
@@ -228,8 +263,6 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 
     # list in the file genotype we keep from fileLSNP in generateMapSnvSel
     listKeep <- readRDS(fileListSNP)
-
-
 
     # Create the GDS file
     newGDS <- createfn.gds(fileNameGDS)
@@ -270,7 +303,10 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
@@ -310,17 +346,18 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
 #' @export
-addRef2GDS1KG <- function(fileNameGDS, filePart){
+addRef2GDS1KG <- function(fileNameGDS, filePart) {
 
-
-
-    gds <- snpgdsOpen(fileNameGDS, readonly = FALSE)
+    gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
     addGDSRef(gds, filePart)
 
@@ -360,7 +397,10 @@ addRef2GDS1KG <- function(fileNameGDS, filePart){
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -375,7 +415,7 @@ pruning1KG.Chr <- function(gds,
                             chr=NULL,
                             minAF = NULL,
                             outPref = "pruned_1KG",
-                            keepObj = FALSE){
+                            keepObj = FALSE) {
 
     filePruned <- file.path(paste0(outPref, ".rds"))
     fileObj <- file.path(paste0(outPref, "Obj.rds"))
@@ -451,7 +491,11 @@ pruning1KG.Chr <- function(gds,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn

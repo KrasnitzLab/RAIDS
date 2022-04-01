@@ -18,11 +18,11 @@ generateGDS1KG(
 the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.
-Default: \code{"./data/sampleGeno"}.
+Default: \code{"./data/sampleGeno"}.}
 
-The directory sampleGeno must contain matFreqSNV.txt.bz2}
-
-\item{fileNamePED}{TODO}
+\item{fileNamePED}{a \code{character} string representing the path and file
+name of the RDS file that contains the pedigree information. The file must
+exist.}
 
 \item{fileListSNP}{TODO}
 

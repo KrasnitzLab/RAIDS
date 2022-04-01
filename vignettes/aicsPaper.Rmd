@@ -105,9 +105,12 @@ needs to be downloaded from the 1KG ftp site:
 
 > ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
 
-The genotyping file for the 1KG samples also needs to be downloaded:
+The genotyping file for the 1KG samples also needs to be downloaded. Beware 
+that there is one file per chromosome:
 
-TODO
+> ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz*
+
+All files are related to GRCh38 genome.
 
 ### Split the 1K genotyping file to one file per sample
 

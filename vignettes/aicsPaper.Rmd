@@ -217,7 +217,7 @@ generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
 <br>
 
 
-#### Generate the GDS file with the 1KG information
+### Generate the GDS file with the 1KG information
 
 The CoreArray Genomic Data Structure (GDS) data files are files suited for 
 large-scale datasets, especially for data which are much larger than the 

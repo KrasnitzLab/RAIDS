@@ -215,9 +215,9 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' the individual identification (Individual.ID) in the pedigree file.
 #' Default: \code{"./data/sampleGeno"}.
 #'
-#' The directory sampleGeno must contain matFreqSNV.txt.bz2
-#'
-#' @param fileNamePED TODO
+#' @param fileNamePED a \code{character} string representing the path and file
+#' name of the RDS file that contains the pedigree information. The file must
+#' exist.
 #'
 #' @param fileListSNP TODO
 #'
@@ -253,8 +253,15 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileSNPSel, fileNameGDS,
                             listSamples=NULL) {
 
-    # check if file fileGDS
-    # It must not exists
+    ## Validate that the pedigree file exists
+    if (! file.exists(fileNamePED)) {
+        stop("The file \'", fileNamePED, "\' does not exist." )
+    }
+
+    ## Validate that the path for the genotyping files exists
+    if (! file.exists(PATHGENO)) {
+        stop("The path \'", PATHGENO, "\' does not exist." )
+    }
 
     # validate the para
 

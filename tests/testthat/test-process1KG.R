@@ -143,3 +143,44 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
     expect_error(generateMapSnvSel(cutOff=c(0.01, 0.02), fileSNV=snpFile,
                         fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
 })
+
+
+#############################################################################
+### Tests generateGDS1KG() results
+#############################################################################
+
+context("generateGDS1KG() results")
+
+test_that("generateGDS1KG() must return error when SNP file is not existing", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileNot <- file.path(data.dir, "TOTO_Not_Present.rds")
+
+    outFile1 <- file.path(data.dir, "GDS_TEMP.gds")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(generateGDS1KG(PATHGENO=data.dir,
+                                fileNamePED=fileNot,
+                                fileListSNP=fileNot,
+                                fileSNPSel=fileNot, fileNameGDS=outFile1,
+                                listSamples=NULL), error_message)
+})
+
+test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+
+    notExisting <- paste0(data.dir, "/totoTest")
+
+    error_message <- paste0("The path \'", notExisting, "\' does not exist.")
+
+    expect_error(generateGDS1KG(PATHGENO=notExisting,
+                                fileNamePED=pedDemoFile,
+                                fileListSNP=pedDemoFile,
+                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
+                                listSamples=NULL), error_message)
+})

@@ -98,7 +98,7 @@ devtools::install_github('belleau/aicsPaper')
 
 ## Formatting the information from 1000 Genomes (1KG)
 
-### Download the required files from 1K
+### Download the required files from 1KG
 
 First, the pedigree file with the description of the 1KG samples
 needs to be downloaded from the 1KG ftp site:

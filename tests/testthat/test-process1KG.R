@@ -66,6 +66,27 @@ test_that("prepPed1KG() must return error when pedigree file is not existing", {
                             batch.v=0L), error_message)
 })
 
+test_that("prepPed1KG() must return the expected output", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+
+    expected <- data.frame(
+        sample.id=c(paste0("HG0010", 0:9)),
+        Name.ID=c(paste0("HG0010", 0:9)),
+        sex=as.character(c(1,2,2,1,2,1,2,1,2,2)),
+        pop.group=c(rep("ACB", 10)),
+        superPop=c(rep("AFR", 10)),
+        batch=c(rep(0L, 10)),
+        stringsAsFactors=FALSE
+    )
+    row.names(expected) <- expected$sample.id
+
+    expect_equal(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
+                            batch.v=0L), expected)
+})
+
 
 #############################################################################
 ### Tests generateMapSnvSel() results

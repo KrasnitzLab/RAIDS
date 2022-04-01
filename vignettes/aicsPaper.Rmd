@@ -147,10 +147,10 @@ saveRDS(ped,  filePED1KG)
 
 Some intermediate file containing the SNP information from 1KG need to be
 generated so the information can ultimately be imported in a GDS file 
-from Bioconductor [gdsfmt](https://bioconductor.org/packages/gdsfmt/).
+using Bioconductor [gdsfmt](https://bioconductor.org/packages/gdsfmt/).
 
-The intermediate SNP file contains the SNP position as well as the frequency 
-in each super population.
+The bulk intermediate SNP file contains the SNP position as well as the 
+frequency in each super population.
 
 ```{r intermediateVCF, echo=T, eval=FALSE}
 

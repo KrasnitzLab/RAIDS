@@ -35,6 +35,7 @@ Imports: S4Vectors,
 Suggests: testthat,
     knitr,
     rmarkdown,
-    BiocStyle
+    BiocStyle,
+    withr
 biocViews: Genetics, Software, Sequencing, WholeGenome
 RoxygenNote: 7.1.2

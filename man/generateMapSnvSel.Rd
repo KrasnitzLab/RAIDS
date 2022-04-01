@@ -34,7 +34,28 @@ indexes of the retained SNP is also created.
 }
 \examples{
 
-# TODO
+## Needed package
+library(withr)
+
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## Demo SNV information file used as input
+snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+
+## Temporary output files
+## The first file contains the indexes of the retained SNPs
+## The second file contains the filter SNP information
+snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
+filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+
+## Create a data.frame containing the information of the retained
+## samples (samples with existing genotyping files)
+generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+    fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+
+## Remove temporary files
+deferred_run()
 
 }
 \author{

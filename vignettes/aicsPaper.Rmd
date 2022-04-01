@@ -105,14 +105,19 @@ needs to be downloaded from the 1KG ftp site:
 
 > ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
 
-The genotyping file for the 1KG samples also needs to be downloaded. Beware 
+The genotyping files for the 1KG samples also needs to be downloaded. Beware 
 that there is one file per chromosome:
 
-> ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz*
+> ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+
+The genotyping files are split by chromosome. All files corresponding to this 
+pattern must be downloaded:
+
+> ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz\*
 
 All files are related to GRCh38 genome.
 
-### Split the 1K genotyping file to one file per sample
+### Split the 1KG genotyping file to one file per sample
 
 TODO
 
@@ -224,7 +229,7 @@ large-scale datasets, especially for data which are much larger than the
 available random-access memory.
 
 The function __generateGDS1KG()__ is used to generate the GDS file that will
-containt the information related to 1KG:
+contain the information related to 1KG:
 
 ```{r gdsCreation, echo=FALSE, eval=FALSE}
 ## The path and file names of the required files

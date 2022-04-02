@@ -242,8 +242,9 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @details
 #'
-#' More information about GDS file format can be found here:
-#' [Bioconductor gdsfmt](https://bioconductor.org/packages/gdsfmt/)
+#' More information about GDS file format can be found at the Bioconductor
+#' gdsfmt website:
+#' https://bioconductor.org/packages/gdsfmt/
 #'
 #' @examples
 #'

@@ -151,11 +151,13 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
 
 context("generateGDS1KG() results")
 
-test_that("generateGDS1KG() must return error when SNP file is not existing", {
+test_that("generateGDS1KG() must return error when pedigree file does not exist", {
 
     data.dir <- system.file("extdata", package="aicsPaper")
 
     fileNot <- file.path(data.dir, "TOTO_Not_Present.rds")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
     outFile1 <- file.path(data.dir, "GDS_TEMP.gds")
 
@@ -163,8 +165,8 @@ test_that("generateGDS1KG() must return error when SNP file is not existing", {
 
     expect_error(generateGDS1KG(PATHGENO=data.dir,
                                 fileNamePED=fileNot,
-                                fileListSNP=fileNot,
-                                fileSNPSel=fileNot, fileNameGDS=outFile1,
+                                fileListSNP=pedDemoFile,
+                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
 
@@ -184,3 +186,38 @@ test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
                                 fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
+
+test_that("generateGDS1KG() must return error when SNP indexes file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+
+    notExisting <- paste0(data.dir, "/totoTest")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(generateGDS1KG(PATHGENO=data.dir,
+                                fileNamePED=pedDemoFile,
+                                fileListSNP=notExisting,
+                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
+                                listSamples=NULL), error_message)
+})
+
+test_that("generateGDS1KG() must return error when SNP information file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+
+    notExisting <- paste0(data.dir, "/totoTest")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(generateGDS1KG(PATHGENO=data.dir,
+                                fileNamePED=pedDemoFile,
+                                fileListSNP=pedDemoFile,
+                                fileSNPSel=notExisting, fileNameGDS=outFile1,
+                                listSamples=NULL), error_message)
+})
+

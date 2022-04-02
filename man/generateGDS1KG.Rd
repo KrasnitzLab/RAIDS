@@ -24,9 +24,13 @@ Default: \code{"./data/sampleGeno"}.}
 name of the RDS file that contains the pedigree information. The file must
 exist.}
 
-\item{fileListSNP}{TODO}
+\item{fileListSNP}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist.}
 
-\item{fileSNPSel}{TODO}
+\item{fileSNPSel}{a \code{character} string representing the path and file
+name of the RDS file that contains the filtered SNP information. The
+file must exist.}
 
 \item{fileNameGDS}{TODO}
 

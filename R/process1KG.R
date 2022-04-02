@@ -219,11 +219,19 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' name of the RDS file that contains the pedigree information. The file must
 #' exist.
 #'
-#' @param fileListSNP TODO
+#' @param fileListSNP a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist.
 #'
-#' @param fileSNPSel TODO
+#' @param fileSNPSel a \code{character} string representing the path and file
+#' name of the RDS file that contains the filtered SNP information. The
+#' file must exist.
 #'
-#' @param fileNameGDS TODO
+#' @param fileNameGDS a \code{character} string representing the path and file
+#' name of the GDS file that will be created. The GDS file will contain the
+#' SNP information, the genotyping information and the pedigree information
+#' from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
 #' @param listSamples a \code{vector} of \code{character} string corresponding
 #' to samples (must be the sample.ids) that will be retained and added to the
@@ -234,8 +242,9 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @details
 #'
-#' More information about GDS file format can be found here:
-#' [Bioconductor gdsfmt](https://bioconductor.org/packages/gdsfmt/)
+#' More information about GDS file format can be found at the Bioconductor
+#' gdsfmt website:
+#' https://bioconductor.org/packages/gdsfmt/
 #'
 #' @examples
 #'
@@ -263,8 +272,17 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
         stop("The path \'", PATHGENO, "\' does not exist." )
     }
 
-    # validate the para
+    ## Validate that the SNP indexes file exists
+    if (! file.exists(fileListSNP)) {
+        stop("The file \'", fileListSNP, "\' does not exist." )
+    }
 
+    ## Validate that the SNP information file exists
+    if (! file.exists(fileSNPSel)) {
+        stop("The file \'", fileSNPSel, "\' does not exist." )
+    }
+
+    ## Read the pedigree file
     ped1KG <- readRDS(fileNamePED)
 
 

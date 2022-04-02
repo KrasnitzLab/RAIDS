@@ -24,11 +24,19 @@ Default: \code{"./data/sampleGeno"}.}
 name of the RDS file that contains the pedigree information. The file must
 exist.}
 
-\item{fileListSNP}{TODO}
+\item{fileListSNP}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist.}
 
-\item{fileSNPSel}{TODO}
+\item{fileSNPSel}{a \code{character} string representing the path and file
+name of the RDS file that contains the filtered SNP information. The
+file must exist.}
 
-\item{fileNameGDS}{TODO}
+\item{fileNameGDS}{a \code{character} string representing the path and file
+name of the GDS file that will be created. The GDS file will contain the
+SNP information, the genotyping information and the pedigree information
+from 1000 Genomes.
+The extension of the file must be '.gds'.}
 
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to samples (must be the sample.ids) that will be retained and added to the
@@ -44,8 +52,9 @@ information from 1KG. The function also add the samples information, the
 SNP information and the genotyping information into the GDS file.
 }
 \details{
-More information about GDS file format can be found here:
-[Bioconductor gdsfmt](https://bioconductor.org/packages/gdsfmt/)
+More information about GDS file format can be found at the Bioconductor
+gdsfmt website:
+https://bioconductor.org/packages/gdsfmt/
 }
 \examples{
 

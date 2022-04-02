@@ -231,7 +231,7 @@ available random-access memory.
 The function __generateGDS1KG()__ is used to generate the GDS file that will
 contain the information related to 1KG:
 
-```{r gdsCreation, echo=FALSE, eval=FALSE}
+```{r gdsCreation, echo=TRUE, eval=FALSE}
 ## The path and file names of the required files
 ## First, the RDS file containing the pedigree information
 ## Second, the bulk SNP information file
@@ -261,6 +261,41 @@ generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
 <br>
 <br>
 
+### TODO
+
+TODO
+
+```{r identifyRelative, echo=TRUE, eval=FALSE}
+    # Identify the individual related
+    gds <- snpgdsOpen(fileGDS)
+    identifyRelative(gds,
+                     maf = 0.05,
+                     thresh = 2^(-11/2),
+                     fileIBD = fileIBD,
+                     filePart = filePart)
+    closefn.gds(gds)
+    
+```
+
+<br>
+<br>
+
+
+### TODO 2
+
+TODO
+
+```{r addRef2GDS1KG, echo=TRUE, eval=FALSE}
+ # create the ref sample list which correspond
+    # to the list of sample unrelated
+    
+    addRef2GDS1KG(fileGDS,
+                  filePart)
+    
+```
+
+<br>
+<br>
 
 # Session info
 

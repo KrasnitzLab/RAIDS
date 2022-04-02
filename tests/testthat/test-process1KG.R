@@ -195,7 +195,7 @@ test_that("generateGDS1KG() must return error when SNP indexes file does not exi
 
     notExisting <- paste0(data.dir, "/totoTest")
 
-    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+    error_message <- paste0("The file \'", notExisting, "\' does not exist.")
 
     expect_error(generateGDS1KG(PATHGENO=data.dir,
                                 fileNamePED=pedDemoFile,
@@ -212,7 +212,7 @@ test_that("generateGDS1KG() must return error when SNP information file does not
 
     notExisting <- paste0(data.dir, "/totoTest")
 
-    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+    error_message <- paste0("The file \'", notExisting, "\' does not exist.")
 
     expect_error(generateGDS1KG(PATHGENO=data.dir,
                                 fileNamePED=pedDemoFile,

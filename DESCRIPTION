@@ -22,7 +22,6 @@ Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
 Depends: R (>= 4.0),
-    GenomicRanges,
     gdsfmt,
     EnsDb.Hsapiens.v86,
     AnnotationDbi,
@@ -30,11 +29,13 @@ Depends: R (>= 4.0),
     SNPRelate,
     stats,
     utils,
-    S4Vectors,
     GENESIS
+Imports: S4Vectors,
+    GenomicRanges
 Suggests: testthat,
     knitr,
     rmarkdown,
-    BiocStyle
+    BiocStyle,
+    withr
 biocViews: Genetics, Software, Sequencing, WholeGenome
 RoxygenNote: 7.1.2

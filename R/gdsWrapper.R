@@ -419,7 +419,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn write.gdsn
+#' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
 #' @keywords internal
@@ -502,21 +502,21 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                     gdsSample <- createfn.gds(fileGDSSample)
 
                     id <- add.gdsn(gdsSample, "sampleStudy",
-                                   listSamples[i])
+                                    listSamples[i])
                 }
 
                 var.Ref <- add.gdsn(gdsSample, "Ref.count",
-                                    matAll$File1R,
-                                    valdim=c( nrow(listPos), 1),
-                                    storage="sp.int16")
+                                        matAll$File1R,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
                 var.Alt <- add.gdsn(gdsSample, "Alt.count",
-                                    matAll$File1A,
-                                    valdim=c( nrow(listPos), 1),
-                                    storage="sp.int16")
+                                        matAll$File1A,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
                 var.Count <- add.gdsn(gdsSample, "Total.count",
-                                      matAll$count,
-                                      valdim=c( nrow(listPos), 1),
-                                      storage="sp.int16")
+                                        matAll$count,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
 
                 closefn.gds(gdsSample)
 
@@ -804,7 +804,7 @@ runLDPruning <- function(gds, method="corr",
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn write.gdsn
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @keywords internal
 addGDSStudyPruning <- function(gds, pruned, sample.id) {
 

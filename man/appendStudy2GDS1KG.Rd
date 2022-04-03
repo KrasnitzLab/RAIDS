@@ -32,7 +32,7 @@ the sample.ids. if NULL all samples}
 
 \item{KEEPCOV}{TODO a \code{logical} if it is keeping the coverage}
 
-\item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
+\item{PATHSAMPLEGDS}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
 }
 \value{
@@ -43,7 +43,11 @@ TODO
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## TODO
+
 
 }
 \author{

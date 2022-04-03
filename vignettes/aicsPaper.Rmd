@@ -98,18 +98,26 @@ devtools::install_github('belleau/aicsPaper')
 
 ## Formatting the information from 1000 Genomes (1KG)
 
-### Download the required files from 1K
+### Download the required files from 1KG
 
 First, the pedigree file with the description of the 1KG samples
 needs to be downloaded from the 1KG ftp site:
 
 > ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
 
-The genotyping file for the 1KG samples also needs to be downloaded:
+The genotyping files for the 1KG samples also needs to be downloaded. Beware 
+that there is one file per chromosome:
 
-TODO
+> ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
 
-### Split the 1K genotyping file per sample
+The genotyping files are split by chromosome. All files corresponding to this 
+pattern must be downloaded:
+
+> ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz\*
+
+All files are related to GRCh38 genome.
+
+### Split the 1KG genotyping file to one file per sample
 
 TODO
 
@@ -127,8 +135,8 @@ library(aicsPaper)
 filePED1KGOri <- "20130606_g1k.ped"
 
 ## Extract needed information from the pedigree file from 1KG into a data.frame
-## Only the samples with genotyping information (file present in PATHGENO)
-## are retained to create the final data.frame
+## Only the samples with genotyping information (sample file present 
+## in PATHGENO parameter) are retained to create the final data.frame
 ped <- prepPed1KG(pedFile=filePED1KGOri, 
                     PATHGENO=file.path("data", "sampleGeno"))
 
@@ -143,7 +151,151 @@ saveRDS(ped,  filePED1KG)
 <br>
 <br>
 
+### Prepare a bulk SNP information file based on 1KG VCF
 
+Some intermediate file containing the SNP information from 1KG need to be
+generated so the information can ultimately be imported in a GDS file 
+using Bioconductor [gdsfmt](https://bioconductor.org/packages/gdsfmt/).
+
+The bulk intermediate SNP file contains the SNP position as well as the 
+frequency in each super population.
+
+```{r intermediateVCF, echo=T, eval=FALSE}
+
+## This is not done in R
+## The python script is in the 'scriptsPy' directory
+    
+    for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
+    do
+      chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
+      python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
+    done
+    for i in `seq 1 22`
+    do
+      cat matFreq.chr${i}.txt >matFreqSNV.txt
+      bzip2 matFreqSNV.txt
+    done
+    
+```
+
+The bulk SNP info file is called '__matFreqSNV.txt__'.
+
+<br>
+<br>
+
+### Filter the bulk SNP information file
+
+The bulk SNP file is filtered to only retain the SNPs with frequency 
+higher then a specific cut-off (here >=0.01) for at least one super 
+population. 
+
+The filter SNP file is saved in RDS format ('__fileLSNP__' parameter). A 
+second file containing the index of the retained SNPs is also 
+created ('__fileLSNP__' parameter)
+
+The function __generateMapSnvSel()__ is used to filter the SNP file and 
+generated the needed RDS files:
+
+```{r filterVCF, echo=T, eval=FALSE}
+## Load required package
+library(aicsPaper)
+
+## The path to the intermediate SNP info file
+fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
+
+## The paths and names of the two output files
+## One file contains the index of retained SNPs ("listSNP.rds")
+## One file contains the filter SNP information ("mapSNVSel.rds")
+fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
+fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
+
+## Filter the bulk SNP file (fileSNV parameter)
+## Create a RDS with filter SNPs (fileFREQ parameter)
+## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
+generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
+                      fileLSNP = fileLSNP.v,
+                      fileFREQ = fileFREQ.v)
+```
+
+
+<br>
+<br>
+
+
+### Generate the GDS file with the 1KG information
+
+The CoreArray Genomic Data Structure (GDS) data files are files suited for 
+large-scale datasets, especially for data which are much larger than the 
+available random-access memory.
+
+The function __generateGDS1KG()__ is used to generate the GDS file that will
+contain the information related to 1KG:
+
+```{r gdsCreation, echo=TRUE, eval=FALSE}
+## The path and file names of the required files
+## First, the RDS file containing the pedigree information
+## Second, the bulk SNP information file
+## Third, the RDS file with the indexes of the retained SNPs
+## Fourth, the RDS file with the filtered SNP information 
+filePED1KG <- file.path(PATHMETA,"ped1KG.rds")
+fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
+fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
+fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
+
+## The name of the GDS file that will be created    
+fileNameGDS <- "matGeno1000g.gds"
+fileGDS <- file.path(PATHGDS, fileNameGDS)
+## TODO
+fileIBD <- file.path(PATHMETA,"ibd.All.0.05.rds")
+filePart <- file.path(PATHMETA,"part.All.0.05.rds")
+    
+## Generate GDS file containing the 1KG information
+generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                    fileNamePED=filePED1KG,
+                    fileSNPSel=fileFREQ.v,
+                    fileListSNP=fileLSNP.v,
+                    fileNameGDS=fileGDS)
+```
+
+
+<br>
+<br>
+
+### TODO
+
+TODO
+
+```{r identifyRelative, echo=TRUE, eval=FALSE}
+    # Identify the individual related
+    gds <- snpgdsOpen(fileGDS)
+    identifyRelative(gds,
+                     maf = 0.05,
+                     thresh = 2^(-11/2),
+                     fileIBD = fileIBD,
+                     filePart = filePart)
+    closefn.gds(gds)
+    
+```
+
+<br>
+<br>
+
+
+### TODO 2
+
+TODO
+
+```{r addRef2GDS1KG, echo=TRUE, eval=FALSE}
+ # create the ref sample list which correspond
+    # to the list of sample unrelated
+    
+    addRef2GDS1KG(fileGDS,
+                  filePart)
+    
+```
+
+<br>
+<br>
 
 # Session info
 

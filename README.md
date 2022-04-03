@@ -1,6 +1,7 @@
 <!-- badges: start -->
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 [![codecov](https://codecov.io/gh/belleau/aicsPaper/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/aicsPaper)
+[![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
 # Accurate inference of genetic ancestry from cancer-derived sequencing #
@@ -15,7 +16,8 @@ The **_aicsPaper_** package enables efficient ancestry inference from various ca
 ## Authors ##
 
 [Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),
-[Astrid Desch&ecirc;nes](http://ca.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes") and
+[Astrid Desch&ecirc;nes](http://ca.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes"),
+David A. Tuveson and
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
 
 

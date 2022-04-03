@@ -12,17 +12,28 @@
 #' @param PATHGENO a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. Only the samples with
 #' associated genotyping files are retained in the creation of the final
-#' \code{data.frame}. Default: \code{"./data/sampleGeno"}.
+#' \code{data.frame}. The name of the genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
 #'
 #' @param batch.v a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
-#' @return a \code{data.frame} containing the needed pedigree information
+#' @return A \code{data.frame} containing the needed pedigree information
 #' from 1K.
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## Demo pedigree file
+#' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+#'
+#' ## Create a data.frame containing the information of the retained
+#' ## samples (samples with existing genotyping files)
+#' prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
+#'
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom utils read.delim
@@ -42,7 +53,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     }
 
     ## Validate that the path for the genotyping files exists
-    if (! file.exists(pedFile)) {
+    if (! file.exists(PATHGENO)) {
         stop("The path \'", PATHGENO, "\' does not exist." )
     }
 
@@ -95,105 +106,188 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     pedAll <- pedAll[listSample1k, ]
 
     return(pedAll)
-
 }
 
 
-#' @title Generate the mapSNVSel file
+#' @title Generate the filter SNP information file in RDS format
 #'
-#' @description TODO
+#' @description The function applies a cut-off filter to the SNP information
+#' file to retain only the SNP that have a frequency superior or equal to the
+#' specified cut-off in at least one super population. The information about
+#' the retained SNPs is saved in a RDS format file. A RDS file containing the
+#' indexes of the retained SNP is also created.
 #'
-#' @param cutOff a single \code{numeric} value, the cut off
-#' for the frequency in at least one super population.
+#' @param cutOff a single \code{numeric} value, the cut-off
+#' for the frequency in at least one super population. Default: \code{0.01}.
 #'
-#' @param fileSNV TODO
+#' @param fileSNV  a \code{character} string representing the path and
+#' file name of the bulk SNP information file from 1KG. The file must be in
+#' text format. The file must exist.
 #'
-#' @param fileLSNP TODO
+#' @param fileLSNP a \code{character} string representing the path and
+#' file name of the RDS file that will contain the indexes of the retained
+#' SNPs. The file extension must be '.rds'.
 #'
-#' @param fileFREQ TODO
+#' @param fileFREQ a \code{character} string representing the path and
+#' file name of the RDS file that will contain the filtered SNP information.
+#' The file extension must be '.rds'.
 #'
 #' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Needed package
+#' library(withr)
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## Demo SNV information file used as input
+#' snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+#'
+#' ## Temporary output files
+#' ## The first file contains the indexes of the retained SNPs
+#' ## The second file contains the filter SNP information
+#' snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
+#' filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+#'
+#' ## Create a data.frame containing the information of the retained
+#' ## samples (samples with existing genotyping files)
+#' generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+#'     fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+#'
+#' ## Remove temporary files
+#' deferred_run()
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
+#' @importFrom S4Vectors isSingleNumber
 #' @export
+generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
-generateMapSnvSel <- function(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ){
+    ## The cut-off must be a single number
+    if (!isSingleNumber(cutOff)) {
+        stop("The cutOff must be a single numeric value.")
+    }
 
-    # test fileSNV
+    ## Validate that the bulk SNP file exists
+    if (! file.exists(fileSNV)) {
+        stop("The file \'", fileSNV, "\' does not exist." )
+    }
 
+    ## Read the bulk SNP information file
     mapSNVSel <- read.csv2(fileSNV)
-    listSNP <- which( rowSums( mapSNVSel[,c("EAS_AF",
+
+    ## Identify SNPs that have a frequency equal or superior to the cut-off
+    ## in at least one super population
+    listSNP <- which(rowSums(mapSNVSel[,c("EAS_AF",
                                             "EUR_AF",
                                             "AFR_AF",
                                             "AMR_AF",
                                             "SAS_AF")] >= (cutOff - 1e-10) &
-                                   mapSNVSel[,c("EAS_AF",
+                                mapSNVSel[,c("EAS_AF",
                                                 "EUR_AF",
                                                 "AFR_AF",
                                                 "AMR_AF",
-                                                "SAS_AF")] <= (1 - cutOff + 1e-10) ) >0)
+                                                "SAS_AF")] <= (1 - cutOff +
+                                                                1e-10)) > 0)
 
+    ## Filter the data.frame
     mapSNVSel <- mapSNVSel[listSNP,]
 
+    ## Save the indexes of the retained SNPs in RDS
     saveRDS(listSNP, fileLSNP)
+    ## Save the filtered SNP information file in RDS
     saveRDS(mapSNVSel, fileFREQ)
 
     return(0L)
 }
 
 
-#' @title Generate the base GDS file from 1KG
+#' @title Generate the GDS file that will contain the information from 1KG
 #'
-#' @description TODO
+#' @description This function generates the GDS file that will contain the
+#' information from 1KG. The function also add the samples information, the
+#' SNP information and the genotyping information into the GDS file.
 #'
-#' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
-#' The directory sampleGeno must contain matFreqSNV.txt.bz2
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
 #'
-#' @param fileNamePED TODO
+#' @param fileNamePED a \code{character} string representing the path and file
+#' name of the RDS file that contains the pedigree information. The file must
+#' exist.
 #'
-#' @param fileListSNP TODO
+#' @param fileListSNP a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist.
 #'
-#' @param fileSNPSel TODO
+#' @param fileSNPSel a \code{character} string representing the path and file
+#' name of the RDS file that contains the filtered SNP information. The
+#' file must exist.
 #'
-#' @param fileNameGDS TODO
+#' @param fileNameGDS a \code{character} string representing the path and file
+#' name of the GDS file that will be created. The GDS file will contain the
+#' SNP information, the genotyping information and the pedigree information
+#' from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
-#' @param listSamples a \code{vector} of \code{string} corresponding to
-#' the sample.ids
-#' if NULL all the samples
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to samples (must be the sample.ids) that will be retained and added to the
+#' GDS file. When \code{NULL}, all the samples are retained.
+#' Default: \code{NULL}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return None.
+#'
+#' @details
+#'
+#' More information about GDS file format can be found at the Bioconductor
+#' gdsfmt website:
+#' https://bioconductor.org/packages/gdsfmt/
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
-#'
 #' @export
-generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
+generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
                             fileSNPSel, fileNameGDS,
                             listSamples=NULL) {
 
-    # check if file fileGDS
-    # It must not exists
+    ## Validate that the pedigree file exists
+    if (! file.exists(fileNamePED)) {
+        stop("The file \'", fileNamePED, "\' does not exist." )
+    }
 
-    # validate the para
+    ## Validate that the path for the genotyping files exists
+    if (! file.exists(PATHGENO)) {
+        stop("The path \'", PATHGENO, "\' does not exist." )
+    }
 
+    ## Validate that the SNP indexes file exists
+    if (! file.exists(fileListSNP)) {
+        stop("The file \'", fileListSNP, "\' does not exist." )
+    }
+
+    ## Validate that the SNP information file exists
+    if (! file.exists(fileSNPSel)) {
+        stop("The file \'", fileSNPSel, "\' does not exist." )
+    }
+
+    ## Read the pedigree file
     ped1KG <- readRDS(fileNamePED)
 
 
     # list in the file genotype we keep from fileLSNP in generateMapSnvSel
     listKeep <- readRDS(fileListSNP)
-
-
 
     # Create the GDS file
     newGDS <- createfn.gds(fileNameGDS)
@@ -234,7 +328,10 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
@@ -242,7 +339,7 @@ generateGDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
 #'
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
-                             fileIBD, filePart) {
+                                fileIBD, filePart) {
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
@@ -274,19 +371,18 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
-#'
 #' @export
-addRef2GDS1KG <- function(fileNameGDS,
-                             filePart){
+addRef2GDS1KG <- function(fileNameGDS, filePart) {
 
-
-
-    gds <- snpgdsOpen(fileNameGDS, readonly = FALSE)
+    gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
     addGDSRef(gds, filePart)
 
@@ -326,12 +422,14 @@ addRef2GDS1KG <- function(fileNameGDS,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
-
 pruning1KG.Chr <- function(gds,
                             method="corr",
                             listSamples=NULL,
@@ -342,7 +440,7 @@ pruning1KG.Chr <- function(gds,
                             chr=NULL,
                             minAF = NULL,
                             outPref = "pruned_1KG",
-                            keepObj = FALSE){
+                            keepObj = FALSE) {
 
     filePruned <- file.path(paste0(outPref, ".rds"))
     fileObj <- file.path(paste0(outPref, "Obj.rds"))
@@ -411,30 +509,30 @@ pruning1KG.Chr <- function(gds,
 #'
 #' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
 #'
-#' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
+#' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
 #' @return None
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
-#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
-#'
+#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
 #' @export
-
-
-appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
-                               fileNamePED,
-                               fileNameGDS,
-                               batch = 1,
-                               studyDF,
-                               listSamples = NULL,
-                               KEEPCOV = TRUE,
-                               PATHSAMPLEGDS = NULL){
+appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
+                                fileNamePED,
+                                fileNameGDS,
+                                batch=1,
+                                studyDF,
+                                listSamples=NULL,
+                                KEEPCOV=TRUE,
+                                PATHSAMPLEGDS=NULL){
 
     # check if file fileGDS
     # It must not exists
@@ -455,8 +553,8 @@ appendStudy2GDS1KG <- function(PATHGENO = file.path("data", "sampleGeno"),
     snpCHR <- index.gdsn(gds, "snp.chromosome")
     snpPOS <- index.gdsn(gds, "snp.position")
 
-    listPos <- data.frame(snp.chromosome = read.gdsn(snpCHR),
-                          snp.position = read.gdsn(snpPOS))
+    listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
+                            snp.position=read.gdsn(snpPOS))
 
 
 

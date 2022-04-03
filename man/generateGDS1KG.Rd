@@ -2,7 +2,7 @@
 % Please edit documentation in R/process1KG.R
 \name{generateGDS1KG}
 \alias{generateGDS1KG}
-\title{Generate the base GDS file from 1KG}
+\title{Generate the GDS file that will contain the information from 1KG}
 \usage{
 generateGDS1KG(
   PATHGENO = file.path("data", "sampleGeno"),
@@ -14,30 +14,54 @@ generateGDS1KG(
 )
 }
 \arguments{
-\item{PATHGENO}{TODO a PATH to the directory genotype file of 1KG
-The directory sampleGeno must contain matFreqSNV.txt.bz2}
+\item{PATHGENO}{a \code{character} string representing the path where
+the 1K genotyping files for each sample are located. The name of the
+genotyping files must correspond to
+the individual identification (Individual.ID) in the pedigree file.
+Default: \code{"./data/sampleGeno"}.}
 
-\item{fileNamePED}{TODO}
+\item{fileNamePED}{a \code{character} string representing the path and file
+name of the RDS file that contains the pedigree information. The file must
+exist.}
 
-\item{fileListSNP}{TODO}
+\item{fileListSNP}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist.}
 
-\item{fileSNPSel}{TODO}
+\item{fileSNPSel}{a \code{character} string representing the path and file
+name of the RDS file that contains the filtered SNP information. The
+file must exist.}
 
-\item{fileNameGDS}{TODO}
+\item{fileNameGDS}{a \code{character} string representing the path and file
+name of the GDS file that will be created. The GDS file will contain the
+SNP information, the genotyping information and the pedigree information
+from 1000 Genomes.
+The extension of the file must be '.gds'.}
 
-\item{listSamples}{a \code{vector} of \code{string} corresponding to
-the sample.ids
-if NULL all the samples}
+\item{listSamples}{a \code{vector} of \code{character} string corresponding
+to samples (must be the sample.ids) that will be retained and added to the
+GDS file. When \code{NULL}, all the samples are retained.
+Default: \code{NULL}.}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+None.
 }
 \description{
-TODO
+This function generates the GDS file that will contain the
+information from 1KG. The function also add the samples information, the
+SNP information and the genotyping information into the GDS file.
+}
+\details{
+More information about GDS file format can be found at the Bioconductor
+gdsfmt website:
+https://bioconductor.org/packages/gdsfmt/
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## TODO
 
 }
 \author{

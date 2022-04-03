@@ -2,29 +2,60 @@
 % Please edit documentation in R/process1KG.R
 \name{generateMapSnvSel}
 \alias{generateMapSnvSel}
-\title{Generate the mapSNVSel file}
+\title{Generate the filter SNP information file in RDS format}
 \usage{
 generateMapSnvSel(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ)
 }
 \arguments{
-\item{cutOff}{a single \code{numeric} value, the cut off
-for the frequency in at least one super population.}
+\item{cutOff}{a single \code{numeric} value, the cut-off
+for the frequency in at least one super population. Default: \code{0.01}.}
 
-\item{fileSNV}{TODO}
+\item{fileSNV}{a \code{character} string representing the path and
+file name of the bulk SNP information file from 1KG. The file must be in
+text format. The file must exist.}
 
-\item{fileLSNP}{TODO}
+\item{fileLSNP}{a \code{character} string representing the path and
+file name of the RDS file that will contain the indexes of the retained
+SNPs. The file extension must be '.rds'.}
 
-\item{fileFREQ}{TODO}
+\item{fileFREQ}{a \code{character} string representing the path and
+file name of the RDS file that will contain the filtered SNP information.
+The file extension must be '.rds'.}
 }
 \value{
 The integer \code{0} when successful.
 }
 \description{
-TODO
+The function applies a cut-off filter to the SNP information
+file to retain only the SNP that have a frequency superior or equal to the
+specified cut-off in at least one super population. The information about
+the retained SNPs is saved in a RDS format file. A RDS file containing the
+indexes of the retained SNP is also created.
 }
 \examples{
 
-# TODO
+## Needed package
+library(withr)
+
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## Demo SNV information file used as input
+snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+
+## Temporary output files
+## The first file contains the indexes of the retained SNPs
+## The second file contains the filter SNP information
+snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
+filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+
+## Create a data.frame containing the information of the retained
+## samples (samples with existing genotyping files)
+generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+    fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+
+## Remove temporary files
+deferred_run()
 
 }
 \author{

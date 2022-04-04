@@ -1,6 +1,7 @@
 ### Unit tests for process1KG.R functions
 
 library(aicsPaper)
+library(withr)
 
 
 
@@ -100,9 +101,9 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
 
     snpFile <- file.path(data.dir, "SNP_TOTO.txt")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
 
     error_message <- paste0("The file \'", snpFile, "\' does not exist.")
 
@@ -117,9 +118,9 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
 
     snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
 
     error_message <- "The cutOff must be a single numeric value."
 
@@ -134,15 +135,63 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
 
     snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.txt")
+    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.txt")
+    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
 
     error_message <- "The cutOff must be a single numeric value."
 
     expect_error(generateMapSnvSel(cutOff=c(0.01, 0.02), fileSNV=snpFile,
                         fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
 })
+
+
+
+test_that("generateMapSnvSel() must generate expected output", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+
+    ## Temporary output files
+    snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP01.rds"))
+    filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP01.rds"))
+
+    expect_equal(generateMapSnvSel(cutOff=c(0.01), fileSNV=snvFile,
+                fileLSNP=snpIndexFile , fileFREQ=filterSNVFile), 0L)
+
+    expect_true(file.exists(snpIndexFile))
+
+    expect_true(file.exists(filterSNVFile))
+
+    snpIndexesExpected <- c(seq_len(4), 6, 8, 9)
+
+    expect_equal(readRDS(snpIndexFile), snpIndexesExpected)
+
+    snpFilteredExpected <- data.frame(CHROM=rep("chr1", 7),
+                            POS=c(16102, 51478, 51897, 51927,
+                                        54489, 54707, 54715),
+                            REF=c("T", "T", "C", "G", "G", "G", "C"),
+                            ALT=c("G", "A", "A", "A", "A", "C", "T"),
+                            AF=as.character(c(0.02, 0.11, 0.08, 0.07,
+                                                0.1, 0.23, 0.21)),
+                            EAS_AF=c("0.0", "0.0", "0.05", "0.01",
+                                     "0.0", "0.08", "0.07"),
+                            EUR_AF=c("0.04", "0.2", "0.12", "0.14",
+                                     "0.18", "0.38", "0.34"),
+                            AFR_AF=c("0.03", "0.02", "0.05", "0.06",
+                                     "0.02", "0.18", "0.16"),
+                            AMR_AF=c("0.03", "0.12", "0.06", "0.07",
+                                     "0.1", "0.25", "0.24"),
+                            SAS_AF=c("0.02", "0.22", "0.1", "0.09",
+                                      "0.21", "0.28", "0.27"),
+                            stringsAsFactors = FALSE)
+
+    expect_equivalent(readRDS(filterSNVFile), snpFilteredExpected)
+
+    deferred_run()
+})
+
 
 
 #############################################################################
@@ -220,4 +269,32 @@ test_that("generateGDS1KG() must return error when SNP information file does not
                                 fileSNPSel=notExisting, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
+
+
+test_that("generateGDS1KG() must create a GDS file", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+
+    snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+
+    filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    ## Temporary GDS file containing 1KG information
+    GDS_file <- local_file(file.path(data.dir, "1KG_TOTO.gds"))
+
+    generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
+                            fileListSNP=snpIndexFile,
+                            fileSNPSel=filterSNVFile, fileNameGDS=GDS_file,
+                            listSamples=NULL)
+
+    expect_true(file.exists(GDS_file))
+
+    ## Remove temporary files
+    deferred_run()
+
+})
+
+
 

@@ -232,22 +232,19 @@ The function __generateGDS1KG()__ is used to generate the GDS file that will
 contain the information related to 1KG:
 
 ```{r gdsCreation, echo=TRUE, eval=FALSE}
+## TODO: what is PATHMETA and PATHSEL
+
 ## The path and file names of the required files
 ## First, the RDS file containing the pedigree information
-## Second, the bulk SNP information file
-## Third, the RDS file with the indexes of the retained SNPs
-## Fourth, the RDS file with the filtered SNP information 
+## Second, the RDS file with the indexes of the retained SNPs
+## Third, the RDS file with the filtered SNP information 
 filePED1KG <- file.path(PATHMETA,"ped1KG.rds")
-fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
 fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
 fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 
 ## The name of the GDS file that will be created    
 fileNameGDS <- "matGeno1000g.gds"
 fileGDS <- file.path(PATHGDS, fileNameGDS)
-## TODO
-fileIBD <- file.path(PATHMETA,"ibd.All.0.05.rds")
-filePart <- file.path(PATHMETA,"part.All.0.05.rds")
     
 ## Generate GDS file containing the 1KG information
 generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
@@ -261,20 +258,31 @@ generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
 <br>
 <br>
 
-### TODO
+### Identify genetically related patients in 1KG 
 
-TODO
+As only unrelated patients can be used in the following analyses, the 
+genetically related patients in 1KG must be identified.
+
+The function __identifyRelative()__ identifies patients that are genetically 
+related in the 1KG files. It generates a list of unrelated as well as a list of
+related patients.
 
 ```{r identifyRelative, echo=TRUE, eval=FALSE}
-    # Identify the individual related
-    gds <- snpgdsOpen(fileGDS)
-    identifyRelative(gds,
-                     maf = 0.05,
-                     thresh = 2^(-11/2),
-                     fileIBD = fileIBD,
-                     filePart = filePart)
-    closefn.gds(gds)
-    
+## TODO: what is PATHMETA 
+
+## The name of the GDS file that contains the 1KG information    
+fileNameGDS <- "matGeno1000g.gds"
+fileGDS <- file.path(PATHGDS, fileNameGDS)
+
+## TODO: whait are those?
+fileIBD <- file.path(PATHMETA,"ibd.All.0.05.rds")
+filePart <- file.path(PATHMETA,"part.All.0.05.rds")
+
+## Identify the genetically related patients in 1KG
+gds <- snpgdsOpen(fileGDS)
+identifyRelative(gds=fileGDS, maf=0.05, thresh = 2^(-11/2),
+                     fileIBD=fileIBD, filePart=filePart)
+closefn.gds(gds)
 ```
 
 <br>
@@ -289,8 +297,8 @@ TODO
  # create the ref sample list which correspond
     # to the list of sample unrelated
     
-    addRef2GDS1KG(fileGDS,
-                  filePart)
+    addRef2GDS1KG(fileGDS=gds,
+                  filePart=filePart)
     
 ```
 

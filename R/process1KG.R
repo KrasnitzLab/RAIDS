@@ -134,6 +134,29 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @return The integer \code{0} when successful.
 #'
+#' @details
+#'
+#' The filtered SNP information RDS file (parameter \code{fileFREQ}), contains
+#' a \code{data.frame} with those columns:
+#' \itemize{
+#' \item{CHROM} {a \code{character} string representing the chromosome where
+#' the SNV is located.}
+#' \item{POS} {a \code{character} string representing the SNV position on the
+#' chromosome.}
+#' \item{REF} {a \code{character} string representing the reference DNA base
+#' for the SNV.}
+#' \item{ALT} {a \code{character} string representing the alternative DNA base
+#' for the SNV.}\
+#' \item{EAS_AF} {a \code{character} string representing the allele frequency
+#' of the EAS super population.}
+#' \item{AFR_AF} {a \code{character} string representing the allele frequency
+#' of the AFR super population.}
+#' \item{AMR_AF} {a \code{character} string representing the allele frequency
+#' of the AMR super population.}
+#' \item{SAS_AF} {a \code{character} string representing the allele frequency
+#' of the SAS super population.}
+#' }
+#'
 #' @examples
 #'
 #' ## Needed package
@@ -147,7 +170,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' ## Temporary output files
 #' ## The first file contains the indexes of the retained SNPs
-#' ## The second file contains the filter SNP information
+#' ## The second file contains the filtered SNP information
 #' snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
 #' filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
 #'
@@ -217,15 +240,15 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @param fileNamePED a \code{character} string representing the path and file
 #' name of the RDS file that contains the pedigree information. The file must
-#' exist.
+#' exist. The file must be a RDS file.
 #'
 #' @param fileListSNP a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
-#' file must exist.
+#' file must exist. The file must be a RDS file.
 #'
 #' @param fileSNPSel a \code{character} string representing the path and file
 #' name of the RDS file that contains the filtered SNP information. The
-#' file must exist.
+#' file must exist. The file must be a RDS file.
 #'
 #' @param fileNameGDS a \code{character} string representing the path and file
 #' name of the GDS file that will be created. The GDS file will contain the
@@ -248,10 +271,31 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @examples
 #'
+#' ## Needed package
+#' library(withr)
+#'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' ## TODO
+#' ## The RDS file containing the pedigree information
+#' pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+#'
+#' ## The RDS file containing the indexes of the retained SNPs
+#' snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Temporary GDS file containing 1KG information
+#' GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
+#'
+#' ## Create a temporary GDS file containing information from 1KG
+#' generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
+#'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+#'     fileNameGDS=GDS_file, listSamples=NULL)
+#'
+#' ## Remove temporary files
+#' deferred_run()
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
@@ -377,15 +421,25 @@ generatePhase1KG2GDS <- function(gds,
 
 }
 
-#' @title Extract a list of id unrelated and a list related
+#' @title Identify genetically related and unrelated patients in 1KG files
 #'
-#' @description TODO
+#' @description The function identify patients that are genetically related in
+#' the 1KG files. It generates a list of unrelated as well as a list of
+#' related patients.
 #'
-#' @param gds TODO
+#' @param gds a \code{character} string representing the path and file
+#' name of the GDS file that contains the 1KG information. The GDS file must
+#' contain the SNP information, the genotyping information and
+#' the pedigree information from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
-#' @param maf TODO
+#' @param maf a single \code{numeric} representing the threshold for the minor
+#' allele frequency. Only the SNPs with ">= maf" will be used.
+#' Default: \code{0.05}.
 #'
-#' @param thresh TODO
+#' @param thresh a single \code{numeric} representing the threshold value used
+#' to decide if a pair of individuals is ancestrally divergent.
+#' Default: \code{2^(-11/2)}.
 #'
 #' @param fileIBD  TODO
 #'
@@ -419,7 +473,6 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 
     saveRDS(ibd.robust, fileIBD)
     saveRDS(part, filePart)
-
 }
 
 

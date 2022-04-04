@@ -32,6 +32,28 @@ specified cut-off in at least one super population. The information about
 the retained SNPs is saved in a RDS format file. A RDS file containing the
 indexes of the retained SNP is also created.
 }
+\details{
+The filtered SNP information RDS file (parameter \code{fileFREQ}), contains
+a \code{data.frame} with those columns:
+\itemize{
+\item{CHROM} {a \code{character} string representing the chromosome where
+the SNV is located.}
+\item{POS} {a \code{character} string representing the SNV position on the
+chromosome.}
+\item{REF} {a \code{character} string representing the reference DNA base
+for the SNV.}
+\item{ALT} {a \code{character} string representing the alternative DNA base
+for the SNV.}\
+\item{EAS_AF} {a \code{character} string representing the allele frequency
+of the EAS super population.}
+\item{AFR_AF} {a \code{character} string representing the allele frequency
+of the AFR super population.}
+\item{AMR_AF} {a \code{character} string representing the allele frequency
+of the AMR super population.}
+\item{SAS_AF} {a \code{character} string representing the allele frequency
+of the SAS super population.}
+}
+}
 \examples{
 
 ## Needed package
@@ -45,7 +67,7 @@ snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
 
 ## Temporary output files
 ## The first file contains the indexes of the retained SNPs
-## The second file contains the filter SNP information
+## The second file contains the filtered SNP information
 snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
 filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
 

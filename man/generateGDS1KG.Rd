@@ -71,7 +71,7 @@ pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
 snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
 
 ## The RDS file containing the filtered SNP information
-filterSNVFile <- local_file(file.path(data.dir, "mapSNVSelected_Demo.rds"))
+filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
 
 ## Temporary GDS file containing 1KG information
 GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))

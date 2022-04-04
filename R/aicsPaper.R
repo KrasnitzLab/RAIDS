@@ -31,8 +31,17 @@
 #'
 #' @seealso
 #' \itemize{
-#'     \item \code{\link{addRef2GDS1KG}} {for TODO}
-#'     \item \code{\link{generateGDS1KG}} {for TODO}
+#'     \item \code{\link{prepPed1KG}} {This function extracts the
+#'     needed information from the 1000 Genomes pedigree file and formats it
+#'     into a \code{data.frame} so in can be used in following steps
+#'     of the ancestry inference process.}
+#'     \item \code{\link{generateMapSnvSel}} {The function applies a cut-off
+#'     filter to the SNP information file to retain only the SNP that have a
+#'     frequency superior or equal to the specified cut-off in at least one
+#'     super population.}
+#'     \item \code{\link{generateGDS1KG}} {This function generates the GDS
+#'     file that will contain the information from 1KG.}
+#'     \item \code{\link{identifyRelative}} {TODO}
 #' }
 #'
 #' @encoding UTF-8

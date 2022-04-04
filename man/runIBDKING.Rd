@@ -7,18 +7,39 @@
 runIBDKING(gds, sampleId = NULL, snp.id = NULL, maf = 0.05)
 }
 \arguments{
-\item{gds}{a \code{gds} object.}
+\item{gds}{a \code{character} string representing the path and file
+name of the GDS file that contains the 1KG information. The GDS file must
+contain the SNP information, the genotyping information and
+the pedigree information from 1000 Genomes.
+The extension of the file must be '.gds'.}
 
-\item{sampleId}{a \code{array} with the sample to keep
-if NULL all}
+\item{sampleId}{a \code{vector} of \code{character} strings representing
+the samples to keep for the analysis. If \code{NULL}, all samples are used.
+Default: \code{NULL}.}
 
-\item{snp.id}{a \code{array} with the snp.id to keep
-if NULL all}
+\item{snp.id}{a \code{vector} of \code{character} strings representing
+the SNPs to keep for the analysis. If \code{NULL}, all SNPs are used.
+Default: \code{NULL}.}
 
-\item{maf}{a \code{numeric} mininum allelic frequency keep.}
+\item{maf}{a single \code{numeric} representing the threshold for the minor
+allele frequency. Only the SNPs with ">= maf" are retained.
+Default: \code{0.05}.}
 }
 \value{
-TODO ibd.robust
+a \code{list} containing:
+\itemize{
+    \item{sample.id}{a \code{character} string representing the sample
+    ids used in the analysis}
+    \item{snp.id}{a \code{character} string representing the SNP ids
+    used in the analysis}
+    \item{k0}{a \code{numeric}, the IBD coefficient, the probability of
+    sharing zero IBD}
+    \item{k1}{a \code{numeric}, the IBD coefficient, the probability of
+    sharing one IBD}
+    \item{IBS0}{a \code{numeric}, the proportion of SNPs with zero IBS}
+    \item{kinship}{a \code{numeric}, the proportion of SNPs with zero IBS,
+    if the parameter kinship=TRUE}
+}
 }
 \description{
 TODO

@@ -284,7 +284,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
 #'
 #' ## The RDS file containing the filtered SNP information
-#' filterSNVFile <- local_file(file.path(data.dir, "mapSNVSelected_Demo.rds"))
+#' filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary GDS file containing 1KG information
 #' GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
@@ -360,11 +360,19 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' the 1KG files. It generates a list of unrelated as well as a list of
 #' related patients.
 #'
-#' @param gds TODO
+#' @param gds a \code{character} string representing the path and file
+#' name of the GDS file that contains the 1KG information. The GDS file must
+#' contain the SNP information, the genotyping information and
+#' the pedigree information from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
-#' @param maf TODO
+#' @param maf a single \code{numeric} representing the threshold for the minor
+#' allele frequency. Only the SNPs with ">= maf" will be used.
+#' Default: \code{0.05}.
 #'
-#' @param thresh TODO
+#' @param thresh a single \code{numeric} representing the threshold value used
+#' to decide if a pair of individuals is ancestrally divergent.
+#' Default: \code{2^(-11/2)}.
 #'
 #' @param fileIBD  TODO
 #'

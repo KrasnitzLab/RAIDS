@@ -743,13 +743,13 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #'
 #' @param listKeep the list of snp.id keep
 #'
-#' @param slide.max.bp.v
+#' @param slide.max.bp.v TODO
 #'
-#' @param ld.threshold.v
+#' @param ld.threshold.v TODO
 #'
-#' @param np
+#' @param np TODO \code{integer}
 #'
-#' @param verbose.v
+#' @param verbose.v TODO
 #'
 #' @return TODO a \code{vector} of \code{numeric}
 #'

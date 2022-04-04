@@ -26,13 +26,13 @@ use in LDpruning}
 
 \item{listKeep}{the list of snp.id keep}
 
-\item{slide.max.bp.v}{}
+\item{slide.max.bp.v}{TODO}
 
-\item{ld.threshold.v}{}
+\item{ld.threshold.v}{TODO}
 
-\item{np}{}
+\item{np}{TODO \code{integer}}
 
-\item{verbose.v}{}
+\item{verbose.v}{TODO}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

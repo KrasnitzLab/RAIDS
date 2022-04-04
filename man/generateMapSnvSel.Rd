@@ -67,7 +67,7 @@ snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
 
 ## Temporary output files
 ## The first file contains the indexes of the retained SNPs
-## The second file contains the filter SNP information
+## The second file contains the filtered SNP information
 snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
 filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
 

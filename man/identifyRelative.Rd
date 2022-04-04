@@ -2,7 +2,7 @@
 % Please edit documentation in R/process1KG.R
 \name{identifyRelative}
 \alias{identifyRelative}
-\title{Extract a list of id unrelated and a list related}
+\title{Identify genetically related and unrelated patients in 1KG files}
 \usage{
 identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
@@ -21,7 +21,9 @@ identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 \code{NULL} invisibly.
 }
 \description{
-TODO
+The function identify patients that are genetically related in
+the 1KG files. It generates a list of unrelated as well as a list of
+related patients.
 }
 \examples{
 

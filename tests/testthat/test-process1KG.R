@@ -298,3 +298,93 @@ test_that("generateGDS1KG() must create a GDS file", {
 
 
 
+#############################################################################
+### Tests identifyRelative() results
+#############################################################################
+
+context("identifyRelative() results")
+
+test_that("identifyRelative() must return error when GDS file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileNot <- file.path(data.dir, "TOTO_GDS.gds")
+
+    fileIBDFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+
+    filePartFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(identifyRelative(gds=fileNot, maf=0.05, thresh=2^(-11/2),
+                fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+
+test_that("identifyRelative() must return error when maf is a vector of numbers", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+
+    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
+
+    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+
+    error_message <- "The \'maf\' parameter must be a single numeric value."
+
+    expect_error(identifyRelative(gds=fileInput, maf=c(0.01, 0.02),
+                    thresh=2^(-11/2),
+                    fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+
+test_that("identifyRelative() must return error when maf is a character strings", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+
+    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
+
+    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+
+    error_message <- "The \'maf\' parameter must be a single numeric value."
+
+    expect_error(identifyRelative(gds=fileInput, maf="test",
+                    thresh=2^(-11/2),
+                    fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+
+test_that("identifyRelative() must return error when thresh is a character strings", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+
+    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
+
+    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+
+    error_message <- "The \'thresh\' parameter must be a single numeric value."
+
+    expect_error(identifyRelative(gds=fileInput, maf=0.05,
+                thresh="p-value",
+                fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+
+test_that("identifyRelative() must return error when thresh is a vector of numerics", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+
+    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
+
+    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+
+    error_message <- "The \'thresh\' parameter must be a single numeric value."
+
+    expect_error(identifyRelative(gds=fileInput, maf=0.05,
+                    thresh=c(0.01, 0.03),
+                    fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+

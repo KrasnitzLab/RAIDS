@@ -457,10 +457,27 @@ generatePhase1KG2GDS <- function(gds,
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom GENESIS pcairPartition
+#' @importFrom S4Vectors isSingleNumber
 #'
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                                 fileIBD, filePart) {
+
+    ## Validate that the GDS file exists
+    if (! file.exists(gds)) {
+        stop("The file \'", gds, "\' does not exist." )
+    }
+
+    ## Validate that the maf is a single numeric value
+    if (! isSingleNumber(maf)) {
+        stop("The \'maf\' parameter must be a single numeric value." )
+    }
+
+    ## Validate that the thresh is a single numeric value
+    if (! isSingleNumber(thresh)) {
+        stop("The \'thresh\' parameter must be a single numeric value." )
+    }
+
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 

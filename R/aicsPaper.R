@@ -42,6 +42,7 @@
 #'     \item \code{\link{generateGDS1KG}} {This function generates the GDS
 #'     file that will contain the information from 1KG.}
 #'     \item \code{\link{identifyRelative}} {TODO}
+#'     \item \code{\link{addRef2GDS1KG}} {TODO}
 #' }
 #'
 #' @encoding UTF-8

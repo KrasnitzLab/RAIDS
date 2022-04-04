@@ -395,6 +395,11 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                                 fileIBD, filePart) {
 
+    ## Validate that the GDS file exists
+    if (! file.exists(gds)) {
+        stop("The file \'", gds, "\' does not exist." )
+    }
+
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
     matKING <- ibd.robust$kinship

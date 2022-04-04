@@ -130,3 +130,46 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
     saveRDS(pruned, fileChr <- file.path(PATHPRUNED, fileOUT))
 }
 
+
+#' @title Merge the pruning files by chromosome in one file
+#'
+#' @description TODO
+#'
+#' @param PATHGENOCHR TODO
+#'
+#' @param PATHOUT TODO
+#'
+#' @return TODO 0
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#'
+#' @export
+groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
+
+    listFiles <- dir(file.path(PATHGENOCHR, "chr1"), ".+\\.chr1\\.vcf\\.bz2")
+    listSamples <- gsub("\\.chr1\\.vcf\\.bz2", "", listFiles)
+
+    for(sampleId in listSamples){
+        listGeno <- list()
+
+        for(chr in seq_len(22)){
+
+            geno <- read.csv2(file.path(PATHGENOCHR, paste0("chr", chr),
+                                        paste0(sampleId,
+                                               ".chr", chr,".vcf.bz2") ),
+                              sep="\t",
+                              row.names = NULL)
+
+            listGeno[[paste0("chr", chr)]] <- geno
+        }
+        genoAll <- do.call(rbind, listGeno)
+        write.csv2(genoAll, file=bzfile(file.path(PATHOUT, paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
+    }
+    return(0L)
+
+}
+

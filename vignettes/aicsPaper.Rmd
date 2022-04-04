@@ -119,7 +119,45 @@ All files are related to GRCh38 genome.
 
 ### Split the 1KG genotyping file to one file per sample
 
-TODO
+TODO cleanup the section
+
+For each chromosome we run the bash command
+
+in directory PATHGENO
+chrCur is the chromosome current in the form ex: chr1
+
+FILECUR is the vcf file from 1000 genome for the chromosome current
+
+```{r fileGenopart1, echo=T, eval=FALSE}
+
+mkdir ${PATHGENO}/${chrCur}
+
+FILECUR is the vcf file from 1000 genome
+
+for i in `seq 1 2548`
+do
+
+    j=$(( $i + 9 ))
+    SAMPLE=$(zcat $FILECUR||head -n 1000 |grep "#CHROM"|cut -d$'\t' -f$j)
+    zcat $FILECUR|grep -v "##"|cut -d$'\t' -f$j |bzip2 -c > ${SAMPLE}.${CHR}.vcf.bz2
+done
+}```
+
+In R
+To combine the genotype for each chromosome in one file for all the genome
+
+You can run
+```{r fileGenopart2, echo=T, eval=FALSE}
+## Load required package
+library(aicsPaper)
+
+PATHGENOCHR <- file.path("data", "pathgenochr")# the path
+PATHOUT <- file.path("data", "pathgenoOUT")
+
+groupChr1KGSNV(PATHGENOCHR, PATHOUT)
+
+}```
+
 
 ### Create a predigree file in RDS format
 

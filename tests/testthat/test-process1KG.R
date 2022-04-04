@@ -298,3 +298,27 @@ test_that("generateGDS1KG() must create a GDS file", {
 
 
 
+#############################################################################
+### Tests identifyRelative() results
+#############################################################################
+
+context("identifyRelative() results")
+
+test_that("identifyRelative() must return error when GDS file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileNot <- file.path(data.dir, "TOTO_GDS.gds")
+
+    fileIBDFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+
+    filePartFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(identifyRelative(gds=fileNot, maf=0.05, thresh=2^(-11/2),
+                fileIBD=fileIBDFile, filePart=filePartFile), error_message)
+})
+
+
+

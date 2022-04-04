@@ -271,4 +271,30 @@ test_that("generateGDS1KG() must return error when SNP information file does not
 })
 
 
+test_that("generateGDS1KG() must create a GDS file", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+
+    snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+
+    filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    ## Temporary GDS file containing 1KG information
+    GDS_file <- local_file(file.path(data.dir, "1KG_TOTO.gds"))
+
+    generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
+                            fileListSNP=snpIndexFile,
+                            fileSNPSel=filterSNVFile, fileNameGDS=GDS_file,
+                            listSamples=NULL)
+
+    expect_true(file.exists(GDS_file))
+
+    ## Remove temporary files
+    deferred_run()
+
+})
+
+
 

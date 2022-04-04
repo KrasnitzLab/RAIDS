@@ -698,17 +698,38 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' @description TODO
 #'
-#' @param gds a \code{gds} object.
+#' @param gds a \code{character} string representing the path and file
+#' name of the GDS file that contains the 1KG information. The GDS file must
+#' contain the SNP information, the genotyping information and
+#' the pedigree information from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
-#' @param sampleId  a \code{array} with the sample to keep
-#' if NULL all
+#' @param sampleId  a \code{vector} of \code{character} strings representing
+#' the samples to keep for the analysis. If \code{NULL}, all samples are used.
+#' Default: \code{NULL}.
 #'
-#' @param snp.id  a \code{array} with the snp.id to keep
-#' if NULL all
+#' @param snp.id  a \code{vector} of \code{character} strings representing
+#' the SNPs to keep for the analysis. If \code{NULL}, all SNPs are used.
+#' Default: \code{NULL}.
 #'
-#' @param maf  a \code{numeric} mininum allelic frequency keep.
+#' @param maf  a single \code{numeric} representing the threshold for the minor
+#' allele frequency. Only the SNPs with ">= maf" are retained.
+#' Default: \code{0.05}.
 #'
-#' @return TODO ibd.robust
+#' @return a \code{list} containing:
+#' \itemize{
+#'     \item{sample.id}{a \code{character} string representing the sample
+#'     ids used in the analysis}
+#'     \item{snp.id}{a \code{character} string representing the SNP ids
+#'     used in the analysis}
+#'     \item{k0}{a \code{numeric}, the IBD coefficient, the probability of
+#'     sharing zero IBD}
+#'     \item{k1}{a \code{numeric}, the IBD coefficient, the probability of
+#'     sharing one IBD}
+#'     \item{IBS0}{a \code{numeric}, the proportion of SNPs with zero IBS}
+#'     \item{kinship}{a \code{numeric}, the proportion of SNPs with zero IBS,
+#'     if the parameter kinship=TRUE}
+#' }
 #'
 #' @examples
 #'
@@ -721,6 +742,7 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' @keywords internal
 runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 
+    # Calculate IBD coefficients by KING method of moment
     ibd.robust <- snpgdsIBDKING(gds, sample.id=sampleId,
                                     snp.id=snp.id,
                                     maf=maf, type="KING-robust")

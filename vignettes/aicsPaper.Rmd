@@ -91,7 +91,7 @@ devtools::install_github('belleau/aicsPaper')
 # Main Steps
 
 - Formatting the information from 1000 Genomes (1KG)
-- TODO
+- Initialize a study with sample to infer ancestry
 
 In the following sections, those main steps are described in details.
 
@@ -388,6 +388,159 @@ generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP.v)
 ## Close both files
 closefn.gds(gdsPhase)
 closefn.gds(gds)
+```
+
+<br>
+<br>
+
+
+## Initialize a study with sample to infer ancestry
+
+You need a mapped BAM with the same genome than the 
+reference here (hg38 for 1KG)
+for each sample.
+
+### Extract the read at each in the GDS
+
+We used here snp-pileup from Facet
+
+First you a vcf file with the SNV you want to keep
+
+### Create a VCF file with the SNV you want tokeep
+In R
+```{r snvListVCF, echo=TRUE, eval=FALSE}
+    library(aicsPaper)
+    
+    gds <- snpgdsOpen(fileGDS1kg)
+    snvListVCF(gds, fileOUT, offset = 1)
+    closefn.gds(gds)
+``` 
+
+You should compress and indexing the vcf file
+You need to install [HTSlib](http://www.htslib.org/download/)
+
+in a terminal
+
+```{r indexVCF, echo=TRUE, eval=FALSE}
+
+     bgzip fileOUT
+     tabix -p vcf fileOUT.gz
+```
+
+
+You need a ped file with the column:
+
+"sample.id"* Id of the sample but the sample can be genotyped more than one
+"sex"*
+"pop.group"* can be self declare or something else but must be there
+"superPop"* can be self declare or something else but must be there
+"Sample.Type"* Ex Primary Tumor or Blood Derived Normal 
+"Diagnosis"* C or N (cancer normal) this is for the sample not the patient
+"Source"* The tissue ex Ovary 
+"Recurrent"  
+"Case.ID" Patient identifiant     
+"Name.ID"* This the unique id of the table
+"batch" Number
+
+You need the extra code in the package Facet to extract the SNV
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode)
+
+The output from snp-pileup should be Name.ID.txt 
+(snp-pileup add .gz to the filename) 
+
+```{r snpPileup, echo=TRUE, eval=FALSE}
+
+    snp-pileup -g -d5000 -q15 -Q20  -r0 VCFGenerateAbove snvSel0.01.vcf.gz OUTPUT.txt FILEBAM.bam
+    
+```
+
+TODO change the path to something generic
+
+in R:
+
+```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
+
+    library(aicsPaper)
+    
+    PATHGENO <- file.path("data", "snpCancer")
+    PATHMETA <- file.path("data", "metadata")
+    PATHGDS <- file.path("data", "genoGDS1000gAF.All.TCGA_OV.WXS")
+    
+    fileNamePED <- "pedTCGA_OV_WXS_C.rds"
+    fileNameGDS <- "matGeno1000g.gds"
+    
+    filePED <- file.path(PATHMETA, fileNamePED)
+    fileNameGDS <- file.path(PATHGDS, fileNameGDS)
+    
+    ped <- readRDS(filePED)
+    
+    studyDF <- data.frame(study.id = "TCGA-OV.WXS.C",
+                              study.desc = "Ovarian example",
+                              study.platform = "WXS",
+                              stringsAsFactors = FALSE)
+    
+    listSamples <- ped[, "Name.ID"]
+    appendStudy2GDS1KG(PATHGENO = PATHGENO,
+                       fileNamePED = filePED,
+                       fileNameGDS = fileNameGDS,
+                       listSamples = listSamples,
+                       studyDesc = studyDF,
+                       batch = 1)
+```
+
+
+
+We select a subset of SNV pruned SNV
+We create a GDS for each sample with only the SNP in the pruning.
+It use more disk space but the analysis for the samples can be run simulatanusly 
+with multiple process (if we we all samples in one file only one process can 
+write in the GDS). 
+
+
+or in R for a s
+
+```{r pruningSample, echo=TRUE, eval=FALSE}
+
+    library(aicsPaper)
+    
+    # fileNameGDS with the sample and 1KG genotype
+    # listSamples list of sample.id from the study
+    # PATHSAMPLEGDS is the path where the gds specific 
+    # to the sample is created
+    
+    studyCur <- "Study.name"
+    gds <- snpgdsOpen(fileNameGDS)
+    
+    gdsfile <- file.path(pathGDS, gdsName)
+    gds <- snpgdsOpen(gdsfile)
+    
+    sampleGDS <- index.gdsn(gds, "sample.id")
+    sample.id <- read.gdsn(sampleGDS)
+    
+    study.offset <- read.gdsn(index.gdsn(gds, "study.offset"))
+    
+    study.id <- read.gdsn(index.gdsn(gds, "study.annot/study.id"))
+    sampleCurrent <- sample.id[study.start[pos] + sampleNum - 1]
+    listSamples <- sample.id[which(study.id == studyCur) + study.offset]
+
+    for(i in seq_len(length(listSamples))){
+        print(system.time(pruned <- pruningSample(gds=gds,
+                                            method="corr",
+                                            sampleCurrent = listSamples[i],
+                                            listSNP = NULL,
+                                            slide.max.bp.v = 5e5,
+                                            ld.threshold.v=sqrt(0.1),
+                                            np = 1,
+                                            verbose.v=FALSE,
+                                            chr = NULL,
+                                            minAF.SuperPop = NULL,
+                                            keepGDSpruned = TRUE,
+                                            PATHSAMPLEGDS = PATHSAMPLEGDS,
+                                            keepFile = FALSE)))
+    }
+    
+    Sys.time()
+    closefn.gds(gds)
 ```
 
 

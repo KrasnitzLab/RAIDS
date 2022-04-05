@@ -2,7 +2,7 @@
 % Please edit documentation in R/process1KG.R
 \name{identifyRelative}
 \alias{identifyRelative}
-\title{Identify genetically related and unrelated patients in 1KG files}
+\title{Identify genetically related and unrelated patients in GDS 1KG file}
 \usage{
 identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
@@ -21,9 +21,15 @@ Default: \code{0.05}.}
 to decide if a pair of individuals is ancestrally divergent.
 Default: \code{2^(-11/2)}.}
 
-\item{fileIBD}{TODO}
+\item{fileIBD}{a \code{character} string representing the path and file
+name of the RDS file that will be created. The RDS file will contain the
+kinship coefficient between the patients.
+The extension of the file must be '.rds'.}
 
-\item{filePart}{TODO}
+\item{filePart}{a \code{character} string representing the path and file
+name of the RDS file that will be created. The RDS file will contain the
+information about the 1KG patients that are unrelated.
+The extension of the file must be '.rds'.}
 }
 \value{
 \code{NULL} invisibly.

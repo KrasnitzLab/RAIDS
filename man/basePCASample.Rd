@@ -8,14 +8,17 @@
 basePCASample(gds, listSample.Ref = NULL, listSNP = NULL, np = 1)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an object of class
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+GDS file.}
 
 \item{listSample.Ref}{A \code{vector} of \code{string} corresponding to
 the sample.ids}
 
 \item{listSNP}{the list of snp.id keep}
 
-\item{np}{a \code{integer} reprenting the number of thread}
+\item{np}{a single positive \code{integer} representing the number of
+threads. Default: \code{1}.}
 }
 \value{
 TODO a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}

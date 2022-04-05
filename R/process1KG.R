@@ -359,6 +359,8 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param gds an object of class \code{gds} opened
 #'
+#' @param gdsPhase TODO
+#'
 #' @param PATHGENO a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
 #' genotyping files must correspond to

@@ -21,7 +21,7 @@ pruning1KG.Chr(
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
-\item{method}{TODO}
+\item{method}{a \code{character string} TODO . Default: \code{corr}}
 
 \item{listSamples}{TODO}
 

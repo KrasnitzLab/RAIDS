@@ -39,12 +39,14 @@
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
-
 pruningSample <- function(gds,
                           method="corr",
                           sampleCurrent,
@@ -144,10 +146,13 @@ pruningSample <- function(gds,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
 #' @export
 
 add1KG2SampleGDS <- function(gds,
@@ -234,18 +239,20 @@ add1KG2SampleGDS <- function(gds,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
-
 addPhase1KG2SampleGDSFromFile <- function(gds,
                                           PATHSAMPLEGDS,
                                           PATHGENO,
                                           fileLSNP){
 
-    listSel <- readRDS(fileLSNP.v)
+    listSel <- readRDS(fileLSNP)
 
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
@@ -276,7 +283,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds,
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)
         matSample <- matSample[listSNP[indexAll],, drop=FALSE]
-        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)[1,]
+        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
         var.phase <- NULL
         if(! ("phase" %in% ls.gdsn(gdsSample))){
             var.phase <- add.gdsn(gdsSample, "phase",

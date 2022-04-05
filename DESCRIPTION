@@ -31,6 +31,7 @@ Depends: R (>= 4.0),
     utils,
     GENESIS
 Imports: S4Vectors,
+    methods,
     GenomicRanges
 Suggests: testthat,
     knitr,

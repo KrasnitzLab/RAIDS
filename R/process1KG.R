@@ -359,6 +359,8 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param gds an object of class \code{gds} opened
 #'
+#' @param gdsPhase TODO
+#'
 #' @param PATHGENO a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
 #' genotyping files must correspond to
@@ -374,16 +376,11 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
 #' @export
-
-generatePhase1KG2GDS <- function(gds,
-                            gdsPhase,
+generatePhase1KG2GDS <- function(gds, gdsPhase,
                             PATHGENO,
                             fileLSNP){
-
-    listSel <- readRDS(fileLSNP.v)
-
 
     sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
     listSNP <- readRDS(fileLSNP)
@@ -397,15 +394,14 @@ generatePhase1KG2GDS <- function(gds,
         file1KG <- file.path(PATHGENO, paste0(sample.id[i],".csv.bz2"))
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
-        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)[1,]
+        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
         print(paste0("GDS ", i, " ", Sys.time()))
         if(! ("phase" %in% ls.gdsn(gdsPhase))){
             var.phase <- add.gdsn(gdsPhase, "phase",
-                                  valdim=c(length(listSNP),
-                                           1),
-                                  matSample,
-                                  storage="bit2",
-                                  compress = "LZ4_RA")
+                                    valdim=c(length(listSNP), 1),
+                                    matSample,
+                                    storage="bit2",
+                                    compress = "LZ4_RA")
 
         }else{
             if(is.null(var.phase)){
@@ -421,17 +417,16 @@ generatePhase1KG2GDS <- function(gds,
 
 }
 
-#' @title Identify genetically related and unrelated patients in 1KG files
+#' @title Identify genetically unrelated patients in GDS 1KG file
 #'
 #' @description The function identify patients that are genetically related in
-#' the 1KG files. It generates a list of unrelated as well as a list of
-#' related patients.
+#' the 1KG file. It generates a first RDS file with the list of unrelated
+#' patient. It also generates a second RDS file with the kinship coefficient
+#' between the patients.
 #'
-#' @param gds a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The GDS file must
-#' contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
-#' The extension of the file must be '.gds'.
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
 #' @param maf a single \code{numeric} representing the threshold for the minor
 #' allele frequency. Only the SNPs with ">= maf" will be used.
@@ -441,9 +436,16 @@ generatePhase1KG2GDS <- function(gds,
 #' to decide if a pair of individuals is ancestrally divergent.
 #' Default: \code{2^(-11/2)}.
 #'
-#' @param fileIBD  TODO
+#' @param fileIBD a \code{character} string representing the path and file
+#' name of the RDS file that will be created. The RDS file will contain the
+#' kinship coefficient between the patients.
+#' The extension of the file must be '.rds'.
 #'
-#' @param filePart TODO
+#'
+#' @param filePart a \code{character} string representing the path and file
+#' name of the RDS file that will be created. The RDS file will contain the
+#' information about the 1KG patients that are unrelated.
+#' The extension of the file must be '.rds'.
 #'
 #' @return \code{NULL} invisibly.
 #'
@@ -454,19 +456,15 @@ generatePhase1KG2GDS <- function(gds,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom GENESIS pcairPartition
 #' @importFrom S4Vectors isSingleNumber
-#'
+#' @importFrom methods is
+#' @encoding UTF-8
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                                 fileIBD, filePart) {
-
-    ## Validate that the GDS file exists
-    if (! file.exists(gds)) {
-        stop("The file \'", gds, "\' does not exist." )
-    }
 
     ## Validate that the maf is a single numeric value
     if (! isSingleNumber(maf)) {
@@ -478,6 +476,11 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
         stop("The \'thresh\' parameter must be a single numeric value." )
     }
 
+    ## Validate that gds is an object of class SNPGDSFileClass
+    if (! is(gds, "SNPGDSFileClass")) {
+        stop("The \'gds\' parameter must be an object of ",
+                    "class \'SNPGDSFileClass\'.")
+    }
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
@@ -493,18 +496,27 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 }
 
 
-#' @title This function create the field sample.ref which is 1 when the sample
-#' are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart
+#' @title Add the information about the unrelated patients to the GDS 1KG file
 #'
-#' @description This function create the field sample.ref which is 1 when the sample
-#' are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart$unrels
-#' from  in GENESIS TODO
+#' @description This function adds the information about the unrelated patients
+#' to the GDS 1KG file. More specificaly, it creates the field
+#' \code{sample.ref} which as the value \code{1} when the sample
+#' is unrelated and the value \code{0} otherwise.
+#' The \code{sample.ref} is filled based on the information present in the
+#' input RDS file.
 #'
-#' @param fileNameGDS  \code{string} with the path and the name of the gds file
+#' @param fileNameGDS a \code{character} string representing the path and file
+#' name of the GDS file that contains the 1KG information. The GDS file must
+#' contain the SNP information, the genotyping information and
+#' the pedigree information from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
-#' @param filePart file save by identifyRelative
+#' @param filePart a \code{character} string representing the path and file
+#' name of the RDS file that contains the
+#' information about the 1KG patients that are unrelated.
+#' The extension of the file must be '.rds'. The file must exists.
 #'
-#' @return None.
+#' @return \code{None}
 #'
 #' @examples
 #'
@@ -513,11 +525,22 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
+#' @encoding UTF-8
 #' @export
 addRef2GDS1KG <- function(fileNameGDS, filePart) {
+
+    ## Validate that the GDS file exists
+    if (! file.exists(fileNameGDS)) {
+        stop("The file \'", fileNameGDS, "\' does not exist." )
+    }
+
+    ## Validate that the RDS file exists
+    if (! file.exists(filePart)) {
+        stop("The file \'", filePart, "\' does not exist." )
+    }
 
     gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
@@ -533,7 +556,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #'
 #' @param gds an object of class \code{gds} opened
 #'
-#' @param method TODO
+#' @param method a \code{character string} TODO . Default: \code{corr}
 #'
 #' @param listSamples TODO
 #'

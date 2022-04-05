@@ -353,6 +353,73 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     closefn.gds(newGDS)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened
+#'
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
+#'
+#' @param fileLSNP TODO
+#'
+#' @return TODO a \code{vector} of \code{string}
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @export
+
+generatePhase1KG2GDS <- function(gds,
+                            gdsPhase,
+                            PATHGENO,
+                            fileLSNP){
+
+    listSel <- readRDS(fileLSNP.v)
+
+
+    sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
+    listSNP <- readRDS(fileLSNP)
+
+
+    var.phase <- NULL
+    for(i in seq_len(length(sample.id))){
+
+        print(paste0("S ", i, " ", Sys.time()))
+
+        file1KG <- file.path(PATHGENO, paste0(sample.id[i],".csv.bz2"))
+        matSample <- read.csv2( file1KG,
+                                row.names = NULL)[listSNP,, drop=FALSE]
+        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)[1,]
+        print(paste0("GDS ", i, " ", Sys.time()))
+        if(! ("phase" %in% ls.gdsn(gdsPhase))){
+            var.phase <- add.gdsn(gdsPhase, "phase",
+                                  valdim=c(length(listSNP),
+                                           1),
+                                  matSample,
+                                  storage="bit2",
+                                  compress = "LZ4_RA")
+
+        }else{
+            if(is.null(var.phase)){
+                var.phase <- index.gdsn(gdsPhase, "phase")
+            }
+            append.gdsn(var.phase, matSample)
+        }
+        rm(matSample)
+    }
+    readmode.gdsn(var.phase)
+
+    return(0L)
+
+}
 
 #' @title Identify genetically related and unrelated patients in 1KG files
 #'

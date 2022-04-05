@@ -376,16 +376,12 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
 #' @export
-
 generatePhase1KG2GDS <- function(gds,
                             gdsPhase,
                             PATHGENO,
                             fileLSNP){
-
-    listSel <- readRDS(fileLSNP.v)
-
 
     sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
     listSNP <- readRDS(fileLSNP)
@@ -399,7 +395,7 @@ generatePhase1KG2GDS <- function(gds,
         file1KG <- file.path(PATHGENO, paste0(sample.id[i],".csv.bz2"))
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
-        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)[1,]
+        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
         print(paste0("GDS ", i, " ", Sys.time()))
         if(! ("phase" %in% ls.gdsn(gdsPhase))){
             var.phase <- add.gdsn(gdsPhase, "phase",

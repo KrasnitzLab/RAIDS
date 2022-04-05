@@ -12,7 +12,7 @@ groupChr1KGSNV(PATHGENOCHR, PATHOUT)
 \item{PATHOUT}{TODO}
 }
 \value{
-TODO 0
+The integer \code{0} when successful.
 }
 \description{
 TODO

@@ -3,11 +3,13 @@
 #'
 #' @description TODO
 #'
-#' @param PATHPRUNED TODO
-#'
-#' @param filePref TODO
+#' @param gds TODO
 #'
 #' @param fileOUT TODO
+#'
+#' @param offset TODO. Default: \code{0}.
+#'
+#' @param freqCutoff TODO. Default: \code{NULL}.
 #'
 #' @return TODO a \code{vector} of \code{numeric}
 #'
@@ -16,11 +18,9 @@
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
+#' @importFrom gdsfmt read.gdsn
 #' @keywords internal
-snvListVCF <- function(gds,
-                        fileOUT,
-                        offset=0,
+snvListVCF <- function(gds, fileOUT, offset=0,
                         freqCutoff=NULL){
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
@@ -139,14 +139,14 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #'
 #' @param PATHOUT TODO
 #'
-#' @return TODO 0
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
+#' @importFrom utils write.csv2 read.csv2
 #' @export
 groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 
@@ -167,9 +167,10 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
             listGeno[[paste0("chr", chr)]] <- geno
         }
         genoAll <- do.call(rbind, listGeno)
-        write.csv2(genoAll, file=bzfile(file.path(PATHOUT, paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
+        write.csv2(genoAll, file=bzfile(file.path(PATHOUT,
+                            paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
     }
-    return(0L)
 
+    return(0L)
 }
 

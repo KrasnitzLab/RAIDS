@@ -40,6 +40,13 @@ package is required.
      devtools::install_github('belleau/aicsPaper')
 
 
+## Documentation ##
+
+[aicsPaper Website](https://adeschen.github.io/aicsPaper/)
+
+[aicsPaper Get Started](https://adeschen.github.io/aicsPaper/articles/aicsPaper.html)
+
+
 ## License ##
 
 This package and the underlying **_aicsPaper_** code are distributed under 

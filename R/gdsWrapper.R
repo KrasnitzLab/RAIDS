@@ -416,7 +416,10 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
@@ -698,11 +701,9 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' @description TODO
 #'
-#' @param gds a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The GDS file must
-#' contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
-#' The extension of the file must be '.gds'.
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
 #' @param sampleId  a \code{vector} of \code{character} strings representing
 #' the samples to keep for the analysis. If \code{NULL}, all samples are used.
@@ -736,18 +737,15 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#'
 #' @importFrom SNPRelate snpgdsIBDKING
-#'
 #' @keywords internal
 runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 
-    # Calculate IBD coefficients by KING method of moment
+    ## Calculate IBD coefficients by KING method of moment
     ibd.robust <- snpgdsIBDKING(gds, sample.id=sampleId,
                                     snp.id=snp.id,
                                     maf=maf, type="KING-robust")
     return(ibd.robust)
-
 }
 
 
@@ -769,23 +767,27 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #'
 #' @param ld.threshold.v TODO
 #'
-#' @param np TODO \code{integer}
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1}.
 #'
-#' @param verbose.v TODO
+#' @param verbose.v a \code{logical} indicating if information is shown during
+#' the process. Default: \code{FALSE}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return a \code{list} of SNP IDs stratified by chromosomes as generated
+#' by \code{\link[SNPRelate:snpgdsLDpruning]{SNPRelate:snpgdsLDpruning()}}.
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen snpgdsLDpruning
 #' @importFrom gdsfmt closefn.gds
-#'
 #' @keywords internal
-
 runLDPruning <- function(gds, method="corr",
                             listSamples=NULL,
                             listKeep=NULL,

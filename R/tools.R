@@ -3,7 +3,11 @@
 #'
 #' @description TODO
 #'
-#' @param gds TODO
+#' @param gds a \code{character} string representing the path and file
+#' name of the GDS file that contains the 1KG information. The GDS file must
+#' contain the SNP information, the genotyping information and
+#' the pedigree information from 1000 Genomes.
+#' The extension of the file must be '.gds'.
 #'
 #' @param fileOUT TODO
 #'
@@ -23,8 +27,7 @@
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
 #' @keywords internal
-snvListVCF <- function(gds, fileOUT, offset=0,
-                        freqCutoff=NULL){
+snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))

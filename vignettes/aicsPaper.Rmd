@@ -321,10 +321,14 @@ fileGDS <- file.path(PATHGDS, fileNameGDS)
 fileIBD <- file.path(PATHMETA,"ibd.All.0.05.rds")
 filePart <- file.path(PATHMETA,"part.All.0.05.rds")
 
-## Identify the genetically related patients in 1KG
+## Open the 1KG GDS file
 gds <- snpgdsOpen(fileGDS)
+
+## Identify the genetically related patients in 1KG
 identifyRelative(gds=fileGDS, maf=0.05, thresh = 2^(-11/2),
                      fileIBD=fileIBD, filePart=filePart)
+
+## Close the 1KG GDS file
 closefn.gds(gds)
 ```
 
@@ -350,30 +354,35 @@ addRef2GDS1KG(fileGDS=gds,  filePart=filePart)
 <br>
 <br>
 
-### Create a GDS with 1KG phase information 
+### Create a second GDS containing the 1KG phase information 
 
 We generate a GDS with the phase information.
 
+The function __generatePhase1KG2GDS()__ is adding the phse information 
+into the newly created 1KG GDS phase file.
 
 ```{r addPhaseGDS1KG, echo=TRUE, eval=FALSE}
- # create the ref sample list which correspond
-    # to the list of sample unrelated
-    
+## Load required package
+library(gdsfmt)
+
+## The name of the 1KG GDS file that already exists
 fileGDS1KG <- file.path(PATHGDS, "matGeno1000g.gds")
+
+## The name of the 1KG GDS phase file that will be created
 fileGDSPhase <- file.path(PATHGDS, "matPhase1000g.gds")
 
-
-
+## Open the 1KG GDS file
 gds <- openfn.gds(fileGDS1KG)
 
+## Create the 1KG GDS phase file
 gdsPhase <- createfn.gds(fileGDSPhase)
 
+## Add the phase information to the 1KG GDS phase file
 generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP.v)
 
+## Close both files
 closefn.gds(gdsPhase)
 closefn.gds(gds)
-
-    
 ```
 
 

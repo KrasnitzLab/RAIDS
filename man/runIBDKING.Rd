@@ -7,11 +7,9 @@
 runIBDKING(gds, sampleId = NULL, snp.id = NULL, maf = 0.05)
 }
 \arguments{
-\item{gds}{a \code{character} string representing the path and file
-name of the GDS file that contains the 1KG information. The GDS file must
-contain the SNP information, the genotyping information and
-the pedigree information from 1000 Genomes.
-The extension of the file must be '.gds'.}
+\item{gds}{an object of class
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+GDS file.}
 
 \item{sampleId}{a \code{vector} of \code{character} strings representing
 the samples to keep for the analysis. If \code{NULL}, all samples are used.

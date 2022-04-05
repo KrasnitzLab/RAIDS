@@ -8,7 +8,11 @@ for at least one super population}
 snvListVCF(gds, fileOUT, offset = 0, freqCutoff = NULL)
 }
 \arguments{
-\item{gds}{TODO}
+\item{gds}{a \code{character} string representing the path and file
+name of the GDS file that contains the 1KG information. The GDS file must
+contain the SNP information, the genotyping information and
+the pedigree information from 1000 Genomes.
+The extension of the file must be '.gds'.}
 
 \item{fileOUT}{TODO}
 
@@ -24,7 +28,10 @@ TODO
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## TODO
 
 }
 \author{

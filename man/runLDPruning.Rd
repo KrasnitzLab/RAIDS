@@ -30,19 +30,25 @@ use in LDpruning}
 
 \item{ld.threshold.v}{TODO}
 
-\item{np}{TODO \code{integer}}
+\item{np}{a single positive \code{integer} specifying the number of
+threads to be used. Default: \code{1}.}
 
-\item{verbose.v}{TODO}
+\item{verbose.v}{a \code{logical} indicating if information is shown during
+the process. Default: \code{FALSE}.}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+a \code{list} of SNP IDs stratified by chromosomes as generated
+by \code{\link[SNPRelate:snpgdsLDpruning]{SNPRelate:snpgdsLDpruning()}}.
 }
 \description{
 TODO
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## TODO
 
 }
 \author{

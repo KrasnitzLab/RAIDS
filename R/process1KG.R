@@ -35,9 +35,10 @@
 #' prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
 #'
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
 #' @importFrom S4Vectors isSingleInteger
+#' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
@@ -182,8 +183,9 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #' ## Remove temporary files
 #' deferred_run()
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
 #' @export
 generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
@@ -297,9 +299,10 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' ## Remove temporary files
 #' deferred_run()
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
+#' @encoding UTF-8
 #' @export
 generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
@@ -375,8 +378,9 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
+#' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gds, gdsPhase,
                             PATHGENO,

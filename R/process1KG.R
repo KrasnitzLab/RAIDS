@@ -455,12 +455,12 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom GENESIS pcairPartition
 #' @importFrom S4Vectors isSingleNumber
 #' @importFrom methods is
-#'
+#' @encoding UTF-8
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                                 fileIBD, filePart) {
@@ -524,9 +524,10 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen
+#' @encoding UTF-8
 #' @export
 addRef2GDS1KG <- function(fileNameGDS, filePart) {
 

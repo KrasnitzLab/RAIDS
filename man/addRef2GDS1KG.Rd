@@ -2,23 +2,32 @@
 % Please edit documentation in R/process1KG.R
 \name{addRef2GDS1KG}
 \alias{addRef2GDS1KG}
-\title{This function create the field sample.ref which is 1 when the sample
-are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart}
+\title{Add the information about the unrelated patients to the GDS 1KG file}
 \usage{
 addRef2GDS1KG(fileNameGDS, filePart)
 }
 \arguments{
-\item{fileNameGDS}{\code{string} with the path and the name of the gds file}
+\item{fileNameGDS}{a \code{character} string representing the path and file
+name of the GDS file that contains the 1KG information. The GDS file must
+contain the SNP information, the genotyping information and
+the pedigree information from 1000 Genomes.
+The extension of the file must be '.gds'.}
 
-\item{filePart}{file save by identifyRelative}
+\item{filePart}{a \code{character} string representing the path and file
+name of the RDS file that contains the
+information about the 1KG patients that are unrelated.
+The extension of the file must be '.rds'. The file must exists.}
 }
 \value{
-None.
+\code{None}
 }
 \description{
-This function create the field sample.ref which is 1 when the sample
-are a reference and 0 otherwise. The sample.ref is fill base of on the file filePart$unrels
-from  in GENESIS TODO
+This function adds the information about the unrelated patients
+to the GDS 1KG file. More specificaly, it creates the field
+\code{sample.ref} which as the value \code{1} when the sample
+is unrelated and the value \code{0} otherwise.
+The \code{sample.ref} is filled based on the information present in the
+input RDS file.
 }
 \examples{
 

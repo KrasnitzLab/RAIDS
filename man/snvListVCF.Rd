@@ -8,11 +8,13 @@ for at least one super population}
 snvListVCF(gds, fileOUT, offset = 0, freqCutoff = NULL)
 }
 \arguments{
+\item{gds}{TODO}
+
 \item{fileOUT}{TODO}
 
-\item{PATHPRUNED}{TODO}
+\item{offset}{TODO. Default: \code{0}.}
 
-\item{filePref}{TODO}
+\item{freqCutoff}{TODO. Default: \code{NULL}.}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

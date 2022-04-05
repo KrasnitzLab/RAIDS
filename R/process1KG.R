@@ -398,11 +398,10 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
         print(paste0("GDS ", i, " ", Sys.time()))
         if(! ("phase" %in% ls.gdsn(gdsPhase))){
             var.phase <- add.gdsn(gdsPhase, "phase",
-                                  valdim=c(length(listSNP),
-                                           1),
-                                  matSample,
-                                  storage="bit2",
-                                  compress = "LZ4_RA")
+                                    valdim=c(length(listSNP), 1),
+                                    matSample,
+                                    storage="bit2",
+                                    compress = "LZ4_RA")
 
         }else{
             if(is.null(var.phase)){
@@ -424,11 +423,9 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #' the 1KG files. It generates a list of unrelated as well as a list of
 #' related patients.
 #'
-#' @param gds a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The GDS file must
-#' contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
-#' The extension of the file must be '.gds'.
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
 #' @param maf a single \code{numeric} representing the threshold for the minor
 #' allele frequency. Only the SNPs with ">= maf" will be used.
@@ -467,11 +464,6 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                                 fileIBD, filePart) {
 
-    ## Validate that the GDS file exists
-    if (! file.exists(gds)) {
-        stop("The file \'", gds, "\' does not exist." )
-    }
-
     ## Validate that the maf is a single numeric value
     if (! isSingleNumber(maf)) {
         stop("The \'maf\' parameter must be a single numeric value." )
@@ -481,7 +473,6 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
     if (! isSingleNumber(thresh)) {
         stop("The \'thresh\' parameter must be a single numeric value." )
     }
-
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
 
@@ -506,7 +497,7 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' The \code{sample.ref} is filled based on the information present in the
 #' input RDS file.
 #'
-#' @param fileNameGDS  a \code{character} string representing the path and file
+#' @param fileNameGDS a \code{character} string representing the path and file
 #' name of the GDS file that contains the 1KG information. The GDS file must
 #' contain the SNP information, the genotyping information and
 #' the pedigree information from 1000 Genomes.
@@ -537,7 +528,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
         stop("The file \'", fileNameGDS, "\' does not exist." )
     }
 
-    ## Validate that the GDS file exists
+    ## Validate that the RDS file exists
     if (! file.exists(filePart)) {
         stop("The file \'", filePart, "\' does not exist." )
     }

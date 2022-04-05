@@ -304,21 +304,6 @@ test_that("generateGDS1KG() must create a GDS file", {
 
 context("identifyRelative() results")
 
-test_that("identifyRelative() must return error when GDS file does not exist", {
-
-    data.dir <- system.file("extdata", package="aicsPaper")
-
-    fileNot <- file.path(data.dir, "TOTO_GDS.gds")
-
-    fileIBDFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
-
-    filePartFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
-
-    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
-
-    expect_error(identifyRelative(gds=fileNot, maf=0.05, thresh=2^(-11/2),
-                fileIBD=fileIBDFile, filePart=filePartFile), error_message)
-})
 
 test_that("identifyRelative() must return error when maf is a vector of numbers", {
 
@@ -388,3 +373,38 @@ test_that("identifyRelative() must return error when thresh is a vector of numer
                     fileIBD=fileIBDFile, filePart=filePartFile), error_message)
 })
 
+
+
+#############################################################################
+### Tests addRef2GDS1KG() results
+#############################################################################
+
+context("addRef2GDS1KG() results")
+
+test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileNot <- file.path(data.dir, "TOTO_GDS.gds")
+
+    filePartFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(addRef2GDS1KG(fileNameGDS=fileNot, filePart=filePartFile),
+                    error_message)
+})
+
+test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileNot <- file.path(data.dir, "TOTO_RDS.rds")
+
+    fileGDS <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The file \'", fileNot, "\' does not exist.")
+
+    expect_error(addRef2GDS1KG(fileNameGDS=fileGDS, filePart=fileNot),
+                 error_message)
+})

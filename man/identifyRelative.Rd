@@ -7,11 +7,9 @@
 identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
 \arguments{
-\item{gds}{a \code{character} string representing the path and file
-name of the GDS file that contains the 1KG information. The GDS file must
-contain the SNP information, the genotyping information and
-the pedigree information from 1000 Genomes.
-The extension of the file must be '.gds'.}
+\item{gds}{an object of class
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+GDS file.}
 
 \item{maf}{a single \code{numeric} representing the threshold for the minor
 allele frequency. Only the SNPs with ">= maf" will be used.

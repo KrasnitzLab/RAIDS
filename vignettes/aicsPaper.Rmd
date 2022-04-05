@@ -90,8 +90,8 @@ devtools::install_github('belleau/aicsPaper')
 
 # Main Steps
 
-- Formatting the information from 1000 Genomes (1KG)
-- Initialize a study with sample to infer ancestry
+1. Format the information from 1000 Genomes (1KG)
+2. Format the information from an external study to get if ready for ancestry inference
 
 In the following sections, those main steps are described in details.
 
@@ -102,7 +102,11 @@ In the following sections, those main steps are described in details.
 
 Those steps explain how to generate the 1KG GDS file needed to run the 
 ancestry inference tool. Beware that it is unnecessary to re-run those 
-steps as the 1KG GDS file is publicly available. TODO where?
+steps as the 1KG GDS file is publicly available. 
+
+TODO where?
+
+<br>
 
 ### Download the required files from 1KG
 
@@ -119,16 +123,22 @@ that there is one file per chromosome:
 The genotyping files are split by chromosome. All files corresponding to this 
 pattern must be downloaded:
 
-> ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz\*
+> ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
 
 All files are related to GRCh38 genome.
 
 <br>
 <br>
 
-### Split the 1KG genotyping file to one file per sample
+### Split the 1KG genotyping file to one file per sample per chromosome
 
-TODO cleanup the section
+To facilitate the manipulation of the genotyping data, the large 1KG
+genotyping files are split into smaller files (one per sample).
+
+There is one genotyping file per chromosome. The process must be executed 
+for each of those files.
+
+The 1KG VCF file is also required.
 
 For each chromosome we run the bash command
 
@@ -137,35 +147,56 @@ chrCur is the chromosome current in the form ex: chr1
 
 FILECUR is the vcf file from 1000 genome for the chromosome current
 
-```{r fileGenopart1, echo=T, eval=FALSE}
+```{r fileGenopart1, echo=TRUE, eval=FALSE}
 
+## This in not a R script
+## This script is in bash
+
+## The variable chrCur is one specific chromosome (example, chrCur="chr1")
+## The variable PATHGENO is a specified directory
+## Create one directory for the specific chromosome
 mkdir ${PATHGENO}/${chrCur}
 
-FILECUR is the vcf file from 1000 genome
+## The variable FILECUR is the associated VCF file for the specific chromosome
+## FILECUR is the vcf file from 1000 genome
+## Example, FILECUR=ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
 
+## There is 2548 samples in the VCF file
+## The information associated to each sample is extracted and a VCF file 
+## specific to this sample for the current chromosome is generated
 for i in `seq 1 2548`
 do
-
     j=$(( $i + 9 ))
     SAMPLE=$(zcat $FILECUR||head -n 1000 |grep "#CHROM"|cut -d$'\t' -f$j)
     zcat $FILECUR|grep -v "##"|cut -d$'\t' -f$j |bzip2 -c > ${SAMPLE}.${CHR}.vcf.bz2
 done
-}```
 
-In R
-To combine the genotype for each chromosome in one file for all the genome
+```
 
-You can run
-```{r fileGenopart2, echo=T, eval=FALSE}
+<br>
+<br>
+
+### Combine the chromosomes to obtain one genotyping file per sample
+
+The genotyping information for all chromosomes is merged so that there is only 
+one genotyping file per sample.
+
+The __groupChr1KGSNV()__ function is used to combine the genotyping information 
+from multiple files.
+
+```{r fileGenopart2, echo=TRUE, eval=FALSE}
 ## Load required package
 library(aicsPaper)
 
-PATHGENOCHR <- file.path("data", "pathgenochr")# the path
+## The path where the genotyping files are located
+PATHGENOCHR <- file.path("data", "pathgenochr")
+
+## The path where the merged genotyping files will be created
 PATHOUT <- file.path("data", "pathgenoOUT")
 
 groupChr1KGSNV(PATHGENOCHR, PATHOUT)
 
-}```
+```
 
 
 ### Create a predigree file in RDS format

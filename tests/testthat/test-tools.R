@@ -101,3 +101,37 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
                             freqCutoff="BED"), error_message)
 })
 
+
+
+#############################################################################
+### Tests groupChr1KGSNV() results
+#############################################################################
+
+context("groupChr1KGSNV() results")
+
+test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    dirNotExisting <- file.path(data.dir, "RED_TOMATO")
+
+    error_message <- paste0("The path \'", dirNotExisting,
+                                "\' does not exist.")
+
+    expect_error(groupChr1KGSNV(PATHGENOCHR=dirNotExisting,
+                                    PATHOUT=data.dir), error_message)
+})
+
+test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    dirNotExisting <- file.path(data.dir, "/RED_TOMATO")
+
+    error_message <- paste0("The path \'", dirNotExisting,
+                            "\' does not exist.")
+
+    expect_error(groupChr1KGSNV(PATHGENOCHR=data.dir,
+                                PATHOUT=dirNotExisting), error_message)
+})
+

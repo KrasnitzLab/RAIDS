@@ -27,7 +27,9 @@ The extension of the file must be '.rds'.}
 
 \item{filePart}{a \code{character} string representing the path and file
 name of the RDS file that will be created. The RDS file will contain the
-information about the 1KG patients that are unrelated.
+information about the 1KG patients that are unrelated. The file will
+contains two lists: the \code{list} of related samples, called \code{rels}
+and the list of unrelated samples, called \code{unrels}.
 The extension of the file must be '.rds'.}
 }
 \value{
@@ -41,10 +43,34 @@ between the patients.
 }
 \examples{
 
+## Needed packages
+library(withr)
+library(gdsfmt)
+
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", package="aicsPaper")
 
-## TODO
+## Open existing 1K GDS file
+GDS_file <- file.path(data.dir, "1KG_Demo.gds")
+gdsFile <- snpgdsOpen(GDS_file)
+
+## Temporary output files
+## The first RDS file will contain the list of unrelated patients
+## The second RDS file will contain the kinship information between patients
+patientTmpFile <- local_file(file.path(data.dir,
+    "unrelatedPatients_TEMP.rds"))
+ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
+
+## Identify unrelated patients in 1KG GDS file
+identifyRelative(gds=gdsFile, maf=0.05, thresh=2^(-11/2),
+    fileIBD=ibdTmpFile, filePart=patientTmpFile)
+
+## Close 1K GDS file
+closefn.gds(gdsFile)
+
+## Remove temporary files
+deferred_run()
+
 
 }
 \author{

@@ -1,21 +1,26 @@
-#' @title Generate a vcf for the SNP with at least freqCutoff for all frequency
-#' for at least one super population
+#' @title Generate a VCF with the information from the SNPs that pass
+#' a cut-off threshold
 #'
-#' @description TODO
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
 #'
-#' @param gds a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The GDS file must
-#' contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
-#' The extension of the file must be '.gds'.
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
-#' @param fileOUT TODO
+#' @param fileOUT a \code{character} string representing the path and file
+#' name of the VCF file that will be created wit the retained SNP information.
 #'
-#' @param offset TODO. Default: \code{0}.
+#' @param offset a single \code{integer} that is added to the SNP position to
+#' switch from 0-based to 1-based coordinate when needed (or reverse).
+#' Default: \code{0L}.
 #'
-#' @param freqCutoff TODO. Default: \code{NULL}.
+#' @param freqCutoff a single positive \code{numeric} specifying the cut-off to
+#' keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -24,10 +29,29 @@
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
-#' @keywords internal
-snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
+#' @importFrom methods is
+#' @importFrom S4Vectors isSingleInteger
+#' @encoding UTF-8
+#' @export
+snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
+
+    ## Validate that gds is an object of class SNPGDSFileClass
+    if (! is(gds, "SNPGDSFileClass")) {
+        stop("The \'gds\' parameter must be an object of ",
+             "class \'SNPGDSFileClass\'.")
+    }
+
+    ## Validate that offset is a single integer
+    if (! isSingleInteger(offset)) {
+        stop("The \'offset\' must be a single integer.")
+    }
+
+    ## Validate that freqCutoff is a single numeric or NULL
+    if (! isSingleNumber(freqCutoff) & ! is.null(freqCutoff)) {
+        stop("The \'freqCutoff\' must be a single numeric or NULL.")
+    }
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
@@ -68,9 +92,6 @@ snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
                             stringsAsFactors=FALSE)
     }
 
-
-
-
     ## Add the header
     ##fileformat=VCFv4.3
     ##FILTER=<ID=PASS,Description="All filters passed">
@@ -86,13 +107,10 @@ snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
     cat('#', file = fileOUT, append=TRUE)
 
     write.table(df, file=fileOUT, sep="\t",
-                    append=TRUE,
-                    row.names=FALSE,
-                    col.names=TRUE,
-                    quote=FALSE)
+                    append=TRUE, row.names=FALSE,
+                    col.names=TRUE, quote=FALSE)
 
-
-
+    return(0L)
 }
 
 #' @title Merge the pruning files by chromosome in one file
@@ -151,8 +169,9 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv2 read.csv2
+#' @encoding UTF-8
 #' @export
 groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 

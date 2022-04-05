@@ -35,9 +35,10 @@
 #' prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
 #'
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
 #' @importFrom S4Vectors isSingleInteger
+#' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
@@ -182,8 +183,9 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #' ## Remove temporary files
 #' deferred_run()
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
 #' @export
 generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
@@ -297,9 +299,10 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' ## Remove temporary files
 #' deferred_run()
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
+#' @encoding UTF-8
 #' @export
 generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
@@ -373,10 +376,14 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
+#' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gds, gdsPhase,
                             PATHGENO,
@@ -441,20 +448,45 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #' kinship coefficient between the patients.
 #' The extension of the file must be '.rds'.
 #'
-#'
 #' @param filePart a \code{character} string representing the path and file
 #' name of the RDS file that will be created. The RDS file will contain the
-#' information about the 1KG patients that are unrelated.
+#' information about the 1KG patients that are unrelated. The file will
+#' contains two lists: the \code{list} of related samples, called \code{rels}
+#' and the list of unrelated samples, called \code{unrels}.
 #' The extension of the file must be '.rds'.
 #'
 #' @return \code{NULL} invisibly.
 #'
 #' @examples
 #'
+#' ## Needed packages
+#' library(withr)
+#' library(gdsfmt)
+#'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' ## TODO
+#' ## Open existing 1K GDS file
+#' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
+#' gdsFile <- snpgdsOpen(GDS_file)
+#'
+#' ## Temporary output files
+#' ## The first RDS file will contain the list of unrelated patients
+#' ## The second RDS file will contain the kinship information between patients
+#' patientTmpFile <- local_file(file.path(data.dir,
+#'     "unrelatedPatients_TEMP.rds"))
+#' ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
+#'
+#' ## Identify unrelated patients in 1KG GDS file
+#' identifyRelative(gds=gdsFile, maf=0.05, thresh=2^(-11/2),
+#'     fileIBD=ibdTmpFile, filePart=patientTmpFile)
+#'
+#' ## Close 1K GDS file
+#' closefn.gds(gdsFile)
+#'
+#' ## Remove temporary files
+#' deferred_run()
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
@@ -523,10 +555,10 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' ## TODO
+#' ## 1K GDS file
+#' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#'
 #' @importFrom SNPRelate snpgdsOpen
 #' @encoding UTF-8
 #' @export
@@ -554,9 +586,11 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
-#' @param method a \code{character string} TODO . Default: \code{corr}
+#' @param method a \code{character string} TODO . Default: \code{"corr"}.
 #'
 #' @param listSamples TODO
 #'
@@ -587,20 +621,19 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-pruning1KG.Chr <- function(gds,
-                            method="corr",
+pruning1KG.Chr <- function(gds, method="corr",
                             listSamples=NULL,
                             slide.max.bp.v=5e5,
                             ld.threshold.v=sqrt(0.1),
-                            np=1,
-                            verbose.v=FALSE,
+                            np=1, verbose.v=FALSE,
                             chr=NULL,
-                            minAF = NULL,
-                            outPref = "pruned_1KG",
-                            keepObj = FALSE) {
+                            minAF=NULL,
+                            outPref="pruned_1KG",
+                            keepObj=FALSE) {
 
     filePruned <- file.path(paste0(outPref, ".rds"))
     fileObj <- file.path(paste0(outPref, "Obj.rds"))
@@ -682,8 +715,9 @@ pruning1KG.Chr <- function(gds,
 #' ## TODO
 #'
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
+#' @encoding UTF-8
 #' @export
 appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 fileNamePED,
@@ -692,7 +726,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 studyDF,
                                 listSamples=NULL,
                                 KEEPCOV=TRUE,
-                                PATHSAMPLEGDS=NULL){
+                                PATHSAMPLEGDS=NULL) {
 
     # check if file fileGDS
     # It must not exists
@@ -744,50 +778,49 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
 #' @param listSample.Ref  A \code{vector} of \code{string} corresponding to
 #' the sample.ids
 #'
 #' @param listSNP the list of snp.id keep
 #'
-#' @param np a \code{integer} reprenting the number of thread
-#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1}.
 #'
 #' @return TODO a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
 #' and a snp.load -> \code{snpgdsPCASNPLoading}
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
+#' @encoding UTF-8
 #' @export
-
-basePCASample <- function(gds,
-                          listSample.Ref = NULL,
-                          listSNP = NULL,
-                          np = 1){
+basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 
     listPCA <- list()
 
     listPCA[["SNP"]] <- listSNP
 
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gds,
-                                        sample.id = listSample.Ref,
-                                        snp.id = listSNP,
-                                        num.thread = np,
-                                        verbose = TRUE)
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gds, sample.id=listSample.Ref,
+                                            snp.id=listSNP,
+                                            num.thread=np,
+                                            verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj = gds,
-                                                 num.thread = np,
-                                                 verbose = TRUE)
-
+                                                 gdsobj=gds,
+                                                 num.thread=np,
+                                                 verbose=TRUE)
 
     return(listPCA)
-
 }
 
 

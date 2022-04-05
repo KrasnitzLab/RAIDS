@@ -229,8 +229,6 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @keywords internal
-
-
 generateGDSSNPinfo <- function(gds, fileFREQ){
 
     mapSNVSel <- readRDS( fileFREQ)
@@ -821,7 +819,7 @@ runLDPruning <- function(gds, method="corr",
 #' @param sample.id A \code{string} corresponding to
 #' the sample.id
 #'
-#' @return None
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'

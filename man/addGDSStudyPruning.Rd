@@ -15,7 +15,7 @@ addGDSStudyPruning(gds, pruned, sample.id)
 the sample.id}
 }
 \value{
-None
+The integer \code{0} when successful.
 }
 \description{
 TODO

@@ -88,10 +88,12 @@ devtools::install_github('belleau/aicsPaper')
 <br>
 
 
-
 # Main Steps
 
+- Formatting the information from 1000 Genomes (1KG)
+- TODO
 
+In the following sections, those main steps are described in details.
 
 <br>
 <br>
@@ -120,6 +122,9 @@ pattern must be downloaded:
 > ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz\*
 
 All files are related to GRCh38 genome.
+
+<br>
+<br>
 
 ### Split the 1KG genotyping file to one file per sample
 

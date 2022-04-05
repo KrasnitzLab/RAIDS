@@ -511,8 +511,7 @@ or in R for a s
     studyCur <- "Study.name"
     gds <- snpgdsOpen(fileNameGDS)
     
-    gdsfile <- file.path(pathGDS, gdsName)
-    gds <- snpgdsOpen(gdsfile)
+    
     
     sampleGDS <- index.gdsn(gds, "sample.id")
     sample.id <- read.gdsn(sampleGDS)
@@ -520,7 +519,7 @@ or in R for a s
     study.offset <- read.gdsn(index.gdsn(gds, "study.offset"))
     
     study.id <- read.gdsn(index.gdsn(gds, "study.annot/study.id"))
-    sampleCurrent <- sample.id[study.start[pos] + sampleNum - 1]
+    
     listSamples <- sample.id[which(study.id == studyCur) + study.offset]
 
     for(i in seq_len(length(listSamples))){

@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{snvListVCF}
 \alias{snvListVCF}
-\title{Generate a vcf for the SNP with at least freqCutoff for all frequency
-for at least one super population}
+\title{Generate a VCF with the information from the SNPs that pass
+a cut-off threshold}
 \usage{
 snvListVCF(gds, fileOUT, offset = 0L, freqCutoff = NULL)
 }
@@ -13,7 +13,8 @@ snvListVCF(gds, fileOUT, offset = 0L, freqCutoff = NULL)
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{fileOUT}{TODO}
+\item{fileOUT}{a \code{character} string representing the path and file
+name of the VCF file that will be created wit the retained SNP information.}
 
 \item{offset}{a single \code{integer} that is added to the SNP position to
 switch from 0-based to 1-based coordinate when needed (or reverse).
@@ -26,7 +27,10 @@ keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.}
 The integer \code{0} when successful.
 }
 \description{
-TODO
+This function extract the SNPs that pass a frequency cut-off
+in at least one super population
+from a GDS SNP information file and save the retained SNP information into
+a VCF file.
 }
 \examples{
 

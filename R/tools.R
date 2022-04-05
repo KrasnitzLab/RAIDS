@@ -1,13 +1,17 @@
-#' @title Generate a vcf for the SNP with at least freqCutoff for all frequency
-#' for at least one super population
+#' @title Generate a VCF with the information from the SNPs that pass
+#' a cut-off threshold
 #'
-#' @description TODO
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param fileOUT TODO
+#' @param fileOUT a \code{character} string representing the path and file
+#' name of the VCF file that will be created wit the retained SNP information.
 #'
 #' @param offset a single \code{integer} that is added to the SNP position to
 #' switch from 0-based to 1-based coordinate when needed (or reverse).
@@ -165,8 +169,9 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv2 read.csv2
+#' @encoding UTF-8
 #' @export
 groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 

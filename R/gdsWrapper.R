@@ -615,7 +615,7 @@ gds2tfam <- function(gds, listSample, pedOUT){
                             fa=rep("0",length(listSample)),
                             mo=rep("0",length(listSample)),
                             sex=sampleANNO$sex[listS],
-                            pheno=rep(0,length(listSample)),
+                            pheno=rep(1,length(listSample)),
                             stringsAsFactors=FALSE)
 
     write.table(pedFile, pedOUT,

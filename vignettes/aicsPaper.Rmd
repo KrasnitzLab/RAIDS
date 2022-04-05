@@ -404,27 +404,42 @@ closefn.gds(gds)
 To run the ancestry inference on samples from an external study, the sample
 information must be formatted in a specific format.
 
-Those steps shows how to prepare the sample information si it can be used 
-as input for ancestry inference.
+Those steps shows how to prepare the sample information needed as input 
+for the ancestry inference.
 
-First, you need a mapped BAM file
-for each sample. The reference genome used for the mapping must correspond 
-to the one used to generate the 1KG GDS file. In this case, genome hg38.
+First, you need a mapped BAM file for each sample. The reference genome used 
+for the mapping must correspond to the one used to generate the 1KG GDS file. 
+In this case, the 1KG GDS file is based on genome hg38.
 
-### Extract the read at each in the GDS
+### Extract the read coverage at each SNP position in the 1KG GDS file
 
 We used here snp-pileup from Facet
 
 First you a vcf file with the SNV you want to keep
 
-### Create a VCF file with the SNV you want tokeep
-In R
+<br>
+<br>
+
+### Create a VCF file containing the retained SNP positions from 1KG GDS file
+
+The __snvListVCF()__ function is used to generate a VCF file that will contain
+the information of all retained SNPs from 1KG GDS file.
+
 ```{r snvListVCF, echo=TRUE, eval=FALSE}
-    library(aicsPaper)
-    
-    gds <- snpgdsOpen(fileGDS1kg)
-    snvListVCF(gds, fileOUT, offset = 1)
-    closefn.gds(gds)
+## Load required package
+library(aicsPaper)
+
+## Open the 1KG GDS file    
+gds <- snpgdsOpen(fileGDS1kg)
+
+## The VCF file that will be created
+fileOUT <- "SNPretained.VCF"
+
+## Generate the VCF with the retained SNP position
+snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
+
+## Close the 1KG GDS file 
+closefn.gds(gds)
 ``` 
 
 You should compress and indexing the vcf file

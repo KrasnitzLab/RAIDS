@@ -39,7 +39,10 @@
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -144,7 +147,10 @@ pruningSample <- function(gds,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
@@ -234,7 +240,10 @@ add1KG2SampleGDS <- function(gds,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

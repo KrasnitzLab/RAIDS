@@ -306,8 +306,9 @@ As only unrelated patients can be used in the following analyses, the
 genetically related patients in 1KG must be identified.
 
 The function __identifyRelative()__ identifies patients that are genetically 
-related in the 1KG files. It generates a list of unrelated as well as a list of
-related patients.
+related in the 1KG files. It generates a file with the unrelated patient 
+information (filePart parameter) as well as a file with the kinship coefficient
+between the patients (fileIBD parameter).
 
 ```{r identifyRelative, echo=TRUE, eval=FALSE}
 ## TODO: what is PATHMETA 
@@ -331,7 +332,7 @@ closefn.gds(gds)
 <br>
 
 
-### Identify a group of unrelated sample in 1KG 
+### Add information about unrelated 1KG patients to the 1KG GDS file
 
 Only the unrelated patients from 1KG are used in the following ancestry 
 inference and kept in the GDS 1KG file. The function __identifyRelative()__ 

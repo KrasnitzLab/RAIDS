@@ -417,11 +417,12 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 
 }
 
-#' @title Identify genetically related and unrelated patients in GDS 1KG file
+#' @title Identify genetically unrelated patients in GDS 1KG file
 #'
 #' @description The function identify patients that are genetically related in
-#' the 1KG files. It generates a list of unrelated as well as a list of
-#' related patients.
+#' the 1KG file. It generates a first RDS file with the list of unrelated
+#' patient. It also generates a second RDS file with the kinship coefficient
+#' between the patients.
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP

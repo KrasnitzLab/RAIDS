@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{identifyRelative}
 \alias{identifyRelative}
-\title{Identify genetically related and unrelated patients in GDS 1KG file}
+\title{Identify genetically unrelated patients in GDS 1KG file}
 \usage{
 identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
@@ -35,8 +35,9 @@ The extension of the file must be '.rds'.}
 }
 \description{
 The function identify patients that are genetically related in
-the 1KG files. It generates a list of unrelated as well as a list of
-related patients.
+the 1KG file. It generates a first RDS file with the list of unrelated
+patient. It also generates a second RDS file with the kinship coefficient
+between the patients.
 }
 \examples{
 

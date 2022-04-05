@@ -98,6 +98,10 @@ devtools::install_github('belleau/aicsPaper')
 
 ## Formatting the information from 1000 Genomes (1KG)
 
+Those steps explain how to generate the 1KG GDS file needed to run the 
+ancestry inference tool. Beware that it is unnecessary to re-run those 
+steps as the 1KG GDS file is publicly available. TODO where?
+
 ### Download the required files from 1KG
 
 First, the pedigree file with the description of the 1KG samples

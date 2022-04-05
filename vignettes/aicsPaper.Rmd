@@ -311,18 +311,23 @@ As only unrelated patients can be used in the following analyses, the
 genetically related patients in 1KG must be identified.
 
 The function __identifyRelative()__ identifies patients that are genetically 
-related in the 1KG files. It generates a file with the unrelated patient 
-information (filePart parameter) as well as a file with the kinship coefficient
-between the patients (fileIBD parameter).
+related in the 1KG files. It generates a RDS file with the unrelated patient 
+information (__filePart__ parameter) as well as a RDS file with the kinship 
+coefficient between the patients (__fileIBD__ parameter).
 
 ```{r identifyRelative, echo=TRUE, eval=FALSE}
+## Load required package
+library(gdsfmt)
+
 ## TODO: what is PATHMETA 
 
 ## The name of the GDS file that contains the 1KG information    
 fileNameGDS <- "matGeno1000g.gds"
 fileGDS <- file.path(PATHGDS, fileNameGDS)
 
-## TODO: whait are those?
+## Files that will be created by the identifyRelative() function
+## The first RDS file will contain the kinship information between patients
+## The second RDS file will contain the list of unrelated patients
 fileIBD <- file.path(PATHMETA,"ibd.All.0.05.rds")
 filePart <- file.path(PATHMETA,"part.All.0.05.rds")
 
@@ -341,7 +346,7 @@ closefn.gds(gds)
 <br>
 
 
-### Add information about unrelated 1KG patients to the 1KG GDS file
+### Add information about unrelated patients to the 1KG GDS file
 
 Only the unrelated patients from 1KG are used in the following ancestry 
 inference and kept in the GDS 1KG file. The function __identifyRelative()__ 
@@ -394,26 +399,47 @@ closefn.gds(gds)
 <br>
 
 
-## Initialize a study with sample to infer ancestry
+## Format information from an external study to get if ready for ancestry inference
 
-You need a mapped BAM with the same genome than the 
-reference here (hg38 for 1KG)
-for each sample.
+To run the ancestry inference on samples from an external study, the sample
+information must be formatted in a specific format.
 
-### Extract the read at each in the GDS
+Those steps shows how to prepare the sample information needed as input 
+for the ancestry inference.
+
+First, you need a mapped BAM file for each sample. The reference genome used 
+for the mapping must correspond to the one used to generate the 1KG GDS file. 
+In this case, the 1KG GDS file is based on genome hg38.
+
+### Extract the read coverage at each SNP position in the 1KG GDS file
 
 We used here snp-pileup from Facet
 
 First you a vcf file with the SNV you want to keep
 
-### Create a VCF file with the SNV you want tokeep
-In R
+<br>
+<br>
+
+### Create a VCF file containing the retained SNP positions from 1KG GDS file
+
+The __snvListVCF()__ function is used to generate a VCF file that will contain
+the information of all retained SNPs from 1KG GDS file.
+
 ```{r snvListVCF, echo=TRUE, eval=FALSE}
-    library(aicsPaper)
-    
-    gds <- snpgdsOpen(fileGDS1kg)
-    snvListVCF(gds, fileOUT, offset = 1)
-    closefn.gds(gds)
+## Load required package
+library(aicsPaper)
+
+## Open the 1KG GDS file    
+gds <- snpgdsOpen(fileGDS1kg)
+
+## The VCF file that will be created
+fileOUT <- "SNPretained.VCF"
+
+## Generate the VCF with the retained SNP position
+snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
+
+## Close the 1KG GDS file 
+closefn.gds(gds)
 ``` 
 
 You should compress and indexing the vcf file

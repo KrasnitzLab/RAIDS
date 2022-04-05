@@ -3,11 +3,9 @@
 #'
 #' @description TODO
 #'
-#' @param gds a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The GDS file must
-#' contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
-#' The extension of the file must be '.gds'.
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
 #' @param fileOUT TODO
 #'
@@ -15,7 +13,7 @@
 #'
 #' @param freqCutoff TODO. Default: \code{NULL}.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -24,10 +22,18 @@
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
-#' @keywords internal
+#' @importFrom methods is
+#' @encoding UTF-8
+#' @export
 snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
+
+    ## Validate that gds is an object of class SNPGDSFileClass
+    if (! is(gds, "SNPGDSFileClass")) {
+        stop("The \'gds\' parameter must be an object of ",
+             "class \'SNPGDSFileClass\'.")
+    }
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
@@ -68,9 +74,6 @@ snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
                             stringsAsFactors=FALSE)
     }
 
-
-
-
     ## Add the header
     ##fileformat=VCFv4.3
     ##FILTER=<ID=PASS,Description="All filters passed">
@@ -86,13 +89,10 @@ snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
     cat('#', file = fileOUT, append=TRUE)
 
     write.table(df, file=fileOUT, sep="\t",
-                    append=TRUE,
-                    row.names=FALSE,
-                    col.names=TRUE,
-                    quote=FALSE)
+                    append=TRUE, row.names=FALSE,
+                    col.names=TRUE, quote=FALSE)
 
-
-
+    return(0L)
 }
 
 #' @title Merge the pruning files by chromosome in one file

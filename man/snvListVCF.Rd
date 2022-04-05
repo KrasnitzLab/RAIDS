@@ -6,7 +6,7 @@
 \title{Generate a vcf for the SNP with at least freqCutoff for all frequency
 for at least one super population}
 \usage{
-snvListVCF(gds, fileOUT, offset = 0, freqCutoff = NULL)
+snvListVCF(gds, fileOUT, offset = 0L, freqCutoff = NULL)
 }
 \arguments{
 \item{gds}{an object of class
@@ -15,9 +15,12 @@ GDS file.}
 
 \item{fileOUT}{TODO}
 
-\item{offset}{TODO. Default: \code{0}.}
+\item{offset}{a single \code{integer} that is added to the SNP position to
+switch from 0-based to 1-based coordinate when needed (or reverse).
+Default: \code{0L}.}
 
-\item{freqCutoff}{TODO. Default: \code{NULL}.}
+\item{freqCutoff}{a single positive \code{numeric} specifying the cut-off to
+keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.}
 }
 \value{
 The integer \code{0} when successful.

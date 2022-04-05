@@ -9,9 +9,12 @@
 #'
 #' @param fileOUT TODO
 #'
-#' @param offset TODO. Default: \code{0}.
+#' @param offset a single \code{integer} that is added to the SNP position to
+#' switch from 0-based to 1-based coordinate when needed (or reverse).
+#' Default: \code{0L}.
 #'
-#' @param freqCutoff TODO. Default: \code{NULL}.
+#' @param freqCutoff a single positive \code{numeric} specifying the cut-off to
+#' keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -25,14 +28,25 @@
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
 #' @importFrom methods is
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
-snvListVCF <- function(gds, fileOUT, offset=0, freqCutoff=NULL) {
+snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 
     ## Validate that gds is an object of class SNPGDSFileClass
     if (! is(gds, "SNPGDSFileClass")) {
         stop("The \'gds\' parameter must be an object of ",
              "class \'SNPGDSFileClass\'.")
+    }
+
+    ## Validate that offset is a single integer
+    if (! isSingleInteger(offset)) {
+        stop("The \'offset\' must be a single integer.")
+    }
+
+    ## Validate that freqCutoff is a single numeric or NULL
+    if (! isSingleNumber(freqCutoff) & ! is.null(freqCutoff)) {
+        stop("The \'freqCutoff\' must be a single numeric or NULL.")
     }
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))

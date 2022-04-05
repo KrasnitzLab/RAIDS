@@ -27,7 +27,9 @@ The extension of the file must be '.rds'.}
 
 \item{filePart}{a \code{character} string representing the path and file
 name of the RDS file that will be created. The RDS file will contain the
-information about the 1KG patients that are unrelated.
+information about the 1KG patients that are unrelated. The file will
+contains two lists: the \code{list} of related samples, called \code{rels}
+and the list of unrelated samples, called \code{unrels}.
 The extension of the file must be '.rds'.}
 }
 \value{

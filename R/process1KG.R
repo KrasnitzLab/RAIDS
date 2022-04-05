@@ -716,3 +716,55 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
     closefn.gds(gds)
 }
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened
+#'
+#' @param listSample.Ref  A \code{vector} of \code{string} corresponding to
+#' the sample.ids
+#'
+#' @param listSNP the list of snp.id keep
+#'
+#' @param np a \code{integer} reprenting the number of thread
+#'
+#'
+#' @return TODO a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
+#' and a snp.load -> \code{snpgdsPCASNPLoading}
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
+#' @export
+
+basePCASample <- function(gds,
+                          listSample.Ref = NULL,
+                          listSNP = NULL,
+                          np = 1){
+
+    listPCA <- list()
+
+    listPCA[["SNP"]] <- listSNP
+
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gds,
+                                        sample.id = listSample.Ref,
+                                        snp.id = listSNP,
+                                        num.thread = np,
+                                        verbose = TRUE)
+
+    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
+                                                 gdsobj = gds,
+                                                 num.thread = np,
+                                                 verbose = TRUE)
+
+
+    return(listPCA)
+
+}
+
+

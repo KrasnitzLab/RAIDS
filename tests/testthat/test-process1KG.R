@@ -305,6 +305,23 @@ test_that("generateGDS1KG() must create a GDS file", {
 context("identifyRelative() results")
 
 
+test_that("identifyRelative() must return error when gds is character string", {
+
+    data.dir <- system.file("extdata", package="aicsPaper")
+
+    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
+
+    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+
+    error_message <- paste0("The \'gds\' parameter must be an object of ",
+                            "class \'SNPGDSFileClass\'.")
+
+    expect_error(identifyRelative(gds="test", maf=0.01,
+            thresh=2^(-11/2), fileIBD=fileIBDFile, filePart=filePartFile),
+            error_message)
+})
+
+
 test_that("identifyRelative() must return error when maf is a vector of numbers", {
 
     data.dir <- system.file("extdata", package="aicsPaper")

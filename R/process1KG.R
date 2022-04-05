@@ -459,6 +459,7 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #'
 #' @importFrom GENESIS pcairPartition
 #' @importFrom S4Vectors isSingleNumber
+#' @importFrom methods is
 #'
 #' @export
 identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
@@ -472,6 +473,12 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
     ## Validate that the thresh is a single numeric value
     if (! isSingleNumber(thresh)) {
         stop("The \'thresh\' parameter must be a single numeric value." )
+    }
+
+    ## Validate that gds is an object of class SNPGDSFileClass
+    if (! is(gds, "SNPGDSFileClass")) {
+        stop("The \'gds\' parameter must be an object of ",
+                    "class \'SNPGDSFileClass\'.")
     }
 
     ibd.robust <- runIBDKING(gds=gds, maf=maf)
@@ -547,7 +554,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #'
 #' @param gds an object of class \code{gds} opened
 #'
-#' @param method TODO
+#' @param method a \code{character string} TODO . Default: \code{corr}
 #'
 #' @param listSamples TODO
 #'

@@ -47,7 +47,6 @@
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @export
-
 pruningSample <- function(gds,
                           method="corr",
                           sampleCurrent,

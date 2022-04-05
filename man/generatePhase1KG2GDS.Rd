@@ -28,7 +28,10 @@ TODO
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="aicsPaper")
+
+## TODO
 
 }
 \author{

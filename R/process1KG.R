@@ -376,7 +376,10 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
@@ -763,35 +766,32 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
+#' @encoding UTF-8
 #' @export
-
-basePCASample <- function(gds,
-                          listSample.Ref = NULL,
-                          listSNP = NULL,
-                          np = 1){
+basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 
     listPCA <- list()
 
     listPCA[["SNP"]] <- listSNP
 
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gds,
-                                        sample.id = listSample.Ref,
-                                        snp.id = listSNP,
-                                        num.thread = np,
-                                        verbose = TRUE)
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gds, sample.id=listSample.Ref,
+                                            snp.id=listSNP,
+                                            num.thread=np,
+                                            verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj = gds,
-                                                 num.thread = np,
-                                                 verbose = TRUE)
-
+                                                 gdsobj=gds,
+                                                 num.thread=np,
+                                                 verbose=TRUE)
 
     return(listPCA)
-
 }
 
 

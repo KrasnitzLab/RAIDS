@@ -44,8 +44,9 @@
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
 pruningSample <- function(gds,
                           method="corr",
@@ -151,8 +152,9 @@ pruningSample <- function(gds,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
+#' @encoding UTF-8
 #' @export
 
 add1KG2SampleGDS <- function(gds,
@@ -244,13 +246,12 @@ add1KG2SampleGDS <- function(gds,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromFile <- function(gds,
-                                          PATHSAMPLEGDS,
-                                          PATHGENO,
-                                          fileLSNP){
+addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
+                                            PATHGENO, fileLSNP) {
 
     listSel <- readRDS(fileLSNP)
 
@@ -309,37 +310,48 @@ addPhase1KG2SampleGDSFromFile <- function(gds,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
-#' @param listPCA  a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
+#' @param listPCA  a \code{list}  with with two objects
+#' pca.unrel -> \code{snpgdsPCAClass}
 #' and a snp.load -> \code{snpgdsPCASNPLoading}
 #'
 #' @param sample.current the sample.id to project in the PCA
 #'
-#' @param np a \code{integer} reprenting the number of thread
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1}.
 #'
+#' @return a \code{snpgdsPCAClass} object, a \code{list} that contains:
+#' \itemize{
+#'    \item{sample.id} {the sample ids used in the analysis}
+#'    \item{snp.id} {the SNP ids used in the analysis}
+#'    \item{eigenvalues} {eigenvalues}
+#'    \item{eigenvect} {eigenvactors, “# of samples” x “eigen.cnt”}
+#'    \item{TraceXTX} {the trace of the genetic covariance matrix}
+#'    \item{Bayesian} {whether use bayerisan normalization}
+#'}
 #'
-#' @return TODO Objects p\code{snpgdsPCAClass}
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
+#' @encoding UTF-8
 #' @export
-
 projectSample2PCA <- function(gds,
                               listPCA,
                               sample.current,
-                              np = 1){
+                              np = 1) {
 
     samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                                   gdsobj = gds,
-                                                   sample.id = sample.current,
-                                                   num.thread = 1, verbose = TRUE)
-
+                                gdsobj=gds, sample.id=sample.current,
+                                num.thread=1, verbose=TRUE)
 
     return(samplePCA)
-
 }

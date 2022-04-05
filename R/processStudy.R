@@ -297,3 +297,42 @@ addPhase1KG2SampleGDSFromFile <- function(gds,
     return(0L)
 
 }
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened
+#'
+#' @param listPCA  a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
+#' and a snp.load -> \code{snpgdsPCASNPLoading}
+#'
+#' @param sample.current the sample.id to project in the PCA
+#'
+#' @param np a \code{integer} reprenting the number of thread
+#'
+#'
+#' @return TODO Objects p\code{snpgdsPCAClass}
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom SNPRelate snpgdsPCASampLoading
+#' @export
+
+projectSample2PCA <- function(gds,
+                              listPCA,
+                              sample.current,
+                              np = 1){
+
+    samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
+                                                   gdsobj = gds,
+                                                   sample.id = sample.current,
+                                                   num.thread = 1, verbose = TRUE)
+
+
+    return(samplePCA)
+
+}

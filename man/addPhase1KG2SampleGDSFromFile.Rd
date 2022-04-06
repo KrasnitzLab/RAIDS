@@ -18,7 +18,7 @@ the sample}
 \item{fileLSNP}{TODO}
 }
 \value{
-TODO a \code{vector} of \code{string}
+The integer \code{0} when successful.
 }
 \description{
 TODO

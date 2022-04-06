@@ -624,7 +624,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 pruning1KG.Chr <- function(gds, method="corr",
                             listSamples=NULL,
                             slide.max.bp.v=5e5,
@@ -678,8 +678,6 @@ pruning1KG.Chr <- function(gds, method="corr",
         saveRDS(snpset, fileObj)
     }
 }
-
-
 
 
 #' @title Create a study at GDS including the reference (first study add)

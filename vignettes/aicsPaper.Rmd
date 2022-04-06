@@ -158,7 +158,6 @@ for each of those files.
 The splitting is done through a bash script:
 
 ```{r fileGenopart1, echo=TRUE, eval=FALSE}
-
 ## This in not a R script
 ## This script is in bash
 
@@ -255,7 +254,6 @@ The bulk intermediate SNP file contains the SNP position as well as the
 frequency in each super population.
 
 ```{r intermediateVCF, echo=T, eval=FALSE}
-
 ## This is not done in R
 ## The python script is in the 'scriptsPy' directory
     
@@ -475,8 +473,8 @@ First you a vcf file with the SNV you want to keep
 
 ### Create a VCF file containing the retained SNP positions from 1KG GDS file
 
-The __snvListVCF()__ function is used to generate a VCF file that will contain
-the information of all retained SNPs from 1KG GDS file.
+The __snvListVCF()__ function is used to generate a VCF file that contains
+the information of all retained SNPs from 1KG GDS fil:
 
 ```{r snvListVCF, echo=TRUE, eval=FALSE}
 ## Load required package
@@ -495,15 +493,21 @@ snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
 closefn.gds(gds)
 ``` 
 
-You should compress and indexing the vcf file
-You need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
+You should compress and indexing the newly created VCF file. Do do so, 
+you need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
 
-in a terminal
+In a terminal:
 
 ```{r indexVCF, echo=TRUE, eval=FALSE}
+## This in not a R script
+## This script is in bash
 
-     bgzip fileOUT
-     tabix -p vcf fileOUT.gz
+## Compress the new VCF file (fileOUT parameter)
+bgzip fileOUT
+
+## Index the new VCF file
+## HTSlib software is needed
+tabix -p vcf fileOUT.gz
 ```
 
 
@@ -522,7 +526,8 @@ You need a ped file with the column:
 "batch" Number
 
 You need the extra code in the package Facet to extract the SNV
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode)
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
+[@Shen2016].
 
 The output from snp-pileup should be Name.ID.txt 
 (snp-pileup add .gz to the filename) 

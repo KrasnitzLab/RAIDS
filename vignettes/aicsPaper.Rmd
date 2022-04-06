@@ -106,6 +106,23 @@ steps as the 1KG GDS file is publicly available.
 
 TODO where?
 
+The mains steps of this processus are:
+
+1. Download the required files from 1KG
+2. Split the 1KG genotyping file to one file per sample per chromosome
+3. Combine the chromosomes to obtain one genotyping file per sample
+4. Create a predigree file in RDS format
+5. Prepare a bulk SNP information file based on 1KG VCF
+6. Filter the bulk SNP information file
+7. Generate the GDS file with the 1KG information
+8. Identify genetically related patients in 1KG
+9. Add information about unrelated patients to the 1KG GDS file
+10. Create a second GDS containing the 1KG phase information
+
+Beware that hose steps are time as well as space demanding.
+
+In the following sections, those main steps are described in details.
+
 <br>
 
 ### Download the required files from 1KG
@@ -135,22 +152,16 @@ All files are related to GRCh38 genome.
 To facilitate the manipulation of the genotyping data, the large 1KG
 genotyping files are split into smaller files (one per sample).
 
-There is one genotyping file per chromosome. The process must be executed 
+As there is one genotyping file per chromosome, the process must be executed 
 for each of those files.
 
-The 1KG VCF file is also required.
-
-For each chromosome we run the bash command
-
-in directory PATHGENO
-chrCur is the chromosome current in the form ex: chr1
-
-FILECUR is the vcf file from 1000 genome for the chromosome current
+The splitting is done through a bash script:
 
 ```{r fileGenopart1, echo=TRUE, eval=FALSE}
-
 ## This in not a R script
 ## This script is in bash
+
+## The script has to be run separately for each chromosome
 
 ## The variable chrCur is one specific chromosome (example, chrCur="chr1")
 ## The variable PATHGENO is a specified directory
@@ -194,10 +205,14 @@ PATHGENOCHR <- file.path("data", "pathgenochr")
 ## The path where the merged genotyping files will be created
 PATHOUT <- file.path("data", "pathgenoOUT")
 
+## Combining the genotyping information for all chromosome in one file per
+## sample
 groupChr1KGSNV(PATHGENOCHR, PATHOUT)
 
 ```
 
+<br>
+<br>
 
 ### Create a predigree file in RDS format
 
@@ -239,24 +254,24 @@ The bulk intermediate SNP file contains the SNP position as well as the
 frequency in each super population.
 
 ```{r intermediateVCF, echo=T, eval=FALSE}
-
 ## This is not done in R
 ## The python script is in the 'scriptsPy' directory
     
-    for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
-    do
-      chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
-      python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
-    done
-    for i in `seq 1 22`
-    do
-      cat matFreq.chr${i}.txt >matFreqSNV.txt
-      bzip2 matFreqSNV.txt
-    done
+for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
+do
+  chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
+  python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
+done
+
+for i in `seq 1 22`
+do
+  cat matFreq.chr${i}.txt >matFreqSNV.txt
+  bzip2 matFreqSNV.txt
+done
     
 ```
 
-The bulk SNP info file is called '__matFreqSNV.txt__'.
+The bulk SNP info file is called __matFreqSNV.txt__.
 
 <br>
 <br>
@@ -267,9 +282,9 @@ The bulk SNP file is filtered to only retain the SNPs with frequency
 higher then a specific cut-off (here >=0.01) for at least one super 
 population. 
 
-The filter SNP file is saved in RDS format ('__fileLSNP__' parameter). A 
+The filter SNP file is saved in RDS format (__fileLSNP__ parameter). A 
 second file containing the index of the retained SNPs is also 
-created ('__fileLSNP__' parameter)
+created (__fileLSNP__ parameter)
 
 The function __generateMapSnvSel()__ is used to filter the SNP file and 
 generated the needed RDS files:
@@ -399,7 +414,7 @@ addRef2GDS1KG(fileGDS=gds,  filePart=filePart)
 
 We generate a GDS with the phase information.
 
-The function __generatePhase1KG2GDS()__ is adding the phse information 
+The function __generatePhase1KG2GDS()__ is adding the phase information 
 into the newly created 1KG GDS phase file.
 
 ```{r addPhaseGDS1KG, echo=TRUE, eval=FALSE}
@@ -438,9 +453,14 @@ information must be formatted in a specific format.
 Those steps shows how to prepare the sample information needed as input 
 for the ancestry inference.
 
-First, you need a mapped BAM file for each sample. The reference genome used 
-for the mapping must correspond to the one used to generate the 1KG GDS file. 
-In this case, the 1KG GDS file is based on genome hg38.
+Those steps are:
+
+1. Extract the read coverage at each SNP position in the 1KG GDS file
+2. Create a VCF file containing the retained SNP positions from 1KG GDS file
+
+Beware that a mapped BAM file is needed for each sample. The reference genome 
+used for the mapping must correspond to the one used to generate the 
+1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.
 
 ### Extract the read coverage at each SNP position in the 1KG GDS file
 
@@ -453,8 +473,8 @@ First you a vcf file with the SNV you want to keep
 
 ### Create a VCF file containing the retained SNP positions from 1KG GDS file
 
-The __snvListVCF()__ function is used to generate a VCF file that will contain
-the information of all retained SNPs from 1KG GDS file.
+The __snvListVCF()__ function is used to generate a VCF file that contains
+the information of all retained SNPs from 1KG GDS fil:
 
 ```{r snvListVCF, echo=TRUE, eval=FALSE}
 ## Load required package
@@ -473,15 +493,21 @@ snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
 closefn.gds(gds)
 ``` 
 
-You should compress and indexing the vcf file
-You need to install [HTSlib](http://www.htslib.org/download/)
+You should compress and indexing the newly created VCF file. Do do so, 
+you need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
 
-in a terminal
+In a terminal:
 
 ```{r indexVCF, echo=TRUE, eval=FALSE}
+## This in not a R script
+## This script is in bash
 
-     bgzip fileOUT
-     tabix -p vcf fileOUT.gz
+## Compress the new VCF file (fileOUT parameter)
+bgzip fileOUT
+
+## Index the new VCF file
+## HTSlib software is needed
+tabix -p vcf fileOUT.gz
 ```
 
 
@@ -500,7 +526,8 @@ You need a ped file with the column:
 "batch" Number
 
 You need the extra code in the package Facet to extract the SNV
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode)
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
+[@Shen2016].
 
 The output from snp-pileup should be Name.ID.txt 
 (snp-pileup add .gz to the filename) 

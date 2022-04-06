@@ -74,7 +74,8 @@ pruningSample <- function(gds,
 
     posSample <- which(sample.id == sampleCurrent)
     if(length(posSample) != 1){
-        stop(paste0("In pruningSample the sample ", sampleCurrent, " doesn't exists\n"))
+        stop("In pruningSample the sample ",
+                sampleCurrent, " doesn't exists\n")
     }
     # Get the genotype for sampleCurrent
     g <- read.gdsn(index.gdsn(gds, "genotype"), start = c(1, posSample), count = c(-1,1))
@@ -102,7 +103,8 @@ pruningSample <- function(gds,
     }
 
     if(length(listKeepPos) == 0){
-        stop(paste0("In pruningSample the sample ", sampleCurrent, " doesn't snp after filters\n"))
+        stop("In pruningSample the sample ", sampleCurrent,
+                " doesn't snp after filters\n")
     }
     listKeep <- snp.id[listKeepPos]
 
@@ -157,10 +159,9 @@ pruningSample <- function(gds,
 #' @encoding UTF-8
 #' @export
 
-add1KG2SampleGDS <- function(gds,
-                             gdsSampleFile){
+add1KG2SampleGDS <- function(gds, gdsSampleFile){
 
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE)
+    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
     snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))
     pruned <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
@@ -222,7 +223,7 @@ add1KG2SampleGDS <- function(gds,
 
     closefn.gds(gdsSample)
 
-
+    return(0L)
 }
 
 #' @title TODO
@@ -238,7 +239,7 @@ add1KG2SampleGDS <- function(gds,
 #'
 #' @param fileLSNP TODO
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -301,8 +302,8 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
     }
 
     closefn.gds(gdsSample)
-    return(0L)
 
+    return(0L)
 }
 
 #' @title TODO
@@ -319,7 +320,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' the sample
 #'
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -328,12 +329,11 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromGDS <- function(gds,
-                                         gdsPhase,
-                                         PATHSAMPLEGDS){
+addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
@@ -385,25 +385,29 @@ addPhase1KG2SampleGDSFromGDS <- function(gds,
     }
 
     closefn.gds(gdsSample)
-    return(0L)
 
+    return(0L)
 }
 
 
-#' @title TODO
+#' @title Project patients onto existing principal component axes (PCA)
 #'
-#' @description TODO
+#' @description This function calculates the patient eigenvectors using
+#' the specified SNP loadings.
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
-#' @param listPCA  a \code{list}  with with two objects
+#' @param listPCA  a \code{list} containing two objects
 #' pca.unrel -> \code{snpgdsPCAClass}
 #' and a snp.load -> \code{snpgdsPCASNPLoading}
 #'
-#' @param sample.current the sample.id to project in the PCA
+#' @param sample.current a \code{character} string representing the
+#' identifiant of the sample to be projected in the PCA.
 #'
 #' @param np a single positive \code{integer} representing the number of
-#' threads. Default: \code{1}.
+#' threads. Default: \code{1L}.
 #'
 #' @return a \code{snpgdsPCAClass} object, a \code{list} that contains:
 #' \itemize{
@@ -415,22 +419,38 @@ addPhase1KG2SampleGDSFromGDS <- function(gds,
 #'    \item{Bayesian} {whether use bayerisan normalization}
 #'}
 #'
+#' @details
+#'
+#' More information about the method used to calculate the patient eigenvectors
+#' can be found at the Bioconductor SNPRelate website:
+#' https://bioconductor.org/packages/SNPRelate/
 #'
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="aicsPaper")
+#'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
-projectSample2PCA <- function(gds,
-                              listPCA,
-                              sample.current,
-                              np = 1) {
+projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 
+
+    ## Validate that sample.current is a character string
+    if(! is.character(sample.current)) {
+        stop("The \'sample.current\' parameter must be a character string.")
+    }
+
+    ## Validate that np is a single positive integer
+    if(! (isSingleInteger(np) && np > 0)) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## Calculate the sample eigenvectors using the specified SNP loadings
     samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
                                 gdsobj=gds, sample.id=sample.current,
                                 num.thread=1, verbose=TRUE)

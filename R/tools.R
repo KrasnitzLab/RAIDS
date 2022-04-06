@@ -133,7 +133,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @encoding
+#' @encoding UTF-8
 #' @keywords internal
 groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 

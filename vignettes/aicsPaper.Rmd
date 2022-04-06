@@ -496,7 +496,7 @@ closefn.gds(gds)
 You should compress and indexing the newly created VCF file. Do do so, 
 you need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
 
-in a terminal
+In a terminal:
 
 ```{r indexVCF, echo=TRUE, eval=FALSE}
 ## This in not a R script
@@ -526,7 +526,8 @@ You need a ped file with the column:
 "batch" Number
 
 You need the extra code in the package Facet to extract the SNV
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode)
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
+[@Shen2016].
 
 The output from snp-pileup should be Name.ID.txt 
 (snp-pileup add .gz to the filename) 

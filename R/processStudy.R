@@ -74,7 +74,8 @@ pruningSample <- function(gds,
 
     posSample <- which(sample.id == sampleCurrent)
     if(length(posSample) != 1){
-        stop(paste0("In pruningSample the sample ", sampleCurrent, " doesn't exists\n"))
+        stop("In pruningSample the sample ",
+                sampleCurrent, " doesn't exists\n")
     }
     # Get the genotype for sampleCurrent
     g <- read.gdsn(index.gdsn(gds, "genotype"), start = c(1, posSample), count = c(-1,1))
@@ -102,7 +103,8 @@ pruningSample <- function(gds,
     }
 
     if(length(listKeepPos) == 0){
-        stop(paste0("In pruningSample the sample ", sampleCurrent, " doesn't snp after filters\n"))
+        stop("In pruningSample the sample ", sampleCurrent,
+                " doesn't snp after filters\n")
     }
     listKeep <- snp.id[listKeepPos]
 
@@ -157,10 +159,9 @@ pruningSample <- function(gds,
 #' @encoding UTF-8
 #' @export
 
-add1KG2SampleGDS <- function(gds,
-                             gdsSampleFile){
+add1KG2SampleGDS <- function(gds, gdsSampleFile){
 
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE)
+    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
     snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))
     pruned <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
@@ -222,7 +223,7 @@ add1KG2SampleGDS <- function(gds,
 
     closefn.gds(gdsSample)
 
-
+    return(0L)
 }
 
 #' @title TODO
@@ -238,7 +239,7 @@ add1KG2SampleGDS <- function(gds,
 #'
 #' @param fileLSNP TODO
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -301,8 +302,8 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
     }
 
     closefn.gds(gdsSample)
-    return(0L)
 
+    return(0L)
 }
 
 #' @title TODO
@@ -319,7 +320,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' the sample
 #'
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
@@ -328,12 +329,11 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromGDS <- function(gds,
-                                         gdsPhase,
-                                         PATHSAMPLEGDS){
+addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
@@ -385,8 +385,8 @@ addPhase1KG2SampleGDSFromGDS <- function(gds,
     }
 
     closefn.gds(gdsSample)
-    return(0L)
 
+    return(0L)
 }
 
 

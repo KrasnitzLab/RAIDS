@@ -3,23 +3,24 @@
 \encoding{UTF-8}
 \name{projectSample2PCA}
 \alias{projectSample2PCA}
-\title{TODO}
+\title{Project patients onto existing principal component axes (PCA)}
 \usage{
-projectSample2PCA(gds, listPCA, sample.current, np = 1)
+projectSample2PCA(gds, listPCA, sample.current, np = 1L)
 }
 \arguments{
 \item{gds}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{listPCA}{a \code{list}  with with two objects
+\item{listPCA}{a \code{list} containing two objects
 pca.unrel -> \code{snpgdsPCAClass}
 and a snp.load -> \code{snpgdsPCASNPLoading}}
 
-\item{sample.current}{the sample.id to project in the PCA}
+\item{sample.current}{a \code{character} string representing the
+identifiant of the sample to be projected in the PCA.}
 
 \item{np}{a single positive \code{integer} representing the number of
-threads. Default: \code{1}.}
+threads. Default: \code{1L}.}
 }
 \value{
 a \code{snpgdsPCAClass} object, a \code{list} that contains:
@@ -33,15 +34,22 @@ a \code{snpgdsPCAClass} object, a \code{list} that contains:
 }
 }
 \description{
-TODO
+This function calculates the patient eigenvectors using
+the specified SNP loadings.
+}
+\details{
+More information about the method used to calculate the patient eigenvectors
+can be found at the Bioconductor SNPRelate website:
+https://bioconductor.org/packages/SNPRelate/
 }
 \examples{
 
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", package="aicsPaper")
+
 ## TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

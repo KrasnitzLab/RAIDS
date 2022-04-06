@@ -390,20 +390,24 @@ addPhase1KG2SampleGDSFromGDS <- function(gds,
 }
 
 
-#' @title TODO
+#' @title Project patients onto existing principal component axes (PCA)
 #'
-#' @description TODO
+#' @description This function calculates the patient eigenvectors using
+#' the specified SNP loadings.
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
 #'
-#' @param listPCA  a \code{list}  with with two objects
+#' @param listPCA  a \code{list} containing two objects
 #' pca.unrel -> \code{snpgdsPCAClass}
 #' and a snp.load -> \code{snpgdsPCASNPLoading}
 #'
-#' @param sample.current the sample.id to project in the PCA
+#' @param sample.current a \code{character} string representing the
+#' identifiant of the sample to be projected in the PCA.
 #'
 #' @param np a single positive \code{integer} representing the number of
-#' threads. Default: \code{1}.
+#' threads. Default: \code{1L}.
 #'
 #' @return a \code{snpgdsPCAClass} object, a \code{list} that contains:
 #' \itemize{
@@ -415,22 +419,38 @@ addPhase1KG2SampleGDSFromGDS <- function(gds,
 #'    \item{Bayesian} {whether use bayerisan normalization}
 #'}
 #'
+#' @details
+#'
+#' More information about the method used to calculate the patient eigenvectors
+#' can be found at the Bioconductor SNPRelate website:
+#' https://bioconductor.org/packages/SNPRelate/
 #'
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="aicsPaper")
+#'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
-projectSample2PCA <- function(gds,
-                              listPCA,
-                              sample.current,
-                              np = 1) {
+projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 
+
+    ## Validate that sample.current is a character string
+    if(! is.character(sample.current)) {
+        stop("The \'sample.current\' parameter must be a character string.")
+    }
+
+    ## Validate that np is a single positive integer
+    if(! (isSingleInteger(np) && np > 0)) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## Calculate the sample eigenvectors using the specified SNP loadings
     samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
                                 gdsobj=gds, sample.id=sample.current,
                                 num.thread=1, verbose=TRUE)

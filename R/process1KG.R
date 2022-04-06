@@ -381,7 +381,7 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
 #' @encoding  UTF-8
 #' @export
@@ -816,9 +816,9 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
                                             verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj=gds,
-                                                 num.thread=np,
-                                                 verbose=TRUE)
+                                                    gdsobj=gds,
+                                                    num.thread=np,
+                                                    verbose=TRUE)
 
     return(listPCA)
 }

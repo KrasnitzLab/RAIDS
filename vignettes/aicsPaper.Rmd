@@ -194,10 +194,14 @@ PATHGENOCHR <- file.path("data", "pathgenochr")
 ## The path where the merged genotyping files will be created
 PATHOUT <- file.path("data", "pathgenoOUT")
 
+## Combining the genotyping information for all chromosome in one file per
+## sample
 groupChr1KGSNV(PATHGENOCHR, PATHOUT)
 
 ```
 
+<br>
+<br>
 
 ### Create a predigree file in RDS format
 

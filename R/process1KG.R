@@ -680,8 +680,6 @@ pruning1KG.Chr <- function(gds, method="corr",
 }
 
 
-
-
 #' @title Create a study at GDS including the reference (first study add)
 #'
 #' @description TODO

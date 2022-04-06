@@ -179,6 +179,7 @@ add1KG2SampleGDS <- function(gds,
     add.gdsn(gdsSample, "snp.id", snp.id[listSNP])
     add.gdsn(gdsSample, "snp.chromosome", snp.chromosome)
     add.gdsn(gdsSample, "snp.position", snp.position)
+    # snp.index is the index of the snp pruned in snp.id fro 1KG gds
     add.gdsn(gdsSample, "snp.index", listSNP)
 
 
@@ -253,8 +254,6 @@ add1KG2SampleGDS <- function(gds,
 addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
                                             PATHGENO, fileLSNP) {
 
-    listSel <- readRDS(fileLSNP)
-
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
 
@@ -313,6 +312,89 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
+#'
+#' @param gdsPhase TODO
+#'
+#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
+#' the sample
+#'
+#'
+#' @return TODO a \code{vector} of \code{string}
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @export
+addPhase1KG2SampleGDSFromGDS <- function(gds,
+                                         gdsPhase,
+                                         PATHSAMPLEGDS){
+
+    listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
+
+
+    indexAll <- NULL
+    for(gdsSampleFile in listGDSSample){
+        gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS, gdsSampleFile))
+
+        snp.index <- read.gdsn(index.gdsn(gdsSample,"snp.index"))
+
+        indexAll <- union(indexAll, snp.index)
+        closefn.gds(gdsSample)
+    }
+
+    gdsSample <- createfn.gds(file.path(PATHSAMPLEGDS, "phase1KG.gds"))
+    indexAll <- indexAll[order(indexAll)]
+    snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))[indexAll]
+    add.gdsn(gdsSample, "snp.id", snp.id)
+    add.gdsn(gdsSample, "snp.index", indexAll)
+    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
+    listSample <- read.gdsn(index.gdsn(gds, "sample.id"))[listRef]
+    #listSNP <- readRDS(fileLSNP)
+    i<-1
+    for(sample1KG in listSample){
+        print(paste0("P ", i, " ", Sys.time()))
+
+        #file1KG <- file.path(PATHGENO, paste0(sample1KG,".csv.bz2"))
+        #matSample <- read.csv2( file1KG,
+        #                        row.names = NULL)
+        #matSample <- matSample[listSNP[indexAll],, drop=FALSE]
+        #matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
+        matSample <- read.gdsn(index.gdsn(gdsPhase, "phase"), start=c(1, listRef[i]), count=c(-1,1))[indexAll]
+        i<-i+1
+
+        var.phase <- NULL
+        if(! ("phase" %in% ls.gdsn(gdsSample))){
+            var.phase <- add.gdsn(gdsSample, "phase",
+                                  valdim=c(length(indexAll),
+                                           1),
+                                  matSample,
+                                  storage="bit2")
+
+        }else{
+            if(is.null(var.phase)){
+                var.phase <- index.gdsn(gdsSample, "phase")
+            }
+            append.gdsn(var.phase, matSample)
+        }
+    }
+
+    closefn.gds(gdsSample)
+    return(0L)
+
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened
 #'
 #' @param listPCA  a \code{list}  with with two objects
 #' pca.unrel -> \code{snpgdsPCAClass}

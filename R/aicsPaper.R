@@ -43,7 +43,8 @@
 #'     file that will contain the information from 1KG.}
 #'     \item \code{\link{identifyRelative}} {The function identify patients
 #'     that are genetically related in the GDS 1KG file.}
-#'     \item \code{\link{addRef2GDS1KG}} {TODO}
+#'     \item \code{\link{addRef2GDS1KG}} { This function adds the information
+#'     about the unrelated patients to the GDS 1KG file.}
 #' }
 #'
 #' @encoding UTF-8

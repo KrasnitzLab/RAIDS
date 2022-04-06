@@ -455,9 +455,14 @@ information must be formatted in a specific format.
 Those steps shows how to prepare the sample information needed as input 
 for the ancestry inference.
 
-First, you need a mapped BAM file for each sample. The reference genome used 
-for the mapping must correspond to the one used to generate the 1KG GDS file. 
-In this case, the 1KG GDS file is based on genome hg38.
+Those steps are:
+
+1. Extract the read coverage at each SNP position in the 1KG GDS file
+2. Create a VCF file containing the retained SNP positions from 1KG GDS file
+
+Beware that a mapped BAM file is needed for each sample. The reference genome 
+used for the mapping must correspond to the one used to generate the 
+1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.
 
 ### Extract the read coverage at each SNP position in the 1KG GDS file
 
@@ -491,7 +496,7 @@ closefn.gds(gds)
 ``` 
 
 You should compress and indexing the vcf file
-You need to install [HTSlib](http://www.htslib.org/download/)
+You need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
 
 in a terminal
 

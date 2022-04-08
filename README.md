@@ -6,4 +6,4 @@
 
 The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome). The package also implements simulation algorithm that generates synthetic cancer-derived data.
 
-# This package is under construction #
+# This package will be available soon. #

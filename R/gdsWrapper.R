@@ -841,3 +841,59 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 
     return(0L)
 }
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened for the sample
+#'
+#' @param listBlock TODO
+#'
+#' @param blockName TODO
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn
+#' @keywords internal
+addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
+
+    block.annot <- data.frame(block.id = blockName,
+                              block.desc = blockDesc,
+                              stringsAsFactors=FALSE)
+
+
+    if(! ("block.annot" %in% ls.gdsn(gds))){
+        var.block.annot <- add.gdsn(gds, "block.annot", block.annot)
+    }else{
+        curAnnot <- index.gdsn(gds, "block.annot/block.id")
+        append.gdsn(curAnnot,block.annot$block.id)
+        curAnnot <- index.gdsn(gds, "block.annot/block.desc")
+        append.gdsn(curAnnot, block.annot$block.desc)
+    }
+
+    var.block <- NULL
+    if(! ("block" %in% ls.gdsn(gds))){
+        var.block <- add.gdsn(gds, "block",
+                              valdim=c(length(listBlock), 1),
+                              listBlock,
+                              storage="int32",
+                              compress = "LZ4_RA")
+        readmode.gdsn(var.block)
+
+    }else{
+        if(is.null(var.block)){
+            var.block <- index.gdsn(gds, "block")
+            var.block <- compression.gdsn(var.block, "")
+        }
+        append.gdsn(var.block, listBlock)
+        var.block <- compression.gdsn(var.block, "LZ4_RA")
+    }
+
+    return(0L)
+}

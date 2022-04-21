@@ -282,7 +282,7 @@ The bulk SNP file is filtered to only retain the SNPs with frequency
 higher then a specific cut-off (here >=0.01) for at least one super 
 population. 
 
-The filter SNP file is saved in RDS format (__fileLSNP__ parameter). A 
+The filter SNP file is saved in RDS format (_fileLSNP_ parameter). A 
 second file containing the index of the retained SNPs is also 
 created (*fileLSNP* parameter)
 

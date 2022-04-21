@@ -90,7 +90,7 @@ devtools::install_github('belleau/aicsPaper')
 
 # Main Steps
 
-1. Format the information from 1000 Genomes (1KG)
+1. Format the information from 1000 Genomes (optional)
 2. Format the information from an external study to get if ready for ancestry inference
 
 In the following sections, those main steps are described in details.
@@ -98,30 +98,30 @@ In the following sections, those main steps are described in details.
 <br>
 <br>
 
-## Formatting the information from 1000 Genomes (1KG)
+## Formatting the information from 1000 Genomes (optional)
 
-Those steps explain how to generate the 1KG GDS file needed to run the 
-ancestry inference tool. Beware that it is unnecessary to re-run those 
-steps as the 1KG GDS file is publicly available. 
+Those steps explain how to generate the 1000 Genomes (1KG) GDS file that is 
+needed to run the ancestry inference tool. Beware that it is unnecessary to 
+re-run those steps as the 1KG GDS file is publicly available. 
 
-TODO where?
+<span style="color:red">The 1KG GDS file will be available soon.</span>
 
-The mains steps of this processus are:
+More specifically, the steps of this procedure are:
 
 1. Download the required files from 1KG
 2. Split the 1KG genotyping file to one file per sample per chromosome
 3. Combine the chromosomes to obtain one genotyping file per sample
-4. Create a predigree file in RDS format
+4. Create a pedigree file in RDS format
 5. Prepare a bulk SNP information file based on 1KG VCF
 6. Filter the bulk SNP information file
 7. Generate the GDS file with the 1KG information
-8. Identify genetically related patients in 1KG
+8. Identify genetically related patients present in 1KG GDS file
 9. Add information about unrelated patients to the 1KG GDS file
-10. Create a second GDS containing the 1KG phase information
+10. Create a second GDS file containing the 1KG phase information
 
-Beware that hose steps are time as well as space demanding.
+Beware that those steps are time, as well as, space consuming.
 
-In the following sections, those main steps are described in details.
+In the following sections, those steps are described in details.
 
 <br>
 
@@ -137,8 +137,8 @@ that there is one file per chromosome:
 
 > ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
 
-The genotyping files are split by chromosome. All files corresponding to this 
-pattern must be downloaded:
+As the genotyping files are split by chromosome, all files corresponding to 
+this pattern must be downloaded:
 
 > ALL.chr\*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
 
@@ -153,7 +153,7 @@ To facilitate the manipulation of the genotyping data, the large 1KG
 genotyping files are split into smaller files (one per sample).
 
 As there is one genotyping file per chromosome, the process must be executed 
-for each of those files.
+for each of those.
 
 The splitting is done through a bash script:
 
@@ -271,7 +271,7 @@ done
     
 ```
 
-The bulk SNP info file is called __matFreqSNV.txt__.
+The bulk SNP info file is called __matFreqSNV.txt.bz2__.
 
 <br>
 <br>
@@ -284,7 +284,7 @@ population.
 
 The filter SNP file is saved in RDS format (__fileLSNP__ parameter). A 
 second file containing the index of the retained SNPs is also 
-created (__fileLSNP__ parameter)
+created (*fileLSNP* parameter)
 
 The function __generateMapSnvSel()__ is used to filter the SNP file and 
 generated the needed RDS files:
@@ -293,7 +293,7 @@ generated the needed RDS files:
 ## Load required package
 library(aicsPaper)
 
-## The path to the intermediate SNP info file
+## The path to the bulk SNP info file
 fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
 
 ## The paths and names of the two output files
@@ -351,15 +351,15 @@ generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
 <br>
 <br>
 
-### Identify genetically related patients in 1KG 
+### Identify genetically related patients present in 1KG GDS file
 
 As only unrelated patients can be used in the following analyses, the 
 genetically related patients in 1KG must be identified.
 
 The function __identifyRelative()__ identifies patients that are genetically 
 related in the 1KG files. It generates a RDS file with the unrelated patient 
-information (__filePart__ parameter) as well as a RDS file with the kinship 
-coefficient between the patients (__fileIBD__ parameter).
+information (_filePart_ parameter) as well as a RDS file with the kinship 
+coefficient between the patients (_fileIBD_ parameter).
 
 ```{r identifyRelative, echo=TRUE, eval=FALSE}
 ## Load required package

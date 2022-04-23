@@ -821,4 +821,71 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
     return(listPCA)
 }
 
+#' @title TODO contain the information from 1KG
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened for the snp information
+#'
+#' @param gdsOut an object of class \code{gds} in writing
+#'
+#' @param PATHBLOCK
+#'
+#' @param superPop
+#'
+#' @param blockName
+#'
+#' @param blockDesc
+#'
+#' @return None.
+#'
+#' @details
+#'
+#' More information about GDS file format can be found at the Bioconductor
+#' gdsfmt website:
+#' https://bioconductor.org/packages/gdsfmt/
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#'
+#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
+#' @encoding UTF-8
+#' @export
+addBlockFromPlink2GDS <- function(gds,
+                                  gdsOut,
+                                  PATHBLOCK,
+                                  superPop,
+                                  blockName,
+                                  blockDesc) {
+
+    snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
+    snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
+
+    listChr <- unique(snp.chromosome)
+
+    listChr <- listChr[order(listChr)]
+    listChr <- 1:5
+    listBlock = list()
+    for(chr in listChr){
+        snp.keep <- snp.position[snp.chromosome == chr]
+
+        listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
+        if(chr > 1){
+            vMax <- max(listBlock[[chr-1]])
+            vMin <- min(listBlock[[chr-1]])
+            listBlock[[chr]][listBlock[[chr]] > 0] <- listBlock[[chr]][listBlock[[chr]] > 0] + vMax
+            if(vMin < 0){
+                listBlock[[chr]][listBlock[[chr]] < 0] <- listBlock[[chr]][listBlock[[chr]] < 0] + vMin
+            }
+        }
+    }
+    listBlock <- do.call(c, listBlock)
+
+    # save in the GDS
+    addGDS1KGLDBlock(gdsOut, listBlock, blockName, blockDesc)
+
+}
 

@@ -425,7 +425,10 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @importFrom utils read.csv
 #' @keywords internal
 generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
-    listSamples,listPos, offset, minCov=10, minProb=0.999, seqError=0.001, KEEPCOV = TRUE, PATHGDSSAMPLE=NULL) {
+                                                listSamples,listPos, offset,
+                                                minCov=10, minProb=0.999,
+                                                seqError=0.001, KEEPCOV = TRUE,
+                                                PATHGDSSAMPLE=NULL) {
 
 
 
@@ -851,6 +854,8 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #' @param listBlock TODO
 #'
 #' @param blockName TODO
+#'
+#' @param blockDesc TODO
 #'
 #' @return The integer \code{0} when successful.
 #'

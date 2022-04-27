@@ -829,13 +829,13 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #'
 #' @param gdsOut an object of class \code{gds} in writing
 #'
-#' @param PATHBLOCK
+#' @param PATHBLOCK TODO
 #'
-#' @param superPop
+#' @param superPop TODO
 #'
-#' @param blockName
+#' @param blockName TODO
 #'
-#' @param blockDesc
+#' @param blockDesc TODO
 #'
 #' @return None.
 #'

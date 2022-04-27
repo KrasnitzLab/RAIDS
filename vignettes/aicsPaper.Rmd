@@ -90,23 +90,42 @@ devtools::install_github('belleau/aicsPaper')
 
 # Main Steps
 
-1. Format the information from 1000 Genomes (optional)
-2. Format the information from an external study to get if ready for ancestry inference
+
+This is an overview of genetic ancestry inference from cancer-derived 
+molecular data:
+
+```{r graphMainSteps, echo = FALSE, fig.align="center", fig.cap="An overview of genetic ancestry inference process.", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_v01.png")
+```
+
+The main steps are:
+
+1. Format the information from 1000 Genomes (1KG) (optional)
+2. Format the information from an external study
+3. Find the optimized parameters for the ancestry inference
+4. Run the ancestry inference on the external study
 
 In the following sections, those main steps are described in details.
 
 <br>
 <br>
 
-## Formatting the information from 1000 Genomes (optional)
+## Step 1. Formatting the information from 1000 Genomes (optional)
 
-Those steps explain how to generate the 1000 Genomes (1KG) GDS file that is 
-needed to run the ancestry inference tool. Beware that it is unnecessary to 
-re-run those steps as the 1KG GDS file is publicly available. 
+
+```{r graphStep1, echo = FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step1_v01.png")
+```
+
+
+This section explains in further details how to generate the 1000 Genomes (1KG) 
+GDS file that is needed to run the ancestry inference tool. Beware that it 
+is unnecessary to re-run those steps as the 1KG GDS file is publicly available. 
 
 <span style="color:red">The 1KG GDS file will be available soon.</span>
 
-More specifically, the steps of this procedure are:
+More specifically, the formatting of the 1KG information includes all those 
+steps:
 
 1. Download the required files from 1KG
 2. Split the 1KG genotyping file to one file per sample per chromosome
@@ -445,7 +464,7 @@ closefn.gds(gds)
 <br>
 
 
-## Format information from an external study to get if ready for ancestry inference
+## Step 2. Format information from an external study to get if ready for ancestry inference
 
 To run the ancestry inference on samples from an external study, the sample
 information must be formatted in a specific format.
@@ -511,7 +530,7 @@ tabix -p vcf fileOUT.gz
 ```
 
 
-You need a ped file with the column:
+You need a __ped__ file with the column:
 
 "sample.id"* Id of the sample but the sample can be genotyped more than one
 "sex"*

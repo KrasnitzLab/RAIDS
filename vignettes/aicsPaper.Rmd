@@ -94,7 +94,7 @@ devtools::install_github('belleau/aicsPaper')
 This is an overview of genetic ancestry inference from cancer-derived 
 molecular data:
 
-```{r graphMainSteps, echo = FALSE, fig.align="center", fig.cap="An overview of genetic ancestry inference process.", out.width = '120%', results='asis'}
+```{r graphMainSteps, echo = FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_v01.png")
 ```
 
@@ -125,7 +125,7 @@ is unnecessary to re-run those steps as the 1KG GDS file is publicly available.
 <span style="color:red">The 1KG GDS file will be available soon.</span>
 
 More specifically, the formatting of the 1KG information includes all those 
-steps:
+sub-steps:
 
 1. Download the required files from 1KG
 2. Split the 1KG genotyping file to one file per sample per chromosome
@@ -138,9 +138,9 @@ steps:
 9. Add information about unrelated patients to the 1KG GDS file
 10. Create a second GDS file containing the 1KG phase information
 
-Beware that those steps are time, as well as, space consuming.
+Beware that those sub-steps are time, as well as, space consuming.
 
-In the following sections, those steps are described in details.
+In the following sections, those sub-steps are described in details.
 
 <br>
 
@@ -325,8 +325,8 @@ fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 ## Create a RDS with filter SNPs (fileFREQ parameter)
 ## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
 generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
-                      fileLSNP = fileLSNP.v,
-                      fileFREQ = fileFREQ.v)
+                      fileLSNP=fileLSNP.v,
+                      fileFREQ=fileFREQ.v)
 ```
 
 

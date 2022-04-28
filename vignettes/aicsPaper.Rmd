@@ -4,6 +4,8 @@ author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
+  pkgdown:
+    as_is: true
 bibliography: aicsBiblio.bibtex
 vignette: >
   %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}

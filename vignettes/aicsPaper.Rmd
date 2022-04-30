@@ -4,6 +4,8 @@ author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
+  pkgdown:
+    as_is: true
 bibliography: aicsBiblio.bibtex
 vignette: >
   %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
@@ -110,7 +112,7 @@ In the following sections, those main steps are described in details.
 <br>
 <br>
 
-## Step 1. Formatting the information from 1000 Genomes (optional)
+## Step 1 - Formatting the information from 1000 Genomes (optional)
 
 
 ```{r graphStep1, echo = FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
@@ -483,10 +485,16 @@ closefn.gds(gds)
 <br>
 
 
-## Step 2. Format information from an external study to get if ready for ancestry inference
+## Step 2 - Format information from an external study to get if ready for ancestry inference
 
 To run the ancestry inference on samples from an external study, the sample
 information must be formatted in a specific format.
+
+
+```{r graphStep2, echo = FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step2_v01.png")
+```
+
 
 Those steps shows how to prepare the sample information needed as input 
 for the ancestry inference.

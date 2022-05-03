@@ -230,7 +230,7 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 
 #' @title TODO
 #'
-#' @description
+#' @description TODO
 #'
 #' @param snp.keep TODO
 #'
@@ -238,7 +238,7 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 #'
 #' @param superPop TODO
 #'
-#' @param chr
+#' @param chr TODO
 #'
 #'
 #' @return the a \code{array} with the sample from pedDF keept

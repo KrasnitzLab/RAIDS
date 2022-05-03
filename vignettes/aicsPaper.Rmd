@@ -4,6 +4,8 @@ author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
+  pkgdown:
+    as_is: true
 bibliography: aicsBiblio.bibtex
 vignette: >
   %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
@@ -90,23 +92,42 @@ devtools::install_github('belleau/aicsPaper')
 
 # Main Steps
 
-1. Format the information from 1000 Genomes (optional)
-2. Format the information from an external study to get if ready for ancestry inference
+
+This is an overview of genetic ancestry inference from cancer-derived 
+molecular data:
+
+```{r graphMainSteps, echo = FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_v01.png")
+```
+
+The main steps are:
+
+1. Format the information from 1000 Genomes (1KG) (optional)
+2. Format the information from an external study
+3. Find the optimized parameters for the ancestry inference
+4. Run the ancestry inference on the external study
 
 In the following sections, those main steps are described in details.
 
 <br>
 <br>
 
-## Formatting the information from 1000 Genomes (optional)
+## Step 1 - Formatting the information from 1000 Genomes (optional)
 
-Those steps explain how to generate the 1000 Genomes (1KG) GDS file that is 
-needed to run the ancestry inference tool. Beware that it is unnecessary to 
-re-run those steps as the 1KG GDS file is publicly available. 
+
+```{r graphStep1, echo = FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step1_v01.png")
+```
+
+
+This section explains in further details how to generate the 1000 Genomes (1KG) 
+GDS file that is needed to run the ancestry inference tool. Beware that it 
+is unnecessary to re-run those steps as the 1KG GDS file is publicly available. 
 
 <span style="color:red">The 1KG GDS file will be available soon.</span>
 
-More specifically, the steps of this procedure are:
+More specifically, the formatting of the 1KG information includes all those 
+sub-steps:
 
 1. Download the required files from 1KG
 2. Split the 1KG genotyping file to one file per sample per chromosome
@@ -119,9 +140,9 @@ More specifically, the steps of this procedure are:
 9. Add information about unrelated patients to the 1KG GDS file
 10. Create a second GDS file containing the 1KG phase information
 
-Beware that those steps are time, as well as, space consuming.
+Beware that those sub-steps are time, as well as, space consuming.
 
-In the following sections, those steps are described in details.
+In the following sections, those sub-steps are described in details.
 
 <br>
 
@@ -153,7 +174,7 @@ To facilitate the manipulation of the genotyping data, the large 1KG
 genotyping files are split into smaller files (one per sample).
 
 As there is one genotyping file per chromosome, the process must be executed 
-for each of those.
+for each of chromosome
 
 The splitting is done through a bash script:
 
@@ -163,18 +184,31 @@ The splitting is done through a bash script:
 
 ## The script has to be run separately for each chromosome
 
-## The variable chrCur is one specific chromosome (example, chrCur="chr1")
-## The variable PATHGENO is a specified directory
 ## Create one directory for the specific chromosome
+##
+## Two variables need to be assigned
+## The variable PATHGENO is the path where the split 1KG genotyping 
+##   files will be located
+## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory 
+##   with the name of the chromosome will be created. The variable must 
+##   include the prefix "chr".
+##
+## Ex: PATHGENO=./genotypingPerSample
+## Ex: chrCur=chr1
+##
 mkdir ${PATHGENO}/${chrCur}
+cd ${PATHGENO}/${chrCur}
 
-## The variable FILECUR is the associated VCF file for the specific chromosome
-## FILECUR is the vcf file from 1000 genome
-## Example, FILECUR=ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
+## The variable FILECUR is the associated 1KG genotyping VCF file for the 
+##     specific chromosome
+## The variable FILECUR must also contain the relative or complete path to 
+##     the VCF file
+## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
 
-## There is 2548 samples in the VCF file
+## There is 2548 samples in one phase VCF file
 ## The information associated to each sample is extracted and a VCF file 
-## specific to this sample for the current chromosome is generated
+## specific to each sample for the current chromosome is generated
+##
 for i in `seq 1 2548`
 do
     j=$(( $i + 9 ))
@@ -191,6 +225,12 @@ done
 
 The genotyping information for all chromosomes is merged so that there is only 
 one genotyping file per sample.
+
+
+```{r graphChr1KGSNV, echo = FALSE, fig.align="center", fig.cap="The function groupChr1KGSNV() merge samples that are split by chromosomes into one file.", out.width = '120%', results='asis'}
+knitr::include_graphics("groupChr1KGSNV_v01.png")
+```
+
 
 The __groupChr1KGSNV()__ function is used to combine the genotyping information 
 from multiple files.
@@ -306,8 +346,8 @@ fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 ## Create a RDS with filter SNPs (fileFREQ parameter)
 ## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
 generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
-                      fileLSNP = fileLSNP.v,
-                      fileFREQ = fileFREQ.v)
+                      fileLSNP=fileLSNP.v,
+                      fileFREQ=fileFREQ.v)
 ```
 
 
@@ -445,10 +485,16 @@ closefn.gds(gds)
 <br>
 
 
-## Format information from an external study to get if ready for ancestry inference
+## Step 2 - Format information from an external study to get if ready for ancestry inference
 
 To run the ancestry inference on samples from an external study, the sample
 information must be formatted in a specific format.
+
+
+```{r graphStep2, echo = FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step2_v01.png")
+```
+
 
 Those steps shows how to prepare the sample information needed as input 
 for the ancestry inference.
@@ -511,7 +557,7 @@ tabix -p vcf fileOUT.gz
 ```
 
 
-You need a ped file with the column:
+You need a __ped__ file with the column:
 
 "sample.id"* Id of the sample but the sample can be genotyped more than one
 "sex"*

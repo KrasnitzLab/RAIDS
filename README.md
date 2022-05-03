@@ -4,9 +4,9 @@
 [![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
-# Accurate inference of genetic ancestry from cancer-derived sequencing #
+# Accurate inference of genetic ancestry from cancer-derived molecular data #
 
-The **_aicsPaper_** package enables efficient ancestry inference from various cancer sequencing sources (exome, RNA, whole-genome). The package also implements simulation algorithm that generates synthetic cancer-derived data.
+The **_aicsPaper_** package enables accurate and robust inference of genetic ancestry from various types of molecular data, including whole-genome, whole-exome, targeted gene panels and RNA sequences, as described in our bioRxiv manuscript. Our tools retain high accuracy in presence of somatic alterations, such as those caused by cancer.
 
 **This code and analysis pipeline was designed and developed for the following publication:**
 

@@ -211,7 +211,8 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile){
 
 
 
-    add.gdsn(gdsSample, "SamplePos", objdesp.gdsn(index.gdsn(gdsSample, "genotype"))$dim[2] + 1)
+    add.gdsn(gdsSample, "SamplePos", objdesp.gdsn(index.gdsn(gdsSample, "genotype"))$dim[2] + 1,
+             storage="int32")
 
     g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1, posCur), count = c(-1,1))[listSNP]
     append.gdsn(var.geno, g)
@@ -456,4 +457,38 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
                                 num.thread=1, verbose=TRUE)
 
     return(samplePCA)
+}
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
+#'
+#' @param gdsPhase TODO
+#'
+#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
+#' the sample
+#'
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
+#' @export
+computeAllelicFraction <- function(gds, gdsSample, allHetero, normalSample){
+
+
+
+
 }

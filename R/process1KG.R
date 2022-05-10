@@ -867,7 +867,7 @@ addBlockFromPlink2GDS <- function(gds,
     listChr <- unique(snp.chromosome)
 
     listChr <- listChr[order(listChr)]
-    listChr <- 1:5
+    listChr <- seq_len(5)
     listBlock = list()
     for(chr in listChr){
         snp.keep <- snp.position[snp.chromosome == chr]

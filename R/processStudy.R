@@ -469,8 +469,9 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 #'
 #' @param gdsPhase TODO
 #'
-#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
-#' the sample
+#' @param allHetero TODO
+#'
+#' @param normalSample TODO
 #'
 #'
 #' @return The integer \code{0} when successful.
@@ -483,7 +484,6 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
 computeAllelicFraction <- function(gds, gdsSample, allHetero, normalSample){

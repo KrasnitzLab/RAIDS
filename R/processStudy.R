@@ -391,6 +391,76 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 }
 
 
+#' @title Compute principal component axes (PCA) on pruned SNV with the reference
+#' samples
+#'
+#' @description This function compute the PCA on pruned SNV with the reference samples
+#'
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
+#'
+#' @param listRef a \code{vector} of string representing the
+#' identifiant of the samples in the reference (unrelated).
+#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1L}.
+#'
+#' @return listPCA  a \code{list} containing two objects
+#' pca.unrel -> \code{snpgdsPCAClass}
+#' and a snp.load -> \code{snpgdsPCASNPLoading}
+#'
+#' @details
+#'
+#' More information about the method used to calculate the patient eigenvectors
+#' can be found at the Bioconductor SNPRelate website:
+#' https://bioconductor.org/packages/SNPRelate/
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleInteger
+#' @encoding UTF-8
+#' @export
+computePrunedPCARef <- function(gds, listRef, np=1L) {
+
+
+    listPCA <- list()
+
+
+    ## Validate that np is a single positive integer
+    if(! (isSingleInteger(np) && np > 0)) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+
+    listPruned <- read.gdsn(index.gdsn(gds, "pruned.study"))
+
+
+    ## Calculate the eigenvectors using the specified SNP loadings for
+    ## the reference samples
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
+                                        sample.id = listRef,
+                                        snp.id = listPruned,
+                                        num.thread = np,
+                                        verbose = TRUE)
+
+    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
+                                                 gdsobj = gdsSample,
+                                                 num.thread = np,
+                                                 verbose = TRUE)
+    return(listPCA)
+}
+
+
+
 #' @title Project patients onto existing principal component axes (PCA)
 #'
 #' @description This function calculates the patient eigenvectors using

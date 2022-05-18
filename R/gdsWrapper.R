@@ -172,7 +172,11 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
     }
 
     if(!(is.null(listSamples))) {
-        pedDF <- pedDF[listSamples,]
+        if(length(listSamples) == length(intersect(listSamples, rownames(pedDF)))){
+            pedDF <- pedDF[listSamples,]
+        }else{
+            stop("List of samples not include in the ped or ped don't have rownames equal to Name.ID\n")
+        }
     } else{
         listSamples <- pedDF$Name.ID
     }

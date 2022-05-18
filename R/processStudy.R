@@ -529,6 +529,66 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
     return(samplePCA)
 }
 
+
+#' @title Project patients onto existing principal component axes (PCA)
+#'
+#' @description This function calculates the patient eigenvectors using
+#' the specified SNP loadings.
+#'
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
+#'
+#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
+#' the sample
+#'
+#' @param listSamples a \code{vector} of string representing the samples for
+#' which compute the PCA.
+#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1L}.
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @details
+#'
+#' More information about the method used to calculate the patient eigenvectors
+#' can be found at the Bioconductor SNPRelate website:
+#' https://bioconductor.org/packages/SNPRelate/
+#'
+#' @examples
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom SNPRelate snpgdsPCASampLoading
+#' @importFrom S4Vectors isSingleInteger
+#' @encoding UTF-8
+#' @export
+computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
+
+    ## Validate that np is a single positive integer
+    if(! (isSingleInteger(np) && np > 0)) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    listRef <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
+
+    for(i in seq_len(length(listSamples)) ){
+
+        gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")))
+        listPCA <- computePrunedPCARef(gdsSample, listRef, np)
+
+        listPCA[["samp.load"]] <- projectSample2PCA(gdsSample, listPCA, listSamples[i], np)
+
+        saveRDS(file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".pca.pruned.rds")))
+    }
+
+    return(0L)
+}
+
+
 #' @title TODO
 #'
 #' @description TODO

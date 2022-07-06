@@ -446,14 +446,14 @@ computePrunedPCARef <- function(gds, listRef, np=1L) {
 
     ## Calculate the eigenvectors using the specified SNP loadings for
     ## the reference samples
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gds,
                                         sample.id = listRef,
                                         snp.id = listPruned,
                                         num.thread = np,
                                         verbose = TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj = gdsSample,
+                                                 gdsobj = gds,
                                                  num.thread = np,
                                                  verbose = TRUE)
     return(listPCA)
@@ -578,11 +578,14 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
     for(i in seq_len(length(listSamples)) ){
 
         gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")))
+
         listPCA <- computePrunedPCARef(gdsSample, listRef, np)
 
         listPCA[["samp.load"]] <- projectSample2PCA(gdsSample, listPCA, listSamples[i], np)
+        closefn.gds(gdsSample)
 
-        saveRDS(file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".pca.pruned.rds")))
+        saveRDS(listPCA, file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".pca.pruned.rds")))
+
     }
 
     return(0L)

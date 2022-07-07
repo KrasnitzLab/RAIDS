@@ -395,7 +395,7 @@ testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn,
+#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
 computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10, cutOffEmptyBox = -3){
@@ -451,7 +451,7 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10, cutOffEmptyBox = -3
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn,
+#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
 computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){

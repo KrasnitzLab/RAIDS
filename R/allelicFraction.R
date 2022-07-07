@@ -234,7 +234,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
         logLHR <- 0
         homoBlock$nbSNV[i] <- nrow(blcCur)
         homoBlock$nbPruned[i] <- length(which(snvH$pruned > 0))
-        if(length(which(snvH$normal.geno != 3)) > 0){
+        if(length(which(snvH$normal.geno != 3)) > 0) {
 
             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
             homoBlock$nbNorm[i] <- length(listCount)
@@ -246,14 +246,15 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                                     # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
                         })))
 
-            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                   1, FUN=function(x){
-                                       return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                                       #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                                   })))
+            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                            c("cnt.ref", "cnt.tot"), drop=FALSE],
+                            1, FUN=function(x){
+                                return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
+                        #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                            })))
             logLHR <- -100
 
-        } else if(length(which(snvH$pruned > 0)) > 2){
+        } else if(length(which(snvH$pruned > 0)) > 2) {
 
             afSNV <- listAF[snvH$pruned[which(snvH$pruned > 0)]]
             afSNV <- apply(matrix(afSNV, ncol=1),
@@ -266,9 +267,8 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
             lH1 <- -100
             # Freq of the more likely geno
 
-            tmp <- apply(matrix(afSNV, nc=1),
-                         1,
-                         FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
+            tmp <- apply(matrix(afSNV, ncol=1), 1,
+                        FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
             # log10 (prod(FreqAllele^2) / prod(freq of more likely genotype))
             # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
             # (snvR = 1 homo ref

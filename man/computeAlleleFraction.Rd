@@ -8,7 +8,7 @@
 computeAlleleFraction(snp.pos, chr, w = 10, cutOff = -3)
 }
 \arguments{
-\item{snp.pos}{}
+\item{snp.pos}{TODO}
 
 \item{chr}{A integer for the chromosome TODO}
 

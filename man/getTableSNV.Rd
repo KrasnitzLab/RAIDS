@@ -19,12 +19,6 @@ GDS file.}
 \item{minProb}{an \code{numeric} betweeen 0 and 1}
 
 \item{eProb}{an \code{numeric} betweeen 0 and 1 probability of sequencing error}
-
-\item{PATHSAMPLEGDS}{the path of an object of class \code{gds} related to
-the sample}
-
-\item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 }
 \value{
 data.frame snp.pos TODO.

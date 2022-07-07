@@ -10,7 +10,7 @@ testEmptyBox(matCov, pCutOff = -3)
 \arguments{
 \item{matCov}{TODO}
 
-\item{pCutOffTODO}{}
+\item{pCutOff}{TODO}
 }
 \value{
 a list TODO.

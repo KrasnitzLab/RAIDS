@@ -600,7 +600,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param gdsPhase TODO
+#' @param gdsSample TODO
 #'
 #' @param allHetero TODO
 #'

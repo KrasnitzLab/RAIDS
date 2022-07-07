@@ -8,12 +8,6 @@
 #'
 #' @param gdsSample TODO
 #'
-#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
-#' the sample
-#'
-#' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-#'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
-#'
 #' @param minCov an \code{integer} default 10
 #'
 #' @param minProb an \code{numeric} betweeen 0 and 1
@@ -162,9 +156,10 @@ getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999, eProb = 0.00
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats dbinom
 #' @encoding UTF-8
 #' @export
-computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001){
+computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 
     # snp.pos <- getTableSNV(gds, gdsSample, minCov, minProb, eProb)
     # dfHetero <- snp.pos[snp.pos$hetero == TRUE,]
@@ -238,7 +233,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001){
         } else if(length(which(snvH$pruned > 0)) > 2){
 
             afSNV <- listAF[snvH$pruned[which(snvH$pruned > 0)]]
-            afSNV <- apply(matrix(afSNV, nc=1),
+            afSNV <- apply(matrix(afSNV, ncol=1),
                            1,
                            FUN=function(x){max(x, 0.01) })
             snvR <- snvH$cnt.ref[which(snvH$pruned > 0)] >  snvH$cnt.alt[which(snvH$pruned > 0)]
@@ -268,7 +263,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001){
 #'
 #' @param matCov TODO
 #'
-#' @param pCutOffTODO
+#' @param pCutOff TODO
 #'
 #'
 #' @return a list TODO.
@@ -282,9 +277,10 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001){
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testEmptyBox<- function(matCov, pCutOff = -3){
+testEmptyBox <- function(matCov, pCutOff = -3) {
 
     p <- 0
     pO <- 0
@@ -336,6 +332,7 @@ testEmptyBox<- function(matCov, pCutOff = -3){
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
 testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
@@ -377,7 +374,7 @@ testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
 #'
 #' @description TODO
 #'
-#' @param snp.pos
+#' @param snp.pos TODO
 #'
 #' @param chr A integer for the chromosome TODO
 #'
@@ -433,7 +430,7 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10, cutOffEmptyBox = -3
 #'
 #' @description TODO
 #'
-#' @param snp.pos
+#' @param snp.pos TODO
 #'
 #' @param chr A integer for the chromosome TODO
 #'
@@ -452,6 +449,7 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10, cutOffEmptyBox = -3
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats median
 #' @encoding UTF-8
 #' @export
 computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
@@ -552,9 +550,6 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #' GDS file.
 #'
 #' @param gdsSample TODO
-#'
-#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
-#' the sample
 #'
 #' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)

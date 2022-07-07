@@ -38,9 +38,6 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 \item{cutOffHomoScore}{TODO}
 
 \item{wAR}{size-1 of the window to compute an empty box}
-
-\item{PATHSAMPLEGDS}{the path of an object of class \code{gds} related to
-the sample}
 }
 \value{
 The data.frame with lap for the snv with depth > minCov. TODO

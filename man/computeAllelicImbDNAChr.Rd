@@ -8,7 +8,7 @@
 computeAllelicImbDNAChr(snp.pos, chr, wAR = 10, cutOffEmptyBox = -3)
 }
 \arguments{
-\item{snp.pos}{}
+\item{snp.pos}{TODO}
 
 \item{chr}{A integer for the chromosome TODO}
 

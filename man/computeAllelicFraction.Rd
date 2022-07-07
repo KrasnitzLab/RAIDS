@@ -12,11 +12,11 @@ computeAllelicFraction(gds, gdsSample, allHetero, normalSample)
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
+\item{gdsSample}{TODO}
+
 \item{allHetero}{TODO}
 
 \item{normalSample}{TODO}
-
-\item{gdsPhase}{TODO}
 }
 \value{
 The integer \code{0} when successful.

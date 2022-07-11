@@ -46,13 +46,13 @@ getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999,
                     snp.chr = read.gdsn(index.gdsn(gds,
                                             "snp.chromosome"))[listKeep],
                     normal.geno = rep(3,length(listKeep)), # Suppose the normal genotype unkown
-                    pruned = rep(0, length(listKeep)),
+                    pruned = rep(FALSE, length(listKeep)),
                     snp.index = listKeep,
                     stringsAsFactors = FALSE)
 
     snp.pruned <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
     listKeepPruned <- which(listKeep %in% snp.pruned)
-    snp.pos$pruned[listKeepPruned] <- listKeep[listKeepPruned]
+    snp.pos$pruned[listKeepPruned] <- TRUE
 
     rm(cnt.total, snp.pruned, listKeepPruned)
 
@@ -233,7 +233,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
         lM1 <- 0
         logLHR <- 0
         homoBlock$nbSNV[i] <- nrow(blcCur)
-        homoBlock$nbPruned[i] <- length(which(snvH$pruned > 0))
+        homoBlock$nbPruned[i] <- length(which(snvH$pruned))
         if(length(which(snvH$normal.geno != 3)) > 0) {
 
             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
@@ -254,14 +254,14 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                             })))
             logLHR <- -100
 
-        } else if(length(which(snvH$pruned > 0)) > 2) {
+        } else if(length(which(snvH$pruned)) > 2) {
 
-            afSNV <- listAF[snvH$pruned[which(snvH$pruned > 0)]]
+            afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
             afSNV <- apply(matrix(afSNV, ncol=1),
                            1,
                            FUN=function(x){max(x, 0.01) })
-            snvR <- snvH$cnt.ref[which(snvH$pruned > 0)] >
-                        snvH$cnt.alt[which(snvH$pruned > 0)]
+            snvR <- snvH$cnt.ref[which(snvH$pruned)] >
+                        snvH$cnt.alt[which(snvH$pruned)]
 
             # Check if it is unlikely the genotype are homo by error
             lH1 <- -100
@@ -689,3 +689,5 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
     snp.pos[which(snp.pos[, "lap"] == -1), "lap"] <- 0.5
     return(snp.pos)
 }
+
+

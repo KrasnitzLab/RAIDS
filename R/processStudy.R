@@ -602,10 +602,20 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #'
 #' @param gdsSample TODO
 #'
-#' @param allHetero TODO
+#' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
+#'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
-#' @param normalSample TODO
+#' @param minCov an \code{integer} default 10
 #'
+#' @param minProb an \code{numeric} betweeen 0 and 1
+#'
+#' @param eProb an \code{numeric} betweeen 0 and 1 probability of sequencing error
+#'
+#' @param cutOffLOH log of the score to be LOH default -5
+#'
+#' @param cutOffHomoScore TODO
+#'
+#' @param wAR size-1 of the window to compute an empty box
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -619,7 +629,15 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computeAllelicFraction <- function(gds, gdsSample, allHetero, normalSample){
+computeAllelicFraction <- function(gds, gdsSample, chrInfo,
+                                   minCov=10, minProb = 0.999, eProb = 0.001,
+                                   cutOffLOH = -5, cutOffHomoScore = -3,
+                                   wAR = 9){
+
+    snp.pos <- computeAllelicFractionDNA(gds, gdsSample,
+                              chrInfo,
+                              minCov=10, minProb = 0.999, eProb = 0.001,
+                              cutOffLOH = -5, cutOffHomoScore = -3, wAR = 9)
 
 
 

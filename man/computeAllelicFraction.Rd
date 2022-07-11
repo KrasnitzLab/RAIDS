@@ -5,7 +5,17 @@
 \alias{computeAllelicFraction}
 \title{TODO}
 \usage{
-computeAllelicFraction(gds, gdsSample, allHetero, normalSample)
+computeAllelicFraction(
+  gds,
+  gdsSample,
+  chrInfo,
+  minCov = 10,
+  minProb = 0.999,
+  eProb = 0.001,
+  cutOffLOH = -5,
+  cutOffHomoScore = -3,
+  wAR = 9
+)
 }
 \arguments{
 \item{gds}{an object of class
@@ -14,9 +24,20 @@ GDS file.}
 
 \item{gdsSample}{TODO}
 
-\item{allHetero}{TODO}
+\item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
+Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
-\item{normalSample}{TODO}
+\item{minCov}{an \code{integer} default 10}
+
+\item{minProb}{an \code{numeric} betweeen 0 and 1}
+
+\item{eProb}{an \code{numeric} betweeen 0 and 1 probability of sequencing error}
+
+\item{cutOffLOH}{log of the score to be LOH default -5}
+
+\item{cutOffHomoScore}{TODO}
+
+\item{wAR}{size-1 of the window to compute an empty box}
 }
 \value{
 The integer \code{0} when successful.

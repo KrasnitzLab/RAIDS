@@ -35,7 +35,9 @@ getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999,
 
 
     cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count"))
-    listKeep <- which(cnt.total >= minCov)
+
+    listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
+
     snp.pos <- data.frame(cnt.tot = cnt.total[listKeep],
                     cnt.ref = read.gdsn(index.gdsn(gdsSample,
                         "Ref.count"))[listKeep],
@@ -46,11 +48,12 @@ getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999,
                     snp.chr = read.gdsn(index.gdsn(gds,
                                             "snp.chromosome"))[listKeep],
                     normal.geno = rep(3,length(listKeep)), # Suppose the normal genotype unkown
-                    pruned = rep(FALSE, length(listKeep)),
+                    pruned = rep(FALSE, length(listKeep)),#bit(length(listKeep)),
                     snp.index = listKeep,
                     stringsAsFactors = FALSE)
 
     snp.pruned <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
+
     listKeepPruned <- which(listKeep %in% snp.pruned)
     snp.pos$pruned[listKeepPruned] <- TRUE
 
@@ -59,6 +62,7 @@ getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999,
 
     if("normal.geno" %in% ls.gdsn(gdsSample)){ # if normal.geno exist mean there is count not in the ref
         # I have other genotype than 1KG
+        print("Aye1")
         cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
         listKeep.o <- which(cnt.total >= minCov)
 

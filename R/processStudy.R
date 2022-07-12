@@ -16,8 +16,6 @@
 #' @param listSamples A \code{vector} of \code{string} corresponding to
 #' the sample.ids. if NULL all samples
 #'
-#' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
-#'
 #' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
@@ -41,7 +39,6 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                batch=1,
                                studyDF,
                                listSamples=NULL,
-                               KEEPCOV=TRUE,
                                PATHSAMPLEGDS=NULL) {
 
     # check if file fileGDS
@@ -80,7 +77,6 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                         listPos=listPos, offset=-1,
                                         minCov=10, minProb=0.999,
                                         seqError=0.001,
-                                        KEEPCOV = TRUE,
                                         PATHGDSSAMPLE=PATHSAMPLEGDS)
 
     print(paste0("Genotype DONE ", Sys.time()))

@@ -9,6 +9,7 @@ computeAllelicFraction(
   gds,
   gdsSample,
   chrInfo,
+  studyType = "DNA",
   minCov = 10,
   minProb = 0.999,
   eProb = 0.001,
@@ -26,6 +27,8 @@ GDS file.}
 
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
+
+\item{studyType}{a \code{string} with value as DNA, ...}
 
 \item{minCov}{an \code{integer} default 10}
 

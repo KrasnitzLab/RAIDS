@@ -1,3 +1,93 @@
+#' @title Create a study at GDS including the reference (first study add)
+#'
+#' @description TODO
+#'
+#' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
+#' The directory sampleGeno must contain matFreqSNV.txt.bz2
+#'
+#' @param fileNamePED TODO
+#'
+#' @param fileNameGDS TODO
+#'
+#' @param batch TODO
+#'
+#' @param studyDF TODO
+#'
+#' @param listSamples A \code{vector} of \code{string} corresponding to
+#' the sample.ids. if NULL all samples
+#'
+#' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
+#'
+#' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
+#' to the samples with coverage info is keep
+#'
+#' @return None
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="aicsPaper")
+#'
+#' ## TODO
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
+#' @encoding UTF-8
+#' @export
+appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
+                               fileNamePED,
+                               fileNameGDS,
+                               batch=1,
+                               studyDF,
+                               listSamples=NULL,
+                               KEEPCOV=TRUE,
+                               PATHSAMPLEGDS=NULL) {
+
+    # check if file fileGDS
+    # It must not exists
+
+    # validate the para
+
+    pedStudy <- readRDS(fileNamePED)
+
+
+    # list in the file genotype we keep from fileLSNP in generateMapSnvSel
+
+
+
+
+    # Create the GDS file
+    gds <- snpgdsOpen(fileNameGDS)
+
+    snpCHR <- index.gdsn(gds, "snp.chromosome")
+    snpPOS <- index.gdsn(gds, "snp.position")
+
+    listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
+                          snp.position=read.gdsn(snpPOS))
+
+
+
+    print(paste0("Start ", Sys.time()))
+
+
+
+
+    print(paste0("Sample info DONE ", Sys.time()))
+
+    generateGDS1KGgenotypeFromSNPPileup(gds, PATHGENO,
+                                        listSamples=listSamples,
+                                        listPos=listPos, offset=-1,
+                                        minCov=10, minProb=0.999,
+                                        seqError=0.001,
+                                        KEEPCOV = TRUE,
+                                        PATHGDSSAMPLE=PATHSAMPLEGDS)
+
+    print(paste0("Genotype DONE ", Sys.time()))
+
+    closefn.gds(gds)
+}
+
 #' @title TODO
 #'
 #' @description TODO
@@ -605,6 +695,8 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
+#' @param studyType a \code{string} with value as DNA, ...
+#'
 #' @param minCov an \code{integer} default 10
 #'
 #' @param minProb an \code{numeric} betweeen 0 and 1
@@ -629,17 +721,15 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computeAllelicFraction <- function(gds, gdsSample, chrInfo,
+computeAllelicFraction <- function(gds, gdsSample, chrInfo, studyType = "DNA",
                                    minCov=10, minProb = 0.999, eProb = 0.001,
                                    cutOffLOH = -5, cutOffHomoScore = -3,
                                    wAR = 9){
 
-    snp.pos <- computeAllelicFractionDNA(gds, gdsSample,
-                              chrInfo,
-                              minCov=10, minProb = 0.999, eProb = 0.001,
-                              cutOffLOH = -5, cutOffHomoScore = -3, wAR = 9)
-
-
-
-
+    if(studyType == "DNA"){
+        snp.pos <- computeAllelicFractionDNA(gds, gdsSample,
+                                  chrInfo,
+                                  minCov=10, minProb = 0.999, eProb = 0.001,
+                                  cutOffLOH = -5, cutOffHomoScore = -3, wAR = 9)
+    }
 }

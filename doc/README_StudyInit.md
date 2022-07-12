@@ -186,6 +186,19 @@ see GDSSample
     |--+ lap    { PackedReal8 237908, 232.3K }
     \--+ segment   { UInt32 237908, 929.3K } # not sure I keep it
 
+
+Section annotation study
+    |--+ study.list   [ data.frame ] *
+    |  |--+ study.id   { Str8 1, 9B }
+    |  |--+ study.desc   { Str8 1, 13B }
+    |  \--+ study.platform   { Str8 1, 4B }
+    \--+ study.annot   [ data.frame ] *
+       |--+ data.id   { Str8 188, 1.1K }
+       |--+ case.id   { Str8 188, 1.1K }
+       |--+ sample.type   { Str8 188, 376B }
+       |--+ diagnosis   { Str8 188, 376B }
+       |--+ source   { Str8 188, 1.7K }
+       \--+ study.id   { Str8 188, 1.7K }
 Not yet the good struct for option 1 and 2
 
 option 1 all the hetero from ex varscan

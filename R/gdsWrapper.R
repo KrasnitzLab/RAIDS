@@ -409,7 +409,14 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' @param seqError  a \code{array} with the sample to keep
 #'
-#' @param KEEPCOV TODO a \code{logical} if it is keeping the coverage
+#' @param pedDF a \code{data.frame} with the sample info. Must have the column
+#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
+#' pedDF is Name.ID and the row.name is Name.ID too.
+#'
+#' @param batch a \code{integer} corresponding
+#'
+#' @param studyDF a \code{data.frame} with at least the column study.id,
+#' study.desc and study.platform
 #'
 #' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
@@ -428,10 +435,13 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
 #' @keywords internal
-generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
+ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                                                 listSamples,listPos, offset,
                                                 minCov=10, minProb=0.999,
-                                                seqError=0.001, KEEPCOV = TRUE,
+                                                seqError=0.001,
+                                                pedStudy,
+                                                batch,
+                                                studyDF,
                                                 PATHGDSSAMPLE=NULL) {
 
 
@@ -495,44 +505,44 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
             rm(z)
 
 
-            if(KEEPCOV){
-                if(is.null(PATHGDSSAMPLE)){
-                    stop("KEEPCOV is TRUE and PATHGDSSAMPLE is NULL in generateGDS1KGgenotypeFromSNPPileup\n")
-                } else{
-                    if(! dir.exists(PATHGDSSAMPLE)){
-                        dir.create(PATHGDSSAMPLE)
-                    }
+
+            if(is.null(PATHGDSSAMPLE)){
+                stop("PATHGDSSAMPLE is NULL in generateGDS1KGgenotypeFromSNPPileup\n")
+            } else{
+                if(! dir.exists(PATHGDSSAMPLE)){
+                    dir.create(PATHGDSSAMPLE)
                 }
-                fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
-                if(file.exists(fileGDSSample) ){
-                    gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
-                } else{
-                    gdsSample <- createfn.gds(fileGDSSample)
+            }
+            fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
+            if(file.exists(fileGDSSample) ){
+                gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
+            } else{
+                gdsSample <- createfn.gds(fileGDSSample)
 
-                    id <- add.gdsn(gdsSample, "sampleStudy",
-                                    listSamples[i])
-                }
-
-                var.Ref <- add.gdsn(gdsSample, "Ref.count",
-                                        matAll$File1R,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-                var.Alt <- add.gdsn(gdsSample, "Alt.count",
-                                        matAll$File1A,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-                var.Count <- add.gdsn(gdsSample, "Total.count",
-                                        matAll$count,
-                                        valdim=c( nrow(listPos), 1),
-                                        storage="sp.int16")
-
-                closefn.gds(gdsSample)
-
+                id <- add.gdsn(gdsSample, "sampleStudy",
+                                listSamples[i])
             }
 
-            if(i == 1) {
-                var.geno <- index.gdsn(gds, "genotype")
-            }
+            var.Ref <- add.gdsn(gdsSample, "Ref.count",
+                                    matAll$File1R,
+                                    valdim=c( nrow(listPos), 1),
+                                    storage="sp.int16")
+            var.Alt <- add.gdsn(gdsSample, "Alt.count",
+                                    matAll$File1A,
+                                    valdim=c( nrow(listPos), 1),
+                                    storage="sp.int16")
+            var.Count <- add.gdsn(gdsSample, "Total.count",
+                                    matAll$count,
+                                    valdim=c( nrow(listPos), 1),
+                                    storage="sp.int16")
+
+            listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy, batch=batch,
+                                                listSamples=c(listSamples[i]),
+                                                studyDF=studyDF)
+
+                #closefn.gds(gdsSample)
+
+
 
             listCount <- table(matAll$count[matAll$count >= minCov])
             cutOffA <- data.frame(count = unlist(vapply(as.integer(names(listCount)),
@@ -571,6 +581,23 @@ generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
                         matAllC$File1R >= cutOffA[as.character(matAllC$count), "allele"])] <- 1
 
             #g <- as.matrix(g)
+            if("geno.ref" %in% ls.gdsn(gdsSample)){
+                var.geno <- index.gdsn(gdsSample, "geno.ref")
+
+                compression.gdsn(var.geno, compress="")
+                #write.gdsn(cur, x, start=c(1, 2), count=c(-1,1))
+                append.gdsn(var.geno,g, check=TRUE)
+                compression.gdsn(var.geno, compress="LZMA_RA.fast")
+                readmode.gdsn(var.geno)
+
+            }else{
+                var.geno <- add.gdsn(gds, "geno.ref",
+                                     valdim=c(length(g),
+                                              1),
+                                     storage="bit2", compress = "LZMA_RA.fast")
+                readmode.gdsn(var.geno)
+            }
+
             append.gdsn(var.geno, g)
             rm(g)
             print(paste0(listMat[pos], " ", i, " ", Sys.time()))

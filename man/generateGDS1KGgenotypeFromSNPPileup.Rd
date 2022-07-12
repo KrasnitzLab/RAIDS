@@ -14,7 +14,9 @@ generateGDS1KGgenotypeFromSNPPileup(
   minCov = 10,
   minProb = 0.999,
   seqError = 0.001,
-  KEEPCOV = TRUE,
+  pedStudy,
+  batch,
+  studyDF,
   PATHGDSSAMPLE = NULL
 )
 }
@@ -36,10 +38,17 @@ samples with the genotype.}
 
 \item{seqError}{a \code{array} with the sample to keep}
 
-\item{KEEPCOV}{TODO a \code{logical} if it is keeping the coverage}
+\item{batch}{a \code{integer} corresponding}
+
+\item{studyDF}{a \code{data.frame} with at least the column study.id,
+study.desc and study.platform}
 
 \item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
+
+\item{pedDF}{a \code{data.frame} with the sample info. Must have the column
+sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
+pedDF is Name.ID and the row.name is Name.ID too.}
 }
 \value{
 The integer \code{0} when successful.

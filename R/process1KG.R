@@ -740,7 +740,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
 
     # Create the GDS file
-    gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
+    gds <- snpgdsOpen(fileNameGDS)
 
     snpCHR <- index.gdsn(gds, "snp.chromosome")
     snpPOS <- index.gdsn(gds, "snp.position")
@@ -752,9 +752,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
     print(paste0("Start ", Sys.time()))
 
-    listSampleGDS <- addStudyGDSSample(gds, pedDF=pedStudy, batch=batch,
-                                        listSamples=listSamples,
-                                        studyDF=studyDF)
+
 
 
     print(paste0("Sample info DONE ", Sys.time()))

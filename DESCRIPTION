@@ -26,8 +26,7 @@ Depends: R (>= 4.0),
     SNPRelate,
     stats,
     utils,
-    GENESIS,
-    Matrix
+    GENESIS
 Imports: S4Vectors,
     ensembldb,
     EnsDb.Hsapiens.v86,

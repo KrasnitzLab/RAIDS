@@ -9,6 +9,7 @@ pruningSample(
   gds,
   method = "corr",
   sampleCurrent,
+  study.id,
   listSNP = NULL,
   slide.max.bp.v = 5e+05,
   ld.threshold.v = sqrt(0.1),
@@ -28,8 +29,11 @@ pruningSample(
 
 \item{method}{the parameter method in SNPRelate::snpgdsLDpruning}
 
-\item{sampleCurrent}{A \code{vector} of \code{string} corresponding to
-the sample.ids
+\item{sampleCurrent}{A \code{string} corresponding to
+the sample.id
+use in LDpruning}
+
+\item{study.id}{A \code{string} corresponding to the study
 use in LDpruning}
 
 \item{listSNP}{the list of snp.id keep}

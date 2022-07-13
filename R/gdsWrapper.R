@@ -181,34 +181,57 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
         listSamples <- pedDF$Name.ID
     }
 
-    sampleGDS <- index.gdsn(gds, "sample.id")
+    # sampleGDS <- index.gdsn(gds, "sample.id")
 
-    samplePres <- read.gdsn(sampleGDS)
-    print(paste0("appendGDSSample ", Sys.time()))
-    appendGDSSample(gds, pedDF, batch=batch, listSamples=listSamples)
-    print(paste0("appendGDSSample DONE ", Sys.time()))
+    # samplePres <- read.gdsn(sampleGDS)
+    # print(paste0("appendGDSSample ", Sys.time()))
+    # appendGDSSample(gds, pedDF, batch=batch, listSamples=listSamples)
+    # print(paste0("appendGDSSample DONE ", Sys.time()))
 
-    add.gdsn(gds, "study.offset", length(samplePres))
+    # add.gdsn(gds, "study.offset", length(samplePres))
 
     df <- data.frame(study.id=studyDF$study.id,
                         study.desc=studyDF$study.desc,
                         study.platform=studyDF$study.platform,
                         stringsAsFactors=FALSE)
 
+    if(! "study.list" %in% ls.gdsn(gds)){
+        add.gdsn(gds, "study.list", df)
 
-    add.gdsn(gds, "study.list", df)
+
+        study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
+                                    case.id=pedDF[, "Case.ID"],
+                                    sample.type=pedDF[, "Sample.Type"],
+                                    diagnosis=pedDF[, "Diagnosis"],
+                                    source=pedDF[, "Source"],
+                                    study.id=rep(studyDF$study.id, nrow(pedDF)),
+                                    stringsAsFactors=FALSE)
+
+        add.gdsn(gds, "study.annot", study.annot)
+        print(paste0("study.annot DONE ", Sys.time()))
+    } else{
+        #append.gdsn(gds, "study.list", df)
+        append.gdsn(index.gdsn(gds, "study.list/study.id"), df$study.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.desc"), df$study.desc, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.platform"), df$study.platform, check=TRUE)
 
 
-    study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
-                                case.id=pedDF[, "Case.ID"],
-                                sample.type=pedDF[, "Sample.Type"],
-                                diagnosis=pedDF[, "Diagnosis"],
-                                source=pedDF[, "Source"],
-                                study.id=rep(studyDF$study.id, nrow(pedDF)),
-                                stringsAsFactors=FALSE)
+        study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
+                                  case.id=pedDF[, "Case.ID"],
+                                  sample.type=pedDF[, "Sample.Type"],
+                                  diagnosis=pedDF[, "Diagnosis"],
+                                  source=pedDF[, "Source"],
+                                  study.id=rep(studyDF$study.id, nrow(pedDF)),
+                                  stringsAsFactors=FALSE)
 
-    add.gdsn(gds, "study.annot", study.annot)
-    print(paste0("study.annot DONE ", Sys.time()))
+        append.gdsn(index.gdsn(gds, "study.annot/data.id"), study.annot$data.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/case.id"), study.annot$case.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/sample.type"), study.annot$sample.type, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/diagnosis"), study.annot$diagnosis, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/source"), study.annot$source, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/study.id"), study.annot$study.id, check=TRUE)
+        print(paste0("study.annot DONE ", Sys.time()))
+    }
     return(pedDF[,"Name.ID"])
 
 }
@@ -391,8 +414,6 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' @description TODO
 #'
-#' @param gds a \code{gds} object.
-#'
 #' @param PATHGENO TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
@@ -435,7 +456,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
 #' @keywords internal
- generateGDS1KGgenotypeFromSNPPileup <- function(gds, PATHGENO,
+ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 listSamples,listPos, offset,
                                                 minCov=10, minProb=0.999,
                                                 seqError=0.001,
@@ -519,22 +540,32 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
             } else{
                 gdsSample <- createfn.gds(fileGDSSample)
 
-                id <- add.gdsn(gdsSample, "sampleStudy",
-                                listSamples[i])
+                # id <- add.gdsn(gdsSample, "sampleStudy",
+                #                 listSamples[i])
             }
 
-            var.Ref <- add.gdsn(gdsSample, "Ref.count",
-                                    matAll$File1R,
-                                    valdim=c( nrow(listPos), 1),
-                                    storage="sp.int16")
-            var.Alt <- add.gdsn(gdsSample, "Alt.count",
-                                    matAll$File1A,
-                                    valdim=c( nrow(listPos), 1),
-                                    storage="sp.int16")
-            var.Count <- add.gdsn(gdsSample, "Total.count",
-                                    matAll$count,
-                                    valdim=c( nrow(listPos), 1),
-                                    storage="sp.int16")
+            if(! "Ref.count" %in% ls.gdsn(gdsSample)){
+                var.Ref <- add.gdsn(gdsSample, "Ref.count",
+                                        matAll$File1R,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
+                var.Alt <- add.gdsn(gdsSample, "Alt.count",
+                                        matAll$File1A,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
+                var.Count <- add.gdsn(gdsSample, "Total.count",
+                                        matAll$count,
+                                        valdim=c( nrow(listPos), 1),
+                                        storage="sp.int16")
+            } else{
+                # you must append
+                var.Ref <- append.gdsn(index.gdsn(gdsSample, "Ref.count"),
+                                    matAll$File1R)
+                var.Alt <- append.gdsn(index.gdsn(gdsSample, "Alt.count"),
+                                       matAll$File1A)
+                var.Count <- append.gdsn(index.gdsn(gdsSample, "Total.count"),
+                                         matAll$count)
+            }
 
             listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy, batch=batch,
                                                 listSamples=c(listSamples[i]),
@@ -591,16 +622,19 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
                 readmode.gdsn(var.geno)
 
             }else{
-                var.geno <- add.gdsn(gds, "geno.ref",
+                var.geno <- add.gdsn(gdsSample, "geno.ref",
                                      valdim=c(length(g),
                                               1),
+                                     g,
                                      storage="bit2", compress = "LZMA_RA.fast")
                 readmode.gdsn(var.geno)
             }
 
-            append.gdsn(var.geno, g)
+
             rm(g)
+            closefn.gds(gdsSample)
             print(paste0(listMat[pos], " ", i, " ", Sys.time()))
+
         }else{
             stop("Missing samples ", listSamples[i])
         }
@@ -930,6 +964,35 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
         append.gdsn(var.block, listBlock)
         var.block <- compression.gdsn(var.block, "LZ4_RA")
     }
+
+    return(0L)
+}
+
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened for the sample
+#'
+#' @param snp.lap TODO
+#'
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @keywords internal
+addUpdateLap <- function(gds, snp.lap) {
+
+    snpLap <- write.gdsn(index.gdsn(gds, "lap"), snp.lap)
+
+    sync.gds(gds)
 
     return(0L)
 }

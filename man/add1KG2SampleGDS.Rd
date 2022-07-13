@@ -5,13 +5,20 @@
 \alias{add1KG2SampleGDS}
 \title{TODO}
 \usage{
-add1KG2SampleGDS(gds, gdsSampleFile)
+add1KG2SampleGDS(gds, gdsSampleFile, sampleCurrent, study.id)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
 \item{gdsSampleFile}{the path of an object of class \code{gds} related to
 the sample}
+
+\item{sampleCurrent}{A \code{string} corresponding to
+the sample.id
+use in LDpruning}
+
+\item{study.id}{A \code{string} corresponding to the study
+use in LDpruning}
 }
 \value{
 TODO a \code{vector} of \code{string}

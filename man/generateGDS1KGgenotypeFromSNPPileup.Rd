@@ -6,7 +6,6 @@
 pileup}
 \usage{
 generateGDS1KGgenotypeFromSNPPileup(
-  gds,
   PATHGENO,
   listSamples,
   listPos,
@@ -21,8 +20,6 @@ generateGDS1KGgenotypeFromSNPPileup(
 )
 }
 \arguments{
-\item{gds}{a \code{gds} object.}
-
 \item{PATHGENO}{TODO a PATH to a directory with the a file for each
 samples with the genotype.}
 

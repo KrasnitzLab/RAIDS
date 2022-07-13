@@ -5,7 +5,15 @@
 \alias{getTableSNV}
 \title{TODO}
 \usage{
-getTableSNV(gds, gdsSample, minCov = 10, minProb = 0.999, eProb = 0.001)
+getTableSNV(
+  gds,
+  gdsSample,
+  sampleCurrent,
+  study.id,
+  minCov = 10,
+  minProb = 0.999,
+  eProb = 0.001
+)
 }
 \arguments{
 \item{gds}{an object of class
@@ -13,6 +21,13 @@ getTableSNV(gds, gdsSample, minCov = 10, minProb = 0.999, eProb = 0.001)
 GDS file.}
 
 \item{gdsSample}{TODO}
+
+\item{sampleCurrent}{A \code{string} corresponding to
+the sample.id
+use in LDpruning}
+
+\item{study.id}{A \code{string} corresponding to the study
+use in LDpruning}
 
 \item{minCov}{an \code{integer} default 10}
 

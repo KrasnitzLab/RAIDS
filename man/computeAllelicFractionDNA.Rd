@@ -8,6 +8,8 @@
 computeAllelicFractionDNA(
   gds,
   gdsSample,
+  sampleCurrent,
+  study.id,
   chrInfo,
   minCov = 10,
   minProb = 0.999,
@@ -23,6 +25,13 @@ computeAllelicFractionDNA(
 GDS file.}
 
 \item{gdsSample}{TODO}
+
+\item{sampleCurrent}{A \code{string} corresponding to
+the sample.id
+use in LDpruning}
+
+\item{study.id}{A \code{string} corresponding to the study
+use in LDpruning}
 
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}

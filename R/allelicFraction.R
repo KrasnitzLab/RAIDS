@@ -8,6 +8,13 @@
 #'
 #' @param gdsSample TODO
 #'
+#' @param sampleCurrent A \code{string} corresponding to
+#' the sample.id
+#' use in LDpruning
+#'
+#' @param study.id A \code{string} corresponding to the study
+#' use in LDpruning
+#'
 #' @param minCov an \code{integer} default 10
 #'
 #' @param minProb an \code{numeric} betweeen 0 and 1
@@ -28,21 +35,32 @@
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-getTableSNV <- function(gds, gdsSample, minCov=10, minProb = 0.999,
+getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10, minProb = 0.999,
                             eProb = 0.001) {
 
 
 
+    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
-    cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count"))
+    posCur <- which(study.annot$data.id == sampleCurrent &
+                        study.annot$study.id == study.id)
+
+    # g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur), count = c(-1,1))[listSNP]
+    # g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i), count = c(-1,1))[listSNP]
+
+
+    cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count"), start=c(1, posCur), count = c(-1,1))
+    #read.gdsn(index.gdsn(gdsSample, "Total.count"))
 
     listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
 
     snp.pos <- data.frame(cnt.tot = cnt.total[listKeep],
-                    cnt.ref = read.gdsn(index.gdsn(gdsSample,
-                        "Ref.count"))[listKeep],
-                    cnt.alt = read.gdsn(index.gdsn(gdsSample,
-                        "Alt.count"))[listKeep],
+                    cnt.ref = read.gdsn(index.gdsn(gdsSample, "Ref.count"),
+                                        start=c(1, posCur),
+                                        count = c(-1,1))[listKeep],
+                    cnt.alt = read.gdsn(index.gdsn(gdsSample, "Alt.count"),
+                                        start=c(1, posCur),
+                                        count = c(-1,1))[listKeep],
                     snp.pos = read.gdsn(index.gdsn(gds,
                                             "snp.position"))[listKeep],
                     snp.chr = read.gdsn(index.gdsn(gds,
@@ -605,6 +623,13 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #'
 #' @param gdsSample TODO
 #'
+#' @param sampleCurrent A \code{string} corresponding to
+#' the sample.id
+#' use in LDpruning
+#'
+#' @param study.id A \code{string} corresponding to the study
+#' use in LDpruning
+#'
 #' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
@@ -635,6 +660,7 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #' @encoding UTF-8
 #' @export
 computeAllelicFractionDNA <- function(gds, gdsSample,
+                                      sampleCurrent, study.id,
                                       chrInfo, minCov=10,
                                       minProb = 0.999,
                                       eProb = 0.001,
@@ -642,7 +668,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                                       cutOffHomoScore = -3,
                                       wAR = 9){
 
-    snp.pos <- getTableSNV(gds, gdsSample, minCov, minProb, eProb)
+    snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id, minCov, minProb, eProb)
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
     snp.pos$imbAR <- rep(-1, nrow(snp.pos))

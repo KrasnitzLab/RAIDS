@@ -2,7 +2,47 @@
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class \code{gds} opened with 1k genome in it
+#'
+#' @param nbSample a \code{numeric} between 0 and 1 TODO
+#'
+#' @return TODO a \code{vector} of \code{string}
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @export
+
+select1KGPop <- function(gds, nbSamples){
+
+    listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    listKeep <- which(listRef == 1)
+    rm(listRef)
+
+    sample.annot <- read.gdsn(index.gdsn(gds, "sample.annot"))[listKeep,]
+    sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[listKeep]
+    listPop <- unique(sample.annot$pop.group)
+    listSel <- list()
+    for(i in seq_len(length(listPop))){
+        listGroup <- which(sample.annot$pop.group == listPop[i])
+        tmp <- sample(listGroup, min(nbSamples, length(listGroup)) )
+        listSel[[i]] <- data.frame(sample.id = sample.id[tmp],
+                                   pop.group = sample.annot$pop.group[tmp],
+                                   superPop = sample.annot$superPop[tmp],
+                                   stringsAsFactors = FALSE)
+
+    }
+    df <- do.call(rbind, listSel)
+    return(df)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
 #'
 #' @param gdsSampleFile the path of an object of class \code{gds} related to
 #' the sample
@@ -14,6 +54,8 @@
 #' @param studyDF TODO
 #'
 #' @param nbSim a \code{integer} TODO
+#'
+#' @param prefId a \code{string} TODO
 #'
 #' @param pRecomb a \code{numeric} between 0 and 1 TODO
 #'
@@ -32,6 +74,7 @@ prepSynthetic <- function(gdsSampleFile,
                           data.id.profile,
                           studyDF,
                           nbSim = 1,
+                          prefId = "",
                           pRecomb = 0.01,
                           minProb=0.999,
                           seqError=0.001){
@@ -41,16 +84,23 @@ prepSynthetic <- function(gdsSampleFile,
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
     if(length(posStudy) != 1){
-        stop(paste0("Problem with the data.id of the profile for synthetic data ", data.id.profile, "\n"))
+        closefn.gds(gdsSample)
+        stop(paste0("Error with the data.id of the profile for synthetic data ", data.id.profile, "\n"))
     }
 
+    sampleSim <- paste(paste0(prefId, ".",data.id.profile), paste(rep(listSampleRef,each=nbSim), seq_len(nbSim), sep="."), sep = ".")
+
+    if(length(which(sampleSim %in% study.SRC$data.id)) > 0){
+        closefn.gds(gdsSample)
+        stop(paste0("Error data.id of the simulation exists change prefId\n"))
+    }
 
     study.list <- data.frame(study.id=studyDF$study.id,
                      study.desc=studyDF$study.desc,
                      study.platform="Synthetic",
                      stringsAsFactors=FALSE)
 
-    pedSim <- data.frame(Name.ID=paste(data.id.profile, paste(rep(listSampleRef,each=nbSim), seq_len(nbSim), sep="."), sep = "."),
+    pedSim <- data.frame(Name.ID=sampleSim,
                          Case.ID=rep(listSampleRef,each=nbSim),
                          Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),
                          Diagnosis= rep(study.SRC$diagnosis[posStudy], length(listSampleRef) * nbSim),
@@ -80,6 +130,8 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param nbSim a \code{integer} TODO
 #'
+#' @param prefId a \code{string} TODO
+#'
 #' @param pRecomb a \code{numeric} between 0 and 1 TODO
 #'
 #' @return TODO a \code{vector} of \code{string}
@@ -98,6 +150,7 @@ syntheticGeno <- function(gds,
                           data.id.profile,
                           listSampleRef,
                           nbSim = 1,
+                          prefId = "",
                           pRecomb = 0.01,
                           minProb=0.999,
                           seqError=0.001){
@@ -109,7 +162,15 @@ syntheticGeno <- function(gds,
     gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
 
 
+    sampleSim <- paste(paste0(prefId, ".",data.id.profile), paste(rep(listSampleRef,each=nbSim), seq_len(nbSim), sep="."), sep = ".")
+
     sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
+    if(length(which(sampleSim %in% sample.id)) > 0){
+        closefn.gds(gdsSample)
+        stop(paste0("Error data.id of the simulation exists change prefId\n"))
+    }
+
+
 
     listPosRef <- which(sample.id %in% listSampleRef)
 
@@ -303,7 +364,12 @@ syntheticGeno <- function(gds,
             ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
             (1 + (altC > 0) * (1 + (refC == 0) ) ) # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
-        appendGDSSampleOnly(gdsSample, paste(data.id.profile, paste(rep(sample.id[curSynt],each=nbSim), seq_len(nbSim), sep="."), sep = "."))
+        appendGDSSampleOnly(gdsSample, paste(paste0(prefId, ".",
+                                                    data.id.profile),
+                                             paste(rep(sample.id[curSynt],
+                                                       each=nbSim),
+                                                   seq_len(nbSim), sep="."),
+                                             sep = "."))
         appendGDSgenotypeMat(gdsSample, gSyn)
     }
 

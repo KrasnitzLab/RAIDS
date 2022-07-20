@@ -11,6 +11,7 @@ syntheticGeno(
   data.id.profile,
   listSampleRef,
   nbSim = 1,
+  prefId = "",
   pRecomb = 0.01,
   minProb = 0.999,
   seqError = 0.001
@@ -29,6 +30,8 @@ the sample}
 \item{listSampleRef}{a \code{string} TODO}
 
 \item{nbSim}{a \code{integer} TODO}
+
+\item{prefId}{a \code{string} TODO}
 
 \item{pRecomb}{a \code{numeric} between 0 and 1 TODO}
 }

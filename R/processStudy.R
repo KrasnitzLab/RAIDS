@@ -789,3 +789,61 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id, chr
     return(0L)
 
 }
+
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened for the 1000 Genomes
+#'
+#' @param gdsSampleFile the path of an object of class \code{gds} related to
+#' the sample
+#'
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @keywords internal
+addStudy1Kg <- function(gds, gdsSampleFile) {
+
+    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
+
+    snp.study <- read.gdsn(index.gdsn(gdsSample, "study.list"))
+
+
+    if(length(which(snp.study$study.id == "Ref.1KG")) == 0){
+
+        sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+        sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
+
+
+        study.list <- data.frame(study.id = "Ref.1KG",
+                              study.desc = "Unrelated samples from 1000 Genomes",
+                              study.platform = "GRCh38 1000 genotypes",
+                              stringsAsFactors = FALSE)
+
+
+        ped1KG <- data.frame(Name.ID = sample.id,
+                             Case.ID= sample.id,
+                             Sample.Type=rep("Reference", length(sample.id)),
+                             Diagnosis= rep("Reference", length(sample.id)),
+                             Source= rep("IGSR", length(listSampleRef) * nbSim),
+                             stringsAsFactors=FALSE)
+
+        addStudyGDSSample(gdsSample, ped1KG, batch=1, listSamples=NULL, study.list)
+
+
+        sync.gds(gds)
+    }
+    closefn.gds(gdsSample)
+
+
+    return(0L)
+}

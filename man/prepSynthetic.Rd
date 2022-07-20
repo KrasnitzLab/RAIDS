@@ -10,6 +10,7 @@ prepSynthetic(
   data.id.profile,
   studyDF,
   nbSim = 1,
+  prefId = "",
   pRecomb = 0.01,
   minProb = 0.999,
   seqError = 0.001
@@ -27,9 +28,9 @@ the sample}
 
 \item{nbSim}{a \code{integer} TODO}
 
-\item{pRecomb}{a \code{numeric} between 0 and 1 TODO}
+\item{prefId}{a \code{string} TODO}
 
-\item{gds}{an object of class \code{gds} opened}
+\item{pRecomb}{a \code{numeric} between 0 and 1 TODO}
 }
 \value{
 TODO a \code{vector} of \code{string}

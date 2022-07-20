@@ -763,15 +763,28 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id, chr
     if(studyType == "DNA"){
         snp.pos <- computeAllelicFractionDNA(gds, gdsSample,
                                              sampleCurrent, study.id, chrInfo,
-                                             minCov=10, minProb = 0.999,
+                                             minCov=minCov, minProb = minProb,
                                              eProb = 0.001,
-                                             cutOffLOH = -5, cutOffHomoScore = -3,
-                                             wAR = 9)
+                                             cutOffLOH = cutOffLOH, cutOffHomoScore = cutOffHomoScore,
+                                             wAR = wAR)
+
+        snp.pos$seg <- rep(0,nrow(snp.pos))
+        k <- 1
+        for(chr in seq_len(22)){
+            snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
+            tmp <- c(0,
+                     abs(snpChr[2:nrow(snpChr), "lap"] -
+                             snpChr[1:(nrow(snpChr)- 1),  "lap"]) > 1e-3 )
+            snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
+            k <- max(snp.pos$seg[snp.pos$snp.chr == chr])
+        }
 
 
     }
 
     addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
+    addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
+
 
     return(0L)
 

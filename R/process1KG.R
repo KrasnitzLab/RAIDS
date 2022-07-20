@@ -776,9 +776,10 @@ addBlockFromPlink2GDS <- function(gds,
     listChr <- unique(snp.chromosome)
 
     listChr <- listChr[order(listChr)]
-    listChr <- seq_len(5)
+    listChr <- seq_len(22)
     listBlock = list()
     for(chr in listChr){
+        print(paste0("chr", chr, " ",Sys.time()))
         snp.keep <- snp.position[snp.chromosome == chr]
 
         listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)

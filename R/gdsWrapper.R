@@ -138,6 +138,36 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
     return(0L)
 }
 
+#' @title This function append the fields sample.id.
+#'
+#' @description This function append the fields samples.id.
+#' The fields append are sample.id with the listSample
+#'
+#' @param gds a \code{gds}.
+#'
+#' @param listSample a \code{array} of sample.id to add.
+#'
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn append.gdsn
+#' @keywords internal
+appendGDSSampleOnly <- function(gds, listSamples){
+
+    sampleGDS <- index.gdsn(gds, "sample.id")
+
+    append.gdsn(sampleGDS,  val=listSamples, check=TRUE)
+
+    return(0L)
+}
+
+
+
 #' @title This function create the gds file fields related to the study and
 #' the sample in it.
 #'
@@ -408,6 +438,33 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 
     return(0L)
 }
+
+#' @title This function append the field genotype in the gds file
+#'
+#' @description TODO
+#'
+#' @param gds a \code{gds} object.
+#'
+#' @param matG  a \code{matrix} with the genotype
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom utils read.csv2
+#' @keywords internal
+appendGDSgenotypeMat <- function(gds, matG) {
+
+
+    geno.var <- index.gdsn(gds, "genotype")
+    append.gdsn(geno.var, matG, check=TRUE)
+    return(0L)
+}
+
 
 #' @title TODO This function append the genotype and the file related to the
 #' pileup
@@ -929,7 +986,7 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn
+#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn sync.gds
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
@@ -964,7 +1021,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
         append.gdsn(var.block, listBlock)
         var.block <- compression.gdsn(var.block, "LZ4_RA")
     }
-
+    sync.gds(gds)
     return(0L)
 }
 
@@ -991,6 +1048,39 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 addUpdateLap <- function(gds, snp.lap) {
 
     snpLap <- write.gdsn(index.gdsn(gds, "lap"), snp.lap)
+
+    sync.gds(gds)
+
+    return(0L)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class \code{gds} opened for the sample
+#'
+#' @param snp.seg TODO
+#'
+#'
+#' @return The integer \code{0} when successful.
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @keywords internal
+addUpdateSegment <- function(gds, snp.seg) {
+
+    if("segment" %in% ls.gdsn(gds)){
+        snpLap <- write.gdsn(index.gdsn(gds, "segment"), snp.seg)
+    } else{
+        snpLap <- add.gdsn(gds, "segment", snp.seg, storage = "uint32")
+    }
+
 
     sync.gds(gds)
 

@@ -710,8 +710,10 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
         blockAF <- computeAlleleFraction(snp.pos[listChr, ], chr,
                                             w = 10, cutOff = -3)
         print(paste0("Step 5 ", Sys.time()))
-        for(i in seq_len(nrow(blockAF))){
-            snp.pos[listChr[blockAF[i,1]:blockAF[i,2]], "lap"] <- blockAF[i,3]
+        if(! is.null(blockAF)){
+            for(i in seq_len(nrow(blockAF))){
+                snp.pos[listChr[blockAF[i,1]:blockAF[i,2]], "lap"] <- blockAF[i,3]
+            }
         }
 
 

@@ -687,8 +687,14 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
     if(! (isSingleInteger(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
+    if(length(which(study.annot$study.id == "Ref.1KG")) == 0){
+        stop("The study Ref.1KG is not define you must run the function addStudy1Kg \n")
+    }
 
-    sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    sample.Unrel.All <- study.annot$data.id[study.annot$study.id == "Ref.1KG"]
+    sample.ref <- sample.Unrel.All$data.id
+    #sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+
     listRef <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
 
     for(i in seq_len(length(listSamples)) ){
@@ -880,8 +886,12 @@ computePCAsynthetic <- function(gds, pruned, sample.id, sample.ref, study.annot)
         stop("Number of sample in study.annot not equal to 1\n")
     }
 
+
     sample.pos <- which(sample.id == study.annot$data.id[1])
-    sample.Unrel <- sample.ref[which(sample.ref != study.annot.synt$case.id[1])]
+    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+
+
+    sample.Unrel <- sample.ref[which(sample.ref != study.annot$case.id[1])]
 
     g <- read.gdsn(index.gdsn(gds, "genotype"),
                    start = c(1,sample.pos),

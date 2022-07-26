@@ -722,7 +722,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
-#' @keywords internal
+#' @keywords export
 
 gds2tfam <- function(gds, listSample, pedOUT){
 
@@ -771,7 +771,7 @@ gds2tfam <- function(gds, listSample, pedOUT){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
-#' @keywords internal
+#' @keywords export
 
 gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
 
@@ -779,8 +779,7 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
     sampleId <-read.gdsn(sampleGDS)
     listS <- which(sampleId %in% listSample)
 
-    sampleGDS <- index.gdsn(gds, "sample.annot")
-    sampleANNO <-read.gdsn(sampleGDS)
+
 
     pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
                           id=sampleId[listS],
@@ -819,7 +818,7 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
-#' @keywords internal
+#' @keywords export
 gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 
     sampleGDS <- index.gdsn(gds, "sample.id")

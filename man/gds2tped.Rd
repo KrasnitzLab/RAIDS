@@ -29,4 +29,4 @@ TODO
 \author{
 Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 }
-\keyword{internal}
+\keyword{export}

@@ -21,7 +21,7 @@ use in LDpruning}
 use in LDpruning}
 }
 \value{
-TODO a \code{vector} of \code{string}
+\code{0L} when successful.
 }
 \description{
 TODO

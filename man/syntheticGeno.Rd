@@ -23,14 +23,14 @@ syntheticGeno(
 
 \item{gdsRefAnnot}{an object of class \code{gds} opened}
 
-\item{gdsSampleFile}{the path of an object of class \code{gds} related to
-the sample}
+\item{gdsSampleFile}{a \code{character} string representing the file name of
+the GDS file containing the information about the samples.}
 
-\item{data.id.profile}{a \code{string} TODO}
+\item{data.id.profile}{a \code{character} string TODO}
 
-\item{listSampleRef}{a \code{string} TODO}
+\item{listSampleRef}{a \code{character} string TODO}
 
-\item{nbSim}{a \code{integer} TODO}
+\item{nbSim}{a single positive \code{integer} TODO}
 
 \item{prefId}{a \code{string} TODO}
 

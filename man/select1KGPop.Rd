@@ -8,12 +8,14 @@
 select1KGPop(gds, nbSamples)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened with 1k genome in it}
+\item{gds}{an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
+\link[gdsfmt]{gds.class} (a GDS file) containing the information about
+1000 Genome (1kG).}
 
-\item{nbSamples}{a \code{numeric} between 0 and 1 TODO}
+\item{nbSamples}{a single positive \code{integer}.}
 }
 \value{
-TODO a \code{vector} of \code{string}
+
 }
 \description{
 TODO

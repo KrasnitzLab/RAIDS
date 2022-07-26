@@ -4,7 +4,7 @@
 #'
 #' @param gds an object of class \code{gds} opened with 1k genome in it
 #'
-#' @param nbSample a \code{numeric} between 0 and 1 TODO
+#' @param nbSamples a \code{numeric} between 0 and 1 TODO
 #'
 #' @return TODO a \code{vector} of \code{string}
 #'
@@ -12,11 +12,11 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-
-select1KGPop <- function(gds, nbSamples){
+select1KGPop <- function(gds, nbSamples) {
 
     listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listKeep <- which(listRef == 1)
@@ -26,15 +26,16 @@ select1KGPop <- function(gds, nbSamples){
     sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
     listSel <- list()
-    for(i in seq_len(length(listPop))){
+
+    for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
         tmp <- sample(listGroup, min(nbSamples, length(listGroup)) )
         listSel[[i]] <- data.frame(sample.id = sample.id[tmp],
                                    pop.group = sample.annot$pop.group[tmp],
                                    superPop = sample.annot$superPop[tmp],
                                    stringsAsFactors = FALSE)
-
     }
+
     df <- do.call(rbind, listSel)
     return(df)
 }
@@ -53,31 +54,35 @@ select1KGPop <- function(gds, nbSamples){
 #'
 #' @param studyDF TODO
 #'
-#' @param nbSim a \code{integer} TODO
+#' @param nbSim a \code{integer} TODO. Default: \code{1}.
 #'
 #' @param prefId a \code{string} TODO
 #'
-#' @param pRecomb a \code{numeric} between 0 and 1 TODO
+#' @param pRecomb a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @param minProb a \code{numeric} TODO. Default: \code{0.999}.
+#'
+#' @param seqError a \code{numeric} TODO. Default: \code{0.001}.
+#'
+#' @return TODO a \code{vector} of \code{character} string
 #'
 #' @examples
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
 #' @export
-
 prepSynthetic <- function(gdsSampleFile,
-                          listSampleRef,
-                          data.id.profile,
-                          studyDF,
-                          nbSim = 1,
-                          prefId = "",
-                          pRecomb = 0.01,
-                          minProb=0.999,
-                          seqError=0.001){
+                            listSampleRef,
+                            data.id.profile,
+                            studyDF,
+                            nbSim = 1,
+                            prefId = "",
+                            pRecomb = 0.01,
+                            minProb=0.999,
+                            seqError=0.001) {
 
     gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
 
@@ -132,7 +137,11 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param prefId a \code{string} TODO
 #'
-#' @param pRecomb a \code{numeric} between 0 and 1 TODO
+#' @param pRecomb a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.
+#'
+#' @param minProb a single \code{numeric}  TODO. Default: \code{0.999}.
+#'
+#' @param seqError a single \code{numeric}  TODO. Default: \code{0.001}.
 #'
 #' @return TODO a \code{vector} of \code{string}
 #'
@@ -140,20 +149,21 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats rmultinom
+#' @encoding UTF-8
 #' @export
-
 syntheticGeno <- function(gds,
-                          gdsRefAnnot,
-                          gdsSampleFile,
-                          data.id.profile,
-                          listSampleRef,
-                          nbSim = 1,
-                          prefId = "",
-                          pRecomb = 0.01,
-                          minProb=0.999,
-                          seqError=0.001){
+                            gdsRefAnnot,
+                            gdsSampleFile,
+                            data.id.profile,
+                            listSampleRef,
+                            nbSim = 1,
+                            prefId = "",
+                            pRecomb = 0.01,
+                            minProb=0.999,
+                            seqError=0.001) {
 
     # if(nbSim != 1){
     #     stop("Just 1 simulation is manage yet")

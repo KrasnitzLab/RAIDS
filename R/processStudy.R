@@ -860,7 +860,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened related to
+#' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
 #'
 #' @param pruned TODO
@@ -883,7 +883,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' @importFrom gdsfmt add.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
 #' @export
-computePCAsynthetic <- function(gds, pruned, sample.id, sample.ref, study.annot){
+computePCAsynthetic <- function(gdsSample, pruned, sample.id, sample.ref, study.annot){
     if(nrow(study.annot) != 1){
         stop("Number of sample in study.annot not equal to 1\n")
     }
@@ -892,7 +892,7 @@ computePCAsynthetic <- function(gds, pruned, sample.id, sample.ref, study.annot)
     sample.pos <- which(sample.id == study.annot$data.id[1])
     sample.Unrel <- sample.ref[which(sample.ref != study.annot$case.id[1])]
 
-    g <- read.gdsn(index.gdsn(gds, "genotype"),
+    g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
                    start = c(1,sample.pos),
                    count = c(-1,1))
 

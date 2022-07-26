@@ -4,10 +4,10 @@
 \alias{computePCAsynthetic}
 \title{TODO}
 \usage{
-computePCAsynthetic(gds, pruned, sample.id, sample.ref, study.annot)
+computePCAsynthetic(gdsSample, pruned, sample.id, sample.ref, study.annot)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened related to
+\item{gdsSample}{an object of class \code{gds} opened related to
 the sample}
 
 \item{pruned}{TODO}

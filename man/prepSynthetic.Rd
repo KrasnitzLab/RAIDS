@@ -18,27 +18,29 @@ prepSynthetic(
 )
 }
 \arguments{
-\item{gdsSampleFile}{the path of an object of class \code{gds} related to
-the sample}
+\item{gdsSampleFile}{a \code{character} string representing the file name
+of the GDS file containing the information about the samples to be opened.}
 
-\item{listSampleRef}{a \code{string} TODO}
+\item{listSampleRef}{a \code{character} string TODO}
 
-\item{data.id.profile}{a \code{string} TODO}
+\item{data.id.profile}{a \code{character} string TODO}
 
 \item{studyDF}{TODO}
 
-\item{nbSim}{a \code{integer} TODO. Default: \code{1}.}
+\item{nbSim}{a single positive \code{integer} representing the number of
+simulations per combination of sample and profile. Default: \code{1}.}
 
-\item{prefId}{a \code{string} TODO}
+\item{prefId}{a \code{character} string TODO}
 
-\item{pRecomb}{a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.}
+\item{pRecomb}{a single \code{numeric} between 0 and 1 TODO.
+Default: \code{0.01}.}
 
-\item{minProb}{a \code{numeric} TODO. Default: \code{0.999}.}
+\item{minProb}{a single \code{numeric} TODO. Default: \code{0.999}.}
 
-\item{seqError}{a \code{numeric} TODO. Default: \code{0.001}.}
+\item{seqError}{a single \code{numeric} TODO. Default: \code{0.001}.}
 }
 \value{
-TODO a \code{vector} of \code{character} string
+\code{0L} when successful.
 }
 \description{
 TODO

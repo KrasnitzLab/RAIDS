@@ -27,41 +27,45 @@ pruningSample(
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
-\item{method}{the parameter method in SNPRelate::snpgdsLDpruning}
+\item{method}{a \code{character} string representing the method used in
+SNPRelate::snpgdsLDpruning() fucntion.
+Default: \code{"corr"}.}
 
-\item{sampleCurrent}{A \code{string} corresponding to
+\item{sampleCurrent}{A \code{character} string corresponding to
 the sample.id
 use in LDpruning}
 
 \item{study.id}{A \code{string} corresponding to the study
 use in LDpruning}
 
-\item{listSNP}{the list of snp.id keep}
+\item{listSNP}{the list of snp.id keep. TODO. Default: \code{NULL}.}
 
-\item{slide.max.bp.v}{TODO}
+\item{slide.max.bp.v}{a single \code{numeric} TODO. Default: \code{5e5}.}
 
-\item{ld.threshold.v}{TODO}
+\item{ld.threshold.v}{a single \code{numeric} TODO.
+Default: \code{sqrt(0.1)}.}
 
-\item{np}{TODO}
+\item{np}{TODO. Default: \code{1}.}
 
-\item{verbose.v}{TODO}
+\item{verbose.v}{TODO. Default: \code{FALSE}.}
 
-\item{chr}{TODO}
+\item{chr}{TODO. Default: \code{NULL}.}
 
-\item{minAF.SuperPop}{TODO}
+\item{minAF.SuperPop}{TODO. Default: \code{NULL}.}
 
-\item{keepGDSpruned}{TODO}
+\item{keepGDSpruned}{a \code{boolean} TODO. Default: \code{TRUE}.}
 
 \item{PATHSAMPLEGDS}{TODO}
 
-\item{keepFile}{TODO}
+\item{keepFile}{a \code{boolean} indicating if the file must be TODO.
+Default: \code{FALSE}.}
 
-\item{PATHPRUNED}{TODO}
+\item{PATHPRUNED}{a \code{character} string TODO. Default: \code{"."}.}
 
-\item{outPref}{TODO}
+\item{outPref}{TODO. Default: \code{"pruned"}.}
 }
 \value{
-TODO a \code{vector} of \code{string}
+\code{0L} when successful.
 }
 \description{
 TODO

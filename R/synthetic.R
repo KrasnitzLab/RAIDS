@@ -2,11 +2,18 @@
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened with 1k genome in it
+#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
+#' \link[gdsfmt]{gds.class} (a GDS file) containing the information about
+#' 1000 Genome (1kG).
 #'
-#' @param nbSamples a \code{numeric} between 0 and 1 TODO
+#' @param nbSamples a single positive \code{integer}.
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return a \code{data.frame) containing those columns:
+#' \itemize{
+#' \item{sample.id} { TODO }
+#' \item{pop.group} { TODO }
+#' \item{superPop} { TODO }
+#' }
 #'
 #' @examples
 #'
@@ -14,9 +21,15 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
 select1KGPop <- function(gds, nbSamples) {
+
+    ## Validate that nbSamples is a single positive integer
+    if(! (isSingleInteger(nbSamples) && nbSamples > 0)) {
+        stop("The \'nbSamples\' parameter must be a single positive integer.")
+    }
 
     listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listKeep <- which(listRef == 1)
@@ -30,13 +43,14 @@ select1KGPop <- function(gds, nbSamples) {
     for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
         tmp <- sample(listGroup, min(nbSamples, length(listGroup)) )
-        listSel[[i]] <- data.frame(sample.id = sample.id[tmp],
-                                   pop.group = sample.annot$pop.group[tmp],
-                                   superPop = sample.annot$superPop[tmp],
-                                   stringsAsFactors = FALSE)
+        listSel[[i]] <- data.frame(sample.id=sample.id[tmp],
+                                    pop.group=sample.annot$pop.group[tmp],
+                                    superPop=sample.annot$superPop[tmp],
+                                    stringsAsFactors=FALSE)
     }
 
     df <- do.call(rbind, listSel)
+
     return(df)
 }
 
@@ -45,26 +59,28 @@ select1KGPop <- function(gds, nbSamples) {
 #'
 #' @description TODO
 #'
-#' @param gdsSampleFile the path of an object of class \code{gds} related to
-#' the sample
+#' @param gdsSampleFile a \code{character} string representing the file name
+#' of the GDS file containing the information about the samples to be opened.
 #'
-#' @param listSampleRef a \code{string} TODO
+#' @param listSampleRef a \code{character} string TODO
 #'
-#' @param data.id.profile a \code{string} TODO
+#' @param data.id.profile a \code{character} string TODO
 #'
 #' @param studyDF TODO
 #'
-#' @param nbSim a \code{integer} TODO. Default: \code{1}.
+#' @param nbSim a single positive \code{integer} representing the number of
+#' simulations per combination of sample and profile. Default: \code{1}.
 #'
-#' @param prefId a \code{string} TODO
+#' @param prefId a \code{character} string TODO
 #'
-#' @param pRecomb a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.
+#' @param pRecomb a single \code{numeric} between 0 and 1 TODO.
+#' Default: \code{0.01}.
 #'
-#' @param minProb a \code{numeric} TODO. Default: \code{0.999}.
+#' @param minProb a single \code{numeric} TODO. Default: \code{0.999}.
 #'
-#' @param seqError a \code{numeric} TODO. Default: \code{0.001}.
+#' @param seqError a single \code{numeric} TODO. Default: \code{0.001}.
 #'
-#' @return TODO a \code{vector} of \code{character} string
+#' @return \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -90,14 +106,17 @@ prepSynthetic <- function(gdsSampleFile,
     posStudy <- which(study.SRC$data.id == data.id.profile)
     if(length(posStudy) != 1){
         closefn.gds(gdsSample)
-        stop(paste0("Error with the data.id of the profile for synthetic data ", data.id.profile, "\n"))
+        stop("Error with the data.id of the profile for synthetic data ",
+                data.id.profile, "\n")
     }
 
-    sampleSim <- paste(paste0(prefId, ".",data.id.profile), paste(rep(listSampleRef,each=nbSim), seq_len(nbSim), sep="."), sep = ".")
+    sampleSim <- paste(paste0(prefId, ".",data.id.profile),
+                        paste(rep(listSampleRef,each=nbSim),
+                                seq_len(nbSim), sep="."), sep = ".")
 
-    if(length(which(sampleSim %in% study.SRC$data.id)) > 0){
+    if(length(which(sampleSim %in% study.SRC$data.id)) > 0) {
         closefn.gds(gdsSample)
-        stop(paste0("Error data.id of the simulation exists change prefId\n"))
+        stop("Error data.id of the simulation exists change prefId\n")
     }
 
     study.list <- data.frame(study.id=studyDF$study.id,
@@ -106,11 +125,12 @@ prepSynthetic <- function(gdsSampleFile,
                      stringsAsFactors=FALSE)
 
     pedSim <- data.frame(Name.ID=sampleSim,
-                         Case.ID=rep(listSampleRef,each=nbSim),
-                         Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),
-                         Diagnosis= rep(study.SRC$diagnosis[posStudy], length(listSampleRef) * nbSim),
-                         Source= rep("Synthetic", length(listSampleRef) * nbSim),
-                         stringsAsFactors=FALSE)
+                Case.ID=rep(listSampleRef, each=nbSim),
+                Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),
+                Diagnosis=rep(study.SRC$diagnosis[posStudy],
+                                length(listSampleRef) * nbSim),
+                Source=rep("Synthetic", length(listSampleRef) * nbSim),
+                stringsAsFactors=FALSE)
 
     addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL, study.list)
 
@@ -126,14 +146,14 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param gdsRefAnnot an object of class \code{gds} opened
 #'
-#' @param gdsSampleFile the path of an object of class \code{gds} related to
-#' the sample
+#' @param gdsSampleFile a \code{character} string representing the file name of
+#' the GDS file containing the information about the samples.
 #'
-#' @param listSampleRef a \code{string} TODO
+#' @param listSampleRef a \code{character} string TODO
 #'
-#' @param data.id.profile a \code{string} TODO
+#' @param data.id.profile a \code{character} string TODO
 #'
-#' @param nbSim a \code{integer} TODO
+#' @param nbSim a single positive \code{integer} TODO
 #'
 #' @param prefId a \code{string} TODO
 #'
@@ -169,25 +189,24 @@ syntheticGeno <- function(gds,
     #     stop("Just 1 simulation is manage yet")
     # }
 
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
+    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE) #
 
 
-    sampleSim <- paste(paste0(prefId, ".",data.id.profile), paste(rep(listSampleRef,each=nbSim), seq_len(nbSim), sep="."), sep = ".")
+    sampleSim <- paste(paste0(prefId, ".", data.id.profile),
+                        paste(rep(listSampleRef,each=nbSim),
+                                seq_len(nbSim), sep="."), sep = ".")
 
     sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
+
     if(length(which(sampleSim %in% sample.id)) > 0){
         closefn.gds(gdsSample)
-        stop(paste0("Error data.id of the simulation exists change prefId\n"))
+        stop("Error data.id of the simulation exists change prefId\n")
     }
-
-
 
     listPosRef <- which(sample.id %in% listSampleRef)
 
 
     superPop <- read.gdsn(index.gdsn(gds, "sample.annot/superPop"))[listPosRef]
-
-
 
     # Get the index of the snp.id from gdsSample in the gds1KG
     list1KG <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
@@ -195,7 +214,7 @@ syntheticGeno <- function(gds,
 
 
     infoSNV <- data.frame(count.tot = read.gdsn(index.gdsn(gdsSample,
-                                                           "Total.count"))[list1KG],
+                                            "Total.count"))[list1KG],
                           lap = read.gdsn(index.gdsn(gdsSample, "lap")))
 
     nbSNV <- nrow(infoSNV)
@@ -214,18 +233,23 @@ syntheticGeno <- function(gds,
 
     block.Annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
 
-    posSP <- data.frame(EAS = which(block.Annot$block.id == "EAS.0.05.500k"),
-                        EUR = which(block.Annot$block.id == "EUR.0.05.500k"),
-                        AFR = which(block.Annot$block.id == "AFR.0.05.500k"),
-                        AMR = which(block.Annot$block.id == "AMR.0.05.500k"),
-                        SAS = which(block.Annot$block.id == "SAS.0.05.500k"))
+    posSP <- data.frame(EAS=which(block.Annot$block.id == "EAS.0.05.500k"),
+                        EUR=which(block.Annot$block.id == "EUR.0.05.500k"),
+                        AFR=which(block.Annot$block.id == "AFR.0.05.500k"),
+                        AMR=which(block.Annot$block.id == "AMR.0.05.500k"),
+                        SAS=which(block.Annot$block.id == "SAS.0.05.500k"))
 
     #g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i), count = c(-1,1))[listSNP]
-    blockDF <- data.frame(EAS = read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,posSP$EAS), count = c(-1,1))[list1KG],
-                          EUR = read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,posSP$EUR), count = c(-1,1))[list1KG],
-                          AFR = read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,posSP$AFR), count = c(-1,1))[list1KG],
-                          AMR = read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,posSP$AMR), count = c(-1,1))[list1KG],
-                          SAS = read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,posSP$SAS), count = c(-1,1))[list1KG])
+    blockDF <- data.frame(EAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                            start=c(1,posSP$EAS), count = c(-1,1))[list1KG],
+                          EUR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                            start=c(1,posSP$EUR), count = c(-1,1))[list1KG],
+                          AFR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                            start=c(1,posSP$AFR), count = c(-1,1))[list1KG],
+                          AMR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                            start=c(1,posSP$AMR), count = c(-1,1))[list1KG],
+                          SAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                            start=c(1,posSP$SAS), count = c(-1,1))[list1KG])
     # prec <- -1
     # minCur <- 3
 
@@ -234,7 +258,7 @@ syntheticGeno <- function(gds,
 
 
     # For each reference simulate
-    for(r in seq_len(length(listPosRef))){
+    for(r in seq_len(length(listPosRef))) {
 
         curSynt <- listPosRef[r]
         # get the genotype of the sample r
@@ -272,9 +296,7 @@ syntheticGeno <- function(gds,
 
             tmp <- rmultinom(nbHetero * nbSim,
                              as.numeric(as.character(df$count.tot[i])),
-                             c(p1,
-                               p2,
-                               p3))
+                             c(p1, p2, p3))
             # depht of allele 1
             matSim1[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[1,],
                                                                     ncol=nbSim)

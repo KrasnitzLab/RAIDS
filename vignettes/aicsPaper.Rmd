@@ -3,8 +3,10 @@ title: "Accurate Inference of Genetic Ancestry from Cancer Sequencing"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
   BiocStyle::html_document:
+    number_sections: yes
     toc: true
   pkgdown:
+    number_sections: yes
     as_is: true
 bibliography: aicsBiblio.bibtex
 vignette: >

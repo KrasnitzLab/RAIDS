@@ -949,16 +949,18 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id, sample.ref, study.
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
 #' @importFrom class knn
+#' @encoding UTF-8
 #' @export
-computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref, study.annot, spRef){
+computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
+                                            study.annot, spRef) {
 
-
-    if(nrow(study.annot) != 1){
-        stop("Number of sample in study.annot not equal to 1\n")
+    ## The number of rows in study.annot must be one.
+    if(nrow(study.annot) != 1) {
+        stop("Number of samples in study.annot not equal to 1\n")
     }
 
     kList <- c(seq_len(14), seq(15,100, by=5))
@@ -967,14 +969,17 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref, study.anno
                          D=rep(0,14 * length(kList)),
                          K=rep(0,14 * length(kList)),
                          SuperPop=character(14 * length(kList)),
-                         stringsAsFactors = FALSE)
+                         stringsAsFactors=FALSE)
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
     #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
-    eigenvect <- rbind(listEigenvector$eigenvector.ref, listEigenvector$eigenvector)
-    rownames(eigenvect) <- c(sample.ref[which(sample.ref != study.annot$case.id[1])],
-                             listEigenvector$sample.id)
+    eigenvect <- rbind(listEigenvector$eigenvector.ref,
+                            listEigenvector$eigenvector)
+
+    rownames(eigenvect) <- c(sample.ref[which(sample.ref !=
+                                                    study.annot$case.id[1])],
+                                listEigenvector$sample.id)
 
 
     totR <- 1

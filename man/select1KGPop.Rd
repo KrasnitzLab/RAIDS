@@ -15,7 +15,12 @@ select1KGPop(gds, nbSamples)
 \item{nbSamples}{a single positive \code{integer}.}
 }
 \value{
-
+a \code{data.frame} containing those columns:
+\itemize{
+\item{sample.id} { TODO }
+\item{pop.group} { TODO }
+\item{superPop} { TODO }
+}
 }
 \description{
 TODO

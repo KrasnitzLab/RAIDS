@@ -8,7 +8,7 @@
 #'
 #' @param nbSamples a single positive \code{integer}.
 #'
-#' @return a \code{data.frame) containing those columns:
+#' @return a \code{data.frame} containing those columns:
 #' \itemize{
 #' \item{sample.id} { TODO }
 #' \item{pop.group} { TODO }

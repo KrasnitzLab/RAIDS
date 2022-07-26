@@ -706,12 +706,12 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #'
 #' @description TODO
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node) or
+#' \link[gdsfmt]{gds.class} (a GDS file) TODO
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSample  a \code{array} with the sample to keep TODO
 #'
 #' @param pedOUT TODO a PATH and file name to the output file
-#'
 #'
 #' @return TODO a \code{vector} of \code{numeric}
 #'
@@ -719,12 +719,12 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
+#' @encoding UTF-8
 #' @keywords export
-
-gds2tfam <- function(gds, listSample, pedOUT){
+gds2tfam <- function(gds, listSample, pedOUT) {
 
     sampleGDS <- index.gdsn(gds, "sample.id")
     sampleId <-read.gdsn(sampleGDS)
@@ -752,9 +752,10 @@ gds2tfam <- function(gds, listSample, pedOUT){
 #'
 #' @description TODO
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node) or
+#' \link[gdsfmt]{gds.class} (a GDS file) TODO
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSample  a \code{array} with the sample to keep
 #'
 #' @param sampleANNO a \code{data.frame} with at least column sex and the name
 #' must be sample.id
@@ -771,15 +772,13 @@ gds2tfam <- function(gds, listSample, pedOUT){
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
+#' @encoding UTF-8
 #' @keywords export
-
-gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
+gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT) {
 
     sampleGDS <- index.gdsn(gds, "sample.id")
     sampleId <-read.gdsn(sampleGDS)
     listS <- which(sampleId %in% listSample)
-
-
 
     pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
                           id=sampleId[listS],
@@ -803,7 +802,7 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSample  a \code{array} with the sample to keep
 #'
 #' @param listSNP  a \code{array} with the snp.id to keep
 #'
@@ -815,9 +814,10 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
+#' @encoding UTF-8
 #' @keywords export
 gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 
@@ -906,8 +906,9 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsIBDKING
+#' @encoding UTF-8
 #' @keywords internal
 runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 

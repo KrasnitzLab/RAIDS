@@ -93,41 +93,45 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param gds an object of class \code{gds} opened
 #'
-#' @param method the parameter method in SNPRelate::snpgdsLDpruning
+#' @param method a \code{character} string representing the method used in
+#' SNPRelate::snpgdsLDpruning() fucntion.
+#' Default: \code{"corr"}.
 #'
-#' @param sampleCurrent A \code{string} corresponding to
+#' @param sampleCurrent A \code{character} string corresponding to
 #' the sample.id
 #' use in LDpruning
 #'
 #' @param study.id A \code{string} corresponding to the study
 #' use in LDpruning
 #'
-#' @param listSNP the list of snp.id keep
+#' @param listSNP the list of snp.id keep. TODO. Default: \code{NULL}.
 #'
-#' @param slide.max.bp.v TODO
+#' @param slide.max.bp.v a single \code{numeric} TODO. Default: \code{5e5}.
 #'
-#' @param ld.threshold.v TODO
+#' @param ld.threshold.v a single \code{numeric} TODO.
+#' Default: \code{sqrt(0.1)}.
 #'
-#' @param np TODO
+#' @param np TODO. Default: \code{1}.
 #'
-#' @param verbose.v TODO
+#' @param verbose.v TODO. Default: \code{FALSE}.
 #'
-#' @param chr TODO
+#' @param chr TODO. Default: \code{NULL}.
 #'
-#' @param minAF.SuperPop TODO
+#' @param minAF.SuperPop TODO. Default: \code{NULL}.
 #'
-#' @param keepGDSpruned TODO
+#' @param keepGDSpruned a \code{boolean} TODO. Default: \code{TRUE}.
 #'
 #' @param PATHSAMPLEGDS TODO
 #'
-#' @param keepFile TODO
-
-#' @param PATHPRUNED TODO
+#' @param keepFile a \code{boolean} indicating if the file must be TODO.
+#' Default: \code{FALSE}.
 #'
-#' @param outPref TODO
+#' @param PATHPRUNED a \code{character} string TODO. Default: \code{"."}.
+#'
+#' @param outPref TODO. Default: \code{"pruned"}.
 #'
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -140,29 +144,27 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-pruningSample <- function(gds,
-                          method="corr",
-                          sampleCurrent,
-                          study.id,
-                          listSNP = NULL,
-                          slide.max.bp.v = 5e5,
-                          ld.threshold.v=sqrt(0.1),
-                          np = 1,
-                          verbose.v=FALSE,
-                          chr = NULL,
-                          minAF.SuperPop = NULL,
-                          keepGDSpruned = TRUE,
-                          PATHSAMPLEGDS = NULL,
-                          keepFile = FALSE,
-                          PATHPRUNED = ".",
-                          outPref = "pruned"
-                          ){
+pruningSample <- function(gds, method="corr", sampleCurrent,
+                            study.id,
+                            listSNP = NULL,
+                            slide.max.bp.v = 5e5,
+                            ld.threshold.v=sqrt(0.1),
+                            np = 1,
+                            verbose.v=FALSE,
+                            chr = NULL,
+                            minAF.SuperPop = NULL,
+                            keepGDSpruned = TRUE,
+                            PATHSAMPLEGDS = NULL,
+                            keepFile = FALSE,
+                            PATHPRUNED = ".",
+                            outPref = "pruned") {
 
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
     fileObj <- file.path(PATHPRUNED, paste0(outPref, ".Obj.rds"))
-    if(! is.null(PATHSAMPLEGDS)){
-        fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent, ".gds"))
-    } else{
+    if(! is.null(PATHSAMPLEGDS)) {
+        fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent,
+                                                            ".gds"))
+    } else {
         stop("The path to the GDS sample is null")
     }
 
@@ -174,13 +176,15 @@ pruningSample <- function(gds,
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     posSample <- which(study.annot$data.id == sampleCurrent &
-                           study.annot$study.id == study.id)
-    if(length(posSample) != 1){
+                            study.annot$study.id == study.id)
+
+    if(length(posSample) != 1) {
         stop("In pruningSample the sample ",
                 sampleCurrent, " doesn't exists\n")
     }
     # Get the genotype for sampleCurrent
-    g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start = c(1, posSample), count = c(-1,1))
+    g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"),
+                    start=c(1, posSample), count=c(-1,1))
 
     closefn.gds(gdsSample)
 
@@ -189,12 +193,12 @@ pruningSample <- function(gds,
 
     listKeepPos <- listGeno
 
-    if(!is.null(chr)){
+    if(!is.null(chr)) {
         snpCHR <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
         listKeepPos <- intersect(which(snpCHR == chr), listKeepPos)
     }
 
-    if(!is.null(minAF.SuperPop)){
+    if(!is.null(minAF.SuperPop)) {
         snpAF <- read.gdsn(index.gdsn(gds, "snp.AF"))
         listKeepPos <- intersect(which(snpCHR == chr), listKeepPos)
         snpAF <- read.gdsn(index.gdsn(gds, "snp.EAS_AF"))
@@ -206,7 +210,7 @@ pruningSample <- function(gds,
         listKeepPos <- intersect(listTMP, listKeepPos)
     }
 
-    if(length(listKeepPos) == 0){
+    if(length(listKeepPos) == 0) {
         stop("In pruningSample the sample ", sampleCurrent,
                 " doesn't snp after filters\n")
     }
@@ -215,12 +219,12 @@ pruningSample <- function(gds,
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listSamples <- sample.id[which(sample.ref == 1)]
 
-    snpset <- runLDPruning(gds,
-                           method,
-                           listSamples=listSamples,
-                           listKeep=listKeep,
-                           slide.max.bp.v = slide.max.bp.v,
-                           ld.threshold.v=ld.threshold.v)
+    snpset <- runLDPruning(gds=gds,
+                            method=method,
+                            listSamples=listSamples,
+                            listKeep=listKeep,
+                            slide.max.bp.v=slide.max.bp.v,
+                            ld.threshold.v=ld.threshold.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
     if(keepFile){

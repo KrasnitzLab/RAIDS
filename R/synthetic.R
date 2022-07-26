@@ -4,7 +4,7 @@
 #'
 #' @param gds an object of class \code{gds} opened with 1k genome in it
 #'
-#' @param nbSamples a \code{numeric} between 0 and 1 TODO
+#' @param nbSamples a single positive \code{integer}.
 #'
 #' @return TODO a \code{vector} of \code{string}
 #'
@@ -14,9 +14,15 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
 select1KGPop <- function(gds, nbSamples) {
+
+    ## Validate that nbSamples is a single positive integer
+    if(! (isSingleInteger(nbSamples) && nbSamples > 0)) {
+        stop("The \'nbSamples\' parameter must be a single positive integer.")
+    }
 
     listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listKeep <- which(listRef == 1)

@@ -748,6 +748,54 @@ gds2tfam <- function(gds, listSample, pedOUT){
 
 }
 
+#' @title create a file tfam file for plink from the gds file
+#'
+#' @description TODO
+#'
+#' @param gds a \code{gds} object.
+#'
+#' @param listSamples  a \code{array} with the sample to keep
+#'
+#' @param sampleANNO a \code{data.frame} with at least column sex and the name
+#' must be sample.id
+#'
+#' @param pedOUT TODO a PATH and file name to the output file
+#'
+#'
+#' @return TODO a \code{vector} of \code{numeric}
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom utils write.table
+#' @keywords internal
+
+gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT){
+
+    sampleGDS <- index.gdsn(gds, "sample.id")
+    sampleId <-read.gdsn(sampleGDS)
+    listS <- which(sampleId %in% listSample)
+
+    sampleGDS <- index.gdsn(gds, "sample.annot")
+    sampleANNO <-read.gdsn(sampleGDS)
+
+    pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
+                          id=sampleId[listS],
+                          fa=rep("0",length(listSample)),
+                          mo=rep("0",length(listSample)),
+                          sex=sampleANNO[sampleId[listS], "sex"],
+                          pheno=rep(1,length(listSample)),
+                          stringsAsFactors=FALSE)
+
+    write.table(pedFile, pedOUT,
+                quote=FALSE, sep="\t",
+                row.names=FALSE,
+                col.names=FALSE)
+
+}
 
 
 #' @title create a file tped file for plink from the gds file

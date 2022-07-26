@@ -254,7 +254,7 @@ pruningSample <- function(gds,
 #' @param study.id A \code{string} corresponding to the study
 #' use in LDpruning
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -267,16 +267,17 @@ pruningSample <- function(gds,
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
 #' @encoding UTF-8
 #' @export
-
 add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
-                             study.id){
+                                study.id) {
 
+    ## Open GDS file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
+    ## Extract needed information from GDS file
     snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))
     pruned <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
     listSNP <- which(snp.id %in% pruned)
-    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
+    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref")) == 1)
     sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))
 
     #sampleCur <- read.gdsn(index.gdsn(gdsSample, "sampleStudy"))
@@ -287,7 +288,7 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
     snp.chromosome <- read.gdsn(index.gdsn(gds,"snp.chromosome"))[listSNP]
     snp.position <-  read.gdsn(index.gdsn(gds,"snp.position"))[listSNP]
 
-    add.gdsn(gdsSample, "sample.id", c(sample.id[listRef], sampleCurrent) )
+    add.gdsn(gdsSample, "sample.id", c(sample.id[listRef], sampleCurrent))
 
     add.gdsn(gdsSample, "snp.id", snp.id[listSNP])
     add.gdsn(gdsSample, "snp.chromosome", snp.chromosome)

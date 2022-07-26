@@ -41,7 +41,7 @@ the sample}
 \item{seqError}{a single \code{numeric}  TODO. Default: \code{0.001}.}
 }
 \value{
-TODO a \code{vector} of \code{string}
+\code{OL} when the function is successful.
 }
 \description{
 TODO

@@ -143,7 +143,7 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param seqError a single \code{numeric}  TODO. Default: \code{0.001}.
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return \code{OL} when the function is successful.
 #'
 #' @examples
 #'
@@ -246,8 +246,8 @@ syntheticGeno <- function(gds,
         gOrder <- g[listOrderSNP]
 
 
-        matSim1 <- matrix(nr=sum(df$Freq), nc=nbSim)
-        matSim2 <- matrix(nr=sum(df$Freq), nc=nbSim)
+        matSim1 <- matrix(nrow=sum(df$Freq), ncol=nbSim)
+        matSim2 <- matrix(nrow=sum(df$Freq), ncol=nbSim)
 
 
         # Loop on the read.count and lap
@@ -276,9 +276,11 @@ syntheticGeno <- function(gds,
                                p2,
                                p3))
             # depht of allele 1
-            matSim1[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[1,], nc=nbSim)
+            matSim1[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[1,],
+                                                                    ncol=nbSim)
             # depht of allele 2
-            matSim2[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[2,], nc=nbSim)
+            matSim2[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[2,],
+                                                                    ncol=nbSim)
 
             # number of SNV homozygote corresponding to
             # df$count.tot[i] and df$lap[i]
@@ -292,9 +294,11 @@ syntheticGeno <- function(gds,
                                    seqError,
                                    2*seqError))
             # depht of allele 1 this is the allele homozygote
-            matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,], nc=nbSim)
+            matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
+                                                                    ncol=nbSim)
             # depht of allele 2 (the depth by error of the other allele )
-            matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,], nc=nbSim)
+            matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
+                                                                    ncol=nbSim)
         }
 
         # superPop of the 1kg sample
@@ -308,10 +312,10 @@ syntheticGeno <- function(gds,
         listB <- unique(blockDF[,curSP])
 
         # block where the phase switch
-        recombSwitch <- matrix(sample(x = c(0,1),
-                                      nbSim *(length(listB)),
-                                      replace=TRUE,
-                                      p = c(1-pRecomb, pRecomb)), ncol = nbSim)
+        recombSwitch <- matrix(sample(x=c(0, 1), size=nbSim *(length(listB)),
+                                replace=TRUE,
+                                prob=c(1-pRecomb, pRecomb)), ncol=nbSim)
+
         #rownames(recombSwitch) <- listB
 
         # indice for each zone with the same phase
@@ -328,7 +332,8 @@ syntheticGeno <- function(gds,
             listZone <- unique(blockZone[,i])
 
             # matrix if the lap is the first entry in the phase or the second for each zone
-            lapPos <- matrix(sample(x = c(0,1), 1 *(length(listZone)), replace=TRUE), nc=1)
+            lapPos <- matrix(sample(x=c(0,1), size=1 *(length(listZone)),
+                                        replace=TRUE), ncol=1)
 
             rownames(lapPos) <- listZone
             #LAPparent <- matrix(nr=nbSNV, nc=nbSim)
@@ -336,8 +341,8 @@ syntheticGeno <- function(gds,
         }
 
         phaseVal <- read.gdsn(index.gdsn(gdsRefAnnot, "phase"),
-                              start = c(1,curSynt),
-                              count = c(-1,1))[list1KG]
+                                start = c(1,curSynt),
+                                count = c(-1,1))[list1KG]
 
 
         # mat1 is lap mat2 is 1-lap

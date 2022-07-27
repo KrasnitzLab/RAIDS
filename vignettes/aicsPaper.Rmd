@@ -8,10 +8,12 @@ output:
   pkgdown:
     number_sections: yes
     as_is: true
+urlcolor: darkred
+linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
   %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
-  %\VignettePackage{aicsPaper}
+  %\VignettePackage{RAIDS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -37,8 +39,8 @@ set.seed(121444)
 
 # Licensing 
 
-The `r Githubpkg("belleau/aicsPaper")` package and the underlying 
-`r Githubpkg("belleau/aicsPaper")` code are distributed under  
+The `r Githubpkg("belleau/RAIDS")` package and the underlying 
+`r Githubpkg("belleau/RAIDS")` code are distributed under  
 the Artistic license 2.0. You are free to use and 
 redistribute this software.  
 
@@ -47,8 +49,8 @@ redistribute this software.
 
 # Citing
 
-If you use this package for a publication, we would ask you to cite the 
-following:
+If you use the **RAIDS** package for a publication, we would ask you to cite 
+the following:
 
 > Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
 
@@ -65,11 +67,16 @@ In sum, matched germline DNA sequence is often missing for cancer-derived
 molecular data. In such cases, having the possibility to infer ancestry 
 from tumor-derived data would be beneficial.
 
-The **aicsPaper** package implements an inference procedure that has been
+The **RAIDS** package implements an inference procedure that has been
 specifically developed to accurately infer genetic ancestry from 
 cancer-derived sequencing. The covered cancer-derived sequencing are, more 
 specifically, tumor exomes, targeted gene panels and RNA sequences.
 
+The **RAIDS** package includes a data synthesis method that enables 
+the selection of the
+best parameters for a specific cancer profile and also permits a 
+statistically assessment of inference accuracy for an individual 
+cancer-derived molecular profile.
 
 <br>
 <br>
@@ -77,15 +84,15 @@ specifically, tumor exomes, targeted gene panels and RNA sequences.
 # Installation
 
 To install the latest version accessible on the 
-[aicsPaper Github Website](https://github.com/belleau/aicsPaper "aicsPaper Github Site"), 
+[RAIDS Github Website](https://github.com/KrasnitzLab/RAIDS "RAIDS Github Site"), 
 the `r CRANpkg("devtools")` package is required.
 
 ```{r installDemo01, eval=FALSE}
 ## Load required package
 library(devtools)
 
-## Install the latest version of aicsPaper
-devtools::install_github('belleau/aicsPaper')
+## Install the latest version of RAIDS
+devtools::install_github('KrasnitzLab/RAIDS')
 ```
 
 <br>
@@ -122,11 +129,24 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 ```
 
 
+******
+
+<span style="color:darkred;font-weight:bold">Beware that a pre-processed 1KG 
+GDS file is available at this address:</span>
+
+<span style="color:red">
+[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds)
+</span>
+
+<span style="color:darkred;font-weight:bold">The size of the file is 15GB.</span>
+<span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span>
+
+******
+
+
 This section explains in further details how to generate the 1000 Genomes (1KG) 
 GDS file that is needed to run the ancestry inference tool. Beware that it 
 is unnecessary to re-run those steps as the 1KG GDS file is publicly available. 
-
-<span style="color:red">The 1KG GDS file will be available soon.</span>
 
 More specifically, the formatting of the 1KG information includes all those 
 sub-steps:
@@ -674,6 +694,18 @@ or in R for a s
     closefn.gds(gds)
 ```
 
+
+<br>
+<br>
+
+# Pre-processed files are available
+
+Pre-processed files, such as the 1KG GDS file, are available at this address:
+
+
+[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
+
+Beware that some of those files are voluminous.
 
 <br>
 <br>

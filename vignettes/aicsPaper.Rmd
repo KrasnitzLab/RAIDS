@@ -39,9 +39,9 @@ set.seed(121444)
 
 # Licensing 
 
-The `r Githubpkg("belleau/RAIDS")` package and the underlying 
-`r Githubpkg("belleau/RAIDS")` code are distributed under  
-the Artistic license 2.0. You are free to use and 
+The `r Githubpkg("KrasnitzLab/RAIDS")` package and the underlying 
+`r Githubpkg("KrasnitzLab/RAIDS")` code are distributed under  
+the https://opensource.org/licenses/Apache-2.0 license. You are free to use and 
 redistribute this software.  
 
 <br>

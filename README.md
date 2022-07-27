@@ -1,12 +1,16 @@
 <!-- badges: start -->
-[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![codecov](https://codecov.io/gh/belleau/aicsPaper/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/aicsPaper)
 [![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
 # Accurate inference of genetic ancestry from cancer-derived molecular data #
 
-The **_aicsPaper_** package enables accurate and robust inference of genetic ancestry from various types of molecular data, including whole-genome, whole-exome, targeted gene panels and RNA sequences, as described in our bioRxiv manuscript. Our tools retain high accuracy in presence of somatic alterations, such as those caused by cancer.
+The **_RAIDS_** package enables accurate and robust inference of genetic 
+ancestry from various types of molecular data, including whole-genome, 
+whole-exome, targeted gene panels and RNA sequences, as described in our 
+bioRxiv manuscript. Our tools retain high accuracy in presence of somatic 
+alterations, such as those caused by cancer.
 
 **This code and analysis pipeline was designed and developed for the following publication:**
 
@@ -36,24 +40,24 @@ package is required.
      ## Load required package
      library(devtools)
 
-     ## Install the latest version of aicsPaper
-     devtools::install_github('belleau/aicsPaper')
+     ## Install the latest version of RAIDS
+     devtools::install_github('KrasnitzLab/RAIDS')
 
 
 ## Documentation ##
 
-[aicsPaper Website](https://adeschen.github.io/aicsPaper/)
+[RAIDS Website](https://adeschen.github.io/aicsPaper/)
 
-[aicsPaper Get Started](https://adeschen.github.io/aicsPaper/articles/aicsPaper.html)
+[RAIDS Get Started](https://adeschen.github.io/aicsPaper/articles/aicsPaper.html)
 
 
 ## License ##
 
-This package and the underlying **_aicsPaper_** code are distributed under 
-the Artistic license 2.0. You are free to use and redistribute this software. 
+This package and the underlying **_RAIDS_** code are distributed under 
+the Apache-2.0 license. You are free to use and redistribute this software. 
 
-For more information on Artistic 2.0 License see
-[http://opensource.org/licenses/Artistic-2.0](http://opensource.org/licenses/Artistic-2.0)
+For more information on Apache-2.0 License see
+[https://opensource.org/licenses/Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
 
 
@@ -65,7 +69,7 @@ For more information on Artistic 2.0 License see
 ## Bugs/Feature requests ##
 
 If you have any bugs or feature requests, 
-[let us know](https://github.com/belleau/aicsPaper/issues). 
+[let us know](https://github.com/KrasnitzLab/RAIDS/issues). 
 
 
 Thanks!

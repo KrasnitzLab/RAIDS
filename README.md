@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![codecov](https://codecov.io/gh/belleau/aicsPaper/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/aicsPaper)
-[![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml)
+[![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
 # Accurate inference of genetic ancestry from cancer-derived molecular data #
@@ -46,9 +46,9 @@ package is required.
 
 ## Documentation ##
 
-[RAIDS Website](https://adeschen.github.io/aicsPaper/)
+[RAIDS Website](https://adeschen.github.io/RAIDS/)
 
-[RAIDS Get Started](https://adeschen.github.io/aicsPaper/articles/aicsPaper.html)
+[RAIDS Get Started](https://adeschen.github.io/RAIDS/articles/aicsPaper.html)
 
 
 ## License ##

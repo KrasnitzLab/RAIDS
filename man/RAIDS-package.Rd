@@ -2,17 +2,17 @@
 % Please edit documentation in R/aicsPaper.R
 \docType{package}
 \encoding{UTF-8}
-\name{aicsPaper-package}
-\alias{aicsPaper-package}
-\alias{aicsPaper}
-\title{aicsPaper: Ancestry Inference from Cancer Sequencing}
+\name{RAIDS-package}
+\alias{RAIDS-package}
+\alias{RAIDS}
+\title{RAIDS: Ancestry Inference from Cancer Sequencing}
 \description{
-The aicsPaper package implements specialized algorithms that enable
+The RAIDS package implements specialized algorithms that enable
 ancestry inference from various cancer sequencing sources (RNA,
 Exome and Whole-Genome sequencing).
 }
 \details{
-The aicsPaper package also implements simulation algorithm that generates
+The RAIDS package also implements simulation algorithm that generates
 synthetic cancer-derived data.
 
 This code and analysis pipeline was designed and developed for the

@@ -524,7 +524,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #' gds <- "Demo GDS TODO"
@@ -979,7 +979,7 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #' gds <- "Demo GDS TODO"

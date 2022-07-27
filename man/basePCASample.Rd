@@ -21,7 +21,8 @@ the sample.ids}
 threads. Default: \code{1}.}
 }
 \value{
-TODO a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
+TODO a \code{list}  with with two objects
+pca.unrel -> \code{snpgdsPCAClass}
 and a snp.load -> \code{snpgdsPCASNPLoading}
 }
 \description{
@@ -30,7 +31,7 @@ TODO
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

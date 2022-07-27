@@ -1,6 +1,6 @@
 ### Unit tests for processStudy.R functions
 
-library(aicsPaper)
+library(RAIDS)
 library(withr)
 
 
@@ -15,7 +15,7 @@ context("projectSample2PCA() results")
 
 test_that("projectSample2PCA() must return error when np is character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -28,7 +28,7 @@ test_that("projectSample2PCA() must return error when np is character string", {
 
 test_that("projectSample2PCA() must return error when np is negative integer", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -41,7 +41,7 @@ test_that("projectSample2PCA() must return error when np is negative integer", {
 
 test_that("projectSample2PCA() must return error when np is zero", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -54,7 +54,7 @@ test_that("projectSample2PCA() must return error when np is zero", {
 
 test_that("projectSample2PCA() must return error when sample.current is number", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
 

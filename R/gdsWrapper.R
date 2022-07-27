@@ -20,8 +20,9 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 
@@ -785,7 +786,7 @@ gds2tfam <- function(gds, listSample, pedOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils write.table
 #' @encoding UTF-8
@@ -797,17 +798,15 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT) {
     listS <- which(sampleId %in% listSample)
 
     pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
-                          id=sampleId[listS],
-                          fa=rep("0",length(listSample)),
-                          mo=rep("0",length(listSample)),
-                          sex=sampleANNO[sampleId[listS], "sex"],
-                          pheno=rep(1,length(listSample)),
-                          stringsAsFactors=FALSE)
+                            id=sampleId[listS],
+                            fa=rep("0",length(listSample)),
+                            mo=rep("0",length(listSample)),
+                            sex=sampleANNO[sampleId[listS], "sex"],
+                            pheno=rep(1,length(listSample)),
+                            stringsAsFactors=FALSE)
 
-    write.table(pedFile, pedOUT,
-                quote=FALSE, sep="\t",
-                row.names=FALSE,
-                col.names=FALSE)
+    write.table(pedFile, pedOUT, quote=FALSE, sep="\t",
+                    row.names=FALSE, col.names=FALSE)
 
 }
 
@@ -970,10 +969,11 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom SNPRelate snpgdsOpen snpgdsLDpruning
 #' @importFrom gdsfmt closefn.gds
+#' @encoding UTF-8
 #' @keywords internal
 runLDPruning <- function(gds, method="corr",
                             listSamples=NULL,
@@ -1014,13 +1014,13 @@ runLDPruning <- function(gds, method="corr",
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addGDSStudyPruning <- function(gds, pruned, sample.id) {
 
-
-    if("pruned.study" %in% ls.gdsn(gds)){
+    if("pruned.study" %in% ls.gdsn(gds)) {
         delete.gdsn(index.gdsn(gds, "pruned.study"))
     }
 
@@ -1049,8 +1049,9 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn sync.gds
+#' @encoding UTF-8
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
@@ -1106,8 +1107,9 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addUpdateLap <- function(gds, snp.lap) {
 
@@ -1134,17 +1136,17 @@ addUpdateLap <- function(gds, snp.lap) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addUpdateSegment <- function(gds, snp.seg) {
 
-    if("segment" %in% ls.gdsn(gds)){
+    if("segment" %in% ls.gdsn(gds)) {
         snpLap <- write.gdsn(index.gdsn(gds, "segment"), snp.seg)
     } else{
-        snpLap <- add.gdsn(gds, "segment", snp.seg, storage = "uint32")
+        snpLap <- add.gdsn(gds, "segment", snp.seg, storage="uint32")
     }
-
 
     sync.gds(gds)
 

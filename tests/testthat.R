@@ -1,5 +1,5 @@
 library(testthat)
-library(aicsPaper)
+library(RAIDS)
 
 ## Run all unit tests
-test_check("aicsPaper")
+test_check("RAIDS")

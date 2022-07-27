@@ -25,7 +25,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo pedigree file
 #' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
@@ -164,7 +164,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo SNV information file used as input
 #' snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
@@ -277,7 +277,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
 #' pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
@@ -377,7 +377,7 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -464,7 +464,7 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Open existing 1K GDS file
 #' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
@@ -553,7 +553,7 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## 1K GDS file
 #' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
@@ -617,7 +617,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -697,13 +697,14 @@ pruning1KG.Chr <- function(gds, method="corr",
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1}.
 #'
-#' @return TODO a \code{list}  with with two objects pca.unrel -> \code{snpgdsPCAClass}
+#' @return TODO a \code{list}  with with two objects
+#' pca.unrel -> \code{snpgdsPCAClass}
 #' and a snp.load -> \code{snpgdsPCASNPLoading}
 #'
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

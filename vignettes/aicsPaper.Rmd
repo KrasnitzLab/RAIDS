@@ -18,23 +18,23 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'hide', warning=FALSE, message=FALSE}
+```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
   library(knitr)
-  library(aicsPaper)
+  library(RAIDS)
 })
 
 set.seed(121444)
 ```
 
 <br />
-**Package**: `r Rpackage("aicsPaper")`<br />
-**Authors**: `r packageDescription("aicsPaper")[["Author"]]`<br />
-**Version**: `r packageDescription("aicsPaper")$Version`<br />
+**Package**: `r Rpackage("RAIDS")`<br />
+**Authors**: `r packageDescription("RAIDS")[["Author"]]`<br />
+**Version**: `r packageDescription("RAIDS")$Version`<br />
 **Compiled date**: `r Sys.Date()`<br />
-**License**: `r packageDescription("aicsPaper")[["License"]]`<br />
+**License**: `r packageDescription("RAIDS")[["License"]]`<br />
 
 
 # Licensing 
@@ -124,7 +124,7 @@ In the following sections, those main steps are described in details.
 ## Step 1 - Formatting the information from 1000 Genomes (optional)
 
 
-```{r graphStep1, echo = FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
+```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step1_v01.png")
 ```
 
@@ -259,7 +259,7 @@ from multiple files.
 
 ```{r fileGenopart2, echo=TRUE, eval=FALSE}
 ## Load required package
-library(aicsPaper)
+library(RAIDS)
 
 ## The path where the genotyping files are located
 PATHGENOCHR <- file.path("data", "pathgenochr")
@@ -283,7 +283,7 @@ in RDS format:
 
 ```{r prepPed1KG, eval=FALSE, echo=TRUE}
 ## Load required package
-library(aicsPaper)
+library(RAIDS)
 
 ## The path to the pedigree file from 1KG
 ## In this example, the file is in the current directory
@@ -315,7 +315,7 @@ using Bioconductor [gdsfmt](https://bioconductor.org/packages/gdsfmt/).
 The bulk intermediate SNP file contains the SNP position as well as the 
 frequency in each super population.
 
-```{r intermediateVCF, echo=T, eval=FALSE}
+```{r intermediateVCF, echo=TRUE, eval=FALSE}
 ## This is not done in R
 ## The python script is in the 'scriptsPy' directory
     
@@ -351,9 +351,9 @@ created (*fileLSNP* parameter)
 The function __generateMapSnvSel()__ is used to filter the SNP file and 
 generated the needed RDS files:
 
-```{r filterVCF, echo=T, eval=FALSE}
+```{r filterVCF, echo=TRUE, eval=FALSE}
 ## Load required package
-library(aicsPaper)
+library(RAIDS)
 
 ## The path to the bulk SNP info file
 fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
@@ -546,7 +546,7 @@ the information of all retained SNPs from 1KG GDS fil:
 
 ```{r snvListVCF, echo=TRUE, eval=FALSE}
 ## Load required package
-library(aicsPaper)
+library(RAIDS)
 
 ## Open the 1KG GDS file    
 gds <- snpgdsOpen(fileGDS1kg)
@@ -612,7 +612,7 @@ in R:
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
 
-    library(aicsPaper)
+    library(RAIDS)
     
     PATHGENO <- file.path("data", "snpCancer")
     PATHMETA <- file.path("data", "metadata")
@@ -653,7 +653,7 @@ or in R for a s
 
 ```{r pruningSample, echo=TRUE, eval=FALSE}
 
-    library(aicsPaper)
+    library(RAIDS)
     
     # fileNameGDS with the sample and 1KG genotype
     # listSamples list of sample.id from the study

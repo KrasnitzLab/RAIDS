@@ -27,7 +27,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -191,7 +191,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10, minP
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -321,7 +321,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -382,7 +382,7 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -448,7 +448,7 @@ testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -506,7 +506,7 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -651,7 +651,7 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

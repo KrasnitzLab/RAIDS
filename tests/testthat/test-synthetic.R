@@ -1,6 +1,6 @@
 ### Unit tests for synthetic functions
 
-library(aicsPaper)
+library(RAIDS)
 library(withr)
 
 

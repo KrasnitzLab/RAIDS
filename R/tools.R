@@ -247,20 +247,19 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr){
 
     blockChr <- read.delim(file.path(PATHBLOCK,
-                                     paste0("block.sp.",superPop, ".f0.05.chr", chr,
-                                            ".blocks.det")),
-                           sep="")
+                            paste0("block.sp.", superPop, ".f0.05.chr", chr,
+                                            ".blocks.det")), sep="")
 
-    z <- cbind(c(blockChr$BP1, snp.keep, blockChr$BP2+1) ,
-               c(seq_len(nrow(blockChr)),
-                 rep(0, length(snp.keep)),
-                 -1*seq_len(nrow(blockChr))))
+    z <- cbind(c(blockChr$BP1, snp.keep, blockChr$BP2+1),
+                c(seq_len(nrow(blockChr)),
+                    rep(0, length(snp.keep)), -1*seq_len(nrow(blockChr))))
 
     z <- z[order(z[,1]),]
     block.snp <- cumsum(z[,2])[z[,2] == 0]
@@ -273,12 +272,11 @@ processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr){
     for(i in seq_len(length(block.snp))){
         if(block.snp[i] == 0){
             if(activeBlock == 1){
-                if(snp.keep[i] - curStart >= 10000){
+                if(snp.keep[i] - curStart >= 10000) {
                     blockState <- blockState - 1
 
                     curStart <- snp.keep[i]
                 }
-
             } else{
                 blockState <- blockState - 1
                 curStart <- snp.keep[i]

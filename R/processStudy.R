@@ -886,23 +886,23 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @encoding UTF-8
 #' @export
 computePCAsynthetic <- function(gdsSample, pruned, sample.id,
                                     sample.ref, study.annot) {
-    if(nrow(study.annot) != 1){
+
+    if(nrow(study.annot) != 1) {
         stop("Number of sample in study.annot not equal to 1\n")
     }
-
 
     sample.pos <- which(sample.id == study.annot$data.id[1])
     sample.Unrel <- sample.ref[which(sample.ref != study.annot$case.id[1])]
 
     g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
-                    start=c(1, sample.pos),
-                    count=c(-1, 1))
+                    start=c(1, sample.pos), count=c(-1, 1))
 
     listPCA <- list()
 

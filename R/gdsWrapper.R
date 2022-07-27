@@ -62,8 +62,9 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addGDSRef <- function(gds, filePart) {
 
@@ -104,8 +105,9 @@ addGDSRef <- function(gds, filePart) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 
@@ -154,14 +156,15 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
+#' @encoding UTF-8
 #' @keywords internal
-appendGDSSampleOnly <- function(gds, listSamples){
+appendGDSSampleOnly <- function(gds, listSamples) {
 
     sampleGDS <- index.gdsn(gds, "sample.id")
 
-    append.gdsn(sampleGDS,  val=listSamples, check=TRUE)
+    append.gdsn(sampleGDS, val=listSamples, check=TRUE)
 
     return(0L)
 }
@@ -192,22 +195,26 @@ appendGDSSampleOnly <- function(gds, listSamples){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 
-    if( sum(c("study.id", "study.desc", "study.platform") %in% colnames(studyDF)) != 3 ) {
+    if(sum(c("study.id", "study.desc", "study.platform") %in%
+                colnames(studyDF)) != 3 ) {
         stop("studyDF incomplete in addStudyGDSSample\n")
     }
 
     if(!(is.null(listSamples))) {
-        if(length(listSamples) == length(intersect(listSamples, rownames(pedDF)))){
+        if(length(listSamples) == length(intersect(listSamples,
+                                                    rownames(pedDF)))) {
             pedDF <- pedDF[listSamples,]
-        }else{
-            stop("List of samples not include in the ped or ped don't have rownames equal to Name.ID\n")
+        } else {
+            stop("List of samples not include in the ped or ped ",
+                    "don't have rownames equal to Name.ID\n")
         }
-    } else{
+    } else {
         listSamples <- pedDF$Name.ID
     }
 
@@ -283,8 +290,9 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 generateGDSSNPinfo <- function(gds, fileFREQ){
 
@@ -331,24 +339,25 @@ generateGDSSNPinfo <- function(gds, fileFREQ){
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn
 #' @importFrom utils read.csv2
+#' @encoding UTF-8
 #' @keywords internal
 generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 
     # File with the description of the SNP keep
-    listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
+    listMat1k <- dir(PATHGENO, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
     listSNP <- readRDS(fileLSNP)
 
-    for(i in seq_len(length(listSamples))){
+    for(i in seq_len(length(listSamples))) {
         pos <- which(listSample1k == listSamples[i])
         print(listSamples[i])
-        if( length(pos) == 1){
-            matSample <- read.csv2( file.path(PATHGENO, listMat1k[pos]),
-                                    row.names = NULL)
+        if( length(pos) == 1) {
+            matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
+                                        row.names=NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
             if(i == 1) {
                 var.geno <- add.gdsn(gds, "genotype",
@@ -396,9 +405,10 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils read.csv2
+#' @encoding UTF-8
 #' @keywords internal
 appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 
@@ -414,8 +424,8 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
     for(i in seq_len(length(listSample))){
         pos <- which(listSample1k == listSample[i])
         if( length(pos) == 1){
-            matSample <- read.csv2( file.path(PATHGENO, listMat1k[pos]),
-                                    row.names = NULL)
+            matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
+                                        row.names = NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
 
 
@@ -431,7 +441,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 
             rm(matSample)
             print(paste0(listMat1k[pos], " ", i))
-        }else{
+        }else {
             stop("Missing 1k samples ", listSample[i])
         }
     }
@@ -453,15 +463,16 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom utils read.csv2
+#' @encoding UTF-8
 #' @keywords internal
 appendGDSgenotypeMat <- function(gds, matG) {
 
-
     geno.var <- index.gdsn(gds, "genotype")
-    append.gdsn(geno.var, matG, check=TRUE)
+    append.gdsn(node=geno.var, val=matG, check=TRUE)
+
     return(0L)
 }
 
@@ -508,10 +519,11 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #'
 #' ## TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
 #' @importFrom stats qbinom
 #' @importFrom utils read.csv
+#' @encoding UTF-8
 #' @keywords internal
  generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 listSamples,listPos, offset,
@@ -539,9 +551,11 @@ appendGDSgenotypeMat <- function(gds, matG) {
             matSample <- read.csv(file.path(PATHGENO, listMat[pos]))
 
 
-            matSample[, "Chromosome"] <- as.integer(gsub("chr", "", matSample[, "Chromosome"]))
+            matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
+                                                    matSample[, "Chromosome"]))
             matSample[, "Position"] <- matSample[, "Position"] + offset
-            matSample[, "count"] <- rowSums(matSample[, c("File1R", "File1A", "File1E", "File1D")])
+            matSample[, "count"] <- rowSums(matSample[, c("File1R", "File1A",
+                                                    "File1E", "File1D")])
 
             # matAll <- merge(matSample[,c( "Chromosome", "Position",
             #                               "File1R",  "File1A",
@@ -585,15 +599,17 @@ appendGDSgenotypeMat <- function(gds, matG) {
 
 
             if(is.null(PATHGDSSAMPLE)){
-                stop("PATHGDSSAMPLE is NULL in generateGDS1KGgenotypeFromSNPPileup\n")
+                stop("PATHGDSSAMPLE is NULL in ",
+                        "generateGDS1KGgenotypeFromSNPPileup\n")
             } else{
-                if(! dir.exists(PATHGDSSAMPLE)){
+                if(! dir.exists(PATHGDSSAMPLE)) {
                     dir.create(PATHGDSSAMPLE)
                 }
             }
-            fileGDSSample <- file.path(PATHGDSSAMPLE, paste0(listSamples[i], ".gds"))
-            if(file.exists(fileGDSSample) ){
-                gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
+            fileGDSSample <- file.path(PATHGDSSAMPLE,
+                                        paste0(listSamples[i], ".gds"))
+            if(file.exists(fileGDSSample)) {
+                gdsSample <- openfn.gds(fileGDSSample, readonly=FALSE)
             } else{
                 gdsSample <- createfn.gds(fileGDSSample)
 
@@ -614,7 +630,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
                                         matAll$count,
                                         valdim=c( nrow(listPos), 1),
                                         storage="sp.int16")
-            } else{
+            } else {
                 # you must append
                 var.Ref <- append.gdsn(index.gdsn(gdsSample, "Ref.count"),
                                     matAll$File1R)

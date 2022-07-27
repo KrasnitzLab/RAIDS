@@ -814,43 +814,45 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id, chr
 #' @param gdsSampleFile the path of an object of class \code{gds} related to
 #' the sample
 #'
-#'
 #' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alexander Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
 #' @keywords internal
 addStudy1Kg <- function(gds, gdsSampleFile) {
 
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
+    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE) #
 
-    snp.study <- read.gdsn(index.gdsn(gdsSample, "study.list"))
-
-
-    if(length(which(snp.study$study.id == "Ref.1KG")) == 0){
-
-        sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
-        sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
+    snp.study <- read.gdsn(index.gdsn(node=gdsSample, "study.list"))
 
 
-        study.list <- data.frame(study.id = "Ref.1KG",
-                              study.desc = "Unrelated samples from 1000 Genomes",
-                              study.platform = "GRCh38 1000 genotypes",
-                              stringsAsFactors = FALSE)
+    if(length(which(snp.study$study.id == "Ref.1KG")) == 0) {
+
+        sample.ref <- read.gdsn(index.gdsn(node=gds, "sample.ref"))
+        sample.id <- read.gdsn(index.gdsn(node=gds,
+                                        "sample.id"))[which(sample.ref == 1)]
+
+
+        study.list <- data.frame(study.id="Ref.1KG",
+                        study.desc="Unrelated samples from 1000 Genomes",
+                        study.platform="GRCh38 1000 genotypes",
+                        stringsAsFactors=FALSE)
 
 
         ped1KG <- data.frame(Name.ID = sample.id,
-                             Case.ID= sample.id,
-                             Sample.Type=rep("Reference", length(sample.id)),
-                             Diagnosis= rep("Reference", length(sample.id)),
-                             Source= rep("IGSR", length(sample.id)),
-                             stringsAsFactors=FALSE)
+                            Case.ID= sample.id,
+                            Sample.Type=rep("Reference", length(sample.id)),
+                            Diagnosis=rep("Reference", length(sample.id)),
+                            Source=rep("IGSR", length(sample.id)),
+                            stringsAsFactors=FALSE)
 
-        addStudyGDSSample(gdsSample, ped1KG, batch=1, listSamples=NULL, study.list)
+        addStudyGDSSample(gds=gdsSample, pedDF=ped1KG, batch=1,
+                            listSamples=NULL, studyDF=study.list)
 
 
         sync.gds(gds)
@@ -888,7 +890,8 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' @importFrom gdsfmt add.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
 #' @export
-computePCAsynthetic <- function(gdsSample, pruned, sample.id, sample.ref, study.annot){
+computePCAsynthetic <- function(gdsSample, pruned, sample.id,
+                                    sample.ref, study.annot) {
     if(nrow(study.annot) != 1){
         stop("Number of sample in study.annot not equal to 1\n")
     }
@@ -898,8 +901,8 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id, sample.ref, study.
     sample.Unrel <- sample.ref[which(sample.ref != study.annot$case.id[1])]
 
     g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
-                   start = c(1,sample.pos),
-                   count = c(-1,1))
+                    start=c(1, sample.pos),
+                    count=c(-1, 1))
 
     listPCA <- list()
 
@@ -907,26 +910,25 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id, sample.ref, study.
     rm(g)
 
     listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
-                                        sample.id = sample.Unrel,
-                                        snp.id = listPCA[["pruned"]],
-                                        num.thread = 1,
-                                        verbose = TRUE)
+                                    sample.id=sample.Unrel,
+                                    snp.id=listPCA[["pruned"]],
+                                    num.thread=1,
+                                    verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj = gdsSample,
-                                                 num.thread = 1,
-                                                 verbose = TRUE)
+                                        gdsobj=gdsSample,
+                                        num.thread=1,
+                                        verbose=TRUE)
 
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                                   gdsobj = gdsSample,
-                                                   sample.id = sample.id[sample.pos],
-                                                   num.thread = 1, verbose = TRUE)
+                                        gdsobj=gdsSample,
+                                        sample.id=sample.id[sample.pos],
+                                        num.thread=1, verbose=TRUE)
 
-    listRes <- list( sample.id = sample.id[sample.pos],
-                     eigenvector.ref = listPCA[["pca.unrel"]]$eigenvect,
-                     eigenvector = listPCA[["samp.load"]]$eigenvect )
+    listRes <- list(sample.id=sample.id[sample.pos],
+                        eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
+                        eigenvector=listPCA[["samp.load"]]$eigenvect)
     return(listRes)
-
 }
 
 #' @title TODO
@@ -965,11 +967,12 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 
     kList <- c(seq_len(14), seq(15,100, by=5))
 
-    resMat <- data.frame(sample.id = rep(listEigenvector$sample.id, 14 * length(kList)),
-                         D=rep(0,14 * length(kList)),
-                         K=rep(0,14 * length(kList)),
-                         SuperPop=character(14 * length(kList)),
-                         stringsAsFactors=FALSE)
+    resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
+                                            14 * length(kList)),
+                            D=rep(0,14 * length(kList)),
+                            K=rep(0,14 * length(kList)),
+                            SuperPop=character(14 * length(kList)),
+                            stringsAsFactors=FALSE)
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
@@ -981,30 +984,30 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
                                                     study.annot$case.id[1])],
                                 listEigenvector$sample.id)
 
-
     totR <- 1
-    for(pcaD in 2:15){
-        for(kV in  seq_len(length(kList))){
+    for(pcaD in 2:15) {
+        for(kV in  seq_len(length(kList))) {
             dCur <- paste0("d", pcaD)
             kCur <- paste0("k", kList[kV])
             resMat[totR,c("D", "K")] <- c(pcaD, kList[kV])
 
-            pcaND <- eigenvect[,1:pcaD]
-            y_pred <- knn(train = pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
-                          test = pcaND[rownames(eigenvect)[nrow(eigenvect)],, drop=FALSE],
-                          cl = factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]], levels= listSuperPop, labels = listSuperPop),
-                          k = kList[kV],
-                          prob = FALSE)
+            pcaND <- eigenvect[ ,seq_len(pcaD)]
+            y_pred <- knn(train=pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
+                test=pcaND[rownames(eigenvect)[nrow(eigenvect)],, drop=FALSE],
+                cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
+                            levels=listSuperPop, labels=listSuperPop),
+                k=kList[kV],
+                prob=FALSE)
 
-            resMat[totR,paste0("SuperPop")] <- listSuperPop[as.integer(y_pred)]
+            resMat[totR, paste0("SuperPop")] <- listSuperPop[as.integer(y_pred)]
 
             totR <- totR + 1
         } # end k
     } # end pca Dim
-    listKNN <- list(sample.id = listEigenvector$sample.id,
-                    sample1Kg = study.annot$case.id[1],
-                    sp = spRef[study.annot$case.id[1]],
-                    matKNN = resMat)
+    listKNN <- list(sample.id=listEigenvector$sample.id,
+                        sample1Kg=study.annot$case.id[1],
+                        sp=spRef[study.annot$case.id[1]],
+                        matKNN=resMat)
 
     return(listKNN)
 }

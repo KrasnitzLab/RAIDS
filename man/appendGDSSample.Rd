@@ -29,6 +29,7 @@ study must be fill.
 \examples{
 
 # TODO
+gds <- "Demo GDS TODO"
 
 }
 \author{

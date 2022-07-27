@@ -36,6 +36,7 @@ https://bioconductor.org/packages/SNPRelate/
 \examples{
 
 ## TODO
+gds <- "TODO"
 
 }
 \author{

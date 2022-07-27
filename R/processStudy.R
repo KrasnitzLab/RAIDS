@@ -27,7 +27,7 @@
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
 #' ## TODO
-#'
+#' fileNamePED <- "TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
@@ -680,6 +680,7 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 #' @examples
 #'
 #' ## TODO
+#' gds <- "TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
@@ -819,6 +820,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id, chr
 #' @examples
 #'
 #' # TODO
+#' gds <- "TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -885,6 +887,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "TOTO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn
@@ -950,6 +953,7 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @examples
 #'
 #' # TODO
+#' listEigenvector <- "TOTO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn

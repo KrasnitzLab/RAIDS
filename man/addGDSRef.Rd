@@ -25,6 +25,7 @@ from  in GENESIS TODO
 \examples{
 
 # TODO
+gds <- "Demo GDS TODO"
 
 }
 \author{

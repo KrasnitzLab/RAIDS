@@ -22,6 +22,7 @@ The fields append are sample.id with the listSample
 \examples{
 
 # TODO
+gds <- "Demo GDS TODO"
 
 }
 \author{

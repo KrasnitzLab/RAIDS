@@ -22,6 +22,7 @@ TODO
 \examples{
 
 # TODO
+gds <- "TODO"
 
 }
 \author{

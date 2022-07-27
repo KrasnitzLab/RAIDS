@@ -19,6 +19,7 @@
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
@@ -62,6 +63,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
@@ -105,6 +107,7 @@ addGDSRef <- function(gds, filePart) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -156,6 +159,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -195,6 +199,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -290,12 +295,13 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSNPinfo <- function(gds, fileFREQ){
+generateGDSSNPinfo <- function(gds, fileFREQ) {
 
     mapSNVSel <- readRDS( fileFREQ)
     print(paste0("Read mapSNVSel DONE ", Sys.time()))
@@ -405,6 +411,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -463,6 +470,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -519,6 +527,8 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
 #' ## TODO
+#' gds <- "Demo GDS TODO"
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
@@ -735,6 +745,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -785,6 +796,7 @@ gds2tfam <- function(gds, listSample, pedOUT) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -828,6 +840,7 @@ gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -920,6 +933,7 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsIBDKING
@@ -968,6 +982,7 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' data.dir <- system.file("extdata", package="aicsPaper")
 #'
 #' ## TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
@@ -1013,6 +1028,7 @@ runLDPruning <- function(gds, method="corr",
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -1048,6 +1064,7 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn sync.gds
@@ -1106,6 +1123,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -1135,6 +1153,7 @@ addUpdateLap <- function(gds, snp.lap) {
 #' @examples
 #'
 #' # TODO
+#' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn

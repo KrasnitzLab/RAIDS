@@ -50,6 +50,7 @@ TODO
 data.dir <- system.file("extdata", package="aicsPaper")
 
 ## TODO
+gds <- "Demo GDS TODO"
 
 }
 \author{

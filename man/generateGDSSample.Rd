@@ -29,6 +29,7 @@ the \code{data.frame} \code{pedDF} passed to the function.
 \examples{
 
 # TODO
+gds <- "Demo GDS TODO"
 
 }
 \author{

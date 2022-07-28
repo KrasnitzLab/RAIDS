@@ -319,10 +319,14 @@ syntheticGeno <- function(gds,
             if(length(a1) > 0){
                 matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
                                                                   ncol=nbSim)
+                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
+                                                                  ncol=nbSim)
             }
             # depht of allele 2 (the depth by error of the other allele )
             if(length(a2) > 0){
-                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
+                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
+                                                                  ncol=nbSim)
+                matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
                                                                   ncol=nbSim)
             }
         }

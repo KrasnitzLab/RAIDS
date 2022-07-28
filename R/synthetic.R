@@ -185,9 +185,6 @@ syntheticGeno <- function(gds,
                             minProb=0.999,
                             seqError=0.001) {
 
-    # if(nbSim != 1){
-    #     stop("Just 1 simulation is manage yet")
-    # }
 
     gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE) #
 
@@ -220,6 +217,7 @@ syntheticGeno <- function(gds,
     nbSNV <- nrow(infoSNV)
 
     # Define a table for each "count.tot","lap" and, Freq (number of occurence)
+    # to reduce the numbe of sampling call later
     df <- as.data.frame(table(infoSNV[,c("count.tot","lap")]))
     df <- df[df$Freq > 0,]
     df <- df[order(df$count.tot, df$lap),]
@@ -310,17 +308,23 @@ syntheticGeno <- function(gds,
             homo <- which(gOrder[(posDF[i]+1):(posDF[i+1])] != 1)
 
 
+            a1 <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 0)
+            a2 <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 2)
             tmpHomo <- rmultinom(nbHomo * nbSim,
                                  as.numeric(as.character(df$count.tot[i])),
                                  c(1- 3 * seqError,
                                    seqError,
                                    2*seqError))
             # depht of allele 1 this is the allele homozygote
-            matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
-                                                                    ncol=nbSim)
+            if(length(a1) > 0){
+                matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
+                                                                  ncol=nbSim)
+            }
             # depht of allele 2 (the depth by error of the other allele )
-            matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
-                                                                    ncol=nbSim)
+            if(length(a2) > 0){
+                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
+                                                                  ncol=nbSim)
+            }
         }
 
         # superPop of the 1kg sample

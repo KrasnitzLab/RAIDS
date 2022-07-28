@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![codecov](https://codecov.io/gh/belleau/aicsPaper/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/aicsPaper)
-[![R-CMD-check-bioc](https://github.com/adeschen/aicsPaper/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
+[![codecov](https://codecov.io/gh/belleau/RAIDS/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/RAIDS)
+[![R-CMD-check-bioc](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
 # Accurate inference of genetic ancestry from cancer-derived molecular data #

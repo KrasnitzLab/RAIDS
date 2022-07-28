@@ -161,10 +161,71 @@ test_that("computeLOHBlocksDNAChr() must return error when chr is character stri
     gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
 
     error_message <- paste0("The \'chr\' must be a single integer value representing ",
-                            "a chromosome")
+                                "a chromosome")
 
     expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
                                     snp.pos=data.frame(), chr="MONTREAL",
                                     genoN=0.001),
                  error_message)
 })
+
+test_that("computeLOHBlocksDNAChr() must return error when genoN is character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'genoN\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                    snp.pos=data.frame(), chr=2,
+                                    genoN="TOTO"), error_message)
+})
+
+
+test_that("computeLOHBlocksDNAChr() must return error when genoN is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'genoN\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                        snp.pos=data.frame(), chr=2,
+                                        genoN=c(0.2, 0.33)), error_message)
+})
+
+
+test_that("computeLOHBlocksDNAChr() must return error when genoN is negative numeric", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'genoN\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                        snp.pos=data.frame(), chr=2,
+                                        genoN=-0.33), error_message)
+})
+
+
+
+test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric above 1", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'genoN\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                        snp.pos=data.frame(), chr=2,
+                                        genoN=1.33), error_message)
+})
+

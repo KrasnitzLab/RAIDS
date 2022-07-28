@@ -250,6 +250,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats dbinom
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
@@ -439,11 +440,16 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #'
 #' @param matCov TODO
 #'
-#' @param pCutOff TODO
+#' @param pCutOff TODO Default: \code{-3}.
 #'
 #' @param vMean TODO
 #'
-#' @return a list TODO.
+#' @return a \code{list} containing:
+#' \itemize{
+#' \item{pWin} {TODO.}
+#' \item{pCut} {TODO.}
+#' \item{pCut1} {TODO.}
+#' }
 #'
 #' @examples
 #'
@@ -503,13 +509,14 @@ testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
 #'
 #' @param snp.pos TODO
 #'
-#' @param chr A integer for the chromosome TODO
+#' @param chr a single positive \code{integer} for the chromosome.
 #'
-#' @param wAR size-1 of the window to compute an empty box
+#' @param wAR a single positive \code{integer} representing the size-1 of
+#' the window used to compute an empty box. Default: \code{10}.
 #'
-#' @param cutOffEmptyBox TODO default -3
+#' @param cutOffEmptyBox TODO Default: \code{-3}.
 #'
-#' @return A vector of the imbAR TODO.
+#' @return a \code{vector} of TODO representing the imbAR TODO.
 #'
 #' @examples
 #'
@@ -520,10 +527,22 @@ testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10,
-                                        cutOffEmptyBox = -3) {
+computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
+                                        cutOffEmptyBox=-3) {
+
+    ## The chr parameter must be a single integer value
+    if (!isSingleNumber(chr))  {
+        stop("The \'chr\' must be a single integer value representing ",
+             "a chromosome")
+    }
+
+    ## The wAR parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
+        stop("The \'wAR\' must be a single numeric positive value.")
+    }
 
     # We use wAR - 1 because
     # process the window ex: 1 to 1+wAR
@@ -537,8 +556,8 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10,
 
     heteroSNV <- snp.pos[listHetero,]
 
-    if(nrow(heteroSNV) > wAR){
-        for(i in seq_len(nrow(heteroSNV)-wAR)){
+    if(nrow(heteroSNV) > wAR) {
+        for(i in seq_len(nrow(heteroSNV)-wAR)) {
             if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ){
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                     ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
@@ -581,19 +600,20 @@ computeAllelicImbDNAChr <- function( snp.pos, chr, wAR = 10,
 #' @importFrom stats median
 #' @encoding UTF-8
 #' @export
-computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
+computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
+
     listBlockAR <- list()
     j <- 1
     tmp <- as.integer(snp.pos$imbAR == 1)
     z <- cbind(c(tmp[1], tmp[-1] - tmp[seq_len(length(tmp) -1)]),
-               c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
+            c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
 
-    if(length(which(z[,1] == 1)) > 0){
+    if(length(which(z[,1] == 1)) > 0) {
 
         segImb <- data.frame(start = seq_len(nrow(snp.pos))[which(z[,1] > 0)],
-                             end = seq_len(nrow(snp.pos))[which(z[,2] < 0)])
+                                end = seq_len(nrow(snp.pos))[which(z[,2] < 0)])
 
-        for(i in seq_len(nrow(segImb))){
+        for(i in seq_len(nrow(segImb))) {
             # index of the segment
             listSeg <- (segImb$start[i]):(segImb$end[i])
             # index hetero segment
@@ -601,7 +621,7 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
             # SNP hetero for the segment
             snp.hetero <- snp.pos[listHetero,]
 
-            if(nrow(snp.hetero) >= 2 * w){
+            if(nrow(snp.hetero) >= 2 * w) {
                 # I am here
                 lapCur <- median(apply(snp.hetero[seq_len(w),
                             c("cnt.ref", "cnt.alt")], 1, min) /
@@ -609,7 +629,7 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 
                 start <- 1
                 k <- w + 1
-                while(k < nrow(snp.hetero)){
+                while(k < nrow(snp.hetero)) {
                     # We have (k+w-1) <= nrow(snp.hetero)
                     # Case 1 true because (nrow(snp.hetero) >= 2 * w
                     # Other case nrow(snp.hetero) >= w+k - 1
@@ -666,16 +686,17 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 
                 listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
 
-                j <- j+1
+                j <- j + 1
             }
 
         }
 
     }
-    listBlockAR <- do.call(rbind,listBlockAR) # note NULL if length(listBlockAR) == 0
+
+    # note NULL if length(listBlockAR) == 0
+    listBlockAR <- do.call(rbind, listBlockAR)
 
     return(listBlockAR)
-
 }
 
 
@@ -709,10 +730,10 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #'
 #' @param cutOffHomoScore TODO
 #'
-#' @param wAR size-1 of the window to compute an empty box
+#' @param wAR a single positive \code{integer} representing the size-1 of
+#' the window used to compute an empty box. Default: \code{9}.
 #'
-#'
-#' @return The data.frame with lap for the snv with depth > minCov. TODO
+#' @return a \code{data.frame} with lap for the snv with depth > minCov. TODO
 #'
 #' @examples
 #'
@@ -723,6 +744,7 @@ computeAlleleFraction <- function( snp.pos, chr, w = 10, cutOff = -3){
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computeAllelicFractionDNA <- function(gds, gdsSample,
@@ -733,6 +755,11 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                                         cutOffLOH=-5,
                                         cutOffHomoScore=-3,
                                         wAR=9) {
+
+    ## The wAR parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
+        stop("The \'wAR\' must be a single numeric positive value.")
+    }
 
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
                             minCov, minProb, eProb)

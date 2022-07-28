@@ -12,9 +12,11 @@ computeAlleleFraction(snp.pos, chr, w = 10, cutOff = -3)
 
 \item{chr}{A integer for the chromosome TODO}
 
-\item{w}{size of the window to compute the allelic Fraction TODO}
+\item{w}{a single positive \code{numeric} representing the size of the
+window to compute the allelic fraction.
+Default: \code{10}.}
 
-\item{cutOff}{TODO default -3}
+\item{cutOff}{TODO . Default: \code{-3}.}
 }
 \value{
 The integer \code{0} when successful.

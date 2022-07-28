@@ -582,9 +582,11 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #'
 #' @param chr A integer for the chromosome TODO
 #'
-#' @param w size of the window to compute the allelic Fraction TODO
+#' @param w a single positive \code{numeric} representing the size of the
+#' window to compute the allelic fraction.
+#' Default: \code{10}.
 #'
-#' @param cutOff TODO default -3
+#' @param cutOff TODO . Default: \code{-3}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -598,9 +600,15 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats median
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
+computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
+
+    ## The w parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(w) && (w >= 1)))  {
+        stop("The \'w\' must be a single numeric positive value.")
+    }
 
     listBlockAR <- list()
     j <- 1
@@ -644,8 +652,8 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 
                         lapCur <- median(apply(snp.hetero[k:(k+w-1),
                                     c("cnt.ref", "cnt.alt")], 1, min) /
-                                    (rowSums(snp.hetero[k:(k+w-1),c("cnt.ref",
-                                                            "cnt.alt")])))
+                                    (rowSums(snp.hetero[k:(k+w-1),
+                                                c("cnt.ref", "cnt.alt")])))
 
                         start <- k
 
@@ -671,26 +679,27 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
                             listBlockAR[[j]] <- c(listHetero[start],
                                                     segImb$end[i], lapCur)
 
-                            j <- j+1
+                            j <- j + 1
 
                             k <- nrow(snp.hetero)
                         } else{ # continue nrow(snp.hetero) >= w+k
-                            lapCur <- median(apply(snp.hetero[start:k, c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[start:k,c("cnt.ref", "cnt.alt")])))
+                            lapCur <- median(apply(snp.hetero[start:k,
+                                c("cnt.ref", "cnt.alt")], 1, min) /
+                                    (rowSums(snp.hetero[start:k,c("cnt.ref",
+                                                        "cnt.alt")])))
 
                             k <- k + 1
                         }
                     }
                 }# End while
-            }else{
+            }else {
                 lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[,c("cnt.ref", "cnt.alt")])))
 
                 listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
 
                 j <- j + 1
             }
-
         }
-
     }
 
     # note NULL if length(listBlockAR) == 0
@@ -725,11 +734,12 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 #' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
 #' Default: \code{0.999}.
 #'
-#' @param eProb an \code{numeric} between 0 and 1 probability of sequencing error
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.001}.
 #'
-#' @param cutOffLOH log of the score to be LOH default -5
+#' @param cutOffLOH log of the score to be LOH . Default: \code{-5}.
 #'
-#' @param cutOffHomoScore TODO
+#' @param cutOffHomoScore TODO. Default: \code{-3}.
 #'
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
@@ -763,6 +773,12 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                 "value between 0 and 1.")
     }
 
+    ## The eProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
+        stop("The \'eProb\' must be a single numeric positive ",
+                "value between 0 and 1.")
+    }
+
     ## The wAR parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
         stop("The \'wAR\' must be a single numeric positive value.")
@@ -776,7 +792,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
 
     homoBlock <- list()
 
-        for(chr in unique(snp.pos$snp.chr)){
+    for(chr in unique(snp.pos$snp.chr)) {
         # Define the end of chr
         print(paste0("chr ", chr))
         print(paste0("Step 1 ", Sys.time()))
@@ -787,11 +803,14 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
         # snp.pos.chr <- snp.pos[listChr,]
 
 
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds, chrInfo,
-                                                    snp.pos[listChr,], chr)
+        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
+                                            snp.pos=snp.pos[listChr,], chr=chr)
+
         print(paste0("Step 2 ", Sys.time()))
+
         homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
                 cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
+
         z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
                         snp.pos[listChr, "snp.pos"]),
                     c(rep(0,  2* nrow(homoBlock[[chr]])),
@@ -801,25 +820,34 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                         rep(0, length(listChr)) ),
                     c(rep(0, 2 * nrow(homoBlock[[chr]])),
                         seq_len(length(listChr))))
-        z <- z[order(z[,1], z[,2]),]
+
+        z <- z[order(z[,1], z[,2]), ]
         pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
         snp.pos[listChr[pos], "lap"] <- 0
         snp.pos[listChr[pos], "LOH"] <- 1
+
         print(paste0("Step 3 ", Sys.time()))
-        snp.pos[listChr, "imbAR"] <- computeAllelicImbDNAChr(snp.pos[listChr, ], chr, wAR = 10, cutOffEmptyBox = -3)
+
+        snp.pos[listChr, "imbAR"] <-
+                computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
+                                            wAR=10, cutOffEmptyBox=-3)
+
         print(paste0("Step 4 ", Sys.time()))
-        blockAF <- computeAlleleFraction(snp.pos[listChr, ], chr,
-                                            w = 10, cutOff = -3)
+        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
+                                                    w=10, cutOff=-3)
+
         print(paste0("Step 5 ", Sys.time()))
-        if(! is.null(blockAF)){
-            for(i in seq_len(nrow(blockAF))){
-                snp.pos[listChr[blockAF[i,1]:blockAF[i,2]], "lap"] <- blockAF[i,3]
+
+        if(! is.null(blockAF)) {
+            for(i in seq_len(nrow(blockAF))) {
+                snp.pos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                                blockAF[i, 3]
             }
         }
-
-
     }
+
     snp.pos[which(snp.pos[, "lap"] == -1), "lap"] <- 0.5
+
     return(snp.pos)
 }
 

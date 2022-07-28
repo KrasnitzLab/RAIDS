@@ -41,11 +41,12 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 \item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
 Default: \code{0.999}.}
 
-\item{eProb}{an \code{numeric} between 0 and 1 probability of sequencing error}
+\item{eProb}{a single \code{numeric} between 0 and 1 representing the
+probability of sequencing error. Default: \code{0.001}.}
 
-\item{cutOffLOH}{log of the score to be LOH default -5}
+\item{cutOffLOH}{log of the score to be LOH . Default: \code{-5}.}
 
-\item{cutOffHomoScore}{TODO}
+\item{cutOffHomoScore}{TODO. Default: \code{-3}.}
 
 \item{wAR}{a single positive \code{integer} representing the size-1 of
 the window used to compute an empty box. Default: \code{9}.}

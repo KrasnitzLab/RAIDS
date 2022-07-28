@@ -49,7 +49,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     }
 
     ## Validate that freqCutoff is a single numeric or NULL
-    if (! isSingleNumber(freqCutoff) & ! is.null(freqCutoff)) {
+    if (! isSingleNumber(freqCutoff) && ! is.null(freqCutoff)) {
         stop("The \'freqCutoff\' must be a single numeric or NULL.")
     }
 

@@ -15,14 +15,28 @@ GDS file.}
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
-\item{snp.pos}{A \code{data.frame} TODO}
+\item{snp.pos}{a \code{data.frame} containing TODO.}
 
-\item{chr}{A integer for the chromosome TODO}
+\item{chr}{a single \code{integer} for the chromosome.}
 
-\item{genoN}{\code{numeric} between 0 and 1 TODO}
+\item{genoN}{a single \code{numeric} between 0 and 1 representing TODO.
+Default: \code{0.0001}.}
 }
 \value{
-a data.frame TODO.
+a \code{data.frame} containing:
+\itemize{
+\item{chr} {TODO}
+\item{start} {TODO}
+\item{end} {TODO}
+\item{logLHR} {TODO}
+\item{LH1} {TODO}
+\item{LM1} {TODO}
+\item{homoScore} {TODO}
+\item{nbSNV} {TODO}
+\item{nbPruned} {TODO}
+\item{nbNorm} {TODO}
+\item{LOH} {TODO}
+}
 }
 \description{
 TODO

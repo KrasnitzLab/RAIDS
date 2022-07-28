@@ -40,6 +40,13 @@ genomic platforms. bioRxiv 2022.02.01.478737
     that are genetically related in the GDS 1KG file.}
     \item \code{\link{addRef2GDS1KG}} { This function adds the information
     about the unrelated patients to the GDS 1KG file.}
+    \item \code{\link{add1KG2SampleGDS}} { TODO }
+    \item \code{\link{addBlockFromPlink2GDS}} { TODO }
+    \item \code{\link{addPhase1KG2SampleGDSFromGDS}} { TODO }
+    \item \code{\link{appendStudy2GDS1KG}} { TODO }
+    \item \code{\link{basePCASample}} { TODO }
+    \item \code{\link{computeAlleleFraction}} { TODO }
+    \item \code{\link{computeAllelicFractionDNA}} { TODO }
 }
 }
 \author{

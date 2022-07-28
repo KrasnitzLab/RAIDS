@@ -184,6 +184,7 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is character st
 })
 
 
+
 test_that("computeLOHBlocksDNAChr() must return error when genoN is vector of numerics", {
 
     data.dir <- system.file("extdata", package="RAIDS")
@@ -228,4 +229,92 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric abov
                                         snp.pos=data.frame(), chr=2,
                                         genoN=1.33), error_message)
 })
+
+
+context("computeAllelicImbDNAChr() results")
+
+
+test_that("computeAllelicImbDNAChr() must return error when chr is vector of numerics", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                            "a chromosome")
+
+    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=c(1, 2),
+                                            wAR=10, cutOffEmptyBox=-3),
+                 error_message)
+})
+
+
+test_that("computeLOHBlocksDNAChr() must return error when chr is character string", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                            "a chromosome")
+
+    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr="titi",
+                                            wAR=10, cutOffEmptyBox=-3),
+                 error_message)
+})
+
+
+
+test_that("computeLOHBlocksDNAChr() must return error when wAR is character string", {
+
+    error_message <- "The \'wAR\' must be a single numeric positive value."
+
+    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=1,
+                                            wAR="10", cutOffEmptyBox=-3),
+                 error_message)
+})
+
+
+
+test_that("computeLOHBlocksDNAChr() must return error when wAR is vector of numerics", {
+
+    error_message <- "The \'wAR\' must be a single numeric positive value."
+
+    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=1,
+                                            wAR=c(11, 21), cutOffEmptyBox=-3),
+                 error_message)
+})
+
+
+
+
+context("computeAllelicFractionDNA() results")
+
+
+test_that("computeAllelicFractionDNA() must return error when wAR is character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- "The \'wAR\' must be a single numeric positive value."
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                            sampleCurrent="test", study.id="test",
+                            chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+                            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+                            wAR="BETA", cutOffEmptyBox=-3),
+                    error_message)
+})
+
+
+
+test_that("computeAllelicFractionDNA() must return error when wAR is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- "The \'wAR\' must be a single numeric positive value."
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                            sampleCurrent="test", study.id="test",
+                            chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+                            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+                            wAR=c(11, 21), cutOffEmptyBox=-3),
+                    error_message)
+})
+
 

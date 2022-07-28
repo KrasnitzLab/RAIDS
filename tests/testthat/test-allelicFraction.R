@@ -300,7 +300,6 @@ test_that("computeAllelicFractionDNA() must return error when wAR is character s
 })
 
 
-
 test_that("computeAllelicFractionDNA() must return error when wAR is vector of numerics", {
 
     data.dir <- system.file("extdata", package="RAIDS")
@@ -317,4 +316,71 @@ test_that("computeAllelicFractionDNA() must return error when wAR is vector of n
                     error_message)
 })
 
+
+test_that("computeAllelicFractionDNA() must return error when minProb is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                            sampleCurrent="test", study.id="test",
+                            chrInfo=c("chr1", "chr2"), minCov=10, minProb=c(0.22, 0.999),
+                            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                    error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when minProb is character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                                sampleCurrent="test", study.id="test",
+                                chrInfo=c("chr1", "chr2"), minCov=10, minProb="0.2",
+                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                    error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when minProb is negative value", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                                sampleCurrent="test", study.id="test",
+                                chrInfo=c("chr1", "chr2"), minCov=10, minProb=-0.11,
+                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                    error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when minProb is negative value", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+                        sampleCurrent="test", study.id="test",
+                        chrInfo=c("chr1", "chr2"), minCov=10, minProb=1.001,
+                        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                    error_message)
+})
 

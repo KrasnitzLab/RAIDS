@@ -38,9 +38,10 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
 \item{minCov}{an \code{integer} default 10}
 
-\item{minProb}{an \code{numeric} betweeen 0 and 1}
+\item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
+Default: \code{0.999}.}
 
-\item{eProb}{an \code{numeric} betweeen 0 and 1 probability of sequencing error}
+\item{eProb}{an \code{numeric} between 0 and 1 probability of sequencing error}
 
 \item{cutOffLOH}{log of the score to be LOH default -5}
 

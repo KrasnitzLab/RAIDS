@@ -414,5 +414,214 @@ syntheticGeno <- function(gds,
     return(0L)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
+#'
+#' @param gdsSample TODO
+#'
+#' @param study.id TODO
+#'
+#' @param popName TODO
+#'
+#' @return \code{data.frame} TODO study.annot with study.annot == study.id and
+#' with the column popName.
+#'
+#' @examples
+#'
+#' ## TODO
+#' gds <- "TODO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats rmultinom
+#' @encoding UTF-8
+#' @export
+#'
+prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
 
+
+    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+
+    studyCur <- study.annot[which(study.annot$study.id == study.id),]
+    rm(study.annot)
+    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))
+    if(! popName %in% colnames(dataRef)){
+        stop(paste0("The population ", popName, " is not supported"))
+    }
+    row.names(dataRef) <- read.gdsn(index.gdsn(gds, "sample.id"))
+
+    studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
+    rownames(studyCur) <- studyCur$data.id
+    return(studyCur)
+}
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matKNN TODO
+#'
+#' @param pedCall TODO see return of prepPedSynthetic1KG
+#'
+#' @param refCall TODO column name in pedCall with the call
+#'
+#' @param predCall TODO column name in matKNN with the call
+#'
+#' @param listCall TODO array of the possible call
+#'
+#' @return \code{list} TODO
+#' with the column popName.
+#'
+#' @examples
+#'
+#' ## TODO
+#' gds <- "TODO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @encoding UTF-8
+#' @export
+#'
+computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall, listCall){
+
+    matAccuracy <- data.frame(pcaD = matKNN$D[1],
+                              K = matKNN$K[1],
+                              Accu.CM = numeric(1),
+                              CM.CI =  numeric(1),
+                              N = nrow(matKNN),
+                              NBNA = length(which(is.na(matKNN[[predCall]])) ))
+    i <- 1
+    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
+        stop("Compute synthetic accuracy with different pca dimension or K\n")
+    }
+
+    #matCur <- matKNN[which(matKNN$D == pcaD & matKNN$K == k),]
+    listKeep <- which(!(is.na(matKNN[[predCall]])) )
+
+    fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
+                    levels = listCall,
+                    labels = listCall)
+
+    fP <- factor(matKNN[[predCall]][listKeep],
+                 levels = listCall,
+                 labels = listCall)
+
+    cm <- table(fCall,
+                fP)
+
+
+    matAccuracy[i, 3] <- sum(diag(cm[rownames(cm) %in% listCall,
+                                     colnames(cm) %in% listCall])) /
+        nrow(pedCall[matKNN$sample.id, ][listKeep,])
+
+    matAccuracy[i, 4] <- 1.96 * (matAccuracy[i, 3] * (1 - matAccuracy[i, 3]) /
+                                     nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
+
+    res <- list(confMat = cm,
+                matAccuracy = matAccuracy)
+    return(res)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matKNN TODO
+#'
+#' @param pedCall TODO see return of prepPedSynthetic1KG
+#'
+#' @param refCall TODO column name in pedCall with the call
+#'
+#' @param predCall TODO column name in matKNN with the call
+#'
+#' @param listCall TODO array of the possible call
+#'
+#' @return \code{list} TODO
+#' with the column popName.
+#'
+#' @examples
+#'
+#' ## TODO
+#' gds <- "TODO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @importFrom pROC multiclass.roc roc
+#' @encoding UTF-8
+#' @export
+#'
+computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall){
+
+    matAccuracy <- data.frame(pcaD = matKNN$D[1],
+                              K = matKNN$K[1],
+                              ROC.AUC = numeric(1),
+                              ROC.CI = numeric(1),
+                              N = nrow(matKNN),
+                              NBNA = length(which(is.na(matKNN[[predCall]])) ) )
+    i <- 1
+    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
+        stop("Compute synthetic accuracy with different pca dimension or K\n")
+    }
+
+    #matCur <- matKNN[which(matKNN$D == pcaD & matKNN$K == k),]
+    listKeep <- which(!(is.na(matKNN[[predCall]])) )
+    #listKeep <- which(!(is.na(pedCall[matKNN$sample.id, refCall])) & fCall %in% listCall)
+
+    fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
+                    levels = listCall,
+                    labels = listCall)
+
+
+
+    predMat <- t(vapply(matKNN[[predCall]][listKeep], FUN=function(x, listCall){
+        p <- numeric(length(listCall))
+        p[which(listCall == x)] <- 1
+        return(p)
+    },
+    FUN.VALUE=numeric(length(listCall)),
+    listCall = listCall))
+    colnames(predMat) <- listCall
+
+    listAccuPop <- list()
+
+
+    df <- data.frame(pcaD = matKNN$D[1],
+                     K = matKNN$K[1],
+                     Call = listCall,
+                     L = NA,
+                     AUC = NA,
+                     H = NA,
+                     stringsAsFactors = FALSE)
+
+
+
+    resROC <- multiclass.roc(fCall[listKeep], predMat)
+    matAccuracy[i, 3] <- as.numeric(resROC$auc)
+    matAccuracy[i, 4] <- 0
+
+    # matAccuracy[i, 6] <- ciBS(fCall[listKeep], predMat, 1,100)
+    listROC <- list()
+    for(j in seq_len(length(listCall))){
+        fCur <- rep(0, length(listKeep))
+        fCur[fCall[listKeep] == listCall[j]] <- 1
+
+        if(length(which(fCur == 1))>0){
+            listROC[[listCall[j]]] <- roc(fCur ~ predMat[,j], ci=TRUE)
+            pos <- which(df$Call == listCall[j])
+            for(r in seq_len(3)){
+                df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])
+            }
+        }else{
+            listROC[[listCall[j]]] <- NA
+        }
+    }
+    res <- list(matAUROC.All = matAccuracy,
+                matAUROC.Call = df,
+                listROC.Call = listROC)
+    return(res)
+}
 

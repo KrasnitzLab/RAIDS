@@ -32,7 +32,8 @@ Imports: S4Vectors,
     EnsDb.Hsapiens.v86,
     AnnotationDbi,
     methods,
-    class
+    class,
+    pROC
 Suggests: testthat,
     knitr,
     rmarkdown,

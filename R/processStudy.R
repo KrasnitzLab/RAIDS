@@ -696,7 +696,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 
     #sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
 
-    listRef <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
+    #listRef <- read.gdsn(index.gdsn(gds, "sample.id"))[which(sample.ref == 1)]
 
     for(i in seq_len(length(listSamples)) ){
 
@@ -708,8 +708,8 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
         }
 
         sample.Unrel.All <- study.annot$data.id[study.annot$study.id == "Ref.1KG"]
-        sample.ref <- sample.Unrel.All$data.id
-        listPCA <- computePrunedPCARef(gdsSample, listRef, np)
+        #sample.ref <- sample.Unrel.All$data.id
+        listPCA <- computePrunedPCARef(gdsSample, sample.Unrel.All, np)
 
         listPCA[["samp.load"]] <- projectSample2PCA(gdsSample, listPCA, listSamples[i], np)
         closefn.gds(gdsSample)

@@ -30,8 +30,8 @@ GDS file.}
 the sample.id
 use in LDpruning}
 
-\item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+\item{study.id}{A \code{character} string corresponding to the study
+used in LDpruning}
 
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
@@ -46,10 +46,11 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
 \item{cutOffHomoScore}{TODO}
 
-\item{wAR}{size-1 of the window to compute an empty box}
+\item{wAR}{a single positive \code{integer} representing the size-1 of
+the window used to compute an empty box. Default: \code{9}.}
 }
 \value{
-The data.frame with lap for the snv with depth > minCov. TODO
+a \code{data.frame} with lap for the snv with depth > minCov. TODO
 }
 \description{
 Create a data.frame with the allelic fraction TODO
@@ -57,7 +58,7 @@ Create a data.frame with the allelic fraction TODO
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

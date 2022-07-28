@@ -24,7 +24,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #' fileNamePED <- "TODO"
@@ -136,7 +136,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -263,7 +263,7 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -366,7 +366,7 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", 'RAIDS')
 #'
 #' ## TODO
 #'
@@ -447,7 +447,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'
@@ -540,7 +540,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'
@@ -620,7 +620,7 @@ computePrunedPCARef <- function(gds, listRef, np=1L) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'
@@ -761,7 +761,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'

@@ -35,7 +35,7 @@ a VCF file.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

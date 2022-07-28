@@ -1,8 +1,8 @@
 ### Unit tests for tools.R functions
 
-library(aicsPaper)
+library(RAIDS)
 library(withr)
-
+library(testthat)
 
 
 
@@ -15,7 +15,7 @@ context("snvListVCF() results")
 
 test_that("snvListVCF() must return error when offset is a character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFile <- local_file(file.path(data.dir, "GDS_TEMP2.gds"))
 
@@ -54,7 +54,7 @@ test_that("snvListVCF() must return error when offset is a character string", {
 
 test_that("snvListVCF() must return error when gds is a character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
 
@@ -68,7 +68,7 @@ test_that("snvListVCF() must return error when gds is a character string", {
 
 test_that("snvListVCF() must return error when freqCutoff is a character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     gdsFile <- local_file(file.path(data.dir, "GDS_TEMP3.gds"))
 
@@ -111,7 +111,7 @@ context("groupChr1KGSNV() results")
 
 test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     dirNotExisting <- file.path(data.dir, "RED_TOMATO")
 
@@ -124,7 +124,7 @@ test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", 
 
 test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     dirNotExisting <- file.path(data.dir, "/RED_TOMATO")
 

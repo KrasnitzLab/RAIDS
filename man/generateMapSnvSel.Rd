@@ -61,7 +61,7 @@ of the SAS super population.}
 library(withr)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## Demo SNV information file used as input
 snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")

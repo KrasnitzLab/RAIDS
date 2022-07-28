@@ -25,7 +25,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -49,7 +49,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     }
 
     ## Validate that freqCutoff is a single numeric or NULL
-    if (! isSingleNumber(freqCutoff) & ! is.null(freqCutoff)) {
+    if (! isSingleNumber(freqCutoff) && ! is.null(freqCutoff)) {
         stop("The \'freqCutoff\' must be a single numeric or NULL.")
     }
 
@@ -128,7 +128,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -181,7 +181,7 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="aicsPaper")
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

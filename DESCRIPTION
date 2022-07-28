@@ -1,4 +1,4 @@
-Package: aicsPaper
+Package: RAIDS
 Type: Package
 Title: Accurate Inference of Genetic Ancestry from Cancer Sequencing
 Description: This package implements specialized algorithms that enable

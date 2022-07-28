@@ -10,12 +10,17 @@ testAlleleFractionChange(matCov, pCutOff = -3, vMean)
 \arguments{
 \item{matCov}{TODO}
 
-\item{pCutOff}{TODO}
+\item{pCutOff}{TODO Default: \code{-3}.}
 
 \item{vMean}{TODO}
 }
 \value{
-a list TODO.
+a \code{list} containing:
+\itemize{
+\item{pWin} {TODO.}
+\item{pCut} {TODO.}
+\item{pCut1} {TODO.}
+}
 }
 \description{
 TODO
@@ -23,7 +28,7 @@ TODO
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

@@ -22,21 +22,37 @@ GDS file.}
 
 \item{gdsSample}{TODO}
 
-\item{sampleCurrent}{A \code{string} corresponding to
-the sample.id
-use in LDpruning}
+\item{sampleCurrent}{A \code{character} string corresponding to
+the sample.id used in LDpruning.}
 
 \item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+use in LDpruning.}
 
-\item{minCov}{an \code{integer} default 10}
+\item{minCov}{a single positive \code{integer} representing the
+minimum coverage needed to retain TODO. Default: \code{10}.}
 
-\item{minProb}{an \code{numeric} betweeen 0 and 1}
+\item{minProb}{a single \code{numeric} between \code{0} and \code{1}
+representing TODO.
+Default: \code{0.999}.}
 
-\item{eProb}{an \code{numeric} betweeen 0 and 1 probability of sequencing error}
+\item{eProb}{a single \code{numeric} between \code{0} and \code{1}
+representing the probability of sequencing error. Default: \code{0.001}.}
 }
 \value{
-data.frame snp.pos TODO.
+a \code{data.frame} containing:
+\itemize{
+\item{cnt.tot} {a single \code{integer} representing the total coverage for
+the SNV.}
+\item{cnt.ref} {a single \code{integer} representing the coverage for
+the reference allele.}
+\item{cnt.alt} {a single \code{integer} representing the coverage for
+the alternative allele.}
+\item{snp.pos} {a single \code{integer} representing the SNV position.}
+\item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
+\item{normal.geno} {a single \code{numeric} \code{3} indicating that
+the normal genotype is unknown. TODO}
+\item{snp.index} {The \code{boolean} \code{FALSE} indicating TODO}
+}
 }
 \description{
 TODO
@@ -44,7 +60,7 @@ TODO
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

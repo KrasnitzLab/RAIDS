@@ -63,7 +63,7 @@ https://bioconductor.org/packages/gdsfmt/
 library(withr)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="aicsPaper")
+data.dir <- system.file("extdata", package="RAIDS")
 
 ## The RDS file containing the pedigree information
 pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")

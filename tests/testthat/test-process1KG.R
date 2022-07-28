@@ -1,6 +1,6 @@
 ### Unit tests for process1KG.R functions
 
-library(aicsPaper)
+library(RAIDS)
 library(withr)
 
 
@@ -15,7 +15,7 @@ context("prepPed1KG() results")
 
 test_that("prepPed1KG() must return error when batch.v is a character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -28,7 +28,7 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
 
 test_that("prepPed1KG() must return error when batch.v is a float", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -42,7 +42,7 @@ test_that("prepPed1KG() must return error when batch.v is a float", {
 
 test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -57,7 +57,7 @@ test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
 test_that("prepPed1KG() must return error when pedigree file is not existing", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
 
@@ -69,7 +69,7 @@ test_that("prepPed1KG() must return error when pedigree file is not existing", {
 
 test_that("prepPed1KG() must return the expected output", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -97,7 +97,7 @@ context("generateMapSnvSel() results")
 
 test_that("generateMapSnvSel() must return error when SNP file is not existing", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     snpFile <- file.path(data.dir, "SNP_TOTO.txt")
 
@@ -114,7 +114,7 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
 
 test_that("generateMapSnvSel() must return error when cutOff file is a character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
 
@@ -131,7 +131,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
 
 test_that("generateMapSnvSel() must return error when cutOff file is a array of numbers", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
 
@@ -149,7 +149,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
 
 test_that("generateMapSnvSel() must generate expected output", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
 
@@ -202,7 +202,7 @@ context("generateGDS1KG() results")
 
 test_that("generateGDS1KG() must return error when pedigree file does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileNot <- file.path(data.dir, "TOTO_Not_Present.rds")
 
@@ -221,7 +221,7 @@ test_that("generateGDS1KG() must return error when pedigree file does not exist"
 
 test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -238,7 +238,7 @@ test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
 
 test_that("generateGDS1KG() must return error when SNP indexes file does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -255,7 +255,7 @@ test_that("generateGDS1KG() must return error when SNP indexes file does not exi
 
 test_that("generateGDS1KG() must return error when SNP information file does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
@@ -273,7 +273,7 @@ test_that("generateGDS1KG() must return error when SNP information file does not
 
 test_that("generateGDS1KG() must create a GDS file", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
 
@@ -307,7 +307,7 @@ context("identifyRelative() results")
 
 test_that("identifyRelative() must return error when gds is character string", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
 
@@ -324,7 +324,7 @@ test_that("identifyRelative() must return error when gds is character string", {
 
 test_that("identifyRelative() must return error when maf is a vector of numbers", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileInput <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -341,7 +341,7 @@ test_that("identifyRelative() must return error when maf is a vector of numbers"
 
 test_that("identifyRelative() must return error when maf is a character strings", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileInput <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -358,7 +358,7 @@ test_that("identifyRelative() must return error when maf is a character strings"
 
 test_that("identifyRelative() must return error when thresh is a character strings", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileInput <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -375,7 +375,7 @@ test_that("identifyRelative() must return error when thresh is a character strin
 
 test_that("identifyRelative() must return error when thresh is a vector of numerics", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileInput <- file.path(data.dir, "1KG_Demo.gds")
 
@@ -400,7 +400,7 @@ context("addRef2GDS1KG() results")
 
 test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileNot <- file.path(data.dir, "TOTO_GDS.gds")
 
@@ -414,7 +414,7 @@ test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
 
 test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 
-    data.dir <- system.file("extdata", package="aicsPaper")
+    data.dir <- system.file("extdata", package="RAIDS")
 
     fileNot <- file.path(data.dir, "TOTO_RDS.rds")
 

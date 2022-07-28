@@ -1,0 +1,170 @@
+### Unit tests for allelicFraction.R functions
+
+library(RAIDS)
+library(withr)
+
+
+
+#############################################################################
+### Tests getTableSNV() results
+#############################################################################
+
+context("getTableSNV() results")
+
+
+test_that("getTableSNV() must return error when minCov is a character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- "The \'minCov\' must be a single numeric positive value."
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                                sampleCurrent="TEST", study.id="TEST",
+                minCov="CANADA", minProb=0.999, eProb=0.001), error_message)
+})
+
+
+test_that("getTableSNV() must return error when minProb is a character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+            "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb="QUEBEC", eProb=0.001), error_message)
+})
+
+
+test_that("getTableSNV() must return error when minProb is negative", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=-0.32, eProb=0.001), error_message)
+})
+
+
+test_that("getTableSNV() must return error when minProb is superior to 1", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=1.32, eProb=0.001), error_message)
+})
+
+
+test_that("getTableSNV() must return error when minProb is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                                sampleCurrent="TEST", study.id="TEST",
+                                minCov=12, minProb=c(0.32, 0.44), eProb=0.001),
+                    error_message)
+})
+
+
+
+test_that("getTableSNV() must return error when eprob is negative", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                        "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                    sampleCurrent="TEST", study.id="TEST",
+                    minCov=12, minProb=0.02, eProb="0.001"), error_message)
+})
+
+
+test_that("getTableSNV() must return error when eProb is superior to 1", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                        "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=0.32, eProb=1.011), error_message)
+})
+
+
+test_that("getTableSNV() must return error when eProb is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(getTableSNV(gds=gdsFIle, gdsSample="TEST",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=0.32, eProb=c(0.001, 0.2)),
+                    error_message)
+})
+
+
+
+context("computeLOHBlocksDNAChr() results")
+
+
+test_that("computeLOHBlocksDNAChr() must return error when chr is vector of numerics", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                                "a chromosome")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                            snp.pos=data.frame(), chr=c(1, 2),
+                                            genoN=0.001),
+                 error_message)
+})
+
+
+test_that("computeLOHBlocksDNAChr() must return error when chr is character string", {
+
+    data.dir <- system.file("extdata", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                            "a chromosome")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsFIle, chrInfo=c("chr1", "chr2"),
+                                    snp.pos=data.frame(), chr="MONTREAL",
+                                    genoN=0.001),
+                 error_message)
+})

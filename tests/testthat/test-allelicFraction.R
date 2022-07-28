@@ -295,7 +295,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is character s
                             sampleCurrent="test", study.id="test",
                             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
                             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                            wAR="BETA", cutOffEmptyBox=-3),
+                            wAR="BETA"),
                     error_message)
 })
 
@@ -313,7 +313,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is vector of n
                             sampleCurrent="test", study.id="test",
                             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
                             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                            wAR=c(11, 21), cutOffEmptyBox=-3),
+                            wAR=c(11, 21)),
                     error_message)
 })
 

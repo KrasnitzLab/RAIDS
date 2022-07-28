@@ -30,8 +30,8 @@ GDS file.}
 the sample.id
 use in LDpruning}
 
-\item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+\item{study.id}{A \code{character} string corresponding to the study
+used in LDpruning}
 
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}

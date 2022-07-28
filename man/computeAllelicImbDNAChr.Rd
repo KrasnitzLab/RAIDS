@@ -10,14 +10,15 @@ computeAllelicImbDNAChr(snp.pos, chr, wAR = 10, cutOffEmptyBox = -3)
 \arguments{
 \item{snp.pos}{TODO}
 
-\item{chr}{A integer for the chromosome TODO}
+\item{chr}{a single positive \code{integer} for the chromosome.}
 
-\item{wAR}{size-1 of the window to compute an empty box}
+\item{wAR}{a single positive \code{integer} representing the size-1 of
+the window used to compute an empty box. Default: \code{10}.}
 
-\item{cutOffEmptyBox}{TODO default -3}
+\item{cutOffEmptyBox}{TODO Default: \code{-3}.}
 }
 \value{
-A vector of the imbAR TODO.
+a \code{vector} of TODO representing the imbAR TODO.
 }
 \description{
 TODO

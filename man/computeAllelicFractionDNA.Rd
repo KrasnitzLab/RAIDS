@@ -46,10 +46,11 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
 \item{cutOffHomoScore}{TODO}
 
-\item{wAR}{size-1 of the window to compute an empty box}
+\item{wAR}{a single positive \code{integer} representing the size-1 of
+the window used to compute an empty box. Default: \code{9}.}
 }
 \value{
-The data.frame with lap for the snv with depth > minCov. TODO
+a \code{data.frame} with lap for the snv with depth > minCov. TODO
 }
 \description{
 Create a data.frame with the allelic fraction TODO

@@ -722,9 +722,10 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 #'
 #' @param minCov an \code{integer} default 10
 #'
-#' @param minProb an \code{numeric} betweeen 0 and 1
+#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#' Default: \code{0.999}.
 #'
-#' @param eProb an \code{numeric} betweeen 0 and 1 probability of sequencing error
+#' @param eProb an \code{numeric} between 0 and 1 probability of sequencing error
 #'
 #' @param cutOffLOH log of the score to be LOH default -5
 #'
@@ -755,6 +756,12 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                                         cutOffLOH=-5,
                                         cutOffHomoScore=-3,
                                         wAR=9) {
+
+    ## The minProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' must be a single numeric positive ",
+                "value between 0 and 1.")
+    }
 
     ## The wAR parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(wAR) && (wAR >= 1)))  {

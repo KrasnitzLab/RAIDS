@@ -37,14 +37,14 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
 
     ## Validate that the batch is an integer
-    if (! isSingleInteger(batch.v)) {
+    if (! isSingleNumber(batch.v)) {
         stop("The batch.v must be an integer.")
     }
 

@@ -28,7 +28,7 @@ pruningSample(
 \item{gds}{an object of class \code{gds} opened}
 
 \item{method}{a \code{character} string representing the method used in
-SNPRelate::snpgdsLDpruning() fucntion.
+SNPRelate::snpgdsLDpruning() function.
 Default: \code{"corr"}.}
 
 \item{sampleCurrent}{A \code{character} string corresponding to

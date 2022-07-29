@@ -10,11 +10,11 @@
 #' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
 #' the information about one sample.
 #'
-#' @param sampleCurrent A \code{character} string corresponding to
-#' the sample.id used in LDpruning.
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier used in in \code{\link{pruningSample}} function
 #'
-#' @param study.id A \code{string} corresponding to the study
-#' used in LDpruning.
+#' @param study.id a \code{character} string corresponding to the study
+#' identifier used in \code{\link{pruningSample}} function.
 #'
 #' @param minCov a single positive \code{integer} representing the
 #' minimum coverage needed to retain TODO. Default: \code{10}.
@@ -50,12 +50,17 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleInteger isSingleNumber
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001) {
 
+    ## The gds must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class ",
+             "\'gdsn.class\' or \'gds.class\'")
+    }
 
     ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
     if (!inherits(gdsSample, "gdsn.class") &&

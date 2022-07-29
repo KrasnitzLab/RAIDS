@@ -4,9 +4,10 @@
 [![R-CMD-check-bioc](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
-# Accurate inference of genetic ancestry from cancer-derived molecular data #
+# Accurate inference of genetic ancestry from cancer-derived molecular data with **RAIDS** #
 
-The **_RAIDS_** package enables accurate and robust inference of genetic 
+The Robust Ancestry Inference using Data Synthesis (**_RAIDS_**) package 
+enables accurate and robust inference of genetic 
 ancestry from various types of molecular data, including whole-genome, 
 whole-exome, targeted gene panels and RNA sequences, as described in our 
 bioRxiv manuscript. Our tools retain high accuracy in presence of somatic 
@@ -27,7 +28,8 @@ David A. Tuveson and
 
 ## Citing ##
 
-If you use this package for a publication, we would ask you to cite the following:
+If you use the **RAIDS** package for a publication, we would ask you to cite 
+the following:
 
 >  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
 

@@ -11,7 +11,7 @@ computeAllelicFractionDNA(
   sampleCurrent,
   study.id,
   chrInfo,
-  minCov = 10,
+  minCov = 10L,
   minProb = 0.999,
   eProb = 0.001,
   cutOffLOH = -5,
@@ -26,17 +26,18 @@ GDS file.}
 
 \item{gdsSample}{TODO}
 
-\item{sampleCurrent}{A \code{string} corresponding to
-the sample.id
-use in LDpruning}
+\item{sampleCurrent}{A \code{character} string corresponding to
+the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{A \code{character} string corresponding to the study
-used in LDpruning}
+\item{study.id}{A \code{character} string corresponding to the naome of
+the study as
+used in \code{\link{pruningSample}} function.}
 
 \item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
-\item{minCov}{an \code{integer} default 10}
+\item{minCov}{a single positive \code{integer} representing the minimum
+required coverage. Default: \code{10L}.}
 
 \item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
 Default: \code{0.999}.}

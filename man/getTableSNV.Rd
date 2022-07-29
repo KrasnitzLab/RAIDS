@@ -25,7 +25,7 @@ GDS file.}
 the information about one sample.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
-the sample identifier used in in \code{\link{pruningSample}} function}
+the sample identifier used in \code{\link{pruningSample}} function.}
 
 \item{study.id}{a \code{character} string corresponding to the study
 identifier used in \code{\link{pruningSample}} function.}

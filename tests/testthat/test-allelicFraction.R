@@ -339,6 +339,42 @@ test_that("computeLOHBlocksDNAChr() must return error when wAR is vector of nume
 context("computeAllelicFractionDNA() results")
 
 
+test_that("computeAllelicFractionDNA() must return error when minCov is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'minCov\' must be a single numeric positive value"
+
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+                        sampleCurrent="test", study.id="test",
+                        chrInfo=c("chr1", "chr2"), minCov="10", minProb=0.999,
+                        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                 error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when minCov is vextor of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'minCov\' must be a single numeric positive value"
+
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+                    sampleCurrent="test", study.id="test",
+                    chrInfo=c("chr1", "chr2"), minCov=c(10, 11), minProb=0.999,
+                    eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+                error_message)
+})
+
+
 test_that("computeAllelicFractionDNA() must return error when wAR is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")

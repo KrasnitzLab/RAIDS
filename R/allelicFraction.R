@@ -11,7 +11,7 @@
 #' the information about one sample.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
-#' the sample identifier used in in \code{\link{pruningSample}} function
+#' the sample identifier used in \code{\link{pruningSample}} function.
 #'
 #' @param study.id a \code{character} string corresponding to the study
 #' identifier used in \code{\link{pruningSample}} function.
@@ -393,7 +393,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #'
 #' @param matCov TODO
 #'
-#' @param pCutOff TODO
+#' @param pCutOff TODO, Default: \code{-3}.
 #'
 #'
 #' @return a \code{list} TODO containing:
@@ -743,17 +743,18 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #'
 #' @param gdsSample TODO
 #'
-#' @param sampleCurrent A \code{string} corresponding to
-#' the sample.id
-#' use in LDpruning
+#' @param sampleCurrent A \code{character} string corresponding to
+#' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id A \code{character} string corresponding to the study
-#' used in LDpruning
+#' @param study.id A \code{character} string corresponding to the naome of
+#' the study as
+#' used in \code{\link{pruningSample}} function.
 #'
 #' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
-#' @param minCov an \code{integer} default 10
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage. Default: \code{10L}.
 #'
 #' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
 #' Default: \code{0.999}.
@@ -782,14 +783,15 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computeAllelicFractionDNA <- function(gds, gdsSample,
-                                        sampleCurrent, study.id,
-                                        chrInfo, minCov=10,
-                                        minProb=0.999,
-                                        eProb=0.001,
-                                        cutOffLOH=-5,
-                                        cutOffHomoScore=-3,
-                                        wAR=9) {
+computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
+                                    chrInfo, minCov=10L,
+                                    minProb=0.999, eProb=0.001,
+                                    cutOffLOH=-5, cutOffHomoScore=-3, wAR=9) {
+
+    ## The minCov parameter must be a single positive integer
+    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
+        stop("The \'minCov\' must be a single numeric positive value")
+    }
 
     ## The minProb parameter must be a single positive numeric between 0 and 1
     if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {

@@ -65,3 +65,18 @@ test_that("projectSample2PCA() must return error when sample.current is number",
                                         sample.current=101,
                                         np=1L), error_message)
 })
+
+
+
+context("appendStudy2GDS1KG() results")
+
+
+test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", {
+
+    error_message <- paste0("The \'fileNameGDS\' must be a character string representing ",
+                                "the GDS study file. The file must exist.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED="test", fileNameGDS=33, batch=1,
+        studyDF="test", listSamples=NULL, PATHSAMPLEGDS=NULL), error_message)
+})

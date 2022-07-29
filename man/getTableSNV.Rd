@@ -20,13 +20,15 @@ getTableSNV(
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{gdsSample}{TODO}
+\item{gdsSample}{an object of class \code{\link[gdsfmt]{gdsn.class}}
+(a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
+the information about one sample.}
 
 \item{sampleCurrent}{A \code{character} string corresponding to
 the sample.id used in LDpruning.}
 
 \item{study.id}{A \code{string} corresponding to the study
-use in LDpruning.}
+used in LDpruning.}
 
 \item{minCov}{a single positive \code{integer} representing the
 minimum coverage needed to retain TODO. Default: \code{10}.}

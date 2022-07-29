@@ -6,13 +6,15 @@
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gdsn.class}}
+#' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
+#' the information about one sample.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample.id used in LDpruning.
 #'
 #' @param study.id A \code{string} corresponding to the study
-#' use in LDpruning.
+#' used in LDpruning.
 #'
 #' @param minCov a single positive \code{integer} representing the
 #' minimum coverage needed to retain TODO. Default: \code{10}.
@@ -54,6 +56,14 @@
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001) {
 
+
+    ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gdsSample, "gdsn.class") &&
+            !inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class ",
+                    "\'gdsn.class\' or \'gds.class\'")
+    }
+
     ## The minCov must be a single positive number
     if (!(isSingleNumber(minCov) && (minCov >= 0)))  {
         stop("The \'minCov\' must be a single numeric positive value.")
@@ -71,8 +81,8 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
              "value between 0 and 1.")
     }
 
-    ## Extract study information from GDS
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    ## Extract study information (data.frame) from GDS Sample file
+    study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
 
     ## Retain the specified sample in the specified study
     posCur <- which(study.annot$data.id == sampleCurrent &
@@ -98,9 +108,9 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                                             start=c(1, posCur),
                                             count=c(-1,1))[listKeep],
-                    snp.pos=read.gdsn(index.gdsn(gds,
+                    snp.pos=read.gdsn(index.gdsn(node=gds,
                                             "snp.position"))[listKeep],
-                    snp.chr=read.gdsn(index.gdsn(gds,
+                    snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
                     normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unkown
                     pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
@@ -382,7 +392,13 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @param pCutOff TODO
 #'
 #'
-#' @return a list TODO.
+#' @return a \code{list} TODO containing:
+#' \itemize{
+#' \item{pWin}{TODO}
+#' \item{p}{TODO}
+#' \item{pCut}{TODO}
+#' \item{pCut1}{TODO}
+#' }
 #'
 #' @examples
 #'
@@ -410,10 +426,8 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
         #vCur2 <- ifelse(matCov$cnt.alt[i] > matCov$cnt.ref[i],
         #                   matCov$cnt.alt[i], matCov$cnt.ref[i])
 
-
-        pCur <- pbinom(vCur1,
-                       size = matCov$cnt.ref[i] + matCov$cnt.alt[i],
-                       vMean)
+        pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
+                        prob=vMean)
         #print(paste0("pCur ", pCur, " vCur1 ", vCur1, " size ",
         #    matCov$cnt.ref[i] + matCov$cnt.alt[i]))
         pCurO <- max(1 - max(2 * pCur,0.01),0.01)
@@ -427,9 +441,9 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
                                 matCov$pWin[1] < 0.5 &
                                 (matCov$pWin[nrow(matCov)] < 0.5) &
                                 ((p-pO) <= pCutOff))
-    res <- list(pWin = matCov$pWin, p=p,
-                    pCut = as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
-                    pCut1 = pCut1)
+    res <- list(pWin=matCov$pWin, p=p,
+                    pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
+                    pCut1=pCut1)
     return(res)
 }
 
@@ -446,6 +460,7 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @return a \code{list} containing:
 #' \itemize{
 #' \item{pWin} {TODO.}
+#' \item{p} {TODO}
 #' \item{pCut} {TODO.}
 #' \item{pCut1} {TODO.}
 #' }
@@ -462,13 +477,13 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
+testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean) {
     p <- 0
     pO <- 0
 
     matCov$pWin <- rep(1, nrow(matCov))
 
-    for(i in seq_len(nrow(matCov))){
+    for(i in seq_len(nrow(matCov))) {
 
         vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
                         matCov$cnt.alt[i], matCov$cnt.ref[i])

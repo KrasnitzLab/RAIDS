@@ -199,11 +199,15 @@ syntheticGeno <- function(gds,
         closefn.gds(gdsSample)
         stop("Error data.id of the simulation exists change prefId\n")
     }
-
+    sample.1kg <- read.gdsn(index.gdsn(gds, "sample.id"))
     listPosRef <- which(sample.id %in% listSampleRef)
+    listPosRef.1kg <- which(sample.1kg %in% listSampleRef)
 
 
-    superPop <- read.gdsn(index.gdsn(gds, "sample.annot/superPop"))[listPosRef]
+    superPop <- read.gdsn(index.gdsn(gds, "sample.annot/superPop"))[listPosRef.1kg]
+    if(all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg]) != TRUE){
+        stop("Order between 1kg and the sample are not the same\n")
+    }
 
     # Get the index of the snp.id from gdsSample in the gds1KG
     list1KG <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
@@ -259,6 +263,7 @@ syntheticGeno <- function(gds,
     for(r in seq_len(length(listPosRef))) {
 
         curSynt <- listPosRef[r]
+        r.1kg <- which(sample.id[listPosRef[r]] == sample.1kg)
         # get the genotype of the sample r
         g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
                        start = c(1,curSynt),
@@ -308,30 +313,23 @@ syntheticGeno <- function(gds,
             homo <- which(gOrder[(posDF[i]+1):(posDF[i+1])] != 1)
 
 
-            a1 <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 0)
-            a2 <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 2)
+
             tmpHomo <- rmultinom(nbHomo * nbSim,
                                  as.numeric(as.character(df$count.tot[i])),
                                  c(1- 3 * seqError,
                                    seqError,
                                    2*seqError))
-            # depht of allele 1 this is the allele homozygote
-            if(length(a1) > 0){
-                matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
-                                                                  ncol=nbSim)
-                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
-                                                                  ncol=nbSim)
-            }
-            # depht of allele 2 (the depth by error of the other allele )
-            if(length(a2) > 0){
-                matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
-                                                                  ncol=nbSim)
-                matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
-                                                                  ncol=nbSim)
-            }
+
+            # The order between between ref and alt is done with the phase
+            # later
+            matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
+                                                              ncol=nbSim)
+            matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
+                                                              ncol=nbSim)
         }
 
-        # superPop of the 1kg sample
+        # superPop of the 1kg sample r is the same
+        # for 1kg in list listPosRef.1kg and listPosRef
         curSP <- superPop[r]
         # define a negative block for SNV not in block
         #blockDF[,curSP][which(blockDF[,curSP] == 0)] <- -1*seq_len(length(which(blockDF[,curSP] == 0)))
@@ -354,7 +352,7 @@ syntheticGeno <- function(gds,
         rownames(blockZone) <- listB
 
 
-        # TODO we have to manage multipple simulation which mean
+        # We have to manage multipple simulation which mean
         # different number of zone for the different simulation
         LAPparent <- matrix(nrow = nbSNV, ncol = nbSim)
         for(i in seq_len(nbSim)){
@@ -371,7 +369,7 @@ syntheticGeno <- function(gds,
         }
 
         phaseVal <- read.gdsn(index.gdsn(gdsRefAnnot, "phase"),
-                                start = c(1,curSynt),
+                                start = c(1,listPosRef.1kg[r]),
                                 count = c(-1,1))[list1KG]
 
 

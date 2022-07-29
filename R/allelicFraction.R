@@ -284,18 +284,18 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     listHetero <- snp.pos[snp.pos$hetero == TRUE, "snp.pos"]
 
     homoBlock <- data.frame(chr=rep(chr, length(listHetero) + 1),
-                            start=c(1, listHetero + 1),
-                            end=c(listHetero, chrEnd))
+                                start=c(1, listHetero + 1),
+                                end=c(listHetero, chrEnd))
 
 
     z <- cbind(c(homoBlock$start, homoBlock$end,
-                    snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
-               c(seq_len(length(homoBlock$start)),
-                    -1*seq_len(length(homoBlock$start)),
-                    rep(0, length(which(snp.pos$homo == TRUE)))),
-               c(rep(0, length(homoBlock$start)),
-                    rep(0, length(homoBlock$start)),
-                    seq_len(length(which(snp.pos$homo == TRUE)))))
+                        snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
+                c(seq_len(length(homoBlock$start)),
+                        -1*seq_len(length(homoBlock$start)),
+                        rep(0, length(which(snp.pos$homo == TRUE)))),
+                c(rep(0, length(homoBlock$start)),
+                        rep(0, length(homoBlock$start)),
+                        seq_len(length(which(snp.pos$homo == TRUE)))))
 
     z <- z[order(z[,1]),]
 
@@ -345,9 +345,8 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
         } else if(length(which(snvH$pruned)) > 2) {
 
             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
-            afSNV <- apply(matrix(afSNV, ncol=1),
-                           1,
-                           FUN=function(x){max(x, 0.01) })
+            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
+                            FUN=function(x){max(x, 0.01)})
             snvR <- snvH$cnt.ref[which(snvH$pruned)] >
                         snvH$cnt.alt[which(snvH$pruned)]
 
@@ -365,7 +364,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                                 sum(log10(tmp))
         }
 
-        homoBlock$logLHR[i] <- max(logLHR,-100)
+        homoBlock$logLHR[i] <- max(logLHR, -100)
         homoBlock$LH1[i] <- lH1
         homoBlock$LM1[i] <- lM1
         homoBlock$homoScore[i] <- lH1 - lM1
@@ -548,7 +547,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
     # process the window ex: 1 to 1+wAR
     wAR <- wAR - 1
     listHetero <- NULL
-    if(length(which(snp.pos$normal.geno != 3) > 0)){
+    if(length(which(snp.pos$normal.geno != 3) > 0)) {
         listHetero <- which(snp.pos$keep == TRUE & snp.pos$normal.geno == 1)
     } else{
         listHetero <- which(snp.pos$hetero == TRUE)
@@ -558,7 +557,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
-            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ){
+            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                     ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
                 if(cur$pCut == 1){
@@ -618,8 +617,8 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
     if(length(which(z[,1] == 1)) > 0) {
 
-        segImb <- data.frame(start = seq_len(nrow(snp.pos))[which(z[,1] > 0)],
-                                end = seq_len(nrow(snp.pos))[which(z[,2] < 0)])
+        segImb <- data.frame(start=seq_len(nrow(snp.pos))[which(z[,1] > 0)],
+                                end=seq_len(nrow(snp.pos))[which(z[,2] < 0)])
 
         for(i in seq_len(nrow(segImb))) {
             # index of the segment
@@ -841,7 +840,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
         if(! is.null(blockAF)) {
             for(i in seq_len(nrow(blockAF))) {
                 snp.pos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
-                                blockAF[i, 3]
+                                                                blockAF[i, 3]
             }
         }
     }

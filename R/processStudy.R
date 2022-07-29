@@ -19,7 +19,7 @@
 #' Default: \code{NULL}.
 #'
 #' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
-#' to the samples with coverage info is keep
+#' to the samples with coverage info is keep. Default: \code{NULL}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -127,7 +127,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @param outPref TODO. Default: \code{"pruned"}.
 #'
 #'
-#' @return \code{0L} when successful.
+#' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -142,18 +142,18 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @export
 pruningSample <- function(gds, method="corr", sampleCurrent,
                             study.id,
-                            listSNP = NULL,
-                            slide.max.bp.v = 5e5,
+                            listSNP=NULL,
+                            slide.max.bp.v=5e5,
                             ld.threshold.v=sqrt(0.1),
-                            np = 1,
+                            np=1,
                             verbose.v=FALSE,
-                            chr = NULL,
-                            minAF.SuperPop = NULL,
-                            keepGDSpruned = TRUE,
-                            PATHSAMPLEGDS = NULL,
-                            keepFile = FALSE,
-                            PATHPRUNED = ".",
-                            outPref = "pruned") {
+                            chr=NULL,
+                            minAF.SuperPop=NULL,
+                            keepGDSpruned=TRUE,
+                            PATHSAMPLEGDS=NULL,
+                            keepFile=FALSE,
+                            PATHPRUNED=".",
+                            outPref="pruned") {
 
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
     fileObj <- file.path(PATHPRUNED, paste0(outPref, ".Obj.rds"))

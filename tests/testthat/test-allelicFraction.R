@@ -552,3 +552,24 @@ test_that("computeAlleleFraction() must return error when w is negative numeric"
     expect_error(computeAlleleFraction(snp.pos=data.frame(), chr=1,
                                     w=-2, cutOff=-3), error_message)
 })
+
+
+test_that("computeAlleleFraction() must return error when chr is character string", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                                "a chromosome")
+
+    expect_error(computeAlleleFraction(snp.pos=data.frame(), chr="1",
+                                        w=11, cutOff=-3), error_message)
+})
+
+
+
+test_that("computeAlleleFraction() must return error when chr is a vector of numerics", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                                "a chromosome")
+
+    expect_error(computeAlleleFraction(snp.pos=data.frame(), chr=c(1,2),
+                                        w=11, cutOff=-3), error_message)
+})

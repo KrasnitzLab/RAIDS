@@ -65,7 +65,7 @@ Default: \code{FALSE}.}
 \item{outPref}{TODO. Default: \code{"pruned"}.}
 }
 \value{
-\code{0L} when successful.
+The function returns \code{0L} when successful.
 }
 \description{
 TODO

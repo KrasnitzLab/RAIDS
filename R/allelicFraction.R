@@ -270,7 +270,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' @export
 computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 
-
     ## The chr parameter must be a single integer value
     if (!isSingleNumber(chr))  {
         stop("The \'chr\' must be a single integer value representing ",
@@ -417,7 +416,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testEmptyBox <- function(matCov, pCutOff = -3) {
+testEmptyBox <- function(matCov, pCutOff=-3) {
 
     p <- 0
     pO <- 0
@@ -482,7 +481,7 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean) {
+testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     p <- 0
     pO <- 0
 
@@ -599,7 +598,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #'
 #' @param snp.pos TODO
 #'
-#' @param chr A integer for the chromosome TODO
+#' @param chr a single positive \code{integer} for the chromosome.
 #'
 #' @param w a single positive \code{numeric} representing the size of the
 #' window to compute the allelic fraction.
@@ -623,6 +622,12 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @encoding UTF-8
 #' @export
 computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
+
+    ## The chr parameter must be a single integer value
+    if (!isSingleNumber(chr))  {
+        stop("The \'chr\' must be a single integer value representing ",
+             "a chromosome")
+    }
 
     ## The w parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(w) && (w >= 1)))  {

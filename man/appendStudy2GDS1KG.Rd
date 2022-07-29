@@ -36,7 +36,7 @@ Default: \code{NULL}.}
 to the samples with coverage info is keep}
 }
 \value{
-The function returns \code{OL} when successful.
+The function returns \code{0L} when successful.
 }
 \description{
 TODO

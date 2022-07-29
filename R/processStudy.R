@@ -21,7 +21,7 @@
 #' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
-#' @return The function returns \code{OL} when successful.
+#' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -67,30 +67,20 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
                           snp.position=read.gdsn(snpPOS))
 
-
-
     print(paste0("Start ", Sys.time()))
-
-
-
 
     print(paste0("Sample info DONE ", Sys.time()))
 
-    generateGDS1KGgenotypeFromSNPPileup(PATHGENO,
-                                        listSamples=listSamples,
-                                        listPos=listPos, offset=-1,
-                                        minCov=10, minProb=0.999,
-                                        seqError=0.001,
-                                        pedStudy = pedStudy,
-                                        batch = batch,
-                                        studyDF = studyDF,
-                                        PATHGDSSAMPLE=PATHSAMPLEGDS)
+    generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
+        listSamples=listSamples, listPos=listPos, offset=-1,
+        minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
+        batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
 
     print(paste0("Genotype DONE ", Sys.time()))
 
     closefn.gds(gds)
 
-    return(OL)
+    return(0L)
 }
 
 #' @title TODO
@@ -100,7 +90,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @param gds an object of class \code{gds} opened
 #'
 #' @param method a \code{character} string representing the method used in
-#' SNPRelate::snpgdsLDpruning() fucntion.
+#' SNPRelate::snpgdsLDpruning() function.
 #' Default: \code{"corr"}.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
@@ -553,20 +543,17 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computePrunedPCARef <- function(gds, listRef, np=1L) {
 
-
-    listPCA <- list()
-
-
     ## Validate that np is a single positive integer
-    if(! (isSingleInteger(np) && np > 0)) {
+    if(! (isSingleNumber(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 
+    listPCA <- list()
 
     listPruned <- read.gdsn(index.gdsn(gds, "pruned.study"))
 
@@ -632,7 +619,7 @@ computePrunedPCARef <- function(gds, listRef, np=1L) {
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
@@ -644,7 +631,7 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
     }
 
     ## Validate that np is a single positive integer
-    if(! (isSingleInteger(np) && np > 0)) {
+    if(! (isSingleNumber(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 
@@ -690,13 +677,13 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom SNPRelate snpgdsPCASampLoading
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 
     ## Validate that np is a single positive integer
-    if(! (isSingleInteger(np) && np > 0)) {
+    if(! (isSingleNumber(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 

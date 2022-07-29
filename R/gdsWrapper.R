@@ -545,7 +545,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @importFrom utils read.csv
 #' @encoding UTF-8
 #' @keywords internal
- generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
+generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 listSamples,listPos, offset,
                                                 minCov=10, minProb=0.999,
                                                 seqError=0.001,

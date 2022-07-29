@@ -21,20 +21,22 @@ The directory sampleGeno must contain matFreqSNV.txt.bz2}
 
 \item{fileNamePED}{TODO}
 
-\item{fileNameGDS}{TODO}
+\item{fileNameGDS}{a \code{character} string representing the file name of
+the GDS study file that will be created. TODO}
 
-\item{batch}{TODO}
+\item{batch}{TODO . Default: \code{1}.}
 
 \item{studyDF}{TODO}
 
 \item{listSamples}{A \code{vector} of \code{string} corresponding to
-the sample.ids. if NULL all samples}
+the sample.ids. If \code{NULL} all samples are selected.
+Default: \code{NULL}.}
 
 \item{PATHSAMPLEGDS}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
 }
 \value{
-None
+The function returns \code{OL} when successful.
 }
 \description{
 TODO

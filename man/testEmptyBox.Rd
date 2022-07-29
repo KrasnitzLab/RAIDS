@@ -13,7 +13,13 @@ testEmptyBox(matCov, pCutOff = -3)
 \item{pCutOff}{TODO}
 }
 \value{
-a list TODO.
+a \code{list} TODO containing:
+\itemize{
+\item{pWin}{TODO}
+\item{p}{TODO}
+\item{pCut}{TODO}
+\item{pCut1}{TODO}
+}
 }
 \description{
 TODO

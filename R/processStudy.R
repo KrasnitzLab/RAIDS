@@ -7,19 +7,21 @@
 #'
 #' @param fileNamePED TODO
 #'
-#' @param fileNameGDS TODO
+#' @param fileNameGDS a \code{character} string representing the file name of
+#' the GDS study file that will be created. TODO
 #'
-#' @param batch TODO
+#' @param batch TODO . Default: \code{1}.
 #'
 #' @param studyDF TODO
 #'
 #' @param listSamples A \code{vector} of \code{string} corresponding to
-#' the sample.ids. if NULL all samples
+#' the sample.ids. If \code{NULL} all samples are selected.
+#' Default: \code{NULL}.
 #'
 #' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
-#' @return None
+#' @return The function returns \code{OL} when successful.
 #'
 #' @examples
 #'
@@ -34,31 +36,33 @@
 #' @encoding UTF-8
 #' @export
 appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
-                               fileNamePED,
-                               fileNameGDS,
-                               batch=1,
-                               studyDF,
-                               listSamples=NULL,
-                               PATHSAMPLEGDS=NULL) {
+                                fileNamePED, fileNameGDS, batch=1,
+                                studyDF, listSamples=NULL,
+                                PATHSAMPLEGDS=NULL) {
 
     # check if file fileGDS
     # It must not exists
 
     # validate the para
 
-    pedStudy <- readRDS(fileNamePED)
+    ## The fileNameGDS must be a character string and the file must exists
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS))))  {
+        stop("The \'fileNameGDS\' must be a character string representing ",
+                "the GDS study file. The file must exist.")
+    }
+
+
+    pedStudy <- readRDS(file=fileNamePED)
 
 
     # list in the file genotype we keep from fileLSNP in generateMapSnvSel
 
 
+    ## Read the GDS file
+    gds <- snpgdsOpen(filename=fileNameGDS)
 
-
-    # Create the GDS file
-    gds <- snpgdsOpen(fileNameGDS)
-
-    snpCHR <- index.gdsn(gds, "snp.chromosome")
-    snpPOS <- index.gdsn(gds, "snp.position")
+    snpCHR <- index.gdsn(node=gds, "snp.chromosome")
+    snpPOS <- index.gdsn(node=gds, "snp.position")
 
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
                           snp.position=read.gdsn(snpPOS))
@@ -85,6 +89,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     print(paste0("Genotype DONE ", Sys.time()))
 
     closefn.gds(gds)
+
+    return(OL)
 }
 
 #' @title TODO

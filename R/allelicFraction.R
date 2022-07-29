@@ -6,13 +6,15 @@
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gdsn.class}}
+#' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
+#' the information about one sample.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample.id used in LDpruning.
 #'
 #' @param study.id A \code{string} corresponding to the study
-#' use in LDpruning.
+#' used in LDpruning.
 #'
 #' @param minCov a single positive \code{integer} representing the
 #' minimum coverage needed to retain TODO. Default: \code{10}.
@@ -54,6 +56,14 @@
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001) {
 
+
+    ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gdsSample, "gdsn.class") &&
+            !inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class ",
+                    "\'gdsn.class\' or \'gds.class\'")
+    }
+
     ## The minCov must be a single positive number
     if (!(isSingleNumber(minCov) && (minCov >= 0)))  {
         stop("The \'minCov\' must be a single numeric positive value.")
@@ -71,8 +81,8 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
              "value between 0 and 1.")
     }
 
-    ## Extract study information from GDS
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    ## Extract study information (data.frame) from GDS Sample file
+    study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
 
     ## Retain the specified sample in the specified study
     posCur <- which(study.annot$data.id == sampleCurrent &
@@ -98,9 +108,9 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                                             start=c(1, posCur),
                                             count=c(-1,1))[listKeep],
-                    snp.pos=read.gdsn(index.gdsn(gds,
+                    snp.pos=read.gdsn(index.gdsn(node=gds,
                                             "snp.position"))[listKeep],
-                    snp.chr=read.gdsn(index.gdsn(gds,
+                    snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
                     normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unkown
                     pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
@@ -284,18 +294,18 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     listHetero <- snp.pos[snp.pos$hetero == TRUE, "snp.pos"]
 
     homoBlock <- data.frame(chr=rep(chr, length(listHetero) + 1),
-                            start=c(1, listHetero + 1),
-                            end=c(listHetero, chrEnd))
+                                start=c(1, listHetero + 1),
+                                end=c(listHetero, chrEnd))
 
 
     z <- cbind(c(homoBlock$start, homoBlock$end,
-                    snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
-               c(seq_len(length(homoBlock$start)),
-                    -1*seq_len(length(homoBlock$start)),
-                    rep(0, length(which(snp.pos$homo == TRUE)))),
-               c(rep(0, length(homoBlock$start)),
-                    rep(0, length(homoBlock$start)),
-                    seq_len(length(which(snp.pos$homo == TRUE)))))
+                        snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
+                c(seq_len(length(homoBlock$start)),
+                        -1*seq_len(length(homoBlock$start)),
+                        rep(0, length(which(snp.pos$homo == TRUE)))),
+                c(rep(0, length(homoBlock$start)),
+                        rep(0, length(homoBlock$start)),
+                        seq_len(length(which(snp.pos$homo == TRUE)))))
 
     z <- z[order(z[,1]),]
 
@@ -345,9 +355,8 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
         } else if(length(which(snvH$pruned)) > 2) {
 
             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
-            afSNV <- apply(matrix(afSNV, ncol=1),
-                           1,
-                           FUN=function(x){max(x, 0.01) })
+            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
+                            FUN=function(x){max(x, 0.01)})
             snvR <- snvH$cnt.ref[which(snvH$pruned)] >
                         snvH$cnt.alt[which(snvH$pruned)]
 
@@ -365,7 +374,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                                 sum(log10(tmp))
         }
 
-        homoBlock$logLHR[i] <- max(logLHR,-100)
+        homoBlock$logLHR[i] <- max(logLHR, -100)
         homoBlock$LH1[i] <- lH1
         homoBlock$LM1[i] <- lM1
         homoBlock$homoScore[i] <- lH1 - lM1
@@ -383,7 +392,13 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @param pCutOff TODO
 #'
 #'
-#' @return a list TODO.
+#' @return a \code{list} TODO containing:
+#' \itemize{
+#' \item{pWin}{TODO}
+#' \item{p}{TODO}
+#' \item{pCut}{TODO}
+#' \item{pCut1}{TODO}
+#' }
 #'
 #' @examples
 #'
@@ -411,10 +426,8 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
         #vCur2 <- ifelse(matCov$cnt.alt[i] > matCov$cnt.ref[i],
         #                   matCov$cnt.alt[i], matCov$cnt.ref[i])
 
-
-        pCur <- pbinom(vCur1,
-                       size = matCov$cnt.ref[i] + matCov$cnt.alt[i],
-                       vMean)
+        pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
+                        prob=vMean)
         #print(paste0("pCur ", pCur, " vCur1 ", vCur1, " size ",
         #    matCov$cnt.ref[i] + matCov$cnt.alt[i]))
         pCurO <- max(1 - max(2 * pCur,0.01),0.01)
@@ -428,9 +441,9 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
                                 matCov$pWin[1] < 0.5 &
                                 (matCov$pWin[nrow(matCov)] < 0.5) &
                                 ((p-pO) <= pCutOff))
-    res <- list(pWin = matCov$pWin, p=p,
-                    pCut = as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
-                    pCut1 = pCut1)
+    res <- list(pWin=matCov$pWin, p=p,
+                    pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
+                    pCut1=pCut1)
     return(res)
 }
 
@@ -447,6 +460,7 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @return a \code{list} containing:
 #' \itemize{
 #' \item{pWin} {TODO.}
+#' \item{p} {TODO}
 #' \item{pCut} {TODO.}
 #' \item{pCut1} {TODO.}
 #' }
@@ -463,13 +477,13 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean){
+testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean) {
     p <- 0
     pO <- 0
 
     matCov$pWin <- rep(1, nrow(matCov))
 
-    for(i in seq_len(nrow(matCov))){
+    for(i in seq_len(nrow(matCov))) {
 
         vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
                         matCov$cnt.alt[i], matCov$cnt.ref[i])
@@ -548,7 +562,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
     # process the window ex: 1 to 1+wAR
     wAR <- wAR - 1
     listHetero <- NULL
-    if(length(which(snp.pos$normal.geno != 3) > 0)){
+    if(length(which(snp.pos$normal.geno != 3) > 0)) {
         listHetero <- which(snp.pos$keep == TRUE & snp.pos$normal.geno == 1)
     } else{
         listHetero <- which(snp.pos$hetero == TRUE)
@@ -558,7 +572,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
-            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ){
+            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                     ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
                 if(cur$pCut == 1){
@@ -582,9 +596,11 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #'
 #' @param chr A integer for the chromosome TODO
 #'
-#' @param w size of the window to compute the allelic Fraction TODO
+#' @param w a single positive \code{numeric} representing the size of the
+#' window to compute the allelic fraction.
+#' Default: \code{10}.
 #'
-#' @param cutOff TODO default -3
+#' @param cutOff TODO . Default: \code{-3}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -598,9 +614,15 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats median
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
+computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
+
+    ## The w parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(w) && (w >= 1)))  {
+        stop("The \'w\' must be a single numeric positive value.")
+    }
 
     listBlockAR <- list()
     j <- 1
@@ -610,8 +632,8 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 
     if(length(which(z[,1] == 1)) > 0) {
 
-        segImb <- data.frame(start = seq_len(nrow(snp.pos))[which(z[,1] > 0)],
-                                end = seq_len(nrow(snp.pos))[which(z[,2] < 0)])
+        segImb <- data.frame(start=seq_len(nrow(snp.pos))[which(z[,1] > 0)],
+                                end=seq_len(nrow(snp.pos))[which(z[,2] < 0)])
 
         for(i in seq_len(nrow(segImb))) {
             # index of the segment
@@ -644,8 +666,8 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 
                         lapCur <- median(apply(snp.hetero[k:(k+w-1),
                                     c("cnt.ref", "cnt.alt")], 1, min) /
-                                    (rowSums(snp.hetero[k:(k+w-1),c("cnt.ref",
-                                                            "cnt.alt")])))
+                                    (rowSums(snp.hetero[k:(k+w-1),
+                                                c("cnt.ref", "cnt.alt")])))
 
                         start <- k
 
@@ -671,26 +693,27 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
                             listBlockAR[[j]] <- c(listHetero[start],
                                                     segImb$end[i], lapCur)
 
-                            j <- j+1
+                            j <- j + 1
 
                             k <- nrow(snp.hetero)
                         } else{ # continue nrow(snp.hetero) >= w+k
-                            lapCur <- median(apply(snp.hetero[start:k, c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[start:k,c("cnt.ref", "cnt.alt")])))
+                            lapCur <- median(apply(snp.hetero[start:k,
+                                c("cnt.ref", "cnt.alt")], 1, min) /
+                                    (rowSums(snp.hetero[start:k,c("cnt.ref",
+                                                        "cnt.alt")])))
 
                             k <- k + 1
                         }
                     }
                 }# End while
-            }else{
+            }else {
                 lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[,c("cnt.ref", "cnt.alt")])))
 
                 listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
 
                 j <- j + 1
             }
-
         }
-
     }
 
     # note NULL if length(listBlockAR) == 0
@@ -722,13 +745,15 @@ computeAlleleFraction <- function( snp.pos, chr, w=10, cutOff=-3) {
 #'
 #' @param minCov an \code{integer} default 10
 #'
-#' @param minProb an \code{numeric} betweeen 0 and 1
+#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#' Default: \code{0.999}.
 #'
-#' @param eProb an \code{numeric} betweeen 0 and 1 probability of sequencing error
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.001}.
 #'
-#' @param cutOffLOH log of the score to be LOH default -5
+#' @param cutOffLOH log of the score to be LOH . Default: \code{-5}.
 #'
-#' @param cutOffHomoScore TODO
+#' @param cutOffHomoScore TODO. Default: \code{-3}.
 #'
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
@@ -756,6 +781,18 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                                         cutOffHomoScore=-3,
                                         wAR=9) {
 
+    ## The minProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' must be a single numeric positive ",
+                "value between 0 and 1.")
+    }
+
+    ## The eProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
+        stop("The \'eProb\' must be a single numeric positive ",
+                "value between 0 and 1.")
+    }
+
     ## The wAR parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
         stop("The \'wAR\' must be a single numeric positive value.")
@@ -769,7 +806,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
 
     homoBlock <- list()
 
-        for(chr in unique(snp.pos$snp.chr)){
+    for(chr in unique(snp.pos$snp.chr)) {
         # Define the end of chr
         print(paste0("chr ", chr))
         print(paste0("Step 1 ", Sys.time()))
@@ -780,11 +817,14 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
         # snp.pos.chr <- snp.pos[listChr,]
 
 
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds, chrInfo,
-                                                    snp.pos[listChr,], chr)
+        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
+                                            snp.pos=snp.pos[listChr,], chr=chr)
+
         print(paste0("Step 2 ", Sys.time()))
+
         homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
                 cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
+
         z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
                         snp.pos[listChr, "snp.pos"]),
                     c(rep(0,  2* nrow(homoBlock[[chr]])),
@@ -794,25 +834,34 @@ computeAllelicFractionDNA <- function(gds, gdsSample,
                         rep(0, length(listChr)) ),
                     c(rep(0, 2 * nrow(homoBlock[[chr]])),
                         seq_len(length(listChr))))
-        z <- z[order(z[,1], z[,2]),]
+
+        z <- z[order(z[,1], z[,2]), ]
         pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
         snp.pos[listChr[pos], "lap"] <- 0
         snp.pos[listChr[pos], "LOH"] <- 1
+
         print(paste0("Step 3 ", Sys.time()))
-        snp.pos[listChr, "imbAR"] <- computeAllelicImbDNAChr(snp.pos[listChr, ], chr, wAR = 10, cutOffEmptyBox = -3)
+
+        snp.pos[listChr, "imbAR"] <-
+                computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
+                                            wAR=10, cutOffEmptyBox=-3)
+
         print(paste0("Step 4 ", Sys.time()))
-        blockAF <- computeAlleleFraction(snp.pos[listChr, ], chr,
-                                            w = 10, cutOff = -3)
+        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
+                                                    w=10, cutOff=-3)
+
         print(paste0("Step 5 ", Sys.time()))
-        if(! is.null(blockAF)){
-            for(i in seq_len(nrow(blockAF))){
-                snp.pos[listChr[blockAF[i,1]:blockAF[i,2]], "lap"] <- blockAF[i,3]
+
+        if(! is.null(blockAF)) {
+            for(i in seq_len(nrow(blockAF))) {
+                snp.pos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                                                                blockAF[i, 3]
             }
         }
-
-
     }
+
     snp.pos[which(snp.pos[, "lap"] == -1), "lap"] <- 0.5
+
     return(snp.pos)
 }
 

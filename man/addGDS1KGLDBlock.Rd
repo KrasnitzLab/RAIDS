@@ -17,7 +17,7 @@ addGDS1KGLDBlock(gds, listBlock, blockName, blockDesc)
 \item{blockDesc}{TODO}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

@@ -72,7 +72,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
                             FILTER=rep(".", length(snp.chromosome)),
                             INFO=paste0("AF=", snp.AF),
                             stringsAsFactors=FALSE)
-    } else{
+    } else {
         freqDF <- data.frame(snp.AF=read.gdsn(index.gdsn(gds, "snp.AF")),
                         snp.EAS_AF=read.gdsn(index.gdsn(gds, "snp.EAS_AF")),
                         snp.EUR_AF=read.gdsn(index.gdsn(gds, "snp.EUR_AF")),
@@ -80,7 +80,8 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
                         snp.AMR_AF=read.gdsn(index.gdsn(gds, "snp.AMR_AF")),
                         snp.SAS_AF=read.gdsn(index.gdsn(gds, "snp.SAS_AF")))
 
-        listKeep <- which(rowSums(freqDF[,2:6] >= freqCutoff & freqDF[,2:6] <= 1 - freqCutoff) > 0)
+        listKeep <- which(rowSums(freqDF[,2:6] >= freqCutoff &
+                                        freqDF[,2:6] <= 1 - freqCutoff) > 0)
         df <- data.frame(CHROM=snp.chromosome[listKeep],
                             POS=as.integer(snp.position[listKeep] + offset),
                             ID=rep(".", length(listKeep)),
@@ -106,8 +107,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
                 "\n"), file = fileOUT, append=TRUE)
     cat('#', file = fileOUT, append=TRUE)
 
-    write.table(df, file=fileOUT, sep="\t",
-                    append=TRUE, row.names=FALSE,
+    write.table(df, file=fileOUT, sep="\t", append=TRUE, row.names=FALSE,
                     col.names=TRUE, quote=FALSE)
 
     return(0L)
@@ -251,7 +251,7 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr){
+processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr) {
 
     blockChr <- read.delim(file.path(PATHBLOCK,
                             paste0("block.sp.", superPop, ".f0.05.chr", chr,

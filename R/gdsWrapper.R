@@ -290,7 +290,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' frequence information TODO describe the file
 #'
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -303,24 +303,33 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' @keywords internal
 generateGDSSNPinfo <- function(gds, fileFREQ) {
 
-    mapSNVSel <- readRDS( fileFREQ)
+    mapSNVSel <- readRDS(file=fileFREQ)
     print(paste0("Read mapSNVSel DONE ", Sys.time()))
 
-    add.gdsn(gds, "snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
+    add.gdsn(node=gds, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
     print(paste0("SNP part snp.id DONE ", Sys.time()))
-    add.gdsn(gds, "snp.chromosome", as.integer(gsub("chr", "", mapSNVSel$CHROM)), storage = "uint16")
+    add.gdsn(node=gds, name="snp.chromosome",
+            as.integer(gsub("chr", "", mapSNVSel$CHROM)), storage = "uint16")
     print(paste0("SNP part snp.chromosome DONE ", Sys.time()))
-    add.gdsn(gds, "snp.position", as.integer(mapSNVSel$POS), storage = "int32")
+    add.gdsn(node=gds, name="snp.position", as.integer(mapSNVSel$POS),
+                storage="int32")
     print(paste0("SNP part snp.position DONE ", Sys.time()))
-    add.gdsn(gds, "snp.allele", paste0(mapSNVSel$REF, "/", mapSNVSel$ALT))
+    add.gdsn(node=gds, name="snp.allele",
+                paste0(mapSNVSel$REF, "/", mapSNVSel$ALT))
     print(paste0("SNP part 1 DONE ", Sys.time()))
-    add.gdsn(gds, "snp.AF", as.numeric(mapSNVSel$AF), storage = "packedreal24")
+    add.gdsn(node=gds, name="snp.AF", as.numeric(mapSNVSel$AF),
+                    storage="packedreal24")
     print(paste0("SNP part AF DONE ", Sys.time()))
-    add.gdsn(gds, "snp.EAS_AF", as.numeric(mapSNVSel$EAS_AF), storage = "packedreal24")
-    add.gdsn(gds, "snp.EUR_AF", as.numeric(mapSNVSel$EUR_AF), storage = "packedreal24")
-    add.gdsn(gds, "snp.AFR_AF", as.numeric(mapSNVSel$AFR_AF), storage = "packedreal24")
-    add.gdsn(gds, "snp.AMR_AF", as.numeric(mapSNVSel$AMR_AF), storage = "packedreal24")
-    add.gdsn(gds, "snp.SAS_AF", as.numeric(mapSNVSel$SAS_AF), storage = "packedreal24")
+    add.gdsn(node=gds, name="snp.EAS_AF", val=as.numeric(mapSNVSel$EAS_AF),
+                    storage="packedreal24")
+    add.gdsn(node=gds, name="snp.EUR_AF", val=as.numeric(mapSNVSel$EUR_AF),
+                    storage="packedreal24")
+    add.gdsn(node=gds, name="snp.AFR_AF", val=as.numeric(mapSNVSel$AFR_AF),
+                    storage="packedreal24")
+    add.gdsn(node=gds, name="snp.AMR_AF", val=as.numeric(mapSNVSel$AMR_AF),
+                    storage="packedreal24")
+    add.gdsn(node=gds, name="snp.SAS_AF", val=as.numeric(mapSNVSel$SAS_AF),
+                    storage="packedreal24")
 
     return(0L)
 }
@@ -424,14 +433,14 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(file=fileLSNP)
     geno.var <- index.gdsn(gds, "genotype")
-    g <- read.gdsn(geno.var, start=c(1, 1), count=c(1,-1))
+    g <- read.gdsn(node=geno.var, start=c(1, 1), count=c(1,-1))
     nbSample <- length(g)
     print(nbSample)
-    for(i in seq_len(length(listSample))){
+    for(i in seq_len(length(listSample))) {
         pos <- which(listSample1k == listSample[i])
-        if( length(pos) == 1){
+        if( length(pos) == 1) {
             matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
                                         row.names = NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
@@ -536,7 +545,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @importFrom utils read.csv
 #' @encoding UTF-8
 #' @keywords internal
- generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
+generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 listSamples,listPos, offset,
                                                 minCov=10, minProb=0.999,
                                                 seqError=0.001,
@@ -651,7 +660,8 @@ appendGDSgenotypeMat <- function(gds, matG) {
                                          matAll$count)
             }
 
-            listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy, batch=batch,
+            listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy,
+                                                batch=batch,
                                                 listSamples=c(listSamples[i]),
                                                 studyDF=studyDF)
 
@@ -716,7 +726,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 
 
             rm(g)
-            closefn.gds(gdsSample)
+            closefn.gds(gdsfile=gdsSample)
             print(paste0(listMat[pos], " ", i, " ", Sys.time()))
 
         }else{
@@ -1037,12 +1047,12 @@ runLDPruning <- function(gds, method="corr",
 addGDSStudyPruning <- function(gds, pruned, sample.id) {
 
     if("pruned.study" %in% ls.gdsn(gds)) {
-        delete.gdsn(index.gdsn(gds, "pruned.study"))
+        delete.gdsn(index.gdsn(node=gds, "pruned.study"))
     }
 
     var.Pruned <- add.gdsn(gds, "pruned.study", pruned)
 
-    sync.gds(gds)
+    sync.gds(gdsfile=gds)
 
     return(0L)
 }
@@ -1059,7 +1069,7 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #'
 #' @param blockDesc TODO
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -1072,14 +1082,13 @@ addGDSStudyPruning <- function(gds, pruned, sample.id) {
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
-    block.annot <- data.frame(block.id = blockName,
-                              block.desc = blockDesc,
-                              stringsAsFactors=FALSE)
+    block.annot <- data.frame(block.id=blockName,
+                                block.desc=blockDesc,
+                                stringsAsFactors=FALSE)
 
-
-    if(! ("block.annot" %in% ls.gdsn(gds))){
+    if(! ("block.annot" %in% ls.gdsn(gds))) {
         var.block.annot <- add.gdsn(gds, "block.annot", block.annot)
-    }else{
+    }else {
         curAnnot <- index.gdsn(gds, "block.annot/block.id")
         append.gdsn(curAnnot,block.annot$block.id)
         curAnnot <- index.gdsn(gds, "block.annot/block.desc")
@@ -1089,14 +1098,13 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
     var.block <- NULL
     if(! ("block" %in% ls.gdsn(gds))){
         var.block <- add.gdsn(gds, "block",
-                              valdim=c(length(listBlock), 1),
-                              listBlock,
-                              storage="int32",
-                              compress = "LZ4_RA")
+                                valdim=c(length(listBlock), 1),
+                                listBlock, storage="int32",
+                                compress = "LZ4_RA")
         readmode.gdsn(var.block)
 
-    }else{
-        if(is.null(var.block)){
+    }else {
+        if(is.null(var.block)) {
             var.block <- index.gdsn(gds, "block")
             var.block <- compression.gdsn(var.block, "")
         }

@@ -1065,8 +1065,8 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         j <- 1
         for(K in kList){
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
-            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall, predCall, listSP)
-            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall, predCall, listSP)
+            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall, predCall, listCall)
+            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall, predCall, listCall)
 
             df <- data.frame(D = D,
                              K = K,

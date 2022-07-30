@@ -5,7 +5,14 @@
 \alias{computeKNNSuperPoprSynthetic}
 \title{TODO}
 \usage{
-computeKNNSuperPoprSynthetic(listEigenvector, sample.ref, study.annot, spRef)
+computeKNNSuperPoprSynthetic(
+  listEigenvector,
+  sample.ref,
+  study.annot,
+  spRef,
+  kList = seq_len(15),
+  pcaList = 2:15
+)
 }
 \arguments{
 \item{listEigenvector}{TODO see return of computePCAsynthetic}
@@ -16,9 +23,14 @@ computeKNNSuperPoprSynthetic(listEigenvector, sample.ref, study.annot, spRef)
 the gds}
 
 \item{spRef}{TODO}
+
+\item{kList}{TODO array of the k possible values}
+
+\item{pcaList}{TODO array of the pca dimension possible values}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors.
+A \code{list} TODO with the sample.id and eigenvectors
+and a table with KNN callfor different K and pca dimension.
 }
 \description{
 TODO

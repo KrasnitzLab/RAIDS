@@ -953,8 +953,12 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #'
 #' @param spRef TODO
 #'
+#' @param kList TODO array of the k possible values
 #'
-#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN callfor different K and pca dimension.
 #'
 #' @examples
 #'
@@ -968,20 +972,26 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @encoding UTF-8
 #' @export
 computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
-                                            study.annot, spRef) {
+                                         study.annot, spRef,
+                                         kList = seq_len(15), pcaList = 2:15) {
 
     ## The number of rows in study.annot must be one.
     if(nrow(study.annot) != 1) {
         stop("Number of samples in study.annot not equal to 1\n")
     }
 
-    kList <- c(seq_len(14), seq(15,100, by=5))
+    if(is.null(kList)){
+        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+    }
+    if(is.null(pcaList)){
+        pcaList <- 2:15
+    }
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
-                                            14 * length(kList)),
-                            D=rep(0,14 * length(kList)),
-                            K=rep(0,14 * length(kList)),
-                            SuperPop=character(14 * length(kList)),
+                                            length(pcaList) * length(kList)),
+                            D=rep(0,length(pcaList) * length(kList)),
+                            K=rep(0,length(pcaList) * length(kList)),
+                            SuperPop=character(length(pcaList) * length(kList)),
                             stringsAsFactors=FALSE)
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
@@ -995,7 +1005,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
                                 listEigenvector$sample.id)
 
     totR <- 1
-    for(pcaD in 2:15) {
+    for(pcaD in pcaList) {
         for(kV in  seq_len(length(kList))) {
             dCur <- paste0("d", pcaD)
             kCur <- paste0("k", kList[kV])
@@ -1020,4 +1030,89 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
                         matKNN=resMat)
 
     return(listKNN)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matKNN.All TODO see it is rbind matKNN of the
+#' computeKNNSuperPoprSynthetic return from group synthetic data
+#'
+#' @param pedCall TODO see return of prepPedSynthetic1KG
+#'
+#' @param refCall TODO column name in pedCall with the call
+#'
+#' @param predCall TODO column name in matKNN with the call
+#'
+#' @param listCall TODO array of the possible call
+#'
+#' @param kList TODO array of the k possible values
+#'
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom stats mad median quantile
+#' @encoding UTF-8
+#' @export
+selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
+                                 predCall, listCall,
+                                 kList = 3:15, pcaList = 2:15){
+    if(min(kList) < 3){
+        warning("Let K be smaller than 3 in parameter selection could be not robust\n")
+    }
+    tableSyn <- list()
+    tableCall <- list()
+    i <- 1
+    for(D in pcaList){
+        matKNNCurD <- matKNN.All[which(matKNN.All$D == D ), ]
+        listTMP <- list()
+        j <- 1
+        for(K in kList){
+            matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
+            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall, predCall, listSP)
+            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall, predCall, listSP)
+
+            df <- data.frame(D = D,
+                             K = K,
+                             AUROC.min = min(resROC$matAUROC.Call$AUC),
+                             AUROC = resROC$matAUROC.All$ROC.AUC,
+                             Accu.CM = res$matAccuracy$Accu.CM)
+            listTMP[[j]] <- df
+            j <- j + 1
+        }
+        df <- do.call(rbind, listTMP)
+        tableCall[[i]] <- df
+        maxAUROC <- max(df[df$K %in% kList, "AUROC.min"])
+        kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3,"K"]
+        kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
+        dfPCA = data.frame(D = D,
+                           median = median(df[df$K %in% kList, "AUROC.min"]),
+                           mad = mad(df[df$K %in% kList, "AUROC.min"]),
+                           upQuartile = quantile(df[df$K %in% kList, "AUROC.min"], 0.75),
+                           K = kV)
+        tableSyn[[i]] <- dfPCA
+        i <- i + 1
+    }
+    dfPCA <- do.call(rbind, tableSyn)
+    dfCall <- do.call(rbind, tableCall)
+    selD <- dfPCA$D[which.max(dfPCA$upQuartile)]
+    selK <- dfPCA$K[which.max(dfPCA$upQuartile)]
+    tmp <- max(dfPCA$upQuartile)
+    listD <- dfPCA$D[which(abs(dfPCA$upQuartile - tmp) < 1e-3)]
+
+    res <- list(dfPCA = dfPCA,
+                dfPop = dfCall,
+                D = selD,
+                K = selK,
+                listD = listD)
+    return(res)
 }

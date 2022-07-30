@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![codecov](https://codecov.io/gh/belleau/RAIDS/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/belleau/RAIDS)
-[![R-CMD-check-bioc](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
+[![codecov](https://codecov.io/gh/krasnitzlab/RAIDS/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/krasnitzlab/RAIDS)
+[![R-CMD-check-bioc](https://github.com/krasnitzlab/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/krasnitzlab/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
 # This package is a pre-release version. It will be released soon. #
@@ -53,9 +53,9 @@ package is required.
 
 ## Documentation ##
 
-[RAIDS Website](https://adeschen.github.io/RAIDS/)
+[RAIDS Website](https://krasnitzlab.github.io/RAIDS/)
 
-[RAIDS Get Started](https://adeschen.github.io/RAIDS/articles/aicsPaper.html)
+[RAIDS Get Started](https://krasnitzlab.github.io/RAIDS/articles/aicsPaper.html)
 
 
 ## License ##

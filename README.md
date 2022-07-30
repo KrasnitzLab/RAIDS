@@ -4,10 +4,9 @@
 [![R-CMD-check-bioc](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/adeschen/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 
+# This package is a pre-release version. It will be released soon. #
 
-# This package will be available soon. #
-
-## If you wish to be notified when the package is released, please send an e-mail with "RAIDS Paper" as the subject line to: pascal_belleau@hotmail.com
+## If you wish to be notified when the package is released, please send an e-mail with "RAIDS Paper" as the subject line to: pascal_belleau@hotmail.com ##
 
 
 # Accurate inference of genetic ancestry from cancer-derived molecular data with **RAIDS** #

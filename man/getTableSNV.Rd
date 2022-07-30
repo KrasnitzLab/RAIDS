@@ -24,11 +24,11 @@ GDS file.}
 (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
 the information about one sample.}
 
-\item{sampleCurrent}{A \code{character} string corresponding to
-the sample.id used in LDpruning.}
+\item{sampleCurrent}{a \code{character} string corresponding to
+the sample identifier used in in \code{\link{pruningSample}} function}
 
-\item{study.id}{A \code{string} corresponding to the study
-used in LDpruning.}
+\item{study.id}{a \code{character} string corresponding to the study
+identifier used in \code{\link{pruningSample}} function.}
 
 \item{minCov}{a single positive \code{integer} representing the
 minimum coverage needed to retain TODO. Default: \code{10}.}

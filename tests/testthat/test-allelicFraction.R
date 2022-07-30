@@ -150,6 +150,39 @@ test_that("getTableSNV() must return error when eProb is vector of numerics", {
 })
 
 
+test_that("getTableSNV() must return error when gds is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'gds\' must be an object of class ",
+                                "\'gdsn.class\' or \'gds.class\'")
+
+    expect_error(getTableSNV(gds="HELLO", gdsSample=gdsF,
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=0.32, eProb=0.001), error_message)
+})
+
+test_that("getTableSNV() must return error when gdsSample is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'gdsSample\' must be an object of class ",
+                            "\'gdsn.class\' or \'gds.class\'")
+
+    expect_error(getTableSNV(gds=gdsF, gdsSample="BABY",
+                        sampleCurrent="TEST", study.id="TEST",
+                        minCov=12, minProb=0.32, eProb=0.001), error_message)
+})
+
+
 context("computeLOHBlocksDNAChr() results")
 
 
@@ -165,8 +198,7 @@ test_that("computeLOHBlocksDNAChr() must return error when chr is vector of nume
                                 "a chromosome")
 
     expect_error(computeLOHBlocksDNAChr(gds=gdsF, chrInfo=c("chr1", "chr2"),
-                                            snp.pos=data.frame(), chr=c(1, 2),
-                                            genoN=0.001),
+                            snp.pos=data.frame(), chr=c(1, 2), genoN=0.001),
                  error_message)
 })
 
@@ -183,8 +215,7 @@ test_that("computeLOHBlocksDNAChr() must return error when chr is character stri
                                 "a chromosome")
 
     expect_error(computeLOHBlocksDNAChr(gds=gdsF, chrInfo=c("chr1", "chr2"),
-                                    snp.pos=data.frame(), chr="MONTREAL",
-                                    genoN=0.001),
+                        snp.pos=data.frame(), chr="MONTREAL", genoN=0.001),
                  error_message)
 })
 
@@ -520,4 +551,25 @@ test_that("computeAlleleFraction() must return error when w is negative numeric"
 
     expect_error(computeAlleleFraction(snp.pos=data.frame(), chr=1,
                                     w=-2, cutOff=-3), error_message)
+})
+
+
+test_that("computeAlleleFraction() must return error when chr is character string", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                                "a chromosome")
+
+    expect_error(computeAlleleFraction(snp.pos=data.frame(), chr="1",
+                                        w=11, cutOff=-3), error_message)
+})
+
+
+
+test_that("computeAlleleFraction() must return error when chr is a vector of numerics", {
+
+    error_message <- paste0("The \'chr\' must be a single integer value representing ",
+                                "a chromosome")
+
+    expect_error(computeAlleleFraction(snp.pos=data.frame(), chr=c(1,2),
+                                        w=11, cutOff=-3), error_message)
 })

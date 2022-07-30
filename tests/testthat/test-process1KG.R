@@ -26,7 +26,7 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
 })
 
 
-test_that("prepPed1KG() must return error when batch.v is a float", {
+test_that("prepPed1KG() must return error when batch.v is a vector of numerics", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
@@ -35,7 +35,7 @@ test_that("prepPed1KG() must return error when batch.v is a float", {
     error_message <- "The batch.v must be an integer."
 
     expect_error(prepPed1KG(pedFile=pedFile, PATHGENO=data.dir,
-                                batch.v=0.111), error_message)
+                                batch.v=c(1, 2)), error_message)
 })
 
 

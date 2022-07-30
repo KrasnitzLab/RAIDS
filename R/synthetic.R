@@ -21,13 +21,13 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 select1KGPop <- function(gds, nbSamples) {
 
-    ## Validate that nbSamples is a single positive integer
-    if(! (isSingleInteger(nbSamples) && nbSamples > 0)) {
+    ## Validate that nbSamples is a single positive numeric
+    if(! (isSingleNumber(nbSamples) && nbSamples > 0)) {
         stop("The \'nbSamples\' parameter must be a single positive integer.")
     }
 
@@ -42,7 +42,7 @@ select1KGPop <- function(gds, nbSamples) {
 
     for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
-        tmp <- sample(listGroup, min(nbSamples, length(listGroup)) )
+        tmp <- sample(listGroup, min(nbSamples, length(listGroup)))
         listSel[[i]] <- data.frame(sample.id=sample.id[tmp],
                                     pop.group=sample.annot$pop.group[tmp],
                                     superPop=sample.annot$superPop[tmp],

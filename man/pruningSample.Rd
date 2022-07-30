@@ -28,7 +28,7 @@ pruningSample(
 \item{gds}{an object of class \code{gds} opened}
 
 \item{method}{a \code{character} string representing the method used in
-SNPRelate::snpgdsLDpruning() fucntion.
+SNPRelate::snpgdsLDpruning() function.
 Default: \code{"corr"}.}
 
 \item{sampleCurrent}{A \code{character} string corresponding to
@@ -65,7 +65,7 @@ Default: \code{FALSE}.}
 \item{outPref}{TODO. Default: \code{"pruned"}.}
 }
 \value{
-\code{0L} when successful.
+The function returns \code{0L} when successful.
 }
 \description{
 TODO

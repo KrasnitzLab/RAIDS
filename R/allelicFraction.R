@@ -10,11 +10,11 @@
 #' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
 #' the information about one sample.
 #'
-#' @param sampleCurrent A \code{character} string corresponding to
-#' the sample.id used in LDpruning.
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier used in in \code{\link{pruningSample}} function
 #'
-#' @param study.id A \code{string} corresponding to the study
-#' used in LDpruning.
+#' @param study.id a \code{character} string corresponding to the study
+#' identifier used in \code{\link{pruningSample}} function.
 #'
 #' @param minCov a single positive \code{integer} representing the
 #' minimum coverage needed to retain TODO. Default: \code{10}.
@@ -50,12 +50,17 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleInteger isSingleNumber
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001) {
 
+    ## The gds must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class ",
+             "\'gdsn.class\' or \'gds.class\'")
+    }
 
     ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
     if (!inherits(gdsSample, "gdsn.class") &&
@@ -265,7 +270,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' @export
 computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 
-
     ## The chr parameter must be a single integer value
     if (!isSingleNumber(chr))  {
         stop("The \'chr\' must be a single integer value representing ",
@@ -412,7 +416,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testEmptyBox <- function(matCov, pCutOff = -3) {
+testEmptyBox <- function(matCov, pCutOff=-3) {
 
     p <- 0
     pO <- 0
@@ -477,7 +481,7 @@ testEmptyBox <- function(matCov, pCutOff = -3) {
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @export
-testAlleleFractionChange <- function(matCov, pCutOff = -3, vMean) {
+testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     p <- 0
     pO <- 0
 
@@ -594,7 +598,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #'
 #' @param snp.pos TODO
 #'
-#' @param chr A integer for the chromosome TODO
+#' @param chr a single positive \code{integer} for the chromosome.
 #'
 #' @param w a single positive \code{numeric} representing the size of the
 #' window to compute the allelic fraction.
@@ -618,6 +622,12 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @encoding UTF-8
 #' @export
 computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
+
+    ## The chr parameter must be a single integer value
+    if (!isSingleNumber(chr))  {
+        stop("The \'chr\' must be a single integer value representing ",
+             "a chromosome")
+    }
 
     ## The w parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(w) && (w >= 1)))  {

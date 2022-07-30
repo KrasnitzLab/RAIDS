@@ -10,7 +10,7 @@ computeAlleleFraction(snp.pos, chr, w = 10, cutOff = -3)
 \arguments{
 \item{snp.pos}{TODO}
 
-\item{chr}{A integer for the chromosome TODO}
+\item{chr}{a single positive \code{integer} for the chromosome.}
 
 \item{w}{a single positive \code{numeric} representing the size of the
 window to compute the allelic fraction.

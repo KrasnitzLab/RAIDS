@@ -33,10 +33,10 @@ the sample.ids. If \code{NULL} all samples are selected.
 Default: \code{NULL}.}
 
 \item{PATHSAMPLEGDS}{TODO a PATH to a directory where a gds specific
-to the samples with coverage info is keep}
+to the samples with coverage info is keep. Default: \code{NULL}.}
 }
 \value{
-The function returns \code{OL} when successful.
+The function returns \code{0L} when successful.
 }
 \description{
 TODO

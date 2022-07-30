@@ -32,7 +32,7 @@
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
 #' @importFrom methods is
-#' @importFrom S4Vectors isSingleInteger
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
@@ -44,7 +44,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     }
 
     ## Validate that offset is a single integer
-    if (! isSingleInteger(offset)) {
+    if (! isSingleNumber(offset)) {
         stop("The \'offset\' must be a single integer.")
     }
 

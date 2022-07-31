@@ -37,7 +37,8 @@ Default: \code{0.01}.}
 
 \item{minProb}{a single \code{numeric} TODO. Default: \code{0.999}.}
 
-\item{seqError}{a single \code{numeric} TODO. Default: \code{0.001}.}
+\item{seqError}{a single positive \code{numeric} between 0 and 1
+representing the sequencing error rate. Default: \code{0.001}.}
 }
 \value{
 \code{0L} when successful.

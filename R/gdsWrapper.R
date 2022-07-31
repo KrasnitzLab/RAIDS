@@ -8,7 +8,7 @@
 #' @param gds a \code{gds}.
 #'
 #' @param pedDF a \code{data.frame} containing the information related to the
-#' sample. It must have those columns: "sample.id", "Name.ID", "sex",
+#' samples. It must have those columns: "sample.id", "Name.ID", "sex",
 #' "pop.group", "superPop" and "batch". The unique id of pedDF
 #' is Name.ID and the row.name is Name.ID too.
 #'
@@ -503,32 +503,42 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param PATHGENO TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
-#'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to the sample identifiers that will have a GDS Sample file created. The
+#' sample identifiers must be present in the "Name.ID" column of the
+#' \code{data.frame} passed to the \code{pedDF} parameter.
 #'
 #' @param listPos  a \code{array}
 #'
 #' @param offset  a \code{integer} to adjust if the genome start at 0 or 1
 #'
-#' @param minCov  a \code{array} with the sample to keep
+#' @param minCov  a single positive \code{integer} representing the minimum
+#' coverage needed to keep the SNPs in the analysis. Default: \code{10}.
 #'
 #' @param minProb  a \code{array} with the sample to keep
 #'
-#' @param seqError  a \code{array} with the sample to keep
+#' @param seqError a single positive \code{numeric} between 0 and 1
+#' representing the sequencing error rate. Default: \code{0.001}.
 #'
-#' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
-#' pedDF is Name.ID and the row.name is Name.ID too.
+#' @param pedDF a \code{data.frame} with the information about the sample(s).
+#' Those are mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings. The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter.
 #'
-#' @param batch a \code{integer} corresponding
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
 #'
-#' @param studyDF a \code{data.frame} with at least the column study.id,
-#' study.desc and study.platform
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings.
 #'
 #' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
-#' @return The integer \code{0} when successful.
+#' @return The  function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -554,12 +564,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 studyDF,
                                                 PATHGDSSAMPLE=NULL) {
 
-
-
     # File with the description of the SNP keep
     listMat <- dir(PATHGENO, pattern = ".+.txt.gz")
     listSampleFile <- gsub(".txt.gz", "", listMat)
-
 
     g <- as.matrix(rep(-1, nrow(listPos)))
 

@@ -17,7 +17,7 @@ Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
 \item{snp.pos}{a \code{data.frame} containing TODO.}
 
-\item{chr}{a single \code{integer} for the chromosome.}
+\item{chr}{a single positive \code{integer} for the chromosome.}
 
 \item{genoN}{a single \code{numeric} between 0 and 1 representing TODO.
 Default: \code{0.0001}.}

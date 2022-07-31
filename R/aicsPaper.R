@@ -40,15 +40,18 @@
 #'     frequency superior or equal to the specified cut-off in at least one
 #'     super population.}
 #'     \item \code{\link{generateGDS1KG}} {This function generates the GDS
-#'     file that will contain the information from 1KG.}
+#'     file that will contain the information from 1KG. }
 #'     \item \code{\link{identifyRelative}} {The function identify patients
-#'     that are genetically related in the GDS 1KG file.}
+#'     that are genetically related in the GDS 1KG file. }
 #'     \item \code{\link{addRef2GDS1KG}} { This function adds the information
-#'     about the unrelated patients to the GDS 1KG file.}
+#'     about the unrelated patients to the GDS 1KG file. }
 #'     \item \code{\link{add1KG2SampleGDS}} { TODO }
 #'     \item \code{\link{addBlockFromPlink2GDS}} { TODO }
 #'     \item \code{\link{addPhase1KG2SampleGDSFromGDS}} { TODO }
-#'     \item \code{\link{appendStudy2GDS1KG}} { TODO }
+#'     \item \code{\link{appendStudy2GDS1KG}} { This function creates the GDS
+#'     Sample file(s) for one or multiple specific samples
+#'     using the information from a RDS Sample description file and the 1KG
+#'     GDS file. }
 #'     \item \code{\link{basePCASample}} { TODO }
 #'     \item \code{\link{computeAlleleFraction}} { TODO }
 #'     \item \code{\link{computeAllelicFractionDNA}} { TODO }

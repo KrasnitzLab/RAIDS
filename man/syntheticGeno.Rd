@@ -32,13 +32,14 @@ the GDS file containing the information about the samples.}
 
 \item{nbSim}{a single positive \code{integer} TODO}
 
-\item{prefId}{a \code{string} TODO}
+\item{prefId}{a \code{string} TODO . Default: \code{""}.}
 
 \item{pRecomb}{a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.}
 
 \item{minProb}{a single \code{numeric}  TODO. Default: \code{0.999}.}
 
-\item{seqError}{a single \code{numeric}  TODO. Default: \code{0.001}.}
+\item{seqError}{a single positive \code{numeric} between 0 and 1
+representing the sequencing error rate. Default: \code{0.001}.}
 }
 \value{
 \code{OL} when the function is successful.

@@ -70,13 +70,116 @@ test_that("projectSample2PCA() must return error when sample.current is number",
 
 context("appendStudy2GDS1KG() results")
 
+test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study", study.platform="WES",
+                        stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'fileNamePED\' must be a character string representing ",
+                        "the RDS Sample information file. The file must exist.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=21, fileNameGDS=gdsFIle, batch=1,
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
 
 test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", {
 
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.desc="Pancreatic study", study.platform="WES",
+                    stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'fileNameGDS\' must be a character string representing ",
-                                "the GDS study file. The file must exist.")
+                                "the GDS 1KG file. The file must exist.")
 
     expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
-        fileNamePED="test", fileNameGDS=33, batch=1,
-        studyDF="test", listSamples=NULL, PATHSAMPLEGDS=NULL), error_message)
+        fileNamePED=sampleRDS, fileNameGDS=33, batch=1,
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("appendStudy2GDS1KG() must return error when batch is a vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES", study.desc="Pancreatic",
+                                study.platform="WES", stringsAsFactors=FALSE)
+
+    error_message <- "The \'batch\' must be a single integer."
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=c(1,2),
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+test_that("appendStudy2GDS1KG() must return error when batch is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.desc="Pancreatic study", study.platform="WES",
+                    stringsAsFactors=FALSE)
+
+    error_message <- "The \'batch\' must be a single integer."
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch="2",
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study", study.platform="WES",
+                        stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'listSamples\' must be a vector ",
+        "of character strings (1 entry or more) or NULL.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
+        studyDF=studyInfo, listSamples=33, PATHSAMPLEGDS=NULL, verbose=FALSE), error_message, fixed=TRUE)
+})
+
+
+test_that("appendStudy2GDS1KG() must return error when verbose is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.desc="Pancreatic study", study.platform="WES",
+                    stringsAsFactors=FALSE)
+
+    error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose="TRUE"), error_message, fixed=TRUE)
 })

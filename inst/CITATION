@@ -1,0 +1,11 @@
+
+## Paper
+bibentry(bibtype = "Article",
+         title = "Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms",
+         author = c(person(c("Pascal"), "Belleau"),
+                    person(c("Astrid"), "Deschênes"),
+                    person(c("David", "A"), "Tuveson"),
+                    person(c("Alexander"), "Krasnitz")),
+         year = "2022", journal = "bioRxiv",
+         doi = "10.1101/2022.02.01.478737",
+         textVersion="Belleau P, Deschênes A, Tuveson DA, Krasnitz A. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737")

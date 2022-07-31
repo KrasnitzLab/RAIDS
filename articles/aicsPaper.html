@@ -150,282 +150,7 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</a> </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the file is 15GB.</span> <span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span></p>
 <hr>
-<p>This section explains in further details how to generate the 1000 Genomes (1KG) GDS file that is needed to run the ancestry inference tool. Beware that it is unnecessary to re-run those steps as the 1KG GDS file is publicly available.</p>
-<p>More specifically, the formatting of the 1KG information includes all those sub-steps:</p>
-<ol style="list-style-type: decimal">
-<li>Download the required files from 1KG</li>
-<li>Split the 1KG genotyping file to one file per sample per chromosome</li>
-<li>Combine the chromosomes to obtain one genotyping file per sample</li>
-<li>Create a pedigree file in RDS format</li>
-<li>Prepare a bulk SNP information file based on 1KG VCF</li>
-<li>Filter the bulk SNP information file</li>
-<li>Generate the GDS file with the 1KG information</li>
-<li>Identify genetically related patients present in 1KG GDS file</li>
-<li>Add information about unrelated patients to the 1KG GDS file</li>
-<li>Create a second GDS file containing the 1KG phase information</li>
-</ol>
-<p>Beware that those sub-steps are time, as well as, space consuming.</p>
-<p>In the following sections, those sub-steps are described in details.</p>
-<p><br></p>
-<div class="section level4">
-<h4 id="download-the-required-files-from-1kg">Download the required files from 1KG<a class="anchor" aria-label="anchor" href="#download-the-required-files-from-1kg"></a>
-</h4>
-<p>First, the pedigree file with the description of the 1KG samples needs to be downloaded from the 1KG ftp site:</p>
-<blockquote>
-<p><a href="ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped" class="uri">ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped</a></p>
-</blockquote>
-<p>The genotyping files for the 1KG samples also needs to be downloaded. Beware that there is one file per chromosome:</p>
-<blockquote>
-<p>ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV</p>
-</blockquote>
-<p>As the genotyping files are split by chromosome, all files corresponding to this pattern must be downloaded:</p>
-<blockquote>
-<p>ALL.chr*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</p>
-</blockquote>
-<p>All files are related to GRCh38 genome.</p>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome">Split the 1KG genotyping file to one file per sample per chromosome<a class="anchor" aria-label="anchor" href="#split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome"></a>
-</h4>
-<p>To facilitate the manipulation of the genotyping data, the large 1KG genotyping files are split into smaller files (one per sample).</p>
-<p>As there is one genotyping file per chromosome, the process must be executed for each of chromosome</p>
-<p>The splitting is done through a bash script:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The script has to be run separately for each chromosome</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Create one directory for the specific chromosome</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Two variables need to be assigned</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable PATHGENO is the path where the split 1KG genotyping </span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   files will be located</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory </span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   with the name of the chromosome will be created. The variable must </span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   include the prefix "chr".</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: PATHGENO=./genotypingPerSample</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: chrCur=chr1</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>mkdir <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>cd <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR is the associated 1KG genotyping VCF file for the </span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">##     specific chromosome</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR must also contain the relative or complete path to </span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="do">##     the VCF file</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="do">## There is 2548 samples in one phase VCF file</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="do">## The information associated to each sample is extracted and a VCF file </span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="do">## specific to each sample for the current chromosome is generated</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">seq 1 2548</span><span class="st">`</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    j<span class="ot">=</span><span class="er">$</span>(( <span class="sc">$</span>i <span class="sc">+</span> <span class="dv">9</span> ))</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    SAMPLE<span class="ot">=</span><span class="er">$</span>(zcat <span class="sc">$</span>FILECUR<span class="sc">||</span>head <span class="sc">-</span>n <span class="dv">1000</span> <span class="sc">|</span>grep <span class="st">"#CHROM"</span><span class="sc">|</span>cut <span class="sc">-</span>d<span class="sc">$</span><span class="st">'</span><span class="sc">\t</span><span class="st">'</span> <span class="sc">-</span>f<span class="sc">$</span>j)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    zcat <span class="sc">$</span>FILECUR<span class="sc">|</span>grep <span class="sc">-</span>v <span class="st">"##"</span><span class="sc">|</span>cut <span class="sc">-</span>d<span class="sc">$</span><span class="st">'</span><span class="sc">\t</span><span class="st">'</span> <span class="sc">-</span>f<span class="sc">$</span>j <span class="sc">|</span>bzip2 <span class="sc">-</span>c <span class="sc">&gt;</span> <span class="er">$</span>{SAMPLE}.<span class="sc">$</span>{CHR}.vcf.bz2</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>done</span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample">Combine the chromosomes to obtain one genotyping file per sample<a class="anchor" aria-label="anchor" href="#combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample"></a>
-</h4>
-<p>The genotyping information for all chromosomes is merged so that there is only one genotyping file per sample.</p>
-<div class="figure" style="text-align: center">
-<img src="groupChr1KGSNV_v01.png" alt="The function groupChr1KGSNV() merge samples that are split by chromosomes into one file." width="120%"><p class="caption">
-The function groupChr1KGSNV() merge samples that are split by chromosomes into one file.
-</p>
-</div>
-<p>The <strong>groupChr1KGSNV()</strong> function is used to combine the genotyping information from multiple files.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The path where the genotyping files are located</span></span>
-<span><span class="va">PATHGENOCHR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"pathgenochr"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The path where the merged genotyping files will be created</span></span>
-<span><span class="va">PATHOUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"pathgenoOUT"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Combining the genotyping information for all chromosome in one file per</span></span>
-<span><span class="co">## sample</span></span>
-<span><span class="fu"><a href="../reference/groupChr1KGSNV.html">groupChr1KGSNV</a></span><span class="op">(</span><span class="va">PATHGENOCHR</span>, <span class="va">PATHOUT</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="create-a-predigree-file-in-rds-format">Create a predigree file in RDS format<a class="anchor" aria-label="anchor" href="#create-a-predigree-file-in-rds-format"></a>
-</h4>
-<p>The function <strong>prepPed1KG()</strong> is used to create the pedigree file in RDS format:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The path to the pedigree file from 1KG</span></span>
-<span><span class="co">## In this example, the file is in the current directory</span></span>
-<span><span class="va">filePED1KGOri</span> <span class="op">&lt;-</span> <span class="st">"20130606_g1k.ped"</span></span>
-<span></span>
-<span><span class="co">## Extract needed information from the pedigree file from 1KG into a data.frame</span></span>
-<span><span class="co">## Only the samples with genotyping information (sample file present </span></span>
-<span><span class="co">## in PATHGENO parameter) are retained to create the final data.frame</span></span>
-<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">filePED1KGOri</span>, </span>
-<span>                    PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Save the pedigree information data.frame as a RDS file </span></span>
-<span><span class="co">## In this example, the file is saved here ./data/metadata/ped1KG.rds</span></span>
-<span><span class="va">filePED1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"metadata"</span>,<span class="st">"ped1KG.rds"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">ped</span>,  <span class="va">filePED1KG</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="prepare-a-bulk-snp-information-file-based-on-1kg-vcf">Prepare a bulk SNP information file based on 1KG VCF<a class="anchor" aria-label="anchor" href="#prepare-a-bulk-snp-information-file-based-on-1kg-vcf"></a>
-</h4>
-<p>Some intermediate file containing the SNP information from 1KG need to be generated so the information can ultimately be imported in a GDS file using Bioconductor <a href="https://bioconductor.org/packages/gdsfmt/" class="external-link">gdsfmt</a>.</p>
-<p>The bulk intermediate SNP file contains the SNP position as well as the frequency in each super population.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is not done in R</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The python script is in the 'scriptsPy' directory</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span><span class="st">`</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  chr<span class="ot">=</span><span class="er">$</span>(echo <span class="sc">$</span>FILECUR<span class="sc">|</span>perl <span class="sc">-</span>n <span class="sc">-</span>e <span class="st">'/ALL\.(chr[^\.]+)/;print $1'</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  python PATH2SCRIPT<span class="sc">/</span>extract1000gFreq.py <span class="sc">$</span>{FILECUR} matFreq.<span class="sc">$</span>{chr}</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>done</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">seq 1 22</span><span class="st">`</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  cat matFreq.chr<span class="sc">$</span>{i}.txt <span class="sc">&gt;</span>matFreqSNV.txt</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  bzip2 matFreqSNV.txt</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>done</span></code></pre></div>
-<p>The bulk SNP info file is called <strong>matFreqSNV.txt.bz2</strong>.</p>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="filter-the-bulk-snp-information-file">Filter the bulk SNP information file<a class="anchor" aria-label="anchor" href="#filter-the-bulk-snp-information-file"></a>
-</h4>
-<p>The bulk SNP file is filtered to only retain the SNPs with frequency higher then a specific cut-off (here &gt;=0.01) for at least one super population.</p>
-<p>The filter SNP file is saved in RDS format (<em>fileLSNP</em> parameter). A second file containing the index of the retained SNPs is also created (<em>fileLSNP</em> parameter)</p>
-<p>The function <strong>generateMapSnvSel()</strong> is used to filter the SNP file and generated the needed RDS files:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The path to the bulk SNP info file</span></span>
-<span><span class="va">fileSNV.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGENO</span>, <span class="st">"matFreqSNV.txt.bz2"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The paths and names of the two output files</span></span>
-<span><span class="co">## One file contains the index of retained SNPs ("listSNP.rds")</span></span>
-<span><span class="co">## One file contains the filter SNP information ("mapSNVSel.rds")</span></span>
-<span><span class="va">fileLSNP.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
-<span><span class="va">fileFREQ.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"mapSNVSel.rds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Filter the bulk SNP file (fileSNV parameter)</span></span>
-<span><span class="co">## Create a RDS with filter SNPs (fileFREQ parameter)</span></span>
-<span><span class="co">## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)</span></span>
-<span><span class="fu"><a href="../reference/generateMapSnvSel.html">generateMapSnvSel</a></span><span class="op">(</span>cutOff<span class="op">=</span><span class="fl">0.01</span>, fileSNV<span class="op">=</span><span class="va">fileSNV.v</span>,</span>
-<span>                      fileLSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
-<span>                      fileFREQ<span class="op">=</span><span class="va">fileFREQ.v</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="generate-the-gds-file-with-the-1kg-information">Generate the GDS file with the 1KG information<a class="anchor" aria-label="anchor" href="#generate-the-gds-file-with-the-1kg-information"></a>
-</h4>
-<p>The CoreArray Genomic Data Structure (GDS) data files are files suited for large-scale datasets, especially for data which are much larger than the available random-access memory.</p>
-<p>The function <strong>generateGDS1KG()</strong> is used to generate the GDS file that will contain the information related to 1KG:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## TODO: what is PATHMETA and PATHSEL</span></span>
-<span></span>
-<span><span class="co">## The path and file names of the required files</span></span>
-<span><span class="co">## First, the RDS file containing the pedigree information</span></span>
-<span><span class="co">## Second, the RDS file with the indexes of the retained SNPs</span></span>
-<span><span class="co">## Third, the RDS file with the filtered SNP information </span></span>
-<span><span class="va">filePED1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHMETA</span>,<span class="st">"ped1KG.rds"</span><span class="op">)</span></span>
-<span><span class="va">fileLSNP.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
-<span><span class="va">fileFREQ.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"mapSNVSel.rds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The name of the GDS file that will be created    </span></span>
-<span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="va">fileNameGDS</span><span class="op">)</span></span>
-<span>    </span>
-<span><span class="co">## Generate GDS file containing the 1KG information</span></span>
-<span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
-<span>                    fileNamePED<span class="op">=</span><span class="va">filePED1KG</span>,</span>
-<span>                    fileSNPSel<span class="op">=</span><span class="va">fileFREQ.v</span>,</span>
-<span>                    fileListSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
-<span>                    fileNameGDS<span class="op">=</span><span class="va">fileGDS</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="identify-genetically-related-patients-present-in-1kg-gds-file">Identify genetically related patients present in 1KG GDS file<a class="anchor" aria-label="anchor" href="#identify-genetically-related-patients-present-in-1kg-gds-file"></a>
-</h4>
-<p>As only unrelated patients can be used in the following analyses, the genetically related patients in 1KG must be identified.</p>
-<p>The function <strong>identifyRelative()</strong> identifies patients that are genetically related in the 1KG files. It generates a RDS file with the unrelated patient information (<em>filePart</em> parameter) as well as a RDS file with the kinship coefficient between the patients (<em>fileIBD</em> parameter).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## TODO: what is PATHMETA </span></span>
-<span></span>
-<span><span class="co">## The name of the GDS file that contains the 1KG information    </span></span>
-<span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="va">fileNameGDS</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Files that will be created by the identifyRelative() function</span></span>
-<span><span class="co">## The first RDS file will contain the kinship information between patients</span></span>
-<span><span class="co">## The second RDS file will contain the list of unrelated patients</span></span>
-<span><span class="va">fileIBD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHMETA</span>,<span class="st">"ibd.All.0.05.rds"</span><span class="op">)</span></span>
-<span><span class="va">filePart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHMETA</span>,<span class="st">"part.All.0.05.rds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Open the 1KG GDS file</span></span>
-<span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Identify the genetically related patients in 1KG</span></span>
-<span><span class="fu"><a href="../reference/identifyRelative.html">identifyRelative</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">fileGDS</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>                     fileIBD<span class="op">=</span><span class="va">fileIBD</span>, filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Close the 1KG GDS file</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="add-information-about-unrelated-patients-to-the-1kg-gds-file">Add information about unrelated patients to the 1KG GDS file<a class="anchor" aria-label="anchor" href="#add-information-about-unrelated-patients-to-the-1kg-gds-file"></a>
-</h4>
-<p>Only the unrelated patients from 1KG are used in the following ancestry inference and kept in the GDS 1KG file. The function <strong>identifyRelative()</strong> identifies the unrelated patients and saves the information about those patients in an intermediate external file.</p>
-<p>The function <strong>addRef2GDS1KG()</strong> is adding the information about the unrelated patients to the GDS 1KG file using the intermediate external file.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Add the information about the unrelated 1KG patients to the 1KG GDS file </span></span>
-<span><span class="fu"><a href="../reference/addRef2GDS1KG.html">addRef2GDS1KG</a></span><span class="op">(</span>fileGDS<span class="op">=</span><span class="va">gds</span>,  filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="create-a-second-gds-containing-the-1kg-phase-information">Create a second GDS containing the 1KG phase information<a class="anchor" aria-label="anchor" href="#create-a-second-gds-containing-the-1kg-phase-information"></a>
-</h4>
-<p>We generate a GDS with the phase information.</p>
-<p>The function <strong>generatePhase1KG2GDS()</strong> is adding the phase information into the newly created 1KG GDS phase file.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The name of the 1KG GDS file that already exists</span></span>
-<span><span class="va">fileGDS1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="st">"matGeno1000g.gds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## The name of the 1KG GDS phase file that will be created</span></span>
-<span><span class="va">fileGDSPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="st">"matPhase1000g.gds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Open the 1KG GDS file</span></span>
-<span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileGDS1KG</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Create the 1KG GDS phase file</span></span>
-<span><span class="va">gdsPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">fileGDSPhase</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Add the phase information to the 1KG GDS phase file</span></span>
-<span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">PATHGENO</span>, <span class="va">fileLSNP.v</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Close both files</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsPhase</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
+<p>There is a vignette<br><a href="Create_1KG_GDS_file.html">Formatting the information from 1000 Genomes (optional)</a> that is dedicated to this step.</p>
 </div>
 <div class="section level3">
 <h3 id="step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference">Step 2 - Format information from an external study to get if ready for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference"></a>
@@ -453,8 +178,8 @@ Step 2 - Formatting the information from an external study
 <div class="section level4">
 <h4 id="create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file">Create a VCF file containing the retained SNP positions from 1KG GDS file<a class="anchor" aria-label="anchor" href="#create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file"></a>
 </h4>
-<p>The <strong>snvListVCF()</strong> function is used to generate a VCF file that contains the information of all retained SNPs from 1KG GDS fil:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>The <strong>snvListVCF()</strong> function is used to generate a VCF file that contains the information of all retained SNPs from 1KG GDS file:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
 <span></span>
@@ -471,25 +196,25 @@ Step 2 - Formatting the information from an external study
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
 <p>You should compress and indexing the newly created VCF file. Do do so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
 <p>In a terminal:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Compress the new VCF file (fileOUT parameter)</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>bgzip fileOUT</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Index the new VCF file</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">## HTSlib software is needed</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>tabix <span class="sc">-</span>p vcf fileOUT.gz</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Compress the new VCF file (fileOUT parameter)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>bgzip fileOUT</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Index the new VCF file</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## HTSlib software is needed</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>tabix <span class="sc">-</span>p vcf fileOUT.gz</span></code></pre></div>
 <p>You need a <strong>ped</strong> file with the column:</p>
 <p>“sample.id”* Id of the sample but the sample can be genotyped more than one “sex”<em> “pop.group”</em> can be self declare or something else but must be there “superPop”* can be self declare or something else but must be there “Sample.Type”* Ex Primary Tumor or Blood Derived Normal “Diagnosis”* C or N (cancer normal) this is for the sample not the patient “Source”* The tissue ex Ovary “Recurrent”<br>
-“Case.ID” Patient identifiant<br>
+“Case.ID” Patient identifier<br>
 “Name.ID”* This the unique id of the table “batch” Number</p>
 <p>You need the extra code in the package Facet to extract the SNV <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a> <span class="citation">(Shen and Seshan 2016)</span>.</p>
 <p>The output from snp-pileup should be Name.ID.txt (snp-pileup add .gz to the filename)</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>    snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 VCFGenerateAbove snvSel0.<span class="fl">01.</span>vcf.gz OUTPUT.txt FILEBAM.bam</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 VCFGenerateAbove snvSel0.<span class="fl">01.</span>vcf.gz OUTPUT.txt FILEBAM.bam</span></code></pre></div>
 <p>TODO change the path to something generic</p>
 <p>in R:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="va">PATHGENO</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"snpCancer"</span><span class="op">)</span></span>
@@ -518,7 +243,7 @@ Step 2 - Formatting the information from an external study
 <span>                       batch <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>We select a subset of SNV pruned SNV We create a GDS for each sample with only the SNP in the pruning. It use more disk space but the analysis for the samples can be run simulatanusly with multiple process (if we we all samples in one file only one process can write in the GDS).</p>
 <p>or in R for a s</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="co"># fileNameGDS with the sample and 1KG genotype</span></span>

@@ -18,7 +18,7 @@ whole-exome, targeted gene panels and RNA sequences, as described in our
 bioRxiv manuscript. Our tools retain high accuracy in presence of somatic 
 alterations, such as those caused by cancer.
 
-**This code and analysis pipeline was designed and developed for the following publication:**
+**This code and analysis pipeline were designed and developed for the following publication:**
 
 >  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
 

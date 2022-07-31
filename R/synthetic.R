@@ -455,11 +455,11 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
 
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
-    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))
-    if(! popName %in% colnames(dataRef)){
-        stop(paste0("The population ", popName, " is not supported"))
+    dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
+    if(! popName %in% colnames(dataRef)) {
+        stop("The population ", popName, " is not supported")
     }
-    row.names(dataRef) <- read.gdsn(index.gdsn(gds, "sample.id"))
+    row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
     rownames(studyCur) <- studyCur$data.id

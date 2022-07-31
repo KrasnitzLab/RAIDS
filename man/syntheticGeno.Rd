@@ -30,7 +30,7 @@ the GDS file containing the information about the samples.}
 
 \item{listSampleRef}{a \code{character} string TODO}
 
-\item{nbSim}{a single positive \code{integer} TODO}
+\item{nbSim}{a single positive \code{integer} TODO . Default: \code{1}.}
 
 \item{prefId}{a \code{string} TODO . Default: \code{""}.}
 

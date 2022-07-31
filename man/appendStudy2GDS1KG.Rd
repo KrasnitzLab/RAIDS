@@ -3,7 +3,9 @@
 \encoding{UTF-8}
 \name{appendStudy2GDS1KG}
 \alias{appendStudy2GDS1KG}
-\title{Create a study at GDS including the reference (first study add)}
+\title{Create the GDS Sample file(s) for one or multiple specific samples
+using the information from a RDS Sample description file and the 1KG
+GDS file}
 \usage{
 appendStudy2GDS1KG(
   PATHGENO = file.path("data", "sampleGeno"),
@@ -12,39 +14,73 @@ appendStudy2GDS1KG(
   batch = 1,
   studyDF,
   listSamples = NULL,
-  PATHSAMPLEGDS = NULL
+  PATHSAMPLEGDS = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{PATHGENO}{TODO a PATH to the directory genotype file of 1KG
-The directory sampleGeno must contain matFreqSNV.txt.bz2}
+\item{PATHGENO}{a \code{character} string representing the path to the
+directory containing the output of SNP-pileup for each sample. The
+SNP-pileup files must be compressed (gz files) and have the name identifiers
+of the samples. A sample with "Name.ID" identifier would have an
+associated SNP-pileup file called "Name.ID.txt.gz".}
 
-\item{fileNamePED}{TODO}
+\item{fileNamePED}{a \code{character} string representing the path to the
+RDS file that contains the information about the sample to analyse.
+The RDS file must
+include a \code{data.frame} with those mandatory columns: "Name.ID",
+"Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+\code{character} strings. The \code{data.frame}
+must contain the information for all the samples passed in the
+\code{listSamples} parameter.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
-the GDS study file that will be created. TODO}
+the GDS 1KG file. The file must exist.}
 
-\item{batch}{TODO . Default: \code{1}.}
+\item{batch}{a single positive \code{integer} representing the current
+identifier for the batch. Beware, this field is not stored anymore.
+Default: \code{1}.}
 
-\item{studyDF}{TODO}
+\item{studyDF}{a \code{data.frame} containing the information about the
+study associated to the analysed sample(s). The \code{data.frame} must have
+those 3 columns: "study.id", "study.desc", "study.platform". All columns
+must be in \code{character} strings.}
 
-\item{listSamples}{A \code{vector} of \code{string} corresponding to
-the sample.ids. If \code{NULL} all samples are selected.
+\item{listSamples}{a \code{vector} of \code{character} string corresponding
+to the sample identifiers that will have a GDS Sample file created. The
+sample identifiers must be present in the "Name.ID" column of the RDS file
+passed to the \code{fileNamePED} parameter.
+If \code{NULL}, all samples in the \code{fileNamePED} are selected.
 Default: \code{NULL}.}
 
-\item{PATHSAMPLEGDS}{TODO a PATH to a directory where a gds specific
-to the samples with coverage info is keep. Default: \code{NULL}.}
+\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
+the directory where the GDS Sample files will be created.
+Default: \code{NULL}.}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{TRUE}.}
 }
 \value{
 The function returns \code{0L} when successful.
 }
 \description{
-TODO
+The function uses the information for the 1KG GDS file and the
+RDS Sample Description file to create the GDS Sample file. One GDS Sample
+file is created per sample. One GDS Sample file will be created for each
+entry present in the \code{listSamples} parameter.
 }
 \examples{
 
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", package="RAIDS")
+
+## The data.frame containing the information about the study
+## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+## The entries should be strings, not factors (stringsAsFactors=FALSE)
+studyInfo <- data.frame(study.id="Pancreatic.WES",
+                study.desc="Pancreatic study",
+                study.platform="WES",
+                stringsAsFactors=FALSE)
 
 ## TODO
 fileNamePED <- "TODO"

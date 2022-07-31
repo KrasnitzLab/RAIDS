@@ -122,7 +122,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
 
-    snp.pruned <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
+    snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
 
     listKeepPruned <- which(listKeep %in% snp.pruned)
     snp.pos$pruned[listKeepPruned] <- TRUE
@@ -235,7 +235,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #'
 #' @param snp.pos a \code{data.frame} containing TODO.
 #'
-#' @param chr a single \code{integer} for the chromosome.
+#' @param chr a single positive \code{integer} for the chromosome.
 #'
 #' @param  genoN a single \code{numeric} between 0 and 1 representing TODO.
 #' Default: \code{0.0001}.

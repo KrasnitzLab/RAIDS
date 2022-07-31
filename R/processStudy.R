@@ -1,25 +1,52 @@
-#' @title Create a study at GDS including the reference (first study add)
+#' @title Create the GDS Sample file(s) for one or multiple specific samples
+#' using the information from a RDS Sample description file and the 1KG
+#' GDS file
 #'
-#' @description TODO
+#' @description The function uses the information for the 1KG GDS file and the
+#' RDS Sample Description file to create the GDS Sample file. One GDS Sample
+#' file is created per sample. One GDS Sample file will be created for each
+#' entry present in the \code{listSamples} parameter.
 #'
-#' @param PATHGENO TODO a PATH to the directory genotype file of 1KG
-#' The directory sampleGeno must contain matFreqSNV.txt.bz2
+#' @param PATHGENO a \code{character} string representing the path to the
+#' directory containing the output of SNP-pileup for each sample. The
+#' SNP-pileup files must be compressed (gz files) and have the name identifiers
+#' of the samples. A sample with "Name.ID" identifier would have an
+#' associated SNP-pileup file called "Name.ID.txt.gz".
 #'
-#' @param fileNamePED TODO
+#' @param fileNamePED a \code{character} string representing the path to the
+#' RDS file that contains the information about the sample to analyse.
+#' The RDS file must
+#' include a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings. The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
-#' the GDS study file that will be created. TODO
+#' the GDS 1KG file. The file must exist.
 #'
-#' @param batch TODO . Default: \code{1}.
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
+#' Default: \code{1}.
 #'
-#' @param studyDF TODO
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings.
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to
-#' the sample.ids. If \code{NULL} all samples are selected.
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to the sample identifiers that will have a GDS Sample file created. The
+#' sample identifiers must be present in the "Name.ID" column of the RDS file
+#' passed to the \code{fileNamePED} parameter.
+#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
 #' Default: \code{NULL}.
 #'
-#' @param PATHSAMPLEGDS TODO a PATH to a directory where a gds specific
-#' to the samples with coverage info is keep. Default: \code{NULL}.
+#' @param PATHSAMPLEGDS a \code{character} string representing the path to
+#' the directory where the GDS Sample files will be created.
+#' Default: \code{NULL}.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{TRUE}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -28,60 +55,90 @@
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyInfo <- data.frame(study.id="Pancreatic.WES",
+#'                 study.desc="Pancreatic study",
+#'                 study.platform="WES",
+#'                 stringsAsFactors=FALSE)
+#'
 #' ## TODO
 #' fileNamePED <- "TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 fileNamePED, fileNameGDS, batch=1,
                                 studyDF, listSamples=NULL,
-                                PATHSAMPLEGDS=NULL) {
+                                PATHSAMPLEGDS=NULL, verbose=TRUE) {
 
-    # check if file fileGDS
-    # It must not exists
-
-    # validate the para
-
-    ## The fileNameGDS must be a character string and the file must exists
-    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS))))  {
-        stop("The \'fileNameGDS\' must be a character string representing ",
-                "the GDS study file. The file must exist.")
+    ## The fileNamePED must be a character string and the file must exists
+    if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
+        stop("The \'fileNamePED\' must be a character string representing ",
+             "the RDS Sample information file. The file must exist.")
     }
 
+    ## The fileNameGDS must be a character string and the file must exists
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+        stop("The \'fileNameGDS\' must be a character string representing ",
+                "the GDS 1KG file. The file must exist.")
+    }
 
+    ## The batch must be a single numeric
+    if (!(isSingleNumber(batch))) {
+        stop("The \'batch\' must be a single integer.")
+    }
+
+    ## The listSamples must be a vector of character string
+    if (!(is.character(listSamples) || is.null(listSamples))) {
+        stop("The \'listSamples\' must be a vector ",
+                "of character strings (1 entry or more) or NULL.")
+    }
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose))) {
+        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
+    }
+
+    ## Open the RDS Sample information file
     pedStudy <- readRDS(file=fileNamePED)
 
-
-    # list in the file genotype we keep from fileLSNP in generateMapSnvSel
-
-
-    ## Read the GDS file
+    ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
 
+    ## Extract the chromosome and position information for all SNPs in 1KG GDS
+    ## Create a data.frame containing the information
     snpCHR <- index.gdsn(node=gds, "snp.chromosome")
     snpPOS <- index.gdsn(node=gds, "snp.position")
 
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
-                          snp.position=read.gdsn(snpPOS))
+                            snp.position=read.gdsn(snpPOS))
 
-    print(paste0("Start ", Sys.time()))
-
-    print(paste0("Sample info DONE ", Sys.time()))
+    if (verbose) {
+        message("Start ", Sys.time())
+        message("Sample info DONE ", Sys.time())
+    }
 
     generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
         listSamples=listSamples, listPos=listPos, offset=-1,
         minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
         batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
 
-    print(paste0("Genotype DONE ", Sys.time()))
+    if (verbose) {
+        message("Genotype DONE ", Sys.time())
+    }
 
+    ## Close 1KG GDS file
     closefn.gds(gds)
 
+    ## Return successful code
     return(0L)
 }
+
 
 #' @title TODO
 #'

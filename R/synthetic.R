@@ -78,7 +78,8 @@ select1KGPop <- function(gds, nbSamples) {
 #'
 #' @param minProb a single \code{numeric} TODO. Default: \code{0.999}.
 #'
-#' @param seqError a single \code{numeric} TODO. Default: \code{0.001}.
+#' @param seqError a single positive \code{numeric} between 0 and 1
+#' representing the sequencing error rate. Default: \code{0.001}.
 #'
 #' @return \code{0L} when successful.
 #'
@@ -153,15 +154,16 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
-#' @param nbSim a single positive \code{integer} TODO
+#' @param nbSim a single positive \code{integer} TODO . Default: \code{1}.
 #'
-#' @param prefId a \code{string} TODO
+#' @param prefId a \code{string} TODO . Default: \code{""}.
 #'
 #' @param pRecomb a \code{numeric} between 0 and 1 TODO. Default: \code{0.01}.
 #'
 #' @param minProb a single \code{numeric}  TODO. Default: \code{0.999}.
 #'
-#' @param seqError a single \code{numeric}  TODO. Default: \code{0.001}.
+#' @param seqError a single positive \code{numeric} between 0 and 1
+#' representing the sequencing error rate. Default: \code{0.001}.
 #'
 #' @return \code{OL} when the function is successful.
 #'
@@ -179,14 +181,14 @@ syntheticGeno <- function(gds,
                             gdsSampleFile,
                             data.id.profile,
                             listSampleRef,
-                            nbSim = 1,
-                            prefId = "",
-                            pRecomb = 0.01,
+                            nbSim=1,
+                            prefId="",
+                            pRecomb=0.01,
                             minProb=0.999,
                             seqError=0.001) {
 
 
-    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE) #
+    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
 
 
     sampleSim <- paste(paste0(prefId, ".", data.id.profile),
@@ -205,7 +207,7 @@ syntheticGeno <- function(gds,
 
 
     superPop <- read.gdsn(index.gdsn(gds, "sample.annot/superPop"))[listPosRef.1kg]
-    if(all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg]) != TRUE){
+    if(all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg]) != TRUE) {
         stop("Order between 1kg and the sample are not the same\n")
     }
 
@@ -214,17 +216,17 @@ syntheticGeno <- function(gds,
 
 
 
-    infoSNV <- data.frame(count.tot = read.gdsn(index.gdsn(gdsSample,
+    infoSNV <- data.frame(count.tot=read.gdsn(index.gdsn(gdsSample,
                                             "Total.count"))[list1KG],
-                          lap = read.gdsn(index.gdsn(gdsSample, "lap")))
+                          lap=read.gdsn(index.gdsn(gdsSample, "lap")))
 
     nbSNV <- nrow(infoSNV)
 
     # Define a table for each "count.tot","lap" and, Freq (number of occurence)
     # to reduce the numbe of sampling call later
     df <- as.data.frame(table(infoSNV[,c("count.tot","lap")]))
-    df <- df[df$Freq > 0,]
-    df <- df[order(df$count.tot, df$lap),]
+    df <- df[df$Freq > 0, ]
+    df <- df[order(df$count.tot, df$lap), ]
     # order of SNV relatively to df
     listOrderSNP <- order(infoSNV$count.tot, infoSNV$lap)
 
@@ -266,8 +268,8 @@ syntheticGeno <- function(gds,
         r.1kg <- which(sample.id[listPosRef[r]] == sample.1kg)
         # get the genotype of the sample r
         g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
-                       start = c(1,curSynt),
-                       count = c(-1,1))
+                        start=c(1, curSynt),
+                        count=c(-1, 1))
 
         # Order the SNV by count.tot and, lap
         gOrder <- g[listOrderSNP]
@@ -455,11 +457,11 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
 
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
-    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))
-    if(! popName %in% colnames(dataRef)){
-        stop(paste0("The population ", popName, " is not supported"))
+    dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
+    if(! popName %in% colnames(dataRef)) {
+        stop("The population ", popName, " is not supported")
     }
-    row.names(dataRef) <- read.gdsn(index.gdsn(gds, "sample.id"))
+    row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
     rownames(studyCur) <- studyCur$data.id

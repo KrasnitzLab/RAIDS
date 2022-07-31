@@ -12,7 +12,7 @@ generateGDSSample(gds, pedDF, listSamples = NULL)
 \item{gds}{a \code{gds}.}
 
 \item{pedDF}{a \code{data.frame} containing the information related to the
-sample. It must have those columns: "sample.id", "Name.ID", "sex",
+samples. It must have those columns: "sample.id", "Name.ID", "sex",
 "pop.group", "superPop" and "batch". The unique id of pedDF
 is Name.ID and the row.name is Name.ID too.}
 

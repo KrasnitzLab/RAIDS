@@ -32,6 +32,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
+    </li>
+    <li>
       <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
     </li>
   </ul></li>
@@ -96,7 +99,7 @@ the GDS file containing the information about the samples.</p></dd>
 
 
 <dt>prefId</dt>
-<dd><p>a <code>string</code> TODO</p></dd>
+<dd><p>a <code>string</code> TODO . Default: <code>""</code>.</p></dd>
 
 
 <dt>pRecomb</dt>
@@ -108,7 +111,8 @@ the GDS file containing the information about the samples.</p></dd>
 
 
 <dt>seqError</dt>
-<dd><p>a single <code>numeric</code>  TODO. Default: <code>0.001</code>.</p></dd>
+<dd><p>a single positive <code>numeric</code> between 0 and 1
+representing the sequencing error rate. Default: <code>0.001</code>.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -34,6 +34,9 @@ pileup — generateGDS1KGgenotypeFromSNPPileup"><meta property="og:description" 
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
+    </li>
+    <li>
       <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
     </li>
   </ul></li>
@@ -80,7 +83,10 @@ samples with the genotype.</p></dd>
 
 
 <dt>listSamples</dt>
-<dd><p>a <code>array</code> with the sample to keep</p></dd>
+<dd><p>a <code>vector</code> of <code>character</code> string corresponding
+to the sample identifiers that will have a GDS Sample file created. The
+sample identifiers must be present in the "Name.ID" column of the
+<code>data.frame</code> passed to the <code>pedDF</code> parameter.</p></dd>
 
 
 <dt>listPos</dt>
@@ -92,7 +98,8 @@ samples with the genotype.</p></dd>
 
 
 <dt>minCov</dt>
-<dd><p>a <code>array</code> with the sample to keep</p></dd>
+<dd><p>a single positive <code>integer</code> representing the minimum
+coverage needed to keep the SNPs in the analysis. Default: <code>10</code>.</p></dd>
 
 
 <dt>minProb</dt>
@@ -100,16 +107,20 @@ samples with the genotype.</p></dd>
 
 
 <dt>seqError</dt>
-<dd><p>a <code>array</code> with the sample to keep</p></dd>
+<dd><p>a single positive <code>numeric</code> between 0 and 1
+representing the sequencing error rate. Default: <code>0.001</code>.</p></dd>
 
 
 <dt>batch</dt>
-<dd><p>a <code>integer</code> corresponding</p></dd>
+<dd><p>a single positive <code>integer</code> representing the current
+identifier for the batch. Beware, this field is not stored anymore.</p></dd>
 
 
 <dt>studyDF</dt>
-<dd><p>a <code>data.frame</code> with at least the column study.id,
-study.desc and study.platform</p></dd>
+<dd><p>a <code>data.frame</code> containing the information about the
+study associated to the analysed sample(s). The <code>data.frame</code> must have
+those 3 columns: "study.id", "study.desc", "study.platform". All columns
+must be in <code>character</code> strings.</p></dd>
 
 
 <dt>PATHGDSSAMPLE</dt>
@@ -118,16 +129,19 @@ to the samples with coverage info is keep</p></dd>
 
 
 <dt>pedDF</dt>
-<dd><p>a <code>data.frame</code> with the sample info. Must have the column
-sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
-pedDF is Name.ID and the row.name is Name.ID too.</p></dd>
+<dd><p>a <code>data.frame</code> with the information about the sample(s).
+Those are mandatory columns: "Name.ID",
+"Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+<code>character</code> strings. The <code>data.frame</code>
+must contain the information for all the samples passed in the
+<code>listSamples</code> parameter.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The integer <code>0</code> when successful.</p>
+<p>The  function returns <code>0L</code> when successful.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

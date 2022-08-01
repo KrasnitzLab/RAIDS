@@ -59,11 +59,11 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pruningSample</span><span class="op">(</span></span>
 <span>  <span class="va">gds</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"corr"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"corr"</span>, <span class="st">"r"</span>, <span class="st">"dprime"</span>, <span class="st">"composite"</span><span class="op">)</span>,</span>
 <span>  <span class="va">sampleCurrent</span>,</span>
 <span>  <span class="va">study.id</span>,</span>
 <span>  listSNP <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  slide.max.bp.v <span class="op">=</span> <span class="fl">5e+05</span>,</span>
+<span>  slide.max.bp.v <span class="op">=</span> <span class="fl">500000L</span>,</span>
 <span>  ld.threshold.v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  verbose.v <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -84,9 +84,10 @@
 
 
 <dt>method</dt>
-<dd><p>a <code>character</code> string representing the method used in
-SNPRelate::snpgdsLDpruning() function.
-Default: <code>"corr"</code>.</p></dd>
+<dd><p>a <code>character</code> string that represents the method that will
+be used to calculate the linkage disequilibrium in the
+<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. The 4 possible values
+are: "corr", "r", "dprime" and "composite". Default: <code>"corr"</code>.</p></dd>
 
 
 <dt>sampleCurrent</dt>
@@ -105,7 +106,11 @@ use in LDpruning</p></dd>
 
 
 <dt>slide.max.bp.v</dt>
-<dd><p>a single <code>numeric</code> TODO. Default: <code>5e5</code>.</p></dd>
+<dd><p>a single positive <code>integer</code> that represents
+the maximum basepairs (bp) in the sliding window. This parameter is used
+for the LD pruning done in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>
+function.
+Default: <code>500000L</code>.</p></dd>
 
 
 <dt>ld.threshold.v</dt>
@@ -114,7 +119,8 @@ Default: <code>sqrt(0.1)</code>.</p></dd>
 
 
 <dt>np</dt>
-<dd><p>TODO. Default: <code>1</code>.</p></dd>
+<dd><p>a single positive <code>integer</code> specifying the number of
+threads to be used. Default: <code>1L</code>.</p></dd>
 
 
 <dt>verbose.v</dt>
@@ -138,8 +144,8 @@ Default: <code>sqrt(0.1)</code>.</p></dd>
 
 
 <dt>keepFile</dt>
-<dd><p>a <code>boolean</code> indicating if the file must be TODO.
-Default: <code>FALSE</code>.</p></dd>
+<dd><p>a <code>logical</code> indicating if the RDS files must be
+created. Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>PATHPRUNED</dt>
@@ -147,7 +153,9 @@ Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>outPref</dt>
-<dd><p>TODO. Default: <code>"pruned"</code>.</p></dd>
+<dd><p>a <code>character</code> string that represents the prefix of the
+RDS files that will be generated. The RDS files are only generated when
+the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</code>.</p></dd>
 
 </dl></div>
     <div id="value">

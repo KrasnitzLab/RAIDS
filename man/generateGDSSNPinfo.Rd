@@ -5,13 +5,16 @@
 \alias{generateGDSSNPinfo}
 \title{This function create the fields related to the snp}
 \usage{
-generateGDSSNPinfo(gds, fileFREQ)
+generateGDSSNPinfo(gds, fileFREQ, verbose = TRUE)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
 
 \item{fileFREQ}{string with the path and the fileNames to a files with
 frequence information TODO describe the file}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{TRUE}.}
 }
 \value{
 The integer \code{0L} when successful.

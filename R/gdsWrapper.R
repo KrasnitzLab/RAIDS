@@ -101,8 +101,10 @@ addGDSRef <- function(gds, filePart) {
 #'
 #' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{TRUE}.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -113,7 +115,8 @@ addGDSRef <- function(gds, filePart) {
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
+appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
+                                verbose=TRUE) {
 
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
@@ -121,8 +124,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
 
     sampleGDS <- index.gdsn(gds, "sample.id")
 
-    append.gdsn(sampleGDS,  val=pedDF$Name.ID, check=TRUE)
-
+    append.gdsn(sampleGDS, val=pedDF$Name.ID, check=TRUE)
 
     samp.annot <- data.frame(sex = pedDF[, "sex"],
                                 pop.group=pedDF[, "pop.group"],
@@ -130,7 +132,8 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
                                 batch=rep(batch, nrow(pedDF)),
                                 stringsAsFactors=FALSE)
 
-    print("Annot")
+    if(verbose) { message("Annot") }
+
     curAnnot <- index.gdsn(gds, "sample.annot/sex")
     append.gdsn(curAnnot,samp.annot$sex, check=TRUE)
     curAnnot <- index.gdsn(gds, "sample.annot/pop.group")
@@ -139,7 +142,8 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL){
     append.gdsn(curAnnot, samp.annot$superPop, check=TRUE)
     curAnnot <- index.gdsn(gds, "sample.annot/batch")
     append.gdsn(curAnnot, samp.annot$batch, check=TRUE)
-    print("Annot done")
+
+    if(verbose) { message("Annot done") }
 
     return(0L)
 }
@@ -194,6 +198,9 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @param studyDF a \code{data.frame} with at least the column study.id,
 #' study.desc and study.platform
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{TRUE}.
+#'
 #' @return TODO
 #'
 #' @examples
@@ -205,7 +212,8 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
+addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
+                                verbose=TRUE) {
 
     if(sum(c("study.id", "study.desc", "study.platform") %in%
                 colnames(studyDF)) != 3 ) {
@@ -241,7 +249,6 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
     if(! "study.list" %in% ls.gdsn(gds)){
         add.gdsn(gds, "study.list", df)
 
-
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
                                     case.id=pedDF[, "Case.ID"],
                                     sample.type=pedDF[, "Sample.Type"],
@@ -251,13 +258,15 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
                                     stringsAsFactors=FALSE)
 
         add.gdsn(gds, "study.annot", study.annot)
-        print(paste0("study.annot DONE ", Sys.time()))
+        if(verbose) { message("study.annot DONE ", Sys.time()) }
     } else{
         #append.gdsn(gds, "study.list", df)
-        append.gdsn(index.gdsn(gds, "study.list/study.id"), df$study.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.list/study.desc"), df$study.desc, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.list/study.platform"), df$study.platform, check=TRUE)
-
+        append.gdsn(index.gdsn(gds, "study.list/study.id"),
+                        df$study.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.desc"),
+                        df$study.desc, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.platform"),
+                        df$study.platform, check=TRUE)
 
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
                                   case.id=pedDF[, "Case.ID"],
@@ -267,16 +276,23 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
                                   study.id=rep(studyDF$study.id, nrow(pedDF)),
                                   stringsAsFactors=FALSE)
 
-        append.gdsn(index.gdsn(gds, "study.annot/data.id"), study.annot$data.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/case.id"), study.annot$case.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/sample.type"), study.annot$sample.type, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/diagnosis"), study.annot$diagnosis, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/source"), study.annot$source, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/study.id"), study.annot$study.id, check=TRUE)
-        print(paste0("study.annot DONE ", Sys.time()))
-    }
-    return(pedDF[,"Name.ID"])
+        append.gdsn(index.gdsn(gds, "study.annot/data.id"),
+                        study.annot$data.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/case.id"),
+                        study.annot$case.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/sample.type"),
+                        study.annot$sample.type, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/diagnosis"),
+                        study.annot$diagnosis, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/source"),
+                        study.annot$source, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/study.id"),
+                        study.annot$study.id, check=TRUE)
 
+        if(verbose) { message("study.annot DONE ", Sys.time()) }
+    }
+
+    return(pedDF[,"Name.ID"])
 }
 
 
@@ -289,6 +305,8 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' @param fileFREQ string with the path and the fileNames to a files with
 #' frequence information TODO describe the file
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{TRUE}.
 #'
 #' @return The integer \code{0L} when successful.
 #'
@@ -301,25 +319,35 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF) {
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSNPinfo <- function(gds, fileFREQ) {
+generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 
     mapSNVSel <- readRDS(file=fileFREQ)
     print(paste0("Read mapSNVSel DONE ", Sys.time()))
 
     add.gdsn(node=gds, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
-    print(paste0("SNP part snp.id DONE ", Sys.time()))
+
+    if(verbose) { message("SNP part snp.id DONE ", Sys.time()) }
+
     add.gdsn(node=gds, name="snp.chromosome",
             as.integer(gsub("chr", "", mapSNVSel$CHROM)), storage = "uint16")
-    print(paste0("SNP part snp.chromosome DONE ", Sys.time()))
+
+    if(verbose) { message("SNP part snp.chromosome DONE ", Sys.time()) }
+
     add.gdsn(node=gds, name="snp.position", as.integer(mapSNVSel$POS),
                 storage="int32")
-    print(paste0("SNP part snp.position DONE ", Sys.time()))
+
+    if(verbose) { message("SNP part snp.position DONE ", Sys.time()) }
+
     add.gdsn(node=gds, name="snp.allele",
                 paste0(mapSNVSel$REF, "/", mapSNVSel$ALT))
-    print(paste0("SNP part 1 DONE ", Sys.time()))
+
+    if(verbose) { message("SNP part 1 DONE ", Sys.time()) }
+
     add.gdsn(node=gds, name="snp.AF", as.numeric(mapSNVSel$AF),
                     storage="packedreal24")
-    print(paste0("SNP part AF DONE ", Sys.time()))
+
+    if(verbose) { message("SNP part AF DONE ", Sys.time()) }
+
     add.gdsn(node=gds, name="snp.EAS_AF", val=as.numeric(mapSNVSel$EAS_AF),
                     storage="packedreal24")
     add.gdsn(node=gds, name="snp.EUR_AF", val=as.numeric(mapSNVSel$EUR_AF),

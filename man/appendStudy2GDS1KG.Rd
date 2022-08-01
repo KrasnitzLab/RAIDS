@@ -35,7 +35,7 @@ must contain the information for all the samples passed in the
 \code{listSamples} parameter.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
-the GDS 1KG file. The file must exist.}
+the 1KG GDS file. The file must exist.}
 
 \item{batch}{a single positive \code{integer} representing the current
 identifier for the batch. Beware, this field is not stored anymore.

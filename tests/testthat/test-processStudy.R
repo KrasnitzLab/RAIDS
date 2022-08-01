@@ -283,12 +283,10 @@ test_that("pruningSample() must return error when method is not in the list of c
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
     sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
 
-    error_message <- "\'arg\' should be one of \"corr\", \"r\", \"dprime\", \"composite\""
-
     expect_error(pruningSample(gds=gdsFile, method="test", sampleCurrent="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
 })
 
 

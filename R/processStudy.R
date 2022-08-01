@@ -146,9 +146,10 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param gds an object of class \code{gds} opened
 #'
-#' @param method a \code{character} string representing the method used in
-#' SNPRelate::snpgdsLDpruning() function.
-#' Default: \code{"corr"}.
+#' @param method a \code{character} string that represents the method that will
+#' be used to calculate the linkage disequilibrium in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample.id
@@ -159,12 +160,17 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param listSNP the list of snp.id keep. TODO. Default: \code{NULL}.
 #'
-#' @param slide.max.bp.v a single \code{numeric} TODO. Default: \code{5e5}.
+#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' the maximum basepairs (bp) in the sliding window. This parameter is used
+#' for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
+#' function.
+#' Default: \code{500000L}.
 #'
 #' @param ld.threshold.v a single \code{numeric} TODO.
 #' Default: \code{sqrt(0.1)}.
 #'
-#' @param np TODO. Default: \code{1}.
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
 #'
 #' @param verbose.v TODO. Default: \code{FALSE}.
 #'
@@ -200,10 +206,11 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-pruningSample <- function(gds, method="corr", sampleCurrent,
+pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
+                            sampleCurrent,
                             study.id,
                             listSNP=NULL,
-                            slide.max.bp.v=5e5,
+                            slide.max.bp.v=500000L,
                             ld.threshold.v=sqrt(0.1),
                             np=1,
                             verbose.v=FALSE,
@@ -214,6 +221,25 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
                             keepFile=FALSE,
                             PATHPRUNED=".",
                             outPref="pruned") {
+
+    ## The parameter method must be a character string
+    if(!(is.character(method))) {
+        stop("The \'method\' parameter must be a character string.")
+    }
+
+    ## Matches a character method against a table of candidate values
+    method <- match.arg(method, several.ok=FALSE)
+
+    ## The parameter slide.max.bp.v must be a single positive integer
+    if(!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
+        stop("The \'slide.max.bp.v\' parameter must be a single positive ",
+                "numeric value.")
+    }
+
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np >= 0.0))) {
+        stop("The \'np\' parameter must be a single positive numeric value.")
+    }
 
     ## The parameter keepGDSpruned must be a logical
     if(!is.logical(keepGDSpruned)) {
@@ -291,8 +317,7 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listSamples <- sample.id[which(sample.ref == 1)]
 
-    snpset <- runLDPruning(gds=gds,
-                            method=method,
+    snpset <- runLDPruning(gds=gds, method=method,
                             listSamples=listSamples,
                             listKeep=listKeep,
                             slide.max.bp.v=slide.max.bp.v,

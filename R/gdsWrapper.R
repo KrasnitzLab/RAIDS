@@ -966,32 +966,54 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 }
 
 
-#' @title TODO just a wrapper of snpgdsLDpruning
+#' @title SNP pruning based on linkage disequilibrium (LD)
 #'
-#' @description TODO
+#' @description This function is a wrapper for the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function that generates a pruned
+#' subset of SNPs that are in approximate linkage equilibrium.
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an \code{object} of class
+#' \code{\link[SNPRelate]{SNPGDSFileClass}}, a SNP GDS file.
 #'
-#' @param method the parameter method in SNPRelate::snpgdsLDpruning
+#' @param method a \code{character} string that represents the method that will
+#' be used to calculate the linkage disequilibrium in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param listSamples A \code{vector} of \code{string} corresponding to
-#' the sample.ids
-#' use in LDpruning
+#' @param listSamples a \code{vector} of \code{character} strings
+#' corresponding to the sample identifiers used in LD pruning done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. If \code{NULL}, all
+#' samples are used. Default: \code{NULL}.
 #'
-#' @param listKeep the list of snp.id keep
+#' @param listKeep a \code{vector} of SNP identifiers specifying selected
+#' SNPs; if \code{NULL}, all SNPs are used in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.
 #'
-#' @param slide.max.bp.v TODO
+#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' the maximum basepairs (bp) in the sliding window. This parameter is used
+#' for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}()
+#' function.
+#' Default: \code{500000L}.
 #'
-#' @param ld.threshold.v TODO
+#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
+#' Default: \code{sqrt(0.1)}.
 #'
 #' @param np a single positive \code{integer} specifying the number of
-#' threads to be used. Default: \code{1}.
+#' threads to be used. Default: \code{1L}.
 #'
 #' @param verbose.v a \code{logical} indicating if information is shown during
-#' the process. Default: \code{FALSE}.
+#' the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
+#' Default: \code{FALSE}.
 #'
 #' @return a \code{list} of SNP IDs stratified by chromosomes as generated
-#' by \code{\link[SNPRelate:snpgdsLDpruning]{SNPRelate:snpgdsLDpruning()}}.
+#' by \code{\link[SNPRelate]{snpgdsLDpruning}} function.
+#'
+#' @details
+#'
+#' The SNP pruning is based on linkage disequilibrium (LD) and is done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function in the
+#' \href{=https://bioconductor.org/packages/SNPRelate/}{SNPRelate} package.
 #'
 #' @examples
 #'
@@ -1007,16 +1029,14 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' @importFrom gdsfmt closefn.gds
 #' @encoding UTF-8
 #' @keywords internal
-runLDPruning <- function(gds, method="corr",
+runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             listSamples=NULL,
                             listKeep=NULL,
-                            slide.max.bp.v = 5e5,
+                            slide.max.bp.v = 500000L,
                             ld.threshold.v=sqrt(0.1),
-                            np=1, verbose.v=FALSE) {
+                            np=1L, verbose.v=FALSE) {
 
-    # validate the para
-    # showfile.gds(closeall=FALSE, verbose=TRUE)
-
+    ## Call SNP LD pruning
     snpset <- snpgdsLDpruning(gds, method="corr",
                                 sample.id=listSamples,
                                 snp.id=listKeep,
@@ -1024,7 +1044,6 @@ runLDPruning <- function(gds, method="corr",
                                 ld.threshold=ld.threshold.v,
                                 num.thread=np,
                                 verbose=verbose.v)
-    # closefn.gds(gds)
     return(snpset)
 }
 

@@ -387,11 +387,10 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @export
 generatePhase1KG2GDS <- function(gds, gdsPhase,
                             PATHGENO,
-                            fileLSNP){
+                            fileLSNP) {
 
     sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
     listSNP <- readRDS(fileLSNP)
-
 
     var.phase <- NULL
     for(i in seq_len(length(sample.id))){

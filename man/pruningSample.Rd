@@ -7,11 +7,11 @@
 \usage{
 pruningSample(
   gds,
-  method = "corr",
+  method = c("corr", "r", "dprime", "composite"),
   sampleCurrent,
   study.id,
   listSNP = NULL,
-  slide.max.bp.v = 5e+05,
+  slide.max.bp.v = 500000L,
   ld.threshold.v = sqrt(0.1),
   np = 1,
   verbose.v = FALSE,
@@ -27,9 +27,10 @@ pruningSample(
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
-\item{method}{a \code{character} string representing the method used in
-SNPRelate::snpgdsLDpruning() function.
-Default: \code{"corr"}.}
+\item{method}{a \code{character} string that represents the method that will
+be used to calculate the linkage disequilibrium in the
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 
 \item{sampleCurrent}{A \code{character} string corresponding to
 the sample.id
@@ -40,12 +41,17 @@ use in LDpruning}
 
 \item{listSNP}{the list of snp.id keep. TODO. Default: \code{NULL}.}
 
-\item{slide.max.bp.v}{a single \code{numeric} TODO. Default: \code{5e5}.}
+\item{slide.max.bp.v}{a single positive \code{integer} that represents
+the maximum basepairs (bp) in the sliding window. This parameter is used
+for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
+function.
+Default: \code{500000L}.}
 
 \item{ld.threshold.v}{a single \code{numeric} TODO.
 Default: \code{sqrt(0.1)}.}
 
-\item{np}{TODO. Default: \code{1}.}
+\item{np}{a single positive \code{integer} specifying the number of
+threads to be used. Default: \code{1L}.}
 
 \item{verbose.v}{TODO. Default: \code{FALSE}.}
 
@@ -57,12 +63,14 @@ Default: \code{sqrt(0.1)}.}
 
 \item{PATHSAMPLEGDS}{TODO}
 
-\item{keepFile}{a \code{boolean} indicating if the file must be TODO.
-Default: \code{FALSE}.}
+\item{keepFile}{a \code{logical} indicating if the RDS files must be
+created. Default: \code{FALSE}.}
 
 \item{PATHPRUNED}{a \code{character} string TODO. Default: \code{"."}.}
 
-\item{outPref}{TODO. Default: \code{"pruned"}.}
+\item{outPref}{a \code{character} string that represents the prefix of the
+RDS files that will be generated. The RDS files are only generated when
+the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
 }
 \value{
 The function returns \code{0L} when successful.

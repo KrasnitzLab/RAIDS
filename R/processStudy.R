@@ -176,12 +176,14 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param PATHSAMPLEGDS TODO
 #'
-#' @param keepFile a \code{boolean} indicating if the file must be TODO.
-#' Default: \code{FALSE}.
+#' @param keepFile a \code{logical} indicating if the RDS files must be
+#' created. Default: \code{FALSE}.
 #'
 #' @param PATHPRUNED a \code{character} string TODO. Default: \code{"."}.
 #'
-#' @param outPref TODO. Default: \code{"pruned"}.
+#' @param outPref a \code{character} string that represents the prefix of the
+#' RDS files that will be generated. The RDS files are only generated when
+#' the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
 #'
 #'
 #' @return The function returns \code{0L} when successful.
@@ -195,6 +197,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 pruningSample <- function(gds, method="corr", sampleCurrent,
@@ -212,13 +215,27 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
                             PATHPRUNED=".",
                             outPref="pruned") {
 
+    ## The parameter keepGDSpruned must be a logical
+    if(!is.logical(keepGDSpruned)) {
+        stop("The \'keepGDSpruned\' parameter must be a logical ",
+                "(TRUE or FALSE).")
+    }
+
+    ## The parameter keepFile must be a logical
+    if(!is.logical(keepFile)) {
+        stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
+    }
+
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
     fileObj <- file.path(PATHPRUNED, paste0(outPref, ".Obj.rds"))
+
+
     if(! is.null(PATHSAMPLEGDS)) {
         fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent,
                                                             ".gds"))
     } else {
-        stop("The path to the GDS sample is null")
+        stop("The PATHSAMPLEGDS parameter that represent the path ",
+                "to the GDS sample is NULL.")
     }
 
     snp.id <- read.gdsn(index.gdsn(gds, "snp.id"))
@@ -235,6 +252,7 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
         stop("In pruningSample the sample ",
                 sampleCurrent, " doesn't exists\n")
     }
+
     # Get the genotype for sampleCurrent
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"),
                     start=c(1, posSample), count=c(-1,1))
@@ -256,16 +274,17 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
         listKeepPos <- intersect(which(snpCHR == chr), listKeepPos)
         snpAF <- read.gdsn(index.gdsn(gds, "snp.EAS_AF"))
         listTMP <- NULL
-        for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")){
+        for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
             snpAF <- read.gdsn(index.gdsn(gds, paste0("snp.", sp, "_AF") ))
-            listTMP <- union(listTMP, which(snpAF >= minAF.SuperPop & snpAF <= 1 - minAF.SuperPop))
+            listTMP <- union(listTMP,
+                which(snpAF >= minAF.SuperPop & snpAF <= 1 - minAF.SuperPop))
         }
         listKeepPos <- intersect(listTMP, listKeepPos)
     }
 
     if(length(listKeepPos) == 0) {
-        stop("In pruningSample the sample ", sampleCurrent,
-                " doesn't snp after filters\n")
+        stop("In pruningSample, the sample ", sampleCurrent,
+                " doesn't have SNPs after filters\n")
     }
     listKeep <- snp.id[listKeepPos]
 
@@ -280,12 +299,14 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
                             ld.threshold.v=ld.threshold.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
-    if(keepFile){
+
+    if(keepFile) {
         saveRDS(pruned, filePruned)
         saveRDS(snpset, fileObj)
     }
-    if(keepGDSpruned){
-        gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
+
+    if(keepGDSpruned) {
+        gdsSample <- openfn.gds(fileGDSSample, readonly=FALSE)
         addGDSStudyPruning(gdsSample, pruned, sampleCurrent)
         closefn.gds(gdsSample)
     }
@@ -434,13 +455,14 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 
 
     indexAll <- NULL
-    for(gdsSampleFile in listGDSSample){
-        gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS, gdsSampleFile))
+    for(gdsSampleFile in listGDSSample) {
+        gdsSample <- openfn.gds(filename=file.path(PATHSAMPLEGDS,
+                                                        gdsSampleFile))
 
-        snp.index <- read.gdsn(index.gdsn(gdsSample,"snp.index"))
+        snp.index <- read.gdsn(node=index.gdsn(node=gdsSample, "snp.index"))
 
         indexAll <- union(indexAll, snp.index)
-        closefn.gds(gdsSample)
+        closefn.gds(gdsfile=gdsSample)
     }
 
     gdsSample <- createfn.gds(file.path(PATHSAMPLEGDS, "phase1KG.gds"))
@@ -450,14 +472,13 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
     add.gdsn(gdsSample, "snp.index", indexAll)
     listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
     listSample <- read.gdsn(index.gdsn(gds, "sample.id"))[listRef]
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(file=fileLSNP)
     i<-1
     for(sample1KG in listSample){
         print(paste0("P ", i, " ", Sys.time()))
-        i<-i+1
+        i <- i + 1
         file1KG <- file.path(PATHGENO, paste0(sample1KG,".csv.bz2"))
-        matSample <- read.csv2( file1KG,
-                                row.names = NULL)
+        matSample <- read.csv2(file=file1KG, row.names=NULL)
         matSample <- matSample[listSNP[indexAll],, drop=FALSE]
         matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
         var.phase <- NULL
@@ -469,14 +490,14 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
                                  storage="bit2")
 
         }else{
-            if(is.null(var.phase)){
-                var.phase <- index.gdsn(gdsSample, "phase")
+            if(is.null(var.phase)) {
+                var.phase <- index.gdsn(node=gdsSample, "phase")
             }
-            append.gdsn(var.phase, matSample)
+            append.gdsn(node=var.phase, val=matSample)
         }
     }
 
-    closefn.gds(gdsSample)
+    closefn.gds(gdsfile=gdsSample)
 
     return(0L)
 }

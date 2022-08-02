@@ -23,7 +23,7 @@
 #' \code{listSamples} parameter.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
-#' the GDS 1KG file. The file must exist.
+#' the 1KG GDS file. The file must exist.
 #'
 #' @param batch a single positive \code{integer} representing the current
 #' identifier for the batch. Beware, this field is not stored anymore.
@@ -144,16 +144,17 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
+#' a GDS node pointing to the 1KG GDS file.
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 #' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param sampleCurrent A \code{character} string corresponding to
-#' the sample.id
-#' use in LDpruning
+#' @param sampleCurrent  a \code{character} string
+#' corresponding to the sample identifier used in LD pruning done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
 #' @param study.id A \code{string} corresponding to the study
 #' use in LDpruning
@@ -166,7 +167,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' function.
 #' Default: \code{500000L}.
 #'
-#' @param ld.threshold.v a single \code{numeric} TODO.
+#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #' Default: \code{sqrt(0.1)}.
 #'
 #' @param np a single positive \code{integer} specifying the number of
@@ -222,6 +224,17 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             PATHPRUNED=".",
                             outPref="pruned") {
 
+    ## The parameter gds must be gdsn.class object
+    if(!(is(gds, "gds.class"))) {
+        stop("The \'gds\' parameter must be gdsn.class object pointing ",
+                "to the 1KG GDS file.")
+    }
+
+    ## The parameter sampleCurrent must be a character string
+    if(!(is.character(sampleCurrent))) {
+        stop("The \'sampleCurrent\' parameter must be a character string.")
+    }
+
     ## The parameter method must be a character string
     if(!(is.character(method))) {
         stop("The \'method\' parameter must be a character string.")
@@ -229,6 +242,12 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
+
+    ## The parameter ld.threshold.v must be a single positive integer
+    if(!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
+        stop("The \'ld.threshold.v\' parameter must be a single positive ",
+                "numeric value.")
+    }
 
     ## The parameter slide.max.bp.v must be a single positive integer
     if(!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
@@ -264,12 +283,12 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                 "to the GDS sample is NULL.")
     }
 
-    snp.id <- read.gdsn(index.gdsn(gds, "snp.id"))
+    snp.id <- read.gdsn(node=index.gdsn(gds, "snp.id"))
 
-    sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))
+    sample.id <- read.gdsn(node=index.gdsn(gds, "sample.id"))
 
-    gdsSample <- openfn.gds(fileGDSSample)
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    gdsSample <- openfn.gds(filename=fileGDSSample)
+    study.annot <- read.gdsn(node=index.gdsn(gdsSample, "study.annot"))
 
     posSample <- which(study.annot$data.id == sampleCurrent &
                             study.annot$study.id == study.id)
@@ -321,7 +340,8 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             listSamples=listSamples,
                             listKeep=listKeep,
                             slide.max.bp.v=slide.max.bp.v,
-                            ld.threshold.v=ld.threshold.v)
+                            ld.threshold.v=ld.threshold.v,
+                            verbose.v=verbose.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
 
@@ -331,9 +351,10 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     }
 
     if(keepGDSpruned) {
-        gdsSample <- openfn.gds(fileGDSSample, readonly=FALSE)
-        addGDSStudyPruning(gdsSample, pruned, sampleCurrent)
-        closefn.gds(gdsSample)
+        gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
+        addGDSStudyPruning(gds=gdsSample, pruned=pruned,
+                            sample.id=sampleCurrent)
+        closefn.gds(gdsfile=gdsSample)
     }
 
     return(0L)

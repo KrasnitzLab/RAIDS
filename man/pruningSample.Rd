@@ -25,16 +25,17 @@ pruningSample(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
+a GDS node pointing to the 1KG GDS file.}
 
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 
-\item{sampleCurrent}{A \code{character} string corresponding to
-the sample.id
-use in LDpruning}
+\item{sampleCurrent}{a \code{character} string
+corresponding to the sample identifier used in LD pruning done by the
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function.}
 
 \item{study.id}{A \code{string} corresponding to the study
 use in LDpruning}
@@ -47,7 +48,8 @@ for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.
 Default: \code{500000L}.}
 
-\item{ld.threshold.v}{a single \code{numeric} TODO.
+\item{ld.threshold.v}{a single \code{numeric} value that represents the LD
+threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 Default: \code{sqrt(0.1)}.}
 
 \item{np}{a single positive \code{integer} specifying the number of

@@ -23,7 +23,7 @@
 #' \code{listSamples} parameter.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
-#' the GDS 1KG file. The file must exist.
+#' the 1KG GDS file. The file must exist.
 #'
 #' @param batch a single positive \code{integer} representing the current
 #' identifier for the batch. Beware, this field is not stored anymore.
@@ -144,27 +144,35 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
+#' a GDS node pointing to the 1KG GDS file.
 #'
-#' @param method a \code{character} string representing the method used in
-#' SNPRelate::snpgdsLDpruning() function.
-#' Default: \code{"corr"}.
+#' @param method a \code{character} string that represents the method that will
+#' be used to calculate the linkage disequilibrium in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param sampleCurrent A \code{character} string corresponding to
-#' the sample.id
-#' use in LDpruning
+#' @param sampleCurrent  a \code{character} string
+#' corresponding to the sample identifier used in LD pruning done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
 #' @param study.id A \code{string} corresponding to the study
 #' use in LDpruning
 #'
 #' @param listSNP the list of snp.id keep. TODO. Default: \code{NULL}.
 #'
-#' @param slide.max.bp.v a single \code{numeric} TODO. Default: \code{5e5}.
+#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' the maximum basepairs (bp) in the sliding window. This parameter is used
+#' for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
+#' function.
+#' Default: \code{500000L}.
 #'
-#' @param ld.threshold.v a single \code{numeric} TODO.
+#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #' Default: \code{sqrt(0.1)}.
 #'
-#' @param np TODO. Default: \code{1}.
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
 #'
 #' @param verbose.v TODO. Default: \code{FALSE}.
 #'
@@ -176,12 +184,14 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param PATHSAMPLEGDS TODO
 #'
-#' @param keepFile a \code{boolean} indicating if the file must be TODO.
-#' Default: \code{FALSE}.
+#' @param keepFile a \code{logical} indicating if the RDS files must be
+#' created. Default: \code{FALSE}.
 #'
 #' @param PATHPRUNED a \code{character} string TODO. Default: \code{"."}.
 #'
-#' @param outPref TODO. Default: \code{"pruned"}.
+#' @param outPref a \code{character} string that represents the prefix of the
+#' RDS files that will be generated. The RDS files are only generated when
+#' the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
 #'
 #'
 #' @return The function returns \code{0L} when successful.
@@ -195,12 +205,14 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-pruningSample <- function(gds, method="corr", sampleCurrent,
+pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
+                            sampleCurrent,
                             study.id,
                             listSNP=NULL,
-                            slide.max.bp.v=5e5,
+                            slide.max.bp.v=500000L,
                             ld.threshold.v=sqrt(0.1),
                             np=1,
                             verbose.v=FALSE,
@@ -212,21 +224,71 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
                             PATHPRUNED=".",
                             outPref="pruned") {
 
+    ## The parameter gds must be gdsn.class object
+    if(!(is(gds, "gds.class"))) {
+        stop("The \'gds\' parameter must be gdsn.class object pointing ",
+                "to the 1KG GDS file.")
+    }
+
+    ## The parameter sampleCurrent must be a character string
+    if(!(is.character(sampleCurrent))) {
+        stop("The \'sampleCurrent\' parameter must be a character string.")
+    }
+
+    ## The parameter method must be a character string
+    if(!(is.character(method))) {
+        stop("The \'method\' parameter must be a character string.")
+    }
+
+    ## Matches a character method against a table of candidate values
+    method <- match.arg(method, several.ok=FALSE)
+
+    ## The parameter ld.threshold.v must be a single positive integer
+    if(!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
+        stop("The \'ld.threshold.v\' parameter must be a single positive ",
+                "numeric value.")
+    }
+
+    ## The parameter slide.max.bp.v must be a single positive integer
+    if(!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
+        stop("The \'slide.max.bp.v\' parameter must be a single positive ",
+                "numeric value.")
+    }
+
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np >= 0.0))) {
+        stop("The \'np\' parameter must be a single positive numeric value.")
+    }
+
+    ## The parameter keepGDSpruned must be a logical
+    if(!is.logical(keepGDSpruned)) {
+        stop("The \'keepGDSpruned\' parameter must be a logical ",
+                "(TRUE or FALSE).")
+    }
+
+    ## The parameter keepFile must be a logical
+    if(!is.logical(keepFile)) {
+        stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
+    }
+
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
     fileObj <- file.path(PATHPRUNED, paste0(outPref, ".Obj.rds"))
+
+
     if(! is.null(PATHSAMPLEGDS)) {
         fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent,
                                                             ".gds"))
     } else {
-        stop("The path to the GDS sample is null")
+        stop("The PATHSAMPLEGDS parameter that represent the path ",
+                "to the GDS sample is NULL.")
     }
 
-    snp.id <- read.gdsn(index.gdsn(gds, "snp.id"))
+    snp.id <- read.gdsn(node=index.gdsn(gds, "snp.id"))
 
-    sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))
+    sample.id <- read.gdsn(node=index.gdsn(gds, "sample.id"))
 
-    gdsSample <- openfn.gds(fileGDSSample)
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    gdsSample <- openfn.gds(filename=fileGDSSample)
+    study.annot <- read.gdsn(node=index.gdsn(gdsSample, "study.annot"))
 
     posSample <- which(study.annot$data.id == sampleCurrent &
                             study.annot$study.id == study.id)
@@ -235,6 +297,7 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
         stop("In pruningSample the sample ",
                 sampleCurrent, " doesn't exists\n")
     }
+
     # Get the genotype for sampleCurrent
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"),
                     start=c(1, posSample), count=c(-1,1))
@@ -256,38 +319,42 @@ pruningSample <- function(gds, method="corr", sampleCurrent,
         listKeepPos <- intersect(which(snpCHR == chr), listKeepPos)
         snpAF <- read.gdsn(index.gdsn(gds, "snp.EAS_AF"))
         listTMP <- NULL
-        for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")){
+        for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
             snpAF <- read.gdsn(index.gdsn(gds, paste0("snp.", sp, "_AF") ))
-            listTMP <- union(listTMP, which(snpAF >= minAF.SuperPop & snpAF <= 1 - minAF.SuperPop))
+            listTMP <- union(listTMP,
+                which(snpAF >= minAF.SuperPop & snpAF <= 1 - minAF.SuperPop))
         }
         listKeepPos <- intersect(listTMP, listKeepPos)
     }
 
     if(length(listKeepPos) == 0) {
-        stop("In pruningSample the sample ", sampleCurrent,
-                " doesn't snp after filters\n")
+        stop("In pruningSample, the sample ", sampleCurrent,
+                " doesn't have SNPs after filters\n")
     }
     listKeep <- snp.id[listKeepPos]
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listSamples <- sample.id[which(sample.ref == 1)]
 
-    snpset <- runLDPruning(gds=gds,
-                            method=method,
+    snpset <- runLDPruning(gds=gds, method=method,
                             listSamples=listSamples,
                             listKeep=listKeep,
                             slide.max.bp.v=slide.max.bp.v,
-                            ld.threshold.v=ld.threshold.v)
+                            ld.threshold.v=ld.threshold.v,
+                            verbose.v=verbose.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
-    if(keepFile){
+
+    if(keepFile) {
         saveRDS(pruned, filePruned)
         saveRDS(snpset, fileObj)
     }
-    if(keepGDSpruned){
-        gdsSample <- openfn.gds(fileGDSSample, readonly = FALSE)
-        addGDSStudyPruning(gdsSample, pruned, sampleCurrent)
-        closefn.gds(gdsSample)
+
+    if(keepGDSpruned) {
+        gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
+        addGDSStudyPruning(gds=gdsSample, pruned=pruned,
+                            sample.id=sampleCurrent)
+        closefn.gds(gdsfile=gdsSample)
     }
 
     return(0L)
@@ -434,13 +501,14 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 
 
     indexAll <- NULL
-    for(gdsSampleFile in listGDSSample){
-        gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS, gdsSampleFile))
+    for(gdsSampleFile in listGDSSample) {
+        gdsSample <- openfn.gds(filename=file.path(PATHSAMPLEGDS,
+                                                        gdsSampleFile))
 
-        snp.index <- read.gdsn(index.gdsn(gdsSample,"snp.index"))
+        snp.index <- read.gdsn(node=index.gdsn(node=gdsSample, "snp.index"))
 
         indexAll <- union(indexAll, snp.index)
-        closefn.gds(gdsSample)
+        closefn.gds(gdsfile=gdsSample)
     }
 
     gdsSample <- createfn.gds(file.path(PATHSAMPLEGDS, "phase1KG.gds"))
@@ -450,14 +518,13 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
     add.gdsn(gdsSample, "snp.index", indexAll)
     listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
     listSample <- read.gdsn(index.gdsn(gds, "sample.id"))[listRef]
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(file=fileLSNP)
     i<-1
     for(sample1KG in listSample){
         print(paste0("P ", i, " ", Sys.time()))
-        i<-i+1
+        i <- i + 1
         file1KG <- file.path(PATHGENO, paste0(sample1KG,".csv.bz2"))
-        matSample <- read.csv2( file1KG,
-                                row.names = NULL)
+        matSample <- read.csv2(file=file1KG, row.names=NULL)
         matSample <- matSample[listSNP[indexAll],, drop=FALSE]
         matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
         var.phase <- NULL
@@ -469,14 +536,14 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
                                  storage="bit2")
 
         }else{
-            if(is.null(var.phase)){
-                var.phase <- index.gdsn(gdsSample, "phase")
+            if(is.null(var.phase)) {
+                var.phase <- index.gdsn(node=gdsSample, "phase")
             }
-            append.gdsn(var.phase, matSample)
+            append.gdsn(node=var.phase, val=matSample)
         }
     }
 
-    closefn.gds(gdsSample)
+    closefn.gds(gdsfile=gdsSample)
 
     return(0L)
 }

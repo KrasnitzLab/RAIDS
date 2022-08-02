@@ -6,7 +6,14 @@
 \title{This function create the gds file fields related to the study and
 the sample in it.}
 \usage{
-addStudyGDSSample(gds, pedDF, batch = 1, listSamples = NULL, studyDF)
+addStudyGDSSample(
+  gds,
+  pedDF,
+  batch = 1,
+  listSamples = NULL,
+  studyDF,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
@@ -21,6 +28,9 @@ pedDF is Name.ID and the row.name is Name.ID too.}
 
 \item{studyDF}{a \code{data.frame} with at least the column study.id,
 study.desc and study.platform}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{TRUE}.}
 }
 \value{
 TODO

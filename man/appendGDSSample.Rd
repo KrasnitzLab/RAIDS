@@ -6,7 +6,7 @@
 \title{This function append the fields related to the samples. If the
 samples are part of a study you must uses the addStudyGDSSample}
 \usage{
-appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL)
+appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL, verbose = TRUE)
 }
 \arguments{
 \item{gds}{a \code{gds}.}
@@ -16,9 +16,12 @@ sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
 of pedDF is Name.ID and the row.name is Name.ID too.}
 
 \item{listSamples}{a \code{array} with the sample from pedDF$Name.ID to keep}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{TRUE}.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 This function append the fields related to the samples.

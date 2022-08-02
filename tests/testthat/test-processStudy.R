@@ -67,7 +67,6 @@ test_that("projectSample2PCA() must return error when sample.current is number",
 })
 
 
-
 context("appendStudy2GDS1KG() results")
 
 test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", {
@@ -183,3 +182,192 @@ test_that("appendStudy2GDS1KG() must return error when verbose is a character st
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
         studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose="TRUE"), error_message, fixed=TRUE)
 })
+
+
+context("pruningSample() results")
+
+
+test_that("pruningSample() must return error when gds is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    error_message <- paste0("The \'gds\' parameter must be gdsn.class object pointing ",
+                                "to the 1KG GDS file.")
+
+    expect_error(pruningSample(gds=gdsFile, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when keepGDSpruned is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- 'The \'keepGDSpruned\' parameter must be a logical (TRUE or FALSE).'
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned="YES",
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when keepFile is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=TRUE,
+        PATHSAMPLEGDS=NULL, keepFile="NO", PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when np is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive numeric value."
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np="1", verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when slide.max.bp.v is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'slide.max.bp.v\' parameter must be a single positive numeric value."
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v="4", ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when ld.threshold.v is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v="3",
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when ld.threshold.v is a vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+            study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v=c(3,3),
+            np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+            PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when method is a numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'method\' parameter must be a character string."
+
+    expect_error(pruningSample(gds=gdsF, method=3, sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when method is not in the list of choices", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    expect_error(pruningSample(gds=gdsF, method="test", sampleCurrent="test",
+        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
+})
+
+
+test_that("pruningSample() must return error when sampleCurrent is a numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'sampleCurrent\' parameter must be a character string."
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent=2,
+        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+})
+

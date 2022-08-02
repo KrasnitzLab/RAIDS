@@ -931,6 +931,9 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' @param study.annot a  \code{data.frame} with one entry from study.annot in
 #' the gds
 #'
+#' @param algorithm algorithm of the PCA "exact", "randomized"
+#'
+#' @param eigen.cnt number of eigenvectors in PCA
 #'
 #' @return A \code{list} TODO with the sample.id and eigenvectors.
 #'
@@ -945,7 +948,8 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' @encoding UTF-8
 #' @export
 computePCAsynthetic <- function(gdsSample, pruned, sample.id,
-                                    sample.ref, study.annot) {
+                                    sample.ref, study.annot,
+                                algorithm="exact", eigen.cnt=32L) {
 
     if(nrow(study.annot) != 1) {
         stop("Number of sample in study.annot not equal to 1\n")
@@ -966,6 +970,8 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
                                     sample.id=sample.Unrel,
                                     snp.id=listPCA[["pruned"]],
                                     num.thread=1,
+                                    algorithm=algorithm,
+                                    eigen.cnt=eigen.cnt,
                                     verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
@@ -983,6 +989,203 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
                         eigenvector=listPCA[["samp.load"]]$eigenvect)
     return(listRes)
 }
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gdsSample an object of class \code{gds} opened related to
+#' the sample
+#'
+#' @param sample.ref TODO
+#'
+#' @param listRM a  \code{} list of sample from the Ref to remove
+#' before the PCA
+#'
+#' @param algorithm algorithm of the PCA "exact", "randomized"
+#' (para snpgdsPCA)
+#'
+#' @param eigen.cnt number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @param missing.rate number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#'
+#' @examples
+#'
+#' # TODO
+#' gds <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @encoding UTF-8
+#' @export
+computePCARefRMMulti <- function(gdsSample,
+                                sample.ref, listRM,
+                                algorithm="exact", eigen.cnt=32L,
+                                missing.rate=0.025) {
+
+    if(length(listRM) < 1) {
+        stop("Number of sample in study.annot not equal 0\n")
+    }
+
+
+    sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM) )]
+
+
+    listPCA <- list()
+
+    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
+
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
+                                        sample.id=sample.Unrel,
+                                        snp.id=listPCA[["pruned"]],
+                                        num.thread=1,
+                                        missing.rate=missing.rate,
+                                        algorithm=algorithm,
+                                        eigen.cnt=eigen.cnt,
+                                        verbose=TRUE)
+
+
+    return(listPCA)
+}
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gdsSample an object of class \code{gds} opened related to
+#' the sample
+#'
+#' @param listPCA TODO
+#'
+#' @param study.annot a  \code{data.frame} with one entry for each synthetic
+#' data to process. The format is the same as study.annot in the gdsSample
+#'
+#' @param algorithm algorithm of the PCA "exact", "randomized"
+#' (para snpgdsPCA)
+#'
+#' @param eigen.cnt number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @param missing.rate number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#'
+#' @examples
+#'
+#' # TODO
+#' gds <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @encoding UTF-8
+#' @export
+computePCAMultiSynthetic <- function(gdsSample, listPCA,
+                                study.annot,
+                                algorithm="exact", eigen.cnt=32L,
+                                missing.rate=0.025) {
+
+    if(nrow(study.annot) < 1) {
+        stop("Number of sample in study.annot not equal to 1\n")
+    }
+
+
+    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
+                                                 gdsobj=gdsSample,
+                                                 num.thread=1,
+                                                 verbose=TRUE)
+
+    listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
+                                                   gdsobj=gdsSample,
+                                                   sample.id=study.annot$data.id,
+                                                   num.thread=1, verbose=TRUE)
+
+    listRes <- list(sample.id=study.annot$data.id,
+                    eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
+                    eigenvector=listPCA[["samp.load"]]$eigenvect)
+    return(listRes)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gdsSample an object of class \code{gds} opened related to
+#' the sample
+#'
+#' @param name.id the sample id
+#' the gds
+#'
+#' @param study.id.ref id of the reference in study.annot
+#'
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#'
+#' @examples
+#'
+#' # TODO
+#' gds <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @encoding UTF-8
+#' @export
+computePCARefSample <- function(gdsSample, name.id, study.id.ref = "Ref.1KG",
+                                algorithm="exact", eigen.cnt=32L) {
+
+    if(length(name.id) != 1) {
+        stop("Number of sample in study.annot not equal to 1\n")
+    }
+
+    sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
+
+    sample.pos <- which(sample.id == name.id)
+
+    study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+
+    sample.Unrel <- study.annot.all[which(study.annot.all$study.id == study.id.ref), "data.id"]
+
+
+    # g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
+    #                start=c(1, sample.pos), count=c(-1, 1))
+    #
+    # rm(g)
+
+    listPCA <- list()
+
+    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
+
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
+                                        sample.id=sample.Unrel,
+                                        snp.id=listPCA[["pruned"]],
+                                        num.thread=1,
+                                        verbose=TRUE)
+
+    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
+                                                 gdsobj=gdsSample,
+                                                 num.thread=1,
+                                                 verbose=TRUE)
+
+    listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
+                                                   gdsobj=gdsSample,
+                                                   sample.id=sample.id[sample.pos],
+                                                   num.thread=1, verbose=TRUE)
+
+    listRes <- list(sample.id=sample.id[sample.pos],
+                    eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
+                    eigenvector=listPCA[["samp.load"]]$eigenvect)
+    return(listRes)
+}
+
 
 #' @title TODO
 #'
@@ -1076,6 +1279,196 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     return(listKNN)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param listEigenvector TODO see return of computePCAsynthetic
+#'
+#' @param listCatPop TODO
+#'
+#' @param study.annot a  \code{data.frame} with one entry from study.annot in
+#' the gds
+#'
+#' @param spRef TODO
+#'
+#' @param kList TODO array of the k possible values
+#'
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN callfor different K and pca dimension.
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @importFrom class knn
+#' @encoding UTF-8
+#' @export
+computeKNNRefSynthetic <- function(listEigenvector, listCatPop,
+                                         study.annot, spRef,
+                                         kList = seq_len(15), pcaList = 2:15) {
+
+    ## The number of rows in study.annot must be one.
+    if(nrow(study.annot) < 1) {
+        stop("Number of samples in study.annot not equal to 1\n")
+    }
+
+    if(is.null(kList)){
+        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+    }
+    if(is.null(pcaList)){
+        pcaList <- 2:15
+    }
+    listMat <- list()
+    for(i in seq_len(length(listEigenvector$sample.id))){
+        resMat <- data.frame(sample.id=rep(listEigenvector$sample.id[i],
+                                           length(pcaList) * length(kList)),
+                             D=rep(0,length(pcaList) * length(kList)),
+                             K=rep(0,length(pcaList) * length(kList)),
+                             SuperPop=character(length(pcaList) * length(kList)),
+                             stringsAsFactors=FALSE)
+
+
+
+        #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
+        eigenvect <- rbind(listEigenvector$eigenvector.ref,
+                           listEigenvector$eigenvector[i,,drop=FALSE])
+
+        rownames(eigenvect) <- c(sample.ref[which(!(sample.ref %in%
+                                                      study.annot$case.id))],
+                                 listEigenvector$sample.id[i])
+
+        totR <- 1
+        for(pcaD in pcaList) {
+            for(kV in  seq_len(length(kList))) {
+                dCur <- paste0("d", pcaD)
+                kCur <- paste0("k", kList[kV])
+                resMat[totR,c("D", "K")] <- c(pcaD, kList[kV])
+
+                pcaND <- eigenvect[ ,seq_len(pcaD)]
+                y_pred <- knn(train=pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
+                              test=pcaND[rownames(eigenvect)[nrow(eigenvect)],, drop=FALSE],
+                              cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
+                                        levels=listCatPop, labels=listCatPop),
+                              k=kList[kV],
+                              prob=FALSE)
+
+                resMat[totR, paste0("SuperPop")] <- listCatPop[as.integer(y_pred)]
+
+                totR <- totR + 1
+            } # end k
+        } # end pca Dim
+        listMat[[i]] <- resMat
+    }
+    resMat <- do.call(rbind, listMat)
+    listKNN <- list(sample.id=listEigenvector$sample.id,
+                    sample1Kg=study.annot$case.id,
+                    sp=spRef[study.annot$case.id],
+                    matKNN=resMat)
+
+    return(listKNN)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param listEigenvector TODO see return of computePCARefSample
+#'
+#' @param sample.ref TODO
+#'
+#' @param study.annot a  \code{data.frame} with one entry from study.annot in
+#' the gds
+#'
+#' @param spRef TODO
+#'
+#' @param kList TODO array of the k possible values
+#'
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN callfor different K and pca dimension.
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn
+#' @importFrom SNPRelate snpgdsPCA snpgdsPCASampLoading snpgdsPCASampLoading
+#' @importFrom class knn
+#' @encoding UTF-8
+#' @export
+computeKNNSuperPopSample <- function(listEigenvector, gdsSample, name.id, spRef,
+                                     study.id.ref = "Ref.1KG",
+                                     kList = seq_len(15), pcaList = 2:15) {
+
+    if(is.null(kList)){
+        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+    }
+    if(is.null(pcaList)){
+        pcaList <- 2:15
+    }
+    if(length(name.id) != 1) {
+        stop("Number of sample in study.annot not equal to 1\n")
+    }
+
+    #sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))
+
+
+    study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+
+    sample.ref <- study.annot.all[which(study.annot.all$study.id == study.id.ref), "data.id"]
+
+    resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
+                                       length(pcaList) * length(kList)),
+                         D=rep(0,length(pcaList) * length(kList)),
+                         K=rep(0,length(pcaList) * length(kList)),
+                         SuperPop=character(length(pcaList) * length(kList)),
+                         stringsAsFactors=FALSE)
+
+    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
+
+    #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
+    eigenvect <- rbind(listEigenvector$eigenvector.ref,
+                       listEigenvector$eigenvector)
+
+    rownames(eigenvect) <- c(sample.ref,
+                             listEigenvector$sample.id)
+
+    totR <- 1
+    for(pcaD in pcaList) {
+        for(kV in  seq_len(length(kList))) {
+            dCur <- paste0("d", pcaD)
+            kCur <- paste0("k", kList[kV])
+            resMat[totR,c("D", "K")] <- c(pcaD, kList[kV])
+
+            pcaND <- eigenvect[ ,seq_len(pcaD)]
+            y_pred <- knn(train=pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
+                          test=pcaND[rownames(eigenvect)[nrow(eigenvect)],, drop=FALSE],
+                          cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
+                                    levels=listSuperPop, labels=listSuperPop),
+                          k=kList[kV],
+                          prob=FALSE)
+
+            resMat[totR, paste0("SuperPop")] <- listSuperPop[as.integer(y_pred)]
+
+            totR <- totR + 1
+        } # end k
+    } # end pca Dim
+    listKNN <- list(sample.id=listEigenvector$sample.id,
+                    matKNN=resMat)
+
+    return(listKNN)
+}
 
 #' @title TODO
 #'
@@ -1160,3 +1553,6 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                 listD = listD)
     return(res)
 }
+
+
+

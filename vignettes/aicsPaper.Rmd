@@ -350,7 +350,7 @@ or in R for a s
 
 or in R for a s
 
-```{r pruningSample, echo=TRUE, eval=FALSE}
+```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
 
     library(RAIDS)
     library(BSgenome)
@@ -414,7 +414,7 @@ or in R for a s
 
 or in R 
 
-```{r pruningSample, echo=TRUE, eval=FALSE}
+```{r generateSynthetic, echo=TRUE, eval=FALSE}
 
     library(RAIDS)
     
@@ -505,7 +505,7 @@ or in R
 
 or in R 
 
-```{r pruningSample, echo=TRUE, eval=FALSE}
+```{r PCA.KNN.Synthetic, echo=TRUE, eval=FALSE}
 
     library(RAIDS)
     
@@ -625,7 +625,7 @@ or in R
 
 or in R 
 
-```{r pruningSample, echo=TRUE, eval=FALSE}
+```{r selectParameters, echo=TRUE, eval=FALSE}
 
     library(RAIDS)
     

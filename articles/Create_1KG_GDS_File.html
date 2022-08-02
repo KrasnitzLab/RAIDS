@@ -71,8 +71,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Formatting the information from 1000 Genomes (optional)</h1>
-                        <h4 data-toc-skip class="author">Pascal Belleau, Astrid Deschênes and Alexander Krasnitz</h4>
+      <h1 data-toc-skip>Formatting the information from 1000 Genomes
+(optional)</h1>
+                        <h4 data-toc-skip class="author">Pascal Belleau,
+Astrid Deschênes and Alexander Krasnitz</h4>
             
       
       
@@ -82,15 +84,21 @@
 
     
     
-<p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-01<br><strong>License</strong>: Apache License (== 2.0) | file LICENSE<br></p>
+<p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
+[aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-02<br><strong>License</strong>: Apache License (== 2.0) | file
+LICENSE<br></p>
 <p><br><br></p>
 <div class="section level2">
-<h2 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---formatting-the-information-from-1000-genomes-optional"></a>
+<h2 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes
+(optional)<a class="anchor" aria-label="anchor" href="#step-1---formatting-the-information-from-1000-genomes-optional"></a>
 </h2>
-<p>This is an overview of the main steps to infer the genetic ancestry<br>
+<p>This is an overview of the main steps to infer the genetic
+ancestry<br>
 from cancer-derived molecular data:</p>
 <ol style="list-style-type: decimal">
-<li>Format the information from 1000 Genomes (1KG) into a 1KG GDS file (optional)</li>
+<li>Format the information from 1000 Genomes (1KG) into a 1KG GDS file
+(optional)</li>
 <li>Format the information from an external study</li>
 <li>Find the optimized parameters for the ancestry inference</li>
 <li>Run the ancestry inference on the external study</li>
@@ -101,16 +109,26 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 </p>
 </div>
 <hr>
-<p><span style="color:darkred;font-weight:bold">Beware that a pre-processed 1KG GDS file is available at this address:</span></p>
-<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</a> </span></p>
-<p><span style="color:darkred;font-weight:bold">The size of the file is 15GB.</span> <span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span></p>
+<p><span style="color:darkred;font-weight:bold">Beware that a
+pre-processed 1KG GDS file is available at this address:</span></p>
+<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</a>
+</span></p>
+<p><span style="color:darkred;font-weight:bold">The size of the file is
+15GB.</span> <span style="color:darkred;font-weight:bold">This section
+can be skipped if you choose to use this file.</span></p>
 <hr>
-<p>This section explains in further details how to generate the 1000 Genomes (1KG) GDS file that is needed to run the ancestry inference tool (step 1). Beware that it is unnecessary to re-run those steps as the 1KG GDS file is publicly available.</p>
-<p>More specifically, the formatting of the 1KG information includes all those sub-steps:</p>
+<p>This section explains in further details how to generate the 1000
+Genomes (1KG) GDS file that is needed to run the ancestry inference tool
+(step 1). Beware that it is unnecessary to re-run those steps as the 1KG
+GDS file is publicly available.</p>
+<p>More specifically, the formatting of the 1KG information includes all
+those sub-steps:</p>
 <ol style="list-style-type: decimal">
 <li>Download the required files from 1KG</li>
-<li>Split the 1KG genotyping file to one file per sample per chromosome</li>
-<li>Combine the chromosomes to obtain one genotyping file per sample</li>
+<li>Split the 1KG genotyping file to one file per sample per
+chromosome</li>
+<li>Combine the chromosomes to obtain one genotyping file per
+sample</li>
 <li>Create a pedigree file in RDS format</li>
 <li>Prepare a bulk SNP information file based on 1KG VCF</li>
 <li>Filter the bulk SNP information file</li>
@@ -119,21 +137,26 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 <li>Add information about unrelated patients to the 1KG GDS file</li>
 <li>Create a second GDS file containing the 1KG phase information</li>
 </ol>
-<p>Beware that those sub-steps are time, as well as, space consuming.</p>
-<p>In the following sections, those sub-steps are described in details.</p>
+<p>Beware that those sub-steps are time, as well as, space
+consuming.</p>
+<p>In the following sections, those sub-steps are described in
+details.</p>
 <p><br></p>
 <div class="section level3">
 <h3 id="download-the-required-files-from-1kg">Download the required files from 1KG<a class="anchor" aria-label="anchor" href="#download-the-required-files-from-1kg"></a>
 </h3>
-<p>First, the pedigree file with the description of the 1KG samples needs to be downloaded from the 1KG ftp site:</p>
+<p>First, the pedigree file with the description of the 1KG samples
+needs to be downloaded from the 1KG ftp site:</p>
 <blockquote>
 <p><a href="ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped" class="uri">ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped</a></p>
 </blockquote>
-<p>The genotyping files for the 1KG samples also needs to be downloaded. Beware that there is one file per chromosome:</p>
+<p>The genotyping files for the 1KG samples also needs to be downloaded.
+Beware that there is one file per chromosome:</p>
 <blockquote>
 <p>ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV</p>
 </blockquote>
-<p>As the genotyping files are split by chromosome, all files corresponding to this pattern must be downloaded:</p>
+<p>As the genotyping files are split by chromosome, all files
+corresponding to this pattern must be downloaded:</p>
 <blockquote>
 <p>ALL.chr*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</p>
 </blockquote>
@@ -141,10 +164,13 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 <p><br><br></p>
 </div>
 <div class="section level3">
-<h3 id="split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome">Split the 1KG genotyping file to one file per sample per chromosome<a class="anchor" aria-label="anchor" href="#split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome"></a>
+<h3 id="split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome">Split the 1KG genotyping file to one file per sample per
+chromosome<a class="anchor" aria-label="anchor" href="#split-the-1kg-genotyping-file-to-one-file-per-sample-per-chromosome"></a>
 </h3>
-<p>To facilitate the manipulation of the genotyping data, the large 1KG genotyping files are split into smaller files (one per sample).</p>
-<p>As there is one genotyping file per chromosome, the process must be executed for each of chromosome</p>
+<p>To facilitate the manipulation of the genotyping data, the large 1KG
+genotyping files are split into smaller files (one per sample).</p>
+<p>As there is one genotyping file per chromosome, the process must be
+executed for each of chromosome</p>
 <p>The splitting is done through a bash script:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
@@ -185,15 +211,19 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 <p><br><br></p>
 </div>
 <div class="section level3">
-<h3 id="combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample">Combine the chromosomes to obtain one genotyping file per sample<a class="anchor" aria-label="anchor" href="#combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample"></a>
+<h3 id="combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample">Combine the chromosomes to obtain one genotyping file per
+sample<a class="anchor" aria-label="anchor" href="#combine-the-chromosomes-to-obtain-one-genotyping-file-per-sample"></a>
 </h3>
-<p>The genotyping information for all chromosomes is merged so that there is only one genotyping file per sample.</p>
+<p>The genotyping information for all chromosomes is merged so that
+there is only one genotyping file per sample.</p>
 <div class="figure" style="text-align: center">
 <img src="groupChr1KGSNV_v01.png" alt="The function groupChr1KGSNV() merge samples that are split by chromosomes into one file." width="120%"><p class="caption">
-The function groupChr1KGSNV() merge samples that are split by chromosomes into one file.
+The function groupChr1KGSNV() merge samples that are split by
+chromosomes into one file.
 </p>
 </div>
-<p>The <strong>groupChr1KGSNV()</strong> function is used to combine the genotyping information from multiple files.</p>
+<p>The <strong>groupChr1KGSNV()</strong> function is used to combine the
+genotyping information from multiple files.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -212,7 +242,8 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level3">
 <h3 id="create-a-predigree-file-in-rds-format">Create a predigree file in RDS format<a class="anchor" aria-label="anchor" href="#create-a-predigree-file-in-rds-format"></a>
 </h3>
-<p>The function <strong>prepPed1KG()</strong> is used to create the pedigree file in RDS format:</p>
+<p>The function <strong>prepPed1KG()</strong> is used to create the
+pedigree file in RDS format:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -236,8 +267,11 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level3">
 <h3 id="prepare-a-bulk-snp-information-file-based-on-1kg-vcf">Prepare a bulk SNP information file based on 1KG VCF<a class="anchor" aria-label="anchor" href="#prepare-a-bulk-snp-information-file-based-on-1kg-vcf"></a>
 </h3>
-<p>Some intermediate file containing the SNP information from 1KG need to be generated so the information can ultimately be imported in a GDS file using Bioconductor <a href="https://bioconductor.org/packages/gdsfmt/" class="external-link">gdsfmt</a>.</p>
-<p>The bulk intermediate SNP file contains the SNP position as well as the frequency in each super population.</p>
+<p>Some intermediate file containing the SNP information from 1KG need
+to be generated so the information can ultimately be imported in a GDS
+file using Bioconductor <a href="https://bioconductor.org/packages/gdsfmt/" class="external-link">gdsfmt</a>.</p>
+<p>The bulk intermediate SNP file contains the SNP position as well as
+the frequency in each super population.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is not done in R</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The python script is in the 'scriptsPy' directory</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -252,15 +286,21 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  cat matFreq.chr<span class="sc">$</span>{i}.txt <span class="sc">&gt;</span>matFreqSNV.txt</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  bzip2 matFreqSNV.txt</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>done</span></code></pre></div>
-<p>The bulk SNP info file is called <strong>matFreqSNV.txt.bz2</strong>.</p>
+<p>The bulk SNP info file is called
+<strong>matFreqSNV.txt.bz2</strong>.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
 <h3 id="filter-the-bulk-snp-information-file">Filter the bulk SNP information file<a class="anchor" aria-label="anchor" href="#filter-the-bulk-snp-information-file"></a>
 </h3>
-<p>The bulk SNP file is filtered to only retain the SNPs with frequency higher then a specific cut-off (here &gt;=0.01) for at least one super population.</p>
-<p>The filter SNP file is saved in RDS format (<em>fileLSNP</em> parameter). A second file containing the index of the retained SNPs is also created (<em>fileLSNP</em> parameter)</p>
-<p>The function <strong>generateMapSnvSel()</strong> is used to filter the SNP file and generated the needed RDS files:</p>
+<p>The bulk SNP file is filtered to only retain the SNPs with frequency
+higher then a specific cut-off (here &gt;=0.01) for at least one super
+population.</p>
+<p>The filter SNP file is saved in RDS format (<em>fileLSNP</em>
+parameter). A second file containing the index of the retained SNPs is
+also created (<em>fileLSNP</em> parameter)</p>
+<p>The function <strong>generateMapSnvSel()</strong> is used to filter
+the SNP file and generated the needed RDS files:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -285,8 +325,11 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level3">
 <h3 id="generate-the-gds-file-with-the-1kg-information">Generate the GDS file with the 1KG information<a class="anchor" aria-label="anchor" href="#generate-the-gds-file-with-the-1kg-information"></a>
 </h3>
-<p>The CoreArray Genomic Data Structure (GDS) data files are files suited for large-scale datasets, especially for data which are much larger than the available random-access memory.</p>
-<p>The function <strong>generateGDS1KG()</strong> is used to generate the GDS file that will contain the information related to 1KG:</p>
+<p>The CoreArray Genomic Data Structure (GDS) data files are files
+suited for large-scale datasets, especially for data which are much
+larger than the available random-access memory.</p>
+<p>The function <strong>generateGDS1KG()</strong> is used to generate
+the GDS file that will contain the information related to 1KG:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## TODO: what is PATHMETA and PATHSEL</span></span>
 <span></span>
@@ -313,8 +356,13 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level3">
 <h3 id="identify-genetically-related-patients-present-in-1kg-gds-file">Identify genetically related patients present in 1KG GDS file<a class="anchor" aria-label="anchor" href="#identify-genetically-related-patients-present-in-1kg-gds-file"></a>
 </h3>
-<p>As only unrelated patients can be used in the following analyses, the genetically related patients in 1KG must be identified.</p>
-<p>The function <strong>identifyRelative()</strong> identifies patients that are genetically related in the 1KG files. It generates a RDS file with the unrelated patient information (<em>filePart</em> parameter) as well as a RDS file with the kinship coefficient between the patients (<em>fileIBD</em> parameter).</p>
+<p>As only unrelated patients can be used in the following analyses, the
+genetically related patients in 1KG must be identified.</p>
+<p>The function <strong>identifyRelative()</strong> identifies patients
+that are genetically related in the 1KG files. It generates a RDS file
+with the unrelated patient information (<em>filePart</em> parameter) as
+well as a RDS file with the kinship coefficient between the patients
+(<em>fileIBD</em> parameter).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
@@ -345,8 +393,14 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level3">
 <h3 id="add-information-about-unrelated-patients-to-the-1kg-gds-file">Add information about unrelated patients to the 1KG GDS file<a class="anchor" aria-label="anchor" href="#add-information-about-unrelated-patients-to-the-1kg-gds-file"></a>
 </h3>
-<p>Only the unrelated patients from 1KG are used in the following ancestry inference and kept in the GDS 1KG file. The function <strong>identifyRelative()</strong> identifies the unrelated patients and saves the information about those patients in an intermediate external file.</p>
-<p>The function <strong>addRef2GDS1KG()</strong> is adding the information about the unrelated patients to the GDS 1KG file using the intermediate external file.</p>
+<p>Only the unrelated patients from 1KG are used in the following
+ancestry inference and kept in the GDS 1KG file. The function
+<strong>identifyRelative()</strong> identifies the unrelated patients
+and saves the information about those patients in an intermediate
+external file.</p>
+<p>The function <strong>addRef2GDS1KG()</strong> is adding the
+information about the unrelated patients to the GDS 1KG file using the
+intermediate external file.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Add the information about the unrelated 1KG patients to the 1KG GDS file </span></span>
 <span><span class="fu"><a href="../reference/addRef2GDS1KG.html">addRef2GDS1KG</a></span><span class="op">(</span>fileGDS<span class="op">=</span><span class="va">gds</span>,  filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span></code></pre></div>
@@ -356,7 +410,8 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <h3 id="create-a-second-gds-containing-the-1kg-phase-information">Create a second GDS containing the 1KG phase information<a class="anchor" aria-label="anchor" href="#create-a-second-gds-containing-the-1kg-phase-information"></a>
 </h3>
 <p>We generate a GDS with the phase information.</p>
-<p>The function <strong>generatePhase1KG2GDS()</strong> is adding the phase information into the newly created 1KG GDS phase file.</p>
+<p>The function <strong>generatePhase1KG2GDS()</strong> is adding the
+phase information into the newly created 1KG GDS phase file.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
@@ -385,7 +440,8 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level2">
 <h2 id="pre-processed-files-are-available">Pre-processed files are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-are-available"></a>
 </h2>
-<p>Pre-processed files, such as the 1KG GDS file, are available at this address:</p>
+<p>Pre-processed files, such as the 1KG GDS file, are available at this
+address:</p>
 <p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
 <p>Beware that some of those files are voluminous.</p>
 <p><br><br></p>
@@ -393,10 +449,11 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on which this document was compiled:</p>
-<pre><code><span><span class="co">## R version 4.1.1 (2021-08-10)</span></span>
+<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on
+which this document was compiled:</p>
+<pre><code><span><span class="co">## R version 4.1.3 (2022-03-10)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.3 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span></span>
@@ -404,7 +461,7 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
 <span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
-<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
 <span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
 <span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
 <span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
@@ -413,44 +470,43 @@ The function groupChr1KGSNV() merge samples that are split by chromosomes into o
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] RAIDS_0.50.0     GENESIS_2.22.2   SNPRelate_1.26.0 gdsfmt_1.28.1   </span></span>
-<span><span class="co">## [5] knitr_1.39       BiocStyle_2.20.2</span></span>
+<span><span class="co">## [1] RAIDS_0.50.0     GENESIS_2.24.2   SNPRelate_1.28.0 gdsfmt_1.30.0   </span></span>
+<span><span class="co">## [5] knitr_1.39       BiocStyle_2.22.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] nlme_3.1-158           bitops_1.0-7           fs_1.5.2              </span></span>
-<span><span class="co">##   [4] bit64_4.0.5            GenomeInfoDb_1.28.4    rprojroot_2.0.3       </span></span>
-<span><span class="co">##   [7] tools_4.1.1            backports_1.4.1        bslib_0.4.0           </span></span>
-<span><span class="co">##  [10] utf8_1.2.2             R6_2.5.1               DBI_1.1.3             </span></span>
-<span><span class="co">##  [13] BiocGenerics_0.38.0    mgcv_1.8-40            DNAcopy_1.66.0        </span></span>
-<span><span class="co">##  [16] withr_2.5.0            tidyselect_1.1.2       bit_4.0.4             </span></span>
-<span><span class="co">##  [19] compiler_4.1.1         textshaping_0.3.6      cli_3.3.0             </span></span>
-<span><span class="co">##  [22] quantreg_5.94          Biobase_2.52.0         mice_3.14.0           </span></span>
-<span><span class="co">##  [25] SparseM_1.81           desc_1.4.1             sandwich_3.0-2        </span></span>
-<span><span class="co">##  [28] bookdown_0.27          sass_0.4.2             lmtest_0.9-40         </span></span>
-<span><span class="co">##  [31] quantsmooth_1.58.0     pkgdown_2.0.6          systemfonts_1.0.4     </span></span>
-<span><span class="co">##  [34] stringr_1.4.0          digest_0.6.29          GWASExactHW_1.01      </span></span>
-<span><span class="co">##  [37] rmarkdown_2.14         XVector_0.32.0         pkgconfig_2.0.3       </span></span>
-<span><span class="co">##  [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
-<span><span class="co">##  [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
-<span><span class="co">##  [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
-<span><span class="co">##  [49] dplyr_1.0.9            RCurl_1.98-1.7         magrittr_2.0.3        </span></span>
-<span><span class="co">##  [52] GenomeInfoDbData_1.2.6 Matrix_1.4-1           Rcpp_1.0.9            </span></span>
-<span><span class="co">##  [55] S4Vectors_0.30.2       fansi_1.0.3            lifecycle_1.0.1       </span></span>
-<span><span class="co">##  [58] pROC_1.18.0            stringi_1.7.8          yaml_2.3.5            </span></span>
-<span><span class="co">##  [61] GWASTools_1.38.0       zlibbioc_1.38.0        MASS_7.3-58           </span></span>
-<span><span class="co">##  [64] plyr_1.8.7             grid_4.1.1             formula.tools_1.7.1   </span></span>
-<span><span class="co">##  [67] blob_1.2.3             parallel_4.1.1         crayon_1.5.1          </span></span>
-<span><span class="co">##  [70] lattice_0.20-45        Biostrings_2.60.2      splines_4.1.1         </span></span>
-<span><span class="co">##  [73] pillar_1.8.0           GenomicRanges_1.44.0   logistf_1.24.1        </span></span>
-<span><span class="co">##  [76] codetools_0.2-18       stats4_4.1.1           glue_1.6.2            </span></span>
-<span><span class="co">##  [79] evaluate_0.15          data.table_1.14.2      BiocManager_1.30.18   </span></span>
-<span><span class="co">##  [82] operator.tools_1.6.3   vctrs_0.4.1            foreach_1.5.2         </span></span>
-<span><span class="co">##  [85] MatrixModels_0.5-0     purrr_0.3.4            tidyr_1.2.0           </span></span>
-<span><span class="co">##  [88] SeqArray_1.32.0        assertthat_0.2.1       cachem_1.0.6          </span></span>
-<span><span class="co">##  [91] xfun_0.31              broom_1.0.0            SeqVarTools_1.30.0    </span></span>
-<span><span class="co">##  [94] class_7.3-20           ragg_1.2.2             survival_3.3-1        </span></span>
-<span><span class="co">##  [97] tibble_3.1.8           iterators_1.0.14       memoise_2.0.1         </span></span>
-<span><span class="co">## [100] IRanges_2.26.0</span></span></code></pre>
+<span><span class="co">##  [1] nlme_3.1-158           bitops_1.0-7           fs_1.5.2              </span></span>
+<span><span class="co">##  [4] bit64_4.0.5            rprojroot_2.0.3        GenomeInfoDb_1.30.1   </span></span>
+<span><span class="co">##  [7] tools_4.1.3            backports_1.4.1        bslib_0.4.0           </span></span>
+<span><span class="co">## [10] utf8_1.2.2             R6_2.5.1               DBI_1.1.3             </span></span>
+<span><span class="co">## [13] BiocGenerics_0.40.0    mgcv_1.8-40            DNAcopy_1.68.0        </span></span>
+<span><span class="co">## [16] withr_2.5.0            tidyselect_1.1.2       bit_4.0.4             </span></span>
+<span><span class="co">## [19] compiler_4.1.3         textshaping_0.3.6      cli_3.3.0             </span></span>
+<span><span class="co">## [22] quantreg_5.94          Biobase_2.54.0         mice_3.14.0           </span></span>
+<span><span class="co">## [25] SparseM_1.81           desc_1.4.1             sandwich_3.0-2        </span></span>
+<span><span class="co">## [28] bookdown_0.27          sass_0.4.2             lmtest_0.9-40         </span></span>
+<span><span class="co">## [31] quantsmooth_1.60.0     pkgdown_2.0.6          systemfonts_1.0.4     </span></span>
+<span><span class="co">## [34] stringr_1.4.0          digest_0.6.29          GWASExactHW_1.01      </span></span>
+<span><span class="co">## [37] rmarkdown_2.14         XVector_0.34.0         pkgconfig_2.0.3       </span></span>
+<span><span class="co">## [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
+<span><span class="co">## [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
+<span><span class="co">## [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
+<span><span class="co">## [49] BiocParallel_1.28.3    dplyr_1.0.9            RCurl_1.98-1.7        </span></span>
+<span><span class="co">## [52] magrittr_2.0.3         GenomeInfoDbData_1.2.7 Matrix_1.4-1          </span></span>
+<span><span class="co">## [55] Rcpp_1.0.9             S4Vectors_0.32.4       fansi_1.0.3           </span></span>
+<span><span class="co">## [58] lifecycle_1.0.1        pROC_1.18.0            stringi_1.7.8         </span></span>
+<span><span class="co">## [61] yaml_2.3.5             GWASTools_1.40.0       zlibbioc_1.40.0       </span></span>
+<span><span class="co">## [64] MASS_7.3-58            plyr_1.8.7             grid_4.1.3            </span></span>
+<span><span class="co">## [67] formula.tools_1.7.1    blob_1.2.3             parallel_4.1.3        </span></span>
+<span><span class="co">## [70] crayon_1.5.1           lattice_0.20-45        Biostrings_2.62.0     </span></span>
+<span><span class="co">## [73] splines_4.1.3          pillar_1.8.0           GenomicRanges_1.46.1  </span></span>
+<span><span class="co">## [76] logistf_1.24.1         stats4_4.1.3           glue_1.6.2            </span></span>
+<span><span class="co">## [79] evaluate_0.15          data.table_1.14.2      BiocManager_1.30.18   </span></span>
+<span><span class="co">## [82] operator.tools_1.6.3   vctrs_0.4.1            MatrixModels_0.5-0    </span></span>
+<span><span class="co">## [85] purrr_0.3.4            tidyr_1.2.0            SeqArray_1.34.0       </span></span>
+<span><span class="co">## [88] assertthat_0.2.1       cachem_1.0.6           xfun_0.31             </span></span>
+<span><span class="co">## [91] broom_1.0.0            SeqVarTools_1.32.0     class_7.3-20          </span></span>
+<span><span class="co">## [94] ragg_1.2.2             survival_3.3-1         tibble_3.1.8          </span></span>
+<span><span class="co">## [97] memoise_2.0.1          IRanges_2.28.0</span></span></code></pre>
 <p><br><br></p>
 </div>
   </div>

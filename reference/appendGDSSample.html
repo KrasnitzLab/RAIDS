@@ -66,7 +66,7 @@ study must be fill.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">appendGDSSample</span><span class="op">(</span><span class="va">gds</span>, <span class="va">pedDF</span>, batch <span class="op">=</span> <span class="fl">1</span>, listSamples <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">appendGDSSample</span><span class="op">(</span><span class="va">gds</span>, <span class="va">pedDF</span>, batch <span class="op">=</span> <span class="fl">1</span>, listSamples <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -84,12 +84,17 @@ of pedDF is Name.ID and the row.name is Name.ID too.</p></dd>
 <dt>listSamples</dt>
 <dd><p>a <code>array</code> with the sample from pedDF$Name.ID to keep</p></dd>
 
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if messages should be printed
+to show how the different steps in the function. Default: <code>TRUE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The integer <code>0</code> when successful.</p>
+<p>The integer <code>0L</code> when successful.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

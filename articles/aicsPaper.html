@@ -71,8 +71,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Accurate Inference of Genetic Ancestry from Cancer Sequencing</h1>
-                        <h4 data-toc-skip class="author">Pascal Belleau, Astrid Deschênes and Alexander Krasnitz</h4>
+      <h1 data-toc-skip>Accurate Inference of Genetic Ancestry from
+Cancer Sequencing</h1>
+                        <h4 data-toc-skip class="author">Pascal Belleau,
+Astrid Deschênes and Alexander Krasnitz</h4>
             
       
       
@@ -82,35 +84,61 @@
 
     
     
-<p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-01<br><strong>License</strong>: Apache License (== 2.0) | file LICENSE<br></p>
+<p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
+[aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-02<br><strong>License</strong>: Apache License (== 2.0) | file
+LICENSE<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
-<p>The <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> package and the underlying <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> code are distributed under<br>
-the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link uri">https://opensource.org/licenses/Apache-2.0</a> license. You are free to use and redistribute this software.</p>
+<p>The <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em>
+package and the underlying <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> code are
+distributed under<br>
+the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link uri">https://opensource.org/licenses/Apache-2.0</a> license. You
+are free to use and redistribute this software.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
 </h2>
-<p>If you use the <strong>RAIDS</strong> package for a publication, we would ask you to cite the following:</p>
+<p>If you use the <strong>RAIDS</strong> package for a publication, we
+would ask you to cite the following:</p>
 <blockquote>
-<p>Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: <a href="https://doi.org/10.1101/2022.02.01.478737" class="external-link uri">https://doi.org/10.1101/2022.02.01.478737</a></p>
+<p>Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander
+Krasnitz. Accurate and robust inference of genetic ancestry from
+cancer-derived molecular data across genomic platforms. bioRxiv
+2022.02.01.478737; doi: <a href="https://doi.org/10.1101/2022.02.01.478737" class="external-link uri">https://doi.org/10.1101/2022.02.01.478737</a></p>
 </blockquote>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Multiple methods have been implemented to infer ancestry from germline DNA sequence <span class="citation">(Price et al. 2006; Pritchard, Stephens, and Donnelly 2000; Alexander, Novembre, and Lange 2009)</span>. However, genotyping of DNA from matched normal specimens is not part of standard clinical practice and is not performed routinely outside academic clinical centers. In sum, matched germline DNA sequence is often missing for cancer-derived molecular data. In such cases, having the possibility to infer ancestry from tumor-derived data would be beneficial.</p>
-<p>The <strong>RAIDS</strong> package implements an inference procedure that has been specifically developed to accurately infer genetic ancestry from cancer-derived sequencing. The covered cancer-derived sequencing are, more specifically, tumor exomes, targeted gene panels and RNA sequences.</p>
-<p>The <strong>RAIDS</strong> package includes a data synthesis method that enables the selection of the best parameters for a specific cancer profile and also permits a statistically assessment of inference accuracy for an individual cancer-derived molecular profile.</p>
+<p>Multiple methods have been implemented to infer ancestry from
+germline DNA sequence <span class="citation">(Price et al. 2006;
+Pritchard, Stephens, and Donnelly 2000; Alexander, Novembre, and Lange
+2009)</span>. However, genotyping of DNA from matched normal specimens
+is not part of standard clinical practice and is not performed routinely
+outside academic clinical centers. In sum, matched germline DNA sequence
+is often missing for cancer-derived molecular data. In such cases,
+having the possibility to infer ancestry from tumor-derived data would
+be beneficial.</p>
+<p>The <strong>RAIDS</strong> package implements an inference procedure
+that has been specifically developed to accurately infer genetic
+ancestry from cancer-derived sequencing. The covered cancer-derived
+sequencing are, more specifically, tumor exomes, targeted gene panels
+and RNA sequences.</p>
+<p>The <strong>RAIDS</strong> package includes a data synthesis method
+that enables the selection of the best parameters for a specific cancer
+profile and also permits a statistically assessment of inference
+accuracy for an individual cancer-derived molecular profile.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install the latest version accessible on the <a href="https://github.com/KrasnitzLab/RAIDS" title="RAIDS Github Site" class="external-link">RAIDS Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em> package is required.</p>
+<p>To install the latest version accessible on the <a href="https://github.com/KrasnitzLab/RAIDS" title="RAIDS Github Site" class="external-link">RAIDS Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em>
+package is required.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
@@ -122,7 +150,8 @@ the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link ur
 <div class="section level2">
 <h2 id="main-steps">Main Steps<a class="anchor" aria-label="anchor" href="#main-steps"></a>
 </h2>
-<p>This is an overview of genetic ancestry inference from cancer-derived molecular data:</p>
+<p>This is an overview of genetic ancestry inference from cancer-derived
+molecular data:</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_v01.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
 An overview of the genetic ancestry inference process.
@@ -135,10 +164,12 @@ An overview of the genetic ancestry inference process.
 <li>Find the optimized parameters for the ancestry inference</li>
 <li>Run the ancestry inference on the external study</li>
 </ol>
-<p>In the following sections, those main steps are described in details.</p>
+<p>In the following sections, those main steps are described in
+details.</p>
 <p><br><br></p>
 <div class="section level3">
-<h3 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---formatting-the-information-from-1000-genomes-optional"></a>
+<h3 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes
+(optional)<a class="anchor" aria-label="anchor" href="#step-1---formatting-the-information-from-1000-genomes-optional"></a>
 </h3>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step1_v01.png" alt="Step 1 - Formatting the information from 1000 Genomes (optional)" width="120%"><p class="caption">
@@ -146,39 +177,56 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 </p>
 </div>
 <hr>
-<p><span style="color:darkred;font-weight:bold">Beware that a pre-processed 1KG GDS file is available at this address:</span></p>
-<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</a> </span></p>
-<p><span style="color:darkred;font-weight:bold">The size of the file is 15GB.</span> <span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span></p>
+<p><span style="color:darkred;font-weight:bold">Beware that a
+pre-processed 1KG GDS file is available at this address:</span></p>
+<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</a>
+</span></p>
+<p><span style="color:darkred;font-weight:bold">The size of the file is
+15GB.</span> <span style="color:darkred;font-weight:bold">This section
+can be skipped if you choose to use this file.</span></p>
 <hr>
-<p>There is a vignette<br><a href="Create_1KG_GDS_file.html">Formatting the information from 1000 Genomes (optional)</a> that is dedicated to this step.</p>
+<p>There is a vignette<br><a href="Create_1KG_GDS_file.html">Formatting the information from 1000
+Genomes (optional)</a> that is dedicated to this step.</p>
 </div>
 <div class="section level3">
-<h3 id="step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference">Step 2 - Format information from an external study to get if ready for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference"></a>
+<h3 id="step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference">Step 2 - Format information from an external study to get if ready
+for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference"></a>
 </h3>
-<p>To run the ancestry inference on samples from an external study, the sample information must be formatted in a specific format.</p>
+<p>To run the ancestry inference on samples from an external study, the
+sample information must be formatted in a specific format.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step2_v01.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
 Step 2 - Formatting the information from an external study
 </p>
 </div>
-<p>Those steps shows how to prepare the sample information needed as input for the ancestry inference.</p>
+<p>Those steps shows how to prepare the sample information needed as
+input for the ancestry inference.</p>
 <p>Those steps are:</p>
 <ol style="list-style-type: decimal">
-<li>Extract the read coverage at each SNP position in the 1KG GDS file</li>
-<li>Create a VCF file containing the retained SNP positions from 1KG GDS file</li>
+<li>Extract the read coverage at each SNP position in the 1KG GDS
+file</li>
+<li>Create a VCF file containing the retained SNP positions from 1KG GDS
+file</li>
 </ol>
-<p>Beware that a mapped BAM file is needed for each sample. The reference genome used for the mapping must correspond to the one used to generate the 1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.</p>
+<p>Beware that a mapped BAM file is needed for each sample. The
+reference genome used for the mapping must correspond to the one used to
+generate the 1KG GDS file. In this case, the 1KG GDS file is based on
+genome hg38.</p>
 <div class="section level4">
-<h4 id="extract-the-read-coverage-at-each-snp-position-in-the-1kg-gds-file">Extract the read coverage at each SNP position in the 1KG GDS file<a class="anchor" aria-label="anchor" href="#extract-the-read-coverage-at-each-snp-position-in-the-1kg-gds-file"></a>
+<h4 id="extract-the-read-coverage-at-each-snp-position-in-the-1kg-gds-file">Extract the read coverage at each SNP position in the 1KG GDS
+file<a class="anchor" aria-label="anchor" href="#extract-the-read-coverage-at-each-snp-position-in-the-1kg-gds-file"></a>
 </h4>
 <p>We used here snp-pileup from Facet</p>
 <p>First you a vcf file with the SNV you want to keep</p>
 <p><br><br></p>
 </div>
 <div class="section level4">
-<h4 id="create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file">Create a VCF file containing the retained SNP positions from 1KG GDS file<a class="anchor" aria-label="anchor" href="#create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file"></a>
+<h4 id="create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file">Create a VCF file containing the retained SNP positions from 1KG GDS
+file<a class="anchor" aria-label="anchor" href="#create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file"></a>
 </h4>
-<p>The <strong>snvListVCF()</strong> function is used to generate a VCF file that contains the information of all retained SNPs from 1KG GDS file:</p>
+<p>The <strong>snvListVCF()</strong> function is used to generate a VCF
+file that contains the information of all retained SNPs from 1KG GDS
+file:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -194,7 +242,8 @@ Step 2 - Formatting the information from an external study
 <span></span>
 <span><span class="co">## Close the 1KG GDS file </span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
-<p>You should compress and indexing the newly created VCF file. Do do so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
+<p>You should compress and indexing the newly created VCF file. Do do
+so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
 <p>In a terminal:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
@@ -206,11 +255,18 @@ Step 2 - Formatting the information from an external study
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## HTSlib software is needed</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>tabix <span class="sc">-</span>p vcf fileOUT.gz</span></code></pre></div>
 <p>You need a <strong>ped</strong> file with the column:</p>
-<p>“sample.id”* Id of the sample but the sample can be genotyped more than one “sex”<em> “pop.group”</em> can be self declare or something else but must be there “superPop”* can be self declare or something else but must be there “Sample.Type”* Ex Primary Tumor or Blood Derived Normal “Diagnosis”* C or N (cancer normal) this is for the sample not the patient “Source”* The tissue ex Ovary “Recurrent”<br>
+<p>“sample.id”* Id of the sample but the sample can be genotyped more
+than one “sex”<em> “pop.group”</em> can be self declare or something
+else but must be there “superPop”* can be self declare or something else
+but must be there “Sample.Type”* Ex Primary Tumor or Blood Derived
+Normal “Diagnosis”* C or N (cancer normal) this is for the sample not
+the patient “Source”* The tissue ex Ovary “Recurrent”<br>
 “Case.ID” Patient identifier<br>
 “Name.ID”* This the unique id of the table “batch” Number</p>
-<p>You need the extra code in the package Facet to extract the SNV <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a> <span class="citation">(Shen and Seshan 2016)</span>.</p>
-<p>The output from snp-pileup should be Name.ID.txt (snp-pileup add .gz to the filename)</p>
+<p>You need the extra code in the package Facet to extract the SNV <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
+<span class="citation">(Shen and Seshan 2016)</span>.</p>
+<p>The output from snp-pileup should be Name.ID.txt (snp-pileup add .gz
+to the filename)</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 VCFGenerateAbove snvSel0.<span class="fl">01.</span>vcf.gz OUTPUT.txt FILEBAM.bam</span></code></pre></div>
 <p>TODO change the path to something generic</p>
 <p>in R:</p>
@@ -241,7 +297,11 @@ Step 2 - Formatting the information from an external study
 <span>                       listSamples <span class="op">=</span> <span class="va">listSamples</span>,</span>
 <span>                       studyDesc <span class="op">=</span> <span class="va">studyDF</span>,</span>
 <span>                       batch <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p>We select a subset of SNV pruned SNV We create a GDS for each sample with only the SNP in the pruning. It use more disk space but the analysis for the samples can be run simulatanusly with multiple process (if we we all samples in one file only one process can write in the GDS).</p>
+<p>We select a subset of SNV pruned SNV We create a GDS for each sample
+with only the SNP in the pruning. It use more disk space but the
+analysis for the samples can be run simulatanusly with multiple process
+(if we we all samples in one file only one process can write in the
+GDS).</p>
 <p>or in R for a s</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -290,7 +350,8 @@ Step 2 - Formatting the information from an external study
 <div class="section level2">
 <h2 id="pre-processed-files-are-available">Pre-processed files are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-are-available"></a>
 </h2>
-<p>Pre-processed files, such as the 1KG GDS file, are available at this address:</p>
+<p>Pre-processed files, such as the 1KG GDS file, are available at this
+address:</p>
 <p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
 <p>Beware that some of those files are voluminous.</p>
 <p><br><br></p>
@@ -298,10 +359,11 @@ Step 2 - Formatting the information from an external study
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on which this document was compiled:</p>
-<pre><code><span><span class="co">## R version 4.1.1 (2021-08-10)</span></span>
+<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on
+which this document was compiled:</p>
+<pre><code><span><span class="co">## R version 4.1.3 (2022-03-10)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.3 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span></span>
@@ -309,7 +371,7 @@ Step 2 - Formatting the information from an external study
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
 <span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
-<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
 <span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
 <span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
 <span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
@@ -318,44 +380,43 @@ Step 2 - Formatting the information from an external study
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] RAIDS_0.50.0     GENESIS_2.22.2   SNPRelate_1.26.0 gdsfmt_1.28.1   </span></span>
-<span><span class="co">## [5] knitr_1.39       BiocStyle_2.20.2</span></span>
+<span><span class="co">## [1] RAIDS_0.50.0     GENESIS_2.24.2   SNPRelate_1.28.0 gdsfmt_1.30.0   </span></span>
+<span><span class="co">## [5] knitr_1.39       BiocStyle_2.22.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] nlme_3.1-158           bitops_1.0-7           fs_1.5.2              </span></span>
-<span><span class="co">##   [4] bit64_4.0.5            GenomeInfoDb_1.28.4    rprojroot_2.0.3       </span></span>
-<span><span class="co">##   [7] tools_4.1.1            backports_1.4.1        bslib_0.4.0           </span></span>
-<span><span class="co">##  [10] utf8_1.2.2             R6_2.5.1               DBI_1.1.3             </span></span>
-<span><span class="co">##  [13] BiocGenerics_0.38.0    mgcv_1.8-40            DNAcopy_1.66.0        </span></span>
-<span><span class="co">##  [16] withr_2.5.0            tidyselect_1.1.2       bit_4.0.4             </span></span>
-<span><span class="co">##  [19] compiler_4.1.1         textshaping_0.3.6      cli_3.3.0             </span></span>
-<span><span class="co">##  [22] quantreg_5.94          Biobase_2.52.0         mice_3.14.0           </span></span>
-<span><span class="co">##  [25] SparseM_1.81           desc_1.4.1             sandwich_3.0-2        </span></span>
-<span><span class="co">##  [28] bookdown_0.27          sass_0.4.2             lmtest_0.9-40         </span></span>
-<span><span class="co">##  [31] quantsmooth_1.58.0     pkgdown_2.0.6          systemfonts_1.0.4     </span></span>
-<span><span class="co">##  [34] stringr_1.4.0          digest_0.6.29          GWASExactHW_1.01      </span></span>
-<span><span class="co">##  [37] rmarkdown_2.14         XVector_0.32.0         pkgconfig_2.0.3       </span></span>
-<span><span class="co">##  [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
-<span><span class="co">##  [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
-<span><span class="co">##  [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
-<span><span class="co">##  [49] dplyr_1.0.9            RCurl_1.98-1.7         magrittr_2.0.3        </span></span>
-<span><span class="co">##  [52] GenomeInfoDbData_1.2.6 Matrix_1.4-1           Rcpp_1.0.9            </span></span>
-<span><span class="co">##  [55] S4Vectors_0.30.2       fansi_1.0.3            lifecycle_1.0.1       </span></span>
-<span><span class="co">##  [58] pROC_1.18.0            stringi_1.7.8          yaml_2.3.5            </span></span>
-<span><span class="co">##  [61] GWASTools_1.38.0       zlibbioc_1.38.0        MASS_7.3-58           </span></span>
-<span><span class="co">##  [64] plyr_1.8.7             grid_4.1.1             formula.tools_1.7.1   </span></span>
-<span><span class="co">##  [67] blob_1.2.3             parallel_4.1.1         crayon_1.5.1          </span></span>
-<span><span class="co">##  [70] lattice_0.20-45        Biostrings_2.60.2      splines_4.1.1         </span></span>
-<span><span class="co">##  [73] pillar_1.8.0           GenomicRanges_1.44.0   logistf_1.24.1        </span></span>
-<span><span class="co">##  [76] codetools_0.2-18       stats4_4.1.1           glue_1.6.2            </span></span>
-<span><span class="co">##  [79] evaluate_0.15          data.table_1.14.2      BiocManager_1.30.18   </span></span>
-<span><span class="co">##  [82] operator.tools_1.6.3   vctrs_0.4.1            foreach_1.5.2         </span></span>
-<span><span class="co">##  [85] MatrixModels_0.5-0     purrr_0.3.4            tidyr_1.2.0           </span></span>
-<span><span class="co">##  [88] SeqArray_1.32.0        assertthat_0.2.1       cachem_1.0.6          </span></span>
-<span><span class="co">##  [91] xfun_0.31              broom_1.0.0            SeqVarTools_1.30.0    </span></span>
-<span><span class="co">##  [94] class_7.3-20           ragg_1.2.2             survival_3.3-1        </span></span>
-<span><span class="co">##  [97] tibble_3.1.8           iterators_1.0.14       memoise_2.0.1         </span></span>
-<span><span class="co">## [100] IRanges_2.26.0</span></span></code></pre>
+<span><span class="co">##  [1] nlme_3.1-158           bitops_1.0-7           fs_1.5.2              </span></span>
+<span><span class="co">##  [4] bit64_4.0.5            rprojroot_2.0.3        GenomeInfoDb_1.30.1   </span></span>
+<span><span class="co">##  [7] tools_4.1.3            backports_1.4.1        bslib_0.4.0           </span></span>
+<span><span class="co">## [10] utf8_1.2.2             R6_2.5.1               DBI_1.1.3             </span></span>
+<span><span class="co">## [13] BiocGenerics_0.40.0    mgcv_1.8-40            DNAcopy_1.68.0        </span></span>
+<span><span class="co">## [16] withr_2.5.0            tidyselect_1.1.2       bit_4.0.4             </span></span>
+<span><span class="co">## [19] compiler_4.1.3         textshaping_0.3.6      cli_3.3.0             </span></span>
+<span><span class="co">## [22] quantreg_5.94          Biobase_2.54.0         mice_3.14.0           </span></span>
+<span><span class="co">## [25] SparseM_1.81           desc_1.4.1             sandwich_3.0-2        </span></span>
+<span><span class="co">## [28] bookdown_0.27          sass_0.4.2             lmtest_0.9-40         </span></span>
+<span><span class="co">## [31] quantsmooth_1.60.0     pkgdown_2.0.6          systemfonts_1.0.4     </span></span>
+<span><span class="co">## [34] stringr_1.4.0          digest_0.6.29          GWASExactHW_1.01      </span></span>
+<span><span class="co">## [37] rmarkdown_2.14         XVector_0.34.0         pkgconfig_2.0.3       </span></span>
+<span><span class="co">## [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
+<span><span class="co">## [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
+<span><span class="co">## [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
+<span><span class="co">## [49] BiocParallel_1.28.3    dplyr_1.0.9            RCurl_1.98-1.7        </span></span>
+<span><span class="co">## [52] magrittr_2.0.3         GenomeInfoDbData_1.2.7 Matrix_1.4-1          </span></span>
+<span><span class="co">## [55] Rcpp_1.0.9             S4Vectors_0.32.4       fansi_1.0.3           </span></span>
+<span><span class="co">## [58] lifecycle_1.0.1        pROC_1.18.0            stringi_1.7.8         </span></span>
+<span><span class="co">## [61] yaml_2.3.5             GWASTools_1.40.0       zlibbioc_1.40.0       </span></span>
+<span><span class="co">## [64] MASS_7.3-58            plyr_1.8.7             grid_4.1.3            </span></span>
+<span><span class="co">## [67] formula.tools_1.7.1    blob_1.2.3             parallel_4.1.3        </span></span>
+<span><span class="co">## [70] crayon_1.5.1           lattice_0.20-45        Biostrings_2.62.0     </span></span>
+<span><span class="co">## [73] splines_4.1.3          pillar_1.8.0           GenomicRanges_1.46.1  </span></span>
+<span><span class="co">## [76] logistf_1.24.1         stats4_4.1.3           glue_1.6.2            </span></span>
+<span><span class="co">## [79] evaluate_0.15          data.table_1.14.2      BiocManager_1.30.18   </span></span>
+<span><span class="co">## [82] operator.tools_1.6.3   vctrs_0.4.1            MatrixModels_0.5-0    </span></span>
+<span><span class="co">## [85] purrr_0.3.4            tidyr_1.2.0            SeqArray_1.34.0       </span></span>
+<span><span class="co">## [88] assertthat_0.2.1       cachem_1.0.6           xfun_0.31             </span></span>
+<span><span class="co">## [91] broom_1.0.0            SeqVarTools_1.32.0     class_7.3-20          </span></span>
+<span><span class="co">## [94] ragg_1.2.2             survival_3.3-1         tibble_3.1.8          </span></span>
+<span><span class="co">## [97] memoise_2.0.1          IRanges_2.28.0</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">
@@ -363,19 +424,31 @@ Step 2 - Formatting the information from an external study
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Alexander2009" class="csl-entry">
-Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast Model-Based Estimation of Ancestry in Unrelated Individuals.”</span> <em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
+Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
+Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
+<em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
 </div>
 <div id="ref-Bonfield2021" class="csl-entry">
-Bonfield, James K, John Marshall, Petr Danecek, Heng Li, Valeriu Ohan, Andrew Whitwham, Thomas Keane, and Robert M Davies. 2021. <span>“<span class="nocase">HTSlib: C library for reading/writing high-throughput sequencing data</span>.”</span> <em>GigaScience</em> 10 (2). <a href="https://doi.org/10.1093/gigascience/giab007" class="external-link">https://doi.org/10.1093/gigascience/giab007</a>.
+Bonfield, James K, John Marshall, Petr Danecek, Heng Li, Valeriu Ohan,
+Andrew Whitwham, Thomas Keane, and Robert M Davies. 2021. <span>“<span class="nocase">HTSlib: C library for reading/writing high-throughput
+sequencing data</span>.”</span> <em>GigaScience</em> 10 (2). <a href="https://doi.org/10.1093/gigascience/giab007" class="external-link">https://doi.org/10.1093/gigascience/giab007</a>.
 </div>
 <div id="ref-Price2006" class="csl-entry">
-Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A. Shadick, and D. Reich. 2006. <span>“Principal Components Analysis Corrects for Stratification in Genome-Wide Association Studies.”</span> <em>Nat Genet</em> 38 (8): 904–9. <a href="https://doi.org/10.1038/ng1847" class="external-link">https://doi.org/10.1038/ng1847</a>.
+Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.
+Shadick, and D. Reich. 2006. <span>“Principal Components Analysis
+Corrects for Stratification in Genome-Wide Association Studies.”</span>
+<em>Nat Genet</em> 38 (8): 904–9. <a href="https://doi.org/10.1038/ng1847" class="external-link">https://doi.org/10.1038/ng1847</a>.
 </div>
 <div id="ref-Pritchard2000" class="csl-entry">
-Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference of Population Structure Using Multilocus Genotype Data.”</span> <em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
+Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference
+of Population Structure Using Multilocus Genotype Data.”</span>
+<em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
 </div>
 <div id="ref-Shen2016" class="csl-entry">
-Shen, R, and V E Seshan. 2016. <span>“<span class="nocase">FACETS: allele-specific copy number and clonal heterogeneity analysis tool for high-throughput DNA sequencing</span>.”</span> <em>Nucleic Acids Res</em> 44 (16): e131. <a href="https://doi.org/10.1093/nar/gkw520" class="external-link">https://doi.org/10.1093/nar/gkw520</a>.
+Shen, R, and V E Seshan. 2016. <span>“<span class="nocase">FACETS:
+allele-specific copy number and clonal heterogeneity analysis tool for
+high-throughput DNA sequencing</span>.”</span> <em>Nucleic Acids
+Res</em> 44 (16): e131. <a href="https://doi.org/10.1093/nar/gkw520" class="external-link">https://doi.org/10.1093/nar/gkw520</a>.
 </div>
 </div>
 </div>

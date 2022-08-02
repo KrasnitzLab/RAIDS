@@ -60,7 +60,14 @@ the sample in it.</h1>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span><span class="va">gds</span>, <span class="va">pedDF</span>, batch <span class="op">=</span> <span class="fl">1</span>, listSamples <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">studyDF</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span></span>
+<span>  <span class="va">gds</span>,</span>
+<span>  <span class="va">pedDF</span>,</span>
+<span>  batch <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  listSamples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">studyDF</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -86,6 +93,11 @@ pedDF is Name.ID and the row.name is Name.ID too.</p></dd>
 <dt>studyDF</dt>
 <dd><p>a <code>data.frame</code> with at least the column study.id,
 study.desc and study.platform</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if messages should be printed
+to show how the different steps in the function. Default: <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div id="value">

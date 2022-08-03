@@ -6,21 +6,24 @@
 \title{TODO}
 \usage{
 computeKNNRefSynthetic(
+  gdsSample,
   listEigenvector,
   listCatPop,
-  study.annot,
+  study.id.syn,
   spRef,
   kList = seq_len(15),
   pcaList = 2:15
 )
 }
 \arguments{
+\item{gdsSample}{an object of class \code{gds} opened related to
+the sample}
+
 \item{listEigenvector}{TODO see return of computePCAsynthetic}
 
 \item{listCatPop}{TODO}
 
-\item{study.annot}{a  \code{data.frame} with one entry from study.annot in
-the gds}
+\item{study.id.syn}{a the study.id of the synthetic data}
 
 \item{spRef}{TODO}
 

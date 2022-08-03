@@ -560,14 +560,18 @@ or in R
     
     # Get the known superPop for the reference
     spRef <- getRef1KGPop(gds, "superPop")
+    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
     
-    
-    # The set of 1KG too use in the synthetic dataset
+    # The set of 1KG use in the synthetic dataset
     # if you use select1KGPop the seed must be the same 
     # as the step 6 
     set.seed(3043)
     dataRef <- select1KGPop(gds, nbSamples = 30L)
     
+    
+    # Split dataRef by pop 
+    #
+    sampleRM <- splitSelectByPop(dataRef)
     
     
     # Can be run in paralle or in different clusters...
@@ -583,33 +587,32 @@ or in R
         gdsSample <- snpgdsOpen(file.GDSSample)
         
         # data.frame with the sample.id (Name.ID) with the study id
-        study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
         
-        # list of sample genotyped
-        sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
-        
-        # The study id is Ref.1KG if you use addStudy1Kg in step 4
-        sample.Unrel.All <- study.annot$data.id[study.annot$study.id == "Ref.1KG"]
-        
-        
-        
-        # get a data.frame with the synthetic sample description
-        study.annot.synt <- study.annot[which(study.annot$study.id == studyDF$study.id),]
-        
-        # The list of SNV pruned
-        pruned <-  read.gdsn(index.gdsn(gdsSample, "snp.id"))
-        
-        for(j in seq_len(nrow(study.annot.synt))){
-            pcaCur <- computePCAsynthetic(gdsSample, pruned, sample.id, sample.Unrel.All, study.annot.synt[j,])
-
-            knnCur <- computeKNNSuperPoprSynthetic(pcaCur, sample.Unrel.All, study.annot.synt[posSyn,], spRef)
+        for(j in seq_len(nrow(sampleRM))){
+            pca1KG <- ccomputePCARefRMMulti(gdsSample, names(spRef),sampleRM[j,])
+            resPCA <- computePCAMultiSynthetic(gdsSample, pca1KG,
+                                               sampleRM[i,], "CRC.Synthetic")
             
-            res <- list(resPCA = pcaCur,
-                        resKNN = knnCur)
             
-            saveRDS(res, file.path(PATH_OUT_SAMPLE, paste0(study.annot.synt[posSyn, "data.id"] , ".rds")))
 
+            studyDF <- computeKNNRefSynthetic(gdsSample, resPCA, listSuperPop,
+                                               studyDF$study.id, spRef)
+            KNN.list[[j]] <- KNN.synt$matKNN
         }
+        KNN.sample.syn <- do.call(rbind, KNN.list)
+        
+        pedSyn <- prepPedSynthetic1KG(gds, gdsSample, studyDF$study.id, "superPop")
+        
+        fieldPopIn1KG <- "superPop"
+        fieldPopInfAnc <- "SuperPop"
+        listParaSample[[listSamples[i]]] <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn, fieldPopIn1KG, fieldPopInfAnc, listSuperPop)
+        
+        listPCASample[[listSamples[i]]] <- computePCARefSample(gdsSample, listSamples[i], study.id.ref = "Ref.1KG")
+        
+        
+        listKNNSample[[listSamples[i]]] <- computeKNNSuperPopSample(gdsSample, listSamples[i], spRef)
+
+        
         closefn.gds(gdsSample)
     }
     

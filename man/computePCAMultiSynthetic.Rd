@@ -5,14 +5,7 @@
 \alias{computePCAMultiSynthetic}
 \title{TODO}
 \usage{
-computePCAMultiSynthetic(
-  gdsSample,
-  listPCA,
-  study.annot,
-  algorithm = "exact",
-  eigen.cnt = 32L,
-  missing.rate = 0.025
-)
+computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, study.id.syn)
 }
 \arguments{
 \item{gdsSample}{an object of class \code{gds} opened related to
@@ -20,17 +13,9 @@ the sample}
 
 \item{listPCA}{TODO}
 
-\item{study.annot}{a  \code{data.frame} with one entry for each synthetic
-data to process. The format is the same as study.annot in the gdsSample}
+\item{sampleRef}{a \code{vector} of sample.id from 1KG with one entry for each synthetic to project.}
 
-\item{algorithm}{algorithm of the PCA "exact", "randomized"
-(para snpgdsPCA)}
-
-\item{eigen.cnt}{number of eigenvectors in PCA
-(para snpgdsPCA)}
-
-\item{missing.rate}{number of eigenvectors in PCA
-(para snpgdsPCA)}
+\item{study.id.syn}{a the study.id of the synthetic data}
 }
 \value{
 A \code{list} TODO with the sample.id and eigenvectors.

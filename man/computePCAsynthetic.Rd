@@ -36,7 +36,7 @@ the gds}
 A \code{list} TODO with the sample.id and eigenvectors.
 }
 \description{
-TODO
+TODO Deprecated
 }
 \examples{
 
@@ -47,3 +47,4 @@ gds <- "TOTO"
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
+\keyword{internal}

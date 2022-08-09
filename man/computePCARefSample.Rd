@@ -9,6 +9,7 @@ computePCARefSample(
   gdsSample,
   name.id,
   study.id.ref = "Ref.1KG",
+  np = 1L,
   algorithm = "exact",
   eigen.cnt = 32L
 )
@@ -21,6 +22,12 @@ the sample}
 the gds}
 
 \item{study.id.ref}{id of the reference in study.annot}
+
+\item{np}{TODO}
+
+\item{algorithm}{TODO}
+
+\item{eigen.cnt}{TODO}
 }
 \value{
 A \code{list} TODO with the sample.id and eigenvectors.

@@ -6,8 +6,8 @@
 \title{TODO}
 \usage{
 computeKNNSuperPopSample(
-  listEigenvector,
   gdsSample,
+  listEigenvector,
   name.id,
   spRef,
   study.id.ref = "Ref.1KG",
@@ -34,7 +34,7 @@ A \code{list} TODO with the sample.id and eigenvectors
 and a table with KNN callfor different K and pca dimension.
 }
 \description{
-TODO
+TODO Deprecated
 }
 \examples{
 
@@ -45,3 +45,4 @@ listEigenvector <- "TOTO"
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
+\keyword{internal}

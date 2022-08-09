@@ -9,6 +9,7 @@ computePCARefRMMulti(
   gdsSample,
   sample.ref,
   listRM,
+  np = 1L,
   algorithm = "exact",
   eigen.cnt = 32L,
   missing.rate = 0.025
@@ -22,6 +23,8 @@ the sample}
 
 \item{listRM}{a  \code{} list of sample from the Ref to remove
 before the PCA}
+
+\item{np}{TODO}
 
 \item{algorithm}{algorithm of the PCA "exact", "randomized"
 (para snpgdsPCA)}

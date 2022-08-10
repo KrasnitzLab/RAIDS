@@ -799,3 +799,43 @@ addBlockFromPlink2GDS <- function(gds,
 
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' GDS file.
+#'
+#' @param popName TODO
+#'
+#' @return \code{data.frame} TODO study.annot with study.annot == study.id and
+#' with the column popName.
+#'
+#' @examples
+#'
+#' ## TODO
+#' gds <- "TODO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats rmultinom
+#' @encoding UTF-8
+#' @export
+#'
+getRef1KGPop <- function(gds, popName){
+
+    sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))[which(sample.ref == TRUE),]
+
+
+    if(! popName %in% colnames(dataRef)) {
+        stop("The population ", popName, " is not supported")
+    }
+
+    dataRef <- dataRef[, popName]
+    names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))[which(sample.ref == TRUE)]
+
+    return(dataRef)
+}
+

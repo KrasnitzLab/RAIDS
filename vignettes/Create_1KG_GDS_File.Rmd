@@ -435,6 +435,48 @@ closefn.gds(gds)
 <br>
 <br>
 
+### Create a VCF file containing the retained SNP positions from 1KG GDS file
+
+The __snvListVCF()__ function is used to generate a VCF file that contains
+the information of all retained SNPs from 1KG GDS file:
+
+```{r snvListVCF, echo=TRUE, eval=FALSE}
+## Load required package
+library(RAIDS)
+
+## Open the 1KG GDS file    
+gds <- snpgdsOpen(fileGDS1kg)
+
+## The VCF file that will be created
+fileOUT <- "SNPretained.VCF"
+
+## Generate the VCF with the retained SNP position
+snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
+
+## Close the 1KG GDS file 
+closefn.gds(gds)
+``` 
+
+You should compress and indexing the newly created VCF file. Do do so, 
+you need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
+
+In a terminal:
+
+```{r indexVCF, echo=TRUE, eval=FALSE}
+## This in not a R script
+## This script is in bash
+
+## Compress the new VCF file (fileOUT parameter)
+bgzip fileOUT
+
+## Index the new VCF file
+## HTSlib software is needed
+tabix -p vcf fileOUT.gz
+```
+
+
+<br>
+<br>
 
 # Pre-processed files are available
 

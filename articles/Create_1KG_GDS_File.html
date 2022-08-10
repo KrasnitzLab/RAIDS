@@ -86,7 +86,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-02<br><strong>License</strong>: Apache License (== 2.0) | file
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-10<br><strong>License</strong>: Apache License (== 2.0) | file
 LICENSE<br></p>
 <p><br><br></p>
 <div class="section level2">
@@ -435,6 +435,42 @@ phase information into the newly created 1KG GDS phase file.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsPhase</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
+<div class="section level4">
+<h4 id="create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file">Create a VCF file containing the retained SNP positions from 1KG GDS
+file<a class="anchor" aria-label="anchor" href="#create-a-vcf-file-containing-the-retained-snp-positions-from-1kg-gds-file"></a>
+</h4>
+<p>The <strong>snvListVCF()</strong> function is used to generate a VCF
+file that contains the information of all retained SNPs from 1KG GDS
+file:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Open the 1KG GDS file    </span></span>
+<span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS1kg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The VCF file that will be created</span></span>
+<span><span class="va">fileOUT</span> <span class="op">&lt;-</span> <span class="st">"SNPretained.VCF"</span></span>
+<span></span>
+<span><span class="co">## Generate the VCF with the retained SNP position</span></span>
+<span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds</span>, fileOUT<span class="op">=</span><span class="va">fileOUT</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Close the 1KG GDS file </span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
+<p>You should compress and indexing the newly created VCF file. Do do
+so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
+<p>In a terminal:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Compress the new VCF file (fileOUT parameter)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>bgzip fileOUT</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Index the new VCF file</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## HTSlib software is needed</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>tabix <span class="sc">-</span>p vcf fileOUT.gz</span></code></pre></div>
+<p><br><br></p>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -490,12 +526,12 @@ which this document was compiled:</p>
 <span><span class="co">## [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
 <span><span class="co">## [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
 <span><span class="co">## [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
-<span><span class="co">## [49] BiocParallel_1.28.3    dplyr_1.0.9            RCurl_1.98-1.7        </span></span>
+<span><span class="co">## [49] BiocParallel_1.28.3    dplyr_1.0.9            RCurl_1.98-1.8        </span></span>
 <span><span class="co">## [52] magrittr_2.0.3         GenomeInfoDbData_1.2.7 Matrix_1.4-1          </span></span>
 <span><span class="co">## [55] Rcpp_1.0.9             S4Vectors_0.32.4       fansi_1.0.3           </span></span>
 <span><span class="co">## [58] lifecycle_1.0.1        pROC_1.18.0            stringi_1.7.8         </span></span>
 <span><span class="co">## [61] yaml_2.3.5             GWASTools_1.40.0       zlibbioc_1.40.0       </span></span>
-<span><span class="co">## [64] MASS_7.3-58            plyr_1.8.7             grid_4.1.3            </span></span>
+<span><span class="co">## [64] MASS_7.3-58.1          plyr_1.8.7             grid_4.1.3            </span></span>
 <span><span class="co">## [67] formula.tools_1.7.1    blob_1.2.3             parallel_4.1.3        </span></span>
 <span><span class="co">## [70] crayon_1.5.1           lattice_0.20-45        Biostrings_2.62.0     </span></span>
 <span><span class="co">## [73] splines_4.1.3          pillar_1.8.0           GenomicRanges_1.46.1  </span></span>
@@ -508,6 +544,13 @@ which this document was compiled:</p>
 <span><span class="co">## [94] ragg_1.2.2             survival_3.3-1         tibble_3.1.8          </span></span>
 <span><span class="co">## [97] memoise_2.0.1          IRanges_2.28.0</span></span></code></pre>
 <p><br><br></p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Bonfield2021" class="csl-entry">
+Bonfield, James K, John Marshall, Petr Danecek, Heng Li, Valeriu Ohan,
+Andrew Whitwham, Thomas Keane, and Robert M Davies. 2021. <span>“<span class="nocase">HTSlib: C library for reading/writing high-throughput
+sequencing data</span>.”</span> <em>GigaScience</em> 10 (2). <a href="https://doi.org/10.1093/gigascience/giab007" class="external-link">https://doi.org/10.1093/gigascience/giab007</a>.
+</div>
+</div>
 </div>
   </div>
 

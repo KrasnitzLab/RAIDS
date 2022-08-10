@@ -88,6 +88,15 @@
     <loc>/reference/computeAllelicImbDNAChr.html</loc>
   </url>
   <url>
+    <loc>/reference/computeKNNRefSample.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeKNNRefSynthetic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeKNNSuperPopSample.html</loc>
+  </url>
+  <url>
     <loc>/reference/computeKNNSuperPoprSynthetic.html</loc>
   </url>
   <url>
@@ -97,7 +106,22 @@
     <loc>/reference/computePCAForSamples.html</loc>
   </url>
   <url>
+    <loc>/reference/computePCAMultiSynthetic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computePCARefRMMulti.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computePCARefSample.html</loc>
+  </url>
+  <url>
     <loc>/reference/computePCAsynthetic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computePoolSyntheticAncestry.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computePoolSyntheticAncestryGr.html</loc>
   </url>
   <url>
     <loc>/reference/computePrunedPCARef.html</loc>
@@ -107,6 +131,9 @@
   </url>
   <url>
     <loc>/reference/computeSyntheticROC.html</loc>
+  </url>
+  <url>
+    <loc>/reference/createStudy2GDS1KG.html</loc>
   </url>
   <url>
     <loc>/reference/estimateAllelicFraction.html</loc>
@@ -140,6 +167,9 @@
   </url>
   <url>
     <loc>/reference/generatePhase1KG2GDS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getRef1KGPop.html</loc>
   </url>
   <url>
     <loc>/reference/getTableSNV.html</loc>
@@ -191,6 +221,9 @@
   </url>
   <url>
     <loc>/reference/snvListVCF.html</loc>
+  </url>
+  <url>
+    <loc>/reference/splitSelectByPop.html</loc>
   </url>
   <url>
     <loc>/reference/syntheticGeno.html</loc>

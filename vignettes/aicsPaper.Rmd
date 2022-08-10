@@ -143,26 +143,20 @@ GDS file is available at this address:</span>
 
 ******
 
-There is a vignette  
-[Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) 
-that is dedicated to this step.
+The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this step.
 
 
-## Step 2 - Format information from an external study to get if ready for ancestry inference
+## Step 2 - Format information from an external study to get it ready for ancestry inference
 
-To run the ancestry inference on samples from an external study, the sample
-information must be formatted in a specific format.
+To run the ancestry inference on samples from an external study. The 
+information about the samples needs to follow a specific format.
 
 
 ```{r graphStep2, echo = FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step2_v01.png")
 ```
 
-
-Those steps shows how to prepare the sample information needed as input 
-for the ancestry inference.
-
-Those steps are:
+The required steps are:
 
 1. Extract the read coverage at each SNP position in the 1KG GDS file
 2. Create a VCF file containing the retained SNP positions from 1KG GDS file

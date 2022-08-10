@@ -19,7 +19,7 @@
 #' \item{pop.group} { a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' \item{superPop} { a \code{character} string representing the
-#' super-population assigned to the sample.
+#' super-population assigned to the sample. }
 #' }
 #'
 #' @examples

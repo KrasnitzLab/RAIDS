@@ -19,7 +19,15 @@ smaller than the \code{nbSamples}, the number of samples in the
 super-population will correspond to the size of the super-population.}
 }
 \value{
-
+a \code{data.frame} containing those columns:
+\itemize{
+\item{sample.id} { a \code{character} string representing the sample
+identifier. }
+\item{pop.group} { a \code{character} string representing the
+super-population assigned to the sample. }
+\item{superPop} { a \code{character} string representing the
+super-population assigned to the sample. }
+}
 }
 \description{
 TODO

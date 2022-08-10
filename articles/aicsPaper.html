@@ -185,23 +185,22 @@ pre-processed 1KG GDS file is available at this address:</span></p>
 15GB.</span> <span style="color:darkred;font-weight:bold">This section
 can be skipped if you choose to use this file.</span></p>
 <hr>
-<p>There is a vignette<br><a href="Create_1KG_GDS_file.html">Formatting the information from 1000
-Genomes (optional)</a> that is dedicated to this step.</p>
+<p>The vignette <a href="Create_1KG_GDS_file.html">Formatting the
+information from 1000 Genomes (optional)</a> is dedicated to this
+step.</p>
 </div>
 <div class="section level3">
-<h3 id="step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference">Step 2 - Format information from an external study to get if ready
-for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-if-ready-for-ancestry-inference"></a>
+<h3 id="step-2---format-information-from-an-external-study-to-get-it-ready-for-ancestry-inference">Step 2 - Format information from an external study to get it ready
+for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-it-ready-for-ancestry-inference"></a>
 </h3>
-<p>To run the ancestry inference on samples from an external study, the
-sample information must be formatted in a specific format.</p>
+<p>To run the ancestry inference on samples from an external study. The
+information about the samples needs to follow a specific format.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step2_v01.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
 Step 2 - Formatting the information from an external study
 </p>
 </div>
-<p>Those steps shows how to prepare the sample information needed as
-input for the ancestry inference.</p>
-<p>Those steps are:</p>
+<p>The required steps are:</p>
 <ol style="list-style-type: decimal">
 <li>Download or create the 3 reference files</li>
 <li>Extract the read coverage at each SNP position in the 1KG GDS
@@ -295,13 +294,17 @@ to the filename)</p>
 </div>
 </div>
 <div class="section level4">
-<h4 id="step-4--select-a-pruned-subset-of-the-single-nucleotide-variant">Step 4. Select a pruned subset of the single nucleotide variant<a class="anchor" aria-label="anchor" href="#step-4--select-a-pruned-subset-of-the-single-nucleotide-variant"></a>
+<h4 id="step-4--select-a-pruned-subset-of-the-single-nucleotide-variants">Step 4. Select a pruned subset of the single nucleotide
+variants<a class="anchor" aria-label="anchor" href="#step-4--select-a-pruned-subset-of-the-single-nucleotide-variants"></a>
 </h4>
-<p>We select a subset of SNV pruned SNV We add in each gdsSample for
-each sample the list of SNV in the pruning. It use more disk space but
-the analysis for the samples can be run simulatanusly with multiple
-process (if we we all samples in one file only one process can write in
-the GDS).</p>
+<p>A subset of pruned SNVs is retained for the following analyses. The
+list of selected SNVs is specific to each sample and the information
+about the retained SNVs is added to the GDS Sample file.</p>
+<p>This step is requiring a lot of disk space and the process can be run
+on multiple threads.</p>
+<p>???:It use more disk space but the analysis for the samples can be
+run simultaneously with multiple process (if we we all samples in one
+file only one process can write in the GDS).</p>
 <p>or in R for a s</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RAIDS</span><span class="op">)</span></span>
@@ -310,20 +313,20 @@ the GDS).</p>
 <span>    <span class="co"># Files related to the reference</span></span>
 <span>    <span class="co"># Downloaded</span></span>
 <span>    <span class="co">##########################################</span></span>
-<span>    <span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="va">PATH_REF</span></span>
+<span>    <span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="va">PATH_WHERE_THE_REFERENCE_1KG_IS_LOCATED</span></span>
 <span>    </span>
-<span>    <span class="va">fileName.GDS</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
+<span>    <span class="va">fileName.GDS.1KG</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
 <span>    <span class="va">fileName.GDS.Annot</span> <span class="op">&lt;-</span> <span class="st">"matAnnot1000g.gds"</span></span>
-<span>    <span class="va">file.GDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS</span><span class="op">)</span></span>
+<span>    <span class="va">file.GDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS.1KG</span><span class="op">)</span></span>
 <span>    <span class="va">file.Annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS.Annot</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co">##########################################</span></span>
 <span>    </span>
-<span>    <span class="co"># Path to the directory where the gds file for each sample</span></span>
+<span>    <span class="co"># Path to the directory where the GDS Sample files are located </span></span>
 <span>    <span class="co"># will be create</span></span>
-<span>    <span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
+<span>    <span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="va">PATH_WHERE_THE_GDS_SAMPLES_FILES_ARE_LOCATED</span></span>
 <span>    </span>
-<span>    <span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
+<span>    <span class="va">gds_1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="co"># The file ped defined before</span></span>
 <span>    <span class="va">filePED</span> <span class="op">&lt;-</span> <span class="va">FILE_PED</span></span>
@@ -334,10 +337,10 @@ the GDS).</p>
 <span>    <span class="va">listSamples</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">[</span>, <span class="st">"Name.ID"</span><span class="op">]</span></span>
 <span>    </span>
 <span>    </span>
-<span>    <span class="co"># Can be run in paralle or in different clusters...</span></span>
+<span>    <span class="co"># Can be run in parallel or in different clusters...</span></span>
 <span>    <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>        <span class="co"># Compute the SNV pruned subset</span></span>
-<span>        <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds</span>,</span>
+<span>        <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds_1KG</span>,</span>
 <span>                      method<span class="op">=</span><span class="st">"corr"</span>,</span>
 <span>                      sampleCurrent <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>                      listSNP <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -353,9 +356,9 @@ the GDS).</p>
 <span>        </span>
 <span>        <span class="co"># Add the genotype of 1KG and of the sample listSamples[i] </span></span>
 <span>        <span class="co"># for SNV pruned in the gdsSample</span></span>
-<span>        <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds_1KG</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>        <span class="co"># Add the sample name from 1KG in the study.annot of gdsSample</span></span>
-<span>        <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">file.GDSSample</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds_1KG</span>, <span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="op">}</span></span>
 <span>    </span>

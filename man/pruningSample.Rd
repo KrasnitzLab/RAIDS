@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{pruningSample}
 \alias{pruningSample}
-\title{TODO}
+\title{Compute the list of pruned SNVs for a specific sample using the
+information from the 1KG GDS file and the}
 \usage{
 pruningSample(
   gds,
@@ -55,17 +56,20 @@ Default: \code{sqrt(0.1)}.}
 \item{np}{a single positive \code{integer} specifying the number of
 threads to be used. Default: \code{1L}.}
 
-\item{verbose.v}{TODO. Default: \code{FALSE}.}
+\item{verbose.v}{a \code{logicial} indicating if information is shown
+during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
+function.  Default: \code{FALSE}.}
 
 \item{chr}{TODO. Default: \code{NULL}.}
 
 \item{minAF.SuperPop}{TODO. Default: \code{NULL}.}
 
-\item{keepGDSpruned}{a \code{boolean} TODO. Default: \code{TRUE}.}
+\item{keepGDSpruned}{a \code{logicial} TODO. Default: \code{TRUE}.}
 
 \item{PATHSAMPLEGDS}{TODO}
 
-\item{keepFile}{a \code{logical} indicating if the RDS files must be
+\item{keepFile}{a \code{logical} indicating if RDS files containing the
+information about the pruned SNVs must be
 created. Default: \code{FALSE}.}
 
 \item{PATHPRUNED}{a \code{character} string TODO. Default: \code{"."}.}
@@ -78,7 +82,10 @@ the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
 The function returns \code{0L} when successful.
 }
 \description{
-TODO
+Compute the list of pruned SNVs for a specific sample. When
+a group of SNVs are in linkage disequilibrium, only one SNV from that group
+is retained. The linkage disequilibrium is calculated with the
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 }
 \examples{
 

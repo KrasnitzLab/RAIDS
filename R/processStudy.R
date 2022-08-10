@@ -81,43 +81,45 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
                                batch=1, studyDF, listSamples=NULL,
                                PATHSAMPLEGDS=NULL, verbose=TRUE) {
-    if(!(is.null(fileNamePED)) && is.null(pedStudy) ){
+
+    if(!(is.null(fileNamePED)) && is.null(pedStudy)) {
         ## The fileNamePED must be a character string and the file must exists
         if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
-            stop("The \'fileNamePED\' must be a character string representing ",
-                 "the RDS Sample information file. The file must exist.")
+            stop("The \'fileNamePED\' must be a character string ",
+                    "representing the RDS Sample information file. ",
+                    "The file must exist.")
         }
         ## Open the RDS Sample information file
         pedStudy <- readRDS(file=fileNamePED)
-    }else if(!(is.null(fileNamePED) || is.null(pedStudy))){
-        stop("The one of both paramater \'fileNamePED\' or pedStudy must define.")
-    }else if(is.null(fileNamePED) && is.null(pedStudy)){
-        stop("The paramater \'fileNamePED\' or pedStudy can\'t be defined at the same time.")
+    }else if(!(is.null(fileNamePED) || is.null(pedStudy))) {
+        stop("The one of both paramater \'fileNamePED\' or pedStudy ",
+                "must define.")
+    }else if(is.null(fileNamePED) && is.null(pedStudy)) {
+        stop("The paramater \'fileNamePED\' or pedStudy can\'t be defined ",
+                "at the same time.")
     }
 
     ## The fileNameGDS must be a character string and the file must exists
-    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+    if(!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
         stop("The \'fileNameGDS\' must be a character string representing ",
              "the GDS 1KG file. The file must exist.")
     }
 
     ## The batch must be a single numeric
-    if (!(isSingleNumber(batch))) {
+    if(!(isSingleNumber(batch))) {
         stop("The \'batch\' must be a single integer.")
     }
 
     ## The listSamples must be a vector of character string
-    if (!(is.character(listSamples) || is.null(listSamples))) {
+    if(!(is.character(listSamples) || is.null(listSamples))) {
         stop("The \'listSamples\' must be a vector ",
              "of character strings (1 entry or more) or NULL.")
     }
 
     ## The verbose parameter must be a logical
-    if (!(is.logical(verbose))) {
+    if(!(is.logical(verbose))) {
         stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
     }
-
-
 
     ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
@@ -128,19 +130,19 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     snpPOS <- index.gdsn(node=gds, "snp.position")
 
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
-                          snp.position=read.gdsn(snpPOS))
+                            snp.position=read.gdsn(snpPOS))
 
-    if (verbose) {
+    if(verbose) {
         message("Start ", Sys.time())
         message("Sample info DONE ", Sys.time())
     }
 
     generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
-                                        listSamples=listSamples, listPos=listPos, offset=-1,
-                                        minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
-                                        batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
+        listSamples=listSamples, listPos=listPos, offset=-1,
+        minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
+        batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
 
-    if (verbose) {
+    if(verbose) {
         message("Genotype DONE ", Sys.time())
     }
 
@@ -293,9 +295,13 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 }
 
 
-#' @title TODO
+#' @title Compute the list of pruned SNVs for a specific sample using the
+#' information from the 1KG GDS file and the
 #'
-#' @description TODO
+#' @description  Compute the list of pruned SNVs for a specific sample. When
+#' a group of SNVs are in linkage disequilibrium, only one SNV from that group
+#' is retained. The linkage disequilibrium is calculated with the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
 #' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
 #' a GDS node pointing to the 1KG GDS file.
@@ -327,17 +333,20 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @param np a single positive \code{integer} specifying the number of
 #' threads to be used. Default: \code{1L}.
 #'
-#' @param verbose.v TODO. Default: \code{FALSE}.
+#' @param verbose.v a \code{logicial} indicating if information is shown
+#' during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
+#' function.  Default: \code{FALSE}.
 #'
 #' @param chr TODO. Default: \code{NULL}.
 #'
 #' @param minAF.SuperPop TODO. Default: \code{NULL}.
 #'
-#' @param keepGDSpruned a \code{boolean} TODO. Default: \code{TRUE}.
+#' @param keepGDSpruned a \code{logicial} TODO. Default: \code{TRUE}.
 #'
 #' @param PATHSAMPLEGDS TODO
 #'
-#' @param keepFile a \code{logical} indicating if the RDS files must be
+#' @param keepFile a \code{logical} indicating if RDS files containing the
+#' information about the pruned SNVs must be
 #' created. Default: \code{FALSE}.
 #'
 #' @param PATHPRUNED a \code{character} string TODO. Default: \code{"."}.

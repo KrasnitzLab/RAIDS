@@ -10,16 +10,23 @@ select1KGPop(gds, nbSamples)
 \arguments{
 \item{gds}{an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
 \link[gdsfmt]{gds.class} (a GDS file) containing the information about
-1000 Genome (1kG).}
+1000 Genome (1KG GDS file).}
 
-\item{nbSamples}{a single positive \code{integer}.}
+\item{nbSamples}{a single positive \code{integer} representing the number
+of samples that will be selected for each super-population present in the
+1KG GDS file. If the number of samples in a specific super-population is
+smaller than the \code{nbSamples}, the number of samples in the
+super-population will correspond to the size of the super-population.}
 }
 \value{
 a \code{data.frame} containing those columns:
 \itemize{
-\item{sample.id} { TODO }
-\item{pop.group} { TODO }
-\item{superPop} { TODO }
+\item{sample.id} { a \code{character} string representing the sample
+identifier. }
+\item{pop.group} { a \code{character} string representing the
+super-population assigned to the sample. }
+\item{superPop} { a \code{character} string representing the
+super-population assigned to the sample. }
 }
 }
 \description{

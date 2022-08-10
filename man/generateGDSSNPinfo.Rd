@@ -10,8 +10,9 @@ generateGDSSNPinfo(gds, fileFREQ, verbose = TRUE)
 \arguments{
 \item{gds}{a \code{gds} object.}
 
-\item{fileFREQ}{string with the path and the fileNames to a files with
-frequence information TODO describe the file}
+\item{fileFREQ}{a \code{character} string with the path and the file
+naame to a RDS file containing the frequency information
+TODO describe the file}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{TRUE}.}

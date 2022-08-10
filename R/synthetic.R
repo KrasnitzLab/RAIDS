@@ -1,23 +1,29 @@
-#' @title TODO
+#' @title Random selection of a specific number of reference samples in each
+#' subcontinental population present in the 1KG GDS file
 #'
-#' @description TODO
+#' @description A fixed number of reference samples are randomly selected for
+#' each subcontinental population present in the 1KG GDS file. When a
+#' subcontinental population has less samples than the fixed number, all
+#' samples from the
+#' subcontinental population are selected.
 #'
 #' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
 #' \link[gdsfmt]{gds.class} (a GDS file) containing the information about
 #' 1000 Genome (1KG GDS file).
 #'
 #' @param nbSamples a single positive \code{integer} representing the number
-#' of samples that will be selected for each super-population present in the
-#' 1KG GDS file. If the number of samples in a specific super-population is
-#' smaller than the \code{nbSamples}, the number of samples in the
-#' super-population will correspond to the size of the super-population.
+#' of samples that will be selected for each subcontinental population present
+#' in the 1KG GDS file. If the number of samples in a specific subcontinental
+#' population is smaller than the \code{nbSamples}, the number of samples
+#' selected in this
+#' subcontinental population will correspond to the size of this population.
 #'
 #' @return a \code{data.frame} containing those columns:
 #' \itemize{
 #' \item{sample.id} { a \code{character} string representing the sample
 #' identifier. }
 #' \item{pop.group} { a \code{character} string representing the
-#' super-population assigned to the sample. }
+#' subcontinental population assigned to the sample. }
 #' \item{superPop} { a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
@@ -26,12 +32,18 @@
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 select1KGPop <- function(gds, nbSamples) {
+
+    ## The gds must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class ",
+             "\'gdsn.class\' or \'gds.class\'")
+    }
 
     ## Validate that nbSamples parameter is a single positive numeric
     if(! (isSingleNumber(nbSamples) && nbSamples > 0)) {
@@ -44,13 +56,13 @@ select1KGPop <- function(gds, nbSamples) {
     rm(listRef)
 
     # Extract information about the selected reference samples
-    # Including all the super-population classes represented
+    # Including all the subcontinental population classes represented
     sample.annot <- read.gdsn(index.gdsn(gds, "sample.annot"))[listKeep,]
     sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
     listSel <- list()
 
-    ## For each super-population class, randomly select a fixed number of
+    ## For each subcontinental population, randomly select a fixed number of
     ## samples
     for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
@@ -72,9 +84,12 @@ select1KGPop <- function(gds, nbSamples) {
 #'
 #' @param dataRef a \code{data.frame} containing those columns:
 #' \itemize{
-#' \item{sample.id} { TODO }
-#' \item{pop.group} { TODO }
-#' \item{superPop} { TODO }
+#' \item{sample.id} { a \code{character} string representing the sample
+#' identifier. }
+#' \item{pop.group} { a \code{character} string representing the
+#' subcontinental population assigned to the sample. }
+#' \item{superPop} { a \code{character} string representing the
+#' super-population assigned to the sample. }
 #' }
 #'
 #' @return a \code{data.frame} containing TODO
@@ -83,13 +98,19 @@ select1KGPop <- function(gds, nbSamples) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-splitSelectByPop <- function(dataRef){
+splitSelectByPop <- function(dataRef) {
+
+    ## The dataRef must be an data.frame object
+    if (!is.data.frame(dataRef)) {
+        stop("The \'dataRef\' must be a data.frame object.")
+    }
 
     tmp <- table(dataRef$pop.group)
-    if(length(which(tmp != tmp[1])) != 0){
+
+    if(length(which(tmp != tmp[1])) != 0) {
         stop("splitSelectByPop with dataRef with different number of pop\n")
     }
 

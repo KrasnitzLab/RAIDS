@@ -10,9 +10,12 @@ splitSelectByPop(dataRef)
 \arguments{
 \item{dataRef}{a \code{data.frame} containing those columns:
 \itemize{
-\item{sample.id} { TODO }
-\item{pop.group} { TODO }
-\item{superPop} { TODO }
+\item{sample.id} { a \code{character} string representing the sample
+identifier. }
+\item{pop.group} { a \code{character} string representing the
+subcontinental population assigned to the sample. }
+\item{superPop} { a \code{character} string representing the
+super-population assigned to the sample. }
 }}
 }
 \value{
@@ -27,5 +30,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

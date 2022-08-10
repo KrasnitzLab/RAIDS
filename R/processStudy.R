@@ -1514,6 +1514,8 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #'
 #' @param spRef TODO
 #'
+#' @param fieldPopInfAnc TODO
+#'
 #' @param kList TODO array of the k possible values
 #'
 #' @param pcaList TODO array of the pca dimension possible values
@@ -1533,7 +1535,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #' @export
 computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                    listCatPop, study.id.syn,
-                                   spRef,
+                                   spRef, fieldPopInfAnc="SuperPop",
                                    kList = seq_len(15),
                                    pcaList = 2:15) {
 
@@ -1560,8 +1562,9 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                            length(pcaList) * length(kList)),
                              D=rep(0,length(pcaList) * length(kList)),
                              K=rep(0,length(pcaList) * length(kList)),
-                             SuperPop=character(length(pcaList) * length(kList)),
+                             # SuperPop=character(length(pcaList) * length(kList)),
                              stringsAsFactors=FALSE)
+        resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
 
 
 
@@ -1584,7 +1587,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                               k=kList[kV],
                               prob=FALSE)
 
-                resMat[totR, paste0("SuperPop")] <- listCatPop[as.integer(y_pred)]
+                resMat[totR, fieldPopInfAnc] <- listCatPop[as.integer(y_pred)]
 
                 totR <- totR + 1
             } # end k
@@ -1781,6 +1784,85 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
     return(listKNN)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
+#' a GDS node pointing to the 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{gds} opened related to
+#' the sample
+#'
+#' @param sampleRM TODO
+#'
+#' @param spRef TODO
+#'
+#' @param study.id.syn TODO
+#'
+#' @param np TODO
+#'
+#' @param listCatPop TODO
+#'
+#' @param fieldPopIn1KG TODO
+#'
+#' @param fieldPopInfAnc TODO
+#'
+#' @param kList TODO array of the k possible values
+#'
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @param algorithm algorithm of the PCA "exact", "randomized"
+#' (para snpgdsPCA)
+#'
+#' @param eigen.cnt number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @param missing.rate number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN callfor different K and pca dimension.
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @export
+computePoolSyntheticAncestryGr <- function(gds, gdsSample,
+                                           sampleRM, spRef,
+                                           study.id.syn,
+                                           np = 1L,
+                                           listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                                           fieldPopIn1KG = "superPop",
+                                           fieldPopInfAnc = "SuperPop",
+                                           kList = seq(2,15,1),
+                                           pcaList = 2:15,
+                                           algorithm="exact",
+                                           eigen.cnt=32L,
+                                           missing.rate=0.025) {
+
+
+    pca1KG <- computePCARefRMMulti(gdsSample, names(spRef),
+                                   sampleRM[j,], np=np,
+                                   algorithm=algorithm,
+                                   eigen.cnt=eigen.cnt,
+                                   missing.rate=missing.rate)
+
+    resPCA <- computePCAMultiSynthetic(gdsSample, pca1KG,
+                                       sampleRM[i,], study.id.syn)
+
+    KNN.synt <- computeKNNRefSynthetic(gdsSample, resPCA,
+                                       listCatPop,
+                                       study.id.syn, spRef,
+                                       fieldPopInfAnc=fieldPopInfAnc)
+
+
+    return(KNN.synt)
+}
 
 
 #' @title TODO
@@ -1848,22 +1930,19 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                                          missing.rate=0.025) {
 
     sampleRM <- splitSelectByPop(dataRef)
-
+    KNN.list <- list()
     for(j in seq_len(nrow(sampleRM))){
-        pca1KG <- ccomputePCARefRMMulti(gdsSample, names(spRef),
-                                        sampleRM[j,], np=np,
-                                        algorithm=algorithm,
-                                        eigen.cnt=eigen.cnt,
-                                        missing.rate=missing.rate)
-
-        resPCA <- computePCAMultiSynthetic(gdsSample, pca1KG,
-                                           sampleRM[i,], study.id.syn)
-
-        studyDF <- computeKNNRefSynthetic(gdsSample, resPCA,
-                                          listSuperPop,
-                                          study.id.syn, spRef)
-
-        KNN.list[[j]] <- KNN.synt$matKNN
+        KNN.list[[j]] <- computePoolSyntheticAncestryGr(gds, gdsSample,
+                                                        sampleRM[j,],
+                                                        spRef, study.id.syn,
+                                                        np, listCatPop,
+                                                        fieldPopIn1KG,
+                                                        fieldPopInfAnc,
+                                                        kList,
+                                                        pcaList,
+                                                        algorithm,
+                                                        eigen.cnt,
+                                                        missing.rate)
     }
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
@@ -1874,7 +1953,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
                                            fieldPopIn1KG, fieldPopInfAnc,
-                                           listSuperPop)
+                                           listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample, sample.ana.id,
                                          study.id.ref = "Ref.1KG", np=np,

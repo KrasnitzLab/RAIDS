@@ -11,6 +11,7 @@ computeKNNRefSynthetic(
   listCatPop,
   study.id.syn,
   spRef,
+  fieldPopInfAnc = "SuperPop",
   kList = seq_len(15),
   pcaList = 2:15
 )
@@ -26,6 +27,8 @@ the sample}
 \item{study.id.syn}{a the study.id of the synthetic data}
 
 \item{spRef}{TODO}
+
+\item{fieldPopInfAnc}{TODO}
 
 \item{kList}{TODO array of the k possible values}
 

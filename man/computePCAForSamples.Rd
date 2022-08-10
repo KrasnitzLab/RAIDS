@@ -26,7 +26,7 @@ The integer \code{0} when successful.
 }
 \description{
 This function calculates the patient eigenvectors using
-the specified SNP loadings.
+the specified SNP loadings. Deprecated
 }
 \details{
 More information about the method used to calculate the patient eigenvectors
@@ -42,3 +42,4 @@ gds <- "TODO"
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
+\keyword{internal}

@@ -54,6 +54,40 @@ select1KGPop <- function(gds, nbSamples) {
     return(df)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param dataRef a \code{data.frame} containing those columns:
+#' \itemize{
+#' \item{sample.id} { TODO }
+#' \item{pop.group} { TODO }
+#' \item{superPop} { TODO }
+#' }
+#'
+#' @return a \code{data.frame} containing TODO
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @encoding UTF-8
+#' @export
+splitSelectByPop <- function(dataRef){
+
+    tmp <- table(dataRef$pop.group)
+    if(length(which(tmp != tmp[1])) != 0){
+        stop("splitSelectByPop with dataRef with different number of pop\n")
+    }
+
+    listPOP <- unique(dataRef$pop.group)
+    sampleRM <- vapply(listPOP, function(x, dataRef){
+        return(dataRef[which(dataRef$pop.group == x), "sample.id"])
+    }, FUN.VALUE = character(tmp[1]), dataRef = dataRef)
+
+    return(sampleRM)
+}
 
 #' @title TODO
 #'

@@ -266,11 +266,16 @@ Here
 ```
 
 
-### Step 4. Select a pruned subset of the single nucleotide variant 
+### Step 4. Select a pruned subset of the single nucleotide variants 
 
-We select a subset of SNV pruned SNV
-We add in each gdsSample for each sample the list of SNV in the pruning.
-It use more disk space but the analysis for the samples can be run simulatanusly 
+A subset of pruned SNVs is retained for the following analyses. The 
+list of selected SNVs is specific to each sample and the information about the 
+retained SNVs is added to the GDS Sample file.
+
+This step is requiring a lot of disk space and the process can be run on 
+multiple threads. 
+
+???:It use more disk space but the analysis for the samples can be run simultaneously 
 with multiple process (if we we all samples in one file only one process can 
 write in the GDS). 
 
@@ -285,20 +290,20 @@ or in R for a s
     # Files related to the reference
     # Downloaded
     ##########################################
-    PATH_1KG <- PATH_REF
+    PATH_1KG <- PATH_WHERE_THE_REFERENCE_1KG_IS_LOCATED
     
-    fileName.GDS <- "matGeno1000g.gds"
+    fileName.GDS.1KG <- "matGeno1000g.gds"
     fileName.GDS.Annot <- "matAnnot1000g.gds"
-    file.GDS <- file.path(PATH_1KG, fileName.GDS)
+    file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
     file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
     ##########################################
     
-    # Path to the directory where the gds file for each sample
+    # Path to the directory where the GDS Sample files are located 
     # will be create
-    PATHSAMPLEGDS <- file.path("The path")
+    PATHSAMPLEGDS <- PATH_WHERE_THE_GDS_SAMPLES_FILES_ARE_LOCATED
     
-    gds <- snpgdsOpen(file.GDS)
+    gds_1KG <- snpgdsOpen(file.GDS)
     
     # The file ped defined before
     filePED <- FILE_PED
@@ -309,10 +314,10 @@ or in R for a s
     listSamples <- ped[, "Name.ID"]
     
     
-    # Can be run in paralle or in different clusters...
+    # Can be run in parallel or in different clusters...
     for(i in seq_len(length(listSamples))){
         # Compute the SNV pruned subset
-        pruningSample(gds=gds,
+        pruningSample(gds=gds_1KG,
                       method="corr",
                       sampleCurrent = listSamples[i],
                       listSNP = NULL,
@@ -328,9 +333,9 @@ or in R for a s
         
         # Add the genotype of 1KG and of the sample listSamples[i] 
         # for SNV pruned in the gdsSample
-        addStudy1Kg(gds, file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")))
+        addStudy1Kg(gds_1KG, file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")))
         # Add the sample name from 1KG in the study.annot of gdsSample
-        addStudy1Kg(gds, file.GDSSample)
+        addStudy1Kg(gds_1KG, file.GDSSample)
 
     }
     

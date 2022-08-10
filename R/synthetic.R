@@ -4,15 +4,22 @@
 #'
 #' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
 #' \link[gdsfmt]{gds.class} (a GDS file) containing the information about
-#' 1000 Genome (1kG).
+#' 1000 Genome (1KG GDS file).
 #'
-#' @param nbSamples a single positive \code{integer}.
+#' @param nbSamples a single positive \code{integer} representing the number
+#' of samples that will be selected for each super-population present in the
+#' 1KG GDS file. If the number of samples in a specific super-population is
+#' smaller than the \code{nbSamples}, the number of samples in the
+#' super-population will correspond to the size of the super-population.
 #'
 #' @return a \code{data.frame} containing those columns:
 #' \itemize{
-#' \item{sample.id} { TODO }
-#' \item{pop.group} { TODO }
-#' \item{superPop} { TODO }
+#' \item{sample.id} { a \code{character} string representing the sample
+#' identifier. }
+#' \item{pop.group} { a \code{character} string representing the
+#' super-population assigned to the sample. }
+#' \item{superPop} { a \code{character} string representing the
+#' super-population assigned to the sample.
 #' }
 #'
 #' @examples
@@ -26,20 +33,25 @@
 #' @export
 select1KGPop <- function(gds, nbSamples) {
 
-    ## Validate that nbSamples is a single positive numeric
+    ## Validate that nbSamples parameter is a single positive numeric
     if(! (isSingleNumber(nbSamples) && nbSamples > 0)) {
         stop("The \'nbSamples\' parameter must be a single positive integer.")
     }
 
+    ## Select reference samples
     listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listKeep <- which(listRef == 1)
     rm(listRef)
 
+    # Extract information about the selected reference samples
+    # Including all the super-population classes represented
     sample.annot <- read.gdsn(index.gdsn(gds, "sample.annot"))[listKeep,]
     sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
     listSel <- list()
 
+    ## For each super-population class, randomly select a fixed number of
+    ## samples
     for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
         tmp <- sample(listGroup, min(nbSamples, length(listGroup)))

@@ -302,8 +302,9 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param fileFREQ string with the path and the fileNames to a files with
-#' frequence information TODO describe the file
+#' @param fileFREQ a \code{character} string with the path and the file
+#' naame to a RDS file containing the frequency information
+#' TODO describe the file
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{TRUE}.
@@ -322,7 +323,8 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 
     mapSNVSel <- readRDS(file=fileFREQ)
-    print(paste0("Read mapSNVSel DONE ", Sys.time()))
+
+    if(verbose) { message("Read mapSNVSel DONE ", Sys.time()) }
 
     add.gdsn(node=gds, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
 
@@ -359,6 +361,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
     add.gdsn(node=gds, name="snp.SAS_AF", val=as.numeric(mapSNVSel$SAS_AF),
                     storage="packedreal24")
 
+    ## Return OL when successful
     return(0L)
 }
 

@@ -65,20 +65,27 @@
     <dl><dt>gds</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gdsn.class.html" class="external-link">gdsn.class</a> (a GDS node), or
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file) containing the information about
-1000 Genome (1kG).</p></dd>
+1000 Genome (1KG GDS file).</p></dd>
 
 
 <dt>nbSamples</dt>
-<dd><p>a single positive <code>integer</code>.</p></dd>
+<dd><p>a single positive <code>integer</code> representing the number
+of samples that will be selected for each super-population present in the
+1KG GDS file. If the number of samples in a specific super-population is
+smaller than the <code>nbSamples</code>, the number of samples in the
+super-population will correspond to the size of the super-population.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>a <code>data.frame</code> containing those columns:</p><ul><li><p>sample.id  TODO</p></li>
-<li><p>pop.group  TODO</p></li>
-<li><p>superPop  TODO</p></li>
+<p>a <code>data.frame</code> containing those columns:</p><ul><li><p>sample.id  a <code>character</code> string representing the sample
+identifier.</p></li>
+<li><p>pop.group  a <code>character</code> string representing the
+super-population assigned to the sample.</p></li>
+<li><p>superPop  a <code>character</code> string representing the
+super-population assigned to the sample.</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>

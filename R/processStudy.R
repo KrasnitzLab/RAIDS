@@ -1847,13 +1847,13 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 
 
     pca1KG <- computePCARefRMMulti(gdsSample, names(spRef),
-                                   sampleRM[j,], np=np,
+                                   sampleRM, np=np,
                                    algorithm=algorithm,
                                    eigen.cnt=eigen.cnt,
                                    missing.rate=missing.rate)
 
     resPCA <- computePCAMultiSynthetic(gdsSample, pca1KG,
-                                       sampleRM[i,], study.id.syn)
+                                       sampleRM, study.id.syn)
 
     KNN.synt <- computeKNNRefSynthetic(gdsSample, resPCA,
                                        listCatPop,
@@ -1965,7 +1965,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                                               spRef)
 
 
-    return(listKNN)
+    return(listKNNSample)
 }
 
 

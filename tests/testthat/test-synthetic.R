@@ -2,6 +2,7 @@
 
 library(RAIDS)
 library(withr)
+library(testthat)
 
 
 
@@ -75,4 +76,59 @@ test_that("splitSelectByPop() must return error when dataRef does not have the s
     error_message <- "The \'dataRef\' must have a column named \'sample.id\'."
     expect_error(splitSelectByPop(dataRef=demo), error_message)
 })
+
+
+test_that("splitSelectByPop() must return expected results", {
+
+    demo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC", "SampleD",
+                                    "SampleE", "SampleF"),
+                       pop.group=c("TSI", "TSI", "YRI", "YRI", "LWK", "LWK"),
+                       superPop=c("EUR", "EUR", "AFR", "AFR", "AFR", "AFR"))
+
+    expected <- matrix(data=c("SampleA", "SampleB", "SampleC", "SampleD",
+                              "SampleE", "SampleF"), byrow = FALSE, nrow = 2)
+    colnames(expected) <- c("TSI", "YRI", "LWK")
+
+    result <- splitSelectByPop(dataRef=demo)
+
+    expect_identical(result, expected)
+})
+
+
+#############################################################################
+### Tests syntheticGeno() results
+#############################################################################
+
+context("syntheticGeno() results")
+
+
+test_that("syntheticGeno() must return error when seqError is a character string", {
+
+    error_message <- paste0("The \'seqError\' parameter must be a single ",
+                "positive numeric value between 0 and 1.")
+
+    expect_error(syntheticGeno(gds="test.gds",
+                              gdsRefAnnot="test.annot.gds",
+                              gdsSampleFile="test.gds",
+                              data.id.profile="test",
+                              listSampleRef=c("Sample1", "sample2"),
+                              nbSim=1, prefId="", pRecomb=0.01,
+                              minProb=0.999, seqError="0.001"), error_message)
+})
+
+
+test_that("syntheticGeno() must return error when minProb is a character string", {
+
+    error_message <- paste0("The \'minProb\' parameter must be a single ",
+                            "positive numeric value between 0 and 1.")
+
+    expect_error(syntheticGeno(gds="test.gds",
+                               gdsRefAnnot="test.annot.gds",
+                               gdsSampleFile="test.gds",
+                               data.id.profile="test",
+                               listSampleRef=c("Sample1", "sample2"),
+                               nbSim=1, prefId="", pRecomb=0.01,
+                               minProb="0.999", seqError=0.001), error_message)
+})
+
 

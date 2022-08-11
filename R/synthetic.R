@@ -245,13 +245,14 @@ prepSynthetic <- function(gdsSampleFile,
 #' @param gdsRefAnnot an object of class \code{gds} opened
 #'
 #' @param gdsSampleFile a \code{character} string representing the file name of
-#' the GDS file containing the information about the samples.
+#' the GDS Sample file containing the information about the analyzed sample.
+#' The file must exist.
 #'
 #' @param listSampleRef a \code{character} string TODO
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
-#' @param nbSim a single positive \code{integer} TODO . Default: \code{1}.
+#' @param nbSim a single positive \code{integer} TODO . Default: \code{1L}.
 #'
 #' @param prefId a \code{string} TODO . Default: \code{""}.
 #'

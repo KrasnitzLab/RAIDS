@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNSuperPoprSynthetic}
 \alias{computeKNNSuperPoprSynthetic}
-\title{TODO}
+\title{Deprecated}
 \usage{
 computeKNNSuperPoprSynthetic(
   listEigenvector,
@@ -33,7 +33,7 @@ A \code{list} TODO with the sample.id and eigenvectors
 and a table with KNN callfor different K and pca dimension.
 }
 \description{
-TODO Deprecated
+Deprecated
 }
 \examples{
 

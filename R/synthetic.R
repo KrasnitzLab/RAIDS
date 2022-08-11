@@ -155,7 +155,8 @@ splitSelectByPop <- function(dataRef) {
 #' @description TODO
 #'
 #' @param gdsSampleFile a \code{character} string representing the file name
-#' of the GDS file containing the information about the samples to be opened.
+#' of the GDS Sample file containing the information about the sample
+#' to be analyzed.
 #'
 #' @param listSampleRef a \code{character} string TODO
 #'
@@ -182,7 +183,7 @@ splitSelectByPop <- function(dataRef) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
@@ -190,13 +191,14 @@ prepSynthetic <- function(gdsSampleFile,
                             listSampleRef,
                             data.id.profile,
                             studyDF,
-                            nbSim = 1,
-                            prefId = "",
-                            pRecomb = 0.01,
+                            nbSim=1,
+                            prefId="",
+                            pRecomb=0.01,
                             minProb=0.999,
                             seqError=0.001) {
 
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE) #
+    ## Open the GDS Sample file
+    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE)
 
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
@@ -282,6 +284,17 @@ syntheticGeno <- function(gds,
                             minProb=0.999,
                             seqError=0.001) {
 
+    ## The parameter minProb must be a single positive integer
+    if(!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' parameter must be a single positive ",
+             "numeric value between 0 and 1.")
+    }
+
+    ## The parameter seqError must be a single positive integer
+    if(!(isSingleNumber(seqError) && (seqError >= 0.0) && (seqError <= 1.0))) {
+        stop("The \'seqError\' parameter must be a single positive ",
+             "numeric value between 0 and 1.")
+    }
 
     gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
 
@@ -513,7 +526,9 @@ syntheticGeno <- function(gds,
         appendGDSgenotypeMat(gdsSample, gSyn)
     }
 
+    ## Close GDS Sample file
     closefn.gds(gdsSample)
+
     return(0L)
 }
 

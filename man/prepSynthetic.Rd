@@ -19,7 +19,8 @@ prepSynthetic(
 }
 \arguments{
 \item{gdsSampleFile}{a \code{character} string representing the file name
-of the GDS file containing the information about the samples to be opened.}
+of the GDS Sample file containing the information about the sample
+to be analyzed.}
 
 \item{listSampleRef}{a \code{character} string TODO}
 
@@ -52,5 +53,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

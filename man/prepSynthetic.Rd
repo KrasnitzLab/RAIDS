@@ -30,7 +30,7 @@ of the GDS file containing the information about the samples to be opened.}
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and profile. Default: \code{1}.}
 
-\item{prefId}{a \code{character} string TODO}
+\item{prefId}{a \code{character} string TODO. Default: \code{""}.}
 
 \item{pRecomb}{a single \code{numeric} between 0 and 1 TODO.
 Default: \code{0.01}.}

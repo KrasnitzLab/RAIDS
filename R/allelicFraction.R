@@ -3,12 +3,12 @@
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a 1KG
 #' GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gdsn.class}}
 #' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
-#' the information about one sample.
+#' the information about one sample (a GDS Sample file).
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.

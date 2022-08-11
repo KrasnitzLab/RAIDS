@@ -3,29 +3,45 @@
 \encoding{UTF-8}
 \name{splitSelectByPop}
 \alias{splitSelectByPop}
-\title{TODO}
+\title{Group samples per subcontinental population}
 \usage{
 splitSelectByPop(dataRef)
 }
 \arguments{
 \item{dataRef}{a \code{data.frame} containing those columns:
 \itemize{
-\item{sample.id} { TODO }
-\item{pop.group} { TODO }
-\item{superPop} { TODO }
+\item{sample.id} { a \code{character} string representing the sample
+identifier. }
+\item{pop.group} { a \code{character} string representing the
+subcontinental population assigned to the sample. }
+\item{superPop} { a \code{character} string representing the
+super-population assigned to the sample. }
 }}
 }
 \value{
-a \code{data.frame} containing TODO
+a \code{matrix} containing the sample identifiers and where
+each column is the name of a subcontinental population. The number of
+row corresponds to the number of samples for each subcontinental population.
 }
 \description{
-TODO
+The function groups the samples per subcontinental
+population and generates a matrix containing the sample identifiers and
+where each column is a subcontinental
+population.
 }
 \examples{
 
-# TODO
+## A data.frame containing samples from 2 subcontinental populations
+demo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC", "SampleD"),
+    pop.group=c("TSI", "TSI", "YRI", "YRI"),
+    superPop=c("EUR", "EUR", "AFR", "AFR"))
+
+## Generate a matrix populated with the sample identifiers and where
+## each row is a subcontinental population
+splitSelectByPop(dataRef=demo)
+
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

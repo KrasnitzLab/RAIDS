@@ -32,8 +32,8 @@ super-population assigned to the sample. }
 }
 }
 \description{
-A fixed number of reference samples are randomly selected for
-each subcontinental population present in the 1KG GDS file. When a
+The function randomly selects a fixed number of reference
+for each subcontinental population present in the 1KG GDS file. When a
 subcontinental population has less samples than the fixed number, all
 samples from the
 subcontinental population are selected.

@@ -1,8 +1,8 @@
 #' @title Random selection of a specific number of reference samples in each
 #' subcontinental population present in the 1KG GDS file
 #'
-#' @description A fixed number of reference samples are randomly selected for
-#' each subcontinental population present in the 1KG GDS file. When a
+#' @description The function randomly selects a fixed number of reference
+#' for each subcontinental population present in the 1KG GDS file. When a
 #' subcontinental population has less samples than the fixed number, all
 #' samples from the
 #' subcontinental population are selected.
@@ -78,9 +78,13 @@ select1KGPop <- function(gds, nbSamples) {
     return(df)
 }
 
-#' @title TODO
+
+#' @title Group samples per subcontinental population
 #'
-#' @description TODO
+#' @description The function groups the samples per subcontinental
+#' population and generates a matrix containing the sample identifiers and
+#' where each column is a subcontinental
+#' population.
 #'
 #' @param dataRef a \code{data.frame} containing those columns:
 #' \itemize{
@@ -92,11 +96,21 @@ select1KGPop <- function(gds, nbSamples) {
 #' super-population assigned to the sample. }
 #' }
 #'
-#' @return a \code{data.frame} containing TODO
+#' @return a \code{matrix} containing the sample identifiers and where
+#' each column is the name of a subcontinental population. The number of
+#' row corresponds to the number of samples for each subcontinental population.
 #'
 #' @examples
 #'
-#' # TODO
+#' ## A data.frame containing samples from 2 subcontinental populations
+#' demo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC", "SampleD"),
+#'     pop.group=c("TSI", "TSI", "YRI", "YRI"),
+#'     superPop=c("EUR", "EUR", "AFR", "AFR"))
+#'
+#' ## Generate a matrix populated with the sample identifiers and where
+#' ## each row is a subcontinental population
+#' splitSelectByPop(dataRef=demo)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
@@ -108,19 +122,33 @@ splitSelectByPop <- function(dataRef) {
         stop("The \'dataRef\' must be a data.frame object.")
     }
 
+    ## The dataRef must have a pop.group column
+    if (!("pop.group" %in% colnames(dataRef))) {
+        stop("The \'dataRef\' must have a column named \'pop.group\'.")
+    }
+
+    ## The dataRef must have a sample.id column
+    if (!("sample.id" %in% colnames(dataRef))) {
+        stop("The \'dataRef\' must have a column named \'sample.id\'.")
+    }
+
     tmp <- table(dataRef$pop.group)
 
     if(length(which(tmp != tmp[1])) != 0) {
-        stop("splitSelectByPop with dataRef with different number of pop\n")
+        stop("The number of samples in each subcontinental population ",
+                "has to be the same.\n")
     }
 
     listPOP <- unique(dataRef$pop.group)
+
+    ## Generate a matrix where each column is a subcontinental population
     sampleRM <- vapply(listPOP, function(x, dataRef){
         return(dataRef[which(dataRef$pop.group == x), "sample.id"])
     }, FUN.VALUE = character(tmp[1]), dataRef = dataRef)
 
     return(sampleRM)
 }
+
 
 #' @title TODO
 #'
@@ -138,7 +166,7 @@ splitSelectByPop <- function(dataRef) {
 #' @param nbSim a single positive \code{integer} representing the number of
 #' simulations per combination of sample and profile. Default: \code{1}.
 #'
-#' @param prefId a \code{character} string TODO
+#' @param prefId a \code{character} string TODO. Default: \code{""}.
 #'
 #' @param pRecomb a single \code{numeric} between 0 and 1 TODO.
 #' Default: \code{0.01}.

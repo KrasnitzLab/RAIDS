@@ -54,3 +54,25 @@ test_that("splitSelectByPop() must return error when dataRef is a character stri
     expect_error(splitSelectByPop(dataRef="GDS"), error_message)
 })
 
+
+test_that("splitSelectByPop() must return error when dataRef does not have the pop.group column", {
+
+    demo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC", "SampleD"),
+                            pop=c("TSI", "TSI", "YRI", "YRI"),
+                            superPop=c("EUR", "EUR", "AFR", "AFR"))
+
+    error_message <- "The \'dataRef\' must have a column named \'pop.group\'."
+    expect_error(splitSelectByPop(dataRef=demo), error_message)
+})
+
+
+test_that("splitSelectByPop() must return error when dataRef does not have the sample.id column", {
+
+    demo <- data.frame(sample=c("SampleA", "SampleB", "SampleC", "SampleD"),
+                       pop.group=c("TSI", "TSI", "YRI", "YRI"),
+                       superPop=c("EUR", "EUR", "AFR", "AFR"))
+
+    error_message <- "The \'dataRef\' must have a column named \'sample.id\'."
+    expect_error(splitSelectByPop(dataRef=demo), error_message)
+})
+

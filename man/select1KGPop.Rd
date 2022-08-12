@@ -3,27 +3,40 @@
 \encoding{UTF-8}
 \name{select1KGPop}
 \alias{select1KGPop}
-\title{TODO}
+\title{Random selection of a specific number of reference samples in each
+subcontinental population present in the 1KG GDS file}
 \usage{
 select1KGPop(gds, nbSamples)
 }
 \arguments{
 \item{gds}{an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
 \link[gdsfmt]{gds.class} (a GDS file) containing the information about
-1000 Genome (1kG).}
+1000 Genome (1KG GDS file).}
 
-\item{nbSamples}{a single positive \code{integer}.}
+\item{nbSamples}{a single positive \code{integer} representing the number
+of samples that will be selected for each subcontinental population present
+in the 1KG GDS file. If the number of samples in a specific subcontinental
+population is smaller than the \code{nbSamples}, the number of samples
+selected in this
+subcontinental population will correspond to the size of this population.}
 }
 \value{
 a \code{data.frame} containing those columns:
 \itemize{
-\item{sample.id} { TODO }
-\item{pop.group} { TODO }
-\item{superPop} { TODO }
+\item{sample.id} { a \code{character} string representing the sample
+identifier. }
+\item{pop.group} { a \code{character} string representing the
+subcontinental population assigned to the sample. }
+\item{superPop} { a \code{character} string representing the
+super-population assigned to the sample. }
 }
 }
 \description{
-TODO
+The function randomly selects a fixed number of reference
+for each subcontinental population present in the 1KG GDS file. When a
+subcontinental population has less samples than the fixed number, all
+samples from the
+subcontinental population are selected.
 }
 \examples{
 
@@ -31,5 +44,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

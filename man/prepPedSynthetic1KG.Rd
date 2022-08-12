@@ -9,8 +9,8 @@ prepPedSynthetic1KG(gds, gdsSample, study.id, popName)
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+1 KG GDS file.}
 
 \item{gdsSample}{TODO}
 
@@ -32,5 +32,5 @@ gds <- "TODO"
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

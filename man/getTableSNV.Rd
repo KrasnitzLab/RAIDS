@@ -12,17 +12,18 @@ getTableSNV(
   study.id,
   minCov = 10,
   minProb = 0.999,
-  eProb = 0.001
+  eProb = 0.001,
+  verbose = FALSE
 )
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a 1KG
 GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gdsn.class}}
 (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
-the information about one sample.}
+the information about one sample (a GDS Sample file).}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}
@@ -39,6 +40,9 @@ Default: \code{0.999}.}
 
 \item{eProb}{a single \code{numeric} between \code{0} and \code{1}
 representing the probability of sequencing error. Default: \code{0.001}.}
+
+\item{verbose}{a \code{logicial} indicating if messages should be printed
+when the function is running. Default: \code{FALSE}.}
 }
 \value{
 a \code{data.frame} containing:

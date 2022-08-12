@@ -350,9 +350,9 @@ test_that("computeAllelicFractionDNA() must return error when minCov is characte
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                        sampleCurrent="test", study.id="test",
-                        chrInfo=c("chr1", "chr2"), minCov="10", minProb=0.999,
-                        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov="10", minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                  error_message)
 })
 
@@ -368,9 +368,9 @@ test_that("computeAllelicFractionDNA() must return error when minCov is vextor o
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                    sampleCurrent="test", study.id="test",
-                    chrInfo=c("chr1", "chr2"), minCov=c(10, 11), minProb=0.999,
-                    eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=c(10, 11), minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                 error_message)
 })
 
@@ -386,11 +386,10 @@ test_that("computeAllelicFractionDNA() must return error when wAR is character s
     error_message <- "The \'wAR\' must be a single numeric positive value."
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                            sampleCurrent="test", study.id="test",
-                            chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
-                            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                            wAR="BETA"),
-                    error_message)
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+        wAR="BETA", verbose=FALSE), error_message)
 })
 
 
@@ -408,7 +407,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is vector of n
                             sampleCurrent="test", study.id="test",
                             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
                             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                            wAR=c(11, 21)),
+                            wAR=c(11, 21), verbose=FALSE),
                     error_message)
 })
 
@@ -425,9 +424,9 @@ test_that("computeAllelicFractionDNA() must return error when minProb is vector 
                             "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample="test",
-                            sampleCurrent="test", study.id="test",
-                            chrInfo=c("chr1", "chr2"), minCov=10, minProb=c(0.22, 0.999),
-                            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=c(0.22, 0.999),
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                     error_message)
 })
 
@@ -444,9 +443,9 @@ test_that("computeAllelicFractionDNA() must return error when minProb is charact
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                                sampleCurrent="test", study.id="test",
-                                chrInfo=c("chr1", "chr2"), minCov=10, minProb="0.2",
-                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb="0.2",
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                     error_message)
 })
 
@@ -463,9 +462,9 @@ test_that("computeAllelicFractionDNA() must return error when minProb is negativ
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                                sampleCurrent="test", study.id="test",
-                                chrInfo=c("chr1", "chr2"), minCov=10, minProb=-0.11,
-                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=-0.11,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                     error_message)
 })
 
@@ -482,9 +481,9 @@ test_that("computeAllelicFractionDNA() must return error when minProb is negativ
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                        sampleCurrent="test", study.id="test",
-                        chrInfo=c("chr1", "chr2"), minCov=10, minProb=1.001,
-                        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=1.001,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                     error_message)
 })
 
@@ -501,9 +500,9 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
-                        sampleCurrent="test", study.id="test",
-                        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.901,
-                        eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+            sampleCurrent="test", study.id="test",
+            chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.901,
+            eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                     error_message)
 })
 
@@ -520,10 +519,10 @@ test_that("computeAllelicFractionDNA() must return error when eProb is vector of
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                        sampleCurrent="test", study.id="test",
-                        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
-                        eProb=c(0.22, 0.999), cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
-                    error_message)
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+        eProb=c(0.22, 0.999), cutOffLOH=-5, cutOffHomoScore=-3, wAR=10,
+        verbose=FALSE), error_message)
 })
 
 
@@ -539,9 +538,9 @@ test_that("computeAllelicFractionDNA() must return error when eProb is character
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
-                    sampleCurrent="test", study.id="test",
-                    chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.2,
-                    eProb="0.001", cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test", chrInfo=c("chr1", "chr2"),
+        minCov=10, minProb=0.2, eProb="0.001", cutOffLOH=-5,
+        cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                 error_message)
 })
 
@@ -555,10 +554,25 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
                                 "value between 0 and 1.")
 
     expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample=gdsF,
-                        sampleCurrent="test", study.id="test",
-                        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.11,
-                        eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10),
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.11,
+        eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
                  error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when verbose is numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- paste0("The \'verbose\' parameters must be a ",
+                                "single logical value (TRUE or FALSE).")
+
+    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample=gdsF,
+        sampleCurrent="test", study.id="test", chrInfo=c("chr1", "chr2"),
+        minCov=10, minProb=0.11,  eProb=0.001, cutOffLOH=-5,
+        cutOffHomoScore=-3, wAR=10, verbose=22), error_message, fixed=TRUE)
 })
 
 

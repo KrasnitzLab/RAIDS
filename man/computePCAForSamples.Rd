@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computePCAForSamples}
 \alias{computePCAForSamples}
-\title{Project patients onto existing principal component axes (PCA)}
+\title{Deprecated - Project patients onto existing principal component
+axes (PCA)}
 \usage{
 computePCAForSamples(gds, PATHSAMPLEGDS, listSamples, np = 1L)
 }

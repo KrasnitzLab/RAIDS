@@ -19,7 +19,8 @@ prepSynthetic(
 }
 \arguments{
 \item{gdsSampleFile}{a \code{character} string representing the file name
-of the GDS file containing the information about the samples to be opened.}
+of the GDS Sample file containing the information about the sample
+to be analyzed.}
 
 \item{listSampleRef}{a \code{character} string TODO}
 
@@ -30,7 +31,7 @@ of the GDS file containing the information about the samples to be opened.}
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and profile. Default: \code{1}.}
 
-\item{prefId}{a \code{character} string TODO}
+\item{prefId}{a \code{character} string TODO. Default: \code{""}.}
 
 \item{pRecomb}{a single \code{numeric} between 0 and 1 TODO.
 Default: \code{0.01}.}
@@ -52,5 +53,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

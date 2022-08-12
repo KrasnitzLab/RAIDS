@@ -3,12 +3,12 @@
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a 1KG
 #' GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gdsn.class}}
 #' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
-#' the information about one sample.
+#' the information about one sample (a GDS Sample file).
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -25,6 +25,9 @@
 #'
 #' @param eProb a single \code{numeric} between \code{0} and \code{1}
 #' representing the probability of sequencing error. Default: \code{0.001}.
+#'
+#' @param verbose a \code{logicial} indicating if messages should be printed
+#' when the function is running. Default: \code{FALSE}.
 #'
 #' @return a \code{data.frame} containing:
 #' \itemize{
@@ -54,7 +57,7 @@
 #' @encoding UTF-8
 #' @export
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
-                            minProb=0.999, eProb=0.001) {
+                            minProb=0.999, eProb=0.001, verbose=FALSE) {
 
     ## The gds must be an object of class "gdsn.class" or "gds.class"
     if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
@@ -131,8 +134,10 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
 
     if("normal.geno" %in% ls.gdsn(node=gdsSample)) { # if normal.geno exist mean there is count not in the ref
+
         # I have other genotype than 1KG
-        print("Aye1")
+        if (verbose) { message("Genotype") }
+
         cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
         listKeep.o <- which(cnt.total >= minCov)
 
@@ -769,6 +774,9 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
 #'
+#' @param verbose a \code{logicial} indicating if the function should print
+#' message when running. Default: \code{FALSE}.
+#'
 #' @return a \code{data.frame} with lap for the snv with depth > minCov. TODO
 #'
 #' @examples
@@ -784,9 +792,9 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @encoding UTF-8
 #' @export
 computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
-                                    chrInfo, minCov=10L,
-                                    minProb=0.999, eProb=0.001,
-                                    cutOffLOH=-5, cutOffHomoScore=-3, wAR=9) {
+                                chrInfo, minCov=10L, minProb=0.999,
+                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+                                wAR=9, verbose=FALSE) {
 
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
@@ -806,8 +814,14 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
     }
 
     ## The wAR parameter must be a single positive numeric superior to 1
-    if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
+    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
         stop("The \'wAR\' must be a single numeric positive value.")
+    }
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose) && length(verbose) == 1)) {
+        stop("The \'verbose\' parameters must be a single logical value ",
+                "(TRUE or FALSE).")
     }
 
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
@@ -819,10 +833,11 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
     homoBlock <- list()
 
     for(chr in unique(snp.pos$snp.chr)) {
-        # Define the end of chr
-        print(paste0("chr ", chr))
-        print(paste0("Step 1 ", Sys.time()))
 
+        if (verbose) {
+            message("chr ", chr)
+            message("Step 1 ", Sys.time())
+        }
 
         #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
         listChr <- which(snp.pos$snp.chr == chr)
@@ -832,7 +847,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
         homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
                                             snp.pos=snp.pos[listChr,], chr=chr)
 
-        print(paste0("Step 2 ", Sys.time()))
+        if (verbose) { message("Step 2 ", Sys.time()) }
 
         homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
                 cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
@@ -852,17 +867,18 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
         snp.pos[listChr[pos], "lap"] <- 0
         snp.pos[listChr[pos], "LOH"] <- 1
 
-        print(paste0("Step 3 ", Sys.time()))
+        if (verbose) { message("Step 3 ", Sys.time()) }
 
         snp.pos[listChr, "imbAR"] <-
                 computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
                                             wAR=10, cutOffEmptyBox=-3)
 
-        print(paste0("Step 4 ", Sys.time()))
+        if (verbose) { message("Step 4 ", Sys.time()) }
+
         blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
                                                     w=10, cutOff=-3)
 
-        print(paste0("Step 5 ", Sys.time()))
+        if (verbose) { message("Step 5 ", Sys.time()) }
 
         if(! is.null(blockAF)) {
             for(i in seq_len(nrow(blockAF))) {

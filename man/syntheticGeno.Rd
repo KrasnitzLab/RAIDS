@@ -11,7 +11,7 @@ syntheticGeno(
   gdsSampleFile,
   data.id.profile,
   listSampleRef,
-  nbSim = 1,
+  nbSim = 1L,
   prefId = "",
   pRecomb = 0.01,
   minProb = 0.999,
@@ -24,13 +24,15 @@ syntheticGeno(
 \item{gdsRefAnnot}{an object of class \code{gds} opened}
 
 \item{gdsSampleFile}{a \code{character} string representing the file name of
-the GDS file containing the information about the samples.}
+the GDS Sample file containing the information about the analyzed sample.
+The file must exist.}
 
 \item{data.id.profile}{a \code{character} string TODO}
 
 \item{listSampleRef}{a \code{character} string TODO}
 
-\item{nbSim}{a single positive \code{integer} TODO . Default: \code{1}.}
+\item{nbSim}{a single positive \code{integer} representing the number of
+simulation that will be generated. Default: \code{1L}.}
 
 \item{prefId}{a \code{string} TODO . Default: \code{""}.}
 
@@ -53,5 +55,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

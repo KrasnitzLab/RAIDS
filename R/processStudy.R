@@ -1778,19 +1778,20 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 
             pcaND <- eigenvect[ ,seq_len(pcaD)]
             y_pred <- knn(train=pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
-                          test=pcaND[rownames(eigenvect)[nrow(eigenvect)],, drop=FALSE],
-                          cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
+                    test=pcaND[rownames(eigenvect)[nrow(eigenvect)],,
+                                drop=FALSE],
+                    cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
                                     levels=listCatPop, labels=listCatPop),
-                          k=kList[kV],
-                          prob=FALSE)
+                    k=kList[kV],
+                    prob=FALSE)
 
             resMat[totR, fieldPopInfAnc] <- listSuperPop[as.integer(y_pred)]
 
             totR <- totR + 1
         } # end k
     } # end pca Dim
-    listKNN <- list(sample.id=listEigenvector$sample.id,
-                    matKNN=resMat)
+
+    listKNN <- list(sample.id=listEigenvector$sample.id, matKNN=resMat)
 
     return(listKNN)
 }
@@ -1930,7 +1931,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                                          dataRef, spRef,
                                          study.id.syn,
                                          np = 1L,
-                                         listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                                         listCatPop = c("EAS", "EUR",
+                                                    "AFR", "AMR", "SAS"),
                                          fieldPopIn1KG = "superPop",
                                          fieldPopInfAnc = "SuperPop",
                                          kList = seq(2,15,1),
@@ -2013,7 +2015,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' @export
 selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                                  predCall, listCall,
-                                 kList = 3:15, pcaList = 2:15){
+                                 kList = 3:15, pcaList = 2:15) {
     if(min(kList) < 3) {
         warning("A K smaller than 3 could not give robust results.\n")
     }
@@ -2026,8 +2028,10 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         j <- 1
         for(K in kList){
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
-            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall, predCall, listCall)
-            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall, predCall, listCall)
+            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall,
+                                            predCall, listCall)
+            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
+                                            predCall, listCall)
 
             df <- data.frame(D = D,
                              K = K,
@@ -2045,7 +2049,8 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         dfPCA = data.frame(D = D,
                            median = median(df[df$K %in% kList, "AUROC.min"]),
                            mad = mad(df[df$K %in% kList, "AUROC.min"]),
-                           upQuartile = quantile(df[df$K %in% kList, "AUROC.min"], 0.75),
+                           upQuartile = quantile(df[df$K %in% kList,
+                                                        "AUROC.min"], 0.75),
                            K = kV)
         tableSyn[[i]] <- dfPCA
         i <- i + 1

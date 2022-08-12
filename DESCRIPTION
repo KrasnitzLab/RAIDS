@@ -10,7 +10,6 @@ Description: This package implements specialized algorithms that enable
     genetic ancestry from cancer-derived molecular data across 
     genomic platforms. bioRxiv 2022.02.01.478737.
 Version: 0.50.0
-Date: 2022-02-28
 Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("cre", "aut"), comment = c(ORCID = "0000-0002-0802-1071")),
     person("Astrid", "Deschênes", email="adeschen@hotmail.com",
@@ -40,5 +39,7 @@ Suggests: testthat,
     BiocStyle,
     withr,
     GenomicRanges
+BugReports: https://github.com/KrasnitzLab/RAIDS/issues
+URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome
 RoxygenNote: 7.1.2

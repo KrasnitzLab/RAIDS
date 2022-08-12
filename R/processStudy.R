@@ -1968,6 +1968,103 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
     return(listKNNSample)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
+#' a GDS node pointing to the 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{gds} opened related to
+#' the sample
+#'
+#' @param sample.ana.id TODO
+#'
+#' @param spRef TODO
+#'
+#' @param study.id.syn TODO
+#'
+#' @param np TODO
+#'
+#' @param listCatPop TODO
+#'
+#' @param fieldPopIn1KG TODO
+#'
+#' @param fieldPopInfAnc TODO
+#'
+#' @param kList TODO array of the k possible values
+#'
+#' @param pcaList TODO array of the pca dimension possible values
+#'
+#' @param algorithm algorithm of the PCA "exact", "randomized"
+#' (para snpgdsPCA)
+#'
+#' @param eigen.cnt number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @param missing.rate number of eigenvectors in PCA
+#' (para snpgdsPCA)
+#'
+#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN callfor different K and pca dimension.
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @export
+computeAncestryFromSyntheticFile <- function(gds, gdsSample,
+                                             listFiles,
+                                             sample.ana.id,
+                                             spRef,
+                                             study.id.syn,
+                                             np = 1L,
+                                             listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                                             fieldPopIn1KG = "superPop",
+                                             fieldPopInfAnc = "SuperPop",
+                                             kList = seq(2,15,1),
+                                             pcaList = 2:15,
+                                             algorithm="exact",
+                                             eigen.cnt=32L,
+                                             missing.rate=0.025) {
+
+    KNN.list <- list()
+
+    for(j in seq_len(length(listFiles))){
+        # We have to test if the file exist and format is OK
+        KNN.list[[j]] <- readRDS(listFiles[j])
+    }
+
+    KNN.sample.syn <- do.call(rbind, KNN.list)
+
+    pedSyn <- prepPedSynthetic1KG(gds, gdsSample,
+                                  study.id.syn, fieldPopIn1KG)
+
+
+
+    listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
+                                           fieldPopIn1KG, fieldPopInfAnc,
+                                           listCatPop)
+
+    listPCASample <- computePCARefSample(gdsSample, sample.ana.id,
+                                         study.id.ref = "Ref.1KG", np=np,
+                                         algorithm=algorithm,
+                                         eigen.cnt=eigen.cnt)
+
+
+    listKNNSample <- computeKNNRefSample(listPCASample,
+                                         listCatPop, spRef,
+                                         kList = seq(2,15,1), pcaList = seq(2,15,1))
+
+    res <- list(pcaSample=listPCASample,
+                paraSample=listParaSample,
+                KNNSample=listKNNSample)
+
+    return(res)
+}
 
 
 #' @title TODO

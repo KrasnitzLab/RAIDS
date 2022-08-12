@@ -252,7 +252,8 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
-#' @param nbSim a single positive \code{integer} TODO . Default: \code{1L}.
+#' @param nbSim a single positive \code{integer} representing the number of
+#' simulation that will be generated. Default: \code{1L}.
 #'
 #' @param prefId a \code{string} TODO . Default: \code{""}.
 #'
@@ -269,21 +270,38 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
-syntheticGeno <- function(gds,
-                            gdsRefAnnot,
+syntheticGeno <- function(gds, gdsRefAnnot,
                             gdsSampleFile,
                             data.id.profile,
                             listSampleRef,
-                            nbSim=1,
+                            nbSim=1L,
                             prefId="",
                             pRecomb=0.01,
                             minProb=0.999,
                             seqError=0.001) {
+
+    ## The gdsSampleFile must be an character string and the file must exist
+    if (!(is.character(gdsSampleFile) && file.exists(gdsSampleFile))) {
+        stop("The \'gdsSampleFile\' must be a character string and the file ",
+                "must exist.")
+    }
+
+    ## The parameter nbSim must be a single positive integer
+    if(!(isSingleNumber(nbSim) && (nbSim >= 0))) {
+        stop("The \'nbSim\' parameter must be a single positive ",
+             "numeric value.")
+    }
+
+    ## The parameter prefId must be a single character string
+    if(!(is.character(prefId) && (length(prefId) == 1))) {
+        stop("The \'prefId\' parameter must be a single character ",
+             "string.")
+    }
 
     ## The parameter minProb must be a single positive integer
     if(!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
@@ -306,10 +324,11 @@ syntheticGeno <- function(gds,
 
     sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
 
-    if(length(which(sampleSim %in% sample.id)) > 0){
+    if(length(which(sampleSim %in% sample.id)) > 0) {
         closefn.gds(gdsSample)
         stop("Error data.id of the simulation exists change prefId\n")
     }
+
     sample.1kg <- read.gdsn(index.gdsn(gds, "sample.id"))
     listPosRef <- which(sample.id %in% listSampleRef)
     listPosRef.1kg <- which(sample.1kg %in% listSampleRef)

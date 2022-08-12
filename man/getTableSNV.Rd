@@ -12,7 +12,8 @@ getTableSNV(
   study.id,
   minCov = 10,
   minProb = 0.999,
-  eProb = 0.001
+  eProb = 0.001,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ Default: \code{0.999}.}
 
 \item{eProb}{a single \code{numeric} between \code{0} and \code{1}
 representing the probability of sequencing error. Default: \code{0.001}.}
+
+\item{verbose}{a \code{logicial} indicating if messages should be printed
+when the function is running. Default: \code{FALSE}.}
 }
 \value{
 a \code{data.frame} containing:

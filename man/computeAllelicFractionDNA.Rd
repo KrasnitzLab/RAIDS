@@ -16,7 +16,8 @@ computeAllelicFractionDNA(
   eProb = 0.001,
   cutOffLOH = -5,
   cutOffHomoScore = -3,
-  wAR = 9
+  wAR = 9,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -51,6 +52,9 @@ probability of sequencing error. Default: \code{0.001}.}
 
 \item{wAR}{a single positive \code{integer} representing the size-1 of
 the window used to compute an empty box. Default: \code{9}.}
+
+\item{verbose}{a \code{logicial} indicating if the function should print
+message when running. Default: \code{FALSE}.}
 }
 \value{
 a \code{data.frame} with lap for the snv with depth > minCov. TODO

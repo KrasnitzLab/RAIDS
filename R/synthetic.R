@@ -334,9 +334,12 @@ syntheticGeno <- function(gds, gdsRefAnnot,
     listPosRef.1kg <- which(sample.1kg %in% listSampleRef)
 
 
-    superPop <- read.gdsn(index.gdsn(gds, "sample.annot/superPop"))[listPosRef.1kg]
-    if(all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg]) != TRUE) {
-        stop("Order between 1kg and the sample are not the same\n")
+    superPop <- read.gdsn(index.gdsn(gds,
+                                "sample.annot/superPop"))[listPosRef.1kg]
+
+    if(! all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg])) {
+        stop("The order between 1kg and the list of samples is not ",
+                "the same.\n")
     }
 
     # Get the index of the snp.id from gdsSample in the gds1KG
@@ -346,7 +349,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
     infoSNV <- data.frame(count.tot=read.gdsn(index.gdsn(gdsSample,
                                             "Total.count"))[list1KG],
-                          lap=read.gdsn(index.gdsn(gdsSample, "lap")))
+                            lap=read.gdsn(index.gdsn(gdsSample, "lap")))
 
     nbSNV <- nrow(infoSNV)
 
@@ -371,7 +374,9 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                         AMR=which(block.Annot$block.id == "AMR.0.05.500k"),
                         SAS=which(block.Annot$block.id == "SAS.0.05.500k"))
 
-    #g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i), count = c(-1,1))[listSNP]
+    #g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
+    #          count = c(-1,1))[listSNP]
+
     blockDF <- data.frame(EAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$EAS), count = c(-1,1))[list1KG],
                           EUR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
@@ -402,10 +407,8 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         # Order the SNV by count.tot and, lap
         gOrder <- g[listOrderSNP]
 
-
         matSim1 <- matrix(nrow=sum(df$Freq), ncol=nbSim)
         matSim2 <- matrix(nrow=sum(df$Freq), ncol=nbSim)
-
 
         # Loop on the read.count and lap
         # Faster to group the read.count and lap
@@ -462,7 +465,8 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         # for 1kg in list listPosRef.1kg and listPosRef
         curSP <- superPop[r]
         # define a negative block for SNV not in block
-        #blockDF[,curSP][which(blockDF[,curSP] == 0)] <- -1*seq_len(length(which(blockDF[,curSP] == 0)))
+        # blockDF[,curSP][which(blockDF[,curSP] == 0)] <-
+        #     -1*seq_len(length(which(blockDF[,curSP] == 0)))
         if(length(which(blockDF[,curSP] == 0)) > 0){
             stop("There is block set to 0\n")
         }
@@ -489,13 +493,16 @@ syntheticGeno <- function(gds, gdsRefAnnot,
             # list of zone with the same phase relatively to 1KG
             listZone <- unique(blockZone[,i])
 
-            # matrix if the lap is the first entry in the phase or the second for each zone
+            ## matrix if the lap is the first entry in the phase or
+            ## the second for each zone
             lapPos <- matrix(sample(x=c(0,1), size=1 *(length(listZone)),
                                         replace=TRUE), ncol=1)
 
             rownames(lapPos) <- listZone
             #LAPparent <- matrix(nr=nbSNV, nc=nbSim)
-            LAPparent[, i] <- lapPos[as.character(blockZone[as.character(blockDF[,curSP]),i]),]
+            LAPparent[, i] <-
+                        lapPos[as.character(blockZone[as.character(blockDF[,
+                                                                curSP]),i]),]
         }
 
         phaseVal <- read.gdsn(index.gdsn(gdsRefAnnot, "phase"),
@@ -514,20 +521,27 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
         # infoSNV$count.tot
         listCount <- table(infoSNV$count.tot)
-        cutOffA <- data.frame(count = unlist(vapply(as.integer(names(listCount)),
-                                                    FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
-                                                    FUN.VALUE = numeric(1), minProb=minProb, eProb= 2 * seqError )),
-                              allele = unlist(vapply(as.integer(names(listCount)),
-                                                     FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
-                                                     FUN.VALUE = numeric(1), minProb=minProb, eProb=seqError)))
+        cutOffA <- data.frame(count=unlist(vapply(as.integer(names(listCount)),
+                FUN=function(x, minProb, eProb){
+                        return(max(2,qbinom(minProb, x,eProb))) },
+                FUN.VALUE=numeric(1), minProb=minProb,
+                                eProb= 2 * seqError )),
+                allele=unlist(vapply(as.integer(names(listCount)),
+                FUN=function(x, minProb, eProb){
+                        return(max(2,qbinom(minProb, x,eProb))) },
+                FUN.VALUE=numeric(1), minProb=minProb, eProb=seqError)))
         row.names(cutOffA) <- names(listCount)
 
-        gSyn <- matrix(rep(-1, nbSim * nrow(infoSNV)), nrow = nrow(infoSNV))
+        gSyn <- matrix(rep(-1, nbSim * nrow(infoSNV)), nrow=nrow(infoSNV))
 
-        # g <- -1 if infoSNV$count.tot - (refC + altC) >= cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 0 if altC == 0 & infoSNV$count.tot - (refC + altC) < cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 1 if altR > 0 & infoSNV$count.tot - (refC + altC) < cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 2 if altR == 0 & infoSNV$count.tot - (refC + altC) < cutOffA[as.character(infoSNV$count.tot), "count"]
+        # g <- -1 if infoSNV$count.tot - (refC + altC) >=
+        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
+        # g <- 0 if altC == 0 & infoSNV$count.tot - (refC + altC) <
+        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
+        # g <- 1 if altR > 0 & infoSNV$count.tot - (refC + altC) <
+        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
+        # g <- 2 if altR == 0 & infoSNV$count.tot - (refC + altC) <
+        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
 
         gSyn <- gSyn +
             (infoSNV$count.tot - (refC + altC) < cutOffA[as.character(infoSNV$count.tot), "count"]) * # multiply by 0 if too much error
@@ -539,10 +553,10 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
         appendGDSSampleOnly(gdsSample, paste(paste0(prefId, ".",
                                                     data.id.profile),
-                                             paste(rep(sample.id[curSynt],
+                                                paste(rep(sample.id[curSynt],
                                                        each=nbSim),
                                                    seq_len(nbSim), sep="."),
-                                             sep = "."))
+                                                sep = "."))
         appendGDSgenotypeMat(gdsSample, gSyn)
     }
 
@@ -557,8 +571,8 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+#' 1 KG GDS file.
 #'
 #' @param gdsSample TODO
 #'
@@ -574,27 +588,41 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' ## TODO
 #' gds <- "TODO"
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
-#'
-prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
+prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 
+    ## The gds must be an object of class "SNPGDSFileClass"
+    if (!is(gds, "SNPGDSFileClass")) {
+        stop("The \'gds\' must be an object of class \'SNPGDSFileClass\'.")
+    }
+
+    ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
+    if (!inherits(gdsSample, "gdsn.class") &&
+            !inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class ",
+                "\'gdsn.class\' or \'gds.class\'")
+    }
 
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
+
     dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
+
     if(! popName %in% colnames(dataRef)) {
-        stop("The population ", popName, " is not supported")
+        stop("The population ", popName, " is not supported.")
     }
+
     row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
     rownames(studyCur) <- studyCur$data.id
+
     return(studyCur)
 }
 
@@ -612,8 +640,11 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
 #'
 #' @param listCall TODO array of the possible call
 #'
-#' @return \code{list} TODO
-#' with the column popName.
+#' @return \code{list} containing 2 entries:
+#' \itemize{
+#' \item{confMat} { TODO }
+#' \item{matAccuracy} { a \code{data.frame} TODO}
+#' }
 #'
 #' @examples
 #'
@@ -623,15 +654,15 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName){
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @encoding UTF-8
 #' @export
-#'
-computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall, listCall){
+computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
+                                        predCall, listCall) {
 
-    matAccuracy <- data.frame(pcaD = matKNN$D[1],
-                              K = matKNN$K[1],
-                              Accu.CM = numeric(1),
-                              CM.CI =  numeric(1),
-                              N = nrow(matKNN),
-                              NBNA = length(which(is.na(matKNN[[predCall]])) ))
+    matAccuracy <- data.frame(pcaD=matKNN$D[1],
+                        K=matKNN$K[1],
+                        Accu.CM=numeric(1),
+                        CM.CI=numeric(1),
+                        N=nrow(matKNN),
+                        NBNA=length(which(is.na(matKNN[[predCall]]))))
     i <- 1
     if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
         stop("Compute synthetic accuracy with different pca dimension or K\n")
@@ -641,26 +672,25 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall, listCall
     listKeep <- which(!(is.na(matKNN[[predCall]])) )
 
     fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
-                    levels = listCall,
-                    labels = listCall)
+                        levels=listCall, labels=listCall)
 
     fP <- factor(matKNN[[predCall]][listKeep],
-                 levels = listCall,
-                 labels = listCall)
+                        levels = listCall, labels = listCall)
 
-    cm <- table(fCall,
-                fP)
+    cm <- table(fCall, fP)
 
 
     matAccuracy[i, 3] <- sum(diag(cm[rownames(cm) %in% listCall,
-                                     colnames(cm) %in% listCall])) /
+                                        colnames(cm) %in% listCall])) /
         nrow(pedCall[matKNN$sample.id, ][listKeep,])
 
     matAccuracy[i, 4] <- 1.96 * (matAccuracy[i, 3] * (1 - matAccuracy[i, 3]) /
-                                     nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
+                            nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
 
-    res <- list(confMat = cm,
-                matAccuracy = matAccuracy)
+    ## Generate list that will be returned
+    ##
+    res <- list(confMat=cm, matAccuracy=matAccuracy)
+
     return(res)
 }
 
@@ -679,41 +709,44 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall, listCall
 #'
 #' @param listCall TODO array of the possible call
 #'
-#' @return \code{list} TODO
-#' with the column popName.
+#' @return \code{list} containing 3 entries:
+#' \itemize{
+#' \item{matAUROC.All}{ TODO }
+#' \item{matAUROC.Call}{ TODO }
+#' \item{listROC.Call}{a \code{list} TODO}
+#' }
 #'
 #' @examples
 #'
 #' ## TODO
 #' gds <- "TODO"
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom pROC multiclass.roc roc
 #' @encoding UTF-8
 #' @export
-#'
-computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall){
+computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
 
-    matAccuracy <- data.frame(pcaD = matKNN$D[1],
-                              K = matKNN$K[1],
-                              ROC.AUC = numeric(1),
-                              ROC.CI = numeric(1),
-                              N = nrow(matKNN),
-                              NBNA = length(which(is.na(matKNN[[predCall]])) ) )
+    matAccuracy <- data.frame(pcaD=matKNN$D[1],
+                             K=matKNN$K[1],
+                             ROC.AUC=numeric(1),
+                             ROC.CI=numeric(1),
+                             N=nrow(matKNN),
+                             NBNA=length(which(is.na(matKNN[[predCall]]))))
+
     i <- 1
-    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
+
+    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1) {
         stop("Compute synthetic accuracy with different pca dimension or K\n")
     }
 
     #matCur <- matKNN[which(matKNN$D == pcaD & matKNN$K == k),]
     listKeep <- which(!(is.na(matKNN[[predCall]])) )
-    #listKeep <- which(!(is.na(pedCall[matKNN$sample.id, refCall])) & fCall %in% listCall)
+    #listKeep <- which(!(is.na(pedCall[matKNN$sample.id, refCall])) &
+    #               fCall %in% listCall)
 
     fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
-                    levels = listCall,
-                    labels = listCall)
-
-
+                        levels=listCall, labels=listCall)
 
     predMat <- t(vapply(matKNN[[predCall]][listKeep], FUN=function(x, listCall){
         p <- numeric(length(listCall))
@@ -727,15 +760,8 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall){
     listAccuPop <- list()
 
 
-    df <- data.frame(pcaD = matKNN$D[1],
-                     K = matKNN$K[1],
-                     Call = listCall,
-                     L = NA,
-                     AUC = NA,
-                     H = NA,
-                     stringsAsFactors = FALSE)
-
-
+    df <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1], Call=listCall,
+                        L=NA, AUC=NA, H=NA, stringsAsFactors=FALSE)
 
     resROC <- multiclass.roc(fCall[listKeep], predMat)
     matAccuracy[i, 3] <- as.numeric(resROC$auc)
@@ -743,11 +769,11 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall){
 
     # matAccuracy[i, 6] <- ciBS(fCall[listKeep], predMat, 1,100)
     listROC <- list()
-    for(j in seq_len(length(listCall))){
+    for(j in seq_len(length(listCall))) {
         fCur <- rep(0, length(listKeep))
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
-        if(length(which(fCur == 1))>0){
+        if(length(which(fCur == 1))>0) {
             listROC[[listCall[j]]] <- roc(fCur ~ predMat[,j], ci=TRUE)
             pos <- which(df$Call == listCall[j])
             for(r in seq_len(3)){
@@ -757,9 +783,11 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall){
             listROC[[listCall[j]]] <- NA
         }
     }
-    res <- list(matAUROC.All = matAccuracy,
-                matAUROC.Call = df,
-                listROC.Call = listROC)
+
+    res <- list(matAUROC.All=matAccuracy,
+                    matAUROC.Call=df,
+                    listROC.Call=listROC)
+
     return(res)
 }
 

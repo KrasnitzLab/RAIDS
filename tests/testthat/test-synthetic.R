@@ -208,3 +208,32 @@ test_that("syntheticGeno() must return error when minProb is a character string"
 })
 
 
+#############################################################################
+### Tests prepPedSynthetic1KG() results
+#############################################################################
+
+context("prepPedSynthetic1KG() results")
+
+
+test_that("prepPedSynthetic1KG() must return error when gds is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- "The \'gds\' must be an object of class \'SNPGDSFileClass\'."
+
+    expect_error(prepPedSynthetic1KG(gds="test.gds",  gdsSample="test.gds",
+                study.id="TCGA", popName="21"), error_message)
+})
+
+
+test_that("prepPedSynthetic1KG() must return error when gds is a numerical value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- "The \'gds\' must be an object of class \'SNPGDSFileClass\'."
+
+    expect_error(prepPedSynthetic1KG(gds=23,  gdsSample="test.gds",
+                                     study.id="TCGA", popName="21"), error_message)
+})

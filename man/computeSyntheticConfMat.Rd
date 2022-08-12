@@ -19,8 +19,11 @@ computeSyntheticConfMat(matKNN, pedCall, refCall, predCall, listCall)
 \item{listCall}{TODO array of the possible call}
 }
 \value{
-\code{list} TODO
-with the column popName.
+\code{list} containing 2 entries:
+\itemize{
+\item{confMat} { TODO }
+\item{matAccuracy} { a \code{data.frame} TODO}
+}
 }
 \description{
 TODO

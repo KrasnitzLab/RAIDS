@@ -19,8 +19,12 @@ computeSyntheticROC(matKNN, pedCall, refCall, predCall, listCall)
 \item{listCall}{TODO array of the possible call}
 }
 \value{
-\code{list} TODO
-with the column popName.
+\code{list} containing 3 entries:
+\itemize{
+\item{matAUROC.All}{ TODO }
+\item{matAUROC.Call}{ TODO }
+\item{listROC.Call}{a \code{list} TODO}
+}
 }
 \description{
 TODO
@@ -32,5 +36,5 @@ gds <- "TODO"
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

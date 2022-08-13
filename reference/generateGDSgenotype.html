@@ -63,7 +63,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSgenotype</span><span class="op">(</span><span class="va">gds</span>, <span class="va">PATHGENO</span>, <span class="va">fileLSNP</span>, <span class="va">listSamples</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSgenotype</span><span class="op">(</span><span class="va">gds</span>, <span class="va">PATHGENO</span>, <span class="va">fileLSNP</span>, <span class="va">listSamples</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -84,12 +84,17 @@ with the genotype.</p></dd>
 <dt>listSamples</dt>
 <dd><p>a <code>array</code> with the sample to keep</p></dd>
 
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if the function must print
+messages when running. Default: <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The integer <code>0</code> when successful.</p>
+<p>The integer <code>0L</code> when successful.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

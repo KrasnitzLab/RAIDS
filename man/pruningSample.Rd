@@ -36,7 +36,9 @@ are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 
 \item{sampleCurrent}{a \code{character} string
 corresponding to the sample identifier used in LD pruning done by the
-\code{\link[SNPRelate]{snpgdsLDpruning}}() function.}
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
+corresponding to the sample identifier must exist and be located in the
+\code{PATHSAMPLEGDS} directory.}
 
 \item{study.id}{A \code{string} corresponding to the study
 use in LDpruning}
@@ -66,7 +68,8 @@ function.  Default: \code{FALSE}.}
 
 \item{keepGDSpruned}{a \code{logicial} TODO. Default: \code{TRUE}.}
 
-\item{PATHSAMPLEGDS}{TODO}
+\item{PATHSAMPLEGDS}{a \code{character} string representing the directory
+wehre the GDS Sample file will be created. The directory must exist.}
 
 \item{keepFile}{a \code{logical} indicating if RDS files containing the
 information about the pruned SNVs must be

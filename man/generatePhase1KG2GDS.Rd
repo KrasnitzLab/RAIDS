@@ -5,7 +5,7 @@
 \alias{generatePhase1KG2GDS}
 \title{TODO}
 \usage{
-generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP)
+generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
@@ -19,6 +19,9 @@ the individual identification (Individual.ID) in the pedigree file.
 Default: \code{"./data/sampleGeno"}.}
 
 \item{fileLSNP}{TODO}
+
+\item{verbose}{a \code{logicial} indicating if the function should
+print messages when running. Default: \code{FALSE}.}
 }
 \value{
 TODO a \code{vector} of \code{string}

@@ -380,7 +380,10 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #'
 #' @param listSamples a \code{array} with the sample to keep
 #'
-#' @return The integer \code{0} when successful.
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
+#'
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -391,7 +394,8 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
+generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
+                                    verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern=".+.csv.bz2")
@@ -414,16 +418,20 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
             }
 
             # Not faster but harder to read
-            # matSample[,1] <- rowSums(t(matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)))
+            # matSample[,1] <- rowSums(t(matrix(as.numeric(unlist(strsplit(
+            #                        matSample[,1], "\\|"))),nr=2)))
             # Easier to read
             matSample[matSample[,1] == "0|0",1] <- 0
             matSample[matSample[,1] == "0|1" | matSample[,1] == "1|0",1] <- 1
             matSample[matSample[,1] == "1|1",1] <- 2
 
             g <- as.matrix(matSample)[,1]
+
             write.gdsn(var.geno, g, start=c(1, i), count=c(-1,1))
+
             rm(matSample)
-            print(paste0(listMat1k[pos], " ", i))
+
+            if(verbose) { message(listMat1k[pos], " ", i) }
         }else{
             stop("Missing samples genotype in ", listSamples[i])
         }
@@ -478,7 +486,8 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
 
 
             # Not faster but harder to read
-            # matSample[,1] <- rowSums(t(matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nr=2)))
+            # matSample[,1] <- rowSums(t(matrix(as.numeric(unlist(strsplit(
+            #                      matSample[,1], "\\|"))),nr=2)))
             # Easier to read
             matSample[matSample[,1] == "0|0",1] <- 0
             matSample[matSample[,1] == "0|1" | matSample[,1] == "1|0",1] <- 1
@@ -708,12 +717,16 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
 
             listCount <- table(matAll$count[matAll$count >= minCov])
-            cutOffA <- data.frame(count = unlist(vapply(as.integer(names(listCount)),
-                                                        FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
-                                                        FUN.VALUE = numeric(1), minProb=minProb, eProb= 2 * seqError )),
-                        allele = unlist(vapply(as.integer(names(listCount)),
-                                    FUN=function(x, minProb, eProb){return(max(2,qbinom(minProb, x,eProb)))},
-                                    FUN.VALUE = numeric(1), minProb=minProb, eProb=seqError)))
+            cutOffA <-
+                data.frame(count=unlist(vapply(as.integer(names(listCount)),
+                FUN=function(x, minProb, eProb){
+                    return(max(2,qbinom(minProb, x,eProb))) },
+                FUN.VALUE=numeric(1), minProb=minProb, eProb=2 * seqError )),
+                allele=unlist(vapply(as.integer(names(listCount)),
+                    FUN=function(x, minProb, eProb){
+                            return(max(2,qbinom(minProb, x,eProb))) },
+                FUN.VALUE=numeric(1), minProb=minProb, eProb=seqError)))
+
             row.names(cutOffA) <- names(listCount)
             # Initialize the genotype array at -1
 
@@ -725,7 +738,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
             matAllC <- matAll[listCov,]
 
 
-            # The difference  depth - (nb Ref + nb Alt) can be realisticly explain by sequencing error
+            # The difference  depth - (nb Ref + nb Alt) can be realistically
+            # explain by sequencing error
             listCov <- listCov[(matAllC$count -
                                 (matAllC$File1R + matAllC$File1A)) <
                                 cutOffA[as.character(matAllC$count), "count"]]
@@ -734,14 +748,17 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
             rm(matAll)
 
             g <- as.matrix(rep(-1, nrow(listPos)))
-            # The sample is homozygote if the other known allele have a coverage of 0
+            # The sample is homozygote if the other known allele have a
+            # coverage of 0
             g[listCov][which(matAllC$File1A == 0)] <- 0
             g[listCov][which(matAllC$File1R == 0)] <- 2
 
-            # The sample is heterozygote if explain the coverage of the minor allele by
-            # sequencing error is not realistic.
-            g[listCov][which(matAllC$File1A >= cutOffA[as.character(matAllC$count), "allele"] &
-                        matAllC$File1R >= cutOffA[as.character(matAllC$count), "allele"])] <- 1
+            # The sample is heterozygote if explain the coverage of
+            # the minor allele by sequencing error is not realistic.
+            g[listCov][which(matAllC$File1A >=
+                        cutOffA[as.character(matAllC$count), "allele"] &
+                        matAllC$File1R >= cutOffA[as.character(matAllC$count),
+                                                    "allele"])] <- 1
 
             #g <- as.matrix(g)
             if("geno.ref" %in% ls.gdsn(gdsSample)){
@@ -1079,7 +1096,7 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title fill the pruned.study in the gds file
+#' @title Fill the pruned.study entry in the GDS file
 #'
 #' @description TODO
 #'
@@ -1087,10 +1104,10 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'
 #' @param pruned TODO
 #'
-#' @param sample.id A \code{string} corresponding to
-#' the sample.id
+#' @param sample.id a \code{character} string corresponding to
+#' the sample identifier.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -1168,7 +1185,9 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
         append.gdsn(var.block, listBlock)
         var.block <- compression.gdsn(var.block, "LZ4_RA")
     }
+
     sync.gds(gds)
+
     return(0L)
 }
 
@@ -1183,7 +1202,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' @param snp.lap TODO
 #'
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -1213,7 +1232,7 @@ addUpdateLap <- function(gds, snp.lap) {
 #' @param snp.seg TODO
 #'
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'

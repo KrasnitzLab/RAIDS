@@ -30,7 +30,7 @@ GDS file.}
 \item{sampleCurrent}{A \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{A \code{character} string corresponding to the naome of
+\item{study.id}{A \code{character} string corresponding to the name of
 the study as
 used in \code{\link{pruningSample}} function.}
 

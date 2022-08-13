@@ -571,10 +571,11 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-#' 1 KG GDS file.
+#' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class
+#' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
+#' file.
 #'
 #' @param study.id TODO
 #'
@@ -595,16 +596,15 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' @export
 prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 
-    ## The gds must be an object of class "SNPGDSFileClass"
-    if (!is(gds, "SNPGDSFileClass")) {
-        stop("The \'gds\' must be an object of class \'SNPGDSFileClass\'.")
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds,  "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
     }
 
-    ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
-    if (!inherits(gdsSample, "gdsn.class") &&
-            !inherits(gdsSample, "gds.class")) {
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
         stop("The \'gdsSample\' must be an object of class ",
-                "\'gdsn.class\' or \'gds.class\'")
+                "\'gds.class\'.")
     }
 
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
@@ -612,12 +612,14 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
 
+    ## Get the information from 1KG GDS file
     dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
 
     if(! popName %in% colnames(dataRef)) {
         stop("The population ", popName, " is not supported.")
     }
 
+    ## Assign row names to the information
     row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]

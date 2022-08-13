@@ -11,7 +11,8 @@ generateGDS1KG(
   fileListSNP,
   fileSNPSel,
   fileNameGDS,
-  listSamples = NULL
+  listSamples = NULL,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -43,9 +44,12 @@ The extension of the file must be '.gds'.}
 to samples (must be the sample.ids) that will be retained and added to the
 GDS file. When \code{NULL}, all the samples are retained.
 Default: \code{NULL}.}
+
+\item{verbose}{a \code{logical} indicating if the funciton must print
+messages when running. Default: \code{FALSE}.}
 }
 \value{
-None.
+The integer \code{0L} when successful.
 }
 \description{
 This function generates the GDS file that will contain the

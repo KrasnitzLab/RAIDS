@@ -371,3 +371,23 @@ test_that("pruningSample() must return error when sampleCurrent is a numeric", {
         PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
+
+
+test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'PATHPRUNED\' parameter must be ",
+        "a character string representing an existing directory.")
+
+    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="Sample2",
+        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        PATHSAMPLEGDS=NULL, keepFile=FALSE, PATHPRUNED=2, outPref="pruned"), error_message, fixed=TRUE)
+})

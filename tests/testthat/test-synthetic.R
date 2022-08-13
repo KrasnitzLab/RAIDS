@@ -217,10 +217,7 @@ context("prepPedSynthetic1KG() results")
 
 test_that("prepPedSynthetic1KG() must return error when gds is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-
-    error_message <- "The \'gds\' must be an object of class \'SNPGDSFileClass\'."
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(prepPedSynthetic1KG(gds="test.gds",  gdsSample="test.gds",
                 study.id="TCGA", popName="21"), error_message)
@@ -229,11 +226,23 @@ test_that("prepPedSynthetic1KG() must return error when gds is a character strin
 
 test_that("prepPedSynthetic1KG() must return error when gds is a numerical value", {
 
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+
+    expect_error(prepPedSynthetic1KG(gds=23,  gdsSample="test.gds",
+                            study.id="TCGA", popName="21"), error_message)
+})
+
+
+test_that("prepPedSynthetic1KG() must return error when gds is a numerical value", {
+
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
-    error_message <- "The \'gds\' must be an object of class \'SNPGDSFileClass\'."
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    expect_error(prepPedSynthetic1KG(gds=23,  gdsSample="test.gds",
-                                     study.id="TCGA", popName="21"), error_message)
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+
+    expect_error(prepPedSynthetic1KG(gds=gdsF,  gdsSample="test.gds",
+                            study.id="TCGA", popName="21"), error_message)
 })

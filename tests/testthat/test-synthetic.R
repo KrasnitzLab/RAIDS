@@ -17,7 +17,7 @@ context("select1KGPop() results")
 test_that("select1KGPop() must return error when gds is a character string", {
 
     error_message <- paste0("The \'gds\' must be an object of class ",
-                                "\'gdsn.class\' or \'gds.class\'")
+                                "\'gds.class\'")
 
     expect_error(select1KGPop(gds="test.gds", nbSamples=10L),
                     error_message)

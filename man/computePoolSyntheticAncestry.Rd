@@ -24,8 +24,8 @@ computePoolSyntheticAncestry(
 )
 }
 \arguments{
-\item{gds}{an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-a GDS node pointing to the 1KG GDS file.}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{gds} opened related to
 the sample}

@@ -798,8 +798,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node) or
-#' \link[gdsfmt]{gds.class} (a GDS file) TODO
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the 1KG GDS file.
 #'
 #' @param listSample  a \code{array} with the sample to keep TODO
 #'
@@ -845,8 +845,8 @@ gds2tfam <- function(gds, listSample, pedOUT) {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node) or
-#' \link[gdsfmt]{gds.class} (a GDS file) TODO
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1 KG GDS file.
 #'
 #' @param listSample  a \code{array} with the sample to keep
 #'

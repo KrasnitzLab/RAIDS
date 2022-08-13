@@ -9,10 +9,11 @@ prepPedSynthetic1KG(gds, gdsSample, study.id, popName)
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-1 KG GDS file.}
+\code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.}
 
-\item{gdsSample}{TODO}
+\item{gdsSample}{an object of class
+\code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
+file.}
 
 \item{study.id}{TODO}
 

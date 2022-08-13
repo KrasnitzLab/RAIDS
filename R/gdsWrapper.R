@@ -380,7 +380,10 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #'
 #' @param listSamples a \code{array} with the sample to keep
 #'
-#' @return The integer \code{0} when successful.
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
+#'
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -391,7 +394,8 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
+generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
+                                    verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern=".+.csv.bz2")
@@ -422,9 +426,12 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples) {
             matSample[matSample[,1] == "1|1",1] <- 2
 
             g <- as.matrix(matSample)[,1]
+
             write.gdsn(var.geno, g, start=c(1, i), count=c(-1,1))
+
             rm(matSample)
-            print(paste0(listMat1k[pos], " ", i))
+
+            if(verbose) { message(listMat1k[pos], " ", i) }
         }else{
             stop("Missing samples genotype in ", listSamples[i])
         }

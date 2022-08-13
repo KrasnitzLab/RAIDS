@@ -263,7 +263,10 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' GDS file. When \code{NULL}, all the samples are retained.
 #' Default: \code{NULL}.
 #'
-#' @return None.
+#' @param verbose a \code{logical} indicating if the funciton must print
+#' messages when running. Default: \code{FALSE}.
+#'
+#' @return The integer \code{0L} when successful.
 #'
 #' @details
 #'
@@ -307,7 +310,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
                             fileSNPSel, fileNameGDS,
-                            listSamples=NULL) {
+                            listSamples=NULL, verbose=FALSE) {
 
     ## Validate that the pedigree file exists
     if (! file.exists(fileNamePED)) {
@@ -332,7 +335,6 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     ## Read the pedigree file
     ped1KG <- readRDS(fileNamePED)
 
-
     # list in the file genotype we keep from fileLSNP in generateMapSnvSel
     listKeep <- readRDS(fileListSNP)
 
@@ -340,20 +342,23 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     newGDS <- createfn.gds(fileNameGDS)
     put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
 
-
-    print(paste0("Start ", Sys.time()))
+    if(verbose) { message("Start ", Sys.time()) }
 
     listSampleGDS <- generateGDSSample(newGDS, ped1KG, listSamples)
-    print(paste0("Sample info DONE ", Sys.time()))
+
+    if(verbose) { message("Sample info DONE ", Sys.time()) }
 
     generateGDSSNPinfo(newGDS, fileSNPSel)
-    print(paste0("SNP info DONE ", Sys.time()))
 
+    if(verbose) { message("SNP info DONE ", Sys.time()) }
 
     generateGDSgenotype(newGDS, PATHGENO, fileListSNP, listSampleGDS)
-    print(paste0("Genotype DONE ", Sys.time()))
+
+    if(verbose) { message("Genotype DONE ", Sys.time()) }
 
     closefn.gds(newGDS)
+
+    return(0L)
 }
 
 #' @title TODO

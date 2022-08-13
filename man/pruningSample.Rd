@@ -72,11 +72,13 @@ function.  Default: \code{FALSE}.}
 information about the pruned SNVs must be
 created. Default: \code{FALSE}.}
 
-\item{PATHPRUNED}{a \code{character} string TODO. Default: \code{"."}.}
+\item{PATHPRUNED}{a \code{character} string representing an existing
+directory. The directory must exist. Default: \code{"."}.}
 
 \item{outPref}{a \code{character} string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
-the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
+the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
+E}
 }
 \value{
 The function returns \code{0L} when successful.

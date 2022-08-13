@@ -234,7 +234,7 @@ snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.
 ```
 
 
-#### Step 3. Create a GDS Sample file (1 GDS file per sample)
+### Step 3. Create a GDS Sample file (1 GDS file per sample)
 
 This step requires 4 files as input:
 - The 1KG GDS file

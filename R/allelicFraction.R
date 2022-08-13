@@ -747,13 +747,13 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
 #' @title TODO
 #'
-#' @description Create a data.frame with the allelic fraction TODO
+#' @description Create a data.frame containing the allelic fraction TODO
 #'
-#' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -802,6 +802,16 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
                                 chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9, verbose=FALSE) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
+    }
 
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {

@@ -1,7 +1,7 @@
 #' @title Initialization of the section related to the sample
 #' information in the \code{gds} file.
 #'
-#' @description This function initializesthe section related to the sample
+#' @description This function initializes the section related to the sample
 #' information in the \code{gds} file. The information is extracted from
 #' the \code{data.frame} \code{pedDF} passed to the function.
 #'
@@ -30,6 +30,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
     }
+
     add.gdsn(gds, "sample.id", pedDF[, "Name.ID"])
 
     ## Create a data.frame containing the information form the samples

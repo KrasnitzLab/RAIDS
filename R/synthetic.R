@@ -162,7 +162,7 @@ splitSelectByPop <- function(dataRef) {
 #' @param studyDF TODO
 #'
 #' @param nbSim a single positive \code{integer} representing the number of
-#' simulations per combination of sample and profile. Default: \code{1}.
+#' simulations per combination of sample and profile. Default: \code{1L}.
 #'
 #' @param prefId a \code{character} string TODO. Default: \code{""}.
 #'
@@ -188,14 +188,25 @@ prepSynthetic <- function(gdsSampleFile,
                             listSampleRef,
                             data.id.profile,
                             studyDF,
-                            nbSim=1,
+                            nbSim=1L,
                             prefId="",
                             pRecomb=0.01,
                             minProb=0.999,
                             seqError=0.001) {
 
+    ## The gdsSampleFile must be a character string and the file must exists
+    if (!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
+        stop("The \'gdsSampleFile\' must be a character string representing ",
+                "the GDS Sample information file. The file must exist.")
+    }
+
+    ## The nbSim must be a single positive numeric
+    if (!(isSingleNumber(nbSim) && nbSim > 0)) {
+        stop("The \'nbSim\' must be a single positive integer.")
+    }
+
     ## Open the GDS Sample file
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE)
+    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)

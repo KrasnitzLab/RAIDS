@@ -22,7 +22,7 @@ is Name.ID and the row.name is Name.ID too.}
 the a \code{array} with the sample from pedDF keept
 }
 \description{
-This function initializesthe section related to the sample
+This function initializes the section related to the sample
 information in the \code{gds} file. The information is extracted from
 the \code{data.frame} \code{pedDF} passed to the function.
 }

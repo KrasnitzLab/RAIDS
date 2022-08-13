@@ -21,11 +21,11 @@ computeAllelicFractionDNA(
 )
 }
 \arguments{
-\item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the 1KG GDS file.}
 
-\item{gdsSample}{TODO}
+\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the GDS Sample file.}
 
 \item{sampleCurrent}{A \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
@@ -60,7 +60,7 @@ message when running. Default: \code{FALSE}.}
 a \code{data.frame} with lap for the snv with depth > minCov. TODO
 }
 \description{
-Create a data.frame with the allelic fraction TODO
+Create a data.frame containing the allelic fraction TODO
 }
 \examples{
 

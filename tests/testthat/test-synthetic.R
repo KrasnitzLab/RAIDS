@@ -6,7 +6,6 @@ library(testthat)
 
 
 
-
 #############################################################################
 ### Tests select1KGPop() results
 #############################################################################
@@ -245,4 +244,39 @@ test_that("prepPedSynthetic1KG() must return error when gds is a numerical value
 
     expect_error(prepPedSynthetic1KG(gds=gdsF,  gdsSample="test.gds",
                             study.id="TCGA", popName="21"), error_message)
+})
+
+
+
+
+#############################################################################
+### Tests prepSynthetic() results
+#############################################################################
+
+context("prepSynthetic() results")
+
+
+test_that("prepSynthetic() must return error when gdsSampleFile is a numeric value", {
+
+    error_message <- paste0("The \'gdsSampleFile\' must be a character string representing ",
+                                "the GDS Sample information file. The file must exist.")
+
+    expect_error(prepSynthetic(gdsSampleFile=22, listSampleRef=c("S_1", "S_2"),
+                    data.id.profile+"S_1", studyDF="TCGA", nbSim=1L,
+                    prefId="",  pRecomb=0.01,
+                    minProb=0.999, seqError=0.001), error_message)
+})
+
+
+test_that("prepSynthetic() must return error when nbSim is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- "The \'nbSim\' must be a single positive integer."
+
+    expect_error(prepSynthetic(gdsSampleFile=gdsFIle, listSampleRef=c("S_1", "S_2"),
+                    data.id.profile+"S_1", studyDF="TCGA", nbSim="1L",
+                    prefId="",  pRecomb=0.01,
+                    minProb=0.999, seqError=0.001), error_message)
 })

@@ -26,8 +26,8 @@ pruningSample(
 )
 }
 \arguments{
-\item{gds}{an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-a GDS node pointing to the 1KG GDS file.}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+1 KG GDS file.}
 
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the
@@ -84,7 +84,8 @@ E}
 The function returns \code{0L} when successful.
 }
 \description{
-Compute the list of pruned SNVs for a specific sample. When
+This function computes the list of pruned SNVs for a
+specific sample. When
 a group of SNVs are in linkage disequilibrium, only one SNV from that group
 is retained. The linkage disequilibrium is calculated with the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function.

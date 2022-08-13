@@ -4,12 +4,10 @@
 #' @description The function randomly selects a fixed number of reference
 #' for each subcontinental population present in the 1KG GDS file. When a
 #' subcontinental population has less samples than the fixed number, all
-#' samples from the
-#' subcontinental population are selected.
+#' samples from the subcontinental population are selected.
 #'
-#' @param gds an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
-#' \link[gdsfmt]{gds.class} (a GDS file) containing the information about
-#' 1000 Genome (1KG GDS file).
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param nbSamples a single positive \code{integer} representing the number
 #' of samples that will be selected for each subcontinental population present
@@ -39,10 +37,9 @@
 #' @export
 select1KGPop <- function(gds, nbSamples) {
 
-    ## The gds must be an object of class "gdsn.class" or "gds.class"
-    if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class ",
-             "\'gdsn.class\' or \'gds.class\'")
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
     }
 
     ## Validate that nbSamples parameter is a single positive numeric

@@ -2,13 +2,11 @@
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a 1KG
-#' GDS file.
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
+#' the opened 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{\link[gdsfmt]{gdsn.class}}
-#' (a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
-#' the information about one sample (a GDS Sample file).
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -59,17 +57,14 @@
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001, verbose=FALSE) {
 
-    ## The gds must be an object of class "gdsn.class" or "gds.class"
-    if (!inherits(gds, "gdsn.class") && !inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class ",
-             "\'gdsn.class\' or \'gds.class\'")
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
     }
 
-    ## The gdsSample must be an object of class "gdsn.class" or "gds.class"
-    if (!inherits(gdsSample, "gdsn.class") &&
-            !inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class ",
-                    "\'gdsn.class\' or \'gds.class\'")
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
     }
 
     ## The minCov must be a single positive number

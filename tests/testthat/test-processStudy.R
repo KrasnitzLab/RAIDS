@@ -194,8 +194,7 @@ test_that("pruningSample() must return error when gds is a character string", {
     gdsFile <- file.path(data.dir, "1KG_Test.gds")
     sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
 
-    error_message <- paste0("The \'gds\' parameter must be gdsn.class object pointing ",
-                                "to the 1KG GDS file.")
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(pruningSample(gds=gdsFile, method="corr", sampleCurrent="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),

@@ -298,13 +298,14 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @title Compute the list of pruned SNVs for a specific sample using the
 #' information from the 1KG GDS file and a linkage disequilibrium analysis
 #'
-#' @description  Compute the list of pruned SNVs for a specific sample. When
+#' @description This function computes the list of pruned SNVs for a
+#' specific sample. When
 #' a group of SNVs are in linkage disequilibrium, only one SNV from that group
 #' is retained. The linkage disequilibrium is calculated with the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1 KG GDS file.
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
@@ -386,10 +387,9 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             PATHPRUNED=".",
                             outPref="pruned") {
 
-    ## The parameter gds must be gdsn.class object
-    if(!(is(gds, "gds.class"))) {
-        stop("The \'gds\' parameter must be gdsn.class object pointing ",
-                "to the 1KG GDS file.")
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
     }
 
     ## The parameter sampleCurrent must be a character string
@@ -1807,8 +1807,8 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
@@ -1887,8 +1887,8 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
@@ -1992,8 +1992,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample

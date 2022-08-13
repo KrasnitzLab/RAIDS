@@ -116,12 +116,12 @@ The main steps are:
 3. Find the optimized parameters for the ancestry inference
 4. Run the ancestry inference on the external study
 
-In the following sections, those main steps are described in details.
+In the following sections, those main sections are described in details.
 
 <br>
 <br>
 
-## Step 1 - Formatting the information from 1000 Genomes (optional)
+## Step 1 - Format the information from 1000 Genomes (optional)
 
 
 ```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
@@ -131,19 +131,26 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 
 ******
 
-<span style="color:darkred;font-weight:bold">Beware that a pre-processed 1KG 
-GDS file is available at this address:</span>
+This step generates 3 important files:
+
+- The 1KG GDS File
+- The SNP Annotation GDS file
+- The SNP Retained VCF file
+
+<span style="color:darkred;font-weight:bold">Beware that the 3 pre-processed 
+files are available at this address:</span>
 
 <span style="color:red">
-[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds)
+[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
 </span>
 
-<span style="color:darkred;font-weight:bold">The size of the file is 15GB.</span>
+<span style="color:darkred;font-weight:bold">The size of the 1KG GDS file is 15GB.</span>
+<span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on hg38.</span>
 <span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span>
 
 ******
 
-The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this step.
+The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this section.
 
 
 ## Step 2 - Format information from an external study to get it ready for ancestry inference
@@ -158,53 +165,66 @@ knitr::include_graphics("MainSteps_Step2_v01.png")
 
 The required steps are:
 
-1. Download or create the 3 reference files
-2. Extract the read coverage at each SNP position in the 1KG GDS file
-3. Pruned
+1. Create a directory containing the 3 required reference files
+2. Extract the read coverage of the sample at each SNP location present in the 1KG GDS file
+3. Pruned SNPs using linkage desequilibrium analysis
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
 1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.
 
-### Step 1. Download or create the 3 reference files
+### Step 1. Create a directory containing the 3 required reference files
 
+The 3 required reference files can be downloaded:
+
+```{r download, echo=TRUE, eval=FALSE}
+## The 1KG GDS file
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
+## The SNP Annotation GDS file
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
+## The SNP Retained VCF file
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
+```
 
-In  a directory PATH_REF (I will use this name PATH_REF to refer at this directory)
+The 3 files should be stored in the same directory. For the current 
+demonstration, the directory will be refered as **PATH_REF**.
 
-### Step 2. Extract the read coverage at each SNP position in the 1KG GDS file
+In the situation where you would need to generate your own reference files, 
+you can refer to the vignette 
+[Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html).
 
-We used here snp-pileup from Facet
+### Step 2. Extract sample coverage at each SNP location present in the 1KG GDS file
 
-<br>
-<br>
+This step requires the installation of the external code 
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) which 
+is associated to the facets package [@Shen2016]. 
 
+Given a VCF file containing SNP locations, [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
+application outputs, for each location, 
+the counts of the reference and alternative nucleotide from an BAM input.
 
-You need a __ped__ file (call later FILE_PED) with the column:
+At this step, [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used to 
+generate a Sample VCF file that will contain the reference and alternative 
+nucleotides counts at each SNP location present in the reference 1KG GDS file.
 
-"Case.ID" Patient identifier     
-"Name.ID"* This the unique id of the table
-"Sample.Type"* Ex Primary Tumor or Blood Derived Normal (can be too WES or RNAseq) 
-"Diagnosis"* C or N (cancer normal) this is for the sample not the patient
-"Source"* The tissue ex Ovary 
+Beware that the name assigned to the Sample VCF file will correspond to the 
+Sample identifier (Name.ID) in the following analysis. For example, a VCF 
+called "Sample.01.txt.gz" would be associated to the sample "Sample.01". 
 
-must contain the information for all the samples (you can have more) process 
-at the same time.
-
-
-You need the extra code in the package Facet to extract the SNV
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
-[@Shen2016].
-
-The output from snp-pileup should be Name.ID.txt 
-(snp-pileup add .gz to the filename) 
 
 ```{r snpPileup, echo=TRUE, eval=FALSE}
 
-    snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
-    
+## Description of the parameters
+## -g : Compresses the output file with BGZF
+## -d5000 : Sets the maximum depth to 5000
+## -q15 : Sets the minimum threshold for mapping quality to 15
+## -Q20 : Sets the minimum threshold for base quality to 20
+## -r0 : Sets the minimum read counts for a position to be output to 0
+## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs
+## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application
+## FILEBAM.bam : The aligned reads from the sample used as input
+snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
+
 ```
 
 

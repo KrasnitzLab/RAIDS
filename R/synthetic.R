@@ -762,7 +762,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     df <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1], Call=listCall,
                         L=NA, AUC=NA, H=NA, stringsAsFactors=FALSE)
 
-    resROC <- multiclass.roc(fCall[listKeep], predMat)
+    resROC <- suppressWarnings(multiclass.roc(fCall[listKeep], predMat))
     matAccuracy[i, 3] <- as.numeric(resROC$auc)
     matAccuracy[i, 4] <- 0
 
@@ -773,7 +773,8 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
         if(length(which(fCur == 1))>0) {
-            listROC[[listCall[j]]] <- roc(fCur ~ predMat[,j], ci=TRUE)
+            listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
+                                                            ci=TRUE))
             pos <- which(df$Call == listCall[j])
             for(r in seq_len(3)){
                 df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])

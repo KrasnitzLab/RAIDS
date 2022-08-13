@@ -13,7 +13,7 @@ addUpdateSegment(gds, snp.seg)
 \item{snp.seg}{TODO}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

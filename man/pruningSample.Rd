@@ -4,7 +4,7 @@
 \name{pruningSample}
 \alias{pruningSample}
 \title{Compute the list of pruned SNVs for a specific sample using the
-information from the 1KG GDS file and the}
+information from the 1KG GDS file and a linkage disequilibrium analysis}
 \usage{
 pruningSample(
   gds,

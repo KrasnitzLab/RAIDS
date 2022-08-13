@@ -9,8 +9,8 @@ identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+1KG GDS file.}
 
 \item{maf}{a single \code{numeric} representing the threshold for the minor
 allele frequency. Only the SNPs with ">= maf" will be used.

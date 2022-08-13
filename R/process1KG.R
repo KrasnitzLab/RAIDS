@@ -372,6 +372,9 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param fileLSNP TODO
 #'
+#' @param verbose a \code{logicial} indicating if the function should
+#' print messages when running. Default: \code{FALSE}.
+#'
 #' @return TODO a \code{vector} of \code{string}
 #'
 #' @examples
@@ -386,8 +389,13 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gds, gdsPhase,
-                            PATHGENO,
-                            fileLSNP) {
+                            PATHGENO, fileLSNP, verbose=FALSE) {
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose) && length(verbose) == 1)) {
+        stop("The \'verbose\' parameters must be a single logical value ",
+             "(TRUE or FALSE).")
+    }
 
     sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
     listSNP <- readRDS(fileLSNP)
@@ -395,13 +403,16 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
     var.phase <- NULL
     for(i in seq_len(length(sample.id))){
 
-        print(paste0("S ", i, " ", Sys.time()))
+        if (verbose) { message("S ", i, " ", Sys.time()) }
 
         file1KG <- file.path(PATHGENO, paste0(sample.id[i],".csv.bz2"))
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
-        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
-        print(paste0("GDS ", i, " ", Sys.time()))
+        matSample <- matrix(as.numeric(unlist(strsplit(matSample[, 1],
+                                                      "\\|"))), nrow=2)[1,]
+
+        if (verbose) { message("GDS ", i, " ", Sys.time()) }
+
         if(! ("phase" %in% ls.gdsn(gdsPhase))){
             var.phase <- add.gdsn(gdsPhase, "phase",
                                     valdim=c(length(listSNP), 1),
@@ -417,10 +428,10 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
         }
         rm(matSample)
     }
+
     readmode.gdsn(var.phase)
 
     return(0L)
-
 }
 
 #' @title Identify genetically unrelated patients in GDS 1KG file
@@ -431,8 +442,8 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 #' between the patients.
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+#' 1KG GDS file.
 #'
 #' @param maf a single \code{numeric} representing the threshold for the minor
 #' allele frequency. Only the SNPs with ">= maf" will be used.

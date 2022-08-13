@@ -296,7 +296,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
 
 #' @title Compute the list of pruned SNVs for a specific sample using the
-#' information from the 1KG GDS file and the
+#' information from the 1KG GDS file and a linkage disequilibrium analysis
 #'
 #' @description  Compute the list of pruned SNVs for a specific sample. When
 #' a group of SNVs are in linkage disequilibrium, only one SNV from that group

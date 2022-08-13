@@ -96,9 +96,10 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     posCur <- which(study.annot$data.id == sampleCurrent &
                         study.annot$study.id == study.id)
 
-    # g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur), count = c(-1,1))[listSNP]
-    # g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i), count = c(-1,1))[listSNP]
-
+    # g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur),
+    #            count = c(-1,1))[listSNP]
+    # g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
+    #            count = c(-1,1))[listSNP]
 
     ## Extract SNV coverage from GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
@@ -120,7 +121,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                                             "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unkown
+                    normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unknown
                     pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
@@ -133,7 +134,8 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     rm(cnt.total, snp.pruned, listKeepPruned)
 
 
-    if("normal.geno" %in% ls.gdsn(node=gdsSample)) { # if normal.geno exist mean there is count not in the ref
+    if("normal.geno" %in% ls.gdsn(node=gdsSample)) {
+        # if normal.geno exist mean there is count not in the ref
 
         # I have other genotype than 1KG
         if (verbose) { message("Genotype") }
@@ -320,7 +322,8 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 
     blcSNV <- data.frame(block = cumsum(z[,2])[z[,2] == 0],
                 snv = z[z[,2] == 0, 3])
-    listAF <- read.gdsn(index.gdsn(gds,"snp.AF"))
+
+    listAF <- read.gdsn(index.gdsn(gds, "snp.AF"))
 
     # Compute if the block is LOH
     homoBlock$logLHR <- rep(0, nrow(homoBlock))
@@ -686,9 +689,12 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
                         start <- k
 
-
-                        if(nrow(snp.hetero) - start < w){ # Close the segment
-                            lapCur <- median(apply(snp.hetero[start:nrow(snp.hetero), c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[start:nrow(snp.hetero),c("cnt.ref", "cnt.alt")])))
+                        if(nrow(snp.hetero) - start < w) { # Close the segment
+                            lapCur <-
+                                median(apply(snp.hetero[start:nrow(snp.hetero),
+                                    c("cnt.ref", "cnt.alt")], 1, min) /
+                                (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                    c("cnt.ref", "cnt.alt")])))
 
 
                             listBlockAR[[j]] <- c(listHetero[start],
@@ -703,7 +709,11 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
                         }
                     }else{ # keep the same region
                         if((nrow(snp.hetero) - k ) < w){ # close
-                            lapCur <- median(apply(snp.hetero[start:nrow(snp.hetero), c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[start:nrow(snp.hetero),c("cnt.ref", "cnt.alt")])))
+                            lapCur <-
+                                median(apply(snp.hetero[start:nrow(snp.hetero),
+                                    c("cnt.ref", "cnt.alt")], 1, min) /
+                                (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                    c("cnt.ref", "cnt.alt")])))
 
                             listBlockAR[[j]] <- c(listHetero[start],
                                                     segImb$end[i], lapCur)
@@ -722,7 +732,9 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
                     }
                 }# End while
             }else {
-                lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")], 1, min) / (rowSums(snp.hetero[,c("cnt.ref", "cnt.alt")])))
+                lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
+                                1, min) / (rowSums(snp.hetero[,c("cnt.ref",
+                                                        "cnt.alt")])))
 
                 listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
 
@@ -751,7 +763,7 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id A \code{character} string corresponding to the naome of
+#' @param study.id A \code{character} string corresponding to the name of
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'

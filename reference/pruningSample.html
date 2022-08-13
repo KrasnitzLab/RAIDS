@@ -111,7 +111,9 @@ are: "corr", "r", "dprime" and "composite". Default: <code>"corr"</code>.</p></d
 <dt>sampleCurrent</dt>
 <dd><p>a <code>character</code> string
 corresponding to the sample identifier used in LD pruning done by the
-<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function.</p></dd>
+<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. A GDS Sample file
+corresponding to the sample identifier must exist and be located in the
+<code>PATHSAMPLEGDS</code> directory.</p></dd>
 
 
 <dt>study.id</dt>
@@ -161,7 +163,8 @@ function.  Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>PATHSAMPLEGDS</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string representing the directory
+wehre the GDS Sample file will be created. The directory must exist.</p></dd>
 
 
 <dt>keepFile</dt>

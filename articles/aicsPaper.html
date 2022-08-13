@@ -274,9 +274,10 @@ sample “Sample.01”.</p>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 PATH_REF<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz PATH_OUT<span class="sc">/</span>Name.ID.txt FILEBAM.bam</span></code></pre></div>
-<div class="section level5">
-<h5 id="step-3--create-a-gds-sample-file-1-gds-file-per-sample">Step 3. Create a GDS Sample file (1 GDS file per sample)<a class="anchor" aria-label="anchor" href="#step-3--create-a-gds-sample-file-1-gds-file-per-sample"></a>
-</h5>
+</div>
+<div class="section level4">
+<h4 id="step-3--create-a-gds-sample-file-1-gds-file-per-sample">Step 3. Create a GDS Sample file (1 GDS file per sample)<a class="anchor" aria-label="anchor" href="#step-3--create-a-gds-sample-file-1-gds-file-per-sample"></a>
+</h4>
 <p>This step requires 4 files as input: - The 1KG GDS file - The SNP
 Annotation GDS file - The SNP Retained VCF file - The VCF Sample
 file</p>
@@ -329,7 +330,6 @@ file</p>
 <span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>                      <span class="at">batch =</span> <span class="dv">1</span>,</span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>                      <span class="at">studyDF =</span> studyDF,</span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>                      <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)<span class="er">))</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level4">
 <h4 id="step-4--select-a-pruned-subset-of-the-single-nucleotide-variants">Step 4. Select a pruned subset of the single nucleotide

@@ -9,9 +9,8 @@ subcontinental population present in the 1KG GDS file}
 select1KGPop(gds, nbSamples)
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gdsn.class} (a GDS node), or
-\link[gdsfmt]{gds.class} (a GDS file) containing the information about
-1000 Genome (1KG GDS file).}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{nbSamples}{a single positive \code{integer} representing the number
 of samples that will be selected for each subcontinental population present
@@ -35,8 +34,7 @@ super-population assigned to the sample. }
 The function randomly selects a fixed number of reference
 for each subcontinental population present in the 1KG GDS file. When a
 subcontinental population has less samples than the fixed number, all
-samples from the
-subcontinental population are selected.
+samples from the subcontinental population are selected.
 }
 \examples{
 

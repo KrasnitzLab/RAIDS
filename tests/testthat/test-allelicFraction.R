@@ -159,7 +159,7 @@ test_that("getTableSNV() must return error when gds is character string", {
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'gds\' must be an object of class ",
-                                "\'gdsn.class\' or \'gds.class\'")
+                                "\'gds.class\'.")
 
     expect_error(getTableSNV(gds="HELLO", gdsSample=gdsF,
                         sampleCurrent="TEST", study.id="TEST",
@@ -175,7 +175,7 @@ test_that("getTableSNV() must return error when gdsSample is character string", 
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'gdsSample\' must be an object of class ",
-                            "\'gdsn.class\' or \'gds.class\'")
+                            "\'gds.class\'.")
 
     expect_error(getTableSNV(gds=gdsF, gdsSample="BABY",
                         sampleCurrent="TEST", study.id="TEST",

@@ -13,7 +13,7 @@ addUpdateLap(gds, snp.lap)
 \item{snp.lap}{TODO}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

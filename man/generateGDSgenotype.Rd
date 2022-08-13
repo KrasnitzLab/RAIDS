@@ -5,7 +5,7 @@
 \alias{generateGDSgenotype}
 \title{This function create the field genotype in the gds file}
 \usage{
-generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples)
+generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose = FALSE)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
@@ -16,9 +16,12 @@ with the genotype.}
 \item{fileLSNP}{TODO list of SNP to keep in the file genotype}
 
 \item{listSamples}{a \code{array} with the sample to keep}
+
+\item{verbose}{a \code{logical} indicating if the function must print
+messages when running. Default: \code{FALSE}.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

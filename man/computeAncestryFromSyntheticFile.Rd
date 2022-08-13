@@ -24,11 +24,13 @@ computeAncestryFromSyntheticFile(
 )
 }
 \arguments{
-\item{gds}{an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-a GDS node pointing to the 1KG GDS file.}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{gds} opened related to
 the sample}
+
+\item{listFiles}{TODO.}
 
 \item{sample.ana.id}{TODO}
 
@@ -36,9 +38,11 @@ the sample}
 
 \item{study.id.syn}{TODO}
 
-\item{np}{TODO}
+\item{np}{a single \code{integer} representing the number of CPU to use.
+Default: \code{1L}.}
 
-\item{listCatPop}{TODO}
+\item{listCatPop}{TODO,
+Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{fieldPopIn1KG}{TODO}
 
@@ -58,7 +62,7 @@ the sample}
 (para snpgdsPCA)}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors
+a \code{list} TODO with the sample.id and eigenvectors
 and a table with KNN callfor different K and pca dimension.
 }
 \description{

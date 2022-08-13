@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{addGDSStudyPruning}
 \alias{addGDSStudyPruning}
-\title{fill the pruned.study in the gds file}
+\title{Fill the pruned.study entry in the GDS file}
 \usage{
 addGDSStudyPruning(gds, pruned, sample.id)
 }
@@ -12,11 +12,11 @@ addGDSStudyPruning(gds, pruned, sample.id)
 
 \item{pruned}{TODO}
 
-\item{sample.id}{A \code{string} corresponding to
-the sample.id}
+\item{sample.id}{a \code{character} string corresponding to
+the sample identifier.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

@@ -17,13 +17,11 @@ getTableSNV(
 )
 }
 \arguments{
-\item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a 1KG
-GDS file.}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
+the opened 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{\link[gdsfmt]{gdsn.class}}
-(a GDS node), or \code{\link[gdsfmt]{gds.class}} (a GDS file) containing
-the information about one sample (a GDS Sample file).}
+\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the GDS Sample file.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}

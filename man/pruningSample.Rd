@@ -4,7 +4,7 @@
 \name{pruningSample}
 \alias{pruningSample}
 \title{Compute the list of pruned SNVs for a specific sample using the
-information from the 1KG GDS file and the}
+information from the 1KG GDS file and a linkage disequilibrium analysis}
 \usage{
 pruningSample(
   gds,
@@ -26,8 +26,8 @@ pruningSample(
 )
 }
 \arguments{
-\item{gds}{an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-a GDS node pointing to the 1KG GDS file.}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+1 KG GDS file.}
 
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the
@@ -72,17 +72,20 @@ function.  Default: \code{FALSE}.}
 information about the pruned SNVs must be
 created. Default: \code{FALSE}.}
 
-\item{PATHPRUNED}{a \code{character} string TODO. Default: \code{"."}.}
+\item{PATHPRUNED}{a \code{character} string representing an existing
+directory. The directory must exist. Default: \code{"."}.}
 
 \item{outPref}{a \code{character} string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
-the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
+the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
+E}
 }
 \value{
 The function returns \code{0L} when successful.
 }
 \description{
-Compute the list of pruned SNVs for a specific sample. When
+This function computes the list of pruned SNVs for a
+specific sample. When
 a group of SNVs are in linkage disequilibrium, only one SNV from that group
 is retained. The linkage disequilibrium is calculated with the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function.

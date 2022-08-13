@@ -296,15 +296,16 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
 
 #' @title Compute the list of pruned SNVs for a specific sample using the
-#' information from the 1KG GDS file and the
+#' information from the 1KG GDS file and a linkage disequilibrium analysis
 #'
-#' @description  Compute the list of pruned SNVs for a specific sample. When
+#' @description This function computes the list of pruned SNVs for a
+#' specific sample. When
 #' a group of SNVs are in linkage disequilibrium, only one SNV from that group
 #' is retained. The linkage disequilibrium is calculated with the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1 KG GDS file.
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
@@ -349,13 +350,13 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' information about the pruned SNVs must be
 #' created. Default: \code{FALSE}.
 #'
-#' @param PATHPRUNED a \code{character} string TODO. Default: \code{"."}.
+#' @param PATHPRUNED a \code{character} string representing an existing
+#' directory. The directory must exist. Default: \code{"."}.
 #'
 #' @param outPref a \code{character} string that represents the prefix of the
 #' RDS files that will be generated. The RDS files are only generated when
 #' the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
-#'
-#'
+#'E
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
@@ -386,10 +387,9 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             PATHPRUNED=".",
                             outPref="pruned") {
 
-    ## The parameter gds must be gdsn.class object
-    if(!(is(gds, "gds.class"))) {
-        stop("The \'gds\' parameter must be gdsn.class object pointing ",
-                "to the 1KG GDS file.")
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
     }
 
     ## The parameter sampleCurrent must be a character string
@@ -431,6 +431,13 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     ## The parameter keepFile must be a logical
     if(!is.logical(keepFile)) {
         stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
+    }
+
+    ## The parameter PATHPRUNED must be a character string representing an
+    ## existing path
+    if(!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
+        stop("The \'PATHPRUNED\' parameter must be a character string ",
+                "representing an existing directory.")
     }
 
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
@@ -1800,8 +1807,8 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
@@ -1880,8 +1887,8 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
@@ -1985,11 +1992,13 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #'
 #' @description TODO
 #'
-#' @param gds an \code{object} of class \code{\link[gdsfmt]{gdsn.class}},
-#' a GDS node pointing to the 1KG GDS file.
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{gds} opened related to
 #' the sample
+#'
+#' @param listFiles TODO.
 #'
 #' @param sample.ana.id TODO
 #'
@@ -1997,9 +2006,11 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #'
 #' @param study.id.syn TODO
 #'
-#' @param np TODO
+#' @param np a single \code{integer} representing the number of CPU to use.
+#' Default: \code{1L}.
 #'
-#' @param listCatPop TODO
+#' @param listCatPop TODO,
+#' Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param fieldPopIn1KG TODO
 #'
@@ -2018,7 +2029,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' @param missing.rate number of eigenvectors in PCA
 #' (para snpgdsPCA)
 #'
-#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
 #'
 #' @examples
@@ -2030,23 +2041,23 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' @encoding UTF-8
 #' @export
 computeAncestryFromSyntheticFile <- function(gds, gdsSample,
-                                             listFiles,
-                                             sample.ana.id,
-                                             spRef,
-                                             study.id.syn,
-                                             np = 1L,
-                                             listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
-                                             fieldPopIn1KG = "superPop",
-                                             fieldPopInfAnc = "SuperPop",
-                                             kList = seq(2,15,1),
-                                             pcaList = 2:15,
-                                             algorithm="exact",
-                                             eigen.cnt=32L,
-                                             missing.rate=0.025) {
+                            listFiles,
+                            sample.ana.id,
+                            spRef,
+                            study.id.syn,
+                            np=1L,
+                            listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                            fieldPopIn1KG="superPop",
+                            fieldPopInfAnc="SuperPop",
+                            kList=seq(2,15,1),
+                            pcaList=2:15,
+                            algorithm="exact",
+                            eigen.cnt=32L,
+                            missing.rate=0.025) {
 
     KNN.list <- list()
 
-    for(j in seq_len(length(listFiles))){
+    for(j in seq_len(length(listFiles))) {
         # We have to test if the file exist and format is OK
         KNN.list[[j]] <- readRDS(listFiles[j])
     }
@@ -2054,27 +2065,28 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
     KNN.sample.syn <- do.call(rbind, KNN.list)
 
     pedSyn <- prepPedSynthetic1KG(gds, gdsSample,
-                                  study.id.syn, fieldPopIn1KG)
+                                    study.id.syn, fieldPopIn1KG)
 
 
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
-                                           fieldPopIn1KG, fieldPopInfAnc,
-                                           listCatPop)
+                                            fieldPopIn1KG, fieldPopInfAnc,
+                                            listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample, sample.ana.id,
-                                         study.id.ref = "Ref.1KG", np=np,
-                                         algorithm=algorithm,
-                                         eigen.cnt=eigen.cnt)
+                                            study.id.ref="Ref.1KG", np=np,
+                                            algorithm=algorithm,
+                                            eigen.cnt=eigen.cnt)
 
 
     listKNNSample <- computeKNNRefSample(listPCASample,
-                                         listCatPop, spRef,
-                                         kList = seq(2,15,1), pcaList = seq(2,15,1))
+                                            listCatPop, spRef,
+                                            kList = seq(2, 15, 1),
+                                            pcaList = seq(2, 15, 1))
 
     res <- list(pcaSample=listPCASample,
-                paraSample=listParaSample,
-                KNNSample=listKNNSample)
+                    paraSample=listParaSample,
+                    KNNSample=listKNNSample)
 
     return(res)
 }

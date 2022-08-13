@@ -425,3 +425,21 @@ test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
     expect_error(addRef2GDS1KG(fileNameGDS=fileGDS, filePart=fileNot),
                  error_message)
 })
+
+
+
+#############################################################################
+### Tests generatePhase1KG2GDS() results
+#############################################################################
+
+context("generatePhase1KG2GDS() results")
+
+test_that("generatePhase1KG2GDS() must return error when verbose is a numeric value", {
+
+    error_message <- paste0("The \'verbose\' parameters must ",
+                        "be a single logical value (TRUE or FALSE).")
+
+    expect_error(generatePhase1KG2GDS(gds="test.gds", gdsPhase="test",
+                PATHGENO="test", fileLSNP="test", verbose=22),
+                 error_message, fixed=TRUE)
+})

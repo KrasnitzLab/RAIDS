@@ -612,12 +612,14 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
 
+    ## Get the information from 1KG GDS file
     dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
 
     if(! popName %in% colnames(dataRef)) {
         stop("The population ", popName, " is not supported.")
     }
 
+    ## Assign row names to the information
     row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]

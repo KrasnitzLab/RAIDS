@@ -8,7 +8,7 @@
 #' entry present in the \code{listSamples} parameter.
 #'
 #' @param PATHGENO a \code{character} string representing the path to the
-#' directory containing the output of SNP-pileup for each sample. The
+#' directory containing the VCF output of SNP-pileup for each sample. The
 #' SNP-pileup files must be compressed (gz files) and have the name identifiers
 #' of the samples. A sample with "Name.ID" identifier would have an
 #' associated SNP-pileup file called "Name.ID.txt.gz".
@@ -314,7 +314,9 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param sampleCurrent  a \code{character} string
 #' corresponding to the sample identifier used in LD pruning done by the
-#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
+#' corresponding to the sample identifier must exist and be located in the
+#' \code{PATHSAMPLEGDS} directory.
 #'
 #' @param study.id A \code{string} corresponding to the study
 #' use in LDpruning
@@ -344,7 +346,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param keepGDSpruned a \code{logicial} TODO. Default: \code{TRUE}.
 #'
-#' @param PATHSAMPLEGDS TODO
+#' @param PATHSAMPLEGDS a \code{character} string representing the directory
+#' wehre the GDS Sample file will be created. The directory must exist.
 #'
 #' @param keepFile a \code{logical} indicating if RDS files containing the
 #' information about the pruned SNVs must be
@@ -428,6 +431,13 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                 "(TRUE or FALSE).")
     }
 
+    ## The parameter PATHSAMPLEGDS must be a character string representing an
+    ## existing path
+    if(!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
+        stop("The \'PATHSAMPLEGDS\' parameter must be a character string ",
+             "representing an existing directory.")
+    }
+
     ## The parameter keepFile must be a logical
     if(!is.logical(keepFile)) {
         stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
@@ -440,23 +450,23 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                 "representing an existing directory.")
     }
 
+    fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent, ".gds"))
+
+    ## The GDS Sample file must exists
+    if(!(file.exists(fileGDSSample))) {
+        stop("The GDS Sample file \'", fileGDSSample, " does not exist.")
+    }
+
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
     fileObj <- file.path(PATHPRUNED, paste0(outPref, ".Obj.rds"))
-
-
-    if(! is.null(PATHSAMPLEGDS)) {
-        fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent,
-                                                            ".gds"))
-    } else {
-        stop("The PATHSAMPLEGDS parameter that represent the path ",
-                "to the GDS sample is NULL.")
-    }
 
     snp.id <- read.gdsn(node=index.gdsn(gds, "snp.id"))
 
     sample.id <- read.gdsn(node=index.gdsn(gds, "sample.id"))
 
+    ## Open the Sample GDS file
     gdsSample <- openfn.gds(filename=fileGDSSample)
+
     study.annot <- read.gdsn(node=index.gdsn(gdsSample, "study.annot"))
 
     posSample <- which(study.annot$data.id == sampleCurrent &

@@ -62,7 +62,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     df <- NULL
 
     if(is.null(freqCutoff)){
-        snp.AF = read.gdsn(index.gdsn(gds, "snp.AF"))
+        snp.AF <- read.gdsn(index.gdsn(gds, "snp.AF"))
         df <- data.frame(CHROM=snp.chromosome,
                             POS=as.integer(snp.position + offset),
                             ID=rep(".", length(snp.chromosome)),

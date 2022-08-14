@@ -36,6 +36,9 @@ set.seed(121444)
 **Compiled date**: `r Sys.Date()`<br />
 **License**: `r packageDescription("RAIDS")[["License"]]`<br />
 
+<style>
+div.whitesmoke pre.r { background-color:#fafafb; }
+</style>
 
 # Licensing 
 
@@ -87,6 +90,7 @@ To install the latest version accessible on the
 [RAIDS Github Website](https://github.com/KrasnitzLab/RAIDS "RAIDS Github Site"), 
 the `r CRANpkg("devtools")` package is required.
 
+<div class="whitesmoke">
 ```{r installDemo01, eval=FALSE}
 ## Load required package
 library(devtools)
@@ -94,6 +98,7 @@ library(devtools)
 ## Install the latest version of RAIDS
 devtools::install_github('KrasnitzLab/RAIDS')
 ```
+</div>
 
 <br>
 <br>
@@ -146,12 +151,15 @@ files are available at this address:</span>
 
 <span style="color:darkred;font-weight:bold">The size of the 1KG GDS file is 15GB.</span>
 <span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on hg38.</span>
-<span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span>
+
+<span style="color:darkred;font-weight:bold">This section can be skipped if 
+you choose to use the pre-processed files.</span>
 
 ******
 
 The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this section.
 
+<br>
 
 ## Step 2 - Format information from an external study to get it ready for ancestry inference
 
@@ -173,25 +181,39 @@ Beware that a mapped BAM file is needed for each sample. The reference genome
 used for the mapping must correspond to the one used to generate the 
 1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.
 
+<br>
+
 ### Step 1. Create a directory containing the 3 required reference files
 
 The 3 required reference files can be downloaded:
 
+<div class="whitesmoke">
 ```{r download, echo=TRUE, eval=FALSE}
+###############################
 ## The 1KG GDS file
+###############################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
+
+###############################
 ## The SNP Annotation GDS file
+###############################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
+
+###############################
 ## The SNP Retained VCF file
+###############################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
 ```
+</div>
 
 The 3 files should be stored in the same directory. For the current 
 demonstration, the directory will be refered as **PATH_REF**.
 
-In the situation where you would need to generate your own reference files, 
+For more information on how to generate your own reference files, 
 you can refer to the vignette 
 [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html).
+
+<br>
 
 ### Step 2. Generate a Sample VCF file (1 file per sample)
 
@@ -203,8 +225,9 @@ Given a VCF file containing SNP locations, [snp-pileup](https://github.com/mskcc
 application outputs, for each location, 
 the counts of the reference and alternative nucleotide from an BAM input.
 
-At this step, [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used to 
-generate a Sample VCF file that will contain the reference and alternative 
+At this step, 
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used 
+to generate a Sample VCF file that will contain the reference and alternative 
 nucleotides counts at each SNP location present in the reference 1KG GDS file.
 The 1KG VCF file which contains the list of retained 1KG SNPs is required. 
 
@@ -217,9 +240,10 @@ Beware that the name assigned to the Sample VCF file will correspond to the
 Sample identifier (Name.ID) in the following analysis. For example, a VCF 
 called "Sample.01.txt.gz" would be associated to the sample "Sample.01". 
 
+<div class="whitesmoke">
+```{r snpPileup, echo=TRUE, eval=FALSE, highlight=TRUE}
 
-```{r snpPileup, echo=TRUE, eval=FALSE}
-
+#####################################################################
 ## Description of the parameters
 ## -g : Compresses the output file with BGZF
 ## -d5000 : Sets the maximum depth to 5000
@@ -229,22 +253,29 @@ called "Sample.01.txt.gz" would be associated to the sample "Sample.01".
 ## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs
 ## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application
 ## FILEBAM.bam : The aligned reads from the sample used as input
+#####################################################################
 snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
 
 ```
+</div>
 
+<br>
 
 ### Step 3. Create a GDS Sample file (1 GDS file per sample)
 
 This step requires 4 files as input:
+
 - The 1KG GDS file
 - The SNP Annotation GDS file
 - The SNP Retained VCF file
 - The VCF Sample file
 
+Using those 4 input files, the function _appendStudy2GDS1KG()_ will generate 
+a GDS Sample file. 
 
-in R:
-Here
+One GDS Sample file is created for each sample passed as argument.
+
+<div class="whitesmoke">
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
 
 library(RAIDS)
@@ -297,7 +328,9 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
                       PATHSAMPLEGDS = PATHSAMPLEGDS)))
     
 ```
+</div>
 
+<br>
 
 ### Step 4. Select a pruned subset of the single nucleotide variants 
 

@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-13<br><strong>License</strong>: Apache License (== 2.0) | file
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-15<br><strong>License</strong>: Apache License (== 2.0) | file
 LICENSE<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
@@ -195,12 +195,14 @@ pre-processed files are available at this address:</span></p>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
 file is 15GB.</span> <span style="color:darkred;font-weight:bold">The
-1KG GDS file is mapped on hg38.</span> <span style="color:darkred;font-weight:bold">This section can be skipped if
-you choose to use this file.</span></p>
+1KG GDS file is mapped on hg38.</span></p>
+<p><span style="color:darkred;font-weight:bold">This section can be
+skipped if you choose to use the pre-processed files.</span></p>
 <hr>
 <p>The vignette <a href="Create_1KG_GDS_file.html">Formatting the
 information from 1000 Genomes (optional)</a> is dedicated to this
 section.</p>
+<p><br></p>
 </div>
 <div class="section level3">
 <h3 id="step-2---format-information-from-an-external-study-to-get-it-ready-for-ancestry-inference">Step 2 - Format information from an external study to get it ready
@@ -216,30 +218,40 @@ Step 2 - Formatting the information from an external study
 <p>The required steps are:</p>
 <ol style="list-style-type: decimal">
 <li>Create a directory containing the 3 required reference files</li>
-<li>Generate a Sample VCF file (1 file per sample)</li>
+<li>Generate a Sample VCF file (1 VCF file per sample)</li>
 <li>Pruned SNPs using linkage desequilibrium analysis</li>
 </ol>
 <p>Beware that a mapped BAM file is needed for each sample. The
 reference genome used for the mapping must correspond to the one used to
 generate the 1KG GDS file. In this case, the 1KG GDS file is based on
 genome hg38.</p>
+<p><br></p>
 <div class="section level4">
 <h4 id="step-1--create-a-directory-containing-the-3-required-reference-files">Step 1. Create a directory containing the 3 required reference
 files<a class="anchor" aria-label="anchor" href="#step-1--create-a-directory-containing-the-3-required-reference-files"></a>
 </h4>
 <p>The 3 required reference files can be downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG GDS file</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matGeno1000g.gds</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## The SNP Annotation GDS file</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matAnnot1000g.gds</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## The SNP Retained VCF file</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG GDS file</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matGeno1000g.gds</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG SNP Annotation GDS file</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matAnnot1000g.gds</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG SNP Retained VCF file</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz</span></code></pre></div>
 <p>The 3 files should be stored in the same directory. For the current
 demonstration, the directory will be refered as
 <strong>PATH_REF</strong>.</p>
-<p>In the situation where you would need to generate your own reference
-files, you can refer to the vignette <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
-Genomes (optional)</a>.</p>
+<p>For more information on how to generate your own reference files, you
+can refer to the vignette <a href="Create_1KG_GDS_file.html">Formatting
+the information from 1000 Genomes (optional)</a>.</p>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="step-2--generate-a-sample-vcf-file-1-file-per-sample">Step 2. Generate a Sample VCF file (1 file per sample)<a class="anchor" aria-label="anchor" href="#step-2--generate-a-sample-vcf-file-1-file-per-sample"></a>
@@ -264,72 +276,89 @@ Generate a Sample VCF file (1 file per sample)
 to the Sample identifier (Name.ID) in the following analysis. For
 example, a VCF called “Sample.01.txt.gz” would be associated to the
 sample “Sample.01”.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Description of the parameters</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## -g : Compresses the output file with BGZF</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## -d5000 : Sets the maximum depth to 5000</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 PATH_REF<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz PATH_OUT<span class="sc">/</span>Name.ID.txt FILEBAM.bam</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Description of the parameters</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## -g : Compresses the output file with BGZF</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## -d5000 : Sets the maximum depth to 5000</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 PATH_REF<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz PATH_OUT<span class="sc">/</span>Name.ID.txt FILEBAM.bam</span></code></pre></div>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="step-3--create-a-gds-sample-file-1-gds-file-per-sample">Step 3. Create a GDS Sample file (1 GDS file per sample)<a class="anchor" aria-label="anchor" href="#step-3--create-a-gds-sample-file-1-gds-file-per-sample"></a>
 </h4>
-<p>This step requires 4 files as input: - The 1KG GDS file - The SNP
-Annotation GDS file - The SNP Retained VCF file - The VCF Sample
-file</p>
-<p>in R: Here</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RAIDS)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The 2 GDS files related to the 1KG reference</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## have to be located in the same directory</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>PATH_1KG <span class="ot">&lt;-</span> PATH_REF</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fileName.GDS <span class="ot">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fileName.GDS.Annot <span class="ot">&lt;-</span> <span class="st">"matAnnot1000g.gds"</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>file.GDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>file.Annot <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS.Annot)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## The 2 GDS files related to the 1KG reference</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## have to be located in the same directory</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Need the path where the files generated by</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># snp-pileup are</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    PATHGENO <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_PILEUP)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Path to the directory where the gds file for each sample</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># will be create</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    PATHSAMPLEGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"The path"</span>)</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The file ped defined before</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    filePED <span class="ot">&lt;-</span> FILE_PED</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    ped <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(filePED)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need a data.frame with study description</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.desc =</span> <span class="st">"Descripttion"</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.platform =</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                              <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>listSamples <span class="ot">&lt;-</span> ped[, <span class="st">"Name.ID"</span>]</span>
+<p>This step requires 4 files as input:</p>
+<ul>
+<li>The 1KG GDS file</li>
+<li>The 1KG SNP Annotation GDS file</li>
+<li>The 1KG SNP Retained VCF file (Pascal, do we need that one?)</li>
+<li>The VCF Sample file</li>
+</ul>
+<p>Using those 4 input files, the function <em>appendStudy2GDS1KG()</em>
+will generate a GDS Sample file.</p>
+<p>One GDS Sample file is created for each sample passed as
+argument.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Load required package</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RAIDS)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG GDS file and the 1KG SNP Annotation GDS file </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## need to be located in the same directory</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">#########################################################</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>PATH_1KG <span class="ot">&lt;-</span> PATH_REF</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fileName.GDS <span class="ot">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>fileName.GDS.Annot <span class="ot">&lt;-</span> <span class="st">"matAnnot1000g.gds"</span>   <span class="do">## Pascal, do you need this file at this step?</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>file.GDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>file.Annot <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS.Annot)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">## The Sample VCF files (one per sample) need  </span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="do">## to be located in the same directory</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>PATHGENO <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_PILEUP)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="do">## The path where the Sample GDS files (one per sample) </span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="do">## will be created need to be specified</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>PATHSAMPLEGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Sample_GDS_directory"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The file ped defined before</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    filePED <span class="ot">&lt;-</span> FILE_PED</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    ped <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(filePED)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Need a data.frame with study description</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.desc =</span> <span class="st">"Descripttion"</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="do">## This function creates a GDS Sample file for each </span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="do">## sample present in the listSamples parameter</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="fu">appendStudy2GDS1KG</span>(<span class="at">PATHGENO =</span> PATHGENO,</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fileNamePED =</span> filePED,</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fileNameGDS =</span> file.GDS,</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>                      <span class="at">listSamples =</span> listSamples,</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>                      <span class="at">batch =</span> <span class="dv">1</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>                      <span class="at">studyDF =</span> studyDF,</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>                      <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)<span class="er">))</span></span></code></pre></div>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="do">## This function creates a GDS Sample file for each </span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="do">## sample present in the listSamples parameter</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>listSamples <span class="ot">&lt;-</span> ped[, <span class="st">"Name.ID"</span>]</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="do">## This function creates a GDS Sample file for each </span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="do">## sample present in the listSamples parameter</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="fu">appendStudy2GDS1KG</span>(<span class="at">PATHGENO =</span> PATHGENO,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fileNamePED =</span> filePED,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fileNameGDS =</span> file.GDS,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>                      <span class="at">listSamples =</span> listSamples,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>                      <span class="at">batch =</span> <span class="dv">1</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                      <span class="at">studyDF =</span> studyDF,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                      <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)<span class="er">))</span></span></code></pre></div>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="step-4--select-a-pruned-subset-of-the-single-nucleotide-variants">Step 4. Select a pruned subset of the single nucleotide

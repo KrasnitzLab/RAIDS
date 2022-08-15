@@ -146,12 +146,15 @@ files are available at this address:</span>
 
 <span style="color:darkred;font-weight:bold">The size of the 1KG GDS file is 15GB.</span>
 <span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on hg38.</span>
-<span style="color:darkred;font-weight:bold">This section can be skipped if you choose to use this file.</span>
+
+<span style="color:darkred;font-weight:bold">This section can be skipped if 
+you choose to use the pre-processed files.</span>
 
 ******
 
 The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this section.
 
+<br>
 
 ## Step 2 - Format information from an external study to get it ready for ancestry inference
 
@@ -166,32 +169,44 @@ knitr::include_graphics("MainSteps_Step2_v01.png")
 The required steps are:
 
 1. Create a directory containing the 3 required reference files
-2. Generate a Sample VCF file (1 file per sample)
+2. Generate a Sample VCF file (1 VCF file per sample)
 3. Pruned SNPs using linkage desequilibrium analysis
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
 1KG GDS file. In this case, the 1KG GDS file is based on genome hg38.
 
+<br>
+
 ### Step 1. Create a directory containing the 3 required reference files
 
 The 3 required reference files can be downloaded:
 
 ```{r download, echo=TRUE, eval=FALSE}
+####################################
 ## The 1KG GDS file
+####################################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
-## The SNP Annotation GDS file
+
+####################################
+## The 1KG SNP Annotation GDS file
+####################################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
-## The SNP Retained VCF file
+
+####################################
+## The 1KG SNP Retained VCF file
+####################################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
 ```
 
 The 3 files should be stored in the same directory. For the current 
 demonstration, the directory will be refered as **PATH_REF**.
 
-In the situation where you would need to generate your own reference files, 
+For more information on how to generate your own reference files, 
 you can refer to the vignette 
 [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html).
+
+<br>
 
 ### Step 2. Generate a Sample VCF file (1 file per sample)
 
@@ -203,8 +218,9 @@ Given a VCF file containing SNP locations, [snp-pileup](https://github.com/mskcc
 application outputs, for each location, 
 the counts of the reference and alternative nucleotide from an BAM input.
 
-At this step, [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used to 
-generate a Sample VCF file that will contain the reference and alternative 
+At this step, 
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used 
+to generate a Sample VCF file that will contain the reference and alternative 
 nucleotides counts at each SNP location present in the reference 1KG GDS file.
 The 1KG VCF file which contains the list of retained 1KG SNPs is required. 
 
@@ -218,8 +234,9 @@ Sample identifier (Name.ID) in the following analysis. For example, a VCF
 called "Sample.01.txt.gz" would be associated to the sample "Sample.01". 
 
 
-```{r snpPileup, echo=TRUE, eval=FALSE}
+```{r snpPileup, echo=TRUE, eval=FALSE, highlight=TRUE}
 
+#####################################################################
 ## Description of the parameters
 ## -g : Compresses the output file with BGZF
 ## -d5000 : Sets the maximum depth to 5000
@@ -229,61 +246,72 @@ called "Sample.01.txt.gz" would be associated to the sample "Sample.01".
 ## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs
 ## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application
 ## FILEBAM.bam : The aligned reads from the sample used as input
+#####################################################################
 snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
 
 ```
 
 
+<br>
+
 ### Step 3. Create a GDS Sample file (1 GDS file per sample)
 
 This step requires 4 files as input:
+
 - The 1KG GDS file
-- The SNP Annotation GDS file
-- The SNP Retained VCF file
+- The 1KG SNP Annotation GDS file
+- The 1KG SNP Retained VCF file  (Pascal, do we need that one?)
 - The VCF Sample file
 
+Using those 4 input files, the function _appendStudy2GDS1KG()_ will generate 
+a GDS Sample file. 
 
-in R:
-Here
+One GDS Sample file is created for each sample passed as argument.
+
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
-
+#########################################################
+## Load required package
+#########################################################
 library(RAIDS)
     
-###############################################
-## The 2 GDS files related to the 1KG reference
-## have to be located in the same directory
-###############################################
+#########################################################
+## The 1KG GDS file and the 1KG SNP Annotation GDS file 
+## need to be located in the same directory
+#########################################################
 PATH_1KG <- PATH_REF
     
 fileName.GDS <- "matGeno1000g.gds"
-fileName.GDS.Annot <- "matAnnot1000g.gds"
+fileName.GDS.Annot <- "matAnnot1000g.gds"   ## Pascal, do you need this file at this step?
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
-###############################################
-## The 2 GDS files related to the 1KG reference
-## have to be located in the same directory
-###############################################
-    
-# Need the path where the files generated by
-# snp-pileup are
-    PATHGENO <- file.path(PATH_PILEUP)
-    
-    # Path to the directory where the gds file for each sample
-    # will be create
-    PATHSAMPLEGDS <- file.path("The path")
+############################################################
+## The Sample VCF files (one per sample) need  
+## to be located in the same directory
+############################################################
+PATHGENO <- file.path(PATH_PILEUP)
+
+############################################################
+## The path where the Sample GDS files (one per sample) 
+## will be created need to be specified
+############################################################
+PATHSAMPLEGDS <- file.path("Sample_GDS_directory")
     
     # The file ped defined before
     filePED <- FILE_PED
     ped <- readRDS(filePED)
     
     
-    # Need a data.frame with study description
-    studyDF <- data.frame(study.id = "Id of the study",
-                              study.desc = "Descripttion",
-                              study.platform = "Platform string like Whole Exome",
-                              stringsAsFactors = FALSE)
+# Need a data.frame with study description
+studyDF <- data.frame(study.id = "Id of the study",
+                  study.desc = "Descripttion",
+                  study.platform = "Platform string like Whole Exome",
+                  stringsAsFactors = FALSE)
     
+############################################################
+## This function creates a GDS Sample file for each 
+## sample present in the listSamples parameter
+############################################################
 listSamples <- ped[, "Name.ID"]
     
 ## This function creates a GDS Sample file for each 
@@ -298,6 +326,7 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
     
 ```
 
+<br>
 
 ### Step 4. Select a pruned subset of the single nucleotide variants 
 
@@ -308,7 +337,8 @@ retained SNVs is added to the GDS Sample file.
 This step is requiring a lot of disk space and the process can be run on 
 multiple threads. 
 
-???:It use more disk space but the analysis for the samples can be run simultaneously 
+???:It use more disk space but the analysis for the samples can be run 
+simultaneously 
 with multiple process (if we we all samples in one file only one process can 
 write in the GDS). 
 

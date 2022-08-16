@@ -117,12 +117,15 @@ corresponding to the sample identifier must exist and be located in the
 
 
 <dt>study.id</dt>
-<dd><p>A <code>string</code> corresponding to the study
-use in LDpruning</p></dd>
+<dd><p>a <code>character</code> string corresponding to the study
+identifier used in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function.
+The study identifier must be present in the GDS Sample file.</p></dd>
 
 
 <dt>listSNP</dt>
-<dd><p>the list of snp.id keep. TODO. Default: <code>NULL</code>.</p></dd>
+<dd><p>a <code>vector</code> of SNVs identifiers specifying selected;
+if <code>NULL</code>, all SNVs are used in the
+<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function. Default: <code>NULL</code>.</p></dd>
 
 
 <dt>slide.max.bp.v</dt>
@@ -151,7 +154,9 @@ function.  Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>chr</dt>
-<dd><p>TODO. Default: <code>NULL</code>.</p></dd>
+<dd><p>a <code>character</code> string representing the chromosome where the
+selected SNVs should belong. Only one chromosome can be handled.
+Default: <code>NULL</code>.</p></dd>
 
 
 <dt>minAF.SuperPop</dt>
@@ -159,12 +164,14 @@ function.  Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>keepGDSpruned</dt>
-<dd><p>a <code>logicial</code> TODO. Default: <code>TRUE</code>.</p></dd>
+<dd><p>a <code>logicial</code> indicating if the information about
+the pruned SNVs should be added to the GDS Sample file.
+Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>PATHSAMPLEGDS</dt>
 <dd><p>a <code>character</code> string representing the directory
-wehre the GDS Sample file will be created. The directory must exist.</p></dd>
+where the GDS Sample file will be created. The directory must exist.</p></dd>
 
 
 <dt>keepFile</dt>

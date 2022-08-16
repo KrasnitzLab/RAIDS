@@ -63,7 +63,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addBlockFromPlink2GDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsOut</span>, <span class="va">PATHBLOCK</span>, <span class="va">superPop</span>, <span class="va">blockName</span>, <span class="va">blockDesc</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addBlockFromPlink2GDS</span><span class="op">(</span></span>
+<span>  <span class="va">gds</span>,</span>
+<span>  <span class="va">gdsOut</span>,</span>
+<span>  <span class="va">PATHBLOCK</span>,</span>
+<span>  <span class="va">superPop</span>,</span>
+<span>  <span class="va">blockName</span>,</span>
+<span>  <span class="va">blockDesc</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -90,6 +98,11 @@
 
 <dt>blockDesc</dt>
 <dd><p>TODO</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if message information should be
+printed. Default: <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div id="value">

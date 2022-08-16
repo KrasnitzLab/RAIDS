@@ -40,10 +40,13 @@ corresponding to the sample identifier used in LD pruning done by the
 corresponding to the sample identifier must exist and be located in the
 \code{PATHSAMPLEGDS} directory.}
 
-\item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+\item{study.id}{a \code{character} string corresponding to the study
+identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
+The study identifier must be present in the GDS Sample file.}
 
-\item{listSNP}{the list of snp.id keep. TODO. Default: \code{NULL}.}
+\item{listSNP}{a \code{vector} of SNVs identifiers specifying selected;
+if \code{NULL}, all SNVs are used in the
+\code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.}
 
 \item{slide.max.bp.v}{a single positive \code{integer} that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
@@ -62,14 +65,18 @@ threads to be used. Default: \code{1L}.}
 during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.  Default: \code{FALSE}.}
 
-\item{chr}{TODO. Default: \code{NULL}.}
+\item{chr}{a \code{character} string representing the chromosome where the
+selected SNVs should belong. Only one chromosome can be handled.
+Default: \code{NULL}.}
 
 \item{minAF.SuperPop}{TODO. Default: \code{NULL}.}
 
-\item{keepGDSpruned}{a \code{logicial} TODO. Default: \code{TRUE}.}
+\item{keepGDSpruned}{a \code{logicial} indicating if the information about
+the pruned SNVs should be added to the GDS Sample file.
+Default: \code{TRUE}.}
 
 \item{PATHSAMPLEGDS}{a \code{character} string representing the directory
-wehre the GDS Sample file will be created. The directory must exist.}
+where the GDS Sample file will be created. The directory must exist.}
 
 \item{keepFile}{a \code{logical} indicating if RDS files containing the
 information about the pruned SNVs must be

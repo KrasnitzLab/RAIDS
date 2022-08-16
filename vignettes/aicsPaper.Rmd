@@ -170,7 +170,8 @@ The required steps are:
 
 1. Create a directory containing the 3 required reference files
 2. Generate a Sample VCF file (1 VCF file per sample)
-3. Pruned SNPs using linkage desequilibrium analysis
+3. Create a RDS file containing information about the samples
+4. Pruned SNPs using linkage desequilibrium analysis
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
@@ -254,7 +255,47 @@ snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.
 
 <br>
 
-### Step 3. Create a GDS Sample file (1 GDS file per sample)
+### Step 3. Create a RDS file containing information about the samples
+
+A RDS file describing the samples that are part of the analysis is required.
+
+The RDS file must contain a \code{data.frame} with those 5 columns:
+
+- **Name.ID**: The unique sample identifier. The GDS Sample file associated to 
+this sample should be called "Name.ID.txt.gz". 
+- **Case.ID**: The patient identifier associated to the sample.
+- **Sample.Type**: The information about the sample type (primary tissue, 
+xenograft, organoid, etc..). 
+- **Diagnosis**: The diagnosis associated to the patient.
+- **Source**: The source of the sample.
+
+This file is referred as the PED RDS file (PED for pedigree).
+
+
+```{r pedCreation, echo=TRUE, }
+#########################################################
+## Assign name and directory for the new PED RDS file
+#########################################################
+data.dir <- system.file("extdata", package="RAIDS")
+demo_PED_File <- file.path(data.dir, "Demo_PED.RDS")
+    
+## Create the data frame with the mendatory columns
+pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                     Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"), 
+                     Sample.Type = rep("Primary Tumor", 3),
+                     Diagnosis = rep("Cancer", 3),
+                     Source = rep("Databank B", 3),
+                     stringsAsFactors = FALSE)
+
+## Save the data frame into a RDS file
+saveRDS(object=pedDF, file=demo_PED_File)
+
+## Remove RDS file (created for demo purpose)
+rm(demo_PED_File)
+```
+
+
+### Step 4. Create a GDS Sample file (1 GDS file per sample)
 
 This step requires 4 files as input:
 
@@ -269,15 +310,16 @@ a GDS Sample file.
 One GDS Sample file is created for each sample passed as argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
-#########################################################
+##############################################################
 ## Load required package
-#########################################################
+##############################################################
 library(RAIDS)
     
-#########################################################
+
+##############################################################
 ## The 1KG GDS file and the 1KG SNP Annotation GDS file 
 ## need to be located in the same directory
-#########################################################
+##############################################################
 PATH_1KG <- PATH_REF
     
 fileName.GDS <- "matGeno1000g.gds"
@@ -285,37 +327,48 @@ fileName.GDS.Annot <- "matAnnot1000g.gds"   ## Pascal, do you need this file at 
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
-############################################################
+
+#################################################################
 ## The Sample VCF files (one per sample) need  
 ## to be located in the same directory
-############################################################
+#################################################################
 PATHGENO <- file.path(PATH_PILEUP)
 
-############################################################
+
+#################################################################
 ## The path where the Sample GDS files (one per sample) 
 ## will be created need to be specified
-############################################################
+#################################################################
 PATHSAMPLEGDS <- file.path("Sample_GDS_directory")
     
-    # The file ped defined before
-    filePED <- FILE_PED
-    ped <- readRDS(filePED)
+
+#################################################################
+## The path and filename for the PED RDS file 
+## will the information about the analyzed samples
+#################################################################
+filePED <- FILE_PED
     
-    
-# Need a data.frame with study description
+#################################################################
+## A data frame containing general information about the study
+## is also required. The data frame must have
+## those 3 columns: "study.id", "study.desc", "study.platform"
+#################################################################
 studyDF <- data.frame(study.id = "Id of the study",
-                  study.desc = "Descripttion",
+                  study.desc = "Description",
                   study.platform = "Platform string like Whole Exome",
                   stringsAsFactors = FALSE)
-    
-############################################################
-## This function creates a GDS Sample file for each 
-## sample present in the listSamples parameter
-############################################################
+
+#################################################################
+## The list of samples to analyzed is passed to the 
+## function. The samples must be present in the PED RDS file
+## and must have an associated GDS Sample file.
+#################################################################
 listSamples <- ped[, "Name.ID"]
     
-## This function creates a GDS Sample file for each 
+#################################################################
+## This function creates one GDS Sample file for each 
 ## sample present in the listSamples parameter
+#################################################################
 appendStudy2GDS1KG(PATHGENO = PATHGENO,
                       fileNamePED = filePED,
                       fileNameGDS = file.GDS,

@@ -171,7 +171,8 @@ The required steps are:
 1. Create a directory containing the 3 required reference files
 2. Generate a Sample VCF file (1 VCF file per sample)
 3. Create a RDS file containing information about the samples
-4. Pruned SNPs using linkage desequilibrium analysis
+4. Create a GDS Sample file (1 GDS file per sample)
+5. Generate a pruned subset of the single nucleotide variants 
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
@@ -381,7 +382,7 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
 
 <br>
 
-### Step 4. Select a pruned subset of the single nucleotide variants 
+### Step 5. Generate a pruned subset of the single nucleotide variants 
 
 A subset of pruned SNVs is retained for the following analyses. The 
 list of selected SNVs is specific to each sample and the information about the 

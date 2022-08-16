@@ -172,7 +172,7 @@ The required steps are:
 2. Generate a Sample VCF file (1 VCF file per sample)
 3. Create a RDS file containing information about the samples
 4. Create a GDS Sample file (1 GDS file per sample)
-5. Generate a pruned subset of the single nucleotide variants 
+5. Generate a pruned subset of the single nucleotide variants (SNVs)  
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
@@ -301,14 +301,23 @@ rm(demo_PED_File)
 This step requires 4 files as input:
 
 - The 1KG GDS file
-- The 1KG SNP Annotation GDS file
-- The 1KG SNP Retained VCF file  (Pascal, do we need that one?)
+- The 1KG SNP Annotation GDS file  (Pascal, do we need that one?)
+- The 1KG SNP Retained VCF file 
 - The VCF Sample file
+- The PED RDS file
 
-Using those 4 input files, the function _appendStudy2GDS1KG()_ will generate 
+A \code{data.frame} containing the general information about the study is 
+also required. The \code{data.frame} must have those 3 columns:
+
+- **study.id**
+- **study.desc**
+- **study.platform**
+
+Using those inputs, the function _appendStudy2GDS1KG()_ will generate 
 a GDS Sample file. 
 
-One GDS Sample file is created for each sample passed as argument.
+One GDS Sample file is created for each sample passed to the 
+__listSamples__ argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
 ##############################################################
@@ -316,7 +325,6 @@ One GDS Sample file is created for each sample passed as argument.
 ##############################################################
 library(RAIDS)
     
-
 ##############################################################
 ## The 1KG GDS file and the 1KG SNP Annotation GDS file 
 ## need to be located in the same directory
@@ -328,21 +336,18 @@ fileName.GDS.Annot <- "matAnnot1000g.gds"   ## Pascal, do you need this file at 
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
-
 #################################################################
 ## The Sample VCF files (one per sample) need  
 ## to be located in the same directory
 #################################################################
 PATHGENO <- file.path(PATH_PILEUP)
 
-
 #################################################################
-## The path where the Sample GDS files (one per sample) 
+## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified
 #################################################################
 PATHSAMPLEGDS <- file.path("Sample_GDS_directory")
     
-
 #################################################################
 ## The path and filename for the PED RDS file 
 ## will the information about the analyzed samples
@@ -382,9 +387,9 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
 
 <br>
 
-### Step 5. Generate a pruned subset of the single nucleotide variants 
+### Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
-A subset of pruned SNVs is retained for the following analyses. The 
+A pruned subset of SNVs is retained for the following analyses. The 
 list of selected SNVs is specific to each sample and the information about the 
 retained SNVs is added to the GDS Sample file.
 

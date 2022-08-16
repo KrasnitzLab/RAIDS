@@ -3,12 +3,13 @@
 \encoding{UTF-8}
 \name{addGDSStudyPruning}
 \alias{addGDSStudyPruning}
-\title{Fill the pruned.study entry in the GDS file}
+\title{Add the pruned.study entry in the GDS Sample file}
 \usage{
 addGDSStudyPruning(gds, pruned, sample.id)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the sample}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+GDS Sample file.}
 
 \item{pruned}{TODO}
 
@@ -19,7 +20,8 @@ the sample identifier.}
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+This function adds the pruned.study entry in the GDS
+Sample file.
 }
 \examples{
 

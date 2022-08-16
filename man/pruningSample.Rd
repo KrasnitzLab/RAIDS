@@ -14,7 +14,7 @@ pruningSample(
   listSNP = NULL,
   slide.max.bp.v = 500000L,
   ld.threshold.v = sqrt(0.1),
-  np = 1,
+  np = 1L,
   verbose.v = FALSE,
   chr = NULL,
   minAF.SuperPop = NULL,
@@ -80,8 +80,7 @@ directory. The directory must exist. Default: \code{"."}.}
 
 \item{outPref}{a \code{character} string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
-the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
-E}
+the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
 }
 \value{
 The function returns \code{0L} when successful.

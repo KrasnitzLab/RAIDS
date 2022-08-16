@@ -762,6 +762,9 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #'
 #' @param blockDesc TODO
 #'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{TRUE}.
+#'
 #' @return None.
 #'
 #' @details
@@ -784,7 +787,7 @@ addBlockFromPlink2GDS <- function(gds,
                                   PATHBLOCK,
                                   superPop,
                                   blockName,
-                                  blockDesc) {
+                                  blockDesc, verbose=FALSE) {
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
@@ -793,18 +796,20 @@ addBlockFromPlink2GDS <- function(gds,
 
     listChr <- listChr[order(listChr)]
     listChr <- seq_len(22)
-    listBlock = list()
-    for(chr in listChr){
-        print(paste0("chr", chr, " ",Sys.time()))
+    listBlock <- list()
+    for(chr in listChr) {
+        if(verbose) { message("chr", chr, " ",Sys.time()) }
         snp.keep <- snp.position[snp.chromosome == chr]
 
         listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
-        if(chr > 1){
+        if(chr > 1) {
             vMax <- max(listBlock[[chr-1]])
             vMin <- min(listBlock[[chr-1]])
-            listBlock[[chr]][listBlock[[chr]] > 0] <- listBlock[[chr]][listBlock[[chr]] > 0] + vMax
-            if(vMin < 0){
-                listBlock[[chr]][listBlock[[chr]] < 0] <- listBlock[[chr]][listBlock[[chr]] < 0] + vMin
+            listBlock[[chr]][listBlock[[chr]] > 0] <-
+                    listBlock[[chr]][listBlock[[chr]] > 0] + vMax
+            if(vMin < 0) {
+                listBlock[[chr]][listBlock[[chr]] < 0] <-
+                        listBlock[[chr]][listBlock[[chr]] < 0] + vMin
             }
         }
     }

@@ -17,7 +17,8 @@ generateGDS1KGgenotypeFromSNPPileup(
   pedStudy,
   batch,
   studyDF,
-  PATHGDSSAMPLE = NULL
+  PATHGDSSAMPLE = NULL,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -51,6 +52,9 @@ must be in \code{character} strings.}
 
 \item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
+
+\item{verbose}{a \code{logical} indicating if the function must print
+messages when running. Default: \code{FALSE}.}
 
 \item{pedDF}{a \code{data.frame} with the information about the sample(s).
 Those are mandatory columns: "Name.ID",

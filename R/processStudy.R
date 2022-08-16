@@ -163,7 +163,8 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' entry present in the \code{listSamples} parameter.
 #'
 #' @param PATHGENO a \code{character} string representing the path to the
-#' directory containing the output of SNP-pileup for each sample. The
+#' directory containing the output of SNP-pileup, a VCF Sample file, for
+#' each sample. The
 #' SNP-pileup files must be compressed (gz files) and have the name identifiers
 #' of the samples. A sample with "Name.ID" identifier would have an
 #' associated SNP-pileup file called "Name.ID.txt.gz".
@@ -660,6 +661,9 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 #'
 #' @param fileLSNP TODO
 #'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{TRUE}.
+#'
 #' @return The integer \code{0} when successful.
 #'
 #' @examples
@@ -673,8 +677,8 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
-                                            PATHGENO, fileLSNP) {
+addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS, PATHGENO,
+                                            fileLSNP, verbose=FALSE) {
 
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
@@ -700,21 +704,20 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
     listSNP <- readRDS(file=fileLSNP)
     i<-1
     for(sample1KG in listSample){
-        print(paste0("P ", i, " ", Sys.time()))
+        if(verbose) { message("P ", i, " ", Sys.time()) }
         i <- i + 1
         file1KG <- file.path(PATHGENO, paste0(sample1KG,".csv.bz2"))
         matSample <- read.csv2(file=file1KG, row.names=NULL)
         matSample <- matSample[listSNP[indexAll],, drop=FALSE]
-        matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
+        matSample <- matrix(as.numeric(unlist(strsplit(matSample[,1],
+                                                        "\\|"))), nrow=2)[1,]
         var.phase <- NULL
-        if(! ("phase" %in% ls.gdsn(gdsSample))){
+        if(!("phase" %in% ls.gdsn(gdsSample))) {
             var.phase <- add.gdsn(gdsSample, "phase",
                                  valdim=c(length(indexAll),
                                           1),
-                                 matSample,
-                                 storage="bit2")
-
-        }else{
+                                 matSample, storage="bit2")
+        }else {
             if(is.null(var.phase)) {
                 var.phase <- index.gdsn(node=gdsSample, "phase")
             }
@@ -726,6 +729,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 
     return(0L)
 }
+
 
 #' @title TODO
 #'
@@ -740,6 +744,8 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
 #' the sample
 #'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{TRUE}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -754,7 +760,8 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
+addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
+                                            verbose=FALSE) {
 
     listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
@@ -779,14 +786,16 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
     #listSNP <- readRDS(fileLSNP)
     i<-1
     for(sample1KG in listSample){
-        print(paste0("P ", i, " ", Sys.time()))
+        if(verbose) { message("P ", i, " ", Sys.time()) }
 
         #file1KG <- file.path(PATHGENO, paste0(sample1KG,".csv.bz2"))
         #matSample <- read.csv2( file1KG,
         #                        row.names = NULL)
         #matSample <- matSample[listSNP[indexAll],, drop=FALSE]
-        #matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1], "\\|"))),nrow=2)[1,]
-        matSample <- read.gdsn(index.gdsn(gdsPhase, "phase"), start=c(1, listRef[i]), count=c(-1,1))[indexAll]
+        #matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1],
+        #                        "\\|"))),nrow=2)[1,]
+        matSample <- read.gdsn(index.gdsn(gdsPhase, "phase"),
+                            start=c(1, listRef[i]), count=c(-1,1))[indexAll]
         i<-i+1
 
         var.phase <- NULL
@@ -794,8 +803,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
             var.phase <- add.gdsn(gdsSample, "phase",
                                   valdim=c(length(indexAll),
                                            1),
-                                  matSample,
-                                  storage="bit2")
+                                  matSample, storage="bit2")
 
         }else{
             if(is.null(var.phase)){
@@ -811,10 +819,11 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS) {
 }
 
 
-#' @title Compute principal component axes (PCA) on pruned SNV with the reference
-#' samples
+#' @title Compute principal component axes (PCA) on pruned SNV with the
+#' reference samples
 #'
-#' @description This function compute the PCA on pruned SNV with the reference samples
+#' @description This function compute the PCA on pruned SNV with the
+#' reference samples
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
@@ -863,16 +872,16 @@ computePrunedPCARef <- function(gds, listRef, np=1L) {
 
     ## Calculate the eigenvectors using the specified SNP loadings for
     ## the reference samples
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gds,
-                                        sample.id = listRef,
-                                        snp.id = listPruned,
-                                        num.thread = np,
-                                        verbose = TRUE)
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gds,
+                                            sample.id=listRef,
+                                            snp.id=listPruned,
+                                            num.thread=np,
+                                            verbose=TRUE)
 
-    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                 gdsobj = gds,
-                                                 num.thread = np,
-                                                 verbose = TRUE)
+    listPCA[["snp.load"]] <- snpgdsPCASNPLoading(pcaobj=listPCA[["pca.unrel"]],
+                                                    gdsobj=gds,
+                                                    num.thread=np,
+                                                    verbose=TRUE)
     return(listPCA)
 }
 

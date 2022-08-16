@@ -5,7 +5,13 @@
 \alias{addPhase1KG2SampleGDSFromFile}
 \title{TODO}
 \usage{
-addPhase1KG2SampleGDSFromFile(gds, PATHSAMPLEGDS, PATHGENO, fileLSNP)
+addPhase1KG2SampleGDSFromFile(
+  gds,
+  PATHSAMPLEGDS,
+  PATHGENO,
+  fileLSNP,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
@@ -16,6 +22,9 @@ the sample}
 \item{PATHGENO}{TODO}
 
 \item{fileLSNP}{TODO}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{TRUE}.}
 }
 \value{
 The integer \code{0} when successful.

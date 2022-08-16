@@ -406,7 +406,9 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSample1k == listSamples[i])
-        print(listSamples[i])
+
+        if(verbose) { message(listSamples[i]) }
+
         if( length(pos) == 1) {
             matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
                                         row.names=NULL)
@@ -454,6 +456,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -467,7 +471,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
+appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP,
+                                verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
@@ -477,7 +482,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
     geno.var <- index.gdsn(gds, "genotype")
     g <- read.gdsn(node=geno.var, start=c(1, 1), count=c(1,-1))
     nbSample <- length(g)
-    print(nbSample)
+    if(verbose) { message(nbSample) }
     for(i in seq_len(length(listSample))) {
         pos <- which(listSample1k == listSample[i])
         if( length(pos) == 1) {
@@ -498,7 +503,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
             append.gdsn(geno.var,g, check=TRUE)
 
             rm(matSample)
-            print(paste0(listMat1k[pos], " ", i))
+            if(verbose) { message(listMat1k[pos], " ", i) }
         }else {
             stop("Missing 1k samples ", listSample[i])
         }
@@ -579,6 +584,9 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
+#'
 #' @return The  function returns \code{0L} when successful.
 #'
 #' @examples
@@ -603,7 +611,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 pedStudy,
                                                 batch,
                                                 studyDF,
-                                                PATHGDSSAMPLE=NULL) {
+                                                PATHGDSSAMPLE=NULL,
+                                                verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat <- dir(PATHGENO, pattern = ".+.txt.gz")
@@ -613,7 +622,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSampleFile == listSamples[i])
-        print(paste0(listSamples[i], " ", Sys.time(), " ", i))
+
+        if(verbose) { message(listSamples[i], " ", Sys.time(), " ", i) }
+
         if(length(pos) == 1){
 
             matSample <- read.csv(file.path(PATHGENO, listMat[pos]))
@@ -783,7 +794,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
             rm(g)
             closefn.gds(gdsfile=gdsSample)
-            print(paste0(listMat[pos], " ", i, " ", Sys.time()))
+            if(verbose) { message(listMat[pos], " ", i, " ", Sys.time()) }
 
         }else{
             stop("Missing samples ", listSamples[i])

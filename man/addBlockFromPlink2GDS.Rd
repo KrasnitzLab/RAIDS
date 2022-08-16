@@ -5,7 +5,15 @@
 \alias{addBlockFromPlink2GDS}
 \title{TODO contain the information from 1KG}
 \usage{
-addBlockFromPlink2GDS(gds, gdsOut, PATHBLOCK, superPop, blockName, blockDesc)
+addBlockFromPlink2GDS(
+  gds,
+  gdsOut,
+  PATHBLOCK,
+  superPop,
+  blockName,
+  blockDesc,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened for the snp information}
@@ -19,6 +27,9 @@ addBlockFromPlink2GDS(gds, gdsOut, PATHBLOCK, superPop, blockName, blockDesc)
 \item{blockName}{TODO}
 
 \item{blockDesc}{TODO}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{TRUE}.}
 }
 \value{
 None.

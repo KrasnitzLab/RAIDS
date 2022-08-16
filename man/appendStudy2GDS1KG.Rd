@@ -20,7 +20,8 @@ appendStudy2GDS1KG(
 }
 \arguments{
 \item{PATHGENO}{a \code{character} string representing the path to the
-directory containing the output of SNP-pileup for each sample. The
+directory containing the output of SNP-pileup, a VCF Sample file, for
+each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
 associated SNP-pileup file called "Name.ID.txt.gz".}

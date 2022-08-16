@@ -319,10 +319,13 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' corresponding to the sample identifier must exist and be located in the
 #' \code{PATHSAMPLEGDS} directory.
 #'
-#' @param study.id A \code{string} corresponding to the study
-#' use in LDpruning
+#' @param study.id a \code{character} string corresponding to the study
+#' identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
+#' The study identifier must be present in the GDS Sample file.
 #'
-#' @param listSNP the list of snp.id keep. TODO. Default: \code{NULL}.
+#' @param listSNP a \code{vector} of SNVs identifiers specifying selected;
+#' if \code{NULL}, all SNVs are used in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.
 #'
 #' @param slide.max.bp.v a single positive \code{integer} that represents
 #' the maximum basepairs (bp) in the sliding window. This parameter is used
@@ -341,14 +344,18 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 #' function.  Default: \code{FALSE}.
 #'
-#' @param chr TODO. Default: \code{NULL}.
+#' @param chr a \code{character} string representing the chromosome where the
+#' selected SNVs should belong. Only one chromosome can be handled.
+#' Default: \code{NULL}.
 #'
 #' @param minAF.SuperPop TODO. Default: \code{NULL}.
 #'
-#' @param keepGDSpruned a \code{logicial} TODO. Default: \code{TRUE}.
+#' @param keepGDSpruned a \code{logicial} indicating if the information about
+#' the pruned SNVs should be added to the GDS Sample file.
+#' Default: \code{TRUE}.
 #'
 #' @param PATHSAMPLEGDS a \code{character} string representing the directory
-#' wehre the GDS Sample file will be created. The directory must exist.
+#' where the GDS Sample file will be created. The directory must exist.
 #'
 #' @param keepFile a \code{logical} indicating if RDS files containing the
 #' information about the pruned SNVs must be
@@ -465,11 +472,13 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     sample.id <- read.gdsn(node=index.gdsn(gds, "sample.id"))
 
-    ## Open the Sample GDS file
+    ## Open the GDS Sample file
     gdsSample <- openfn.gds(filename=fileGDSSample)
 
+    ## Extract all study information from the GDS Sample file
     study.annot <- read.gdsn(node=index.gdsn(gdsSample, "study.annot"))
 
+    ## Select study information associated to the current sample
     posSample <- which(study.annot$data.id == sampleCurrent &
                             study.annot$study.id == study.id)
 
@@ -478,10 +487,11 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                 sampleCurrent, " doesn't exists\n")
     }
 
-    # Get the genotype for sampleCurrent
+    ## Get the SNV genotype information for the current sample
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"),
                     start=c(1, posSample), count=c(-1,1))
 
+    ## Close the GDS Sample file
     closefn.gds(gdsSample)
 
     listGeno <- which(g != 3)
@@ -526,16 +536,16 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     pruned <- unlist(snpset, use.names=FALSE)
 
+    ## When TRUE, generate 2 RDS file with the pruned SNVs information
     if(keepFile) {
         saveRDS(pruned, filePruned)
         saveRDS(snpset, fileObj)
     }
 
+    ## When TRUE, add the pruned SNvs information to the GDS Sample file
     if(keepGDSpruned) {
-        ## Add the pruned SNPs information to the GDS Sample file
         gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
-        addGDSStudyPruning(gds=gdsSample, pruned=pruned,
-                                sample.id=sampleCurrent)
+        addGDSStudyPruning(gds=gdsSample, pruned=pruned)
         closefn.gds(gdsfile=gdsSample)
     }
 

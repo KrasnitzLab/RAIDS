@@ -360,7 +360,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @param outPref a \code{character} string that represents the prefix of the
 #' RDS files that will be generated. The RDS files are only generated when
 #' the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.
-#'E
+#'
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
@@ -381,7 +381,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             listSNP=NULL,
                             slide.max.bp.v=500000L,
                             ld.threshold.v=sqrt(0.1),
-                            np=1,
+                            np=1L,
                             verbose.v=FALSE,
                             chr=NULL,
                             minAF.SuperPop=NULL,
@@ -516,11 +516,12 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     listSamples <- sample.id[which(sample.ref == 1)]
 
+    ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gds, method=method,
                             listSamples=listSamples,
                             listKeep=listKeep,
                             slide.max.bp.v=slide.max.bp.v,
-                            ld.threshold.v=ld.threshold.v,
+                            ld.threshold.v=ld.threshold.v, np=np,
                             verbose.v=verbose.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
@@ -531,9 +532,10 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     }
 
     if(keepGDSpruned) {
+        ## Add the pruned SNPs information to the GDS Sample file
         gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
         addGDSStudyPruning(gds=gdsSample, pruned=pruned,
-                            sample.id=sampleCurrent)
+                                sample.id=sampleCurrent)
         closefn.gds(gdsfile=gdsSample)
     }
 

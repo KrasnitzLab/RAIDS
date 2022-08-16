@@ -1108,11 +1108,13 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title Fill the pruned.study entry in the GDS file
+#' @title Add the pruned.study entry in the GDS Sample file
 #'
-#' @description TODO
+#' @description This function adds the pruned.study entry in the GDS
+#' Sample file.
 #'
-#' @param gds an object of class \code{gds} opened for the sample
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' GDS Sample file.
 #'
 #' @param pruned TODO
 #'
@@ -1132,12 +1134,15 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' @keywords internal
 addGDSStudyPruning <- function(gds, pruned, sample.id) {
 
+    ## Delete the pruned.study entry if present in the GDS Sample file
     if("pruned.study" %in% ls.gdsn(gds)) {
         delete.gdsn(index.gdsn(node=gds, "pruned.study"))
     }
 
+    ## Create the pruned.study node in the GDS Sample file
     var.Pruned <- add.gdsn(gds, "pruned.study", pruned)
 
+    # Write the data cached in memory to the GDS Sample file
     sync.gds(gdsfile=gds)
 
     return(0L)

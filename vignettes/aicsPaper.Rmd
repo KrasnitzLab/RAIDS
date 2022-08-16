@@ -150,8 +150,6 @@ files are available at this address:</span>
 <span style="color:darkred;font-weight:bold">This section can be skipped if 
 you choose to use the pre-processed files.</span>
 
-******
-
 The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this section.
 
 <br>
@@ -235,7 +233,6 @@ Beware that the name assigned to the Sample VCF file will correspond to the
 Sample identifier (Name.ID) in the following analysis. For example, a VCF 
 called "Sample.01.txt.gz" would be associated to the sample "Sample.01". 
 
-
 ```{r snpPileup, echo=TRUE, eval=FALSE, highlight=TRUE}
 
 #####################################################################
@@ -252,7 +249,6 @@ called "Sample.01.txt.gz" would be associated to the sample "Sample.01".
 snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
 
 ```
-
 
 <br>
 
@@ -295,13 +291,13 @@ saveRDS(object=pedDF, file=demo_PED_File)
 rm(demo_PED_File)
 ```
 
+<br>
 
 ### Step 4. Create a GDS Sample file (1 GDS file per sample)
 
 This step requires 4 files as input:
 
 - The 1KG GDS file
-- The 1KG SNP Annotation GDS file  (Pascal, do we need that one?)
 - The 1KG SNP Retained VCF file 
 - The VCF Sample file
 - The PED RDS file
@@ -332,9 +328,7 @@ library(RAIDS)
 PATH_1KG <- PATH_REF
     
 fileName.GDS <- "matGeno1000g.gds"
-fileName.GDS.Annot <- "matAnnot1000g.gds"   ## Pascal, do you need this file at this step?
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
-file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
 #################################################################
 ## The Sample VCF files (one per sample) need  
@@ -379,7 +373,7 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
                       fileNamePED = filePED,
                       fileNameGDS = file.GDS,
                       listSamples = listSamples,
-                      batch = 1,
+                      batch = 1,  ## Numerical value required
                       studyDF = studyDF,
                       PATHSAMPLEGDS = PATHSAMPLEGDS)))
     
@@ -389,83 +383,83 @@ appendStudy2GDS1KG(PATHGENO = PATHGENO,
 
 ### Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
-A pruned subset of SNVs is retained for the following analyses. The 
+The initial list of 1KG SNPs is pruned, using linkage disequilibrium analysis, 
+to retained as subset of SNVs of interest for each sample. The 
 list of selected SNVs is specific to each sample and the information about the 
 retained SNVs is added to the GDS Sample file.
 
-This step is requiring a lot of disk space and the process can be run on 
-multiple threads. 
+The function __pruningSample()__ requires the 1KG GDS file as input. It also 
+requires the path to the GDS Sample files.
 
-???:It use more disk space but the analysis for the samples can be run 
-simultaneously 
-with multiple process (if we we all samples in one file only one process can 
-write in the GDS). 
+Beware that this step is requiring large disk space.
 
-
-or in R for a s
+To speed up the process, the function can be run on multiple CPUs.
 
 ```{r pruningSample, echo=TRUE, eval=FALSE}
+##############################################################
+## Load required package
+##############################################################
+library(RAIDS)
+    
+##############################################################
+## The 1KG GDS file and the 1KG SNP Annotation GDS file 
+## need to be located in the same directory
+##############################################################
+PATH_1KG <- PATH_REF
+    
+fileName.GDS.1KG <- "matGeno1000g.gds"
+file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
-    library(RAIDS)
-    
-    ##########################################
-    # Files related to the reference
-    # Downloaded
-    ##########################################
-    PATH_1KG <- PATH_WHERE_THE_REFERENCE_1KG_IS_LOCATED
-    
-    fileName.GDS.1KG <- "matGeno1000g.gds"
-    fileName.GDS.Annot <- "matAnnot1000g.gds"
-    file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
-    file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
+## Open the 1KG GDS file
+gds_1KG <- snpgdsOpen(file.GDS)
 
-    ##########################################
-    
-    # Path to the directory where the GDS Sample files are located 
-    # will be create
-    PATHSAMPLEGDS <- PATH_WHERE_THE_GDS_SAMPLES_FILES_ARE_LOCATED
-    
-    gds_1KG <- snpgdsOpen(file.GDS)
-    
-    # The file ped defined before
-    filePED <- FILE_PED
-    ped <- readRDS(filePED)
-    # You need a list of the sample Name.ID 
-    # you can get it for other source than 
-    # filePED 
-    listSamples <- ped[, "Name.ID"]
-    
-    
-    # Can be run in parallel or in different clusters...
-    for(i in seq_len(length(listSamples))){
-        # Compute the SNV pruned subset
-        pruningSample(gds=gds_1KG,
-                      method="corr",
-                      sampleCurrent = listSamples[i],
-                      listSNP = NULL,
-                      slide.max.bp.v = 5e5,
-                      ld.threshold.v=sqrt(0.1),
-                      np = 1,
-                      verbose.v=FALSE,
-                      chr = NULL,
-                      minAF.SuperPop = NULL,
-                      keepGDSpruned = TRUE,
-                      PATHSAMPLEGDS = PATHSAMPLEGDS,
-                      keepFile = FALSE)
+##############################################################
+## All GDS Sample files need to be located in the same 
+## directory.
+##############################################################
+PATHSAMPLEGDS <- PATH_WHERE_THE_GDS_SAMPLES_FILES_ARE_LOCATED
+
+##############################################################
+## The list of samples to analyse as obtained by the 
+## PED RDS file. The samples must have an 
+## associated GDS Sample file.
+##############################################################
+filePED <- FILE_PED
+ped <- readRDS(filePED)
+listSamples <- ped[, "Name.ID"]
+
+##############################################################
+## The pruning function is called on one sample at the time
+##############################################################
+for(i in seq_len(length(listSamples))) {
+  ## Compute the SNV pruned subset
+  pruningSample(gds=gds_1KG,
+          sampleCurrent = listSamples[i],
+          study.id = studyDF$study.id,  ## Study identifier as defined in the previous step
+          listSNP = NULL,
+          np = 1L, ## Number of CPU (Default: 1)
+          verbose.v = FALSE,
+          keepGDSpruned = TRUE, ## When TRUE, the information about the pruned SNVs is added to the GDS Sample file
+          PATHSAMPLEGDS = PATHSAMPLEGDS, ## All GDS Sample files must be in the same directory
+          keepFile = FALSE) ## When TRUE, 2 RDS files with the pruned SNVs information are generated
+  
+  ## GDS Sample file for the current sample
+  file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
         
-        # Add the genotype of 1KG and of the sample listSamples[i] 
-        # for SNV pruned in the gdsSample
-        addStudy1Kg(gds_1KG, file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")))
-        # Add the sample name from 1KG in the study.annot of gdsSample
-        addStudy1Kg(gds_1KG, file.GDSSample)
-
-    }
+  ## Add the genotype information for the list of pruned SNVs in the GDS Sample file
+  add1KG2SampleGDS(gds_1KG, file.GDSSample, listSamples[1], studyDF$study.id))
+  
+  ## Add annotation to the GDS Sample file
+  addStudy1Kg(gds_1KG, file.GDSSample)
+}
     
-    
-    closefn.gds(gds)
+## Close the 1KG GDS file (it is important to close the GDS file)
+closefn.gds(gds)
 ```
 
-### Step 5. Estimate the allelic for the SNV pruned 
+<br>
+
+### Step 6. Estimate the allelic for the pruned SNVs
 
 
 
@@ -529,7 +523,9 @@ or in R for a s
     closefn.gds(gds)
 ```
 
-### Step 6. Generate the synthetic dataset
+<br>
+
+### Step 7. Generate the synthetic dataset
 
 
 
@@ -620,7 +616,7 @@ or in R
     
 ```
 
-### Step 7. Compute the PCA-KNN ancestry call for each synthetic data
+### Step 8. Compute the PCA-KNN ancestry call for each synthetic data
 
 
 
@@ -743,7 +739,7 @@ or in R
     
 ```
 
-### Step 8. Select paramters for the PCA-KNN ancestry call
+### Step 9. Select paramters for the PCA-KNN ancestry call
 
 
 

@@ -183,6 +183,11 @@ test_that("getTableSNV() must return error when gdsSample is character string", 
 })
 
 
+#############################################################################
+### Tests computeLOHBlocksDNAChr() results
+#############################################################################
+
+
 context("computeLOHBlocksDNAChr() results")
 
 
@@ -289,6 +294,11 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric abov
 })
 
 
+#############################################################################
+### Tests computeAllelicImbDNAChr() results
+#############################################################################
+
+
 context("computeAllelicImbDNAChr() results")
 
 
@@ -336,7 +346,41 @@ test_that("computeLOHBlocksDNAChr() must return error when wAR is vector of nume
 })
 
 
+#############################################################################
+### Tests computeAllelicFractionDNA() results
+#############################################################################
+
 context("computeAllelicFractionDNA() results")
+
+
+test_that("computeAllelicFractionDNA() must return error when gds is character string", {
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionDNA(gds="test.gds", gdsSample=gdsF,
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
+                    error_message)
+})
+
+
+test_that("computeAllelicFractionDNA() must return error when gdsSample is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample="toto.gds",
+        sampleCurrent="test", study.id="test",
+        chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
+            error_message)
+})
 
 
 test_that("computeAllelicFractionDNA() must return error when minCov is character string", {
@@ -403,7 +447,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is vector of n
 
     error_message <- "The \'wAR\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample=gdsF,
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
                             sampleCurrent="test", study.id="test",
                             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
                             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
@@ -423,7 +467,7 @@ test_that("computeAllelicFractionDNA() must return error when minProb is vector 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample="test",
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=c(0.22, 0.999),
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -499,7 +543,7 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample="test",
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
             sampleCurrent="test", study.id="test",
             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.901,
             eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -550,10 +594,13 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample=gdsF,
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.11,
         eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -566,14 +613,18 @@ test_that("computeAllelicFractionDNA() must return error when verbose is numeric
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
     error_message <- paste0("The \'verbose\' parameters must be a ",
                                 "single logical value (TRUE or FALSE).")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsFIle, gdsSample=gdsF,
+    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test", chrInfo=c("chr1", "chr2"),
         minCov=10, minProb=0.11,  eProb=0.001, cutOffLOH=-5,
         cutOffHomoScore=-3, wAR=10, verbose=22), error_message, fixed=TRUE)
 })
+
 
 
 context("computeAlleleFraction() results")

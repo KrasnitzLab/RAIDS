@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{computePrunedPCARef}
 \alias{computePrunedPCARef}
-\title{Compute principal component axes (PCA) on pruned SNV with the reference
-samples}
+\title{Compute principal component axes (PCA) on pruned SNV with the
+reference samples}
 \usage{
 computePrunedPCARef(gds, listRef, np = 1L)
 }
@@ -25,7 +25,8 @@ pca.unrel -> \code{snpgdsPCAClass}
 and a snp.load -> \code{snpgdsPCASNPLoading}
 }
 \description{
-This function compute the PCA on pruned SNV with the reference samples
+This function compute the PCA on pruned SNV with the
+reference samples
 }
 \details{
 More information about the method used to calculate the patient eigenvectors

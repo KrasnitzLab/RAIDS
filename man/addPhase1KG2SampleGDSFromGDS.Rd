@@ -5,7 +5,7 @@
 \alias{addPhase1KG2SampleGDSFromGDS}
 \title{TODO}
 \usage{
-addPhase1KG2SampleGDSFromGDS(gds, gdsPhase, PATHSAMPLEGDS)
+addPhase1KG2SampleGDSFromGDS(gds, gdsPhase, PATHSAMPLEGDS, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class
@@ -16,6 +16,9 @@ GDS file.}
 
 \item{PATHSAMPLEGDS}{the path of an object of class \code{gds} related to
 the sample}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{TRUE}.}
 }
 \value{
 The integer \code{0} when successful.

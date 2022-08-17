@@ -116,7 +116,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                                             "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unknown
+                    normal.geno=rep(3,length(listKeep)),#ormal genotype unknown
                     pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
@@ -399,7 +399,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @param pCutOff TODO, Default: \code{-3}.
 #'
 #'
-#' @return a \code{list} TODO containing:
+#' @return a \code{list} containing 4 entries:
 #' \itemize{
 #' \item{pWin}{TODO}
 #' \item{p}{TODO}
@@ -464,10 +464,9 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #'
 #' @param vMean TODO
 #'
-#' @return a \code{list} containing:
+#' @return a \code{list} containing 3 entries:
 #' \itemize{
 #' \item{pWin} {TODO.}
-#' \item{p} {TODO}
 #' \item{pCut} {TODO.}
 #' \item{pCut1} {TODO.}
 #' }
@@ -747,13 +746,13 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
 #' @title TODO
 #'
-#' @description Create a data.frame with the allelic fraction TODO
+#' @description Create a data.frame containing the allelic fraction TODO
 #'
-#' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
 #' @param sampleCurrent A \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -802,6 +801,16 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
                                 chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9, verbose=FALSE) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
+    }
 
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {

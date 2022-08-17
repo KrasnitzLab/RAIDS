@@ -10,7 +10,7 @@ prepSynthetic(
   listSampleRef,
   data.id.profile,
   studyDF,
-  nbSim = 1,
+  nbSim = 1L,
   prefId = "",
   pRecomb = 0.01,
   minProb = 0.999,
@@ -29,7 +29,7 @@ to be analyzed.}
 \item{studyDF}{TODO}
 
 \item{nbSim}{a single positive \code{integer} representing the number of
-simulations per combination of sample and profile. Default: \code{1}.}
+simulations per combination of sample and profile. Default: \code{1L}.}
 
 \item{prefId}{a \code{character} string TODO. Default: \code{""}.}
 

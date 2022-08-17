@@ -162,7 +162,7 @@ splitSelectByPop <- function(dataRef) {
 #' @param studyDF TODO
 #'
 #' @param nbSim a single positive \code{integer} representing the number of
-#' simulations per combination of sample and profile. Default: \code{1}.
+#' simulations per combination of sample and profile. Default: \code{1L}.
 #'
 #' @param prefId a \code{character} string TODO. Default: \code{""}.
 #'
@@ -188,14 +188,25 @@ prepSynthetic <- function(gdsSampleFile,
                             listSampleRef,
                             data.id.profile,
                             studyDF,
-                            nbSim=1,
+                            nbSim=1L,
                             prefId="",
                             pRecomb=0.01,
                             minProb=0.999,
                             seqError=0.001) {
 
+    ## The gdsSampleFile must be a character string and the file must exists
+    if (!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
+        stop("The \'gdsSampleFile\' must be a character string representing ",
+                "the GDS Sample information file. The file must exist.")
+    }
+
+    ## The nbSim must be a single positive numeric
+    if (!(isSingleNumber(nbSim) && nbSim > 0)) {
+        stop("The \'nbSim\' must be a single positive integer.")
+    }
+
     ## Open the GDS Sample file
-    gdsSample <- openfn.gds(gdsSampleFile, readonly = FALSE)
+    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
@@ -762,7 +773,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     df <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1], Call=listCall,
                         L=NA, AUC=NA, H=NA, stringsAsFactors=FALSE)
 
-    resROC <- multiclass.roc(fCall[listKeep], predMat)
+    resROC <- suppressWarnings(multiclass.roc(fCall[listKeep], predMat))
     matAccuracy[i, 3] <- as.numeric(resROC$auc)
     matAccuracy[i, 4] <- 0
 
@@ -773,7 +784,8 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
         if(length(which(fCur == 1))>0) {
-            listROC[[listCall[j]]] <- roc(fCur ~ predMat[,j], ci=TRUE)
+            listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
+                                                            ci=TRUE))
             pos <- which(df$Call == listCall[j])
             for(r in seq_len(3)){
                 df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])

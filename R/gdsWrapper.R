@@ -1,7 +1,7 @@
 #' @title Initialization of the section related to the sample
 #' information in the \code{gds} file.
 #'
-#' @description This function initializesthe section related to the sample
+#' @description This function initializes the section related to the sample
 #' information in the \code{gds} file. The information is extracted from
 #' the \code{data.frame} \code{pedDF} passed to the function.
 #'
@@ -30,6 +30,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
     }
+
     add.gdsn(gds, "sample.id", pedDF[, "Name.ID"])
 
     ## Create a data.frame containing the information form the samples
@@ -405,7 +406,9 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSample1k == listSamples[i])
-        print(listSamples[i])
+
+        if(verbose) { message(listSamples[i]) }
+
         if( length(pos) == 1) {
             matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
                                         row.names=NULL)
@@ -453,6 +456,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -466,7 +471,8 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
+appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP,
+                                verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
@@ -476,7 +482,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
     geno.var <- index.gdsn(gds, "genotype")
     g <- read.gdsn(node=geno.var, start=c(1, 1), count=c(1,-1))
     nbSample <- length(g)
-    print(nbSample)
+    if(verbose) { message(nbSample) }
     for(i in seq_len(length(listSample))) {
         pos <- which(listSample1k == listSample[i])
         if( length(pos) == 1) {
@@ -497,7 +503,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP) {
             append.gdsn(geno.var,g, check=TRUE)
 
             rm(matSample)
-            print(paste0(listMat1k[pos], " ", i))
+            if(verbose) { message(listMat1k[pos], " ", i) }
         }else {
             stop("Missing 1k samples ", listSample[i])
         }
@@ -578,6 +584,9 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running. Default: \code{FALSE}.
+#'
 #' @return The  function returns \code{0L} when successful.
 #'
 #' @examples
@@ -602,7 +611,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 pedStudy,
                                                 batch,
                                                 studyDF,
-                                                PATHGDSSAMPLE=NULL) {
+                                                PATHGDSSAMPLE=NULL,
+                                                verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat <- dir(PATHGENO, pattern = ".+.txt.gz")
@@ -612,7 +622,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSampleFile == listSamples[i])
-        print(paste0(listSamples[i], " ", Sys.time(), " ", i))
+
+        if(verbose) { message(listSamples[i], " ", Sys.time(), " ", i) }
+
         if(length(pos) == 1){
 
             matSample <- read.csv(file.path(PATHGENO, listMat[pos]))
@@ -782,7 +794,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
             rm(g)
             closefn.gds(gdsfile=gdsSample)
-            print(paste0(listMat[pos], " ", i, " ", Sys.time()))
+            if(verbose) { message(listMat[pos], " ", i, " ", Sys.time()) }
 
         }else{
             stop("Missing samples ", listSamples[i])
@@ -1033,8 +1045,8 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. If \code{NULL}, all
 #' samples are used. Default: \code{NULL}.
 #'
-#' @param listKeep a \code{vector} of SNP identifiers specifying selected
-#' SNPs; if \code{NULL}, all SNPs are used in the
+#' @param listKeep a \code{vector} of SNVs identifiers specifying selected;
+#' if \code{NULL}, all SNVs are used in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.
 #'
 #' @param slide.max.bp.v a single positive \code{integer} that represents
@@ -1054,8 +1066,8 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #' Default: \code{FALSE}.
 #'
-#' @return a \code{list} of SNP IDs stratified by chromosomes as generated
-#' by \code{\link[SNPRelate]{snpgdsLDpruning}} function.
+#' @return a \code{list} of SNP identifiers stratified by chromosomes as
+#' generated by \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #'
 #' @details
 #'
@@ -1096,16 +1108,17 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title Fill the pruned.study entry in the GDS file
+#' @title Add the pruned.study entry (pruned SNVs) in the GDS Sample file
 #'
-#' @description TODO
+#' @description This function adds the pruned.study entry, which contains
+#' the pruned SNVs, in the GDS
+#' Sample file. If a pruned.study entry is already present, the entry is
+#' deleted and a new entry is created.
 #'
-#' @param gds an object of class \code{gds} opened for the sample
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' GDS Sample file.
 #'
-#' @param pruned TODO
-#'
-#' @param sample.id a \code{character} string corresponding to
-#' the sample identifier.
+#' @param pruned a \code{vector} of pruned SNVs.
 #'
 #' @return The integer \code{0L} when successful.
 #'
@@ -1118,14 +1131,17 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addGDSStudyPruning <- function(gds, pruned, sample.id) {
+addGDSStudyPruning <- function(gds, pruned) {
 
+    ## Delete the pruned.study entry if present in the GDS Sample file
     if("pruned.study" %in% ls.gdsn(gds)) {
         delete.gdsn(index.gdsn(node=gds, "pruned.study"))
     }
 
-    var.Pruned <- add.gdsn(gds, "pruned.study", pruned)
+    ## Create the pruned.study node in the GDS Sample file
+    var.Pruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
 
+    # Write the data cached in memory to the GDS Sample file
     sync.gds(gdsfile=gds)
 
     return(0L)

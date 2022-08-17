@@ -21,12 +21,12 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
 
     error_message <- "The batch.v must be an integer."
 
-    expect_error(prepPed1KG(pedFile=pedFile, PATHGENO=data.dir,
+    expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
                                 batch.v="SAVE"), error_message)
 })
 
 
-test_that("prepPed1KG() must return error when batch.v is a vector of numerics", {
+test_that("prepPed1KG() must return error when batch.v is a vector of float", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
@@ -34,8 +34,8 @@ test_that("prepPed1KG() must return error when batch.v is a vector of numerics",
 
     error_message <- "The batch.v must be an integer."
 
-    expect_error(prepPed1KG(pedFile=pedFile, PATHGENO=data.dir,
-                                batch.v=c(1, 2)), error_message)
+    expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
+                                batch.v=c(0.111, 2)), error_message)
 })
 
 
@@ -424,22 +424,4 @@ test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 
     expect_error(addRef2GDS1KG(fileNameGDS=fileGDS, filePart=fileNot),
                  error_message)
-})
-
-
-
-#############################################################################
-### Tests generatePhase1KG2GDS() results
-#############################################################################
-
-context("generatePhase1KG2GDS() results")
-
-test_that("generatePhase1KG2GDS() must return error when verbose is a numeric value", {
-
-    error_message <- paste0("The \'verbose\' parameters must ",
-                        "be a single logical value (TRUE or FALSE).")
-
-    expect_error(generatePhase1KG2GDS(gds="test.gds", gdsPhase="test",
-                PATHGENO="test", fileLSNP="test", verbose=22),
-                 error_message, fixed=TRUE)
 })

@@ -676,7 +676,8 @@ pruning1KG.Chr <- function(gds, method="corr",
             chrGDS <- index.gdsn(gds, "snp.chromosome")
             snpCHR <- read.gdsn(chrGDS)
 
-            listKeep <- snpID[which(snpCHR == chr & snpAF >= minAF & snpAF <= 1-minAF)]
+            listKeep <- snpID[which(snpCHR == chr & snpAF >= minAF &
+                                        snpAF <= 1-minAF)]
         }
     }
 
@@ -762,6 +763,9 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #'
 #' @param blockDesc TODO
 #'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{TRUE}.
+#'
 #' @return None.
 #'
 #' @details
@@ -784,7 +788,7 @@ addBlockFromPlink2GDS <- function(gds,
                                   PATHBLOCK,
                                   superPop,
                                   blockName,
-                                  blockDesc) {
+                                  blockDesc, verbose=FALSE) {
 
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
@@ -794,17 +798,19 @@ addBlockFromPlink2GDS <- function(gds,
     listChr <- listChr[order(listChr)]
     listChr <- seq_len(22)
     listBlock <- list()
-    for(chr in listChr){
-        print(paste0("chr", chr, " ",Sys.time()))
+    for(chr in listChr) {
+        if(verbose) { message("chr", chr, " ",Sys.time()) }
         snp.keep <- snp.position[snp.chromosome == chr]
 
         listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
-        if(chr > 1){
+        if(chr > 1) {
             vMax <- max(listBlock[[chr-1]])
             vMin <- min(listBlock[[chr-1]])
-            listBlock[[chr]][listBlock[[chr]] > 0] <- listBlock[[chr]][listBlock[[chr]] > 0] + vMax
-            if(vMin < 0){
-                listBlock[[chr]][listBlock[[chr]] < 0] <- listBlock[[chr]][listBlock[[chr]] < 0] + vMin
+            listBlock[[chr]][listBlock[[chr]] > 0] <-
+                    listBlock[[chr]][listBlock[[chr]] > 0] + vMax
+            if(vMin < 0) {
+                listBlock[[chr]][listBlock[[chr]] < 0] <-
+                        listBlock[[chr]][listBlock[[chr]] < 0] + vMin
             }
         }
     }
@@ -842,7 +848,8 @@ addBlockFromPlink2GDS <- function(gds,
 getRef1KGPop <- function(gds, popName){
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
-    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))[which(sample.ref == TRUE),]
+    dataRef <- read.gdsn(index.gdsn(gds,
+                            "sample.annot"))[which(sample.ref == TRUE),]
 
 
     if(! popName %in% colnames(dataRef)) {
@@ -850,7 +857,8 @@ getRef1KGPop <- function(gds, popName){
     }
 
     dataRef <- dataRef[, popName]
-    names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))[which(sample.ref == TRUE)]
+    names(dataRef) <- read.gdsn(index.gdsn(node=gds,
+                            "sample.id"))[which(sample.ref == TRUE)]
 
     return(dataRef)
 }

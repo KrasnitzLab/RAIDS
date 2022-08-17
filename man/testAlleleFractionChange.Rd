@@ -15,10 +15,9 @@ testAlleleFractionChange(matCov, pCutOff = -3, vMean)
 \item{vMean}{TODO}
 }
 \value{
-a \code{list} containing:
+a \code{list} containing 3 entries:
 \itemize{
 \item{pWin} {TODO.}
-\item{p} {TODO}
 \item{pCut} {TODO.}
 \item{pCut1} {TODO.}
 }

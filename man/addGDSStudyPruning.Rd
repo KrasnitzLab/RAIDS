@@ -3,23 +3,24 @@
 \encoding{UTF-8}
 \name{addGDSStudyPruning}
 \alias{addGDSStudyPruning}
-\title{Fill the pruned.study entry in the GDS file}
+\title{Add the pruned.study entry (pruned SNVs) in the GDS Sample file}
 \usage{
-addGDSStudyPruning(gds, pruned, sample.id)
+addGDSStudyPruning(gds, pruned)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the sample}
+\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+GDS Sample file.}
 
-\item{pruned}{TODO}
-
-\item{sample.id}{a \code{character} string corresponding to
-the sample identifier.}
+\item{pruned}{a \code{vector} of pruned SNVs.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+This function adds the pruned.study entry, which contains
+the pruned SNVs, in the GDS
+Sample file. If a pruned.study entry is already present, the entry is
+deleted and a new entry is created.
 }
 \examples{
 

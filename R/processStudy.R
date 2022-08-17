@@ -1101,7 +1101,8 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #'
 #' @param minProb an \code{numeric} betweeen 0 and 1
 #'
-#' @param eProb an \code{numeric} betweeen 0 and 1 probability of sequencing error
+#' @param eProb an \code{numeric} betweeen 0 and 1 probability of
+#' sequencing error
 #'
 #' @param cutOffLOH log of the score to be LOH default -5
 #'
@@ -1367,11 +1368,17 @@ computePCARefRMMulti <- function(gdsSample,
 #'
 #' @param listPCA TODO
 #'
-#' @param sampleRef a \code{vector} of sample.id from 1KG with one entry for each synthetic to project.
+#' @param sampleRef a \code{vector} of sample.id from 1KG with one entry for
+#' each synthetic to project.
 #'
 #' @param study.id.syn a the study.id of the synthetic data
 #'
-#' @return A \code{list} TODO with the sample.id and eigenvectors.
+#' @return a \code{list} containing 3 entries:
+#' \itemize{
+#' \item{sample.id} { TODO }
+#' \item{eigenvector.ref} { TODO }
+#' \item{eigenvecto} { TODO }
+#' }
 #'
 #' @examples
 #'
@@ -1401,11 +1408,16 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
                                                  verbose=TRUE)
 
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                                   gdsobj=gdsSample,
-                                                   sample.id=study.annot$data.id,
-                                                   num.thread=1, verbose=TRUE)
-    rownames(listPCA[["pca.unrel"]]$eigenvect) <- listPCA[["pca.unrel"]]$sample.id
-    rownames(listPCA[["samp.load"]]$eigenvect) <- listPCA[["samp.load"]]$sample.id
+                                                gdsobj=gdsSample,
+                                                sample.id=study.annot$data.id,
+                                                num.thread=1L, verbose=TRUE)
+
+    rownames(listPCA[["pca.unrel"]]$eigenvect) <-
+                                            listPCA[["pca.unrel"]]$sample.id
+
+    rownames(listPCA[["samp.load"]]$eigenvect) <-
+                                            listPCA[["samp.load"]]$sample.id
+
     listRes <- list(sample.id=listPCA[["samp.load"]]$sample.id,
                     eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
                     eigenvector=listPCA[["samp.load"]]$eigenvect)

@@ -68,7 +68,7 @@
 <span>  <span class="va">name.id</span>,</span>
 <span>  study.id.ref <span class="op">=</span> <span class="st">"Ref.1KG"</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  algorithm <span class="op">=</span> <span class="st">"exact"</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"randomized"</span><span class="op">)</span>,</span>
 <span>  eigen.cnt <span class="op">=</span> <span class="fl">32L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -76,13 +76,13 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>gdsSample</dt>
-<dd><p>an object of class <code>gds</code> opened related to
-the sample</p></dd>
+<dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a>,
+a GDS Sample file.</p></dd>
 
 
 <dt>name.id</dt>
-<dd><p>the sample id
-the gds</p></dd>
+<dd><p>a <code>character</code> string representing the sample
+identifier.</p></dd>
 
 
 <dt>study.id.ref</dt>
@@ -90,23 +90,29 @@ the gds</p></dd>
 
 
 <dt>np</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a single positive <code>integer</code> representing the number of CPU
+that will be used. Default: <code>1L</code>.</p></dd>
 
 
 <dt>algorithm</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string representing the algorithm used
+to calculate the PCA. The 2 choices are "exact" (traditional exact
+calculation) and "randomized" (fast PCA with randomized algorithm
+introduced in Galinsky et al. 2016). Default: <code>"exact"</code>.</p></dd>
 
 
 <dt>eigen.cnt</dt>
-<dd><p>TODO</p></dd>
+<dd><p>TODO. Default: <code>32L</code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>A <code>list</code> TODO with the sample.id and eigenvectors.</p>
-    </div>
+<p>a <code>list</code> containing 3 entries:</p><ul><li><p>sample.id  TODO</p></li>
+<li><p>eigenvector.ref  TODO</p></li>
+<li><p>eigenvector  TODO</p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Pascal Belleau, Astrid Deschênes and Alexander Krasnitz</p>

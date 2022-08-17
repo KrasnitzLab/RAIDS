@@ -2083,10 +2083,15 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                                             listCatPop, spRef,
                                             kList = seq(2, 15, 1),
                                             pcaList = seq(2, 15, 1))
+    resCall <- listKNNSample$matKNN[
+        which(listKNNSample$matKNN$D == listParaSample$D &
+                  listKNNSample$matKNN$K == listParaSample$K ) ,]
 
-    res <- list(pcaSample=listPCASample,
-                    paraSample=listParaSample,
-                    KNNSample=listKNNSample)
+    res <- list(pcaSample=listPCASample, # PCA of the sample + 1KG
+                paraSample=listParaSample, # Result of the parameter selection
+                KNNSample=listKNNSample, # KNN for the sample
+                Ancestry=resCall # the ancestry call fo rthe sample
+                )
 
     return(res)
 }

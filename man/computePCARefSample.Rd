@@ -10,27 +10,36 @@ computePCARefSample(
   name.id,
   study.id.ref = "Ref.1KG",
   np = 1L,
-  algorithm = "exact",
+  algorithm = c("exact", "randomized"),
   eigen.cnt = 32L
 )
 }
 \arguments{
-\item{gdsSample}{an object of class \code{gds} opened related to
-the sample}
+\item{gdsSample}{an object of class \link[gdsfmt]{gds.class},
+a GDS Sample file.}
 
-\item{name.id}{the sample id
-the gds}
+\item{name.id}{a \code{character} string representing the sample
+identifier.}
 
 \item{study.id.ref}{id of the reference in study.annot}
 
-\item{np}{TODO}
+\item{np}{a single positive \code{integer} representing the number of CPU
+that will be used. Default: \code{1L}.}
 
-\item{algorithm}{TODO}
+\item{algorithm}{a \code{character} string representing the algorithm used
+to calculate the PCA. The 2 choices are "exact" (traditional exact
+calculation) and "randomized" (fast PCA with randomized algorithm
+introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{TODO}
+\item{eigen.cnt}{TODO. Default: \code{32L}.}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors.
+a \code{list} containing 3 entries:
+\itemize{
+\item{sample.id} { TODO }
+\item{eigenvector.ref} { TODO }
+\item{eigenvector} { TODO }
+}
 }
 \description{
 TODO

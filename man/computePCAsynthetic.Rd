@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computePCAsynthetic}
 \alias{computePCAsynthetic}
-\title{Deprecated}
+\title{Deprecated Function}
 \usage{
 computePCAsynthetic(
   gdsSample,

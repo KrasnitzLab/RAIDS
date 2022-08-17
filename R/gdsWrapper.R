@@ -180,29 +180,40 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 }
 
 
-
-#' @title This function create the gds file fields related to the study and
-#' the sample in it.
+#' @title Add information related to a specific study and a specific sample
+#' into a GDS file
 #'
-#' @description TODO
+#' @description This function add entries related to 1) a specific study and
+#' 2) a specific sample into a GDS file. More specifically, a
+#' "study.annot" node is added to the GDS file. In addition, those nodes are
+#' also created inside those 2 nodes: "study.list" and "study.annot".
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id of
-#' pedDF is Name.ID and the row.name is Name.ID too.
+#' @param pedDF a \code{data.frame} with the sample information. The
+#' \code{data.frame} must have the columns:
+#' "Name.ID", "Case.ID", "Sample.Type", "Diagnosis" and "Source".
+#' The unique sample identifier of the \code{data.frame} is the "Name.ID"
+#' column and the row names of the \code{data.frame} must be the "Name.ID"
+#' values.
 #'
-#' @param batch a \code{integer} corresponding
+#' @param batch a \code{integer} corresponding the batch associated to the
+#' study. Default: \code{1}.
 #'
-#' @param listSamples a \code{array} with the sample from pedDF to keep
+#' @param listSamples a \code{vector} of \code{character} string representing
+#' the samples (samples identifiers) that are saved into the GDS.
+#' If \code{NULL}, all samples present in the \code{pedDF} are used.
+#' Default: \code{NULL}.
 #'
-#' @param studyDF a \code{data.frame} with at least the column study.id,
-#' study.desc and study.platform
+#' @param studyDF a \code{data.frame} with at least the 3 columns: "study.id",
+#' "study.desc" and "study.platform".
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{TRUE}.
 #'
-#' @return TODO
+#' @return a \code{vector} of \code{character} strings representing the sample
+#' identifiers present in the \code{pedDF} object.
 #'
 #' @examples
 #'
@@ -233,14 +244,6 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
         listSamples <- pedDF$Name.ID
     }
 
-    # sampleGDS <- index.gdsn(gds, "sample.id")
-
-    # samplePres <- read.gdsn(sampleGDS)
-    # print(paste0("appendGDSSample ", Sys.time()))
-    # appendGDSSample(gds, pedDF, batch=batch, listSamples=listSamples)
-    # print(paste0("appendGDSSample DONE ", Sys.time()))
-
-    # add.gdsn(gds, "study.offset", length(samplePres))
 
     df <- data.frame(study.id=studyDF$study.id,
                         study.desc=studyDF$study.desc,

@@ -2148,10 +2148,15 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                                             listCatPop, spRef,
                                             kList = seq(2, 15, 1),
                                             pcaList = seq(2, 15, 1))
+    resCall <- listKNNSample$matKNN[
+        which(listKNNSample$matKNN$D == listParaSample$D &
+                  listKNNSample$matKNN$K == listParaSample$K ) ,]
 
-    res <- list(pcaSample=listPCASample,
-                    paraSample=listParaSample,
-                    KNNSample=listKNNSample)
+    res <- list(pcaSample=listPCASample, # PCA of the sample + 1KG
+                paraSample=listParaSample, # Result of the parameter selection
+                KNNSample=listKNNSample, # KNN for the sample
+                Ancestry=resCall # the ancestry call fo rthe sample
+                )
 
     return(res)
 }
@@ -2202,11 +2207,13 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
     }
     tableSyn <- list()
     tableCall <- list()
+    tableAUROC <- list()
     i <- 1
 
     for(D in pcaList) {
         matKNNCurD <- matKNN.All[which(matKNN.All$D == D ), ]
         listTMP <- list()
+        listTMP.AUROC <- list()
         j <- 1
         for(K in kList) {
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
@@ -2222,10 +2229,13 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                                 Accu.CM=res$matAccuracy$Accu.CM)
 
             listTMP[[j]] <- df
+            listTMP.AUROC[[j]] <- resROC$matAUROC.Call
             j <- j + 1
         }
         df <- do.call(rbind, listTMP)
+
         tableCall[[i]] <- df
+        tableAUROC[[i]] <- do.call(rbind, listTMP.AUROC)
         maxAUROC <- max(df[df$K %in% kList, "AUROC.min"])
         kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3, "K"]
         kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
@@ -2241,17 +2251,18 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
 
     dfPCA <- do.call(rbind, tableSyn)
     dfCall <- do.call(rbind, tableCall)
+    dfAUROC <- do.call(rbind, tableAUROC)
     selD <- dfPCA$D[which.max(dfPCA$upQuartile)]
     selK <- dfPCA$K[which.max(dfPCA$upQuartile)]
     tmp <- max(dfPCA$upQuartile)
     listD <- dfPCA$D[which(abs(dfPCA$upQuartile - tmp) < 1e-3)]
 
     res <- list(dfPCA=dfPCA,
-                    dfPop=dfCall,
-                    D=selD,
-                    K=selK,
-                    listD=listD)
-
+                dfPop=dfCall,
+                dfAUROC=dfAUROC,
+                D = selD,
+                K = selK,
+                listD = listD)
     return(res)
 }
 

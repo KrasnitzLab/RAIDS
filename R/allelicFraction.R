@@ -116,7 +116,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                                             "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3,length(listKeep)), # Suppose the normal genotype unknown
+                    normal.geno=rep(3,length(listKeep)),#ormal genotype unknown
                     pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
@@ -399,7 +399,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @param pCutOff TODO, Default: \code{-3}.
 #'
 #'
-#' @return a \code{list} TODO containing:
+#' @return a \code{list} containing 4 entries:
 #' \itemize{
 #' \item{pWin}{TODO}
 #' \item{p}{TODO}
@@ -464,10 +464,9 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #'
 #' @param vMean TODO
 #'
-#' @return a \code{list} containing:
+#' @return a \code{list} containing 3 entries:
 #' \itemize{
 #' \item{pWin} {TODO.}
-#' \item{p} {TODO}
 #' \item{pCut} {TODO.}
 #' \item{pCut1} {TODO.}
 #' }

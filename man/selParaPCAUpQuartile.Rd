@@ -32,7 +32,14 @@ computeKNNSuperPoprSynthetic return from group synthetic data}
 \item{pcaList}{TODO array of the pca dimension possible values}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors.
+a \code{list} containing 5 entries:
+\itemize{
+\item{dfPCA} {TODO}
+\item{dfPop} {TODO}
+\item{D} {TODO}
+\item{K} {TODO}
+\item{listD} {TODO}
+}
 }
 \description{
 TODO

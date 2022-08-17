@@ -676,7 +676,8 @@ pruning1KG.Chr <- function(gds, method="corr",
             chrGDS <- index.gdsn(gds, "snp.chromosome")
             snpCHR <- read.gdsn(chrGDS)
 
-            listKeep <- snpID[which(snpCHR == chr & snpAF >= minAF & snpAF <= 1-minAF)]
+            listKeep <- snpID[which(snpCHR == chr & snpAF >= minAF &
+                                        snpAF <= 1-minAF)]
         }
     }
 
@@ -847,7 +848,8 @@ addBlockFromPlink2GDS <- function(gds,
 getRef1KGPop <- function(gds, popName){
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
-    dataRef <- read.gdsn(index.gdsn(gds, "sample.annot"))[which(sample.ref == TRUE),]
+    dataRef <- read.gdsn(index.gdsn(gds,
+                            "sample.annot"))[which(sample.ref == TRUE),]
 
 
     if(! popName %in% colnames(dataRef)) {
@@ -855,7 +857,8 @@ getRef1KGPop <- function(gds, popName){
     }
 
     dataRef <- dataRef[, popName]
-    names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))[which(sample.ref == TRUE)]
+    names(dataRef) <- read.gdsn(index.gdsn(node=gds,
+                            "sample.id"))[which(sample.ref == TRUE)]
 
     return(dataRef)
 }

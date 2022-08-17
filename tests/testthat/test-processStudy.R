@@ -459,3 +459,69 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
         keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message,
         fixed=TRUE)
 })
+
+
+
+#############################################################################
+### Tests add1KG2SampleGDS() results
+#############################################################################
+
+
+context("add1KG2SampleGDS() results")
+
+
+test_that("add1KG2SampleGDS() must return error when gds is a character string", {
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+
+    expect_error(add1KG2SampleGDS(gds="toto.gds", gdsSampleFile="sample.gds",
+        sampleCurrent="sample", study.id="TCGA"), error_message, fixed=TRUE)
+})
+
+
+test_that("add1KG2SampleGDS() must return error when gdsSampleFile is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'gdsSampleFile\' must be a character string representing ",
+                                "the GDS Sample file. The file must exist.")
+
+    expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=33,
+        sampleCurrent="sample", study.id="TCGA"), error_message, fixed=TRUE)
+})
+
+test_that("add1KG2SampleGDS() must return error when sampleCurrent is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'sampleCurrent\' must be a character string."
+
+    expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=gdsFile,
+            sampleCurrent=33, study.id="TCGA"), error_message, fixed=TRUE)
+})
+
+
+test_that("add1KG2SampleGDS() must return error when study.id is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'study.id\' must be a character string."
+
+    expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=gdsFile,
+        sampleCurrent="Test", study.id=22), error_message, fixed=TRUE)
+})

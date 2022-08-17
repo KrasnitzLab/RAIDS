@@ -326,11 +326,11 @@ patient.</li>
 <span>    </span>
 <span><span class="co">## Create the data frame with the mendatory columns</span></span>
 <span><span class="va">pedDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Name.ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span>, <span class="st">"Sample_03"</span><span class="op">)</span>,</span>
-<span>                     Case.ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Patient_h11"</span>, <span class="st">"Patient_h12"</span>, <span class="st">"Patient_h18"</span><span class="op">)</span>, </span>
-<span>                     Sample.Type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Primary Tumor"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                     Diagnosis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Cancer"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                     Source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                     stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                    Case.ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Patient_h11"</span>, <span class="st">"Patient_h12"</span>, <span class="st">"Patient_h18"</span><span class="op">)</span>, </span>
+<span>                    Sample.Type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Primary Tumor"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>                    Diagnosis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Cancer"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>                    Source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>                    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Save the data frame into a RDS file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">pedDF</span>, file<span class="op">=</span><span class="va">demo_PED_File</span><span class="op">)</span></span>
@@ -399,7 +399,7 @@ generate a GDS Sample file.</p>
 <span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,</span>
 <span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
 <span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
@@ -467,33 +467,43 @@ CPUs.</p>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>ped <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(filePED)</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>listSamples <span class="ot">&lt;-</span> ped[, <span class="st">"Name.ID"</span>]</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="do">## The pruning function is called on one sample at the time</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))) {</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the SNV pruned subset</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pruningSample</span>(<span class="at">gds=</span>gds_1KG,</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>          <span class="at">sampleCurrent =</span> listSamples[i],</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>          <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id,  <span class="do">## Study identifier as defined in the previous step</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">listSNP =</span> <span class="cn">NULL</span>,</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">np =</span> 1L, <span class="do">## Number of CPU (Default: 1)</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">verbose.v =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>          <span class="at">keepGDSpruned =</span> <span class="cn">TRUE</span>, <span class="do">## When TRUE, the information about the pruned SNVs is added to the GDS Sample file</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>          <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS, <span class="do">## All GDS Sample files must be in the same directory</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>          <span class="at">keepFile =</span> <span class="cn">FALSE</span>) <span class="do">## When TRUE, 2 RDS files with the pruned SNVs information are generated</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="do">## GDS Sample file for the current sample</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>)</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add the genotype information for the list of pruned SNVs in the GDS Sample file</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add1KG2SampleGDS</span>(gds_1KG, file.GDSSample, listSamples[<span class="dv">1</span>], studyDF<span class="sc">$</span>study.id))</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add annotation to the GDS Sample file</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addStudy1Kg</span>(gds_1KG, file.GDSSample)</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="do">## Close the 1KG GDS file (it is important to close the GDS file)</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="fu">closefn.gds</span>(gds)</span></code></pre></div>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="do">## The study information passed to the function must correspond </span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="do">## the the information present in the previously defined </span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="do">## data frame (see previous step).</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,  <span class="do">## IMPORTANT INFORMATION</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="do">## The pruning function is called on one sample at the time</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))) {</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the SNV pruned subset</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pruningSample</span>(<span class="at">gds=</span>gds_1KG,</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>          <span class="at">sampleCurrent =</span> listSamples[i],</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>          <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id,  <span class="do">## Study identifier as defined in the previous step</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>          <span class="at">np =</span> 1L, <span class="do">## Number of CPU (Default: 1)</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>          <span class="at">keepGDSpruned =</span> <span class="cn">TRUE</span>, <span class="do">## When TRUE, the information about the pruned SNVs is added to the GDS Sample file</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>          <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS, <span class="do">## All GDS Sample files must be in the same directory</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>          <span class="at">keepFile =</span> <span class="cn">FALSE</span>) <span class="do">## When TRUE, 2 RDS files with the pruned SNVs information are generated</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="do">## GDS Sample file for the current sample</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>)</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add the genotype information for the list of pruned SNVs in the GDS Sample file</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add1KG2SampleGDS</span>(<span class="at">gds =</span> gds_1KG, <span class="at">gdsSampleFile =</span> file.GDSSample, </span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sampleCurrent =</span> listSamples[<span class="dv">1</span>], </span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>                      <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id))</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add annotation to the GDS Sample file</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addStudy1Kg</span>(gds_1KG, file.GDSSample)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="do">## Close the 1KG GDS file (it is important to close the GDS file)</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="fu">closefn.gds</span>(gds)</span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">

@@ -8,10 +8,11 @@
 addStudy1Kg(gds, gdsSampleFile)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the 1000 Genomes}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{gdsSampleFile}{the path of an object of class \code{gds} related to
-the sample}
+\item{gdsSampleFile}{a \code{character} string representing the path and
+file name of the GDS Sample file. The GDS Sample file must exist.}
 }
 \value{
 The integer \code{0} when successful.
@@ -28,4 +29,3 @@ gds <- "TODO"
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
-\keyword{internal}

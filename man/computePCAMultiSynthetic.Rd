@@ -13,12 +13,18 @@ the sample}
 
 \item{listPCA}{TODO}
 
-\item{sampleRef}{a \code{vector} of sample.id from 1KG with one entry for each synthetic to project.}
+\item{sampleRef}{a \code{vector} of sample.id from 1KG with one entry for
+each synthetic to project.}
 
 \item{study.id.syn}{a the study.id of the synthetic data}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors.
+a \code{list} containing 3 entries:
+\itemize{
+\item{sample.id} { TODO }
+\item{eigenvector.ref} { TODO }
+\item{eigenvecto} { TODO }
+}
 }
 \description{
 TODO

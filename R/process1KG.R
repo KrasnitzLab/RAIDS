@@ -845,7 +845,7 @@ addBlockFromPlink2GDS <- function(gds,
 #' @encoding UTF-8
 #' @export
 #'
-getRef1KGPop <- function(gds, popName){
+getRef1KGPop <- function(gds, popName) {
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     dataRef <- read.gdsn(index.gdsn(gds,

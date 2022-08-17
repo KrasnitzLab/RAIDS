@@ -525,3 +525,125 @@ test_that("add1KG2SampleGDS() must return error when study.id is a numeric value
     expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=gdsFile,
         sampleCurrent="Test", study.id=22), error_message, fixed=TRUE)
 })
+
+
+
+
+#############################################################################
+### Tests computePCARefSample() results
+#############################################################################
+
+
+context("computePCARefSample() results")
+
+
+test_that("computePCARefSample() must return error when np is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+                        study.id.ref="Ref.1KG",
+                        np="1", algorithm="exact",
+                        eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return error when np is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'algorithm\' parameter must be a character string."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+                                study.id.ref="Ref.1KG",
+                                np=1L, algorithm=33,
+                                eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+
+test_that("computePCARefSample() must return error when algorithm is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'algorithm\' parameter must be a character string."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+                                     study.id.ref="Ref.1KG",
+                                     np=1L, algorithm=33,
+                                     eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return error when algorithm is not a valid choice", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+                                        study.id.ref="Ref.1KG",
+                                        np=1L, algorithm="sun",
+                                        eigen.cnt=32L))
+})
+
+
+test_that("computePCARefSample() must return error when name.id isnumeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'name.id\' parameter must be a character string."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id=22,
+                                    study.id.ref="Ref.1KG",
+                                    np=1L, algorithm="exact",
+                                    eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+
+#############################################################################
+### Tests addStudy1Kg() results
+#############################################################################
+
+
+context("addStudy1Kg() results")
+
+
+test_that("addStudy1Kg() must return error when gds is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+
+    expect_error(addStudy1Kg(gds=33, gdsSampleFile=gdsFile),
+                                error_message, fixed=TRUE)
+})
+

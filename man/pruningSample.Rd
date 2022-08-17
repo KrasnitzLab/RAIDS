@@ -44,7 +44,8 @@ corresponding to the sample identifier must exist and be located in the
 identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 The study identifier must be present in the GDS Sample file.}
 
-\item{listSNP}{a \code{vector} of SNVs identifiers specifying selected;
+\item{listSNP}{a \code{vector} of SNVs identifiers specifying selected to
+be passed the the pruning function;
 if \code{NULL}, all SNVs are used in the
 \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.}
 
@@ -66,10 +67,13 @@ during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.  Default: \code{FALSE}.}
 
 \item{chr}{a \code{character} string representing the chromosome where the
-selected SNVs should belong. Only one chromosome can be handled.
+selected SNVs should belong. Only one chromosome can be handled. If
+\code{NULL}, the chromosome is not used as a filtering criterion.
 Default: \code{NULL}.}
 
-\item{minAF.SuperPop}{TODO. Default: \code{NULL}.}
+\item{minAF.SuperPop}{a single positive \code{numeric} representing the
+minimum allelic frequency used to select the SNVs. If \code{NULL}, the
+allelic frequency is not used as a filtering criterion. Default: \code{NULL}.}
 
 \item{keepGDSpruned}{a \code{logicial} indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.
@@ -97,7 +101,9 @@ This function computes the list of pruned SNVs for a
 specific sample. When
 a group of SNVs are in linkage disequilibrium, only one SNV from that group
 is retained. The linkage disequilibrium is calculated with the
-\code{\link[SNPRelate]{snpgdsLDpruning}}() function.
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function. The initial list of
+SNVs that are passed to the \code{\link[SNPRelate]{snpgdsLDpruning}}()
+function can be specified by the user.
 }
 \examples{
 

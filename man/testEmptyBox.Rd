@@ -13,7 +13,7 @@ testEmptyBox(matCov, pCutOff = -3)
 \item{pCutOff}{TODO, Default: \code{-3}.}
 }
 \value{
-a \code{list} TODO containing:
+a \code{list} containing 4 entries:
 \itemize{
 \item{pWin}{TODO}
 \item{p}{TODO}

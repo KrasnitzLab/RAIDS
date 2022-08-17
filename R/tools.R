@@ -62,7 +62,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     df <- NULL
 
     if(is.null(freqCutoff)){
-        snp.AF = read.gdsn(index.gdsn(gds, "snp.AF"))
+        snp.AF <- read.gdsn(index.gdsn(gds, "snp.AF"))
         df <- data.frame(CHROM=snp.chromosome,
                             POS=as.integer(snp.position + offset),
                             ID=rep(".", length(snp.chromosome)),
@@ -96,7 +96,8 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     ## Add the header
     ##fileformat=VCFv4.3
     ##FILTER=<ID=PASS,Description="All filters passed">
-    ##INFO=<ID=AF,Number=A,Type=Float,Description="Estimated allele frequency in the range (0,1)">
+    ##INFO=<ID=AF,Number=A,Type=Float,Description="Estimated allele frequency
+    ##                            in the range (0,1)">
     #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
 
     cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOUT)

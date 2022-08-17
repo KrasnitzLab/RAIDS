@@ -3,28 +3,30 @@
 \encoding{UTF-8}
 \name{add1KG2SampleGDS}
 \alias{add1KG2SampleGDS}
-\title{TODO}
+\title{Add the information about the pruned SNVs into the GDS Sample file}
 \usage{
 add1KG2SampleGDS(gds, gdsSampleFile, sampleCurrent, study.id)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{gdsSampleFile}{the path of an object of class \code{gds} related to
-the sample}
+\item{gdsSampleFile}{a \code{character} string representing the path and
+file name of the GDS Sample file. The GDS Sample file must exist.}
 
-\item{sampleCurrent}{A \code{string} corresponding to
-the sample.id
-use in LDpruning}
+\item{sampleCurrent}{a \code{character} string corresponding to the sample
+identifier associated to the current list of pruned SNVs.}
 
-\item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+\item{study.id}{a \code{character} string corresponding to the study
+identifier associated to the current list of pruned SNVs.}
 }
 \value{
-\code{0L} when successful.
+The function returns \code{0L} when successful.
 }
 \description{
-TODO
+The function extracts the information about the pruned SNVs
+from the 1KG GDS file and adds entries related to the pruned SNVs in
+the GDS Sample file.
 }
 \examples{
 

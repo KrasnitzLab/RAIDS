@@ -278,11 +278,11 @@ demo_PED_File <- file.path(data.dir, "Demo_PED.RDS")
     
 ## Create the data frame with the mendatory columns
 pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                     Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"), 
-                     Sample.Type = rep("Primary Tumor", 3),
-                     Diagnosis = rep("Cancer", 3),
-                     Source = rep("Databank B", 3),
-                     stringsAsFactors = FALSE)
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"), 
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Diagnosis = rep("Cancer", 3),
+                    Source = rep("Databank B", 3),
+                    stringsAsFactors = FALSE)
 
 ## Save the data frame into a RDS file
 saveRDS(object=pedDF, file=demo_PED_File)
@@ -355,7 +355,7 @@ filePED <- FILE_PED
 #################################################################
 studyDF <- data.frame(study.id = "Id of the study",
                   study.desc = "Description",
-                  study.platform = "Platform string like Whole Exome",
+                  study.platform = "Whole-Exome",
                   stringsAsFactors = FALSE)
 
 #################################################################
@@ -428,6 +428,16 @@ filePED <- FILE_PED
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
+#################################################################
+## The study information passed to the function must correspond 
+## the the information present in the previously defined 
+## data frame (see previous step).
+#################################################################
+studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
+                  study.desc = "Description",
+                  study.platform = "Whole-Exome",
+                  stringsAsFactors = FALSE)
+
 ##############################################################
 ## The pruning function is called on one sample at the time
 ##############################################################
@@ -436,9 +446,7 @@ for(i in seq_len(length(listSamples))) {
   pruningSample(gds=gds_1KG,
           sampleCurrent = listSamples[i],
           study.id = studyDF$study.id,  ## Study identifier as defined in the previous step
-          listSNP = NULL,
           np = 1L, ## Number of CPU (Default: 1)
-          verbose.v = FALSE,
           keepGDSpruned = TRUE, ## When TRUE, the information about the pruned SNVs is added to the GDS Sample file
           PATHSAMPLEGDS = PATHSAMPLEGDS, ## All GDS Sample files must be in the same directory
           keepFile = FALSE) ## When TRUE, 2 RDS files with the pruned SNVs information are generated
@@ -447,7 +455,9 @@ for(i in seq_len(length(listSamples))) {
   file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
         
   ## Add the genotype information for the list of pruned SNVs in the GDS Sample file
-  add1KG2SampleGDS(gds_1KG, file.GDSSample, listSamples[1], studyDF$study.id))
+  add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
+                      sampleCurrent = listSamples[1], 
+                      study.id = studyDF$study.id))
   
   ## Add annotation to the GDS Sample file
   addStudy1Kg(gds_1KG, file.GDSSample)

@@ -170,7 +170,8 @@ The required steps are:
 2. Generate a Sample VCF file (1 VCF file per sample)
 3. Create a RDS file containing information about the samples
 4. Create a GDS Sample file (1 GDS file per sample)
-5. Generate a pruned subset of the single nucleotide variants (SNVs)  
+5. Generate a pruned subset of the single nucleotide variants (SNVs) 
+6. Estimate the allelic frequency for the pruned SNVs
 
 Beware that a mapped BAM file is needed for each sample. The reference genome 
 used for the mapping must correspond to the one used to generate the 
@@ -402,8 +403,7 @@ To speed up the process, the function can be run on multiple CPUs.
 library(RAIDS)
     
 ##############################################################
-## The 1KG GDS file and the 1KG SNP Annotation GDS file 
-## need to be located in the same directory
+## The 1KG GDS file is required 
 ##############################################################
 PATH_1KG <- PATH_REF
     
@@ -469,68 +469,75 @@ closefn.gds(gds)
 
 <br>
 
-### Step 6. Estimate the allelic for the pruned SNVs
+### Step 6. Estimate the allelic fraction for the pruned SNVs
 
 
+The __estimateAllelicFraction()__ estimates the allelic fraction for all 
+SNVs present in the pruned SNV dataset. The function requires those 2 files:
+
+1. The 1KG GDS file
+2. The GDS Sample file
+
+The 3 other inputs are:
+
+1. The information about the length of the chromosomes
+2. The sample identifier (it corresponds to the GDS Sample file name)
+3. The study identifier (it should correspond to the one used previously)
+
+The function processes one sample at the time. 
 
 or in R for a s
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
+##############################################################
+## Load required package
+##############################################################
+library(RAIDS)
+library(BSgenome)
+library(BSgenome.Hsapiens.UCSC.hg38)
 
-    library(RAIDS)
-    library(BSgenome)
-    library(BSgenome.Hsapiens.UCSC.hg38)
+##############################################################
+## The 1KG GDS file is required
+##############################################################
+PATH_1KG <- PATH_REF
+    
+fileName.GDS.1KG <- "matGeno1000g.gds"
+file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
-    ##########################################
-    # Files related to the reference
-    # Downloaded
-    ##########################################
-    PATH_1KG <- PATH_REF
+## Open the 1KG GDS file     
+gds <- snpgdsOpen(file.GDS)
     
-    fileName.GDS <- "matGeno1000g.gds"
-    fileName.GDS.Annot <- "matAnnot1000g.gds"
-    file.GDS <- file.path(PATH_1KG, fileName.GDS)
-    file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
+##############################################################
+## The length of each chromosome is required
+## Chromosomes X, Y and M need relabeling
+##############################################################
+chrInfo <- integer(25)
+for(i in seq_len(22)) {
+    chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])
+}
+chrInfo[23] <- length(Hsapiens[["chrX"]])
+chrInfo[24] <- length(Hsapiens[["chrY"]])
+chrInfo[25] <- length(Hsapiens[["chrM"]])
 
-    ##########################################
-    
-    gds <- snpgdsOpen(file.GDS)
-    
-    # Path to the directory where the gds file for each sample
-    # will be create
-    PATHSAMPLEGDS <- file.path("The path")
-    
-    # Look at studyDF at step 3.
-    study.id <- "Id of the study"
-    
-    # The file ped defined before
-    filePED <- FILE_PED
-    ped <- readRDS(filePED)
-    # You need a list of the sample Name.ID 
-    # you can get it from other source than 
-    # filePED 
-    listSamples <- ped[, "Name.ID"]
-    
-    # You need the autosomal chr length from the genome.
-    chrInfo <- integer(22)
-    
-    for(i in seq_len(22)){
-        chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])
-    }
+##############################################################
+## The GDS Sample file is required
+##############################################################
 
-    # Can be run in paralle or in different clusters...
-    for(i in seq_len(length(listSamples))){
-        file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
-        gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
+## Name of the GDS Sample file (the name corresponds to the sample identifier)
+file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
-        estimateAllelicFraction(gds, gdsSample,
-                                listSamples[i], study.id,
-                                chrInfo)
-        closefn.gds(gdsSample)
-    }
-    
-    
-    closefn.gds(gds)
+## Open the 1KG GDS file  
+gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
+
+## Estimate the allelic fraction of the pruned SNVs for the current sample
+snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
+                                      sampleCurrent=sampleName, 
+                                      study.id=studyDF$study.id,
+                                      chrInfo=chrInfo)
+
+## Close both GDS files
+closefn.gds(gdsSample)    
+closefn.gds(gds)
 ```
 
 <br>
@@ -571,9 +578,9 @@ or in R
     # Need a data.frame with study description for the
     # synthetic data
     studyDF <- data.frame(study.id = "Id of the synthetic dataset",
-                              study.desc = "Descripttion",
-                              study.platform = "Platform string like Whole Exome",
-                              stringsAsFactors = FALSE)
+                            study.desc = "Descripttion",
+                            study.platform = "Platform string like Whole Exome",
+                            stringsAsFactors = FALSE)
     
     
     

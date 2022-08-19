@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{estimateAllelicFraction}
 \alias{estimateAllelicFraction}
-\title{TODO}
+\title{Estimate the allelic fraction of the pruned SNVs for a specific
+sample}
 \usage{
 estimateAllelicFraction(
   gds,
@@ -12,7 +13,7 @@ estimateAllelicFraction(
   study.id,
   chrInfo,
   studyType = "DNA",
-  minCov = 10,
+  minCov = 10L,
   minProb = 0.999,
   eProb = 0.001,
   cutOffLOH = -5,
@@ -21,42 +22,53 @@ estimateAllelicFraction(
 )
 }
 \arguments{
-\item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the 1KG GDS file.}
 
-\item{gdsSample}{TODO}
+\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the GDS Sample file.}
 
-\item{sampleCurrent}{A \code{string} corresponding to
-the sample.id
-use in LDpruning}
+\item{sampleCurrent}{a \code{character} string corresponding to
+the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{A \code{string} corresponding to the study
-use in LDpruning}
+\item{study.id}{a \code{character} string corresponding to the study
+identifier.}
 
-\item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
+\item{chrInfo}{a \code{vector}
+chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
+       Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
-\item{studyType}{a \code{string} with value as DNA, ...}
+\item{studyType}{a \code{character} string representing the type of study.
+It can be values such as "DNA", "whole-exome", "RNA", etc..
+Default: \code{"DNA"}.}
 
-\item{minCov}{an \code{integer} default 10}
+\item{minCov}{a single positive \code{integer} representing the minimum
+required coverage. Default: \code{10L}.}
 
-\item{minProb}{an \code{numeric} betweeen 0 and 1}
+\item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
+Default: \code{0.999}.}
 
-\item{eProb}{an \code{numeric} betweeen 0 and 1 probability of
-sequencing error}
+\item{eProb}{a single \code{numeric} between 0 and 1 representing the
+probability of sequencing error. Default: \code{0.001}.}
 
-\item{cutOffLOH}{log of the score to be LOH default -5}
+\item{cutOffLOH}{a single \code{numeric} representing the cutoff, in log,
+for the homozygote score to assign a region as LOH.
+Default: \code{-5}.}
 
-\item{cutOffHomoScore}{TODO}
+\item{cutOffHomoScore}{a single \code{numeric} representing the cutoff, in
+log, that the SNVs in a block are called homozygote by error.
+Default: \code{-3}.}
 
-\item{wAR}{size-1 of the window to compute an empty box}
+\item{wAR}{a single positive \code{integer} representing the size-1 of
+the window used to compute an empty box. Default: \code{9}.}
 }
 \value{
 The integer \code{0} when successful.
 }
 \description{
-TODO
+The function estimates the allelic fraction of the pruned
+SNVs for a specific sample and add the information to the associated
+GDS Sample file.
 }
 \examples{
 

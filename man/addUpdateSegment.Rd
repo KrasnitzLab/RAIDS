@@ -3,12 +3,14 @@
 \encoding{UTF-8}
 \name{addUpdateSegment}
 \alias{addUpdateSegment}
-\title{TODO}
+\title{Add information related to allelic fraction of a pruned SNV dataset
+for a specific sample into a GDS file}
 \usage{
 addUpdateSegment(gds, snp.seg)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the sample}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the GDS Sample file.}
 
 \item{snp.seg}{TODO}
 }

@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{getTableSNV}
 \alias{getTableSNV}
-\title{TODO}
+\title{Extract the genotype information for a SNV dataset using
+the GDS Sample file and the 1KG GDS file}
 \usage{
 getTableSNV(
   gds,
@@ -21,7 +22,7 @@ getTableSNV(
 the opened 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+(a GDS file), the opened GDS Sample file.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}
@@ -29,11 +30,11 @@ the sample identifier used in \code{\link{pruningSample}} function.}
 \item{study.id}{a \code{character} string corresponding to the study
 identifier used in \code{\link{pruningSample}} function.}
 
-\item{minCov}{a single positive \code{integer} representing the
-minimum coverage needed to retain TODO. Default: \code{10}.}
+\item{minCov}{a single positive \code{integer} representing the minimum
+required coverage. Default: \code{10L}.}
 
 \item{minProb}{a single \code{numeric} between \code{0} and \code{1}
-representing TODO.
+representing the probability that the calculated genotype call is correct.
 Default: \code{0.999}.}
 
 \item{eProb}{a single \code{numeric} between \code{0} and \code{1}
@@ -53,13 +54,19 @@ the reference allele.}
 the alternative allele.}
 \item{snp.pos} {a single \code{integer} representing the SNV position.}
 \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-\item{normal.geno} {a single \code{numeric} \code{3} indicating that
-the normal genotype is unknown. TODO}
-\item{snp.index} {The \code{boolean} \code{FALSE} indicating TODO}
+\item{normal.geno} {a single \code{numeric} indicating the genotype of the
+SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
+(heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
+the normal genotype is unknown.}
+\item{snp.index} {a \code{vector} of \code{integer} representing the
+position of the SNVs in the 1KG GDS file.}
 }
 }
 \description{
-TODO
+The function generates a \code{data.frame} containing the
+genotype information from a initial list of SNVs associated to a specific
+sample. The function uses the
+information present in the 1KG GDS file and the GDS Sample file.
 }
 \examples{
 

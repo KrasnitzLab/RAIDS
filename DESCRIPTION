@@ -38,7 +38,9 @@ Suggests: testthat,
     rmarkdown,
     BiocStyle,
     withr,
-    GenomicRanges
+    GenomicRanges,
+    BSgenome,
+    BSgenome.Hsapiens.UCSC.hg38
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome

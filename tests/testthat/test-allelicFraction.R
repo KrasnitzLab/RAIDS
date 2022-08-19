@@ -166,6 +166,7 @@ test_that("getTableSNV() must return error when gds is character string", {
                         minCov=12, minProb=0.32, eProb=0.001), error_message)
 })
 
+
 test_that("getTableSNV() must return error when gdsSample is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
@@ -180,6 +181,22 @@ test_that("getTableSNV() must return error when gdsSample is character string", 
     expect_error(getTableSNV(gds=gdsF, gdsSample="BABY",
                         sampleCurrent="TEST", study.id="TEST",
                         minCov=12, minProb=0.32, eProb=0.001), error_message)
+})
+
+
+test_that("getTableSNV() must return error when verbose is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'verbose\' parameter must be a logical."
+
+    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+        sampleCurrent="TEST", study.id="TEST",
+        minCov=12, minProb=0.32, eProb=0.001, verbose="blue"), error_message)
 })
 
 

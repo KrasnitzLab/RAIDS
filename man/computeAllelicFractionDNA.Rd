@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computeAllelicFractionDNA}
 \alias{computeAllelicFractionDNA}
-\title{TODO}
+\title{Estimate the allelic fraction of the pruned SNVs for a specific
+sample}
 \usage{
 computeAllelicFractionDNA(
   gds,
@@ -16,7 +17,7 @@ computeAllelicFractionDNA(
   eProb = 0.001,
   cutOffLOH = -5,
   cutOffHomoScore = -3,
-  wAR = 9,
+  wAR = 9L,
   verbose = FALSE
 )
 }
@@ -27,28 +28,32 @@ computeAllelicFractionDNA(
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the GDS Sample file.}
 
-\item{sampleCurrent}{A \code{character} string corresponding to
+\item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{A \code{character} string corresponding to the name of
+\item{study.id}{a \code{character} string corresponding to the name of
 the study as
 used in \code{\link{pruningSample}} function.}
 
-\item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
+\item{chrInfo}{a \code{vector} of \code{integer} values representing
+the length of the chromosomes.}
 
 \item{minCov}{a single positive \code{integer} representing the minimum
 required coverage. Default: \code{10L}.}
 
-\item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
+\item{minProb}{a single \code{numeric} between \code{0} and \code{1}
+representing the probability that the calculated genotype call is correct.
 Default: \code{0.999}.}
 
 \item{eProb}{a single \code{numeric} between 0 and 1 representing the
 probability of sequencing error. Default: \code{0.001}.}
 
-\item{cutOffLOH}{log of the score to be LOH . Default: \code{-5}.}
+\item{cutOffLOH}{a single log of the score to be LOH TODO.
+Default: \code{-5}.}
 
-\item{cutOffHomoScore}{TODO. Default: \code{-3}.}
+\item{cutOffHomoScore}{a single \code{numeric} representing the cutoff, in
+log, that the SNVs in a block are called homozygote by error.
+Default: \code{-3}.}
 
 \item{wAR}{a single positive \code{integer} representing the size-1 of
 the window used to compute an empty box. Default: \code{9}.}
@@ -57,10 +62,12 @@ the window used to compute an empty box. Default: \code{9}.}
 message when running. Default: \code{FALSE}.}
 }
 \value{
-a \code{data.frame} with lap for the snv with depth > minCov. TODO
+a \code{data.frame} with lap for the pruned SNV dataset with
+coverage > \code{minCov}. TODO
 }
 \description{
-Create a data.frame containing the allelic fraction TODO
+The function creates a \code{data.frame} containing the
+allelic fraction for the pruned SNV dataset specific to a sample.
 }
 \examples{
 

@@ -1071,40 +1071,52 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 }
 
 
-#' @title TODO
+#' @title Estimate the allelic fraction of the pruned SNVs for a specific
+#' sample
 #'
-#' @description TODO
+#' @description The function estimates the allelic fraction of the pruned
+#' SNVs for a specific sample and add the information to the associated
+#' GDS Sample file.
 #'
-#' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsSample TODO
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
-#' @param sampleCurrent A \code{string} corresponding to
-#' the sample.id
-#' use in LDpruning
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id A \code{string} corresponding to the study
-#' use in LDpruning
+#' @param study.id a \code{character} string corresponding to the study
+#' identifier.
 #'
-#' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
+#' @param chrInfo a \code{vector}
+#'  chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
-#' @param studyType a \code{string} with value as DNA, ...
+#' @param studyType a \code{character} string representing the type of study.
+#' It can be values such as "DNA", "whole-exome", "RNA", etc..
+#' Default: \code{"DNA"}.
 #'
-#' @param minCov an \code{integer} default 10
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage. Default: \code{10L}.
 #'
-#' @param minProb an \code{numeric} betweeen 0 and 1
+#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#' Default: \code{0.999}.
 #'
-#' @param eProb an \code{numeric} betweeen 0 and 1 probability of
-#' sequencing error
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.001}.
 #'
-#' @param cutOffLOH log of the score to be LOH default -5
+#' @param cutOffLOH a single \code{numeric} representing the cutoff, in log,
+#' for the homozygote score to assign a region as LOH.
+#' Default: \code{-5}.
 #'
-#' @param cutOffHomoScore TODO
+#' @param cutOffHomoScore a single \code{numeric} representing the cutoff, in
+#' log, that the SNVs in a block are called homozygote by error.
+#' Default: \code{-3}.
 #'
-#' @param wAR size-1 of the window to compute an empty box
+#' @param wAR a single positive \code{integer} representing the size-1 of
+#' the window used to compute an empty box. Default: \code{9}.
 #'
 #' @return The integer \code{0} when successful.
 #'
@@ -1116,13 +1128,61 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
-                                    chrInfo, studyType = "DNA",
-                                    minCov=10, minProb = 0.999, eProb = 0.001,
-                                    cutOffLOH = -5, cutOffHomoScore = -3,
-                                    wAR = 9) {
+                                    chrInfo, studyType="DNA",
+                                    minCov=10L, minProb=0.999, eProb=0.001,
+                                    cutOffLOH=-5, cutOffHomoScore=-3,
+                                    wAR=9) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The sampleCurrent must be a character string
+    if (!is.character(sampleCurrent)) {
+        stop("The \'sampleCurrent\' must be a character string.")
+    }
+
+    ## The study.id must be a character string
+    if (!is.character(study.id)) {
+        stop("The \'study.id\' must be a character string.")
+    }
+
+    ## The studyType must be a character string
+    if (!is.character(studyType)) {
+        stop("The \'studyType\' must be a character string.")
+    }
+
+    ## The minCov parameter must be a single positive integer
+    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
+        stop("The \'minCov\' must be a single numeric positive value")
+    }
+
+    ## The minProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The eProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
+        stop("The \'eProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The wAR parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
+        stop("The \'wAR\' must be a single numeric positive value.")
+    }
 
     snp.pos <- NULL
     if(studyType == "DNA") {
@@ -1130,12 +1190,12 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
                                             sampleCurrent=sampleCurrent,
                                             study.id, chrInfo,
                                             minCov=minCov, minProb=minProb,
-                                            eProb=0.001,
+                                            eProb=eProb,
                                             cutOffLOH=cutOffLOH,
                                             cutOffHomoScore=cutOffHomoScore,
                                             wAR=wAR)
 
-        snp.pos$seg <- rep(0,nrow(snp.pos))
+        snp.pos$seg <- rep(0, nrow(snp.pos))
         k <- 1
         for(chr in seq_len(22)) {
             snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
@@ -1150,6 +1210,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
     addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
+    # Successful
     return(0L)
 }
 

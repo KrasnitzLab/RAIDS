@@ -1,12 +1,16 @@
-#' @title TODO
+#' @title Extract the genotype information for a SNV dataset using
+#' the GDS Sample file and the 1KG GDS file
 #'
-#' @description TODO
+#' @description The function generates a \code{data.frame} containing the
+#' genotype information from a initial list of SNVs associated to a specific
+#' sample. The function uses the
+#' information present in the 1KG GDS file and the GDS Sample file.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
 #' the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' (a GDS file), the opened GDS Sample file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -14,11 +18,11 @@
 #' @param study.id a \code{character} string corresponding to the study
 #' identifier used in \code{\link{pruningSample}} function.
 #'
-#' @param minCov a single positive \code{integer} representing the
-#' minimum coverage needed to retain TODO. Default: \code{10}.
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage. Default: \code{10L}.
 #'
 #' @param minProb a single \code{numeric} between \code{0} and \code{1}
-#' representing TODO.
+#' representing the probability that the calculated genotype call is correct.
 #' Default: \code{0.999}.
 #'
 #' @param eProb a single \code{numeric} between \code{0} and \code{1}
@@ -37,9 +41,12 @@
 #' the alternative allele.}
 #' \item{snp.pos} {a single \code{integer} representing the SNV position.}
 #' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-#' \item{normal.geno} {a single \code{numeric} \code{3} indicating that
-#' the normal genotype is unknown. TODO}
-#' \item{snp.index} {The \code{boolean} \code{FALSE} indicating TODO}
+#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
+#' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
+#' the normal genotype is unknown.}
+#' \item{snp.index} {a \code{vector} of \code{integer} representing the
+#' position of the SNVs in the 1KG GDS file.}
 #' }
 #'
 #' @examples
@@ -81,7 +88,12 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     ## The eProb must be a single positive numeric between 0 and 1
     if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0)))  {
         stop("The \'eProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
+                "value between 0 and 1.")
+    }
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose))) {
+        stop("The \'verbose\' parameter must be a logical.")
     }
 
     ## Extract study information (data.frame) from GDS Sample file
@@ -744,9 +756,11 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 }
 
 
-#' @title TODO
+#' @title Estimate the allelic fraction of the pruned SNVs for a specific
+#' sample
 #'
-#' @description Create a data.frame containing the allelic fraction TODO
+#' @description The function creates a \code{data.frame} containing the
+#' allelic fraction for the pruned SNV dataset specific to a sample.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
@@ -754,28 +768,32 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the GDS Sample file.
 #'
-#' @param sampleCurrent A \code{character} string corresponding to
+#' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id A \code{character} string corresponding to the name of
+#' @param study.id a \code{character} string corresponding to the name of
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
-#' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-#'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes.
 #'
 #' @param minCov a single positive \code{integer} representing the minimum
 #' required coverage. Default: \code{10L}.
 #'
-#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#' @param minProb a single \code{numeric} between \code{0} and \code{1}
+#' representing the probability that the calculated genotype call is correct.
 #' Default: \code{0.999}.
 #'
 #' @param eProb a single \code{numeric} between 0 and 1 representing the
 #' probability of sequencing error. Default: \code{0.001}.
 #'
-#' @param cutOffLOH log of the score to be LOH . Default: \code{-5}.
+#' @param cutOffLOH a single log of the score to be LOH TODO.
+#' Default: \code{-5}.
 #'
-#' @param cutOffHomoScore TODO. Default: \code{-3}.
+#' @param cutOffHomoScore a single \code{numeric} representing the cutoff, in
+#' log, that the SNVs in a block are called homozygote by error.
+#' Default: \code{-3}.
 #'
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
@@ -783,7 +801,8 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @param verbose a \code{logicial} indicating if the function should print
 #' message when running. Default: \code{FALSE}.
 #'
-#' @return a \code{data.frame} with lap for the snv with depth > minCov. TODO
+#' @return a \code{data.frame} with lap for the pruned SNV dataset with
+#' coverage > \code{minCov}. TODO
 #'
 #' @examples
 #'
@@ -800,7 +819,7 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
                                 chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                                wAR=9, verbose=FALSE) {
+                                wAR=9L, verbose=FALSE) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
@@ -842,6 +861,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
                             minCov, minProb, eProb)
+
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
     snp.pos$imbAR <- rep(-1, nrow(snp.pos))

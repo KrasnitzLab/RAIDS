@@ -1242,11 +1242,13 @@ addUpdateLap <- function(gds, snp.lap) {
 }
 
 
-#' @title TODO
+#' @title Add information related to allelic fraction of a pruned SNV dataset
+#' for a specific sample into a GDS file
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened for the sample
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
 #' @param snp.seg TODO
 #'
@@ -1272,6 +1274,7 @@ addUpdateSegment <- function(gds, snp.seg) {
 
     sync.gds(gds)
 
+    ## Successful
     return(0L)
 }
 

@@ -18,7 +18,10 @@ addUpdateSegment(gds, snp.seg)
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+The function adds the information related to allelic
+fraction of a pruned SNV dataset for a specific sample into a GDS file into
+the "segment" node. If the "segment" already exists, the previous
+information is erased.
 }
 \examples{
 

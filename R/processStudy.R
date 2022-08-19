@@ -1181,7 +1181,18 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 
     ## The wAR parameter must be a single positive numeric superior to 1
     if (!(isSingleNumber(wAR) && (wAR >= 1))) {
-        stop("The \'wAR\' must be a single numeric positive value.")
+        stop("The \'wAR\' parameter must be a single numeric positive value.")
+    }
+
+    ## The cutOffLOH parameter must be a single numeric
+    if (!(isSingleNumber(cutOffLOH))) {
+        stop("The \'cutOffLOH\' parameter must be a single numeric value.")
+    }
+
+    ## The cutOffHomoScore parameter must be a single numeric
+    if (!(isSingleNumber(cutOffHomoScore))) {
+        stop("The \'cutOffHomoScore\' parameter must be a single ",
+                        "numeric value.")
     }
 
     snp.pos <- NULL

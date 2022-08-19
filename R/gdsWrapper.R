@@ -1245,7 +1245,10 @@ addUpdateLap <- function(gds, snp.lap) {
 #' @title Add information related to allelic fraction of a pruned SNV dataset
 #' for a specific sample into a GDS file
 #'
-#' @description TODO
+#' @description The function adds the information related to allelic
+#' fraction of a pruned SNV dataset for a specific sample into a GDS file into
+#' the "segment" node. If the "segment" already exists, the previous
+#' information is erased.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the GDS Sample file.

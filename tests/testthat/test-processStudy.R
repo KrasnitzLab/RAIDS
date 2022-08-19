@@ -952,7 +952,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
 })
 
 
-test_that("estimateAllelicFraction() must return error when eProb is vector of numeric values", {
+test_that("estimateAllelicFraction() must return error when wAR is vector of numeric values", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
 
@@ -961,7 +961,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'wAR\' must be a single numeric positive value."
+    error_message <- "The \'wAR\' parameter must be a single numeric positive value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
                 gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
@@ -970,3 +970,80 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
                 wAR="9"), error_message, fixed=TRUE)
 })
 
+
+test_that("estimateAllelicFraction() must return error when cutOffLOH is vector of numeric values", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
+
+    expect_error(estimateAllelicFraction(gds=gdsF,
+            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
+            eProb=0.01, cutOffLOH=c(-5, -3), cutOffHomoScore=-3,
+            wAR=9), error_message, fixed=TRUE)
+})
+
+
+test_that("estimateAllelicFraction() must return error when cutOffLOH is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
+
+    expect_error(estimateAllelicFraction(gds=gdsF,
+                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
+                eProb=0.01, cutOffLOH="-3", cutOffHomoScore=-3,
+                wAR=9), error_message, fixed=TRUE)
+})
+
+
+
+
+test_that("estimateAllelicFraction() must return error when cutOffLOH is vector of numeric values", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
+
+    expect_error(estimateAllelicFraction(gds=gdsF,
+                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
+                eProb=0.01, cutOffLOH=-5, cutOffHomoScore=c(-3, -4),
+                wAR=9), error_message, fixed=TRUE)
+})
+
+
+test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
+
+    expect_error(estimateAllelicFraction(gds=gdsF,
+                    gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                    chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
+                    eProb=0.01, cutOffLOH=-5, cutOffHomoScore="-3",
+                    wAR=9), error_message, fixed=TRUE)
+})

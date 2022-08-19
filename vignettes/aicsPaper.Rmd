@@ -486,7 +486,6 @@ The 3 other inputs are:
 
 The function processes one sample at the time. 
 
-or in R for a s
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
 ##############################################################

@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-18<br><strong>License</strong>: Apache License (== 2.0) | file
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-19<br><strong>License</strong>: Apache License (== 2.0) | file
 LICENSE<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
@@ -531,7 +531,7 @@ previously)</li>
 <span><span class="co">## Load required package</span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/BSgenome" class="external-link">BSgenome</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
@@ -751,7 +751,7 @@ data<a class="anchor" aria-label="anchor" href="#step-8--compute-the-pca-knn-anc
 <span>        </span>
 <span>        <span class="co"># data.frame with the sample.id (Name.ID) with the study id</span></span>
 <span>        </span>
-<span>        <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>            <span class="va">pca1KG</span> <span class="op">&lt;-</span> <span class="fu">ccomputePCARefRMMulti</span><span class="op">(</span><span class="va">gdsSample</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">spRef</span><span class="op">)</span>,<span class="va">sampleRM</span><span class="op">[</span><span class="va">j</span>,<span class="op">]</span><span class="op">)</span></span>
 <span>            <span class="va">resPCA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computePCAMultiSynthetic.html">computePCAMultiSynthetic</a></span><span class="op">(</span><span class="va">gdsSample</span>, <span class="va">pca1KG</span>,</span>
 <span>                                               <span class="va">sampleRM</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span>, <span class="st">"CRC.Synthetic"</span><span class="op">)</span></span>
@@ -762,7 +762,7 @@ data<a class="anchor" aria-label="anchor" href="#step-8--compute-the-pca-knn-anc
 <span>                                               <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, <span class="va">spRef</span><span class="op">)</span></span>
 <span>            <span class="va">KNN.list</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">KNN.synt</span><span class="op">$</span><span class="va">matKNN</span></span>
 <span>        <span class="op">}</span></span>
-<span>        <span class="va">KNN.sample.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">KNN.list</span><span class="op">)</span></span>
+<span>        <span class="va">KNN.sample.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">KNN.list</span><span class="op">)</span></span>
 <span>        </span>
 <span>        <span class="va">pedSyn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPedSynthetic1KG.html">prepPedSynthetic1KG</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSample</span>, <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>        </span>
@@ -940,9 +940,9 @@ which this document was compiled:</p>
 <span><span class="co">## [28] bookdown_0.28          sass_0.4.2             lmtest_0.9-40         </span></span>
 <span><span class="co">## [31] quantsmooth_1.60.0     pkgdown_2.0.6          systemfonts_1.0.4     </span></span>
 <span><span class="co">## [34] stringr_1.4.0          digest_0.6.29          GWASExactHW_1.01      </span></span>
-<span><span class="co">## [37] rmarkdown_2.14         XVector_0.34.0         pkgconfig_2.0.3       </span></span>
+<span><span class="co">## [37] rmarkdown_2.15         XVector_0.34.0         pkgconfig_2.0.3       </span></span>
 <span><span class="co">## [40] htmltools_0.5.3        highr_0.9              fastmap_1.1.0         </span></span>
-<span><span class="co">## [43] rlang_1.0.4            RSQLite_2.2.15         jquerylib_0.1.4       </span></span>
+<span><span class="co">## [43] rlang_1.0.4            RSQLite_2.2.16         jquerylib_0.1.4       </span></span>
 <span><span class="co">## [46] generics_0.1.3         zoo_1.8-10             jsonlite_1.8.0        </span></span>
 <span><span class="co">## [49] BiocParallel_1.28.3    dplyr_1.0.9            RCurl_1.98-1.8        </span></span>
 <span><span class="co">## [52] magrittr_2.0.3         GenomeInfoDbData_1.2.7 Matrix_1.4-1          </span></span>

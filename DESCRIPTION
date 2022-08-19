@@ -32,15 +32,15 @@ Imports: S4Vectors,
     AnnotationDbi,
     methods,
     class,
-    pROC
+    pROC,
+    BSgenome,
+    BSgenome.Hsapiens.UCSC.hg38
 Suggests: testthat,
     knitr,
     rmarkdown,
     BiocStyle,
     withr,
-    GenomicRanges,
-    BSgenome,
-    BSgenome.Hsapiens.UCSC.hg38
+    GenomicRanges
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome

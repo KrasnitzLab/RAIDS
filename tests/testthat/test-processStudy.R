@@ -2,8 +2,6 @@
 
 library(RAIDS)
 library(withr)
-library(BSgenome)
-library(BSgenome.Hsapiens.UCSC.hg38)
 
 chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L, 181538259L,
                 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,

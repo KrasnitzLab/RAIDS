@@ -19,9 +19,11 @@ syntheticGeno(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the 1KG GDS file.}
 
-\item{gdsRefAnnot}{an object of class \code{gds} opened}
+\item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the1 1KG SNV Annotation GDS file.}
 
 \item{gdsSampleFile}{a \code{character} string representing the file name of
 the GDS Sample file containing the information about the analyzed sample.

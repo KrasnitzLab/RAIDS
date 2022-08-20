@@ -28,10 +28,10 @@
 #'
 #' @examples
 #'
-#' ## Fix the number of samples needed by subcontinetal population
+#' ## The number of samples needed by subcontinental population
 #' nbSamples <- 30
 #'
-#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -251,9 +251,11 @@ prepSynthetic <- function(gdsSampleFile,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsRefAnnot an object of class \code{gds} opened
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file.
 #'
 #' @param gdsSampleFile a \code{character} string representing the file name of
 #' the GDS Sample file containing the information about the analyzed sample.
@@ -296,6 +298,11 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                             minProb=0.999,
                             seqError=0.001) {
 
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
     ## The gdsSampleFile must be an character string and the file must exist
     if (!(is.character(gdsSampleFile) && file.exists(gdsSampleFile))) {
         stop("The \'gdsSampleFile\' must be a character string and the file ",
@@ -326,6 +333,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
              "numeric value between 0 and 1.")
     }
 
+    ## Open the GDS Sample file
     gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
 
 
@@ -353,19 +361,19 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                 "the same.\n")
     }
 
-    # Get the index of the snp.id from gdsSample in the gds1KG
+    ## Get  index of the SNV associated to the sample from the GDS Sample file
     list1KG <- read.gdsn(index.gdsn(gdsSample, "snp.index"))
 
 
-
+    ## Create a table with the coverage and
     infoSNV <- data.frame(count.tot=read.gdsn(index.gdsn(gdsSample,
                                             "Total.count"))[list1KG],
                             lap=read.gdsn(index.gdsn(gdsSample, "lap")))
 
     nbSNV <- nrow(infoSNV)
 
-    # Define a table for each "count.tot","lap" and, Freq (number of occurence)
-    # to reduce the numbe of sampling call later
+    ## Define a table for each "count.tot","lap" and, Freq (number of occurrence)
+    ## to reduce the number of sampling calls later
     df <- as.data.frame(table(infoSNV[,c("count.tot","lap")]))
     df <- df[df$Freq > 0, ]
     df <- df[order(df$count.tot, df$lap), ]

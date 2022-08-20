@@ -8,7 +8,8 @@
 addUpdateLap(gds, snp.lap)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the sample}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), a GDS file.}
 
 \item{snp.lap}{TODO}
 }
@@ -16,7 +17,10 @@ addUpdateLap(gds, snp.lap)
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+The function adds the information related to TODO
+for a specific sample into a GDS file into
+the "lap" node. If the "lap" already exists, the previous
+information is erased.
 }
 \examples{
 

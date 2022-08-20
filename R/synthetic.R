@@ -28,7 +28,10 @@
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Fix the number of samples needed by subcontinetal population
+#' nbSamples <- 30
+#'
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

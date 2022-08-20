@@ -859,6 +859,8 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
                 "(TRUE or FALSE).")
     }
 
+    ## Extract the genotype information for a SNV dataset using
+    ## the GDS Sample file and the 1KG GDS file
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
                             minCov, minProb, eProb)
 

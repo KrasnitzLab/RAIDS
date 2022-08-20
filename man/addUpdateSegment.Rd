@@ -10,7 +10,7 @@ addUpdateSegment(gds, snp.seg)
 }
 \arguments{
 \item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+(a GDS file), a GDS file.}
 
 \item{snp.seg}{TODO}
 }

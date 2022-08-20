@@ -1214,9 +1214,13 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
 #' @title TODO
 #'
-#' @description TODO
+#' @description The function adds the information related to TODO
+#' for a specific sample into a GDS file into
+#' the "lap" node. If the "lap" already exists, the previous
+#' information is erased.
 #'
-#' @param gds an object of class \code{gds} opened for the sample
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), a GDS file.
 #'
 #' @param snp.lap TODO
 #'
@@ -1251,7 +1255,7 @@ addUpdateLap <- function(gds, snp.lap) {
 #' information is erased.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' (a GDS file), a GDS file.
 #'
 #' @param snp.seg TODO
 #'

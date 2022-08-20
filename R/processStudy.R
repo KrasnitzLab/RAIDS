@@ -1218,7 +1218,10 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
         }
     }
 
+    ## Save information into the "lap" node in the GDS Sample file
     addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
+
+    ## Save information into the "segment" node in the GDS Sample file
     addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
     # Successful

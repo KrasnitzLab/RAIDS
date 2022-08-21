@@ -38,7 +38,10 @@ samples from the subcontinental population are selected.
 }
 \examples{
 
-# TODO
+## The number of samples needed by subcontinental population
+nbSamples <- 30
+
+## TODO
 
 }
 \author{

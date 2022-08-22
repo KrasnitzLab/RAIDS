@@ -5,7 +5,8 @@
 #' information in the \code{gds} file. The information is extracted from
 #' the \code{data.frame} \code{pedDF} passed to the function.
 #'
-#' @param gds a \code{gds}.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} containing the information related to the
 #' samples. It must have those columns: "sample.id", "Name.ID", "sex",
@@ -14,7 +15,7 @@
 #'
 #' @param listSamples a \code{array} with the sample from pedDF to keep
 #'
-#' @return the a \code{array} with the sample from pedDF keept
+#' @return a \code{array} with the sample from pedDF keept
 #'
 #' @examples
 #'
@@ -55,7 +56,8 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL){
 #' on the file filePart$unrels
 #' from  in GENESIS TODO
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param filePart a \code{list} from the function pcairPartition in GENESIS
 #'
@@ -94,7 +96,8 @@ addGDSRef <- function(gds, filePart) {
 #' If the samples are in the section study the field related to the
 #' study must be fill.
 #'
-#' @param gds a \code{gds}.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} with the sample info. Must have the column
 #' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
@@ -154,12 +157,13 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
 #' @description This function append the fields samples.id.
 #' The fields append are sample.id with the listSample
 #'
-#' @param gds a \code{gds}.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param listSample a \code{array} of sample.id to add.
 #'
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'

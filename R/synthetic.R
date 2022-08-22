@@ -29,9 +29,22 @@
 #' @examples
 #'
 #' ## The number of samples needed by subcontinental population
-#' nbSamples <- 30
+#' ## The number is small for demonstration purpose
+#' nbSamples <- 5L
 #'
-#' ## TODO
+#' ## Open 1KG GDS Demo file
+#' ## This file only one superpopulation (for demonstration purpose)
+#' data.dir <- system.file("extdata", package="RAIDS")
+#' gdsFile <- file.path(data.dir, "gds1KG.gds")
+#' gdsFileOpen <- openfn.gds(gdsFile)
+#'
+#' ## Extract a selected number of random samples
+#' ## for each subcontinental population
+#' ## In the 1KG GDS Demo file, there is one subcontinental population
+#' dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
+#'
+#' ## Important to close the 1KG GDS Demo file
+#' closefn.gds(gdsFileOpen)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -261,7 +274,8 @@ prepSynthetic <- function(gdsSampleFile,
 #' the GDS Sample file containing the information about the analyzed sample.
 #' The file must exist.
 #'
-#' @param listSampleRef a \code{character} string TODO
+#' @param listSampleRef a \code{vector} of \code{character} string
+#' representing the sample identifiers of the 1KG selected reference samples.
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
@@ -423,7 +437,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                         start=c(1, curSynt),
                         count=c(-1, 1))
 
-        # Order the SNV by count.tot and, lap
+        # Order the SNV by count.tot and, lap (low allelic proportion)
         gOrder <- g[listOrderSNP]
 
         matSim1 <- matrix(nrow=sum(df$Freq), ncol=nbSim)

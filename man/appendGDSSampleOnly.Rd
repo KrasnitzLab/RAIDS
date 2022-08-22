@@ -8,12 +8,13 @@
 appendGDSSampleOnly(gds, listSamples)
 }
 \arguments{
-\item{gds}{a \code{gds}.}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
 \item{listSample}{a \code{array} of sample.id to add.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 This function append the fields samples.id.

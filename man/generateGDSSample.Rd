@@ -9,7 +9,8 @@ information in the \code{gds} file.}
 generateGDSSample(gds, pedDF, listSamples = NULL)
 }
 \arguments{
-\item{gds}{a \code{gds}.}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
 \item{pedDF}{a \code{data.frame} containing the information related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
@@ -19,7 +20,7 @@ is Name.ID and the row.name is Name.ID too.}
 \item{listSamples}{a \code{array} with the sample from pedDF to keep}
 }
 \value{
-the a \code{array} with the sample from pedDF keept
+a \code{array} with the sample from pedDF keept
 }
 \description{
 This function initializes the section related to the sample

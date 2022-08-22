@@ -28,7 +28,6 @@ test_that("select1KGPop() must return error when nbSamples is a character string
     data.dir <- system.file("extdata/tests", package="RAIDS")
 
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -39,6 +38,28 @@ test_that("select1KGPop() must return error when nbSamples is a character string
     expect_error(select1KGPop(gds=gdsF, nbSamples="CANADA"),
                     error_message)
 })
+
+
+test_that("select1KGPop() must return expected results", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test_02.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    expected <- data.frame(sample.id=c("HG00101", "HG00097",
+                                        "HG00096", "HG00100"),
+                           pop.group=rep("GBR", 4), superPop=rep("EUR", 4))
+
+    set.seed(1212)
+    results <- select1KGPop(gds=gdsF, nbSamples=4L)
+
+    expect_equal(results, expected)
+
+})
+
 
 
 #############################################################################

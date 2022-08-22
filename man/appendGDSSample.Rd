@@ -9,7 +9,8 @@ samples are part of a study you must uses the addStudyGDSSample}
 appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL, verbose = TRUE)
 }
 \arguments{
-\item{gds}{a \code{gds}.}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
 \item{pedDF}{a \code{data.frame} with the sample info. Must have the column
 sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id

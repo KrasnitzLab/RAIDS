@@ -39,9 +39,22 @@ samples from the subcontinental population are selected.
 \examples{
 
 ## The number of samples needed by subcontinental population
-nbSamples <- 30
+## The number is small for demonstration purpose
+nbSamples <- 5L
 
-## TODO
+## Open 1KG GDS Demo file
+## This file only one superpopulation (for demonstration purpose)
+data.dir <- system.file("extdata", package="RAIDS")
+gdsFile <- file.path(data.dir, "gds1KG.gds")
+gdsFileOpen <- openfn.gds(gdsFile)
+
+## Extract a selected number of random samples
+## for each subcontinental population
+## In the 1KG GDS Demo file, there is one subcontinental population
+dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
+
+## Important to close the 1KG GDS Demo file
+closefn.gds(gdsFileOpen)
 
 }
 \author{

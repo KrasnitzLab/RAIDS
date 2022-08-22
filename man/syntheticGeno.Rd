@@ -31,7 +31,8 @@ The file must exist.}
 
 \item{data.id.profile}{a \code{character} string TODO}
 
-\item{listSampleRef}{a \code{character} string TODO}
+\item{listSampleRef}{a \code{vector} of \code{character} string
+representing the sample identifiers of the 1KG selected reference samples.}
 
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulation that will be generated. Default: \code{1L}.}

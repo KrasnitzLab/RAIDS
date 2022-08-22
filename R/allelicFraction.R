@@ -447,12 +447,11 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 
         pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
                         prob=vMean)
-        #print(paste0("pCur ", pCur, " vCur1 ", vCur1, " size ",
-        #    matCov$cnt.ref[i] + matCov$cnt.alt[i]))
+
         pCurO <- max(1 - max(2 * pCur,0.01),0.01)
 
         matCov$pWin[i] <- pCur * 2
-        #print(paste0("Part ",pCur))
+
         p <- p + log10(max(pCur,0.01))
         pO <- pO + log10(pCurO)
     }

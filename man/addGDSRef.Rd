@@ -9,7 +9,8 @@ on a list of unrelated samples.}
 addGDSRef(gds, filePart)
 }
 \arguments{
-\item{gds}{a \code{gds} object.}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
 \item{filePart}{a \code{list} from the function pcairPartition in GENESIS}
 }

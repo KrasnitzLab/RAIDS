@@ -1212,7 +1212,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
             snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
             tmp <- c(0,
                      abs(snpChr[2:nrow(snpChr), "lap"] -
-                             snpChr[1:(nrow(snpChr)- 1),  "lap"]) > 1e-3 )
+                             snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
             snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
             k <- max(snp.pos$seg[snp.pos$snp.chr == chr])
         }

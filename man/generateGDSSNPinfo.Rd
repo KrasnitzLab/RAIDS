@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{generateGDSSNPinfo}
 \alias{generateGDSSNPinfo}
-\title{This function create the fields related to the snp}
+\title{This function creates the fields related to the snp TODO}
 \usage{
 generateGDSSNPinfo(gds, fileFREQ, verbose = TRUE)
 }

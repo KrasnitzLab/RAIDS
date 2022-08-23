@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{addUpdateLap}
 \alias{addUpdateLap}
-\title{TODO}
+\title{Add information related to low allelic fraction associated to
+the pruned SNV dataset for a specific sample into a GDS file}
 \usage{
 addUpdateLap(gds, snp.lap)
 }
@@ -11,21 +12,50 @@ addUpdateLap(gds, snp.lap)
 \item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), a GDS file.}
 
-\item{snp.lap}{TODO}
+\item{snp.lap}{a \code{vector} of \code{numeric} value representing the
+low allelic fraction for each SNV present in the pruned SNV dataset. The
+values should be between \code{0} and \code{0.50}. The
+length of the \code{vector} should correspond to the number of SNVs
+present in the "snp.id" entry of the GDS sample file.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-The function adds the information related to TODO
-for a specific sample into a GDS file into
-the "lap" node. If the "lap" already exists, the previous
-information is erased.
+The function adds the information related to low allelic
+fraction
+associated to the pruned SNV dataset for a specific sample into a
+GDS file, more specifically, in the "lap" node. The "lap" node must
+already be present in the GDS file.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Create a "lap" node
+lap_initial <- rep(0.0, 8)
+add.gdsn(node=GDS_file_tmp, name="lap", val=rep(10L, 12))
+sync.gds(GDS_file_tmp)
+
+## Vector of low allelic fraction
+lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
+
+## Add segments to the GDS file
+RAIDS:::addUpdateLap(gds=GDS_file_tmp, snp.lap=lap)
+
+## Read lap information from GDS file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="lap"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{generateGDSgenotype}
 \alias{generateGDSgenotype}
-\title{This function create the field genotype in the gds file}
+\title{This function creates the field genotype in the gds file TODO}
 \usage{
 generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose = FALSE)
 }

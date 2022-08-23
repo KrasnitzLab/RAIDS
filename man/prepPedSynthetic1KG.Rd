@@ -17,7 +17,9 @@ file.}
 
 \item{study.id}{TODO}
 
-\item{popName}{TODO}
+\item{popName}{a \code{character} string representing the name of the
+column from the \code{data.frame} stored in the "sample.annot" node of the
+1KG GDS file. The column must be present in the \code{data.frame}.}
 }
 \value{
 \code{data.frame} TODO study.annot with study.annot == study.id and

@@ -3,30 +3,52 @@
 \encoding{UTF-8}
 \name{addUpdateSegment}
 \alias{addUpdateSegment}
-\title{Add information related to allelic fraction of a pruned SNV dataset
-for a specific sample into a GDS file}
+\title{Add information related to segments associated to the pruned SNV
+dataset for a specific sample into a GDS file}
 \usage{
 addUpdateSegment(gds, snp.seg)
 }
 \arguments{
 \item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), a GDS file.}
+(a GDS file), a GDS Sample file.}
 
-\item{snp.seg}{TODO}
+\item{snp.seg}{a \code{vector} of \code{integer} representing the segment
+identifiers associated to each SNV selected for the specific sample. The
+length of the \code{vector} should correspond to the number of SNVs
+present in the "snp.id" entry of the GDS sample file.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-The function adds the information related to allelic
-fraction of a pruned SNV dataset for a specific sample into a GDS file into
-the "segment" node. If the "segment" already exists, the previous
-information is erased.
+The function adds the information related to segments
+associated to the pruned SNV dataset for a specific sample into a
+GDS file, more specifically, in the "segment" node. If the "segment" node
+already exists, the previous information is erased.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Vector of segment identifiers
+segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
+
+## Add segments to the GDS file
+RAIDS:::addUpdateSegment(gds=GDS_file_tmp, snp.seg=segments)
+
+## Read segments information from GDS file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

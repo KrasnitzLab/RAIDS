@@ -51,7 +51,7 @@ test_that("select1KGPop() must return expected results", {
 
     expected <- data.frame(sample.id=c("HG00101", "HG00097",
                                         "HG00096", "HG00100"),
-                           pop.group=rep("GBR", 4), superPop=rep("EUR", 4))
+                            pop.group=rep("GBR", 4), superPop=rep("EUR", 4))
 
     set.seed(1212)
     results <- select1KGPop(gds=gdsF, nbSamples=4L)
@@ -161,7 +161,8 @@ test_that("syntheticGeno() must return error when nbSim is a character string", 
 })
 
 
-test_that("syntheticGeno() must return error when prefId is a vector of character strings", {
+test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
+            "of character strings"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -203,7 +204,8 @@ test_that("syntheticGeno() must return error when prefId is a numeric value", {
 })
 
 
-test_that("syntheticGeno() must return error when seqError is a character string", {
+test_that(paste0("syntheticGeno() must return error when seqError is a ",
+                    "character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -223,7 +225,8 @@ test_that("syntheticGeno() must return error when seqError is a character string
 })
 
 
-test_that("syntheticGeno() must return error when minProb is a character string", {
+test_that(paste0("syntheticGeno() must return error when minProb is a ",
+                    "character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -250,7 +253,8 @@ test_that("syntheticGeno() must return error when minProb is a character string"
 context("prepPedSynthetic1KG() results")
 
 
-test_that("prepPedSynthetic1KG() must return error when gds is a character string", {
+test_that(paste0("prepPedSynthetic1KG() must return error when gds is ",
+            "a character string"), {
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
@@ -259,7 +263,8 @@ test_that("prepPedSynthetic1KG() must return error when gds is a character strin
 })
 
 
-test_that("prepPedSynthetic1KG() must return error when gds is a numerical value", {
+test_that(paste0("prepPedSynthetic1KG() must return error when gds is ",
+                    "a numerical value"), {
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
@@ -268,7 +273,8 @@ test_that("prepPedSynthetic1KG() must return error when gds is a numerical value
 })
 
 
-test_that("prepPedSynthetic1KG() must return error when gds is a numerical value", {
+test_that(paste0("prepPedSynthetic1KG() must return error when gds is a ",
+            "numerical value"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -276,7 +282,8 @@ test_that("prepPedSynthetic1KG() must return error when gds is a numerical value
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+    error_message <- paste0("The \'gdsSample\' must be an object of ",
+                                "class \'gds.class\'.")
 
     expect_error(prepPedSynthetic1KG(gds=gdsF,  gdsSample="test.gds",
                             study.id="TCGA", popName="21"), error_message)
@@ -292,10 +299,12 @@ test_that("prepPedSynthetic1KG() must return error when gds is a numerical value
 context("prepSynthetic() results")
 
 
-test_that("prepSynthetic() must return error when gdsSampleFile is a numeric value", {
+test_that(paste0("prepSynthetic() must return error when gdsSampleFile is",
+                    " a numeric value"), {
 
-    error_message <- paste0("The \'gdsSampleFile\' must be a character string representing ",
-                                "the GDS Sample information file. The file must exist.")
+    error_message <- paste0("The \'gdsSampleFile\' must be a character ",
+                    "string representing the GDS Sample information file. ",
+                    "The file must exist.")
 
     expect_error(prepSynthetic(gdsSampleFile=22, listSampleRef=c("S_1", "S_2"),
                     data.id.profile+"S_1", studyDF="TCGA", nbSim=1L,
@@ -304,14 +313,16 @@ test_that("prepSynthetic() must return error when gdsSampleFile is a numeric val
 })
 
 
-test_that("prepSynthetic() must return error when nbSim is a character string", {
+test_that(paste0("prepSynthetic() must return error when nbSim is ",
+                    "a character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
     error_message <- "The \'nbSim\' must be a single positive integer."
 
-    expect_error(prepSynthetic(gdsSampleFile=gdsFIle, listSampleRef=c("S_1", "S_2"),
+    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+                    listSampleRef=c("S_1", "S_2"),
                     data.id.profile+"S_1", studyDF="TCGA", nbSim="1L",
                     prefId="",  pRecomb=0.01,
                     minProb=0.999, seqError=0.001), error_message)

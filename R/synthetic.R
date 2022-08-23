@@ -386,7 +386,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
     nbSNV <- nrow(infoSNV)
 
-    ## Define a table for each "count.tot","lap" and, Freq (number of occurrence)
+    ## Define a table for each "count.tot","lap" and Freq (number of occurrence)
     ## to reduce the number of sampling calls later
     df <- as.data.frame(table(infoSNV[,c("count.tot","lap")]))
     df <- df[df$Freq > 0, ]
@@ -577,8 +577,9 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         #                   cutOffA[as.character(infoSNV$count.tot), "count"]
 
         gSyn <- gSyn +
-            (infoSNV$count.tot - (refC + altC) < cutOffA[as.character(infoSNV$count.tot), "count"]) * # multiply by 0 if too much error
-            ( (refC == 0 |  altC == 0) + # 1 if homozygot
+            (infoSNV$count.tot - (refC + altC) <
+                cutOffA[as.character(infoSNV$count.tot), "count"]) * # multiply by 0 if too much error
+            ((refC == 0 |  altC == 0) + # 1 if homozygot
                   (refC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) *
                   (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) # 1 if both allele are higher than cutoff hetero
             ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
@@ -612,7 +613,10 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #'
 #' @param study.id TODO
 #'
-#' @param popName TODO
+#' @param popName a \code{character} string representing the name of the
+#' column from the \code{data.frame} stored in the "sample.annot" node of the
+#' 1KG GDS file. The column must be present in the \code{data.frame}.
+#'
 #'
 #' @return \code{data.frame} TODO study.annot with study.annot == study.id and
 #' with the column popName.

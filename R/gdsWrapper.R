@@ -26,7 +26,7 @@
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSample <- function(gds, pedDF, listSamples=NULL){
+generateGDSSample <- function(gds, pedDF, listSamples=NULL) {
 
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
@@ -304,7 +304,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 }
 
 
-#' @title This function create the fields related to the snp
+#' @title This function creates the fields related to the snp TODO
 #'
 #' @description TODO
 #'
@@ -375,7 +375,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 
 
 
-#' @title This function create the field genotype in the gds file
+#' @title This function creates the field genotype in the gds file TODO
 #'
 #' @description TODO
 #'
@@ -1174,7 +1174,8 @@ addGDSStudyPruning <- function(gds, pruned) {
 #' gds <- "Demo GDS TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn append.gdsn sync.gds
+#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn
+#' @importFrom gdsfmt append.gdsn sync.gds
 #' @encoding UTF-8
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
@@ -1216,25 +1217,54 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
 
 
-#' @title TODO
+#' @title Add information related to low allelic fraction associated to
+#' the pruned SNV dataset for a specific sample into a GDS file
 #'
-#' @description The function adds the information related to TODO
-#' for a specific sample into a GDS file into
-#' the "lap" node. If the "lap" already exists, the previous
-#' information is erased.
+#' @description The function adds the information related to low allelic
+#' fraction
+#' associated to the pruned SNV dataset for a specific sample into a
+#' GDS file, more specifically, in the "lap" node. The "lap" node must
+#' already be present in the GDS file.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), a GDS file.
 #'
-#' @param snp.lap TODO
-#'
+#' @param snp.lap a \code{vector} of \code{numeric} value representing the
+#' low allelic fraction for each SNV present in the pruned SNV dataset. The
+#' values should be between \code{0} and \code{0.50}. The
+#' length of the \code{vector} should correspond to the number of SNVs
+#' present in the "snp.id" entry of the GDS sample file.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create a "lap" node
+#' lap_initial <- rep(0.0, 8)
+#' add.gdsn(node=GDS_file_tmp, name="lap", val=rep(10L, 12))
+#' sync.gds(GDS_file_tmp)
+#'
+#' ## Vector of low allelic fraction
+#' lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addUpdateLap(gds=GDS_file_tmp, snp.lap=lap)
+#'
+#' ## Read lap information from GDS file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="lap"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -1250,26 +1280,47 @@ addUpdateLap <- function(gds, snp.lap) {
 }
 
 
-#' @title Add information related to allelic fraction of a pruned SNV dataset
-#' for a specific sample into a GDS file
+#' @title Add information related to segments associated to the pruned SNV
+#' dataset for a specific sample into a GDS file
 #'
-#' @description The function adds the information related to allelic
-#' fraction of a pruned SNV dataset for a specific sample into a GDS file into
-#' the "segment" node. If the "segment" already exists, the previous
-#' information is erased.
+#' @description The function adds the information related to segments
+#' associated to the pruned SNV dataset for a specific sample into a
+#' GDS file, more specifically, in the "segment" node. If the "segment" node
+#' already exists, the previous information is erased.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), a GDS file.
+#' (a GDS file), a GDS Sample file.
 #'
-#' @param snp.seg TODO
-#'
+#' @param snp.seg a \code{vector} of \code{integer} representing the segment
+#' identifiers associated to each SNV selected for the specific sample. The
+#' length of the \code{vector} should correspond to the number of SNVs
+#' present in the "snp.id" entry of the GDS sample file.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Vector of segment identifiers
+#' segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addUpdateSegment(gds=GDS_file_tmp, snp.seg=segments)
+#'
+#' ## Read segments information from GDS file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn

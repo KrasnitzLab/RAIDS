@@ -4,7 +4,7 @@
 \name{addUpdateLap}
 \alias{addUpdateLap}
 \title{Add information related to low allelic fraction associated to
-the pruned SNV dataset for a specific sample into a GDS file}
+the SNV dataset for a specific sample into a GDS file}
 \usage{
 addUpdateLap(gds, snp.lap)
 }
@@ -13,7 +13,7 @@ addUpdateLap(gds, snp.lap)
 (a GDS file), a GDS file.}
 
 \item{snp.lap}{a \code{vector} of \code{numeric} value representing the
-low allelic fraction for each SNV present in the pruned SNV dataset. The
+low allelic fraction for each SNV present in the SNV dataset. The
 values should be between \code{0} and \code{0.50}. The
 length of the \code{vector} should correspond to the number of SNVs
 present in the "snp.id" entry of the GDS sample file.}
@@ -24,7 +24,7 @@ The integer \code{0L} when successful.
 \description{
 The function adds the information related to low allelic
 fraction
-associated to the pruned SNV dataset for a specific sample into a
+associated to the SNV dataset for a specific sample into a
 GDS file, more specifically, in the "lap" node. The "lap" node must
 already be present in the GDS file.
 }

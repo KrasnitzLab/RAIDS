@@ -1115,24 +1115,45 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title Add the pruned.study entry (pruned SNVs) in the GDS Sample file
+#' @title Add the pruned.study entry related to the SNV dataset in the
+#' GDS Sample file
 #'
-#' @description This function adds the pruned.study entry, which contains
-#' the pruned SNVs, in the GDS
-#' Sample file. If a pruned.study entry is already present, the entry is
+#' @description This function adds the names of the SNVs into the node called
+#' "pruned.study" in GDS
+#' Sample file. If a "pruned.study" entry is already present, the entry is
 #' deleted and a new entry is created.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' GDS Sample file.
 #'
-#' @param pruned a \code{vector} of pruned SNVs.
+#' @param pruned a \code{vector} of \code{character} string representing the
+#' name of the SNVs.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' #' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Vector of low allelic fraction
+#' study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
+#'
+#' ## Read lap information from GDS file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -1218,11 +1239,11 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
 
 #' @title Add information related to low allelic fraction associated to
-#' the pruned SNV dataset for a specific sample into a GDS file
+#' the SNV dataset for a specific sample into a GDS file
 #'
 #' @description The function adds the information related to low allelic
 #' fraction
-#' associated to the pruned SNV dataset for a specific sample into a
+#' associated to the SNV dataset for a specific sample into a
 #' GDS file, more specifically, in the "lap" node. The "lap" node must
 #' already be present in the GDS file.
 #'
@@ -1230,7 +1251,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' (a GDS file), a GDS file.
 #'
 #' @param snp.lap a \code{vector} of \code{numeric} value representing the
-#' low allelic fraction for each SNV present in the pruned SNV dataset. The
+#' low allelic fraction for each SNV present in the SNV dataset. The
 #' values should be between \code{0} and \code{0.50}. The
 #' length of the \code{vector} should correspond to the number of SNVs
 #' present in the "snp.id" entry of the GDS sample file.
@@ -1280,11 +1301,11 @@ addUpdateLap <- function(gds, snp.lap) {
 }
 
 
-#' @title Add information related to segments associated to the pruned SNV
+#' @title Add information related to segments associated to the SNV
 #' dataset for a specific sample into a GDS file
 #'
 #' @description The function adds the information related to segments
-#' associated to the pruned SNV dataset for a specific sample into a
+#' associated to the SNV dataset for a specific sample into a
 #' GDS file, more specifically, in the "segment" node. If the "segment" node
 #' already exists, the previous information is erased.
 #'

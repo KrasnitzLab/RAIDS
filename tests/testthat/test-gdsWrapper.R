@@ -119,3 +119,38 @@ test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GD
 
     expect_equal(results, lap)
 })
+
+
+
+#############################################################################
+### Tests addGDSStudyPruning() results
+#############################################################################
+
+context("addGDSStudyPruning() results")
+
+
+test_that("addGDSStudyPruning() must copy the expected entry in \"pruned.study\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_03.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Vector of SNV names
+    study <- c('s19771', 's19999', 's20122', 's21222')
+
+    ## Add name of SNVs to the GDS file
+    RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(results, study)
+})
+

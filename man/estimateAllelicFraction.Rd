@@ -18,7 +18,8 @@ estimateAllelicFraction(
   eProb = 0.001,
   cutOffLOH = -5,
   cutOffHomoScore = -3,
-  wAR = 9
+  wAR = 9,
+  gdsRefAnnot = NULL
 )
 }
 \arguments{
@@ -61,6 +62,9 @@ Default: \code{-3}.}
 
 \item{wAR}{a single positive \code{integer} representing the size-1 of
 the window used to compute an empty box. Default: \code{9}.}
+
+\item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the1 1KG SNV Annotation GDS file. Default: \code{NULL}.}
 }
 \value{
 The integer \code{0} when successful.

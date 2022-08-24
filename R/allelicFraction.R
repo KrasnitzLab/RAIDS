@@ -140,7 +140,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
     rm(cnt.total, snp.pruned, listKeepPruned)
 
-
+    # Add
     if("normal.geno" %in% ls.gdsn(node=gdsSample)) {
         # if normal.geno exist mean there is count not in the ref
 
@@ -189,6 +189,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                     c(rep(0, nrow(snp.pos)), seq_len(nrow(snp.pos.o)),
                             rep(0, nrow(snp.pos))))
         z <- z[order(z[,1], z[,2], z[,3]), ]
+        # merge snp.pos with snp.pos.o
         snp.pos <- rbind(snp.pos,
                             snp.pos.o[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
 

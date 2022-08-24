@@ -1118,6 +1118,9 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
 #'
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file. Default: \code{NULL}.
+#'
 #' @return The integer \code{0} when successful.
 #'
 #' @examples
@@ -1135,7 +1138,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
                                     chrInfo, studyType="DNA",
                                     minCov=10L, minProb=0.999, eProb=0.001,
                                     cutOffLOH=-5, cutOffHomoScore=-3,
-                                    wAR=9) {
+                                    wAR=9, gdsRefAnnot=NULL) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
@@ -1208,14 +1211,17 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 
         snp.pos$seg <- rep(0, nrow(snp.pos))
         k <- 1
+        # Find segment with same lap
         for(chr in seq_len(22)) {
             snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
             tmp <- c(0,
                      abs(snpChr[2:nrow(snpChr), "lap"] -
                              snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
             snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
-            k <- max(snp.pos$seg[snp.pos$snp.chr == chr])
+            k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
         }
+    } else if(studyType == "RNA"){
+
     }
 
     ## Save information into the "lap" node in the GDS Sample file

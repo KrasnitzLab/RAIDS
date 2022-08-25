@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{runIBDKING}
 \alias{runIBDKING}
-\title{Function just wrap snpgdsIBDKING}
+\title{Identity-by-descent (IBD) analysis}
 \usage{
 runIBDKING(gds, sampleId = NULL, snp.id = NULL, maf = 0.05)
 }
@@ -41,7 +41,10 @@ a \code{list} containing:
 }
 }
 \description{
-TODO
+This function calculates the IDB coefficients by KING method
+of moment using the
+\code{\link[SNPRelate:snpgdsIBDKING]{SNPRelate::snpgdsIBDKING}}
+function.
 }
 \examples{
 

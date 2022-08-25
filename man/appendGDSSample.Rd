@@ -3,8 +3,7 @@
 \encoding{UTF-8}
 \name{appendGDSSample}
 \alias{appendGDSSample}
-\title{This function append the fields related to the samples. If the
-samples are part of a study you must uses the addStudyGDSSample}
+\title{Append fields related to samples into a GDS file}
 \usage{
 appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL, verbose = TRUE)
 }
@@ -12,11 +11,16 @@ appendGDSSample(gds, pedDF, batch = 1, listSamples = NULL, verbose = TRUE)
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{pedDF}{a \code{data.frame} with the sample info. Must have the column
-sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
-of pedDF is Name.ID and the row.name is Name.ID too.}
+\item{pedDF}{a \code{data.frame} with the information about the sample(s).
+The \code{data.frame} must have the columns: "sample.id", "Name.ID", "sex",
+"pop.group" and "superPop". The unique identifier for the sample(s) is
+the "Name.ID" column and the row names of the \code{data.frame} must
+correspond to the "Name.ID" column.}
 
-\item{listSamples}{a \code{array} with the sample from pedDF$Name.ID to keep}
+\item{batch}{a \code{integer} representing the batch identifier.}
+
+\item{listSamples}{a \code{vector} of \code{character} string with the
+selected sample(s). If \code{NULL}, all samples are used.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{TRUE}.}
@@ -25,15 +29,64 @@ to show how the different steps in the function. Default: \code{TRUE}.}
 The integer \code{0L} when successful.
 }
 \description{
-This function append the fields related to the samples.
-The fields append are sample.id and the \code{data.frame} sample.annot.
-If the samples are in the section study the field related to the
-study must be fill.
+This function appends the fields related to samples into
+a GDS file. The information is extracted from the \code{data.frame} passed
+to the function and is added to the "sample.annot" and "sample.id" nodes.
+The "sample.id" and "sample.annot" nodes must already exist.
+If the samples are part of a study, the function
+addStudyGDSSample() must be used.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_03.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Create "sample.id" node (the node must be present)
+add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+    "sample_02"))
+
+## Create "sample.annot" node (the node must be present)
+add.gdsn(node=GDS_file_tmp, name="sample.annot", val=data.frame(
+  Name.ID=c("sample_01", "sample_02"),
+    sex=c(1,1),  # 1:Male  2: Female
+    pop.group=c("ACB", "ACB"),
+    superPop=c("AFR", "AFR"),
+    batch=c(1, 1),
+    stringsAsFactors=FALSE))
+
+sync.gds(gdsfile=GDS_file_tmp)
+
+## Create a data.frame with information about samples
+sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
+    sex=c(1,2,1),  # 1:Male  2: Female
+    pop.group=c("ACB", "ACB", "ACB"),
+    superPop=c("AFR", "AFR", "AFR"),
+    stringsAsFactors=FALSE)
+
+## The row names must be the sample identifiers
+rownames(sample_info) <- sample_info$Name.ID
+
+## Add information about 2 samples to the GDS file
+RAIDS:::appendGDSSample(gds=GDS_file_tmp, pedDF=sample_info, batch=2,
+    listSamples=c("sample_04", "sample_06"), verbose=FALSE)
+
+## Read sample identifier list
+## Only "sample_04" and "sample_06" should have been added
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+## Read sample information from GDS file
+## Only "sample_04" and "sample_06" should have been added
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

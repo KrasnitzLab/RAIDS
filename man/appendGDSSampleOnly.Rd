@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{appendGDSSampleOnly}
 \alias{appendGDSSampleOnly}
-\title{This function append the fields sample.id.}
+\title{Append sample names into a GDS file}
 \usage{
 appendGDSSampleOnly(gds, listSamples)
 }
@@ -11,19 +11,45 @@ appendGDSSampleOnly(gds, listSamples)
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{listSample}{a \code{array} of sample.id to add.}
+\item{listSample}{a \code{vector} of \code{character} string representing
+the sample identifiers to be added to GDS file.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-This function append the fields samples.id.
-The fields append are sample.id with the listSample
+This function append the sample identifiers into the
+"samples.id" node of a GDS file.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_04.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Create "sample.id" node (the node must be present)
+add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+    "sample_02"))
+
+sync.gds(gdsfile=GDS_file_tmp)
+
+## Add information about 2 samples to the GDS file
+RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
+    listSamples=c("sample_03", "sample_04"))
+
+## Read sample identifier list
+## Only "sample_03" and "sample_04" should have been added
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
+
 
 }
 \author{

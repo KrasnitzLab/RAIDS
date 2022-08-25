@@ -4,7 +4,7 @@
 \name{generateGDSSample}
 \alias{generateGDSSample}
 \title{Initialization of the section related to the sample
-information in the \code{gds} file.}
+information in the GDS file}
 \usage{
 generateGDSSample(gds, pedDF, listSamples = NULL)
 }
@@ -14,8 +14,8 @@ generateGDSSample(gds, pedDF, listSamples = NULL)
 
 \item{pedDF}{a \code{data.frame} containing the information related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
-"pop.group", "superPop" and "batch". The unique id of pedDF
-is Name.ID and the row.name is Name.ID too.}
+"pop.group", "superPop" and "batch". The unique id of this \code{data.frame}
+is "Name.ID" and the row.name is Name.ID too.}
 
 \item{listSamples}{a \code{array} with the sample from pedDF to keep}
 }
@@ -25,7 +25,7 @@ a \code{array} with the sample from pedDF keept
 \description{
 This function initializes the section related to the sample
 information in the \code{gds} file. The information is extracted from
-the \code{data.frame} \code{pedDF} passed to the function.
+the \code{data.frame} passed to the function.
 }
 \examples{
 

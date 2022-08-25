@@ -154,3 +154,43 @@ test_that("addGDSStudyPruning() must copy the expected entry in \"pruned.study\"
     expect_equal(results, study)
 })
 
+
+#############################################################################
+### Tests appendGDSSampleOnly() results
+#############################################################################
+
+context("appendGDSSampleOnly() results")
+
+
+test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_04.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+        "sample_02"))
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    ## Add name of samples to the GDS file
+    RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp, listSamples=samples)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected <- c("sample_01", "sample_02", samples)
+
+    expect_equal(results, expected)
+})
+

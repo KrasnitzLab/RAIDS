@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{addUpdateSegment}
 \alias{addUpdateSegment}
-\title{Add information related to segments associated to the pruned SNV
+\title{Add information related to segments associated to the SNV
 dataset for a specific sample into a GDS file}
 \usage{
 addUpdateSegment(gds, snp.seg)
@@ -22,7 +22,7 @@ The integer \code{0L} when successful.
 }
 \description{
 The function adds the information related to segments
-associated to the pruned SNV dataset for a specific sample into a
+associated to the SNV dataset for a specific sample into a
 GDS file, more specifically, in the "segment" node. If the "segment" node
 already exists, the previous information is erased.
 }

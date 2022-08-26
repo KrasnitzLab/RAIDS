@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{addGDSStudyPruning}
 \alias{addGDSStudyPruning}
-\title{Add the pruned.study entry (pruned SNVs) in the GDS Sample file}
+\title{Add the pruned.study entry related to the SNV dataset in the
+GDS Sample file}
 \usage{
 addGDSStudyPruning(gds, pruned)
 }
@@ -11,21 +12,41 @@ addGDSStudyPruning(gds, pruned)
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 GDS Sample file.}
 
-\item{pruned}{a \code{vector} of pruned SNVs.}
+\item{pruned}{a \code{vector} of \code{character} string representing the
+name of the SNVs.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-This function adds the pruned.study entry, which contains
-the pruned SNVs, in the GDS
-Sample file. If a pruned.study entry is already present, the entry is
+This function adds the names of the SNVs into the node called
+"pruned.study" in GDS
+Sample file. If a "pruned.study" entry is already present, the entry is
 deleted and a new entry is created.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Vector of low allelic fraction
+study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
+
+## Add segments to the GDS file
+RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
+
+## Read lap information from GDS file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

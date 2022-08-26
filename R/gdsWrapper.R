@@ -1,17 +1,17 @@
 #' @title Initialization of the section related to the sample
-#' information in the \code{gds} file.
+#' information in the GDS file
 #'
 #' @description This function initializes the section related to the sample
 #' information in the \code{gds} file. The information is extracted from
-#' the \code{data.frame} \code{pedDF} passed to the function.
+#' the \code{data.frame} passed to the function.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} containing the information related to the
 #' samples. It must have those columns: "sample.id", "Name.ID", "sex",
-#' "pop.group", "superPop" and "batch". The unique id of pedDF
-#' is Name.ID and the row.name is Name.ID too.
+#' "pop.group", "superPop" and "batch". The unique id of this \code{data.frame}
+#' is "Name.ID" and the row.name is Name.ID too.
 #'
 #' @param listSamples a \code{array} with the sample from pedDF to keep
 #'
@@ -88,22 +88,28 @@ addGDSRef <- function(gds, filePart) {
 }
 
 
-#' @title This function append the fields related to the samples. If the
-#' samples are part of a study you must uses the addStudyGDSSample
+#' @title Append fields related to samples into a GDS file
 #'
-#' @description This function append the fields related to the samples.
-#' The fields append are sample.id and the \code{data.frame} sample.annot.
-#' If the samples are in the section study the field related to the
-#' study must be fill.
+#' @description This function appends the fields related to samples into
+#' a GDS file. The information is extracted from the \code{data.frame} passed
+#' to the function and is added to the "sample.annot" and "sample.id" nodes.
+#' The "sample.id" and "sample.annot" nodes must already exist.
+#' If the samples are part of a study, the function
+#' addStudyGDSSample() must be used.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param pedDF a \code{data.frame} with the sample info. Must have the column
-#' sample.id, Name.ID, sex, pop.group, superPop and batch. The unique id
-#' of pedDF is Name.ID and the row.name is Name.ID too.
+#' @param pedDF a \code{data.frame} with the information about the sample(s).
+#' The \code{data.frame} must have the columns: "sample.id", "Name.ID", "sex",
+#' "pop.group" and "superPop". The unique identifier for the sample(s) is
+#' the "Name.ID" column and the row names of the \code{data.frame} must
+#' correspond to the "Name.ID" column.
 #'
-#' @param listSamples a \code{array} with the sample from pedDF$Name.ID to keep
+#' @param batch a \code{integer} representing the batch identifier.
+#'
+#' @param listSamples a \code{vector} of \code{character} string with the
+#' selected sample(s). If \code{NULL}, all samples are used.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{TRUE}.
@@ -112,8 +118,55 @@ addGDSRef <- function(gds, filePart) {
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_03.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create "sample.id" node (the node must be present)
+#' add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+#'     "sample_02"))
+#'
+#' ## Create "sample.annot" node (the node must be present)
+#' add.gdsn(node=GDS_file_tmp, name="sample.annot", val=data.frame(
+#'   Name.ID=c("sample_01", "sample_02"),
+#'     sex=c(1,1),  # 1:Male  2: Female
+#'     pop.group=c("ACB", "ACB"),
+#'     superPop=c("AFR", "AFR"),
+#'     batch=c(1, 1),
+#'     stringsAsFactors=FALSE))
+#'
+#' sync.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Create a data.frame with information about samples
+#' sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
+#'     sex=c(1,2,1),  # 1:Male  2: Female
+#'     pop.group=c("ACB", "ACB", "ACB"),
+#'     superPop=c("AFR", "AFR", "AFR"),
+#'     stringsAsFactors=FALSE)
+#'
+#' ## The row names must be the sample identifiers
+#' rownames(sample_info) <- sample_info$Name.ID
+#'
+#' ## Add information about 2 samples to the GDS file
+#' RAIDS:::appendGDSSample(gds=GDS_file_tmp, pedDF=sample_info, batch=2,
+#'     listSamples=c("sample_04", "sample_06"), verbose=FALSE)
+#'
+#' ## Read sample identifier list
+#' ## Only "sample_04" and "sample_06" should have been added
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+#'
+#' ## Read sample information from GDS file
+#' ## Only "sample_04" and "sample_06" should have been added
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -122,14 +175,16 @@ addGDSRef <- function(gds, filePart) {
 appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
                                 verbose=TRUE) {
 
+    ## Only keep selected samples
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
     }
 
+    ## Append sample identifiers to the "sample.id" node
     sampleGDS <- index.gdsn(gds, "sample.id")
-
     append.gdsn(sampleGDS, val=pedDF$Name.ID, check=TRUE)
 
+    ## Create the data.frame with the sample information
     samp.annot <- data.frame(sex = pedDF[, "sex"],
                                 pop.group=pedDF[, "pop.group"],
                                 superPop=pedDF[, "superPop"],
@@ -138,8 +193,9 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
 
     if(verbose) { message("Annot") }
 
+    ## Append data.frame to "sample.annot" node
     curAnnot <- index.gdsn(gds, "sample.annot/sex")
-    append.gdsn(curAnnot,samp.annot$sex, check=TRUE)
+    append.gdsn(curAnnot, samp.annot$sex, check=TRUE)
     curAnnot <- index.gdsn(gds, "sample.annot/pop.group")
     append.gdsn(curAnnot, samp.annot$pop.group, check=TRUE)
     curAnnot <- index.gdsn(gds, "sample.annot/superPop")
@@ -152,23 +208,50 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
     return(0L)
 }
 
-#' @title This function append the fields sample.id.
+
+#' @title Append sample names into a GDS file
 #'
-#' @description This function append the fields samples.id.
-#' The fields append are sample.id with the listSample
+#' @description This function append the sample identifiers into the
+#' "samples.id" node of a GDS file.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param listSample a \code{array} of sample.id to add.
+#' @param listSample a \code{vector} of \code{character} string representing
+#' the sample identifiers to be added to GDS file.
 #'
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_04.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create "sample.id" node (the node must be present)
+#' add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+#'     "sample_02"))
+#'
+#' sync.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Add information about 2 samples to the GDS file
+#' RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
+#'     listSamples=c("sample_03", "sample_04"))
+#'
+#' ## Read sample identifier list
+#' ## Only "sample_03" and "sample_04" should have been added
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -979,9 +1062,12 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 }
 
 
-#' @title Function just wrap snpgdsIBDKING
+#' @title Identity-by-descent (IBD) analysis
 #'
-#' @description TODO
+#' @description This function calculates the IDB coefficients by KING method
+#' of moment using the
+#' \code{\link[SNPRelate:snpgdsIBDKING]{SNPRelate::snpgdsIBDKING}}
+#' function.
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
@@ -1115,24 +1201,45 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title Add the pruned.study entry (pruned SNVs) in the GDS Sample file
+#' @title Add the pruned.study entry related to the SNV dataset in the
+#' GDS Sample file
 #'
-#' @description This function adds the pruned.study entry, which contains
-#' the pruned SNVs, in the GDS
-#' Sample file. If a pruned.study entry is already present, the entry is
+#' @description This function adds the names of the SNVs into the node called
+#' "pruned.study" in GDS
+#' Sample file. If a "pruned.study" entry is already present, the entry is
 #' deleted and a new entry is created.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' GDS Sample file.
 #'
-#' @param pruned a \code{vector} of pruned SNVs.
+#' @param pruned a \code{vector} of \code{character} string representing the
+#' name of the SNVs.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' #' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Vector of low allelic fraction
+#' study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
+#'
+#' ## Read lap information from GDS file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
@@ -1218,11 +1325,11 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
 
 #' @title Add information related to low allelic fraction associated to
-#' the pruned SNV dataset for a specific sample into a GDS file
+#' the SNV dataset for a specific sample into a GDS file
 #'
 #' @description The function adds the information related to low allelic
 #' fraction
-#' associated to the pruned SNV dataset for a specific sample into a
+#' associated to the SNV dataset for a specific sample into a
 #' GDS file, more specifically, in the "lap" node. The "lap" node must
 #' already be present in the GDS file.
 #'
@@ -1230,7 +1337,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' (a GDS file), a GDS file.
 #'
 #' @param snp.lap a \code{vector} of \code{numeric} value representing the
-#' low allelic fraction for each SNV present in the pruned SNV dataset. The
+#' low allelic fraction for each SNV present in the SNV dataset. The
 #' values should be between \code{0} and \code{0.50}. The
 #' length of the \code{vector} should correspond to the number of SNVs
 #' present in the "snp.id" entry of the GDS sample file.
@@ -1280,11 +1387,11 @@ addUpdateLap <- function(gds, snp.lap) {
 }
 
 
-#' @title Add information related to segments associated to the pruned SNV
+#' @title Add information related to segments associated to the SNV
 #' dataset for a specific sample into a GDS file
 #'
 #' @description The function adds the information related to segments
-#' associated to the pruned SNV dataset for a specific sample into a
+#' associated to the SNV dataset for a specific sample into a
 #' GDS file, more specifically, in the "segment" node. If the "segment" node
 #' already exists, the previous information is erased.
 #'

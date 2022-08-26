@@ -297,3 +297,45 @@ test_that("appendGDSSample() must print the expected message", {
 })
 
 
+
+#############################################################################
+### Tests appendGDSgenotypeMat() results
+#############################################################################
+
+context("appendGDSgenotypeMat() results")
+
+
+test_that("appendGDSgenotypeMat() must copy the expected entry in \"genotype\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_06.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create a "genotype" node with initial matrix
+    geno_initial <- matrix(rep(0L, 24), nrow=6)
+
+    add.gdsn(node=GDS_file_tmp, name="genotype", val=geno_initial)
+    sync.gds(GDS_file_tmp)
+
+    ## new genotype to be added
+    geno_new <- matrix(rep(1L, 12), nrow=6)
+
+    ## Add genotype to the GDS file
+    results0 <- RAIDS:::appendGDSgenotypeMat(gds=GDS_file_tmp,  matG=geno_new)
+
+    ## Read genotype names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="genotype"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected1 <- cbind(geno_initial, geno_new)
+
+    expect_equal(results1, expected1)
+    expect_equal(results0, 0L)
+})
+

@@ -19,7 +19,8 @@ estimateAllelicFraction(
   cutOffLOH = -5,
   cutOffHomoScore = -3,
   wAR = 9,
-  gdsRefAnnot = NULL
+  gdsRefAnnot = NULL,
+  block.id = NULL
 )
 }
 \arguments{
@@ -64,7 +65,12 @@ Default: \code{-3}.}
 the window used to compute an empty box. Default: \code{9}.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG SNV Annotation GDS file. Default: \code{NULL}.}
+(a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
+Default: \code{NULL}.}
+
+\item{block.id}{a \code{character} string corresponding to the block
+identifier in \code{gdsRefAnnot}.  RNA specific
+Default: \code{NULL}}
 }
 \value{
 The integer \code{0} when successful.

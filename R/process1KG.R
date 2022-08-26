@@ -863,14 +863,16 @@ getRef1KGPop <- function(gds, popName) {
     return(dataRef)
 }
 
-#' @title Generate two indexes base on gene annotation for gdsAnnot1KG block
+#' @title Generate two indexes based on gene annotation for gdsAnnot1KG block
 #'
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the 1KG GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param winSize TODO
+#' @param winSize a single positive \code{integer} representing the
+#' size of the window to use to group the SNVs when the SNVs are in a
+#' non-coding region. Default: \code{10000}.
 #'
 #' @param EnsDb An object with the ensembl genome annotation
 #' Default: \code{EnsDb.Hsapiens.v86}.
@@ -892,20 +894,23 @@ getRef1KGPop <- function(gds, popName) {
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom S4Vectors Rle
 #' @importFrom BSgenome strand
 #' @importFrom GenomicRanges GRanges reduce
+#' @importFrom IRanges IRanges
 #' @importFrom AnnotationDbi select
 #' @importFrom ensembldb exonsBy toSAF genes
+#' @importFrom AnnotationFilter GeneIdFilter
+#' @encoding UTF-8
 #' @keywords internal
-
-generateGeneBlock <- function(gds, winSize = 10000, EnsDb=EnsDb.Hsapiens.v86){
+generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
     edb <- EnsDb
     listEnsId <- unique(names(genes(edb)))
 
-    cols <- c("GENEID", "SYMBOL", "GENENAME", "GENESEQSTART", "GENESEQEND", "SEQNAME")
+    cols <- c("GENEID", "SYMBOL", "GENENAME", "GENESEQSTART",
+                "GENESEQEND", "SEQNAME")
 
     annot <- select(edb, keys=listEnsId, columns=cols, keytype="GENEID")
     annot <- annot[which(annot$SEQNAME %in% c(1:22, "X")),]
@@ -920,14 +925,10 @@ generateGeneBlock <- function(gds, winSize = 10000, EnsDb=EnsDb.Hsapiens.v86){
     # Data frame of the all genes
     dfGenneAll <- as.data.frame(grGene)
 
-
     # group the overlapping gene
     grGeneReduce <- reduce(grGene)
     # data.frame version of grGeneReduce
     dfGene <- as.data.frame(grGeneReduce)
-
-
-
 
     # All exon
     allExon <- exonsBy(edb, by = "gene", filter = GeneIdFilter(listEnsId))
@@ -941,10 +942,10 @@ generateGeneBlock <- function(gds, winSize = 10000, EnsDb=EnsDb.Hsapiens.v86){
     dfExonReduce <- toSAF(exonReduce)
     listMat <- list()
 
-    matFreqAll <- data.frame(chr = read.gdsn(index.gdsn(gds, "snp.chromosome")),
-                             pos = read.gdsn(index.gdsn(gds, "snp.position")),
-                             snp.allele = read.gdsn(index.gdsn(gds, "snp.allele")),
-                             stringsAsFactors = FALSE)
+    matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gds, "snp.chromosome")),
+                        pos=read.gdsn(index.gdsn(gds, "snp.position")),
+                        snp.allele=read.gdsn(index.gdsn(gds, "snp.allele")),
+                        stringsAsFactors=FALSE)
     for(chr in seq_len(22))
     {
         dfExonChr <- dfExonReduce[which(dfExonReduce$Chr == chr),]

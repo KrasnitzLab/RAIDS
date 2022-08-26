@@ -15,7 +15,7 @@ prepPedSynthetic1KG(gds, gdsSample, study.id, popName)
 \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
 file.}
 
-\item{study.id}{TODO}
+\item{study.id}{a \code{character} string}
 
 \item{popName}{a \code{character} string representing the name of the
 column from the \code{data.frame} stored in the "sample.annot" node of the

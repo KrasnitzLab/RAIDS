@@ -83,7 +83,8 @@ GDS Sample file.</p>
 <span>  cutOffLOH <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>,</span>
 <span>  cutOffHomoScore <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>,</span>
 <span>  wAR <span class="op">=</span> <span class="fl">9</span>,</span>
-<span>  gdsRefAnnot <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  gdsRefAnnot <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  block.id <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -155,7 +156,14 @@ the window used to compute an empty box. Default: <code>9</code>.</p></dd>
 
 <dt>gdsRefAnnot</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
-(a GDS file), the1 1KG SNV Annotation GDS file. Default: <code>NULL</code>.</p></dd>
+(a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
+Default: <code>NULL</code>.</p></dd>
+
+
+<dt>block.id</dt>
+<dd><p>a <code>character</code> string corresponding to the block
+identifier in <code>gdsRefAnnot</code>.  RNA specific
+Default: <code>NULL</code></p></dd>
 
 </dl></div>
     <div id="value">

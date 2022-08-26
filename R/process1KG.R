@@ -893,10 +893,11 @@ getRef1KGPop <- function(gds, popName) {
 #' # TODO
 #'
 #' @author Pascal Belleau, Astrid Desch&ecirc;nes and Alex Krasnitz
+#' @importFrom S4Vectors Rle
+#' @importFrom BSgenome strand
 #' @importFrom GenomicRanges GRanges reduce
-#' @importFrom EnsDb.Hsapiens.v86 EnsDb.Hsapiens.v86
 #' @importFrom AnnotationDbi select
-#' @importFrom ensembldb exonsBy toSAF
+#' @importFrom ensembldb exonsBy toSAF genes
 #' @keywords internal
 
 generateGeneBlock <- function(gds, winSize = 10000, EnsDb=EnsDb.Hsapiens.v86){

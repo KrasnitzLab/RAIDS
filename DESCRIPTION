@@ -34,12 +34,13 @@ Imports: S4Vectors,
     methods,
     class,
     pROC,
+    IRanges,
+    AnnotationFilter
 Suggests: testthat,
     knitr,
     rmarkdown,
     BiocStyle,
-    withr,
-    GenomicRanges
+    withr
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome

@@ -394,7 +394,7 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 #' @param gds a \code{gds} object.
 #'
 #' @param fileFREQ a \code{character} string with the path and the file
-#' naame to a RDS file containing the frequency information
+#' name to a RDS file containing the frequency information
 #' TODO describe the file
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
@@ -602,20 +602,60 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP,
     return(0L)
 }
 
-#' @title This function append the field genotype in the gds file
+#' @title Appends the genotype information for sepcific samples
+#' (1 column == 1 sample) into a GDS file
 #'
-#' @description TODO
+#' @description This function appends the genotype information into a
+#' GDS file. More specifically, the genotype information is added to the
+#' "genotype" node. The "genotype" node must already be present in the
+#' GDS file. The genotype information is a matrix with the rows corresponding
+#' to SNVs and columns corresponding to samples.
+#' The number of rows of the new genotype information must
+#' correspond to the number of rows of the matrix present in the
+#' "genotype" node.
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS Sample file.
 #'
-#' @param matG  a \code{matrix} with the genotype
+#' @param matG a \code{matrix} of \code{integer} representing the genotypes
+#' of the SNVs for one or multiple samples. The rows correspond to SNVs and
+#' the columns correspond to samples. The number of rows must
+#' correspond to the number of rows of the matrix present in the
+#' "genotype" node.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_06.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create a "genotype" node with initial matrix
+#' geno_initial <- matrix(rep(0L, 10), nrow=2)
+#'
+#' add.gdsn(node=GDS_file_tmp, name="genotype", val=geno_initial)
+#' sync.gds(GDS_file_tmp)
+#'
+#' ## New genotype information to be added
+#' new_genotype <- matrix(rep(1L, 6), nrow=2)
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::appendGDSgenotypeMat(gds=GDS_file_tmp, matG=new_genotype)
+#'
+#' ## Read genotype information from GDS file
+#' ## The return matrix should be a combinaison of both initial matrix
+#' ## and new matrix (column binded)
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="genotype"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -901,7 +941,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the 1KG GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param listSample  a \code{array} with the sample to keep TODO
 #'

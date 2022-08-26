@@ -291,6 +291,22 @@ test_that(paste0("prepPedSynthetic1KG() must return error when gds is a ",
 
 
 
+test_that(paste0("prepPedSynthetic1KG() must return error when study.id is a ",
+        "numerical value"), {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'study.id\' parameter must be a character string."
+
+    expect_error(prepPedSynthetic1KG(gds=gdsF,  gdsSample=gdsF,
+                study.id=23, popName="AFR"), error_message)
+})
+
+
 
 #############################################################################
 ### Tests prepSynthetic() results

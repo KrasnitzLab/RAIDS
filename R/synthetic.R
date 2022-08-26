@@ -585,12 +585,14 @@ syntheticGeno <- function(gds, gdsRefAnnot,
             ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
             (1 + (altC > 0) * (1 + (refC == 0) ) ) # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
-        appendGDSSampleOnly(gdsSample, paste(paste0(prefId, ".",
-                                                    data.id.profile),
-                                                paste(rep(sample.id[curSynt],
-                                                       each=nbSim),
-                                                   seq_len(nbSim), sep="."),
-                                                sep = "."))
+        ## Append the name of the samples to the GDS Sample file "sample.id"
+        ## node
+        appendGDSSampleOnly(gds=gdsSample,
+            listSamples=paste(paste0(prefId, ".", data.id.profile),
+                paste(rep(sample.id[curSynt], each=nbSim),
+                seq_len(nbSim), sep="."), sep = "."))
+
+        ## Append the genotype matrix to the GDS Sample file "genotype" node
         appendGDSgenotypeMat(gdsSample, gSyn)
     }
 
@@ -611,7 +613,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
 #' file.
 #'
-#' @param study.id TODO
+#' @param study.id a \code{character} string
 #'
 #' @param popName a \code{character} string representing the name of the
 #' column from the \code{data.frame} stored in the "sample.annot" node of the
@@ -644,8 +646,15 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
                 "\'gds.class\'.")
     }
 
+    ## The study.id must be a character string
+    if (!is.character(study.id)) {
+        stop("The \'study.id\' parameter must be a character string.")
+    }
+
+    ## Extract study information from the GDS Sample file
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
+    ## Retain the information associated to the current study
     studyCur <- study.annot[which(study.annot$study.id == study.id),]
     rm(study.annot)
 
@@ -656,7 +665,7 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
         stop("The population ", popName, " is not supported.")
     }
 
-    ## Assign row names to the information
+    ## Assign sample names to the information
     row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]

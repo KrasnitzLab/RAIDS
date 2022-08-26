@@ -257,3 +257,43 @@ test_that("appendGDSSample() must copy the expected entry in \"sample.annot\" no
 
 
 
+test_that("appendGDSSample() must print the expected message", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_05.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01", "sample_02"))
+
+    dataInit <- data.frame(sex=c(1,1),  pop.group=c("ACB", "ACB"),
+        superPop=c("AFR", "AFR"), batch=c(1, 1), stringsAsFactors=FALSE)
+
+    add.gdsn(node=GDS_file_tmp, name="sample.annot", val=dataInit)
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    sample_info <- data.frame(Name.ID=samples, sex=c(1,2,1),
+                                pop.group=c("ACB", "ACB", "ACB"),
+                                superPop=c("AFR", "AFR", "AFR"),
+                                stringsAsFactors=FALSE)
+    rownames(sample_info) <- samples
+
+    message <- "Annot"
+
+    ## Add samples to the GDS file
+    expect_message(RAIDS:::appendGDSSample(gds=GDS_file_tmp,  pedDF=sample_info, batch=2,
+                listSamples=c("sample_05", "sample_11"), verbose=TRUE),
+                regexp=message, all=TRUE, perl=TRUE)
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+})
+
+

@@ -11,7 +11,7 @@ generateGDSSNPinfo(gds, fileFREQ, verbose = TRUE)
 \item{gds}{a \code{gds} object.}
 
 \item{fileFREQ}{a \code{character} string with the path and the file
-naame to a RDS file containing the frequency information
+name to a RDS file containing the frequency information
 TODO describe the file}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed

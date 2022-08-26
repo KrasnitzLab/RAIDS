@@ -339,3 +339,54 @@ test_that("appendGDSgenotypeMat() must copy the expected entry in \"genotype\" n
     expect_equal(results0, 0L)
 })
 
+
+#############################################################################
+### Tests generateGDSSample() results
+#############################################################################
+
+context("generateGDSSample() results")
+
+
+test_that("generateGDSSample() must copy the expected entry in \"sample.annot\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_06.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create PEF information
+    pedInformation <- data.frame(sample.id=c("sample_01", "sample_02", "sample_03"),
+                            Name.ID=c("sample_01", "sample_02", "sample_03"),
+                            sex=c(1, 1, 2),  # 1:Male  2: Female
+                            pop.group=c("ACB", "ACB", "ACB"),
+                            superPop=c("AFR", "AFR", "AFR"),
+                            batch=c(1, 1, 1), stringsAsFactors=FALSE)
+    rownames(pedInformation) <- pedInformation$Name.ID
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::generateGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+                                listSamples=c("sample_01", "sample_02"))
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+    results2 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected1 <- c("sample_01", "sample_02")
+
+    expected2 <- pedInformation[c("sample_01", "sample_02"),]
+    expected2$Name.ID <- NULL
+    expected2$sample.id <- NULL
+    rownames(expected2) <- NULL
+
+    expect_equal(results1, expected1)
+    expect_equal(results2, expected2)
+    expect_equal(results3, expected1)
+})
+

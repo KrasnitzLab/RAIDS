@@ -14,23 +14,63 @@ generateGDSSample(gds, pedDF, listSamples = NULL)
 
 \item{pedDF}{a \code{data.frame} containing the information related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
-"pop.group", "superPop" and "batch". The unique id of this \code{data.frame}
-is "Name.ID" and the row.name is Name.ID too.}
+"pop.group", "superPop" and "batch". All columns, except "sex" and batch",
+are \code{character} strings. The "batch" and "sex" columns are
+\code{integer}. The unique identifier
+of this \code{data.frame} is the "Name.ID" column. The row names of the
+\code{data.frame} must correspond to the identifiers present in the
+"Name.ID" column.}
 
-\item{listSamples}{a \code{array} with the sample from pedDF to keep}
+\item{listSamples}{a \code{vector} of \code{character} string representing
+the identifiers of the selected samples. If \code{NULL}, all samples are
+selected. Default: \code{NULL}.}
 }
 \value{
-a \code{array} with the sample from pedDF keept
+a \code{vector} of \code{character} string with the identifiers of
+the samples saved in the GDS file.
 }
 \description{
 This function initializes the section related to the sample
-information in the \code{gds} file. The information is extracted from
-the \code{data.frame} passed to the function.
+information in the GDS file. The information is extracted from
+the \code{data.frame} passed to the function. The nodes "sample.id" and
+"sample.annot" are created in the GDS file.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_10.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Create "sample.annot" node (the node must be present)
+pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
+    Name.ID=c("sample_01", "sample_02"),
+    sex=c(1,1),  # 1:Male  2: Female
+    pop.group=c("ACB", "ACB"),
+    superPop=c("AFR", "AFR"),
+    batch=c(1, 1),
+    stringsAsFactors=FALSE)
+
+## The row names must be the sample identifiers
+rownames(pedInformation) <- pedInformation$Name.ID
+
+## Add information about 2 samples to the GDS file
+RAIDS:::generateGDSSample(gds=GDS_file_tmp, pedDF=pedInformation,
+    listSamples=NULL)
+
+## Read sample identifier list
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+## Read sample information from GDS file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

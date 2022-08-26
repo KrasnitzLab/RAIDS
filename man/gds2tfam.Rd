@@ -9,7 +9,7 @@ gds2tfam(gds, listSample, pedOUT)
 }
 \arguments{
 \item{gds}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the 1KG GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{listSample}{a \code{array} with the sample to keep TODO}
 

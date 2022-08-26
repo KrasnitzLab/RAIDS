@@ -154,3 +154,146 @@ test_that("addGDSStudyPruning() must copy the expected entry in \"pruned.study\"
     expect_equal(results, study)
 })
 
+
+#############################################################################
+### Tests appendGDSSampleOnly() results
+#############################################################################
+
+context("appendGDSSampleOnly() results")
+
+
+test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_04.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+        "sample_02"))
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    ## Add name of samples to the GDS file
+    RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp, listSamples=samples)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected <- c("sample_01", "sample_02", samples)
+
+    expect_equal(results, expected)
+})
+
+
+#############################################################################
+### Tests appendGDSSample() results
+#############################################################################
+
+context("appendGDSSample() results")
+
+
+test_that("appendGDSSample() must copy the expected entry in \"sample.annot\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_05.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+                                                        "sample_02"))
+
+    dataInit <- data.frame(sex=c(1,1),  pop.group=c("ACB", "ACB"),
+        superPop=c("AFR", "AFR"), batch=c(1, 1), stringsAsFactors=FALSE)
+
+    add.gdsn(node=GDS_file_tmp, name="sample.annot", val=dataInit)
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    sample_info <- data.frame(Name.ID=samples, sex=c(1,2,1),
+                    pop.group=c("ACB", "ACB", "ACB"),
+                    superPop=c("AFR", "AFR", "AFR"),
+                    stringsAsFactors=FALSE)
+    rownames(sample_info) <- samples
+
+    ## Add samples to the GDS file
+    RAIDS:::appendGDSSample(gds=GDS_file_tmp,  pedDF=sample_info, batch=2,
+                listSamples=c("sample_05", "sample_11"), verbose=FALSE)
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+    results2 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected1 <- c("sample_01", "sample_02", samples[samples != "sample_08"])
+
+    dataF <- sample_info[c("sample_05", "sample_11"),]
+    dataF$Name.ID <- NULL
+    dataF$batch <- rep(2, 2)
+    expected2 <- rbind(dataInit, dataF)
+    rownames(expected2) <- NULL
+
+    expect_equal(results1, expected1)
+    expect_equal(results2, expected2)
+})
+
+
+
+test_that("appendGDSSample() must print the expected message", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_05.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01", "sample_02"))
+
+    dataInit <- data.frame(sex=c(1,1),  pop.group=c("ACB", "ACB"),
+        superPop=c("AFR", "AFR"), batch=c(1, 1), stringsAsFactors=FALSE)
+
+    add.gdsn(node=GDS_file_tmp, name="sample.annot", val=dataInit)
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    sample_info <- data.frame(Name.ID=samples, sex=c(1,2,1),
+                                pop.group=c("ACB", "ACB", "ACB"),
+                                superPop=c("AFR", "AFR", "AFR"),
+                                stringsAsFactors=FALSE)
+    rownames(sample_info) <- samples
+
+    message <- "Annot"
+
+    ## Add samples to the GDS file
+    expect_message(RAIDS:::appendGDSSample(gds=GDS_file_tmp,  pedDF=sample_info, batch=2,
+                listSamples=c("sample_05", "sample_11"), verbose=TRUE),
+                regexp=message, all=TRUE, perl=TRUE)
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+})
+
+

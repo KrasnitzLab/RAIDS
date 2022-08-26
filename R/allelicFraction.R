@@ -140,7 +140,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
     rm(cnt.total, snp.pruned, listKeepPruned)
 
-    # Add
+    # Add snv info for snv not in Reference
     if("normal.geno" %in% ls.gdsn(node=gdsSample)) {
         # if normal.geno exist mean there is count not in the ref
 

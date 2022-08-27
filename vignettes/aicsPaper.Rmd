@@ -634,8 +634,10 @@ closefn.gds(gds.Annot)
 or in R 
 
 ```{r PCA.KNN.Synthetic, echo=TRUE, eval=FALSE}
-
-    library(RAIDS)
+####################################################################
+## Load required package
+####################################################################
+library(RAIDS)    
     
 
     ##########################################
@@ -750,15 +752,29 @@ or in R
     
 ```
 
-### Sub-Step 9. Select paramters for the PCA-KNN ancestry call
+
+## Step 3 - Find the optimized parameters for the ancestry inference
+
+Before running the ancestry inference, the selection of the best parameters 
+must be done.
+
+```{r graphStep4, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step3_v01.png")
+```
+
+
+### Sub-Step 1. Select paramters for the PCA-KNN ancestry call
 
 
 
 or in R 
 
 ```{r selectParameters, echo=TRUE, eval=FALSE}
-
-    library(RAIDS)
+####################################################################
+## Load required package
+####################################################################
+library(RAIDS)    
+    
     
 
     ##########################################

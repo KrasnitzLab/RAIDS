@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{addStudyGDSSample}
 \alias{addStudyGDSSample}
-\title{Add information related to a specific study and a specific sample
-into a GDS file}
+\title{Add information related to a specific study and specific samples
+into a GDS Sample file}
 \usage{
 addStudyGDSSample(
   gds,
@@ -30,30 +30,71 @@ values.}
 study. Default: \code{1}.}
 
 \item{listSamples}{a \code{vector} of \code{character} string representing
-the samples (samples identifiers) that are saved into the GDS.
+the samples (samples identifiers) that are saved into the GDS. All the
+samples must be present in the 'pdeDF' \code{data.frame}.
 If \code{NULL}, all samples present in the \code{pedDF} are used.
 Default: \code{NULL}.}
 
 \item{studyDF}{a \code{data.frame} with at least the 3 columns: "study.id",
-"study.desc" and "study.platform".}
+"study.desc" and "study.platform". The three columns are in character
+string format (no factor).}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{TRUE}.}
 }
 \value{
 a \code{vector} of \code{character} strings representing the sample
-identifiers present in the \code{pedDF} object.
+identifiers that have been saved in the GDS Sample file.
 }
 \description{
 This function add entries related to 1) a specific study and
-2) a specific sample into a GDS file. More specifically, a
-"study.annot" node is added to the GDS file. In addition, those nodes are
-also created inside those 2 nodes: "study.list" and "study.annot".
+2) specific samples into a GDS Sample file.
+The study information is appended to the GDS Sample file "study.list" node
+when the node is already present in the file. Otherwise, the node is
+created and then, the information is added.
+The sample information for all selected samples is appended to the GDS
+Sample file "study.annot" node
+when the node is already present in the file. Otherwise, the node is
+created and then, the information is added.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_11.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+## Create a PED data frame with sample information
+ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
+    Case.ID=c("1KG_sample_01", "1KG_sample_02"),
+    Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
+    Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+
+## Create a Study data frame with information about the study
+## All samples are associated to the same study
+studyInfo <- data.frame(study.id="Ref.1KG",
+    study.desc="Unrelated samples from 1000 Genomes",
+    study.platform="GRCh38 1000 genotypes",
+    stringsAsFactors=FALSE)
+
+## Add the sample information to the GDS Sample file
+## The information for all samples is added (listSamples=NULL)
+RAIDS:::addStudyGDSSample(gds=GDS_file_tmp, pedDF=ped1KG, batch=1,
+    listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+
+## Read study information from GDS Sample file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+
+## Read sample information from GDS Sample file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

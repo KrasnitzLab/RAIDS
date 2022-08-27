@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{addStudy1Kg}
 \alias{addStudy1Kg}
-\title{TODO}
+\title{Add information about the 1KG samples into
+the GDS Sample file}
 \usage{
 addStudy1Kg(gds, gdsSampleFile)
 }
@@ -18,7 +19,11 @@ file name of the GDS Sample file. The GDS Sample file must exist.}
 The integer \code{0} when successful.
 }
 \description{
-TODO
+The information about the samples present in the 1KG GDS file
+into the GDS Sample file. Only the information about the unrelated samples
+from the 1OOO Genome Study are copied into the GDS Sample file. The
+information is only added to the GDS Sample file when the 1KG Study is not
+present in the GDS Sample file.
 }
 \examples{
 

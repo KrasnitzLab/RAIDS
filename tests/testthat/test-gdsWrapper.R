@@ -390,3 +390,63 @@ test_that("generateGDSSample() must copy the expected entry in \"sample.annot\" 
     expect_equal(results3, expected1)
 })
 
+
+
+#############################################################################
+### Tests addStudyGDSSample() results
+#############################################################################
+
+context("addStudyGDSSample() results")
+
+
+test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_11.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create PEF information
+    pedInformation <- data.frame(Name.ID=c("sample_01", "sample_02", "sample_03"),
+        Case.ID=c("sample_01", "sample_02", "sample_03"),
+        Sample.Type=rep("Reference", 3), Diagnosis=rep("Reference", 3),
+        Source=rep("IGSR", 3), stringsAsFactors=FALSE)
+
+    rownames(pedInformation) <- pedInformation$Name.ID
+
+    ## Create Study information
+    studyInfo <- data.frame(study.id="Ref.1KG",
+                    study.desc="Unrelated samples from 1000 Genomes",
+                    study.platform="GRCh38 1000 Genotypes",
+                    stringsAsFactors=FALSE)
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+                    batch=2, listSamples=c("sample_01", "sample_02"),
+                    studyDF=studyInfo, verbose=FALSE)
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+
+    results2 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected3 <- c("sample_01", "sample_02")
+
+    expected1 <- studyInfo
+
+    expected2 <- data.frame(data.id=expected3, case.id=expected3,
+            sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+            source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+            stringsAsFactors=FALSE)
+
+    expect_equal(results1, expected1)
+    expect_equal(results2, expected2)
+    expect_equal(results3, expected3)
+})
+

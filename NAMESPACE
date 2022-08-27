@@ -2,6 +2,7 @@
 
 export(add1KG2SampleGDS)
 export(addBlockFromPlink2GDS)
+export(addGeneBlockGDSRefAnnot)
 export(addPhase1KG2SampleGDSFromFile)
 export(addPhase1KG2SampleGDSFromGDS)
 export(addRef2GDS1KG)

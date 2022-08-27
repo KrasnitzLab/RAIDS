@@ -1126,3 +1126,49 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
     return(matGene.Block)
 }
 
+
+#' @title Generate two indexes based on gene annotation for gdsAnnot1KG block in add them
+#' to gdsAnnot1KG
+#'
+#' @description TODO
+#'
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#'
+#' @param file.gdsRefAnnot the filename corresponding to an object of
+#' class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file. The function will
+#' open it in write mode and close it after.
+#'
+#' @param winSize a single positive \code{integer} representing the
+#' size of the window to use to group the SNVs when the SNVs are in a
+#' non-coding region. Default: \code{10000}.
+#'
+#' @param EnsDb An object with the ensembl genome annotation
+#' Default: \code{EnsDb.Hsapiens.v86}.
+#'
+#' @param suffixe.blockName TODO ex Ensembl.Hsapiens.v86
+#'
+#' @return \code{OL} when the function is successful.
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @importFrom gdsfmt openfn.gds closefn.gds
+#' @encoding UTF-8
+#' @export
+addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000, EnsDb, suffixe.blockName) {
+
+    dfGeneBlock <- generateGeneBlock(gds, winSize, EnsDb)
+    gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
+    blockName <- paste0("Gene.", suffixe.blockName)
+    blockDesc <- paste0("List of blocks including overlapping genes ", suffixe.blockName)
+    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
+    blockName <- paste0("GeneS.", suffixe.blockName)
+    blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
+    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
+    closefn.gds(gdsRefAnnot)
+    return(0L)
+}
+

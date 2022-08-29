@@ -946,12 +946,16 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                         pos=read.gdsn(index.gdsn(gds, "snp.position")),
                         snp.allele=read.gdsn(index.gdsn(gds, "snp.allele")),
                         stringsAsFactors=FALSE)
+    offsetGene <- 0
+    offsetGeneS <- 0
+    offsetGene.O <- 0
+
     for(chr in seq_len(22))
     {
         dfExonChr <- dfExonReduce[which(dfExonReduce$Chr == chr),]
         dfGenneAllChr <- dfGenneAll[which(dfGenneAll$seqnames == chr),]
         dfGeneChr <- dfGene[which(dfGene$seqnames == chr),]
-
+        # matFreq <- NULL
         #    matFreq <- read.csv2(fileSNV,
         #                         header=FALSE)
 
@@ -1041,8 +1045,10 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                      rep(0, nrow(matFreq))) )
         z <- z[order(z[,1], -1 * z[,2]),]
 
-        # group by interval which inoverlap a gene
+        # group by interval which in overlap a gene
         matFreq$Gene[listPos] <- cumsum(z[,2])[z[,2] == 0]
+        matFreq$Gene[matFreq$Gene > 0] <- matFreq$Gene[matFreq$Gene > 0] + offsetGene
+        offsetGene <- max(offsetGene, max(matFreq$Gene))
 
         listD <- which(matFreq$Gene > 0)
 
@@ -1074,45 +1080,48 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
         indexNew <- cumsum(!(duplicated(tmp[listO])))
 
         matFreq$GeneS <- rep(0, nrow(matFreq))
-        matFreq$GeneS[listD][listO] <- indexNew
+        matFreq$GeneS[listD][listO] <- indexNew + offsetGeneS
+        offsetGeneS <- max(offsetGeneS, max(matFreq$GeneS))
 
         matFreq$GeneS[matFreq$GeneS < 0] <- 0
         matFreq$GeneS[matFreq$Gene < 0] <- 0
         listOrph <- which(matFreq$GeneS == 0)
         flag <- TRUE
-        v <- -1
+        v <- offsetGene.O - 1
         i <- 1
         curZone <- "GeneS"
         curZone1 <- "Gene"
         winSize <- 10000
 
+        if(length(listOrph) > 0){
+            # Very slow can do better
+            # but just run 1 time so less priority
+            #    user  system elapsed
+            # 517.595   7.035 524.658
+            #    user  system elapsed
+            # 558.526   2.274 561.043
+            #
+            while(flag){
+                #use the index
+                vStart <- min(c(which(matFreq$pos[startIndex] >  (matFreq[listOrph[i], "pos"] + winSize)),  length(startIndex)))
 
-        # Very slow can do better
-        # but just run 1 time so less priority
-        #    user  system elapsed
-        # 517.595   7.035 524.658
-        #    user  system elapsed
-        # 558.526   2.274 561.043
-        #
-        while(flag){
-            #use the index
-            vStart <- min(c(which(matFreq$pos[startIndex] >  (matFreq[listOrph[i], "pos"] + winSize)),  length(startIndex)))
+                preList <- listOrph[i]:startIndex[vStart]
+                listWin <- which( matFreq[preList, "pos"] > (matFreq[listOrph[i], "pos"] + winSize) |
+                                      (matFreq[preList, "pos"] > matFreq[listOrph[i], "pos"] &
+                                           matFreq[preList,"GeneS"] > 0))
+                j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1, listOrph[i])
 
-            preList <- listOrph[i]:startIndex[vStart]
-            listWin <- which( matFreq[preList, "pos"] > (matFreq[listOrph[i], "pos"] + winSize) |
-                                  (matFreq[preList, "pos"] > matFreq[listOrph[i], "pos"] &
-                                       matFreq[preList,"GeneS"] > 0))
-            j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1, listOrph[i])
+                matFreq[listOrph[i]:j, curZone] <- v
+                matFreq[listOrph[i]:j, curZone1] <- v
+                v <- v - 1
+                i <- which(listOrph == j) + 1
+                flag <- ifelse(i <= length(listOrph),
+                               TRUE,
+                               FALSE)
 
-            matFreq[listOrph[i]:j, curZone] <- v
-            matFreq[listOrph[i]:j, curZone1] <- v
-            v <- v - 1
-            i <- which(listOrph == j) + 1
-            flag <- ifelse(i <= length(listOrph),
-                           TRUE,
-                           FALSE)
-
-            #print(paste0(v, " ", i, " ", j))
+                #print(paste0(v, " ", i, " ", j))
+            }
+            offsetGene.O <- min(offsetGene.O, min(matFreq$Gene))
         }
 
         listMat[[chr]] <- matFreq

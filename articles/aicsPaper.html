@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-27<br><strong>License</strong>: Apache License (== 2.0) | file
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-08-29<br><strong>License</strong>: Apache License (== 2.0) | file
 LICENSE<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
@@ -666,7 +666,10 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-8--compute-the-pca-knn
 </h4>
 <p>or in R</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co">####################################################################</span></span>
+<span><span class="co">## Load required package</span></span>
+<span><span class="co">####################################################################</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span>    </span>
 <span>    </span>
 <span></span>
 <span>    <span class="co">##########################################</span></span>
@@ -779,112 +782,139 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-8--compute-the-pca-knn
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds.Annot</span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="step-3---find-the-optimized-parameters-for-the-ancestry-inference">Step 3 - Find the optimized parameters for the ancestry
+inference<a class="anchor" aria-label="anchor" href="#step-3---find-the-optimized-parameters-for-the-ancestry-inference"></a>
+</h3>
+<p>Before running the ancestry inference, the selection of the best
+parameters must be done.</p>
+<div class="figure" style="text-align: center">
+<img src="MainSteps_Step3_v01.png" alt="Step 3 - Find the optimized parameters for the ancestry inference" width="120%"><p class="caption">
+Step 3 - Find the optimized parameters for the ancestry inference
+</p>
+</div>
 <div class="section level4">
-<h4 id="sub-step-9--select-paramters-for-the-pca-knn-ancestry-call">Sub-Step 9. Select paramters for the PCA-KNN ancestry call<a class="anchor" aria-label="anchor" href="#sub-step-9--select-paramters-for-the-pca-knn-ancestry-call"></a>
+<h4 id="sub-step-1--select-paramters-for-the-pca-knn-ancestry-call">Sub-Step 1. Select paramters for the PCA-KNN ancestry call<a class="anchor" aria-label="anchor" href="#sub-step-1--select-paramters-for-the-pca-knn-ancestry-call"></a>
 </h4>
 <p>or in R</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(RAIDS)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Files related to the reference</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Downloaded</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    PATH_1KG <span class="ot">&lt;-</span> PATH_REF</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    fileName.GDS <span class="ot">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    fileName.GDS.Annot <span class="ot">&lt;-</span> <span class="st">"matAnnot1000g.gds"</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    file.GDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    file.Annot <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS.Annot)</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    gds <span class="ot">&lt;-</span> <span class="fu">openfn.gds</span>(file.GDS)</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    gds.Annot <span class="ot">&lt;-</span> <span class="fu">openfn.gds</span>(file.Annot)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Load required package</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RAIDS)    </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Files related to the reference</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Downloaded</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    PATH_1KG <span class="ot">&lt;-</span> PATH_REF</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    fileName.GDS <span class="ot">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    fileName.GDS.Annot <span class="ot">&lt;-</span> <span class="st">"matAnnot1000g.gds"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    file.GDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    file.Annot <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_1KG, fileName.GDS.Annot)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="do">##########################################</span></span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Path to the directory where the gds file for each sample</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># will be create</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    PATHSAMPLEGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"The path"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    gds <span class="ot">&lt;-</span> <span class="fu">openfn.gds</span>(file.GDS)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    gds.Annot <span class="ot">&lt;-</span> <span class="fu">openfn.gds</span>(file.Annot)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># directory which content directory name Name.ID in whihc the PCA is save</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"The path"</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Path to the directory where the gds file for each sample</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># will be create</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    PATHSAMPLEGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"The path"</span>)</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need a data.frame with study description for the</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># synthetic data</span></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the synthetic dataset"</span>,</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.desc =</span> <span class="st">"Descripttion"</span>,</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.platform =</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>                              <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Look at studyDF at step 3.</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    study.id <span class="ot">&lt;-</span> <span class="st">"Id of the study"</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># directory which content directory name Name.ID in whihc the PCA is save</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"The path"</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need a data.frame with study description for the</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># synthetic data</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the synthetic dataset"</span>,</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.desc =</span> <span class="st">"Descripttion"</span>,</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>                              <span class="at">study.platform =</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>                              <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The file ped defined before</span></span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    filePED <span class="ot">&lt;-</span> FILE_PED</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    ped <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(filePED)</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You need a list of the sample Name.ID </span></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># you can get it from other source than </span></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filePED </span></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    listSamples <span class="ot">&lt;-</span> ped[, <span class="st">"Name.ID"</span>]</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    spRef <span class="ot">&lt;-</span> <span class="fu">getRef1KGPop</span>(gds, <span class="st">"superPop"</span>)</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Can be run in paralle or in different clusters...</span></span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    listParaSample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    listPCASample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>    listKNNSample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    listAncestrySample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))){</span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>        file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>))</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>        gdsSample <span class="ot">&lt;-</span> <span class="fu">snpgdsOpen</span>(file.GDSSample)</span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>        PATH_OUT_SAMPLE <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_OUT, listSamples[i])</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The directory PATH_OUT_SAMPLE must just content </span></span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>        <span class="co"># only the rds files from step 7</span></span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>        listSynthetic <span class="ot">&lt;-</span> <span class="fu">dir</span>(PATH_OUT_SAMPLE, <span class="st">".rds"</span>)</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>        listKNN <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSynthetic))){</span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>            tmp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(PATHSYN, listSynthetic[i]))</span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>            listKNN[[i]] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>resKNN<span class="sc">$</span>matKNN</span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>        matKNN.All <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, listKNN)</span>
-<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The parameter superPop is define by the output of step 7</span></span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the function return data.frame with the known superPop </span></span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>        <span class="co"># associate with synthetic data.</span></span>
-<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>        pedSyn <span class="ot">&lt;-</span> <span class="fu">prepPedSynthetic1KG</span>(gds, gdsSample, studyDF<span class="sc">$</span>study.id, <span class="st">"superPop"</span>)</span>
-<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>        <span class="co"># list of superPop in synthetic dataset</span></span>
-<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>        listSP <span class="ot">&lt;-</span> <span class="fu">unique</span>(pedSyn<span class="sc">$</span>superPop)</span>
-<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The SuperPop is the super population field in matKNN.All</span></span>
-<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>        <span class="co"># superPop are the known super population from the ref</span></span>
-<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return the parameter selected.</span></span>
-<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>        listParaSample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">selParaPCAUpQuartile</span>(matKNN.All, pedSyn, <span class="st">"superPop"</span>, <span class="st">"SuperPop"</span>, listSP)</span>
-<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>        listPCASample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">computePCARefSample</span>(gdsSample, listSamples[i], <span class="at">study.id.ref =</span> <span class="st">"Ref.1KG"</span>)</span>
-<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>        listKNNSample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">computeKNNSuperPopSample</span>(gdsSample, listSamples[i], spRef)</span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>        listAncestrySample[[listSamples[i]]] <span class="ot">&lt;-</span> </span>
-<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>    <span class="fu">closefn.gds</span>(gds)</span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>    <span class="fu">closefn.gds</span>(gds.Annot)</span></code></pre></div>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Look at studyDF at step 3.</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    study.id <span class="ot">&lt;-</span> <span class="st">"Id of the study"</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The file ped defined before</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    filePED <span class="ot">&lt;-</span> FILE_PED</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    ped <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(filePED)</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You need a list of the sample Name.ID </span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># you can get it from other source than </span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filePED </span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    listSamples <span class="ot">&lt;-</span> ped[, <span class="st">"Name.ID"</span>]</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    spRef <span class="ot">&lt;-</span> <span class="fu">getRef1KGPop</span>(gds, <span class="st">"superPop"</span>)</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Can be run in paralle or in different clusters...</span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    listParaSample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    listPCASample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    listKNNSample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    listAncestrySample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))){</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>        file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>))</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>        gdsSample <span class="ot">&lt;-</span> <span class="fu">snpgdsOpen</span>(file.GDSSample)</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>        PATH_OUT_SAMPLE <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_OUT, listSamples[i])</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The directory PATH_OUT_SAMPLE must just content </span></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>        <span class="co"># only the rds files from step 7</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>        listSynthetic <span class="ot">&lt;-</span> <span class="fu">dir</span>(PATH_OUT_SAMPLE, <span class="st">".rds"</span>)</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>        listKNN <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSynthetic))){</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>            tmp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(PATHSYN, listSynthetic[i]))</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>            listKNN[[i]] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>resKNN<span class="sc">$</span>matKNN</span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>        matKNN.All <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, listKNN)</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The parameter superPop is define by the output of step 7</span></span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the function return data.frame with the known superPop </span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>        <span class="co"># associate with synthetic data.</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>        pedSyn <span class="ot">&lt;-</span> <span class="fu">prepPedSynthetic1KG</span>(gds, gdsSample, studyDF<span class="sc">$</span>study.id, <span class="st">"superPop"</span>)</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>        <span class="co"># list of superPop in synthetic dataset</span></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>        listSP <span class="ot">&lt;-</span> <span class="fu">unique</span>(pedSyn<span class="sc">$</span>superPop)</span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The SuperPop is the super population field in matKNN.All</span></span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>        <span class="co"># superPop are the known super population from the ref</span></span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return the parameter selected.</span></span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>        listParaSample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">selParaPCAUpQuartile</span>(matKNN.All, pedSyn, <span class="st">"superPop"</span>, <span class="st">"SuperPop"</span>, listSP)</span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>        listPCASample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">computePCARefSample</span>(gdsSample, listSamples[i], <span class="at">study.id.ref =</span> <span class="st">"Ref.1KG"</span>)</span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>        listKNNSample[[listSamples[i]]] <span class="ot">&lt;-</span> <span class="fu">computeKNNSuperPopSample</span>(gdsSample, listSamples[i], spRef)</span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>        listAncestrySample[[listSamples[i]]] <span class="ot">&lt;-</span> </span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">closefn.gds</span>(gds)</span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">closefn.gds</span>(gds.Annot)</span></code></pre></div>
 <p><br><br></p>
 </div>
+</div>
+<div class="section level3">
+<h3 id="step-4---run-the-ancestry-inference-on-the-external-study">Step 4 - Run the ancestry inference on the external study<a class="anchor" aria-label="anchor" href="#step-4---run-the-ancestry-inference-on-the-external-study"></a>
+</h3>
+<p>TODO</p>
+<div class="figure" style="text-align: center">
+<img src="MainSteps_Step4_v01.png" alt="Step 3 - Run the ancestry inference on the external study" width="120%"><p class="caption">
+Step 3 - Run the ancestry inference on the external study
+</p>
+</div>
+<p><br><br></p>
 </div>
 </div>
 <div class="section level2">

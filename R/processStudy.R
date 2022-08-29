@@ -1242,14 +1242,17 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 }
 
 
-#' @title Add information about the 1KG samples into
+#' @title Append information about the 1KG samples into
 #' the GDS Sample file
 #'
 #' @description The information about the samples present in the 1KG GDS file
-#' into the GDS Sample file. Only the information about the unrelated samples
+#' is added into the GDS Sample file. Only the information about the
+#' unrelated samples
 #' from the 1OOO Genome Study are copied into the GDS Sample file. The
 #' information is only added to the GDS Sample file when the 1KG Study is not
-#' present in the GDS Sample file.
+#' already present in the GDS Sample file. The sample information for all
+#' selected samples is appended to the GDS Sample file "study.annot" node.
+#' The study information is appended to the GDS Sample file "study.list" node.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
@@ -1278,7 +1281,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
     ## The gdsSampleFile must be a character string and the file must exists
     if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
         stop("The \'gdsSampleFile\' must be a character string representing ",
-             "the GDS Sample file. The file must exist.")
+                "the GDS Sample file. The file must exist.")
     }
 
     ## Open GDS Sample file

@@ -400,7 +400,8 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
     ## This validation is not necessary as the function is internal
     if(sum(c("study.id", "study.desc", "study.platform") %in%
                 colnames(studyDF)) != 3 ) {
-        stop("studyDF incomplete in addStudyGDSSample\n")
+        stop("The \'studyDF\' data frame is incomplete. ",
+                "One or more mandatory column is missing.\n")
     }
 
     ## Used only the selected samples (all when listSamples == NULL)

@@ -409,8 +409,9 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
                                                     rownames(pedDF)))) {
             pedDF <- pedDF[listSamples,]
         } else {
-            stop("List of samples not include in the ped or ped ",
-                    "don't have rownames equal to Name.ID\n")
+            stop("List of samples includes samples not present in ",
+                    "the \'pedDF\' data frame. The sample names must be ",
+                    "present in the \'Name.ID\' column.")
         }
     } else {
         listSamples <- pedDF$Name.ID

@@ -451,9 +451,6 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
 })
 
 
-
-
-
 test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node when the node already exists", {
 
     ## Create a temporary GDS file in an test directory
@@ -524,3 +521,52 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
     expect_equal(results3, expected3)
 })
 
+
+test_that("addStudyGDSSample() must generate an error when input PED is not correct", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_12.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(gdsFile)
+
+    ## Create Study information initial
+    studyInfoInit <- data.frame(study.id="Ref.1KG",
+                                study.desc="Unrelated samples from 1000 Genomes",
+                                study.platform="GRCh38 1000 Genotypes",
+                                stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.list", studyInfoInit)
+
+    ## Create sample information initial
+    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"), case.id=c("sample_01", "sample_02"),
+            sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+            source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+            stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.annot", sampleInfo)
+
+    sync.gds(GDS_file_tmp)
+
+    ## Create sample information novel
+    pedInformation <- data.frame(Name.ID=c("sample_11", "sample_12"),
+            Case.ID=c("sample_11", "sample_12"),
+            Sample.Type=rep("Reference 2", 2), Diagnosis=rep("Reference 2", 2),
+            Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+
+    ## Create study information novel
+    studyInfo <- data.frame(study.id="Ref.1KG New",
+                            study.desc="Unrelated samples from 1000 Genomes New",
+                            study.platform="GRCh38 1000 Genotypes",
+                            stringsAsFactors=FALSE)
+
+    message <- paste0("List of samples includes samples not present in ",
+                    "the \'pedDF\' data frame. The sample names must be ",
+                    "present in the \'Name.ID\' column.")
+
+    ## Add samples to the GDS file
+    expect_error(RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+                batch=2, listSamples=c("sample_101", "sample_102"),
+                studyDF=studyInfo, verbose=FALSE), message, fixed=TRUE)
+})

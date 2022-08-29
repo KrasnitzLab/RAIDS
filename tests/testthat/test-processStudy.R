@@ -9,6 +9,23 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L, 181538259L,
                 90338345L, 83257441L, 80373285L, 58617616L, 64444167L,
                 46709983L,  50818468L, 156040895L, 57227415L,  16569L)
 
+processStudy_remove_local_GDS_file <- function(path) {
+    unlink(x=path, force=TRUE)
+}
+
+processStudy_local_GDS_file <- function(path) {
+    GDS_file_tmp  <- createfn.gds(filename=path)
+    defer_parent(processStudy_remove_local_GDS_file(path=path))
+
+    add.gdsn(GDS_file_tmp, "Ref.count", rep(10L, 12))
+    add.gdsn(GDS_file_tmp, "Alt.count", rep(12L, 12))
+    add.gdsn(GDS_file_tmp, "Total.count", rep(22L, 12))
+    add.gdsn(GDS_file_tmp, "lap", rep(0.5, 12))
+    sync.gds(GDS_file_tmp)
+
+    return(GDS_file_tmp)
+}
+
 #############################################################################
 ### Tests projectSample2PCA() results
 #############################################################################
@@ -649,6 +666,28 @@ test_that("addStudy1Kg() must return error when gds is a numeric value", {
     expect_error(addStudy1Kg(gds=33, gdsSampleFile=gdsFile),
                                 error_message, fixed=TRUE)
 })
+
+
+test_that("addStudy1Kg() must return error when gdsSampleFile is a numeric value", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "GDS_TEMP_processStudy_01.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- processStudy_local_GDS_file(gdsFile)
+
+    error_message <- paste0("The \'gdsSampleFile\' must be a character ",
+        "string representing the GDS Sample file. The file must exist.")
+
+    expect_error(addStudy1Kg(gds=GDS_file_tmp, gdsSampleFile=33),
+                    error_message, fixed=TRUE)
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+})
+
 
 
 #############################################################################

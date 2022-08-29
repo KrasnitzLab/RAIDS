@@ -1242,9 +1242,17 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 }
 
 
-#' @title TODO
+#' @title Append information about the 1KG samples into
+#' the GDS Sample file
 #'
-#' @description TODO
+#' @description The information about the samples present in the 1KG GDS file
+#' is added into the GDS Sample file. Only the information about the
+#' unrelated samples
+#' from the 1OOO Genome Study are copied into the GDS Sample file. The
+#' information is only added to the GDS Sample file when the 1KG Study is not
+#' already present in the GDS Sample file. The sample information for all
+#' selected samples is appended to the GDS Sample file "study.annot" node.
+#' The study information is appended to the GDS Sample file "study.list" node.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
@@ -1273,7 +1281,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
     ## The gdsSampleFile must be a character string and the file must exists
     if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
         stop("The \'gdsSampleFile\' must be a character string representing ",
-             "the GDS Sample file. The file must exist.")
+                "the GDS Sample file. The file must exist.")
     }
 
     ## Open GDS Sample file
@@ -1282,17 +1290,22 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
     ## Extract study information from GDS Sample file
     snp.study <- read.gdsn(index.gdsn(node=gdsSample, "study.list"))
 
+    ## When the 1KG Study is not already present in the GDS Sample file
     if(length(which(snp.study$study.id == "Ref.1KG")) == 0) {
 
+        ## Extract information about all samples from 1KG that are unrelated
+        ## and can be used in the ancestry analysis
         sample.ref <- read.gdsn(index.gdsn(node=gds, "sample.ref"))
         sample.id <- read.gdsn(index.gdsn(node=gds,
                                         "sample.id"))[which(sample.ref == 1)]
 
+        ## Create study information for the 1KG Study
         study.list <- data.frame(study.id="Ref.1KG",
                         study.desc="Unrelated samples from 1000 Genomes",
                         study.platform="GRCh38 1000 genotypes",
                         stringsAsFactors=FALSE)
 
+        ## Create the pedigree information  for the 1KG samples
         ped1KG <- data.frame(Name.ID=sample.id,
                             Case.ID=sample.id,
                             Sample.Type=rep("Reference", length(sample.id)),
@@ -1300,8 +1313,11 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
                             Source=rep("IGSR", length(sample.id)),
                             stringsAsFactors=FALSE)
 
+        ## Row names must be the sample identifiers
         rownames(ped1KG) <- ped1KG$Name.ID
 
+        ## Add the information about the 1KG samples into the
+        ## GDS sample
         addStudyGDSSample(gds=gdsSample, pedDF=ped1KG, batch=1,
                             listSamples=NULL, studyDF=study.list)
 
@@ -1314,6 +1330,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
     ## Return success
     return(0L)
 }
+
 
 #' @title Deprecated Function
 #'

@@ -758,7 +758,7 @@ library(RAIDS)
 Before running the ancestry inference, the selection of the best parameters 
 must be done.
 
-```{r graphStep4, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
+```{r graphStep3, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step3_v01.png")
 ```
 
@@ -883,6 +883,19 @@ library(RAIDS)
 
 <br>
 <br>
+
+
+## Step 4 - Run the ancestry inference on the external study
+
+TODO
+
+```{r graphStep4, echo = FALSE, fig.align="center", fig.cap="Step 3 - Run the ancestry inference on the external study", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step4_v01.png")
+```
+
+<br>
+<br>
+
 
 # Pre-processed files are available
 

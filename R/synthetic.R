@@ -163,16 +163,30 @@ splitSelectByPop <- function(dataRef) {
 }
 
 
-#' @title Prepare the annotations for the synthetic data
+#' @title Add information related to the synthetic samples
+#' (study and sample information) into a GDS Sample file
 #'
-#' @description TODO
+#' @description This function add entries related to synthetic samples into
+#' a GDS Sample file. The entries are 1) a specific synthetic study and
+#' 2) specific synthetic sample information into a GDS Sample file.
+#' The study information is appended to the GDS Sample file "study.list" node.
+#' In this case, the "study.platform" entry, in the study information node,
+#' is always "Synthetic".
+#' The sample information for all selected samples is appended to the GDS
+#' Sample file "study.annot" node. In this case, the "Source" and the
+#' "Sample.Type" entries are always "Synthetic".
+#' The synthetic samples are assigned unique names by combining :
+#' "prefId", ".", "data.id.profile", ".", "listSampleRef", ".",
+#' simulation number (between 1 and nbSim)
 #'
 #' @param gdsSampleFile a \code{character} string representing the file name
 #' of the GDS Sample file containing the information about the sample
-#' to be analyzed.
+#' used to generate the synthetic profiles.
 #'
-#' @param listSampleRef a \code{character} string representing the
-#' identifiers of the selected 1KG samples that will be used as reference.
+#' @param listSampleRef a \code{vector} of \code{character} string
+#' representing the
+#' identifiers of the selected 1KG samples that will be used as reference to
+#' generate the synthetic profiles.
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
@@ -185,18 +199,10 @@ splitSelectByPop <- function(dataRef) {
 #' @param nbSim a single positive \code{integer} representing the number of
 #' simulations per combination of sample and 1KG reference. Default: \code{1L}.
 #'
-#' @param prefId a \code{character} string representing the prefix that
+#' @param prefId a single \code{character} string representing the prefix that
 #' is going to be added to the name of the synthetic profile. The prefix
 #' enables the creation of multiple synthetic profile using the same
 #' combination of sample and 1KG reference. Default: \code{""}.
-#'
-#' @param pRecomb a single \code{numeric} between 0 and 1 TODO.
-#' Default: \code{0.01}.
-#'
-#' @param minProb a single \code{numeric} TODO. Default: \code{0.999}.
-#'
-#' @param seqError a single positive \code{numeric} between 0 and 1
-#' representing the sequencing error rate. Default: \code{0.001}.
 #'
 #' @return \code{0L} when successful.
 #'
@@ -213,15 +219,17 @@ prepSynthetic <- function(gdsSampleFile,
                             data.id.profile,
                             studyDF,
                             nbSim=1L,
-                            prefId="",
-                            pRecomb=0.01,
-                            minProb=0.999,
-                            seqError=0.001) {
+                            prefId="") {
 
     ## The gdsSampleFile must be a character string and the file must exists
     if (!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
         stop("The \'gdsSampleFile\' must be a character string representing ",
                 "the GDS Sample information file. The file must exist.")
+    }
+
+    ## The listSampleRef must be character string
+    if (!is.character(listSampleRef)) {
+        stop("The \'listSampleRef\' must be a vector of character strings.")
     }
 
     ## The study.id must have the 2 mandatory columns
@@ -235,7 +243,10 @@ prepSynthetic <- function(gdsSampleFile,
         stop("The \'nbSim\' must be a single positive integer.")
     }
 
-
+    ## The prefId must be a single character String
+    if (!(is.character(prefId) && length(prefId) == 1)) {
+        stop("The \'prefId\' must be a single character string.")
+    }
 
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
@@ -243,13 +254,16 @@ prepSynthetic <- function(gdsSampleFile,
     ## Extract information about the samples listed in the GDS Samples
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
-    if(length(posStudy) != 1){
+    if(length(posStudy) != 1) {
         closefn.gds(gdsSample)
         stop("Error with the data.id of the profile for synthetic data ",
                 data.id.profile, "\n")
     }
 
-    sampleSim <- paste(paste0(prefId, ".",data.id.profile),
+    ## Assign unique names to synthetic samples using
+    ## the same of the sample, the name of the 1KG reference sample,
+    ## the number of simulations and the prefix
+    sampleSim <- paste(paste0(prefId, ".", data.id.profile),
                         paste(rep(listSampleRef,each=nbSim),
                                 seq_len(nbSim), sep="."), sep = ".")
 
@@ -268,7 +282,7 @@ prepSynthetic <- function(gdsSampleFile,
                      stringsAsFactors=FALSE)
 
     ## Create Pedigree information data frame for the synthetic samples
-    ## The sample type is always set to "Synthetic"
+    ## The sample type is always set to "Synthetic" (idem for the source)
     pedSim <- data.frame(Name.ID=sampleSim,
                 Case.ID=rep(listSampleRef, each=nbSim),
                 Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),

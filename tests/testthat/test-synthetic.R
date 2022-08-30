@@ -324,8 +324,7 @@ test_that(paste0("prepSynthetic() must return error when gdsSampleFile is",
 
     expect_error(prepSynthetic(gdsSampleFile=22, listSampleRef=c("S_1", "S_2"),
                     data.id.profile+"S_1", studyDF="TCGA", nbSim=1L,
-                    prefId="",  pRecomb=0.01,
-                    minProb=0.999, seqError=0.001), error_message)
+                    prefId=""), error_message)
 })
 
 
@@ -345,8 +344,22 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                     listSampleRef=c("S_1", "S_2"),
                     data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
-                    prefId="",  pRecomb=0.01,
-                    minProb=0.999, seqError=0.001), error_message)
+                    prefId=""), error_message)
+})
+
+
+test_that(paste0("prepSynthetic() must return error when listSampleRef is vector of numerics"), {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    error_message <- paste0("The \'listSampleRef\' must be a vector of ",
+                                "character strings.")
+
+    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+                listSampleRef=c(1, 2),
+                data.id.profile+"S_1", studyDF=NULL, nbSim="1L",
+                prefId=""), error_message)
 })
 
 
@@ -366,7 +379,6 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                         listSampleRef=c("S_1", "S_2"),
                             data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
-                            prefId="",  pRecomb=0.01,
-                            minProb=0.999, seqError=0.001), error_message)
+                            prefId=""), error_message)
 })
 

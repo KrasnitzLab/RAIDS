@@ -791,6 +791,10 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @param cutOffLOH a single log of the score to be LOH TODO.
 #' Default: \code{-5}.
 #'
+#' @param cutOffHomoScore TODO
+#'
+#' @param wAR TODO Default: \code{9L}.
+#'
 #' @param verbose a \code{logicial} indicating if the function should print
 #' message when running. Default: \code{FALSE}.
 #'

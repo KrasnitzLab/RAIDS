@@ -772,6 +772,60 @@ test_that("addStudy1Kg() must return expected results", {
 })
 
 
+
+test_that("addStudy1Kg() must return expected results when 1KG already present", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_02.gds")
+
+    ## Create and open a temporary GDS file 1KG
+    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+
+    ## Create and open a temporary GDS Sample file
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_02.gds")
+    GDS_file_Sample <- createfn.gds(gdsFileSample)
+
+    study.list <- data.frame(study.id=c("Ref.1KG"),
+                        study.desc=c("Important Study"),
+                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.list", study.list)
+
+    study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+                             sample.type=c("Study"), diagnosis=c("Study"),
+                             source=rep("IGSR"), study.id=c("Ref.1KG"),
+                             stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.annot", study.annot)
+
+    sync.gds(GDS_file_Sample)
+
+    closefn.gds(GDS_file_Sample)
+    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+
+    result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, gdsSampleFile=gdsFileSample)
+
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+
+    result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
+
+    result2 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp_1KG)
+
+    expected1 <- study.list
+
+    expected2 <- study.annot
+
+    expect_equal(result0, 0L)
+    expect_equal(result1, expected1)
+    expect_equal(result2, expected2)
+})
+
+
 #############################################################################
 ### Tests estimateAllelicFraction() results
 #############################################################################

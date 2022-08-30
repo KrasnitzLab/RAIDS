@@ -163,7 +163,7 @@ splitSelectByPop <- function(dataRef) {
 }
 
 
-#' @title TODO
+#' @title Prepare the annotations for the synthetic data
 #'
 #' @description TODO
 #'
@@ -171,11 +171,15 @@ splitSelectByPop <- function(dataRef) {
 #' of the GDS Sample file containing the information about the sample
 #' to be analyzed.
 #'
-#' @param listSampleRef a \code{character} string TODO
+#' @param listSampleRef a \code{character} string representing the
+#' identifiers of the selected 1KG samples that will be used as reference.
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
-#' @param studyDF TODO
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
 #'
 #' @param nbSim a single positive \code{integer} representing the number of
 #' simulations per combination of sample and profile. Default: \code{1L}.
@@ -224,6 +228,7 @@ prepSynthetic <- function(gdsSampleFile,
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
+    ## Extract information about the samples listed in the GDS Samples
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
     if(length(posStudy) != 1){
@@ -257,6 +262,7 @@ prepSynthetic <- function(gdsSampleFile,
     addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL, study.list)
 
     closefn.gds(gdsSample)
+
     return(0L)
 }
 

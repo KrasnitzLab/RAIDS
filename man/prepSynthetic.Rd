@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{prepSynthetic}
 \alias{prepSynthetic}
-\title{TODO}
+\title{Prepare the annotations for the synthetic data}
 \usage{
 prepSynthetic(
   gdsSampleFile,
@@ -22,11 +22,15 @@ prepSynthetic(
 of the GDS Sample file containing the information about the sample
 to be analyzed.}
 
-\item{listSampleRef}{a \code{character} string TODO}
+\item{listSampleRef}{a \code{character} string representing the
+identifiers of the selected 1KG samples that will be used as reference.}
 
 \item{data.id.profile}{a \code{character} string TODO}
 
-\item{studyDF}{TODO}
+\item{studyDF}{a \code{data.frame} containing the information about the
+study associated to the analysed sample(s). The \code{data.frame} must have
+those 3 columns: "study.id", "study.desc", "study.platform". All columns
+must be in \code{character} strings (no factor).}
 
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and profile. Default: \code{1L}.}

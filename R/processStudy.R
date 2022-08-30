@@ -1321,7 +1321,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
         addStudyGDSSample(gds=gdsSample, pedDF=ped1KG, batch=1,
                             listSamples=NULL, studyDF=study.list)
 
-        sync.gds(gds)
+        sync.gds(gdsSample)
     }
 
     ## Close GDS Sample file (important)

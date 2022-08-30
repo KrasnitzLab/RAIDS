@@ -537,7 +537,7 @@ chrInfo[25] <- length(Hsapiens[["chrM"]])
 ## Name of the GDS Sample file (the name corresponds to the sample identifier)
 file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
-## Open the 1KG GDS file  
+## Open the GDS Sample file  
 gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 
 ## Estimate the allelic fraction of the pruned SNVs for the current sample

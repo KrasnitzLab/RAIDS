@@ -26,6 +26,27 @@ processStudy_local_GDS_file <- function(path) {
     return(GDS_file_tmp)
 }
 
+
+processStudy_local_GDS_1KG_file <- function(path) {
+    GDS_file_tmp  <- createfn.gds(filename=path)
+    defer_parent(processStudy_remove_local_GDS_file(path=path))
+
+    ## Create sample information initial
+    add.gdsn(GDS_file_tmp, "sample.id", c("HTT101", "HTT102", "HTT103"))
+
+    samples <- data.frame(sex=c(1, 1, 2), pop.group=c("GBR", "GIH", "GBR"),
+                    superPop=c("EUR", "SAS", "EUR"), batch=rep(0, 3),
+                    stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_tmp, "sample.annot", samples)
+
+    add.gdsn(GDS_file_tmp, "sample.ref", c(1,0, 1))
+
+    sync.gds(GDS_file_tmp)
+
+    return(GDS_file_tmp)
+}
+
 #############################################################################
 ### Tests projectSample2PCA() results
 #############################################################################
@@ -688,6 +709,67 @@ test_that("addStudy1Kg() must return error when gdsSampleFile is a numeric value
     closefn.gds(gdsfile=GDS_file_tmp)
 })
 
+
+test_that("addStudy1Kg() must return expected results", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_01.gds")
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+
+    ## Create and open a temporary GDS file 1KG
+    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+
+    ## Create and open a temporary GDS Sample file
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+    GDS_file_Sample <- createfn.gds(gdsFileSample)
+
+    study.list <- data.frame(study.id=c("HTT Study"),
+                        study.desc=c("Important Study"),
+                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.list", study.list)
+
+    study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+                sample.type=c("Study"), diagnosis=c("Study"),
+                source=rep("IGSR"), study.id=c("Study"),
+                stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.annot", study.annot)
+
+    sync.gds(GDS_file_Sample)
+
+    closefn.gds(GDS_file_Sample)
+    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+
+    result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, gdsSampleFile=gdsFileSample)
+
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+
+    result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
+
+    result2 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp_1KG)
+
+    expected1 <- data.frame(study.id=c("HTT Study", "Ref.1KG"),
+        study.desc=c("Important Study", "Unrelated samples from 1000 Genomes"),
+        study.platform=c("Panel", "GRCh38 1000 genotypes"),
+        stringsAsFactors=FALSE)
+
+    expected2 <- data.frame(data.id=c("TOTO1", "HTT101", "HTT103"),
+                    case.id=c("TOTO1", "HTT101", "HTT103"),
+                    sample.type=c("Study", rep("Reference", 2)),
+                    diagnosis=c("Study", rep("Reference", 2)),
+                    source=rep("IGSR", 3), study.id=c("Study", "Ref.1KG", "Ref.1KG"),
+                    stringsAsFactors=FALSE)
+
+    expect_equal(result0, 0L)
+    expect_equal(result1, expected1)
+    expect_equal(result2, expected2)
+})
 
 
 #############################################################################

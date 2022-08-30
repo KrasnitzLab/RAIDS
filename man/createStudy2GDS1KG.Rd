@@ -33,13 +33,15 @@ include a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings. The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter.}
+\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+can be defined.}
 
 \item{pedStudy}{a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-\code{character} strings. The \code{data.frame}
+\code{character} strings (no factor). The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter.}
+\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
 the 1KG GDS file. The file must exist.}

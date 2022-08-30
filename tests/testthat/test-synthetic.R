@@ -335,11 +335,38 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
+    studyDF <- data.frame(study.id = "Id of the study",
+                            study.desc = "Description",
+                            study.platform = "Whole-Exome",
+                            stringsAsFactors = FALSE)
+
     error_message <- "The \'nbSim\' must be a single positive integer."
 
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                     listSampleRef=c("S_1", "S_2"),
-                    data.id.profile+"S_1", studyDF="TCGA", nbSim="1L",
+                    data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
                     prefId="",  pRecomb=0.01,
                     minProb=0.999, seqError=0.001), error_message)
 })
+
+
+
+test_that(paste0("prepSynthetic() must return error when studyDF is missing mandatory column"), {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    studyDF <- data.frame(study.id="Id of the study",
+                                study.platform="Whole-Exome",
+                                stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'studyDF\' data frame is incomplete. ",
+                                "One or more mandatory column is missing.\n")
+
+    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+                        listSampleRef=c("S_1", "S_2"),
+                            data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
+                            prefId="",  pRecomb=0.01,
+                            minProb=0.999, seqError=0.001), error_message)
+})
+

@@ -29,13 +29,17 @@ identifiers of the selected 1KG samples that will be used as reference.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
-those 3 columns: "study.id", "study.desc", "study.platform". All columns
-must be in \code{character} strings (no factor).}
+those 2 columns: "study.id" and "study.desc". Those 2 columns
+must be in \code{character} strings (no factor). Other columns can be
+present, such as "study.platform", but won't be used.}
 
 \item{nbSim}{a single positive \code{integer} representing the number of
-simulations per combination of sample and profile. Default: \code{1L}.}
+simulations per combination of sample and 1KG reference. Default: \code{1L}.}
 
-\item{prefId}{a \code{character} string TODO. Default: \code{""}.}
+\item{prefId}{a \code{character} string representing the prefix that
+is going to be added to the name of the synthetic profile. The prefix
+enables the creation of multiple synthetic profile using the same
+combination of sample and 1KG reference. Default: \code{""}.}
 
 \item{pRecomb}{a single \code{numeric} between 0 and 1 TODO.
 Default: \code{0.01}.}

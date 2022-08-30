@@ -20,13 +20,15 @@
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings. The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter.
+#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' can be defined.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-#' \code{character} strings. The \code{data.frame}
+#' \code{character} strings (no factor). The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter.
+#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' can be defined.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
 #' the 1KG GDS file. The file must exist.
@@ -82,6 +84,7 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                batch=1, studyDF, listSamples=NULL,
                                PATHSAMPLEGDS=NULL, verbose=TRUE) {
 
+    ## When fileNamePED is defined and pedStudy is null
     if(!(is.null(fileNamePED)) && is.null(pedStudy)) {
         ## The fileNamePED must be a character string and the file must exists
         if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
@@ -91,12 +94,19 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
         }
         ## Open the RDS Sample information file
         pedStudy <- readRDS(file=fileNamePED)
-    }else if(!(is.null(fileNamePED) || is.null(pedStudy))) {
-        stop("The one of both paramater \'fileNamePED\' or pedStudy ",
-                "must define.")
-    }else if(is.null(fileNamePED) && is.null(pedStudy)) {
-        stop("The paramater \'fileNamePED\' or pedStudy can\'t be defined ",
-                "at the same time.")
+    } else if(!(is.null(fileNamePED) || is.null(pedStudy))) {
+        stop("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
+                "defined at the same time.")
+    } else if(is.null(fileNamePED) && is.null(pedStudy)) {
+        stop("One of the parameter \'fineNamePED\' of \'pedStudy\' must ",
+                "be defined.")
+    }
+
+    ## The PED study must have the mandatory columns
+    if(!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
+             %in% colnames(pedStudy)))) {
+        stop(paste0("The PED study data frame is incomplete. ",
+                        "One or more mandatory columns are missing."))
     }
 
     ## The fileNameGDS must be a character string and the file must exists

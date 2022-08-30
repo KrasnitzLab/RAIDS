@@ -1585,4 +1585,43 @@ addUpdateSegment <- function(gds, snp.seg) {
 }
 
 
+#' @title Get the block number for each SNV in snp.index
+#'
+#' @description TODO
+#'
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
+#' Default: \code{NULL}.
+#'
+#' @param snp.index TODO
+#'
+#' @param block.id a \code{character} string corresponding to the block
+#' identifier in \code{gdsRefAnnot}.  RNA specific
+#' Default: \code{NULL}
+#'
+#' @return TODO a \code{vector} of \code{numeric} corresponding to the
+#' block number
+#'
+#' @examples
+#'
+#' # TODO
+#' gds <- "Demo GDS TODO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+get.Gene.Block <- function(gdsRefAnnot, snp.index, block.id) {
+
+    block.annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
+    pos <- which(block.annot$block.id == block.id)
+    if(length(pos) != 1){
+        stop(paste0("Try to get Gene.Block with block.id problematic ", block.id))
+    }
+
+    b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,pos),
+                   count = c(-1,1))[snp.index]
+    return(b)
+
+}
 

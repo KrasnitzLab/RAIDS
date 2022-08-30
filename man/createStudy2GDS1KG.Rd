@@ -51,7 +51,7 @@ Default: \code{1}.}
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
 those 3 columns: "study.id", "study.desc", "study.platform". All columns
-must be in \code{character} strings.}
+must be in \code{character} strings (no factor).}
 
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to the sample identifiers that will have a GDS Sample file created. The

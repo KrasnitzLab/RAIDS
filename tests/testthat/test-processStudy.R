@@ -26,6 +26,27 @@ processStudy_local_GDS_file <- function(path) {
     return(GDS_file_tmp)
 }
 
+
+processStudy_local_GDS_1KG_file <- function(path) {
+    GDS_file_tmp  <- createfn.gds(filename=path)
+    defer_parent(processStudy_remove_local_GDS_file(path=path))
+
+    ## Create sample information initial
+    add.gdsn(GDS_file_tmp, "sample.id", c("HTT101", "HTT102", "HTT103"))
+
+    samples <- data.frame(sex=c(1, 1, 2), pop.group=c("GBR", "GIH", "GBR"),
+                    superPop=c("EUR", "SAS", "EUR"), batch=rep(0, 3),
+                    stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_tmp, "sample.annot", samples)
+
+    add.gdsn(GDS_file_tmp, "sample.ref", c(1,0, 1))
+
+    sync.gds(GDS_file_tmp)
+
+    return(GDS_file_tmp)
+}
+
 #############################################################################
 ### Tests projectSample2PCA() results
 #############################################################################
@@ -689,6 +710,121 @@ test_that("addStudy1Kg() must return error when gdsSampleFile is a numeric value
 })
 
 
+test_that("addStudy1Kg() must return expected results", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_01.gds")
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+
+    ## Create and open a temporary GDS file 1KG
+    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+
+    ## Create and open a temporary GDS Sample file
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+    GDS_file_Sample <- createfn.gds(gdsFileSample)
+
+    study.list <- data.frame(study.id=c("HTT Study"),
+                        study.desc=c("Important Study"),
+                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.list", study.list)
+
+    study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+                sample.type=c("Study"), diagnosis=c("Study"),
+                source=rep("IGSR"), study.id=c("Study"),
+                stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.annot", study.annot)
+
+    sync.gds(GDS_file_Sample)
+
+    closefn.gds(GDS_file_Sample)
+    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+
+    result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, gdsSampleFile=gdsFileSample)
+
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+
+    result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
+
+    result2 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp_1KG)
+
+    expected1 <- data.frame(study.id=c("HTT Study", "Ref.1KG"),
+        study.desc=c("Important Study", "Unrelated samples from 1000 Genomes"),
+        study.platform=c("Panel", "GRCh38 1000 genotypes"),
+        stringsAsFactors=FALSE)
+
+    expected2 <- data.frame(data.id=c("TOTO1", "HTT101", "HTT103"),
+                    case.id=c("TOTO1", "HTT101", "HTT103"),
+                    sample.type=c("Study", rep("Reference", 2)),
+                    diagnosis=c("Study", rep("Reference", 2)),
+                    source=rep("IGSR", 3), study.id=c("Study", "Ref.1KG", "Ref.1KG"),
+                    stringsAsFactors=FALSE)
+
+    expect_equal(result0, 0L)
+    expect_equal(result1, expected1)
+    expect_equal(result2, expected2)
+})
+
+
+
+test_that("addStudy1Kg() must return expected results when 1KG already present", {
+
+    ## Create a temporary GDS file in an test directory
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_02.gds")
+
+    ## Create and open a temporary GDS file 1KG
+    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+
+    ## Create and open a temporary GDS Sample file
+    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_02.gds")
+    GDS_file_Sample <- createfn.gds(gdsFileSample)
+
+    study.list <- data.frame(study.id=c("Ref.1KG"),
+                        study.desc=c("Important Study"),
+                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.list", study.list)
+
+    study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+                             sample.type=c("Study"), diagnosis=c("Study"),
+                             source=rep("IGSR"), study.id=c("Ref.1KG"),
+                             stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_Sample, "study.annot", study.annot)
+
+    sync.gds(GDS_file_Sample)
+
+    closefn.gds(GDS_file_Sample)
+    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+
+    result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, gdsSampleFile=gdsFileSample)
+
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+
+    result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
+
+    result2 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp_1KG)
+
+    expected1 <- study.list
+
+    expected2 <- study.annot
+
+    expect_equal(result0, 0L)
+    expect_equal(result1, expected1)
+    expect_equal(result2, expected2)
+})
+
 
 #############################################################################
 ### Tests estimateAllelicFraction() results
@@ -1085,4 +1221,72 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
                     chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                     eProb=0.01, cutOffLOH=-5, cutOffHomoScore="-3",
                     wAR=9), error_message, fixed=TRUE)
+})
+
+
+#############################################################################
+### Tests createStudy2GDS1KG() results
+#############################################################################
+
+context("createStudy2GDS1KG() results")
+
+
+test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
+            " a numeric value and pedStudy is NULL"), {
+
+    error_message <- paste0("The \'fileNamePED\' must be a character string ",
+            "representing the RDS Sample information file. ",
+            "The file must exist.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+            fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
+            batch=1, studyDF=NULL, listSamples=NULL,
+            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and pedStudy is NULL", {
+
+    error_message <- paste0("One of the parameter \'fineNamePED\' of ",
+                        "\'pedStudy\' must be defined.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                    fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
+                    batch=1, studyDF=NULL, listSamples=NULL,
+                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when pedDF is missing mandatory column", {
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The PED study data frame is incomplete. ",
+                            "One or more mandatory columns are missing.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                    fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
+                    batch=1, studyDF=NULL, listSamples=NULL,
+                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical value", {
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis = rep("Cancer", 3),
+                        Sample.Type = rep("Primary Tumor", 3),
+                        Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The \'fileNameGDS\' must be a character ",
+                "string representing the GDS 1KG file. The file must exist.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
+                        batch=1, studyDF=NULL, listSamples=NULL,
+                        PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })

@@ -163,7 +163,7 @@ splitSelectByPop <- function(dataRef) {
 }
 
 
-#' @title TODO
+#' @title Prepare the annotations for the synthetic data
 #'
 #' @description TODO
 #'
@@ -171,16 +171,24 @@ splitSelectByPop <- function(dataRef) {
 #' of the GDS Sample file containing the information about the sample
 #' to be analyzed.
 #'
-#' @param listSampleRef a \code{character} string TODO
+#' @param listSampleRef a \code{character} string representing the
+#' identifiers of the selected 1KG samples that will be used as reference.
 #'
 #' @param data.id.profile a \code{character} string TODO
 #'
-#' @param studyDF TODO
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 2 columns: "study.id" and "study.desc". Those 2 columns
+#' must be in \code{character} strings (no factor). Other columns can be
+#' present, such as "study.platform", but won't be used.
 #'
 #' @param nbSim a single positive \code{integer} representing the number of
-#' simulations per combination of sample and profile. Default: \code{1L}.
+#' simulations per combination of sample and 1KG reference. Default: \code{1L}.
 #'
-#' @param prefId a \code{character} string TODO. Default: \code{""}.
+#' @param prefId a \code{character} string representing the prefix that
+#' is going to be added to the name of the synthetic profile. The prefix
+#' enables the creation of multiple synthetic profile using the same
+#' combination of sample and 1KG reference. Default: \code{""}.
 #'
 #' @param pRecomb a single \code{numeric} between 0 and 1 TODO.
 #' Default: \code{0.01}.
@@ -216,14 +224,23 @@ prepSynthetic <- function(gdsSampleFile,
                 "the GDS Sample information file. The file must exist.")
     }
 
+    ## The study.id must have the 2 mandatory columns
+    if(sum(c("study.id", "study.desc") %in% colnames(studyDF)) != 2 ) {
+        stop("The \'studyDF\' data frame is incomplete. ",
+             "One or more mandatory column is missing.\n")
+    }
+
     ## The nbSim must be a single positive numeric
     if (!(isSingleNumber(nbSim) && nbSim > 0)) {
         stop("The \'nbSim\' must be a single positive integer.")
     }
 
+
+
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
+    ## Extract information about the samples listed in the GDS Samples
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     posStudy <- which(study.SRC$data.id == data.id.profile)
     if(length(posStudy) != 1){
@@ -241,11 +258,17 @@ prepSynthetic <- function(gdsSampleFile,
         stop("Error data.id of the simulation exists change prefId\n")
     }
 
+    ## Create a study information data frame using the information passed
+    ## as parameters
+    ## The synthetic samples will be associated to this information
+    ## The study platform is always set to "Synthetic"
     study.list <- data.frame(study.id=studyDF$study.id,
                      study.desc=studyDF$study.desc,
                      study.platform="Synthetic",
                      stringsAsFactors=FALSE)
 
+    ## Create Pedigree information data frame for the synthetic samples
+    ## The sample type is always set to "Synthetic"
     pedSim <- data.frame(Name.ID=sampleSim,
                 Case.ID=rep(listSampleRef, each=nbSim),
                 Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),
@@ -257,6 +280,7 @@ prepSynthetic <- function(gdsSampleFile,
     addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL, study.list)
 
     closefn.gds(gdsSample)
+
     return(0L)
 }
 

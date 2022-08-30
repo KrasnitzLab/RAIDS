@@ -33,13 +33,15 @@ include a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings. The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter.}
+\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+can be defined.}
 
 \item{pedStudy}{a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-\code{character} strings. The \code{data.frame}
+\code{character} strings (no factor). The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter.}
+\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
 the 1KG GDS file. The file must exist.}
@@ -51,7 +53,7 @@ Default: \code{1}.}
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
 those 3 columns: "study.id", "study.desc", "study.platform". All columns
-must be in \code{character} strings.}
+must be in \code{character} strings (no factor).}
 
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to the sample identifiers that will have a GDS Sample file created. The

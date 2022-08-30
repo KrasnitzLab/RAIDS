@@ -1222,3 +1222,71 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
                     eProb=0.01, cutOffLOH=-5, cutOffHomoScore="-3",
                     wAR=9), error_message, fixed=TRUE)
 })
+
+
+#############################################################################
+### Tests createStudy2GDS1KG() results
+#############################################################################
+
+context("createStudy2GDS1KG() results")
+
+
+test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
+            " a numeric value and pedStudy is NULL"), {
+
+    error_message <- paste0("The \'fileNamePED\' must be a character string ",
+            "representing the RDS Sample information file. ",
+            "The file must exist.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+            fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
+            batch=1, studyDF=NULL, listSamples=NULL,
+            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and pedStudy is NULL", {
+
+    error_message <- paste0("One of the parameter \'fineNamePED\' of ",
+                        "\'pedStudy\' must be defined.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                    fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
+                    batch=1, studyDF=NULL, listSamples=NULL,
+                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when pedDF is missing mandatory column", {
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The PED study data frame is incomplete. ",
+                            "One or more mandatory columns are missing.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                    fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
+                    batch=1, studyDF=NULL, listSamples=NULL,
+                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical value", {
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis = rep("Cancer", 3),
+                        Sample.Type = rep("Primary Tumor", 3),
+                        Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The \'fileNameGDS\' must be a character ",
+                "string representing the GDS 1KG file. The file must exist.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
+                        batch=1, studyDF=NULL, listSamples=NULL,
+                        PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})

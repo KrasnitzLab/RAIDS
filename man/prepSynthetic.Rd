@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{prepSynthetic}
 \alias{prepSynthetic}
-\title{Prepare the annotations for the synthetic data}
+\title{Add information related to the synthetic samples
+(study and sample information) into a GDS Sample file}
 \usage{
 prepSynthetic(
   gdsSampleFile,
@@ -11,19 +12,18 @@ prepSynthetic(
   data.id.profile,
   studyDF,
   nbSim = 1L,
-  prefId = "",
-  pRecomb = 0.01,
-  minProb = 0.999,
-  seqError = 0.001
+  prefId = ""
 )
 }
 \arguments{
 \item{gdsSampleFile}{a \code{character} string representing the file name
 of the GDS Sample file containing the information about the sample
-to be analyzed.}
+used to generate the synthetic profiles.}
 
-\item{listSampleRef}{a \code{character} string representing the
-identifiers of the selected 1KG samples that will be used as reference.}
+\item{listSampleRef}{a \code{vector} of \code{character} string
+representing the
+identifiers of the selected 1KG samples that will be used as reference to
+generate the synthetic profiles.}
 
 \item{data.id.profile}{a \code{character} string TODO}
 
@@ -36,24 +36,27 @@ present, such as "study.platform", but won't be used.}
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and 1KG reference. Default: \code{1L}.}
 
-\item{prefId}{a \code{character} string representing the prefix that
+\item{prefId}{a single \code{character} string representing the prefix that
 is going to be added to the name of the synthetic profile. The prefix
 enables the creation of multiple synthetic profile using the same
 combination of sample and 1KG reference. Default: \code{""}.}
-
-\item{pRecomb}{a single \code{numeric} between 0 and 1 TODO.
-Default: \code{0.01}.}
-
-\item{minProb}{a single \code{numeric} TODO. Default: \code{0.999}.}
-
-\item{seqError}{a single positive \code{numeric} between 0 and 1
-representing the sequencing error rate. Default: \code{0.001}.}
 }
 \value{
 \code{0L} when successful.
 }
 \description{
-TODO
+This function add entries related to synthetic samples into
+a GDS Sample file. The entries are 1) a specific synthetic study and
+2) specific synthetic sample information into a GDS Sample file.
+The study information is appended to the GDS Sample file "study.list" node.
+In this case, the "study.platform" entry, in the study information node,
+is always "Synthetic".
+The sample information for all selected samples is appended to the GDS
+Sample file "study.annot" node. In this case, the "Source" and the
+"Sample.Type" entries are always "Synthetic".
+The synthetic samples are assigned unique names by combining :
+"prefId", ".", "data.id.profile", ".", "listSampleRef", ".",
+simulation number (between 1 and nbSim)
 }
 \examples{
 

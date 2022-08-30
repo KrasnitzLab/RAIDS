@@ -51,6 +51,10 @@ probability of sequencing error. Default: \code{0.001}.}
 \item{cutOffLOH}{a single log of the score to be LOH TODO.
 Default: \code{-5}.}
 
+\item{cutOffHomoScore}{TODO}
+
+\item{wAR}{TODO Default: \code{9L}.}
+
 \item{verbose}{a \code{logicial} indicating if the function should print
 message when running. Default: \code{FALSE}.}
 }

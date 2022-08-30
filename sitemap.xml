@@ -82,10 +82,16 @@
     <loc>/reference/basePCASample.html</loc>
   </url>
   <url>
+    <loc>/reference/calcAF.MLRNA.html</loc>
+  </url>
+  <url>
     <loc>/reference/computeAlleleFraction.html</loc>
   </url>
   <url>
     <loc>/reference/computeAllelicFractionDNA.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeAllelicFractionRNA.html</loc>
   </url>
   <url>
     <loc>/reference/computeAllelicImbDNAChr.html</loc>
@@ -178,6 +184,9 @@
     <loc>/reference/generatePhase1KG2GDS.html</loc>
   </url>
   <url>
+    <loc>/reference/get.Gene.Block.html</loc>
+  </url>
+  <url>
     <loc>/reference/getRef1KGPop.html</loc>
   </url>
   <url>
@@ -236,6 +245,9 @@
   </url>
   <url>
     <loc>/reference/syntheticGeno.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tableBlockAF.html</loc>
   </url>
   <url>
     <loc>/reference/testAlleleFractionChange.html</loc>

@@ -96,17 +96,21 @@ identifiers of the selected 1KG samples that will be used as reference.</p></dd>
 <dt>studyDF</dt>
 <dd><p>a <code>data.frame</code> containing the information about the
 study associated to the analysed sample(s). The <code>data.frame</code> must have
-those 3 columns: "study.id", "study.desc", "study.platform". All columns
-must be in <code>character</code> strings (no factor).</p></dd>
+those 2 columns: "study.id" and "study.desc". Those 2 columns
+must be in <code>character</code> strings (no factor). Other columns can be
+present, such as "study.platform", but won't be used.</p></dd>
 
 
 <dt>nbSim</dt>
 <dd><p>a single positive <code>integer</code> representing the number of
-simulations per combination of sample and profile. Default: <code>1L</code>.</p></dd>
+simulations per combination of sample and 1KG reference. Default: <code>1L</code>.</p></dd>
 
 
 <dt>prefId</dt>
-<dd><p>a <code>character</code> string TODO. Default: <code>""</code>.</p></dd>
+<dd><p>a <code>character</code> string representing the prefix that
+is going to be added to the name of the synthetic profile. The prefix
+enables the creation of multiple synthetic profile using the same
+combination of sample and 1KG reference. Default: <code>""</code>.</p></dd>
 
 
 <dt>pRecomb</dt>

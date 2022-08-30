@@ -1128,6 +1128,10 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{9}.
 #'
+#' @param cutOffAR a single \code{numeric} representing the cutoff, in
+#' log score, that the SNVs in a gene are allelic fraction different 0.5
+#' Default: \code{3}.
+#'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
 #' Default: \code{NULL}.
@@ -1153,7 +1157,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
                                     chrInfo, studyType="DNA",
                                     minCov=10L, minProb=0.999, eProb=0.001,
                                     cutOffLOH=-5, cutOffHomoScore=-3,
-                                    wAR=9, gdsRefAnnot=NULL, block.id = NULL) {
+                                    wAR=9, cutOffAR=3, gdsRefAnnot=NULL, block.id = NULL) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
@@ -1224,21 +1228,29 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
                                             cutOffHomoScore=cutOffHomoScore,
                                             wAR=wAR)
 
-        snp.pos$seg <- rep(0, nrow(snp.pos))
-        k <- 1
-        # Find segment with same lap
-        for(chr in seq_len(22)) {
-            snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
-            tmp <- c(0,
-                     abs(snpChr[2:nrow(snpChr), "lap"] -
-                             snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
-            snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
-            k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
-        }
+
     } else if(studyType == "RNA"){
-
+        snp.pos <- computeAllelicFractionRNA(gds=gds, gdsSample=gdsSample,
+                                             gdsRefAnnot=gdsRefAnnot,
+                                             sampleCurrent=sampleCurrent,
+                                             study.id, block.id=block.id,
+                                             chrInfo=chrInfo,
+                                             minCov=minCov, minProb=minProb,
+                                             eProb=eProb,
+                                             cutOffLOH=cutOffLOH,
+                                             cutOffAR=cutOffAR)
     }
-
+    snp.pos$seg <- rep(0, nrow(snp.pos))
+    k <- 1
+    # Find segment with same lap
+    for(chr in seq_len(22)) {
+        snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
+        tmp <- c(0,
+                 abs(snpChr[2:nrow(snpChr), "lap"] -
+                         snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+        snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
+        k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
+    }
     ## Save information into the "lap" node in the GDS Sample file
     ## Suppose we keep only the pruned SNV
     addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])

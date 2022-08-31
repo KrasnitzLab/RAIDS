@@ -831,8 +831,6 @@ test_that("computeAllelicFractionRNA() must return error when block.id is vector
 })
 
 
-
-
 test_that("computeAllelicFractionRNA() must return error when block.id is vector of strings", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
@@ -845,6 +843,253 @@ test_that("computeAllelicFractionRNA() must return error when block.id is vector
 
     expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=c("1", "2"),
-        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        chrInfo=NULL, minCov=10L, minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minCov is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'minCov\' must be a single numeric positive value."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov="10", minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minCov is a vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'minCov\' must be a single numeric positive value."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=c(10, 12), minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minCov is negative numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'minCov\' must be a single numeric positive value."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=-2, minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minProb is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb="CANADA", eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minProb is a negative numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=-0.2, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minProb is superior to 1", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+            gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+            chrInfo=NULL, minCov=2, minProb=1.1, eProb=0.001, cutOffLOH=-5,
+            cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when minProb is vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'minProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+            chrInfo=NULL, minCov=2, minProb=c(0.1, 0.2), eProb=0.001, cutOffLOH=-5,
+            cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when eProb is vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                            "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=c(0.001, 0.2), cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when eProb is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb="0.001", cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when eProb is negative numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=-0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when eProb is numeric superior to 1", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'eProb\' must be a single numeric positive ",
+                                "value between 0 and 1.")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=1.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return cutOffAR is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffAR\' must be a single numeric value."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
+        cutOffAR="3", verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return cutOffAR is vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'cutOffAR\' must be a single numeric value."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=c(2,3), verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return verbose is numerical value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'verbose\' parameters must be a single logical value ",
+                            "(TRUE or FALSE).")
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
+        chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=2, verbose=33), error_message, fixed=TRUE)
 })

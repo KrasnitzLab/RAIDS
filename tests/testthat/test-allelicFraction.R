@@ -691,3 +691,73 @@ test_that("computeAlleleFraction() must return error when chr is a vector of num
     expect_error(computeAlleleFraction(snp.pos=data.frame(), chr=c(1,2),
                                         w=11, cutOff=-3), error_message)
 })
+
+
+#############################################################################
+### Tests computeAllelicFractionRNA() results
+#############################################################################
+
+
+context("computeAllelicFractionRNA() results")
+
+
+test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionRNA(gds="test.gds", gdsSample=NULL,
+        gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
+        gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
+        gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'gdsRefAnnot\' must be an object of class \'gds.class\'."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot="titi.gds", sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})

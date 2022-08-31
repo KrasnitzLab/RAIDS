@@ -1147,7 +1147,7 @@ tableBlockAF <- function(snp.pos) {
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
-#' @param block.id a \code{character} correponding to the field gene block
+#' @param block.id a \code{character} corresponding to the field gene block
 #' in \code{gds} gdsRefAnnot to use split by gene.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} values representing
@@ -1167,7 +1167,8 @@ tableBlockAF <- function(snp.pos) {
 #' Default: \code{-5}.
 #'
 #' @param cutOffAR a single \code{numeric} representing the cutoff, in
-#' log score, that the SNVs in a gene are allelic fraction different 0.5
+#' log score, to tag SNVs located in a gene has having an allelic fraction
+#' different 0.5
 #' Default: \code{3}.
 #'
 #' @param verbose a \code{logicial} indicating if the function should print
@@ -1203,6 +1204,11 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
         stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
     }
 
+    ## The gdsRefAnnot must be an object of class "gds.class"
+    if (!inherits(gdsRefAnnot, "gds.class")) {
+        stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
+    }
+
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
         stop("The \'minCov\' must be a single numeric positive value")
@@ -1220,7 +1226,10 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
              "value between 0 and 1.")
     }
 
-
+    ## The cutOffAR parameter must be a single numeric
+    if (!(isSingleNumber(cutOffAR))) {
+        stop("The \'cutOffAR\' must be a single numeric value.")
+    }
 
     ## The verbose parameter must be a logical
     if (!(is.logical(verbose) && length(verbose) == 1)) {
@@ -1236,11 +1245,13 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
 
     # Get the block structure base on genes from gdsRefAnnot
-    snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index, block.id)
+    snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index,
+                                                                block.id)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
-    if("phase" %in% ls.gdsn(node=gdsSample) ){
-        snp.pos$phase <- read.gdsn(index.gdsn(gdsSample, "phase"))[snp.pos$snp.index]
+    if("phase" %in% ls.gdsn(node=gdsSample) ) {
+        snp.pos$phase <- read.gdsn(index.gdsn(gdsSample,
+                                                "phase"))[snp.pos$snp.index]
     }
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
@@ -1262,21 +1273,26 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
         blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
         # LOH
         blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
-        blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR >= cutOffAR]
+        blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
+                                                                >= cutOffAR]
         blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
 
         listBlock[[chr]] <- blockAF
-        print(chr)
+
+        if (verbose) {
+            message("Step 1 done ", Sys.time())
+        }
     }
+
     blockAF <- do.call(rbind, listBlock)
     listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
     blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
-                                          length(listMissing),
-                                          replace=TRUE)
-    for(b in seq_len(nrow(blockAF))){
+                                            length(listMissing),
+                                            replace=TRUE)
+
+    for(b in seq_len(nrow(blockAF))) {
         snp.pos$lap[snp.pos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
     }
-
 
     return(snp.pos)
 }

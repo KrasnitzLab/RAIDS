@@ -64,13 +64,6 @@ Default: \code{3}.}
 
 \item{verbose}{a \code{logicial} indicating if the function should print
 message when running. Default: \code{FALSE}.}
-
-\item{cutOffHomoScore}{a single \code{numeric} representing the cutoff, in
-log, that the SNVs in a block are called homozygote by error.
-Default: \code{-3}.}
-
-\item{wAR}{a single positive \code{integer} representing the size-1 of
-the window used to compute an empty box. Default: \code{9}.}
 }
 \value{
 a \code{data.frame} with lap for the pruned SNV dataset with

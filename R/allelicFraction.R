@@ -1166,13 +1166,6 @@ tableBlockAF <- function(snp.pos) {
 #' @param cutOffLOH a single log of the score to be LOH TODO.
 #' Default: \code{-5}.
 #'
-#' @param cutOffHomoScore a single \code{numeric} representing the cutoff, in
-#' log, that the SNVs in a block are called homozygote by error.
-#' Default: \code{-3}.
-#'
-#' @param wAR a single positive \code{integer} representing the size-1 of
-#' the window used to compute an empty box. Default: \code{9}.
-#'
 #' @param cutOffAR a single \code{numeric} representing the cutoff, in
 #' log score, that the SNVs in a gene are allelic fraction different 0.5
 #' Default: \code{3}.
@@ -1195,10 +1188,10 @@ tableBlockAF <- function(snp.pos) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot, sampleCurrent, study.id,
-                                      block.id, chrInfo, minCov=10L, minProb=0.999,
-                                      eProb=0.001, cutOffLOH=-5,
-                                      cutOffAR=3, verbose=FALSE) {
+computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
+            sampleCurrent, study.id, block.id, chrInfo, minCov=10L,
+            minProb=0.999, eProb=0.001, cutOffLOH=-5,
+            cutOffAR=3, verbose=FALSE) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {

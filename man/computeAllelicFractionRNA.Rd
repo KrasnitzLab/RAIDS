@@ -39,8 +39,8 @@ the sample identifier as used in \code{\link{pruningSample}} function.}
 the study as
 used in \code{\link{pruningSample}} function.}
 
-\item{block.id}{a \code{character} correponding to the field gene block
-in \code{gds} gdsRefAnnot to use split by gene.}
+\item{block.id}{a \code{character} corresponding to the field gene block
+in the GDS \code{gdsRefAnnot} to use split by gene.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} values representing
 the length of the chromosomes.}
@@ -59,7 +59,8 @@ probability of sequencing error. Default: \code{0.001}.}
 Default: \code{-5}.}
 
 \item{cutOffAR}{a single \code{numeric} representing the cutoff, in
-log score, that the SNVs in a gene are allelic fraction different 0.5
+log score, to tag SNVs located in a gene has having an allelic fraction
+different 0.5
 Default: \code{3}.}
 
 \item{verbose}{a \code{logicial} indicating if the function should print

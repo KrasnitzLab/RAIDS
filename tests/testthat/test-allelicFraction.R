@@ -812,3 +812,39 @@ test_that("computeAllelicFractionRNA() must return error when block.id is numeri
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
 })
+
+
+test_that("computeAllelicFractionRNA() must return error when block.id is vector of strings", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'block.id\' must be a single character string."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=c("1", "2"),
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+
+
+test_that("computeAllelicFractionRNA() must return error when block.id is vector of strings", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'block.id\' must be a single character string."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=c("1", "2"),
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})

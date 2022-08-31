@@ -1148,7 +1148,7 @@ tableBlockAF <- function(snp.pos) {
 #' used in \code{\link{pruningSample}} function.
 #'
 #' @param block.id a \code{character} corresponding to the field gene block
-#' in \code{gds} gdsRefAnnot to use split by gene.
+#' in the GDS \code{gdsRefAnnot} to use split by gene.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} values representing
 #' the length of the chromosomes.
@@ -1209,9 +1209,24 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
         stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
     }
 
+    ## The sampleCurrent parameter must be a single character string
+    if (!(is.character(sampleCurrent) && length(sampleCurrent) == 1)) {
+        stop("The \'sampleCurrent\' must be a single character string.")
+    }
+
+    ## The study.id parameter must be a single character string
+    if (!(is.character(study.id) && length(study.id) == 1)) {
+        stop("The \'study.id\' must be a single character string.")
+    }
+
+    ## The block.id parameter must be a single character string
+    if (!(is.character(block.id) && length(block.id) == 1)) {
+        stop("The \'block.id\' must be a single character string.")
+    }
+
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
-        stop("The \'minCov\' must be a single numeric positive value")
+        stop("The \'minCov\' must be a single numeric positive value.")
     }
 
     ## The minProb parameter must be a single positive numeric between 0 and 1

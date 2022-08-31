@@ -729,7 +729,7 @@ test_that("computeAllelicFractionRNA() must return error when gds is character s
 })
 
 
-test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+test_that("computeAllelicFractionRNA() must return error when gdsSample is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -746,7 +746,7 @@ test_that("computeAllelicFractionRNA() must return error when gds is character s
 })
 
 
-test_that("computeAllelicFractionRNA() must return error when gds is character string", {
+test_that("computeAllelicFractionRNA() must return error when gdsRefAnnot is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -758,6 +758,57 @@ test_that("computeAllelicFractionRNA() must return error when gds is character s
 
     expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot="titi.gds", sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when sampleCurrent is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'sampleCurrent\' must be a single character string."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent=1, study.id="TCGA", block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when study.id is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'study.id\' must be a single character string."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id=33, block.id=NULL,
+        chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffAR=3, verbose=FALSE), error_message)
+})
+
+
+test_that("computeAllelicFractionRNA() must return error when block.id is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'block.id\' must be a single character string."
+
+    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+        gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=33,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
 })

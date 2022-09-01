@@ -1086,7 +1086,8 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #'
 #' @description The function estimates the allelic fraction of the pruned
 #' SNVs for a specific sample and add the information to the associated
-#' GDS Sample file.
+#' GDS Sample file. The allelic fraction estimation method is adapted to
+#' the type of study (DNA or RNA).
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
@@ -1105,8 +1106,8 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
 #'
 #' @param studyType a \code{character} string representing the type of study.
-#' It can be values such as "DNA", "whole-exome", "RNA", etc..
-#' Default: \code{"DNA"}.
+#' The possible choices are: "DNA" and "RNA". The type of study affects the
+#' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
 #'
 #' @param minCov a single positive \code{integer} representing the minimum
 #' required coverage. Default: \code{10L}.
@@ -1154,9 +1155,9 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @encoding UTF-8
 #' @export
 estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
-    chrInfo, studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
-    cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3, gdsRefAnnot=NULL,
-    block.id=NULL) {
+    chrInfo, studyType=c("DNA", "RNA"), minCov=10L, minProb=0.999,
+    eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
+    gdsRefAnnot=NULL, block.id=NULL) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
@@ -1182,6 +1183,9 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     if (!is.character(studyType)) {
         stop("The \'studyType\' must be a character string.")
     }
+
+    ## Set study type
+    studyType <- match.arg(studyType)
 
     ## The minCov parameter must be a single positive integer
     if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
@@ -1217,6 +1221,8 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     }
 
     snp.pos <- NULL
+
+    ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
         snp.pos <- computeAllelicFractionDNA(gds=gds, gdsSample=gdsSample,
                                             sampleCurrent=sampleCurrent,
@@ -1251,12 +1257,13 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
         snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
         k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
     }
+
     ## Save information into the "lap" node in the GDS Sample file
-    ## Suppose we keep only the pruned SNV
+    ## Suppose we keep only the pruned SNVs
     addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
 
     ## Save information into the "segment" node in the GDS Sample file
-    ## Suppose we keep only the pruned SNV
+    ## Suppose we keep only the pruned SNVs
     addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
     # Successful
@@ -1620,7 +1627,7 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## Validate that algorithm is valid choice
+    ## Set algorithm
     algorithm <- match.arg(algorithm)
 
     if(length(name.id) != 1) {

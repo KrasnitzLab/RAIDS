@@ -757,10 +757,10 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
 
 #' @title Estimate the allelic fraction of the pruned SNVs for a specific
-#' sample
+#' DNA-seq sample
 #'
 #' @description The function creates a \code{data.frame} containing the
-#' allelic fraction for the pruned SNV dataset specific to a sample.
+#' allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
@@ -964,12 +964,16 @@ calcAF.MLRNA <- function(snp.pos.Hetero) {
         mPhase <- data.frame(a1 = rep(0, length(listPhase)),
                              a2 = rep(0, length(listPhase)))
         if(length(which(snp.pos.Hetero$phase == 0)) > 0){
-            mPhase[which(snp.pos.Hetero$phase == 0), "a1"] <- snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.ref"]
-            mPhase[which(snp.pos.Hetero$phase == 0), "a2"] <- snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.alt"]
+            mPhase[which(snp.pos.Hetero$phase == 0), "a1"] <-
+                    snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.ref"]
+            mPhase[which(snp.pos.Hetero$phase == 0), "a2"] <-
+                    snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.alt"]
         }
         if(length(which(snp.pos.Hetero$phase == 1)) > 0){
-            mPhase[which(snp.pos.Hetero$phase == 1), "a2"] <- snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.ref"]
-            mPhase[which(snp.pos.Hetero$phase == 1), "a1"] <- snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.alt"]
+            mPhase[which(snp.pos.Hetero$phase == 1), "a2"] <-
+                    snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.ref"]
+            mPhase[which(snp.pos.Hetero$phase == 1), "a1"] <-
+                    snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.alt"]
         }
 
         m1 <- sum(mPhase[,"a1"])
@@ -1070,9 +1074,9 @@ tableBlockAF <- function(snp.pos) {
             flag <- TRUE
             if(resBlock[i, "nbHetero"] == 1){
                 tmp <- min(snp.pos[snp.pos$block.id == resBlock$block[i] &
-                                       snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
-                    sum(snp.pos[snp.pos$block.id == resBlock$block[i] &
-                                    snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
+                                snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
+                            sum(snp.pos[snp.pos$block.id == resBlock$block[i] &
+                                snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
                 flag <- ifelse(tmp > 0.05, FALSE,TRUE)
             }
             if(flag){
@@ -1090,10 +1094,10 @@ tableBlockAF <- function(snp.pos) {
                 tmp[which(tmp < 0.01)] <- 0.01
                 lH <- lH + ifelse(length(listAlt) > 0,sum(log10(tmp)*2), 0)
 
-                lM <- sum(
-                    log10(apply(snp.pos[which(snp.pos$block.id == resBlock$block[i] &
-                                                  snp.pos$homo), "freq", drop=FALSE], 1,
-                                FUN = function(x){
+                lM <- sum(log10(apply(snp.pos[which(snp.pos$block.id ==
+                                            resBlock$block[i] & snp.pos$homo),
+                                            "freq", drop=FALSE], 1,
+                                FUN = function(x) {
                                     return(max(x^2, 2*(x * (1-x)), (1-x)^2))
                                 })))
                 resBlock$sumAlleleLow[i] <- 0
@@ -1109,8 +1113,9 @@ tableBlockAF <- function(snp.pos) {
         if(resBlock[i, "nbKeep"] > 0 &
            resBlock[i, "nbHetero"] > 1){
 
-            resML <- calcAF.MLRNA(snp.pos[which(snp.pos$block.id == resBlock$block[i] &
-                                                    snp.pos$hetero),])
+            resML <- calcAF.MLRNA(snp.pos[which(snp.pos$block.id ==
+                                                        resBlock$block[i] &
+                                                        snp.pos$hetero),])
 
             resBlock$aFraction[i] <- resML$aFraction
             resBlock$lR[i] <- resML$lR
@@ -1120,6 +1125,7 @@ tableBlockAF <- function(snp.pos) {
 
         }
     }
+
     return(resBlock)
 }
 

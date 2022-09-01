@@ -4,7 +4,7 @@
 \name{computeAllelicFractionDNA}
 \alias{computeAllelicFractionDNA}
 \title{Estimate the allelic fraction of the pruned SNVs for a specific
-sample}
+DNA-seq sample}
 \usage{
 computeAllelicFractionDNA(
   gds,
@@ -64,7 +64,7 @@ coverage > \code{minCov}. TODO
 }
 \description{
 The function creates a \code{data.frame} containing the
-allelic fraction for the pruned SNV dataset specific to a sample.
+allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
 }
 \examples{
 

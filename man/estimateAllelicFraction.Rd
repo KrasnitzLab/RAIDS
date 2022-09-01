@@ -12,7 +12,7 @@ estimateAllelicFraction(
   sampleCurrent,
   study.id,
   chrInfo,
-  studyType = "DNA",
+  studyType = c("DNA", "RNA"),
   minCov = 10L,
   minProb = 0.999,
   eProb = 0.001,
@@ -42,8 +42,8 @@ chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
        Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
 
 \item{studyType}{a \code{character} string representing the type of study.
-It can be values such as "DNA", "whole-exome", "RNA", etc..
-Default: \code{"DNA"}.}
+The possible choices are: "DNA" and "RNA". The type of study affects the
+way the estimation of the allelic fraction is done. Default: \code{"DNA"}.}
 
 \item{minCov}{a single positive \code{integer} representing the minimum
 required coverage. Default: \code{10L}.}
@@ -78,12 +78,13 @@ identifier in \code{gdsRefAnnot}.  RNA specific
 Default: \code{NULL}}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 The function estimates the allelic fraction of the pruned
 SNVs for a specific sample and add the information to the associated
-GDS Sample file.
+GDS Sample file. The allelic fraction estimation method is adapted to
+the type of study (DNA or RNA).
 }
 \examples{
 

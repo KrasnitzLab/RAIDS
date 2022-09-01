@@ -1407,3 +1407,25 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
             batch=1, studyDF=NULL, listSamples=NULL,
             PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })
+
+
+
+test_that("createStudy2GDS1KG() must return error when both  fileNamePED and pedStudy are defined", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis = rep("Cancer", 3),
+                        Sample.Type = rep("Primary Tumor", 3),
+                        Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
+                        "defined at the same time.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                fileNamePED=gdsFile, pedStudy=pedDF, fileNameGDS=gdsFile,
+                batch=1, studyDF=NULL, listSamples=NULL,
+                PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
+})

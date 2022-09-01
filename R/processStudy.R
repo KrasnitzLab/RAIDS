@@ -1140,7 +1140,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' identifier in \code{gdsRefAnnot}.  RNA specific
 #' Default: \code{NULL}
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -1154,10 +1154,9 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @encoding UTF-8
 #' @export
 estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
-                                    chrInfo, studyType="DNA",
-                                    minCov=10L, minProb=0.999, eProb=0.001,
-                                    cutOffLOH=-5, cutOffHomoScore=-3,
-                                    wAR=9, cutOffAR=3, gdsRefAnnot=NULL, block.id = NULL) {
+    chrInfo, studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
+    cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3, gdsRefAnnot=NULL,
+    block.id=NULL) {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
@@ -1229,17 +1228,18 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
                                             wAR=wAR)
 
 
-    } else if(studyType == "RNA"){
+    } else if(studyType == "RNA") {
         snp.pos <- computeAllelicFractionRNA(gds=gds, gdsSample=gdsSample,
-                                             gdsRefAnnot=gdsRefAnnot,
-                                             sampleCurrent=sampleCurrent,
-                                             study.id, block.id=block.id,
-                                             chrInfo=chrInfo,
-                                             minCov=minCov, minProb=minProb,
-                                             eProb=eProb,
-                                             cutOffLOH=cutOffLOH,
-                                             cutOffAR=cutOffAR)
+                                    gdsRefAnnot=gdsRefAnnot,
+                                    sampleCurrent=sampleCurrent,
+                                    study.id=study.id, block.id=block.id,
+                                    chrInfo=chrInfo,
+                                    minCov=minCov, minProb=minProb,
+                                    eProb=eProb,
+                                    cutOffLOH=cutOffLOH,
+                                    cutOffAR=cutOffAR)
     }
+
     snp.pos$seg <- rep(0, nrow(snp.pos))
     k <- 1
     # Find segment with same lap

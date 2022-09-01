@@ -1224,6 +1224,21 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
 })
 
 
+test_that("estimateAllelicFraction() must return error when studyType is not a valid choice", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    expect_error(estimateAllelicFraction(gds=gdsF,
+        gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+        chrInfo=chrInfo, studyType="TOTO", minCov=10L, minProb=0.1,
+        eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9))
+})
+
 #############################################################################
 ### Tests createStudy2GDS1KG() results
 #############################################################################
@@ -1289,4 +1304,106 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
                         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
                         batch=1, studyDF=NULL, listSamples=NULL,
                         PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when batch is character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis = rep("Cancer", 3),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- "The \'batch\' must be a single integer."
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+            batch="1", studyDF=NULL, listSamples=NULL,
+            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when batch is vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis = rep("Cancer", 3),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- "The \'batch\' must be a single integer."
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+                fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+                batch=c(1,2), studyDF=NULL, listSamples=NULL,
+                PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when listSamples is vector of numerics", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis = rep("Cancer", 3),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The \'listSamples\' must be a vector ",
+                        "of character strings (1 entry or more) or NULL.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+            batch=1, studyDF=NULL, listSamples=c(1,2),
+            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when listSamples is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                Diagnosis = rep("Cancer", 3),
+                Sample.Type = rep("Primary Tumor", 3),
+                Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- paste0("The \'listSamples\' must be a vector ",
+                            "of character strings (1 entry or more) or NULL.")
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+        batch=1, studyDF=NULL, listSamples=1,
+        PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis = rep("Cancer", 3),
+                    Sample.Type = rep("Primary Tumor", 3),
+                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+
+    error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+            batch=1, studyDF=NULL, listSamples=NULL,
+            PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })

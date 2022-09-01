@@ -73,6 +73,7 @@ coverage > \code{minCov}. TODO
 \description{
 The function creates a \code{data.frame} containing the
 allelic fraction for the pruned SNV dataset specific to a RNA-seq sample.
+TODO
 }
 \examples{
 

@@ -3,8 +3,9 @@
 \encoding{UTF-8}
 \name{addGeneBlockGDSRefAnnot}
 \alias{addGeneBlockGDSRefAnnot}
-\title{Generate two indexes based on gene annotation for gdsAnnot1KG block in add them
-to gdsAnnot1KG}
+\title{Generate two indexes based on gene annotation for gdsAnnot1KG
+block and add the indexes into the
+gdsAnnot1KG}
 \usage{
 addGeneBlockGDSRefAnnot(
   gds,
@@ -25,7 +26,7 @@ open it in write mode and close it after.}
 
 \item{winSize}{a single positive \code{integer} representing the
 size of the window to use to group the SNVs when the SNVs are in a
-non-coding region. Default: \code{10000}.}
+non-coding region. Default: \code{10000L}.}
 
 \item{EnsDb}{An object with the ensembl genome annotation
 Default: \code{EnsDb.Hsapiens.v86}.}
@@ -44,5 +45,5 @@ TODO
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

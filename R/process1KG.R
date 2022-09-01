@@ -960,8 +960,8 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
         #                         header=FALSE)
 
 
-        # colnames(matFreq) <- c("chr", "pos", "ref", "alt", "af", "EAS_AF", "EUR_AF",
-        #                        "AFR_AF", "AMR_AF", "SAS_AF")
+        # colnames(matFreq) <- c("chr", "pos", "ref", "alt", "af", "EAS_AF",
+        #                        "EUR_AF","AFR_AF", "AMR_AF", "SAS_AF")
         print(system.time({
             # SNV in the GDS
             matFreq <- matFreqAll[which(matFreqAll$chr == chr),]
@@ -991,44 +991,55 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                 if(dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
                    dfGenneAllChr$start[genePos] <=  matFreq$pos[nrow(matFreq)]){
                     # In which partitions from the index the gene is located
-                    vStart <- max(c(which(matFreq$pos[startIndex] <=  dfGenneAllChr$start[genePos]), 1))
-                    vEnd <- min(c(which(matFreq$pos[startIndex] >=  dfGenneAllChr$end[genePos]),
-                                  length(startIndex)))
+                    vStart <- max(c(which(matFreq$pos[startIndex] <=
+                                            dfGenneAllChr$start[genePos]), 1))
+                    vEnd <- min(c(which(matFreq$pos[startIndex] >=
+                                            dfGenneAllChr$end[genePos]),
+                                            length(startIndex)))
                     # List of SNV in the gene
                     listP <- which(matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] >= dfGenneAllChr$start[genePos] &
-                                       matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
+                                matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
+
                     # if SNV in the gene
-                    if(length(listP) > 0 ){
+                    if(length(listP) > 0 ) {
                         # listPos in the gene
-                        listP <- listPos[startIndex[vStart]:startIndex[vEnd]][listP]
+                        listP <-
+                            listPos[startIndex[vStart]:startIndex[vEnd]][listP]
+
                         # Add the name of the gene of SNVs
-                        listSNVGenes[listP] <- paste0(listSNVGenes[listP], ":", dfGenneAllChr$mcols.GENEID[genePos])
-                        # Allow run on all without check if the SNV have already gene name
-                        listSNVGenes[listP] <- gsub("^:", "", listSNVGenes[listP])
+                        listSNVGenes[listP] <- paste0(listSNVGenes[listP], ":",
+                            dfGenneAllChr$mcols.GENEID[genePos])
+
+                        # Allow run on all without check if the SNV have
+                        # already gene name
+                        listSNVGenes[listP] <- gsub("^:", "",
+                                                        listSNVGenes[listP])
 
                         # Exon of the gene
-                        dfExon <- dfExonChr[which(dfExonChr$GeneID == dfGenneAllChr$mcols.GENEID[genePos]),]
+                        dfExon <- dfExonChr[which(dfExonChr$GeneID ==
+                                        dfGenneAllChr$mcols.GENEID[genePos]),]
                         k <- 1
 
                         listE <- list()
-                        for(pos in listP){
-                            if(length(which(dfExon$Start <= matFreq$pos[pos] & dfExon$End >= matFreq$pos[pos])) > 0){
+                        for(pos in listP) {
+                            if(length(which(dfExon$Start <= matFreq$pos[pos] &
+                                        dfExon$End >= matFreq$pos[pos])) > 0) {
                                 listE[[k]] <- pos
                                 k <- k + 1
                             }
                         }
-                        if(length(listE) > 0){
+
+                        if(length(listE) > 0) {
                             listE <- do.call(c, listE)
-                            listSNVExons[listE] <- paste0(listSNVExons[listE], ":", dfGenneAllChr$mcols.GENEID[genePos])
-                            listSNVExons[listE] <- gsub("^:", "", listSNVExons[listE])
+                            listSNVExons[listE] <- paste0(listSNVExons[listE],
+                                    ":", dfGenneAllChr$mcols.GENEID[genePos])
+                            listSNVExons[listE] <- gsub("^:", "",
+                                    listSNVExons[listE])
                         }
                     }
-                    #print(genePos)
                 }
             }
         }))
-
-
 
 
         # add the column Exon with the list of gene with an exon with the SNV
@@ -1037,24 +1048,20 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
         matFreq$GName <- listSNVGenes
 
         # dfGeneChr are reduced (merge all the overlap interval)
-        z <- cbind(c(dfGeneChr$start,
-                     dfGeneChr$end,
-                     as.integer(matFreq$pos)),
-                   c(seq_len(nrow(dfGeneChr)),
-                     -1 * seq_len(nrow(dfGeneChr)),
-                     rep(0, nrow(matFreq))) )
+        z <- cbind(c(dfGeneChr$start, dfGeneChr$end, as.integer(matFreq$pos)),
+                   c(seq_len(nrow(dfGeneChr)), -1 * seq_len(nrow(dfGeneChr)),
+                                rep(0, nrow(matFreq))))
         z <- z[order(z[,1], -1 * z[,2]),]
 
         # group by interval which in overlap a gene
         matFreq$Gene[listPos] <- cumsum(z[,2])[z[,2] == 0]
-        matFreq$Gene[matFreq$Gene > 0] <- matFreq$Gene[matFreq$Gene > 0] + offsetGene
+        matFreq$Gene[matFreq$Gene > 0] <- matFreq$Gene[matFreq$Gene > 0] +
+                                                                    offsetGene
         offsetGene <- max(offsetGene, max(matFreq$Gene))
 
         listD <- which(matFreq$Gene > 0)
 
-        tmp <- paste0(matFreq[listD, "GName"],
-                      "_",
-                      matFreq[listD, "Gene"])
+        tmp <- paste0(matFreq[listD, "GName"], "_", matFreq[listD, "Gene"])
         listO <- order(tmp)
 
 
@@ -1103,23 +1110,26 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
             #
             while(flag){
                 #use the index
-                vStart <- min(c(which(matFreq$pos[startIndex] >  (matFreq[listOrph[i], "pos"] + winSize)),  length(startIndex)))
+                vStart <- min(c(which(matFreq$pos[startIndex] >
+                                (matFreq[listOrph[i], "pos"] + winSize)),
+                                length(startIndex)))
 
                 preList <- listOrph[i]:startIndex[vStart]
-                listWin <- which( matFreq[preList, "pos"] > (matFreq[listOrph[i], "pos"] + winSize) |
-                                      (matFreq[preList, "pos"] > matFreq[listOrph[i], "pos"] &
-                                           matFreq[preList,"GeneS"] > 0))
-                j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1, listOrph[i])
+                listWin <- which(matFreq[preList, "pos"] >
+                                    (matFreq[listOrph[i], "pos"] + winSize) |
+                                    (matFreq[preList, "pos"] >
+                                        matFreq[listOrph[i], "pos"] &
+                                        matFreq[preList,"GeneS"] > 0))
+
+                j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1,
+                                listOrph[i])
 
                 matFreq[listOrph[i]:j, curZone] <- v
                 matFreq[listOrph[i]:j, curZone1] <- v
                 v <- v - 1
                 i <- which(listOrph == j) + 1
-                flag <- ifelse(i <= length(listOrph),
-                               TRUE,
-                               FALSE)
+                flag <- ifelse(i <= length(listOrph), TRUE, FALSE)
 
-                #print(paste0(v, " ", i, " ", j))
             }
             offsetGene.O <- min(offsetGene.O, min(matFreq$Gene))
         }
@@ -1136,8 +1146,9 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 }
 
 
-#' @title Generate two indexes based on gene annotation for gdsAnnot1KG block in add them
-#' to gdsAnnot1KG
+#' @title Generate two indexes based on gene annotation for gdsAnnot1KG
+#' block and add the indexes into the
+#' gdsAnnot1KG
 #'
 #' @description TODO
 #'
@@ -1151,7 +1162,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #'
 #' @param winSize a single positive \code{integer} representing the
 #' size of the window to use to group the SNVs when the SNVs are in a
-#' non-coding region. Default: \code{10000}.
+#' non-coding region. Default: \code{10000L}.
 #'
 #' @param EnsDb An object with the ensembl genome annotation
 #' Default: \code{EnsDb.Hsapiens.v86}.
@@ -1159,25 +1170,36 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #' @param suffixe.blockName TODO ex Ensembl.Hsapiens.v86
 #'
 #' @return \code{OL} when the function is successful.
+#'
 #' @examples
 #'
 #' # TODO
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt openfn.gds closefn.gds
 #' @encoding UTF-8
 #' @export
-addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000, EnsDb, suffixe.blockName) {
+addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000,
+                                            EnsDb, suffixe.blockName) {
 
     dfGeneBlock <- generateGeneBlock(gds, winSize, EnsDb)
+
+    ## Opne GDS 1KG Annotation file in writting mode
     gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
+
+
     blockName <- paste0("Gene.", suffixe.blockName)
-    blockDesc <- paste0("List of blocks including overlapping genes ", suffixe.blockName)
+    blockDesc <- paste0("List of blocks including overlapping genes ",
+                                suffixe.blockName)
     addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
     blockName <- paste0("GeneS.", suffixe.blockName)
     blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
     addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
+
+    ## Close GDS 1KG annotation file
     closefn.gds(gdsRefAnnot)
+
+    ## Success
     return(0L)
 }
 

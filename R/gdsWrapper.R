@@ -1615,13 +1615,14 @@ get.Gene.Block <- function(gdsRefAnnot, snp.index, block.id) {
 
     block.annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
     pos <- which(block.annot$block.id == block.id)
-    if(length(pos) != 1){
-        stop(paste0("Try to get Gene.Block with block.id problematic ", block.id))
+
+    if(length(pos) != 1) {
+        stop("Try to get Gene.Block with block.id problematic ", block.id)
     }
 
     b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,pos),
-                   count = c(-1,1))[snp.index]
-    return(b)
+                    count = c(-1,1))[snp.index]
 
+    return(b)
 }
 

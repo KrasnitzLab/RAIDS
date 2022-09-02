@@ -16,7 +16,8 @@ addBlockFromPlink2GDS(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the snp information}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), TODO}
 
 \item{gdsOut}{an object of class \code{gds} in writing}
 
@@ -32,7 +33,7 @@ addBlockFromPlink2GDS(
 printed. Default: \code{TRUE}.}
 }
 \value{
-None.
+\code{OL} when the function is successful.
 }
 \description{
 TODO

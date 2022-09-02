@@ -751,7 +751,8 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened for the snp information
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), TODO
 #'
 #' @param gdsOut an object of class \code{gds} in writing
 #'
@@ -766,7 +767,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed. Default: \code{TRUE}.
 #'
-#' @return None.
+#' @return \code{OL} when the function is successful.
 #'
 #' @details
 #'
@@ -783,13 +784,21 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #' @encoding UTF-8
 #' @export
-addBlockFromPlink2GDS <- function(gds,
-                                  gdsOut,
-                                  PATHBLOCK,
-                                  superPop,
-                                  blockName,
-                                  blockDesc, verbose=FALSE) {
+addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
+                                    superPop, blockName,
+                                    blockDesc, verbose=FALSE) {
 
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
+
+    ## The verbose must be a logical
+    if (!(is.logical(verbose) && length(verbose) == 1)) {
+        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
+    }
+
+    ## Extract the SNP chromosomes and positions
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
 
@@ -800,6 +809,7 @@ addBlockFromPlink2GDS <- function(gds,
     listBlock <- list()
     for(chr in listChr) {
         if(verbose) { message("chr", chr, " ",Sys.time()) }
+
         snp.keep <- snp.position[snp.chromosome == chr]
 
         listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
@@ -816,19 +826,27 @@ addBlockFromPlink2GDS <- function(gds,
     }
     listBlock <- do.call(c, listBlock)
 
-    # save in the GDS
+    ## Save the information into the GDS file
     addGDS1KGLDBlock(gdsOut, listBlock, blockName, blockDesc)
 
+    ## Success
+    return(0L)
 }
 
-#' @title Extract the known super population for the 1KG GDS file
+#' @title Extract the specified column from the "sample.ref" node present in
+#' the 1KG GDS file
 #'
-#' @description TODO
+#' @description The function extract the specified column for the "sample.ref"
+#' node present in the 1KG GDS file. The column must be present in the
+#' \code{data.frame} saved in the "sample.ref" node.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param popName TODO
+#' @param popName a \code{character} string representing the name of the column
+#' that will be fetched in the \code{data.frame} present in the 1KG GDS
+#' "sample.ref" node. The column must be present in the \code{data.frame}.
+#'  Default: \code{"superPop"}.
 #'
 #' @return \code{data.frame} TODO study.annot with study.annot == study.id and
 #' with the column popName.
@@ -843,21 +861,25 @@ addBlockFromPlink2GDS <- function(gds,
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
-#'
-getRef1KGPop <- function(gds, popName) {
+getRef1KGPop <- function(gds, popName="superPop") {
 
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
         stop("The \'gds\' must be an object of class \'gds.class\'")
     }
 
+    ## The popName is a character string
+    if (!is.character(popName)) {
+        sop("The \'popName\' parameter must be a single character string.")
+    }
+
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     dataRef <- read.gdsn(index.gdsn(gds,
                             "sample.annot"))[which(sample.ref == TRUE),]
 
-
     if(! popName %in% colnames(dataRef)) {
-        stop("The population ", popName, " is not supported")
+        stop("The population ", popName, " is not supported ",
+                "(not found in the 1KG GDS file).")
     }
 
     dataRef <- dataRef[, popName]

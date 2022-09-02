@@ -3,14 +3,13 @@
 \encoding{UTF-8}
 \name{getRef1KGPop}
 \alias{getRef1KGPop}
-\title{TODO}
+\title{Extract the known super population for the 1KG GDS file}
 \usage{
 getRef1KGPop(gds, popName)
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{popName}{TODO}
 }
@@ -28,5 +27,5 @@ gds <- "TODO"
 
 }
 \author{
-Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

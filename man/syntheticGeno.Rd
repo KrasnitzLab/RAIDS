@@ -33,7 +33,7 @@ The file must exist.}
 \item{data.id.profile}{a \code{character} string representing the unique
 identifier of the cancer sample.}
 
-\item{listSampleRef}{a \code{vector} of \code{character} string
+\item{listSampleRef}{a \code{vector} of \code{character} strings
 representing the sample identifiers of the 1KG selected reference samples.}
 
 \item{nbSim}{a single positive \code{integer} representing the number of

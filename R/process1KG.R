@@ -821,13 +821,12 @@ addBlockFromPlink2GDS <- function(gds,
 
 }
 
-#' @title TODO
+#' @title Extract the known super population for the 1KG GDS file
 #'
 #' @description TODO
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param popName TODO
 #'
@@ -839,13 +838,18 @@ addBlockFromPlink2GDS <- function(gds,
 #' ## TODO
 #' gds <- "TODO"
 #'
-#' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
 #'
 getRef1KGPop <- function(gds, popName) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
     dataRef <- read.gdsn(index.gdsn(gds,

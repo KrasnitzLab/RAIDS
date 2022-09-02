@@ -264,10 +264,10 @@ test_that("generateGDS1KG() must return error when SNP information file does not
     error_message <- paste0("The file \'", notExisting, "\' does not exist.")
 
     expect_error(generateGDS1KG(PATHGENO=data.dir,
-                                fileNamePED=pedDemoFile,
-                                fileListSNP=pedDemoFile,
-                                fileSNPSel=notExisting, fileNameGDS=outFile1,
-                                listSamples=NULL), error_message)
+                            fileNamePED=pedDemoFile,
+                            fileListSNP=pedDemoFile,
+                            fileSNPSel=notExisting, fileNameGDS=outFile1,
+                            listSamples=NULL), error_message)
 })
 
 
@@ -290,10 +290,6 @@ test_that("generateGDS1KG() must create a GDS file", {
                             listSamples=NULL)
 
     expect_true(file.exists(GDS_file))
-
-    ## Remove temporary files
-    deferred_run()
-
 })
 
 
@@ -391,7 +387,6 @@ test_that("identifyRelative() must return error when thresh is a vector of numer
 })
 
 
-
 #############################################################################
 ### Tests addRef2GDS1KG() results
 #############################################################################
@@ -412,6 +407,7 @@ test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
                     error_message)
 })
 
+
 test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 
     data.dir <- system.file("extdata", package="RAIDS")
@@ -424,4 +420,27 @@ test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 
     expect_error(addRef2GDS1KG(fileNameGDS=fileGDS, filePart=fileNot),
                  error_message)
+})
+
+
+#############################################################################
+### Tests getRef1KGPop() results
+#############################################################################
+
+context("getRef1KGPop() results")
+
+
+test_that("select1KGPop() must return error when gds is a character string", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(getRef1KGPop(gds="test.gds", popName="superPop"),
+                    error_message)
 })

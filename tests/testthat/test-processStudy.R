@@ -2,6 +2,7 @@
 
 library(RAIDS)
 library(withr)
+library(gdsfmt)
 
 chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L, 181538259L,
                 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
@@ -9,43 +10,6 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L, 181538259L,
                 90338345L, 83257441L, 80373285L, 58617616L, 64444167L,
                 46709983L,  50818468L, 156040895L, 57227415L,  16569L)
 
-processStudy_remove_local_GDS_file <- function(path) {
-    unlink(x=path, force=TRUE)
-}
-
-processStudy_local_GDS_file <- function(path) {
-    GDS_file_tmp  <- createfn.gds(filename=path)
-    defer_parent(processStudy_remove_local_GDS_file(path=path))
-
-    add.gdsn(GDS_file_tmp, "Ref.count", rep(10L, 12))
-    add.gdsn(GDS_file_tmp, "Alt.count", rep(12L, 12))
-    add.gdsn(GDS_file_tmp, "Total.count", rep(22L, 12))
-    add.gdsn(GDS_file_tmp, "lap", rep(0.5, 12))
-    sync.gds(GDS_file_tmp)
-
-    return(GDS_file_tmp)
-}
-
-
-processStudy_local_GDS_1KG_file <- function(path) {
-    GDS_file_tmp  <- createfn.gds(filename=path)
-    defer_parent(processStudy_remove_local_GDS_file(path=path))
-
-    ## Create sample information initial
-    add.gdsn(GDS_file_tmp, "sample.id", c("HTT101", "HTT102", "HTT103"))
-
-    samples <- data.frame(sex=c(1, 1, 2), pop.group=c("GBR", "GIH", "GBR"),
-                    superPop=c("EUR", "SAS", "EUR"), batch=rep(0, 3),
-                    stringsAsFactors = FALSE)
-
-    add.gdsn(GDS_file_tmp, "sample.annot", samples)
-
-    add.gdsn(GDS_file_tmp, "sample.ref", c(1,0, 1))
-
-    sync.gds(GDS_file_tmp)
-
-    return(GDS_file_tmp)
-}
 
 #############################################################################
 ### Tests projectSample2PCA() results
@@ -56,9 +20,7 @@ context("projectSample2PCA() results")
 
 test_that("projectSample2PCA() must return error when np is character string", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
@@ -69,9 +31,7 @@ test_that("projectSample2PCA() must return error when np is character string", {
 
 test_that("projectSample2PCA() must return error when np is negative integer", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
@@ -82,9 +42,7 @@ test_that("projectSample2PCA() must return error when np is negative integer", {
 
 test_that("projectSample2PCA() must return error when np is zero", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
@@ -95,9 +53,7 @@ test_that("projectSample2PCA() must return error when np is zero", {
 
 test_that("projectSample2PCA() must return error when sample.current is number", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Demo.gds")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- paste0("The \'sample.current\' ",
                                 "parameter must be a character string.")
@@ -108,14 +64,18 @@ test_that("projectSample2PCA() must return error when sample.current is number",
 })
 
 
+#############################################################################
+### Tests appendStudy2GDS1KG() results
+#############################################################################
+
+
 context("appendStudy2GDS1KG() results")
+
 
 test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
                         study.desc="Pancreatic study", study.platform="WES",
@@ -132,10 +92,8 @@ test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", 
 
 test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
                     study.desc="Pancreatic study", study.platform="WES",
@@ -152,10 +110,8 @@ test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", 
 
 test_that("appendStudy2GDS1KG() must return error when batch is a vector of numerics", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES", study.desc="Pancreatic",
                                 study.platform="WES", stringsAsFactors=FALSE)
@@ -169,10 +125,8 @@ test_that("appendStudy2GDS1KG() must return error when batch is a vector of nume
 
 test_that("appendStudy2GDS1KG() must return error when batch is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures",  "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
                     study.desc="Pancreatic study", study.platform="WES",
@@ -188,10 +142,8 @@ test_that("appendStudy2GDS1KG() must return error when batch is a character stri
 
 test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures",  "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
                         study.desc="Pancreatic study", study.platform="WES",
@@ -208,10 +160,8 @@ test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric"
 
 test_that("appendStudy2GDS1KG() must return error when verbose is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
                     study.desc="Pancreatic study", study.platform="WES",
@@ -235,10 +185,10 @@ context("pruningSample() results")
 
 test_that("pruningSample() must return error when gds is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
@@ -251,9 +201,9 @@ test_that("pruningSample() must return error when gds is a character string", {
 
 test_that("pruningSample() must return error when keepGDSpruned is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -269,10 +219,10 @@ test_that("pruningSample() must return error when keepGDSpruned is a character s
 
 test_that("pruningSample() must return error when keepFile is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -288,10 +238,10 @@ test_that("pruningSample() must return error when keepFile is a character string
 
 test_that("pruningSample() must return error when np is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -307,10 +257,10 @@ test_that("pruningSample() must return error when np is a character string", {
 
 test_that("pruningSample() must return error when slide.max.bp.v is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -326,10 +276,10 @@ test_that("pruningSample() must return error when slide.max.bp.v is a character 
 
 test_that("pruningSample() must return error when ld.threshold.v is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -345,10 +295,10 @@ test_that("pruningSample() must return error when ld.threshold.v is a character 
 
 test_that("pruningSample() must return error when ld.threshold.v is a vector of numerics", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -364,10 +314,10 @@ test_that("pruningSample() must return error when ld.threshold.v is a vector of 
 
 test_that("pruningSample() must return error when method is a numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -383,10 +333,10 @@ test_that("pruningSample() must return error when method is a numeric", {
 
 test_that("pruningSample() must return error when method is not in the list of choices", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -400,10 +350,10 @@ test_that("pruningSample() must return error when method is not in the list of c
 
 test_that("pruningSample() must return error when sampleCurrent is a numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -420,10 +370,10 @@ test_that("pruningSample() must return error when sampleCurrent is a numeric", {
 
 test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -440,10 +390,10 @@ test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
 
 test_that("pruningSample() must return error when PATHSAMPLEGDS is a numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -460,10 +410,10 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a numeric", {
 
 test_that("pruningSample() must return error when PATHSAMPLEGDS is a non existing directory", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -481,10 +431,10 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a non existin
 
 test_that("pruningSample() must return error when GDS Sample file does not exist", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-    sampleRDS <- file.path(data.dir, "Sample_Info_Test.RDS")
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -522,9 +472,7 @@ test_that("add1KG2SampleGDS() must return error when gds is a character string",
 
 test_that("add1KG2SampleGDS() must return error when gdsSampleFile is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -538,9 +486,7 @@ test_that("add1KG2SampleGDS() must return error when gdsSampleFile is a numeric 
 
 test_that("add1KG2SampleGDS() must return error when sampleCurrent is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -554,9 +500,7 @@ test_that("add1KG2SampleGDS() must return error when sampleCurrent is a numeric 
 
 test_that("add1KG2SampleGDS() must return error when study.id is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -580,9 +524,7 @@ context("computePCARefSample() results")
 
 test_that("computePCARefSample() must return error when np is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -598,9 +540,7 @@ test_that("computePCARefSample() must return error when np is a character string
 
 test_that("computePCARefSample() must return error when np is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -617,9 +557,7 @@ test_that("computePCARefSample() must return error when np is a numeric value", 
 
 test_that("computePCARefSample() must return error when algorithm is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -635,9 +573,7 @@ test_that("computePCARefSample() must return error when algorithm is a numeric v
 
 test_that("computePCARefSample() must return error when algorithm is not a valid choice", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -651,9 +587,7 @@ test_that("computePCARefSample() must return error when algorithm is not a valid
 
 test_that("computePCARefSample() must return error when name.id isnumeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -678,9 +612,7 @@ context("addStudy1Kg() results")
 
 test_that("addStudy1Kg() must return error when gds is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
@@ -692,11 +624,10 @@ test_that("addStudy1Kg() must return error when gds is a numeric value", {
 test_that("addStudy1Kg() must return error when gdsSampleFile is a numeric value", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "GDS_TEMP_processStudy_01.gds")
+    gdsFile <- test_path("fixtures", "GDS_TEMP_processStudy_101.gds")
 
     ## Create and open a temporary GDS file
-    GDS_file_tmp  <- processStudy_local_GDS_file(gdsFile)
+    GDS_file_tmp  <- local_GDS_Sample_file(gdsFile)
 
     error_message <- paste0("The \'gdsSampleFile\' must be a character ",
         "string representing the GDS Sample file. The file must exist.")
@@ -713,15 +644,14 @@ test_that("addStudy1Kg() must return error when gdsSampleFile is a numeric value
 test_that("addStudy1Kg() must return expected results", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_01.gds")
-    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+    gdsFile1KG <- test_path("fixtures", "GDS_TEMP_processStudy_1KG_102.gds")
 
     ## Create and open a temporary GDS file 1KG
-    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+    GDS_file_tmp_1KG  <- local_GDS_1KG_file(gdsFile1KG, env=parent.frame())
 
     ## Create and open a temporary GDS Sample file
-    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_01.gds")
+    gdsFileSample <- test_path("fixtures",
+                                "GDS_TEMP_processStudy_Sample_102.gds")
     GDS_file_Sample <- createfn.gds(gdsFileSample)
 
     study.list <- data.frame(study.id=c("HTT Study"),
@@ -740,7 +670,7 @@ test_that("addStudy1Kg() must return expected results", {
     sync.gds(GDS_file_Sample)
 
     closefn.gds(GDS_file_Sample)
-    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+    withr::defer((unlink(gdsFileSample, force = TRUE)), envir = parent.frame())
 
     result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, gdsSampleFile=gdsFileSample)
 
@@ -753,6 +683,7 @@ test_that("addStudy1Kg() must return expected results", {
     ## Close GDS file
     ## The file will automatically be deleted
     closefn.gds(gdsfile=GDS_file_tmp_1KG)
+    closefn.gds(gdsfile=gds_sample_file)
 
     expected1 <- data.frame(study.id=c("HTT Study", "Ref.1KG"),
         study.desc=c("Important Study", "Unrelated samples from 1000 Genomes"),
@@ -760,11 +691,11 @@ test_that("addStudy1Kg() must return expected results", {
         stringsAsFactors=FALSE)
 
     expected2 <- data.frame(data.id=c("TOTO1", "HTT101", "HTT103"),
-                    case.id=c("TOTO1", "HTT101", "HTT103"),
-                    sample.type=c("Study", rep("Reference", 2)),
-                    diagnosis=c("Study", rep("Reference", 2)),
-                    source=rep("IGSR", 3), study.id=c("Study", "Ref.1KG", "Ref.1KG"),
-                    stringsAsFactors=FALSE)
+                case.id=c("TOTO1", "HTT101", "HTT103"),
+                sample.type=c("Study", rep("Reference", 2)),
+                diagnosis=c("Study", rep("Reference", 2)),
+                source=rep("IGSR", 3), study.id=c("Study", "Ref.1KG", "Ref.1KG"),
+                stringsAsFactors=FALSE)
 
     expect_equal(result0, 0L)
     expect_equal(result1, expected1)
@@ -776,14 +707,14 @@ test_that("addStudy1Kg() must return expected results", {
 test_that("addStudy1Kg() must return expected results when 1KG already present", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile1KG <- file.path(data.dir, "GDS_TEMP_processStudy_1KG_02.gds")
+    gdsFile1KG <- test_path("fixtures", "GDS_TEMP_processStudy_1KG_02.gds")
 
     ## Create and open a temporary GDS file 1KG
-    GDS_file_tmp_1KG  <- processStudy_local_GDS_1KG_file(gdsFile1KG)
+    GDS_file_tmp_1KG  <- local_GDS_1KG_file(gdsFile1KG, env=parent.frame())
 
     ## Create and open a temporary GDS Sample file
-    gdsFileSample <- file.path(data.dir, "GDS_TEMP_processStudy_Sample_02.gds")
+    gdsFileSample <- test_path("fixtures",
+                                "GDS_TEMP_processStudy_Sample_02.gds")
     GDS_file_Sample <- createfn.gds(gdsFileSample)
 
     study.list <- data.frame(study.id=c("Ref.1KG"),
@@ -815,6 +746,7 @@ test_that("addStudy1Kg() must return expected results when 1KG already present",
     ## Close GDS file
     ## The file will automatically be deleted
     closefn.gds(gdsfile=GDS_file_tmp_1KG)
+    closefn.gds(gdsfile=gds_sample_file)
 
     expected1 <- study.list
 
@@ -836,9 +768,7 @@ context("estimateAllelicFraction() results")
 
 test_that("estimateAllelicFraction() must return error when gds is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -855,9 +785,7 @@ test_that("estimateAllelicFraction() must return error when gds is a character s
 
 test_that("estimateAllelicFraction() must return error when gdsSample is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -874,9 +802,7 @@ test_that("estimateAllelicFraction() must return error when gdsSample is a chara
 
 test_that("estimateAllelicFraction() must return error when sampleCurrent is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -893,9 +819,7 @@ test_that("estimateAllelicFraction() must return error when sampleCurrent is a n
 
 test_that("estimateAllelicFraction() must return error when study.id is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -912,9 +836,7 @@ test_that("estimateAllelicFraction() must return error when study.id is a numeri
 
 test_that("estimateAllelicFraction() must return error when studyType is a numeric value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -931,9 +853,7 @@ test_that("estimateAllelicFraction() must return error when studyType is a numer
 
 test_that("estimateAllelicFraction() must return error when minCov is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -950,9 +870,7 @@ test_that("estimateAllelicFraction() must return error when minCov is vector of 
 
 test_that("estimateAllelicFraction() must return error when minCov is character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -969,9 +887,7 @@ test_that("estimateAllelicFraction() must return error when minCov is character 
 
 test_that("estimateAllelicFraction() must return error when minProb is character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -989,9 +905,7 @@ test_that("estimateAllelicFraction() must return error when minProb is character
 
 test_that("estimateAllelicFraction() must return error when minProb is negative value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1009,9 +923,7 @@ test_that("estimateAllelicFraction() must return error when minProb is negative 
 
 test_that("estimateAllelicFraction() must return error when minProb is above 1", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1029,9 +941,7 @@ test_that("estimateAllelicFraction() must return error when minProb is above 1",
 
 test_that("estimateAllelicFraction() must return error when minProb is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1049,9 +959,7 @@ test_that("estimateAllelicFraction() must return error when minProb is vector of
 
 test_that("estimateAllelicFraction() must return error when eProb is character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1069,9 +977,7 @@ test_that("estimateAllelicFraction() must return error when eProb is character s
 
 test_that("estimateAllelicFraction() must return error when eProb is negative value", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1089,9 +995,7 @@ test_that("estimateAllelicFraction() must return error when eProb is negative va
 
 test_that("estimateAllelicFraction() must return error when eProb is above 1", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1109,9 +1013,7 @@ test_that("estimateAllelicFraction() must return error when eProb is above 1", {
 
 test_that("estimateAllelicFraction() must return error when eProb is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1129,9 +1031,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
 
 test_that("estimateAllelicFraction() must return error when wAR is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1148,9 +1048,7 @@ test_that("estimateAllelicFraction() must return error when wAR is vector of num
 
 test_that("estimateAllelicFraction() must return error when cutOffLOH is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1167,9 +1065,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
 
 test_that("estimateAllelicFraction() must return error when cutOffLOH is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1188,9 +1084,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is a chara
 
 test_that("estimateAllelicFraction() must return error when cutOffLOH is vector of numeric values", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1207,9 +1101,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
 
 test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1226,9 +1118,7 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
 
 test_that("estimateAllelicFraction() must return error when studyType is not a valid choice", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
@@ -1329,8 +1219,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
 test_that("createStudy2GDS1KG() must return error when batch is vector of numerics", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1349,8 +1238,7 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
 test_that("createStudy2GDS1KG() must return error when listSamples is vector of numerics", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1370,8 +1258,7 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
 
 test_that("createStudy2GDS1KG() must return error when listSamples is numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                 Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),

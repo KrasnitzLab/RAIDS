@@ -870,7 +870,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
 
     ## The popName is a character string
     if (!is.character(popName)) {
-        sop("The \'popName\' parameter must be a single character string.")
+        stop("The \'popName\' parameter must be a single character string.")
     }
 
     sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))

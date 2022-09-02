@@ -3,22 +3,28 @@
 \encoding{UTF-8}
 \name{getRef1KGPop}
 \alias{getRef1KGPop}
-\title{Extract the known super population for the 1KG GDS file}
+\title{Extract the specified column from the "sample.ref" node present in
+the 1KG GDS file}
 \usage{
-getRef1KGPop(gds, popName)
+getRef1KGPop(gds, popName = "superPop")
 }
 \arguments{
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{popName}{TODO}
+\item{popName}{a \code{character} string representing the name of the column
+that will be fetched in the \code{data.frame} present in the 1KG GDS
+"sample.ref" node. The column must be present in the \code{data.frame}.
+ Default: \code{"superPop"}.}
 }
 \value{
 \code{data.frame} TODO study.annot with study.annot == study.id and
 with the column popName.
 }
 \description{
-TODO
+The function extract the specified column for the "sample.ref"
+node present in the 1KG GDS file. The column must be present in the
+\code{data.frame} saved in the "sample.ref" node.
 }
 \examples{
 

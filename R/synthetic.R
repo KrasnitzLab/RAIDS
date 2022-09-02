@@ -319,7 +319,7 @@ prepSynthetic <- function(gdsSampleFile,
 #' the GDS Sample file containing the information about the sample.
 #' The file must exist.
 #'
-#' @param listSampleRef a \code{vector} of \code{character} string
+#' @param listSampleRef a \code{vector} of \code{character} strings
 #' representing the sample identifiers of the 1KG selected reference samples.
 #'
 #' @param data.id.profile a \code{character} string representing the unique
@@ -381,6 +381,16 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                 "must exist.")
     }
 
+    ## The data.id.profile must be a character string
+    if (!(is.character(data.id.profile) && length(data.id.profile) == 1)) {
+        stop("The \'data.id.profile\' must be a character string.")
+    }
+
+    ## The listSampleRef must be a character string
+    if(!is.character(listSampleRef)) {
+        stop("The \'listSampleRef\' must be a vector of character strings.")
+    }
+
     ## The parameter nbSim must be a single positive integer
     if(!(isSingleNumber(nbSim) && (nbSim >= 0))) {
         stop("The \'nbSim\' parameter must be a single positive ",
@@ -391,6 +401,12 @@ syntheticGeno <- function(gds, gdsRefAnnot,
     if(!(is.character(prefId) && (length(prefId) == 1))) {
         stop("The \'prefId\' parameter must be a single character ",
              "string.")
+    }
+
+    ## The parameter pRecomb must be a single positive integer
+    if(!(isSingleNumber(pRecomb) && (pRecomb >= 0.0) && (pRecomb <= 1.0))) {
+        stop("The \'pRecomb\' parameter must be a single positive ",
+             "numeric value between 0 and 1.")
     }
 
     ## The parameter minProb must be a single positive integer

@@ -177,6 +177,59 @@ test_that("syntheticGeno() must return error when gdsSampleFile is a numeric val
 })
 
 
+test_that("syntheticGeno() must return error when data.id.profile is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'data.id.profile\' must be a character string."
+
+    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+            gdsSampleFile=gdsFIle, data.id.profile=22,
+            listSampleRef=c("Sample1", "sample2"),
+            nbSim=1, prefId="", pRecomb=0.01,
+            minProb=0.999, seqError=0.001), error_message)
+})
+
+
+test_that("syntheticGeno() must return error when listSampleRef is a numeric value", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'listSampleRef\' must be a vector of character strings."
+
+    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+        gdsSampleFile=gdsFIle, data.id.profile="sample01", listSampleRef=33,
+        nbSim=1, prefId="", pRecomb=0.01,
+        minProb=0.999, seqError=0.001), error_message)
+})
+
+
+test_that("syntheticGeno() must return error when data.id.profile is a vector of strings", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'data.id.profile\' must be a character string."
+
+    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+                    gdsSampleFile=gdsFIle, data.id.profile=c("01", "02"),
+                    listSampleRef=c("Sample1", "sample2"),
+                    nbSim=1, prefId="", pRecomb=0.01,
+                    minProb=0.999, seqError=0.001), error_message)
+})
+
+
 test_that("syntheticGeno() must return error when nbSim is a character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
@@ -237,6 +290,25 @@ test_that("syntheticGeno() must return error when prefId is a numeric value", {
                         nbSim=2, prefId=2,
                         pRecomb=0.01, minProb=0.999, seqError=0.001),
                  error_message)
+})
+
+
+test_that(paste0("syntheticGeno() must return error when pRecomb is a character string"), {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'pRecomb\' parameter must be a single positive ",
+                                "numeric value between 0 and 1.")
+
+    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+            gdsSampleFile=gdsFIle, data.id.profile="test",
+            listSampleRef=c("Sample1", "sample2"),
+            nbSim=1, prefId="", pRecomb="0.01",
+            minProb=0.999, seqError=0.001), error_message)
 })
 
 

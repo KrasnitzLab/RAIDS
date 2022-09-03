@@ -134,8 +134,8 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 This step generates 3 important files:
 
 - The 1KG GDS File
-- The SNP Annotation GDS file
-- The SNP Retained VCF file
+- The SNV Annotation GDS file
+- The SNV Retained VCF file
 
 <span style="color:darkred;font-weight:bold">Beware that the 3 pre-processed 
 files are available at this address:</span>
@@ -197,7 +197,7 @@ wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
 
 ####################################
-## The 1KG SNP Retained VCF file
+## The 1KG SNV Retained VCF file
 ####################################
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
 ```
@@ -226,7 +226,7 @@ At this step,
 to generate a Sample SNP pileup file that will contain the reference and 
 alternative 
 nucleotides counts at each SNP location present in the reference 1KG GDS file.
-The 1KG VCF file, which contains the list of retained 1KG SNPs, is required. 
+The 1KG VCF file, which contains the list of retained 1KG SNVs, is required. 
 
 
 ```{r graphStep2_SubStep2, echo=FALSE, fig.align="center", fig.cap="Generate a Sample SNP pileup file (1 file per sample)", out.width='100%', results='asis'}
@@ -332,7 +332,7 @@ passed to the __listSamples__ argument.
 library(RAIDS)
     
 ##############################################################
-## The 1KG GDS file and the 1KG SNP Annotation GDS file 
+## The 1KG GDS file and the 1KG SNV Annotation GDS file 
 ## need to be located in the same directory
 ##############################################################
 PATH_1KG <- PATH_REF
@@ -393,17 +393,15 @@ createStudy2GDS1KG(PATHGENO = PATHGENO,
 
 ### Sub-Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
-The initial list of 1KG SNPs is pruned, using linkage disequilibrium analysis, 
+The initial list of 1KG SNVs is pruned, using linkage disequilibrium analysis, 
 to retained as subset of SNVs of interest for each sample. The 
 list of selected SNVs is specific to each sample and the information about the 
 retained SNVs is added to the GDS Sample file.
 
-The function __pruningSample()__ requires the 1KG GDS file as input. It also 
+The __pruningSample()__ function requires the 1KG GDS file as input. It also 
 requires the path to the GDS Sample files.
 
-Beware that this step is requiring large disk space.
-
-To speed up the process, the function can be run on multiple CPUs.
+Beware that this step can requisite large disk space.
 
 ```{r pruningSample, echo=TRUE, eval=FALSE}
 ##############################################################
@@ -439,8 +437,8 @@ listSamples <- ped[, "Name.ID"]
 
 #################################################################
 ## The study information passed to the function must correspond 
-## the the information present in the previously defined 
-## data frame (see previous step).
+## the information present in the previously defined study 
+## data.frame (see previous step).
 #################################################################
 studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
                   study.desc = "Description",
@@ -452,36 +450,33 @@ studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
 ##############################################################
 for(i in seq_len(length(listSamples))) {
   ## Compute the SNV pruned subset
-  ## study.id: Study identifier as defined in the previous step
-  ## np: Number of CPU (Default: 1)
-  ## keepGDSpruned: When TRUE, the information about the pruned SNVs is 
-  ##                  added to the GDS Sample file
-  ## PATHSAMPLEGDS: All GDS Sample files must be in the same directory
-  ## keepFile: When TRUE, 2 RDS files with the pruned SNVs information 
-  ##                  are generated
+  ## study.id: Study identifier as defined in the previous step.
+  ##           The study identifier must be the same that the one present in
+  ##           GDS Sample file.
+  ## PATHSAMPLEGDS: All GDS Sample files must be in the same directory.
   pruningSample(gds=gds_1KG,
           sampleCurrent = listSamples[i],
           study.id = studyDF$study.id, 
-          np = 1L, 
-          keepGDSpruned = TRUE,
-          PATHSAMPLEGDS = PATHSAMPLEGDS, 
-          keepFile = FALSE) 
+          PATHSAMPLEGDS = PATHSAMPLEGDS) 
   
   ## GDS Sample file for the current sample
+  ## The file name corresponds to the path + sample identifier + ".gds"
   file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
         
   ## Add the genotype information for the list of pruned SNVs 
-  ## in the GDS Sample file
+  ## into the GDS Sample file
+  ## The genotype information is extracted from the 1KG GDS file
   add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
                       sampleCurrent = listSamples[1], 
                       study.id = studyDF$study.id))
   
-  ## Add annotation to the GDS Sample file
+  ## Add annotation from the 1KG GDS file to the GDS Sample file
+  ## This is required.
   addStudy1Kg(gds_1KG, file.GDSSample)
 }
     
-## Close the 1KG GDS file (it is important to close the GDS file)
-closefn.gds(gds)
+## Close the 1KG GDS file (it is important to always close the GDS files)
+closefn.gds(gds_1KG)
 ```
 
 <br>

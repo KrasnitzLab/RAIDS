@@ -89,20 +89,25 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL) {
 }
 
 
-#' @title The function add an array sample.ref to the gds file.It define base
-#' on a list of unrelated samples.
+#' @title Create a "sample.ref" node i a GDS file with the information about
+#' the related/unrelated state of the reference samples
 #'
-#' @description This function create the field sample.ref which is 1 when
-#' the samples are a reference and 0 otherwise. The sample.ref is fill based
-#' on the file filePart$unrels
-#' from  in GENESIS TODO
+#' @description This function creates a "sample.ref" node in the GDS file.
+#' The node contains a vector of integers with value of 1 when
+#' the samples are used as references and 0 otherwise.
+#' The information used to fill the "sample.ref" node comes from the RDS file
+#' that contains the information about the unrelated reference samples.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param filePart a \code{list} from the function pcairPartition in GENESIS
+#' @param filePart a \code{character} string representing the path and file
+#' name of a RDS file containing the information about the related and
+#' unrelated samples in the reference dataset. The RDS file must exist. The
+#' RDS file must contains a \code{vector} of \code{character} strings called
+#' "unrels" with the name of the unrelated samples.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -125,6 +130,7 @@ addGDSRef <- function(gds, filePart) {
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
     add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
 
+    ## Success
     return(0L)
 }
 

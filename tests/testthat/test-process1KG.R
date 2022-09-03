@@ -5,7 +5,6 @@ library(withr)
 
 
 
-
 #############################################################################
 ### Tests prepPed1KG() results
 #############################################################################
@@ -15,9 +14,9 @@ context("prepPed1KG() results")
 
 test_that("prepPed1KG() must return error when batch.v is a character string", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     error_message <- "The batch.v must be an integer."
 
@@ -28,9 +27,9 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
 
 test_that("prepPed1KG() must return error when batch.v is a vector of float", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    ddata.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     error_message <- "The batch.v must be an integer."
 
@@ -42,9 +41,9 @@ test_that("prepPed1KG() must return error when batch.v is a vector of float", {
 
 test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     notExisting <- paste0(data.dir, "/totoTest")
 
@@ -57,21 +56,21 @@ test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
 test_that("prepPed1KG() must return error when pedigree file is not existing", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
     error_message <- paste0("The file \'", pedDemoFile, "\' does not exist.")
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
-                            batch.v=0L), error_message)
+                                batch.v=0L), error_message)
 })
 
 test_that("prepPed1KG() must return the expected output", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     expected <- data.frame(
         sample.id=c(paste0("HG0010", 0:9)),
@@ -80,8 +79,7 @@ test_that("prepPed1KG() must return the expected output", {
         pop.group=c(rep("ACB", 10)),
         superPop=c(rep("AFR", 10)),
         batch=c(rep(0L, 10)),
-        stringsAsFactors=FALSE
-    )
+        stringsAsFactors=FALSE)
     row.names(expected) <- expected$sample.id
 
     expect_equal(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
@@ -97,13 +95,13 @@ context("generateMapSnvSel() results")
 
 test_that("generateMapSnvSel() must return error when SNP file is not existing", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    snpFile <- file.path(data.dir, "SNP_TOTO.txt")
+    snpFile <- test_path("fixtures", "SNP_TOTO.txt")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
+    outFile1 <- test_path("fixtures", "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
+    outFile2 <- test_path("fixtures", "SNP_TOTO2.rds")
 
     error_message <- paste0("The file \'", snpFile, "\' does not exist.")
 
@@ -114,13 +112,13 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
 
 test_that("generateMapSnvSel() must return error when cutOff file is a character string", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+    snpFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
+    outFile1 <- test_path("fixtures", "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
+    outFile2 <- test_path("fixtures", "SNP_TOTO2.rds")
 
     error_message <- "The cutOff must be a single numeric value."
 
@@ -131,13 +129,13 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
 
 test_that("generateMapSnvSel() must return error when cutOff file is a array of numbers", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    snpFile <- file.path(data.dir, "PedigreeDemoTOTO.ped")
+    snpFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
-    outFile1 <- file.path(data.dir, "SNP_TOTO1.rds")
+    outFile1 <- test_path("fixtures", "SNP_TOTO1.rds")
 
-    outFile2 <- file.path(data.dir, "SNP_TOTO2.rds")
+    outFile2 <- test_path("fixtures", "SNP_TOTO2.rds")
 
     error_message <- "The cutOff must be a single numeric value."
 
@@ -149,13 +147,13 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
 
 test_that("generateMapSnvSel() must generate expected output", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+    snvFile <- test_path("fixtures", "matFreqSNV_Demo.txt.bz2")
 
     ## Temporary output files
-    snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP01.rds"))
-    filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP01.rds"))
+    snpIndexFile <- local_file(test_path("fixtures", "listSNP_TEMP01.rds"))
+    filterSNVFile <- local_file(test_path("fixtures", "mapSNVSel_TEMP01.rds"))
 
     expect_equal(generateMapSnvSel(cutOff=c(0.01), fileSNV=snvFile,
                 fileLSNP=snpIndexFile , fileFREQ=filterSNVFile), 0L)
@@ -188,8 +186,6 @@ test_that("generateMapSnvSel() must generate expected output", {
                             stringsAsFactors = FALSE)
 
     expect_equivalent(readRDS(filterSNVFile), snpFilteredExpected)
-
-    deferred_run()
 })
 
 
@@ -202,13 +198,13 @@ context("generateGDS1KG() results")
 
 test_that("generateGDS1KG() must return error when pedigree file does not exist", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    fileNot <- file.path(data.dir, "TOTO_Not_Present.rds")
+    fileNot <- test_path("fixtures", "TOTO_Not_Present.rds")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    outFile1 <- file.path(data.dir, "GDS_TEMP.gds")
+    outFile1 <- test_path("fixtures", "GDS_TEMP.gds")
 
     error_message <- paste0("The file \'", fileNot, "\' does not exist.")
 
@@ -221,9 +217,9 @@ test_that("generateGDS1KG() must return error when pedigree file does not exist"
 
 test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     notExisting <- paste0(data.dir, "/totoTest")
 
@@ -238,9 +234,9 @@ test_that("generateGDS1KG() must return error when PATHGENO is not existing", {
 
 test_that("generateGDS1KG() must return error when SNP indexes file does not exist", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     notExisting <- paste0(data.dir, "/totoTest")
 
@@ -255,9 +251,9 @@ test_that("generateGDS1KG() must return error when SNP indexes file does not exi
 
 test_that("generateGDS1KG() must return error when SNP information file does not exist", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+    pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     notExisting <- paste0(data.dir, "/totoTest")
 
@@ -273,16 +269,16 @@ test_that("generateGDS1KG() must return error when SNP information file does not
 
 test_that("generateGDS1KG() must create a GDS file", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
-    pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+    pedigreeFile <- test_path("fixtures", "PedigreeDemo.rds")
 
-    snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
 
-    filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+    filterSNVFile <- test_path("fixtures",  "mapSNVSelected_Demo.rds")
 
     ## Temporary GDS file containing 1KG information
-    GDS_file <- local_file(file.path(data.dir, "1KG_TOTO.gds"))
+    GDS_file <- local_file(test_path("fixtures", "1KG_TOTO.gds"))
 
     generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
                             fileListSNP=snpIndexFile,
@@ -303,14 +299,12 @@ context("identifyRelative() results")
 
 test_that("identifyRelative() must return error when gds is character string", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileIBDFile <- test_path("fixtures", "OUTPUT_01.rds")
 
-    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
-
-    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+    filePartFile <- test_path("fixtures", "OUTPUT_02.rds")
 
     error_message <- paste0("The \'gds\' parameter must be an object of ",
-                            "class \'SNPGDSFileClass\'.")
+                                "class \'SNPGDSFileClass\'.")
 
     expect_error(identifyRelative(gds="test", maf=0.01,
             thresh=2^(-11/2), fileIBD=fileIBDFile, filePart=filePartFile),
@@ -320,13 +314,11 @@ test_that("identifyRelative() must return error when gds is character string", {
 
 test_that("identifyRelative() must return error when maf is a vector of numbers", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileInput <- test_path("fixtures", "1KG_Demo.gds")
 
-    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+    fileIBDFile <- test_path("fixtures", "OUTPUT_01.rds")
 
-    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
-
-    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+    filePartFile <- test_path("fixtures", "OUTPUT_02.rds")
 
     error_message <- "The \'maf\' parameter must be a single numeric value."
 
@@ -337,13 +329,11 @@ test_that("identifyRelative() must return error when maf is a vector of numbers"
 
 test_that("identifyRelative() must return error when maf is a character strings", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileInput <- test_path("fixtures", "1KG_Demo.gds")
 
-    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+    fileIBDFile <- test_path("fixtures", "OUTPUT_01.rds")
 
-    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
-
-    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+    filePartFile <- test_path("fixtures", "OUTPUT_02.rds")
 
     error_message <- "The \'maf\' parameter must be a single numeric value."
 
@@ -354,13 +344,11 @@ test_that("identifyRelative() must return error when maf is a character strings"
 
 test_that("identifyRelative() must return error when thresh is a character strings", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileInput <- test_path("fixtures", "1KG_Demo.gds")
 
-    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+    fileIBDFile <- test_path("fixtures", "OUTPUT_01.rds")
 
-    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
-
-    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+    filePartFile <- test_path("fixtures", "OUTPUT_02.rds")
 
     error_message <- "The \'thresh\' parameter must be a single numeric value."
 
@@ -371,13 +359,11 @@ test_that("identifyRelative() must return error when thresh is a character strin
 
 test_that("identifyRelative() must return error when thresh is a vector of numerics", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileInput <- test_path("fixtures", "1KG_Test.gds")
 
-    fileInput <- file.path(data.dir, "1KG_Demo.gds")
+    fileIBDFile <- test_path("fixtures", "OUTPUT_01.rds")
 
-    fileIBDFile <- file.path(data.dir, "OUTPUT_01.rds")
-
-    filePartFile <- file.path(data.dir, "OUTPUT_02.rds")
+    filePartFile <- test_path("fixtures", "OUTPUT_02.rds")
 
     error_message <- "The \'thresh\' parameter must be a single numeric value."
 
@@ -395,11 +381,9 @@ context("addRef2GDS1KG() results")
 
 test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileNot <- test_path("fixtures", "TOTO_GDS.gds")
 
-    fileNot <- file.path(data.dir, "TOTO_GDS.gds")
-
-    filePartFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+    filePartFile <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     error_message <- paste0("The file \'", fileNot, "\' does not exist.")
 
@@ -410,11 +394,9 @@ test_that("addRef2GDS1KG() must return error when GDS file does not exist", {
 
 test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    fileNot <- test_path("fixtures", "TOTO_RDS.rds")
 
-    fileNot <- file.path(data.dir, "TOTO_RDS.rds")
-
-    fileGDS <- file.path(data.dir, "1KG_Demo.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     error_message <- paste0("The file \'", fileNot, "\' does not exist.")
 
@@ -432,15 +414,60 @@ context("getRef1KGPop() results")
 
 test_that("select1KGPop() must return error when gds is a character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
-
-    gdsF <- openfn.gds(gdsFIle)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
-
     error_message <- "The \'gds\' must be an object of class \'gds.class\'"
 
     expect_error(getRef1KGPop(gds="test.gds", popName="superPop"),
                     error_message)
 })
+
+
+test_that("select1KGPop() must return error when popName is a numeric", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'popName\' parameter must be a single character string."
+
+    expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
+})
+
+
+test_that("select1KGPop() must return error when popName is a numeric", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'popName\' parameter must be a single character string."
+
+    expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
+})
+
+
+test_that("select1KGPop() must return expected result", {
+
+    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+
+    results <- getRef1KGPop(gds_1KG, popName="superPop")
+
+    ## Close the GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gds_1KG)
+
+    expected <- c("EUR",  "EUR")
+    names(expected) <- c("HTT101", "HTT103")
+
+    expect_identical(results, expected)
+})
+
+
+

@@ -853,8 +853,18 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #'
 #' @examples
 #'
-#' ## TODO
-#' gds <- "TODO"
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Open existing 1K GDS file with "sample.ref" node
+#' GDS_file <- file.path(data.dir, "1KG_Demo_with_sampleREF.gds")
+#' gdsFile <- snpgdsOpen(GDS_file)
+#'
+#' ## Extract super population information for the 1KG samples
+#' getRef1KGPop(gds=gdsFile, popName="superPop")
+#'
+#' ## Close 1K GDS file
+#' closefn.gds(gdsFile)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

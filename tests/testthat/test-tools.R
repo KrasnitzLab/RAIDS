@@ -68,9 +68,10 @@ test_that("snvListVCF() must return error when gds is a character string", {
 
 test_that("snvListVCF() must return error when freqCutoff is a character string", {
 
-    data.dir <- system.file("extdata", package="RAIDS")
+    data.dir <- test_path("fixtures")
 
     gdsFile <- local_file(file.path(data.dir, "GDS_TEMP3.gds"))
+    withr::defer(unlink(gdsFile, force=TRUE), envir = parent.frame())
 
     gdsFileTMP <- createfn.gds(gdsFile)
     put.attr.gdsn(gdsFileTMP$root, "FileFormat", "SNP_ARRAY")
@@ -92,6 +93,7 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
     closefn.gds(gdsFileTMP)
 
     gds <- snpgdsOpen(gdsFile)
+    withr::defer(closefn.gds(gds), envir = parent.frame())
 
     fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
 

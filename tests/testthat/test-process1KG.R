@@ -435,3 +435,39 @@ test_that("select1KGPop() must return error when popName is a numeric", {
     expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
 })
 
+
+test_that("select1KGPop() must return error when popName is a numeric", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'popName\' parameter must be a single character string."
+
+    expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
+})
+
+
+test_that("select1KGPop() must return expected result", {
+
+    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+
+    results <- getRef1KGPop(gds_1KG, popName="superPop")
+
+    ## Close the GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gds_1KG)
+
+    expected <- c("EUR",  "EUR")
+    names(expected) <- c("HTT101", "HTT103")
+
+    expect_identical(results, expected)
+})
+
+
+

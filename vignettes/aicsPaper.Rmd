@@ -230,7 +230,7 @@ The 1KG VCF file, which contains the list of retained 1KG SNVs, is required.
 
 
 ```{r graphStep2_SubStep2, echo=FALSE, fig.align="center", fig.cap="Generate a Sample SNP pileup file (1 file per sample)", out.width='100%', results='asis'}
-knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v01.png")
+knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png")
 ```
 
 Beware that the name assigned to the Sample SNP pileup file will correspond to 

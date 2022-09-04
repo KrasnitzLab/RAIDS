@@ -20,7 +20,7 @@ information about the 1KG patients that are unrelated.
 The extension of the file must be '.rds'. The file must exists.}
 }
 \value{
-\code{None}
+The integer \code{0L} when successful.
 }
 \description{
 This function adds the information about the unrelated patients

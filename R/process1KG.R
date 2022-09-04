@@ -563,7 +563,7 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' information about the 1KG patients that are unrelated.
 #' The extension of the file must be '.rds'. The file must exists.
 #'
-#' @return \code{None}
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -594,6 +594,9 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
     addGDSRef(gds, filePart)
 
     closefn.gds(gds)
+
+    ## Success
+    return(0L)
 }
 
 

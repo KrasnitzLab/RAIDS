@@ -684,3 +684,51 @@ test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
     ## The file will automatically be deleted
     closefn.gds(gdsfile=GDS_file_tmp)
 })
+
+
+
+
+#############################################################################
+### Tests addGDSRef() results
+#############################################################################
+
+context("addGDSRef() results")
+
+
+test_that("addGDSRef() must return expected result", {
+
+    ## Create and open a temporary GDS file
+    GDS_path  <- test_path("fixtures", "GDS_addGDSRef_Temp_01.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(unlink(x=GDS_path, force=TRUE), envir = parent.frame())
+
+    ## Create "sample.id" node (the node must be present)
+    sampleIDs <- c("HG00104", "HG00105", "HG00106", "HG00109", "HG00110")
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+    sync.gds(GDS_file_tmp)
+
+    listD <- list(rels=c("HG00106", "HG00110"), unrels=c("HG00104",
+                            "HG00105", "HG00109"))
+
+    RDS_file_tmp <- test_path("fixtures", "RDS_addGDSRef_Temp_01.RDS")
+
+    saveRDS(listD, RDS_file_tmp)
+    defer(unlink(RDS_file_tmp), envir = parent.frame())
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addGDSRef(gds=GDS_file_tmp,  filePart = RDS_file_tmp)
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.ref"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected1 <- c(1, 1, 0, 1, 0)
+
+    expect_equal(results3, 0L)
+    expect_equal(results1, expected1)
+})
+
+

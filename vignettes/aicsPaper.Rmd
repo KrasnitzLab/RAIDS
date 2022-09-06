@@ -781,7 +781,7 @@ the step 3.
 
 or in R 
 
-```{r PCA.KNN.Synthetic, echo=TRUE, eval=FALSE}
+```{r PCA.KNN.Sample, echo=TRUE, eval=FALSE}
 ####################################################################
 ## Load required package
 ####################################################################

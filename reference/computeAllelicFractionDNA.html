@@ -129,16 +129,20 @@ probability of sequencing error. Default: <code>0.001</code>.</p></dd>
 
 
 <dt>cutOffLOH</dt>
-<dd><p>a single log of the score to be LOH TODO.
+<dd><p>a single <code>numeric</code> representing the cutoff, in log,
+for the homozygote score to assign a region as LOH.
 Default: <code>-5</code>.</p></dd>
 
 
 <dt>cutOffHomoScore</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a single <code>numeric</code> representing the cutoff, in
+log, that the SNVs in a block are called homozygote by error.
+Default: <code>-3</code>.</p></dd>
 
 
 <dt>wAR</dt>
-<dd><p>TODO Default: <code>9L</code>.</p></dd>
+<dd><p>a single positive <code>integer</code> representing the size-1 of
+the window used to compute an empty box. Default: <code>9L</code>.</p></dd>
 
 
 <dt>verbose</dt>

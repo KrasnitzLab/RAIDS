@@ -32,11 +32,49 @@ input RDS file.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
+## Locate RDS with unrelated/related status for 1KG samples
 data.dir <- system.file("extdata", package="RAIDS")
+rdsFilePath <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
 
-## 1K GDS file
-GDS_file <- file.path(data.dir, "1KG_Demo.gds")
+## Create a temporary GDS file in an test directory
+data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(data.dir, "GDS_TEMP_201.gds")
+
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+## Create "sample.id" node (the node must be present)
+sampleIDs <- c("HG00104", "HG00109", "HG00110")
+add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+
+## Create "snp.id" node (the node must be present)
+snpIDs <- c("s1", "s2", "s3", "s4", "s5", "s6")
+add.gdsn(node=GDS_file_tmp, name="snp.id", val=snpIDs)
+
+## Create "snp.position" node (the node must be present)
+snpPositions <- c(16102, 51478, 51897, 51927, 54489, 54707)
+add.gdsn(node=GDS_file_tmp, name="snp.position", val=snpPositions)
+
+## Create "snp.chromosome" node (the node must be present)
+snpPositions <- c(1, 1, 1, 1, 1, 1)
+add.gdsn(node=GDS_file_tmp, name="snp.chromosome", val=snpPositions)
+
+## Create "genotype" node (the node must be present)
+genotype <- matrix(rep(1, 18), ncol = 3)
+add.gdsn(node=GDS_file_tmp, name="genotype", val=genotype)
+
+## Close GDS file
+closefn.gds(GDS_file_tmp)
+
+## Create  "sample.ref" node in GDS file using RDS information
+addRef2GDS1KG(fileNameGDS=gdsFilePath, filePart=rdsFilePath)
+
+## Read sample reference data.frame
+gdsFile <- openfn.gds(gdsFilePath, readonly=TRUE)
+read.gdsn(index.gdsn(node=gdsFile, path="sample.ref"))
+closefn.gds(gdsfile=gdsFile)
+
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
 }
 \author{

@@ -484,11 +484,11 @@ closefn.gds(gds_1KG)
 ### Sub-Step 6. Estimate the allelic fraction for the pruned SNVs
 
 The __estimateAllelicFraction()__ estimates the allelic fraction for all 
-SNVs present in the pruned SNV dataset. The function requires those 2 files:
+SNVs present in the pruned SNV dataset. The function requires those 2 or 3 files:
 
 1. The 1KG GDS file
 2. The GDS Sample file
-
+3. In the case of RNA-seq The 1KG annotation GDS TODOPB
 The 3 other inputs are:
 
 1. The information about the length of the chromosomes
@@ -512,10 +512,14 @@ library(BSgenome.Hsapiens.UCSC.hg38)
 PATH_1KG <- PATH_REF
     
 fileName.GDS.1KG <- "matGeno1000g.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
+fileName.GDS.Annot <- "matAnnot1000g.gds"
+
+file.GDS <- file.path(PATH_1KG, fileName.GDS)
+file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file     
 gds <- snpgdsOpen(file.GDS)
+gds.Annot <- openfn.gds(file.Annot)
     
 ##############################################################
 ## The length of each chromosome is required
@@ -539,20 +543,46 @@ file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 ## Open the GDS Sample file  
 gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 
-## Estimate the allelic fraction of the pruned SNVs for the current sample
+## Estimate the allelic fraction of the pruned SNVs for the current sample for DNA sample
+## In the case of RNA-seq it need the GDS gds.Annot and
+## block.id which referes to block.id in gds.Annot fro the 
+## gene annotion of the SNV TODOPB
 snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
                                       sampleCurrent=sampleName, 
                                       study.id=studyDF$study.id,
                                       chrInfo=chrInfo)
 
+## Estimate the allelic fraction of the pruned SNVs for the current sample for RNA-seq sample TODOPB
+# snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
+#                                    sampleCurrent=sampleName, 
+#                                    study.id=studyDF$study.id,
+#                                    chrInfo=chrInfo, 
+#                                    studyType="RNA",
+#                                    gdsRefAnnot=gds.Annot,
+#                                    block.id="GeneS.Ensembl.Hsapiens.v86")
+
+
 ## Close both GDS files
 closefn.gds(gdsSample)    
 closefn.gds(gds)
+closefn.gds(gds.Annot)
 ```
 
 <br>
 
-### Sub-Step 7. Generate the synthetic dataset
+
+
+## Step 3 - Find the optimized parameters for the ancestry inference
+
+Before running the ancestry inference, the selection of the best parameters 
+must be done.
+
+```{r graphStep3, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step3_v01.png")
+```
+
+
+### Sub-Step 1. Generate the synthetic dataset
 
 
 
@@ -609,6 +639,10 @@ fileName.GDS.Annot <- "matAnnot1000g.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
+## Open the 1KG GDS file     
+gds <- snpgdsOpen(file.GDS)
+gds.Annot <- openfn.gds(file.Annot)
+
 
 # Generate the synthetic data
 # The data is added to the GDS sample file
@@ -626,8 +660,7 @@ closefn.gds(gds.Annot)
     
 ```
 
-### Sub-Step 8. Compute the PCA-KNN ancestry call for each synthetic data
-
+### Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic data
 
 
 or in R 
@@ -669,12 +702,11 @@ library(RAIDS)
     
     # Need a data.frame with study description for the
     # synthetic data
-    studyDF <- data.frame(study.id = "Id of the synthetic dataset",
-                              study.desc = "Descripttion",
-                              study.platform = "Platform string like Whole Exome",
-                              stringsAsFactors = FALSE)
-    
-    
+    tudyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
+                          study.desc = "Descripttion",
+                          study.platform = "Platform string like Whole Exome",
+                          stringsAsFactors = FALSE)
+
     
     # Look at studyDF at step 3.
     study.id <- "Id of the study"
@@ -689,7 +721,6 @@ library(RAIDS)
     
     # Get the known superPop for the reference
     spRef <- getRef1KGPop(gds, "superPop")
-    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
     
     # The set of 1KG use in the synthetic dataset
     # if you use select1KGPop the seed must be the same 
@@ -716,31 +747,20 @@ library(RAIDS)
         gdsSample <- snpgdsOpen(file.GDSSample)
         
         # data.frame with the sample.id (Name.ID) with the study id
+        KNN.list <- list()
         
         for(j in seq_len(nrow(sampleRM))){
-            pca1KG <- ccomputePCARefRMMulti(gdsSample, names(spRef),sampleRM[j,])
-            resPCA <- computePCAMultiSynthetic(gdsSample, pca1KG,
-                                               sampleRM[i,], "CRC.Synthetic")
-            
-            
-
-            studyDF <- computeKNNRefSynthetic(gdsSample, resPCA, listSuperPop,
-                                               studyDF$study.id, spRef)
+            KNN.synt <- computePoolSyntheticAncestryGr(gds, gdsSample,
+                                                             sampleRM[j,],
+                                                             studyDF.syn$study.id,
+                                                             np=4,
+                                                             spRef=spRef,
+                                                             eigen.cnt=15L)
             KNN.list[[j]] <- KNN.synt$matKNN
         }
         KNN.sample.syn <- do.call(rbind, KNN.list)
+        saveRDS(KNN.sample.syn, file.path(PATH_OUT_SAMPLE, paste0("KNN.synt.", listSamples[i], ".", i, ".rds")))
         
-        pedSyn <- prepPedSynthetic1KG(gds, gdsSample, studyDF$study.id, "superPop")
-        
-        fieldPopIn1KG <- "superPop"
-        fieldPopInfAnc <- "SuperPop"
-        listParaSample[[listSamples[i]]] <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn, fieldPopIn1KG, fieldPopInfAnc, listSuperPop)
-        
-        listPCASample[[listSamples[i]]] <- computePCARefSample(gdsSample, listSamples[i], study.id.ref = "Ref.1KG")
-        
-        
-        listKNNSample[[listSamples[i]]] <- computeKNNSuperPopSample(gdsSample, listSamples[i], spRef)
-
         
         closefn.gds(gdsSample)
     }
@@ -752,28 +772,20 @@ library(RAIDS)
 ```
 
 
-## Step 3 - Find the optimized parameters for the ancestry inference
+## Step 4 - Run the ancestry inference on the external study
 
-Before running the ancestry inference, the selection of the best parameters 
-must be done.
+The PCA of the sample and KNN sample and Call the ancestry with the optimal parameters K and D
 
-```{r graphStep3, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
-knitr::include_graphics("MainSteps_Step3_v01.png")
-```
-
-
-### Sub-Step 1. Select paramters for the PCA-KNN ancestry call
-
-
+Note The formal selection of parameter K and D  is done here too but all the synthetic data are prepare in 
+the step 3. 
 
 or in R 
 
-```{r selectParameters, echo=TRUE, eval=FALSE}
+```{r PCA.KNN.Synthetic, echo=TRUE, eval=FALSE}
 ####################################################################
 ## Load required package
 ####################################################################
 library(RAIDS)    
-    
     
 
     ##########################################
@@ -783,15 +795,14 @@ library(RAIDS)
     PATH_1KG <- PATH_REF
     
     fileName.GDS <- "matGeno1000g.gds"
-    fileName.GDS.Annot <- "matAnnot1000g.gds"
+    
     file.GDS <- file.path(PATH_1KG, fileName.GDS)
-    file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
+    
 
     ##########################################
     
     gds <- openfn.gds(file.GDS)
-    gds.Annot <- openfn.gds(file.Annot)
-
+    
     
     # Path to the directory where the gds file for each sample
     # will be create
@@ -800,15 +811,17 @@ library(RAIDS)
     # directory which content directory name Name.ID in whihc the PCA is save
     # 
     PATH_OUT <- file.path("The path")
-    
+    if(! file.exists(PATH_OUT)){
+        dir.create(PATH_OUT)
+    }
     
     # Need a data.frame with study description for the
     # synthetic data
-    studyDF <- data.frame(study.id = "Id of the synthetic dataset",
-                              study.desc = "Descripttion",
-                              study.platform = "Platform string like Whole Exome",
-                              stringsAsFactors = FALSE)
-    
+    studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
+                          study.desc = "Descripttion",
+                          study.platform = "Platform string like Whole Exome",
+                          stringsAsFactors = FALSE)
+
     
     
     # Look at studyDF at step 3.
@@ -822,75 +835,48 @@ library(RAIDS)
     # filePED 
     listSamples <- ped[, "Name.ID"]
     
-    
+    # Get the known superPop for the reference
     spRef <- getRef1KGPop(gds, "superPop")
     
-
+    
+    
     # Can be run in paralle or in different clusters...
-    listParaSample <- list()
-    listPCASample <- list()
-    listKNNSample <- list()
-    listAncestrySample <- list()
     for(i in seq_len(length(listSamples))){
         
         file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+        
+        PATHKNN <- file.path(PATH_OUT, listSamples[i])
+        listFilesName <- dir(file.path(PATHKNN), ".rds")
+
+        # List of the KNN result from PCA on synthetic data with path
+        listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+
+        
         gdsSample <- snpgdsOpen(file.GDSSample)
         
-        PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
-        # The directory PATH_OUT_SAMPLE must just content 
-        # only the rds files from step 7
-        listSynthetic <- dir(PATH_OUT_SAMPLE, ".rds")
-        listKNN <- list()
-        for(i in seq_len(length(listSynthetic))){
-            tmp <- readRDS(file.path(PATHSYN, listSynthetic[i]))
-            listKNN[[i]] <- tmp$resKNN$matKNN
-        }
-        matKNN.All <- do.call(rbind, listKNN)
+        resCall <- computeAncestryFromSyntheticFile(gds=gds, 
+                                                    gdsSample=gdsSample,
+                                                    listFiles=listFiles,
+                                                    sample.ana.id=listSamples[i],
+                                                    spRef=spRef,
+                                                    study.id.syn=studyDF.syn$study.id,
+                                                    np = 4L)
 
-        # The parameter superPop is define by the output of step 7
-        # the function return data.frame with the known superPop 
-        # associate with synthetic data.
         
-        pedSyn <- prepPedSynthetic1KG(gds, gdsSample, studyDF$study.id, "superPop")
-        
-        # list of superPop in synthetic dataset
-        listSP <- unique(pedSyn$superPop)
-        
-        # The SuperPop is the super population field in matKNN.All
-        # superPop are the known super population from the ref
-        # return the parameter selected.
-        listParaSample[[listSamples[i]]] <- selParaPCAUpQuartile(matKNN.All, pedSyn, "superPop", "SuperPop", listSP)
-        
-        listPCASample[[listSamples[i]]] <- computePCARefSample(gdsSample, listSamples[i], study.id.ref = "Ref.1KG")
-        
-        
-        listKNNSample[[listSamples[i]]] <- computeKNNSuperPopSample(gdsSample, listSamples[i], spRef)
-        
-        listAncestrySample[[listSamples[i]]] <- 
+        saveRDS(resCall, file.path(PATHOUT, paste0( listSamples[i], ".infoCall",".rds")))
+        write.csv(resCall$Ancestry, file.path(PATHOUT, paste0( listSamples[i], ".Ancestry",".csv")),
+                    quote = FALSE,
+                    row.names = FALSE)
+
+        closefn.gds(gdsSample)
     }
     
     
-    
     closefn.gds(gds)
-    closefn.gds(gds.Annot)
     
 ```
 
 
-
-
-
-<br>
-<br>
-
-
-## Step 4 - Run the ancestry inference on the external study
-
-TODO
-
-```{r graphStep4, echo = FALSE, fig.align="center", fig.cap="Step 3 - Run the ancestry inference on the external study", out.width = '120%', results='asis'}
-knitr::include_graphics("MainSteps_Step4_v01.png")
-```
 
 <br>
 <br>

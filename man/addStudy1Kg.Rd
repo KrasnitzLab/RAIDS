@@ -16,7 +16,7 @@ addStudy1Kg(gds, gdsSampleFile)
 file name of the GDS Sample file. The GDS Sample file must exist.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 The information about the samples present in the 1KG GDS file

@@ -34,12 +34,12 @@ estimateAllelicFraction(
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{a \code{character} string corresponding to the study
-identifier.}
+\item{study.id}{a \code{character} string corresponding to the name of
+the study as
+used in \code{\link{pruningSample}} function.}
 
-\item{chrInfo}{a \code{vector}
-chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-       Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
+\item{chrInfo}{a \code{vector} of \code{integer} values representing
+the length of the chromosomes. See 'details' section.}
 
 \item{studyType}{a \code{character} string representing the type of study.
 The possible choices are: "DNA" and "RNA". The type of study affects the
@@ -86,10 +86,44 @@ SNVs for a specific sample and add the information to the associated
 GDS Sample file. The allelic fraction estimation method is adapted to
 the type of study (DNA or RNA).
 }
+\details{
+The `chrInfo` parameter contains the length of the chromosomes. The
+length of the chromosomes can be obtain through the
+\code{\link[BSgenome]{BSgenome-class}}
+library.
+
+As example:
+
+```
+
+library(BSgenome.Hsapiens.UCSC.hg38)
+
+chrInfo <- integer(25L)
+
+for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
+
+chrInfo[23] <- length(Hsapiens[["chrX"]])
+
+chrInfo[24] <- length(Hsapiens[["chrY"]])
+
+chrInfo[25] <- length(Hsapiens[["chrM"]])
+
+```
+}
 \examples{
+
+## Required libraries
+library(BSgenome.Hsapiens.UCSC.hg38)
 
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", "RAIDS")
+
+## Get chromosome length information
+chrInfo <- integer(25L)
+for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
+chrInfo[23] <- length(Hsapiens[["chrX"]])
+chrInfo[24] <- length(Hsapiens[["chrY"]])
+chrInfo[25] <- length(Hsapiens[["chrM"]])
 
 ## TODO
 

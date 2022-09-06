@@ -1098,12 +1098,12 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id a \code{character} string corresponding to the study
-#' identifier.
+#' @param study.id a \code{character} string corresponding to the name of
+#' the study as
+#' used in \code{\link{pruningSample}} function.
 #'
-#' @param chrInfo a \code{vector}
-#'  chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-#'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes. See 'details' section.
 #'
 #' @param studyType a \code{character} string representing the type of study.
 #' The possible choices are: "DNA" and "RNA". The type of study affects the
@@ -1143,10 +1143,45 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #'
 #' @return The integer \code{0L} when successful.
 #'
+#' @details
+#'
+#' The `chrInfo` parameter contains the length of the chromosomes. The
+#' length of the chromosomes can be obtain through the
+#' \code{\link[BSgenome]{BSgenome-class}}
+#' library.
+#'
+#' As example:
+#'
+#' ```
+#'
+#' library(BSgenome.Hsapiens.UCSC.hg38)
+#'
+#' chrInfo <- integer(25L)
+#'
+#' for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
+#'
+#' chrInfo[23] <- length(Hsapiens[["chrX"]])
+#'
+#' chrInfo[24] <- length(Hsapiens[["chrY"]])
+#'
+#' chrInfo[25] <- length(Hsapiens[["chrM"]])
+#'
+#' ```
+#'
 #' @examples
+#'
+#' ## Required libraries
+#' library(BSgenome.Hsapiens.UCSC.hg38)
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", "RAIDS")
+#'
+#' ## Get chromosome length information
+#' chrInfo <- integer(25L)
+#' for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
+#' chrInfo[23] <- length(Hsapiens[["chrX"]])
+#' chrInfo[24] <- length(Hsapiens[["chrY"]])
+#' chrInfo[25] <- length(Hsapiens[["chrM"]])
 #'
 #' ## TODO
 #'
@@ -1289,7 +1324,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 #' @param gdsSampleFile a \code{character} string representing the path and
 #' file name of the GDS Sample file. The GDS Sample file must exist.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'

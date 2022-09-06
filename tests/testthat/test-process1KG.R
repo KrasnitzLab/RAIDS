@@ -405,6 +405,57 @@ test_that("addRef2GDS1KG() must return error when RDS file does not exist", {
 })
 
 
+
+test_that("addRef2GDS1KG() must return expected results", {
+
+    fileRDS <- test_path("fixtures", "unrelatedSamples_RDS_TMP_201.rds")
+    res <- list()
+    res$rels <- c("Sample01", "Sample04")
+    res$unrels <- c("Sample02", "Sample03", "Sample05")
+    saveRDS(res, fileRDS)
+    defer(unlink(fileRDS, force=TRUE), envir=parent.frame())
+
+    fileGDS <- test_path("fixtures", "1KG_GDS_TEMP_201.gds")
+
+    GDS_file_tmp  <- createfn.gds(filename=fileGDS)
+    defer(unlink(fileGDS), envir = parent.frame())
+
+    ## Create "sample.id" node (the node must be present)
+    sampleIDs <- c("Sample01", "Sample02", "Sample03", "Sample04", "Sample05")
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+
+    ## Create "snp.id" node (the node must be present)
+    snpIDs <- c("s1", "s2", "s3", "s4", "s5", "s6")
+    add.gdsn(node=GDS_file_tmp, name="snp.id", val=snpIDs)
+
+    ## Create "snp.position" node (the node must be present)
+    snpPositions <- c(16102, 51478, 51897, 51927, 54489, 54707)
+    add.gdsn(node=GDS_file_tmp, name="snp.position", val=snpPositions)
+
+    ## Create "snp.chromosome" node (the node must be present)
+    snpPositions <- c(1, 1, 1, 1, 1, 1)
+    add.gdsn(node=GDS_file_tmp, name="snp.chromosome", val=snpPositions)
+
+    ## Create "genotype" node (the node must be present)
+    genotype <- matrix(rep(1, 30), nrow = 6)
+    add.gdsn(node=GDS_file_tmp, name="genotype", val=genotype)
+
+    sync.gds(GDS_file_tmp)
+
+    closefn.gds(GDS_file_tmp)
+
+    result1 <- addRef2GDS1KG(fileNameGDS=fileGDS, filePart=fileRDS)
+
+    tmpFile <- openfn.gds(fileGDS)
+    defer(closefn.gds(tmpFile), envir=parent.frame())
+
+    result2 <- read.gdsn(index.gdsn(node=tmpFile, path="sample.ref"))
+
+    expect_equal(result1, 0L)
+    expect_equal(result2, c(0, 1, 1, 0, 1))
+})
+
+
 #############################################################################
 ### Tests getRef1KGPop() results
 #############################################################################

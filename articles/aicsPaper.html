@@ -535,7 +535,7 @@ function requires different inputs for DNA and RNA samples.</p>
 <p>For the DNA samples, these 2 files are required: 1. The GDS Sample
 file 2, The 1KG GDS file</p>
 <p>For the RNA samples, these 3 files are required: 1. The GDS Sample
-file 2. The 1KG GDS file 3. The 1KG SNv annotation GDS file</p>
+file 2. The 1KG GDS file 3. The 1KG SNv Annotation GDS file</p>
 <p>In both cases, the other required inputs are:</p>
 <ol style="list-style-type: decimal">
 <li>The information about the length of the chromosomes</li>
@@ -547,16 +547,17 @@ previously)</li>
 <p>The <strong>estimateAllelicFraction()</strong> function processes one
 sample at the time.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##############################################################</span></span>
+<code class="sourceCode R"><span><span class="co">###################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/BSgenome" class="external-link">BSgenome</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="co">## The 1KG GDS file is required</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">## The 1KG SNV Annotation GDS file is only required for RNA samples</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="va">PATH_REF</span></span>
 <span>    </span>
 <span><span class="va">fileName.GDS.1KG</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
@@ -568,10 +569,12 @@ sample at the time.</p>
 <span><span class="co">## Open the 1KG GDS file     </span></span>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span>    </span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="co">## The length of each chromosome is required</span></span>
 <span><span class="co">## Chromosomes X, Y and M need relabeling</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">## There is other ways to extract the information</span></span>
+<span><span class="co">## This is one example</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">25L</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">22L</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">chrInfo</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="va">i</span><span class="op">)</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
@@ -580,21 +583,20 @@ sample at the time.</p>
 <span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">24</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrY"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">25</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrM"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="co">## The GDS Sample file is required</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span></span>
-<span><span class="co">## Name of the GDS Sample file (the name corresponds to the sample identifier)</span></span>
+<span><span class="co">## Name of the GDS Sample file </span></span>
+<span><span class="co">## The name must corresponds to the sample identifier</span></span>
 <span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Open the GDS Sample file  </span></span>
+<span><span class="co">## Open the GDS Sample file in writing mode</span></span>
 <span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.GDSSample</span>, readonly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span><span class="co">## The estimation of the allelic fraction</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">###################################################################</span></span>
 <span></span>
 <span><span class="co">## Estimate the allelic fraction of the pruned SNVs </span></span>
 <span><span class="co">## The current example is for a DNA sample</span></span>
@@ -687,6 +689,9 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span>                            study.platform <span class="op">=</span> <span class="st">"WXS"</span>,</span>
 <span>                            stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">## The GDS Sample file is needed</span></span>
+<span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="va">PATH_TO_GDS_SAMPLE_FILE</span></span>
+<span></span>
 <span><span class="co"># Just prepare the annotations for the synthetic data</span></span>
 <span><span class="co"># Add the information to the GDS sample file</span></span>
 <span><span class="fu"><a href="../reference/prepSynthetic.html">prepSynthetic</a></span><span class="op">(</span>gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>,</span>
@@ -697,8 +702,8 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
-<span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file</span></span>
-<span><span class="co">## are both required</span></span>
+<span><span class="co">## Both the 1KG GDS file and the 1KG SNV Annotation GDS file</span></span>
+<span><span class="co">## are required</span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="va">PATH_REF</span></span>
 <span>    </span>
@@ -711,9 +716,11 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span><span class="va">gds.Annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.Annot</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="co"># Generate the synthetic data</span></span>
-<span><span class="co"># The data is saved in the GDS sample file</span></span>
+<span><span class="co">##############################################################</span></span>
+<span><span class="co">## The syntheticGeno() function generate the synthetic </span></span>
+<span><span class="co">## profiles.</span></span>
+<span><span class="co">## The synthetic profiles are saved in the GDS Sample file</span></span>
+<span><span class="co">##############################################################</span></span>
 <span><span class="va">resG</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/syntheticGeno.html">syntheticGeno</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>,</span>
 <span>                        gdsRefAnnot <span class="op">=</span> <span class="va">gds.Annot</span>,</span>
 <span>                        gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>,</span>
@@ -752,49 +759,58 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span></span>
 <span>    </span>
-<span>    <span class="co"># Path to the directory where the gds file for each sample</span></span>
-<span>    <span class="co"># will be create</span></span>
-<span>    <span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
+<span><span class="co"># Path to the directory where the gds file for each sample</span></span>
+<span><span class="co"># will be create</span></span>
+<span><span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
 <span>    </span>
-<span>    <span class="co"># directory which content directory name Name.ID in whihc the PCA is save</span></span>
-<span>    <span class="co"># </span></span>
-<span>    <span class="va">PATH_OUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
-<span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">PATH_OUT</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
+<span><span class="co"># directory which content directory name Name.ID in whihc the PCA is save</span></span>
+<span><span class="co"># </span></span>
+<span><span class="va">PATH_OUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">PATH_OUT</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span>    </span>
-<span>    <span class="co"># Need a data.frame with study description for the</span></span>
-<span>    <span class="co"># synthetic data</span></span>
-<span>    <span class="va">studyDF.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"Id of the synthetic dataset"</span>,</span>
+<span><span class="co"># Need a data.frame with study description for the</span></span>
+<span><span class="co"># synthetic data</span></span>
+<span><span class="va">studyDF.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"Id of the synthetic dataset"</span>,</span>
 <span>                          study.desc <span class="op">=</span> <span class="st">"Descripttion"</span>,</span>
 <span>                          study.platform <span class="op">=</span> <span class="st">"Platform string like Whole Exome"</span>,</span>
 <span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span>    </span>
-<span>    <span class="co"># Look at studyDF at step 3.</span></span>
-<span>    <span class="va">study.id</span> <span class="op">&lt;-</span> <span class="st">"Id of the study"</span></span>
+<span><span class="co"># Look at studyDF at step 3.</span></span>
+<span><span class="va">study.id</span> <span class="op">&lt;-</span> <span class="st">"Id of the study"</span></span>
 <span>    </span>
-<span>    <span class="co"># The file ped defined before</span></span>
-<span>    <span class="va">filePED</span> <span class="op">&lt;-</span> <span class="va">FILE_PED</span></span>
-<span>    <span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
-<span>    <span class="co"># You need a list of the sample Name.ID </span></span>
-<span>    <span class="co"># you can get it from other source than </span></span>
-<span>    <span class="co"># filePED </span></span>
-<span>    <span class="va">listSamples</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">[</span>, <span class="st">"Name.ID"</span><span class="op">]</span></span>
+<span><span class="co"># The file ped defined before</span></span>
+<span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="va">FILE_PED</span></span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># You need a list of the sample Name.ID </span></span>
+<span><span class="co"># you can get it from other source than </span></span>
+<span><span class="co"># filePED </span></span>
+<span><span class="va">listSamples</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">[</span>, <span class="st">"Name.ID"</span><span class="op">]</span></span>
 <span>    </span>
-<span>    <span class="co"># Get the known superPop for the reference</span></span>
-<span>    <span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
+<span><span class="co"># Get the known superPop for the reference</span></span>
+<span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>    </span>
-<span>    <span class="co"># The set of 1KG use in the synthetic dataset</span></span>
-<span>    <span class="co"># if you use select1KGPop the seed must be the same </span></span>
-<span>    <span class="co"># as the step 6 </span></span>
+<span><span class="co"># The set of 1KG use in the synthetic dataset</span></span>
+<span><span class="co"># if you use select1KGPop the seed must be the same </span></span>
+<span><span class="co"># as the step 6 </span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span>
-<span>    <span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, nbSamples <span class="op">=</span> <span class="fl">30L</span><span class="op">)</span></span>
 <span>    </span>
 <span>    </span>
-<span>    <span class="co"># Split dataRef by pop </span></span>
-<span>    <span class="co">#</span></span>
-<span>    <span class="va">sampleRM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/splitSelectByPop.html">splitSelectByPop</a></span><span class="op">(</span><span class="va">dataRef</span><span class="op">)</span></span>
+<span><span class="co">####################################################################</span></span>
+<span><span class="co">## Fix seed as in step 6 to ensure the same results</span></span>
+<span><span class="co">####################################################################    </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span>       </span>
+<span>    </span>
+<span><span class="co">## Extract the 1KG samples used to generate the synthetic dataset</span></span>
+<span><span class="co">## Already done in step 6, no need to repeat if the results have been saved</span></span>
+<span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, nbSamples <span class="op">=</span> <span class="fl">30L</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Split dataRef by pop </span></span>
+<span><span class="co">#</span></span>
+<span><span class="va">sampleRM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/splitSelectByPop.html">splitSelectByPop</a></span><span class="op">(</span><span class="va">dataRef</span><span class="op">)</span></span>
 <span>    </span>
 <span>    </span>
 <span><span class="co"># Can be run in paralle or in different clusters...</span></span>
@@ -806,7 +822,7 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span>  </span>
 <span>  <span class="co">## The directory where the output files will be created must exist      </span></span>
 <span>  <span class="va">PATH_OUT_SAMPLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  </span>

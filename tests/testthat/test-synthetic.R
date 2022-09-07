@@ -431,7 +431,7 @@ test_that(paste0("prepSynthetic() must return error when gdsSampleFile is",
                     "The file must exist.")
 
     expect_error(prepSynthetic(gdsSampleFile=22, listSampleRef=c("S_1", "S_2"),
-                    data.id.profile+"S_1", studyDF="TCGA", nbSim=1L,
+                    data.id.profile="S_1", studyDF="TCGA", nbSim=1L,
                     prefId=""), error_message)
 })
 
@@ -451,7 +451,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
 
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                     listSampleRef=c("S_1", "S_2"),
-                    data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
+                    data.id.profile="S_1", studyDF=studyDF, nbSim="1L",
                     prefId=""), error_message)
 })
 
@@ -466,10 +466,9 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
 
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                 listSampleRef=c(1, 2),
-                data.id.profile+"S_1", studyDF=NULL, nbSim="1L",
+                data.id.profile="S_1", studyDF=NULL, nbSim=1L,
                 prefId=""), error_message)
 })
-
 
 
 test_that(paste0("prepSynthetic() must return error when studyDF is missing mandatory column"), {
@@ -486,7 +485,25 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
 
     expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
                         listSampleRef=c("S_1", "S_2"),
-                            data.id.profile+"S_1", studyDF=studyDF, nbSim="1L",
+                            data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
                             prefId=""), error_message)
 })
 
+
+test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    studyDF <- data.frame(study.id = "Id of the study",
+                          study.desc = "Description",
+                          study.platform = "Whole-Exome",
+                          stringsAsFactors = FALSE)
+
+    error_message <- "The \'prefId\' must be a single character string."
+
+    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+                        listSampleRef=c("S_1", "S_2"),
+                        data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
+                        prefId=33), error_message)
+})

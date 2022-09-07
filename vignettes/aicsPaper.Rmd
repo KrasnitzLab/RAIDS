@@ -488,10 +488,12 @@ SNVs present in the pruned SNV dataset. Beware that the function requires
 different inputs for DNA and RNA samples.
 
 For the DNA samples, these 2 files are required:
+
 1. The GDS Sample file
-2, The 1KG GDS file
+2. The 1KG GDS file
 
 For the RNA samples, these 3 files are required:
+
 1. The GDS Sample file
 2. The 1KG GDS file
 3. The 1KG SNv Annotation GDS file

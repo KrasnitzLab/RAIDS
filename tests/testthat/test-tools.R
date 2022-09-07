@@ -58,8 +58,7 @@ test_that("snvListVCF() must return error when gds is a character string", {
 
     fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
 
-    error_message <- paste0("The \'gds\' parameter must be an object of ",
-                                "class \'SNPGDSFileClass\'.")
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(snvListVCF(gds="welcome.txt", fileOUT=fileOUT, offset=0L,
                             freqCutoff=NULL), error_message)
@@ -103,6 +102,39 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
                             freqCutoff="BED"), error_message)
 })
 
+
+
+test_that("snvListVCF() must return expected results when freqCutoff is NULL", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gds <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gds), envir=parent.frame())
+
+    fileOUT <- file.path(data.dir, "VCF_TEMP_01.vcf")
+    withr::defer(unlink(fileOUT, force=TRUE), envir=parent.frame())
+
+    result1 <- suppressWarnings(snvListVCF(gds=gds, fileOUT=fileOUT, offset=0L,
+                                    freqCutoff=NULL))
+
+    ## Read two times the vcf file,
+    ## First for the columns names, second for the data
+    tmp_vcf <- readLines(fileOUT)
+    tmp_vcf_data <- read.table(fileOUT, stringsAsFactors=FALSE)
+
+    # filter for the columns names
+    tmp_vcf <- tmp_vcf[-(grep("#CHROM",tmp_vcf)+1):-(length(tmp_vcf))]
+    vcf_names <- unlist(strsplit(tmp_vcf[length(tmp_vcf)],"\t"))
+    names(tmp_vcf_data) <- vcf_names
+
+
+    expect_equal(result1, 0L)
+    expect_true(file.exists(fileOUT))
+    expect_equal(nrow(tmp_vcf_data), 7)
+    expect_equal(ncol(tmp_vcf_data), 8)
+})
 
 
 #############################################################################

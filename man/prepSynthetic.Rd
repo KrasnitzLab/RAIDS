@@ -46,15 +46,15 @@ combination of sample and 1KG reference. Default: \code{""}.}
 }
 \description{
 This function add entries related to synthetic profiles into
-a GDS Sample file. The entries are 1) a specific synthetic study and
-2) specific synthetic sample information into a GDS Sample file.
+a GDS Sample file. The entries are related to two types of information:
+the synthetic study and the synthetic profiles.
 
 The study information is appended to the GDS Sample file "study.list" node.
-The "study.platform" entry is always set to "Synthetic".
+The "study.platform" entry is always set to 'Synthetic'.
 
-The sample information for all selected samples is appended to the GDS
-Sample file "study.annot" node. Both the "Source" and the
-"Sample.Type" entries are always set to "Synthetic".
+The profile information, for all selected synthetic profiles, is appended to
+the GDS Sample file "study.annot" node. Both the "Source" and the
+"Sample.Type" entries are always set to 'Synthetic'.
 
 The synthetic samples are assigned unique names by combining :
 [prefId].[data.id.profile].[listSampleRef].[simulation number(1 to nbSim)]

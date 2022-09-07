@@ -163,21 +163,22 @@ splitSelectByPop <- function(dataRef) {
 }
 
 
-#' @title Add information related to the synthetic samples
+#' @title Add information related to the synthetic profiles
 #' (study and sample information) into a GDS Sample file
 #'
-#' @description This function add entries related to synthetic samples into
-#' a GDS Sample file. The entries are 1) a specific synthetic study and
-#' 2) specific synthetic sample information into a GDS Sample file.
+#' @description This function add entries related to synthetic profiles into
+#' a GDS Sample file. The entries are related to two type of information:
+#' the synthetic study and the synthetic sample information.
+#'
 #' The study information is appended to the GDS Sample file "study.list" node.
-#' In this case, the "study.platform" entry, in the study information node,
-#' is always "Synthetic".
-#' The sample information for all selected samples is appended to the GDS
-#' Sample file "study.annot" node. In this case, the "Source" and the
-#' "Sample.Type" entries are always "Synthetic".
+#' The "study.platform" entry is always set to "Synthetic".
+#'
+#' The sample information for all selected synthetic profiles is appended to
+#' the GDS Sample file "study.annot" node. Both the "Source" and the
+#' "Sample.Type" entries are always set to "Synthetic".
+#'
 #' The synthetic samples are assigned unique names by combining :
-#' "prefId", ".", "data.id.profile", ".", "listSampleRef", ".",
-#' simulation number (between 1 and nbSim)
+#' [prefId].[data.id.profile].[listSampleRef].[simulation number(1 to nbSim)]
 #'
 #' @param gdsSampleFile a \code{character} string representing the file name
 #' of the GDS Sample file containing the information about the sample

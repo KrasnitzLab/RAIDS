@@ -484,18 +484,25 @@ closefn.gds(gds_1KG)
 ### Sub-Step 6. Estimate the allelic fraction for the pruned SNVs
 
 The __estimateAllelicFraction()__ estimates the allelic fraction for all 
-SNVs present in the pruned SNV dataset. The function requires those 2 or 3 files:
+SNVs present in the pruned SNV dataset. Beware that the function requires 
+different inputs for DNA and RNA samples.
 
-1. The 1KG GDS file
-2. The GDS Sample file
-3. In the case of RNA-seq The 1KG annotation GDS TODOPB
-The 3 other inputs are:
+For the DNA samples, these 2 files are required:
+1. The GDS Sample file
+2, The 1KG GDS file
+
+For the RNA samples, these 3 files are required:
+1. The GDS Sample file
+2. The 1KG GDS file
+3. The 1KG SNv annotation GDS file
+
+In both cases, the other required inputs are:
 
 1. The information about the length of the chromosomes
 2. The sample identifier (it corresponds to the GDS Sample file name)
 3. The study identifier (it should correspond to the one used previously)
 
-The function processes one sample at the time. 
+The __estimateAllelicFraction()__ function processes one sample at the time. 
 
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
@@ -519,7 +526,6 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file     
 gds <- snpgdsOpen(file.GDS)
-gds.Annot <- openfn.gds(file.Annot)
     
 ##############################################################
 ## The length of each chromosome is required
@@ -543,29 +549,26 @@ file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 ## Open the GDS Sample file  
 gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 
-## Estimate the allelic fraction of the pruned SNVs for the current sample for DNA sample
-## In the case of RNA-seq it need the GDS gds.Annot and
-## block.id which referes to block.id in gds.Annot fro the 
-## gene annotion of the SNV TODOPB
+
+
+##############################################################
+## The estimation of the allelic fraction
+##############################################################
+
+## Estimate the allelic fraction of the pruned SNVs 
+## The current example is for a DNA sample
+## In the case of RNA sample, the function needs different inputs
+## such as the 1KG SNV Annotation GDS file and
+## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file 
+## for the gene annotation of the SNVs
 snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
                                       sampleCurrent=sampleName, 
                                       study.id=studyDF$study.id,
                                       chrInfo=chrInfo)
 
-## Estimate the allelic fraction of the pruned SNVs for the current sample for RNA-seq sample TODOPB
-# snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
-#                                    sampleCurrent=sampleName, 
-#                                    study.id=studyDF$study.id,
-#                                    chrInfo=chrInfo, 
-#                                    studyType="RNA",
-#                                    gdsRefAnnot=gds.Annot,
-#                                    block.id="GeneS.Ensembl.Hsapiens.v86")
-
-
 ## Close both GDS files
 closefn.gds(gdsSample)    
 closefn.gds(gds)
-closefn.gds(gds.Annot)
 ```
 
 <br>
@@ -581,12 +584,35 @@ must be done.
 knitr::include_graphics("MainSteps_Step3_v01.png")
 ```
 
+Two parameters can be optimized in the ancestry inference process:
+
+- K: the number of neighbors used to call the ancestry
+- D: the number of dimensions used to create the PCA
+
+The accuracy is evaluated through synthetic dataset created from merging a 
+cancer profile with a 1KG sample of known ancestry. Using the synthetic 
+profiles, a range of K and D values are tested. Through that process, the K 
+and D values with satisfying accuracy can be selected.
+
+This step is divided in two sub-steps:
+
+1. Generate the synthetic dataset
+2. Compute the PCA-KNN ancestry call for each synthetic profile
 
 ### Sub-Step 1. Generate the synthetic dataset
 
+A synthetic profile is generated through the merging of one cancer profile 
+with one 1KG sample of known ancestry. Multiple 1KG samples of different 
+ancestry are required to create a synthetic dataset that will be able to 
+show the specific accuracy for each super-population. All the synthetic 
+profiles are saved in the GDS Sample file corresponding to the cancer profile 
+used to generate the dataset.
 
-
-or in R 
+In summary, a fixed number of samples fo each super-population is extracted 
+from the 1KG study. The information is saved in the GDS Sample file associated 
+to the selected cancer profile. A synthetic profile is created for each 
+combination of the 1KG samples and cancer profile. THe synthetic profile is 
+then saved in the GDS Sample file.
 
 ```{r generateSynthetic, echo=TRUE, eval=FALSE}
 ####################################################################
@@ -645,14 +671,14 @@ gds.Annot <- openfn.gds(file.Annot)
 
 
 # Generate the synthetic data
-# The data is added to the GDS sample file
+# The data is saved in the GDS sample file
 resG <- syntheticGeno(gds = gds,
-                      gdsRefAnnot = gds.Annot,
-                      gdsSampleFile = file.GDSSample,
-                      data.id.profile = sampleName,
-                      listSampleRef = listSampleRef,
-                      nbSim = 1L,
-                      prefId = "1")
+                        gdsRefAnnot = gds.Annot,
+                        gdsSampleFile = file.GDSSample,
+                        data.id.profile = sampleName,
+                        listSampleRef = listSampleRef,
+                        nbSim = 1L,
+                        prefId = "1")
 
 ## Close both GDS files
 closefn.gds(gds)
@@ -672,21 +698,18 @@ or in R
 library(RAIDS)    
     
 
-    ##########################################
-    # Files related to the reference
-    # Downloaded
-    ##########################################
-    PATH_1KG <- PATH_REF
+##########################################
+# Files related to the reference
+# Downloaded
+##########################################
+PATH_1KG <- PATH_REF
     
-    fileName.GDS <- "matGeno1000g.gds"
-    fileName.GDS.Annot <- "matAnnot1000g.gds"
-    file.GDS <- file.path(PATH_1KG, fileName.GDS)
-    file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
+fileName.GDS <- "matGeno1000g.gds"
+file.GDS <- file.path(PATH_1KG, fileName.GDS)
 
-    ##########################################
+##########################################
     
-    gds <- openfn.gds(file.GDS)
-    gds.Annot <- openfn.gds(file.Annot)
+gds <- openfn.gds(file.GDS)
 
     
     # Path to the directory where the gds file for each sample
@@ -702,7 +725,7 @@ library(RAIDS)
     
     # Need a data.frame with study description for the
     # synthetic data
-    tudyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
+    studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
                           study.desc = "Descripttion",
                           study.platform = "Platform string like Whole Exome",
                           stringsAsFactors = FALSE)
@@ -734,50 +757,54 @@ library(RAIDS)
     sampleRM <- splitSelectByPop(dataRef)
     
     
-    # Can be run in paralle or in different clusters...
-    for(i in seq_len(length(listSamples))){
+# Can be run in paralle or in different clusters...
+for(i in seq_len(length(listSamples))){
         
-        file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+  file.GDSSample <- file.path(PATHSAMPLEGDS, 
+                                      paste0(listSamples[i], ".gds"))
         
-        PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
-        if(! file.exists(PATH_OUT_SAMPLE)){
+  PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
+  if(! file.exists(PATH_OUT_SAMPLE)){
             dir.create(PATH_OUT_SAMPLE)
-        }
+  }
         
-        gdsSample <- snpgdsOpen(file.GDSSample)
+  gdsSample <- snpgdsOpen(file.GDSSample)
         
-        # data.frame with the sample.id (Name.ID) with the study id
-        KNN.list <- list()
+  # data.frame with the sample.id (Name.ID) with the study id
+  KNN.list <- list()
         
-        for(j in seq_len(nrow(sampleRM))){
-            KNN.synt <- computePoolSyntheticAncestryGr(gds, gdsSample,
-                                                             sampleRM[j,],
-                                                             studyDF.syn$study.id,
-                                                             np=4,
-                                                             spRef=spRef,
-                                                             eigen.cnt=15L)
-            KNN.list[[j]] <- KNN.synt$matKNN
-        }
-        KNN.sample.syn <- do.call(rbind, KNN.list)
-        saveRDS(KNN.sample.syn, file.path(PATH_OUT_SAMPLE, paste0("KNN.synt.", listSamples[i], ".", i, ".rds")))
+  for(j in seq_len(nrow(sampleRM))){
+      KNN.synt <- computePoolSyntheticAncestryGr(gds, gdsSample,
+                                                          sampleRM[j,],
+                                                          studyDF.syn$study.id,
+                                                          np=4L,
+                                                          spRef=spRef,
+                                                          eigen.cnt=15L)
+      KNN.list[[j]] <- KNN.synt$matKNN
+  }
+  
+  KNN.sample.syn <- do.call(rbind, KNN.list)
+  saveRDS(KNN.sample.syn, file.path(PATH_OUT_SAMPLE, 
+                        paste0("KNN.synt.", listSamples[i], ".", i, ".rds")))
         
-        
-        closefn.gds(gdsSample)
-    }
+  ## Close GDS Sample file
+  closefn.gds(gdsSample)
+}
     
-    
-    closefn.gds(gds)
-    closefn.gds(gds.Annot)
-    
+## Close both 1KG GDS file  
+closefn.gds(gds)
 ```
 
 
+<br>
+
 ## Step 4 - Run the ancestry inference on the external study
 
-The PCA of the sample and KNN sample and Call the ancestry with the optimal parameters K and D
+The PCA of the sample and KNN sample and Call the ancestry with the optimal 
+K and D parameters.
 
-Note The formal selection of parameter K and D  is done here too but all the synthetic data are prepare in 
-the step 3. 
+Note: The formal selection of K and D parameters is done at this step but 
+all the synthetic data are prepared in the step 3. 
 
 or in R 
 
@@ -840,7 +867,7 @@ library(RAIDS)
     
     
     
-    # Can be run in paralle or in different clusters...
+    # Can be run in parallel or in different clusters...
     for(i in seq_len(length(listSamples))){
         
         file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
@@ -854,16 +881,16 @@ library(RAIDS)
         
         gdsSample <- snpgdsOpen(file.GDSSample)
         
-        resCall <- computeAncestryFromSyntheticFile(gds=gds, 
-                                                    gdsSample=gdsSample,
-                                                    listFiles=listFiles,
-                                                    sample.ana.id=listSamples[i],
-                                                    spRef=spRef,
-                                                    study.id.syn=studyDF.syn$study.id,
-                                                    np = 4L)
+        resCall <- computeAncestryFromSyntheticFile(gds = gds, 
+                                            gdsSample = gdsSample,
+                                            listFiles = listFiles,
+                                            sample.ana.id = listSamples[i],
+                                            spRef = spRef,
+                                            study.id.syn = studyDF.syn$study.id,
+                                            np = 4L)
 
-        
-        saveRDS(resCall, file.path(PATHOUT, paste0( listSamples[i], ".infoCall",".rds")))
+        saveRDS(resCall, file.path(PATHOUT, 
+                              paste0( listSamples[i], ".infoCall",".rds")))
         write.csv(resCall$Ancestry, file.path(PATHOUT, paste0( listSamples[i], ".Ancestry",".csv")),
                     quote = FALSE,
                     row.names = FALSE)
@@ -871,9 +898,8 @@ library(RAIDS)
         closefn.gds(gdsSample)
     }
     
-    
-    closefn.gds(gds)
-    
+## Close both 1KG GDS file   
+closefn.gds(gds)
 ```
 
 

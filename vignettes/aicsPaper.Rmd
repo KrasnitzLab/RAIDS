@@ -577,20 +577,20 @@ closefn.gds(gds)
 
 ## Step 3 - Find the optimized parameters for the ancestry inference
 
-Before running the ancestry inference, the selection of the best parameters 
-must be done.
+At this step, the optimization of the parameters is required to obtained the 
+most accurate results at the ancestry inference step.
 
 ```{r graphStep3, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step3_v01.png")
 ```
 
-Two parameters can be optimized in the ancestry inference process:
+Two parameters can be optimized for the ancestry inference process:
 
 - K: the number of neighbors used to call the ancestry
 - D: the number of dimensions used to create the PCA
 
-The accuracy is evaluated through synthetic dataset created from merging a 
-cancer profile with a 1KG sample of known ancestry. Using the synthetic 
+The accuracy is evaluated through a synthetic dataset created from merging one 
+cancer profile with multiple 1KG samples of known ancestry. Using the synthetic 
 profiles, a range of K and D values are tested. Through that process, the K 
 and D values with satisfying accuracy can be selected.
 
@@ -611,7 +611,7 @@ used to generate the dataset.
 In summary, a fixed number of samples fo each super-population is extracted 
 from the 1KG study. The information is saved in the GDS Sample file associated 
 to the selected cancer profile. A synthetic profile is created for each 
-combination of the 1KG samples and cancer profile. THe synthetic profile is 
+combination of the 1KG samples and cancer profile. The synthetic profile is 
 then saved in the GDS Sample file.
 
 ```{r generateSynthetic, echo=TRUE, eval=FALSE}
@@ -641,18 +641,18 @@ listSampleRef <- dataRef$sample.id
 ## The column names must be as shown 
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
-                          study.desc = "TCGA.BRCA synthetic data",
-                          study.platform = "WXS",
-                          stringsAsFactors = FALSE)
+                            study.desc = "TCGA.BRCA synthetic data",
+                            study.platform = "WXS",
+                            stringsAsFactors = FALSE)
 
 # Just prepare the annotations for the synthetic data
 # Add the information to the GDS sample file
 prepSynthetic(gdsSampleFile = file.GDSSample,
-              listSampleRef = listSampleRef,
-              data.id.profile = sampleName,
-              studyDF = studyDF.syn,
-              nbSim = 1,
-              prefId = "1")
+                listSampleRef = listSampleRef,
+                data.id.profile = sampleName,
+                studyDF = studyDF.syn,
+                nbSim = 1,
+                prefId = "1")
 
 ##############################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file
@@ -683,7 +683,6 @@ resG <- syntheticGeno(gds = gds,
 ## Close both GDS files
 closefn.gds(gds)
 closefn.gds(gds.Annot)
-    
 ```
 
 ### Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic data
@@ -800,11 +799,24 @@ closefn.gds(gds)
 
 ## Step 4 - Run the ancestry inference on the external study
 
+The ancestry inference is done with the optimized K and D parameters. More 
+specifically, a PCA is generated using the 1KG reference samples and the 
+cancer sample. The _D_ parameter specifies the number of dimension for the 
+PCA. Then, the ancestry of the cancer sample is inferred using
+a k-nearest neighbors classification method. The _K_ parameter specifies the 
+number of neighbors used for the classification.
+
+
+```{r graphStep4, echo = FALSE, fig.align="center", fig.cap="Step 4 - Run the ancestry inference on the external study", out.width = '120%', results='asis'}
+knitr::include_graphics("MainSteps_Step4_v01.png")
+```
+
+
 The PCA of the sample and KNN sample and Call the ancestry with the optimal 
 K and D parameters.
 
-Note: The formal selection of K and D parameters is done at this step but 
-all the synthetic data are prepared in the step 3. 
+Note: The formal selection of _K_ and _D_ parameters is done at this step but 
+all the synthetic data is prepared in the step 3. 
 
 or in R 
 

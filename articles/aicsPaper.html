@@ -617,23 +617,23 @@ sample at the time.</p>
 <h3 id="step-3---find-the-optimized-parameters-for-the-ancestry-inference">Step 3 - Find the optimized parameters for the ancestry
 inference<a class="anchor" aria-label="anchor" href="#step-3---find-the-optimized-parameters-for-the-ancestry-inference"></a>
 </h3>
-<p>Before running the ancestry inference, the selection of the best
-parameters must be done.</p>
+<p>At this step, the optimization of the parameters is required to
+obtained the most accurate results at the ancestry inference step.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step3_v01.png" alt="Step 3 - Find the optimized parameters for the ancestry inference" width="120%"><p class="caption">
 Step 3 - Find the optimized parameters for the ancestry inference
 </p>
 </div>
-<p>Two parameters can be optimized in the ancestry inference
+<p>Two parameters can be optimized for the ancestry inference
 process:</p>
 <ul>
 <li>K: the number of neighbors used to call the ancestry</li>
 <li>D: the number of dimensions used to create the PCA</li>
 </ul>
-<p>The accuracy is evaluated through synthetic dataset created from
-merging a cancer profile with a 1KG sample of known ancestry. Using the
-synthetic profiles, a range of K and D values are tested. Through that
-process, the K and D values with satisfying accuracy can be
+<p>The accuracy is evaluated through a synthetic dataset created from
+merging one cancer profile with multiple 1KG samples of known ancestry.
+Using the synthetic profiles, a range of K and D values are tested.
+Through that process, the K and D values with satisfying accuracy can be
 selected.</p>
 <p>This step is divided in two sub-steps:</p>
 <ol style="list-style-type: decimal">
@@ -652,7 +652,7 @@ cancer profile used to generate the dataset.</p>
 <p>In summary, a fixed number of samples fo each super-population is
 extracted from the 1KG study. The information is saved in the GDS Sample
 file associated to the selected cancer profile. A synthetic profile is
-created for each combination of the 1KG samples and cancer profile. THe
+created for each combination of the 1KG samples and cancer profile. The
 synthetic profile is then saved in the GDS Sample file.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -681,18 +681,18 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span><span class="co">## The column names must be as shown </span></span>
 <span><span class="co">#################################################################### </span></span>
 <span><span class="va">studyDF.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"TCGA.BRCA.Synthetic"</span>,</span>
-<span>                          study.desc <span class="op">=</span> <span class="st">"TCGA.BRCA synthetic data"</span>,</span>
-<span>                          study.platform <span class="op">=</span> <span class="st">"WXS"</span>,</span>
-<span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                            study.desc <span class="op">=</span> <span class="st">"TCGA.BRCA synthetic data"</span>,</span>
+<span>                            study.platform <span class="op">=</span> <span class="st">"WXS"</span>,</span>
+<span>                            stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Just prepare the annotations for the synthetic data</span></span>
 <span><span class="co"># Add the information to the GDS sample file</span></span>
 <span><span class="fu"><a href="../reference/prepSynthetic.html">prepSynthetic</a></span><span class="op">(</span>gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>,</span>
-<span>              listSampleRef <span class="op">=</span> <span class="va">listSampleRef</span>,</span>
-<span>              data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
-<span>              studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
-<span>              nbSim <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>              prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
+<span>                listSampleRef <span class="op">=</span> <span class="va">listSampleRef</span>,</span>
+<span>                data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
+<span>                studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
+<span>                nbSim <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file</span></span>
@@ -837,10 +837,23 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <div class="section level3">
 <h3 id="step-4---run-the-ancestry-inference-on-the-external-study">Step 4 - Run the ancestry inference on the external study<a class="anchor" aria-label="anchor" href="#step-4---run-the-ancestry-inference-on-the-external-study"></a>
 </h3>
+<p>The ancestry inference is done with the optimized K and D parameters.
+More specifically, a PCA is generated using the 1KG reference samples
+and the cancer sample. The <em>D</em> parameter specifies the number of
+dimension for the PCA. Then, the ancestry of the cancer sample is
+inferred using a k-nearest neighbors classification method. The
+<em>K</em> parameter specifies the number of neighbors used for the
+classification.</p>
+<div class="figure" style="text-align: center">
+<img src="MainSteps_Step4_v01.png" alt="Step 4 - Run the ancestry inference on the external study" width="120%"><p class="caption">
+Step 4 - Run the ancestry inference on the external study
+</p>
+</div>
 <p>The PCA of the sample and KNN sample and Call the ancestry with the
 optimal K and D parameters.</p>
-<p>Note: The formal selection of K and D parameters is done at this step
-but all the synthetic data are prepared in the step 3.</p>
+<p>Note: The formal selection of <em>K</em> and <em>D</em> parameters is
+done at this step but all the synthetic data is prepared in the step
+3.</p>
 <p>or in R</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>

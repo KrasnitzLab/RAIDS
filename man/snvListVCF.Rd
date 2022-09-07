@@ -9,9 +9,8 @@ a cut-off threshold}
 snvListVCF(gds, fileOUT, offset = 0L, freqCutoff = NULL)
 }
 \arguments{
-\item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the 1KG GDS file.}
 
 \item{fileOUT}{a \code{character} string representing the path and file
 name of the VCF file that will be created wit the retained SNP information.}
@@ -37,7 +36,21 @@ a VCF file.
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", package="RAIDS")
 
-## TODO
+## Demo 1KG GDS file
+gdsFile <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
+
+## Output VCF file that will be created
+vcfFile <- file.path(data.dir, "Demo_TMP_01.vcf")
+
+## Create a VCF file with the SNV dataset present in the GDS file
+## No cutoff on frequency, so all SNVs are saved
+snvListVCF(gds=gdsFile, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+
+## Close GDS file (IMPORTANT)
+closefn.gds(gdsFile)
+
+## Remove temporary VCF file
+unlink(vcfFile, force=TRUE)
 
 }
 \author{

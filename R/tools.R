@@ -6,9 +6,8 @@
 #' from a GDS SNP information file and save the retained SNP information into
 #' a VCF file.
 #'
-#' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
 #'
 #' @param fileOUT a \code{character} string representing the path and file
 #' name of the VCF file that will be created wit the retained SNP information.
@@ -27,7 +26,21 @@
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
-#' ## TODO
+#' ## Demo 1KG GDS file
+#' gdsFile <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
+#'
+#' ## Output VCF file that will be created
+#' vcfFile <- file.path(data.dir, "Demo_TMP_01.vcf")
+#'
+#' ## Create a VCF file with the SNV dataset present in the GDS file
+#' ## No cutoff on frequency, so all SNVs are saved
+#' snvListVCF(gds=gdsFile, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+#'
+#' ## Close GDS file (IMPORTANT)
+#' closefn.gds(gdsFile)
+#'
+#' ## Remove temporary VCF file
+#' unlink(vcfFile, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
@@ -37,10 +50,9 @@
 #' @export
 snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 
-    ## Validate that gds is an object of class SNPGDSFileClass
-    if (! is(gds, "SNPGDSFileClass")) {
-        stop("The \'gds\' parameter must be an object of ",
-             "class \'SNPGDSFileClass\'.")
+    ## Validate that gds is an object of class gds.class
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
     }
 
     ## Validate that offset is a single integer
@@ -111,6 +123,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
     write.table(df, file=fileOUT, sep="\t", append=TRUE, row.names=FALSE,
                     col.names=TRUE, quote=FALSE)
 
+    ## Successful
     return(0L)
 }
 

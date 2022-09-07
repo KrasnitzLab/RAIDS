@@ -494,7 +494,7 @@ For the DNA samples, these 2 files are required:
 For the RNA samples, these 3 files are required:
 1. The GDS Sample file
 2. The 1KG GDS file
-3. The 1KG SNv annotation GDS file
+3. The 1KG SNv Annotation GDS file
 
 In both cases, the other required inputs are:
 
@@ -506,16 +506,17 @@ The __estimateAllelicFraction()__ function processes one sample at the time.
 
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
-##############################################################
+###################################################################
 ## Load required package
-##############################################################
+###################################################################
 library(RAIDS)
 library(BSgenome)
 library(BSgenome.Hsapiens.UCSC.hg38)
 
-##############################################################
+###################################################################
 ## The 1KG GDS file is required
-##############################################################
+## The 1KG SNV Annotation GDS file is only required for RNA samples
+###################################################################
 PATH_1KG <- PATH_REF
     
 fileName.GDS.1KG <- "matGeno1000g.gds"
@@ -527,10 +528,12 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 ## Open the 1KG GDS file     
 gds <- snpgdsOpen(file.GDS)
     
-##############################################################
+###################################################################
 ## The length of each chromosome is required
 ## Chromosomes X, Y and M need relabeling
-##############################################################
+## There is other ways to extract the information
+## This is one example
+###################################################################
 chrInfo <- integer(25L)
 for(i in seq_len(22L)) {
     chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])
@@ -539,21 +542,20 @@ chrInfo[23] <- length(Hsapiens[["chrX"]])
 chrInfo[24] <- length(Hsapiens[["chrY"]])
 chrInfo[25] <- length(Hsapiens[["chrM"]])
 
-##############################################################
+###################################################################
 ## The GDS Sample file is required
-##############################################################
+###################################################################
 
-## Name of the GDS Sample file (the name corresponds to the sample identifier)
+## Name of the GDS Sample file 
+## The name must corresponds to the sample identifier
 file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
-## Open the GDS Sample file  
+## Open the GDS Sample file in writing mode
 gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 
-
-
-##############################################################
+###################################################################
 ## The estimation of the allelic fraction
-##############################################################
+###################################################################
 
 ## Estimate the allelic fraction of the pruned SNVs 
 ## The current example is for a DNA sample
@@ -572,7 +574,6 @@ closefn.gds(gds)
 ```
 
 <br>
-
 
 
 ## Step 3 - Find the optimized parameters for the ancestry inference
@@ -645,6 +646,9 @@ studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
                             study.platform = "WXS",
                             stringsAsFactors = FALSE)
 
+## The GDS Sample file is needed
+file.GDSSample <- PATH_TO_GDS_SAMPLE_FILE
+
 # Just prepare the annotations for the synthetic data
 # Add the information to the GDS sample file
 prepSynthetic(gdsSampleFile = file.GDSSample,
@@ -655,8 +659,8 @@ prepSynthetic(gdsSampleFile = file.GDSSample,
                 prefId = "1")
 
 ##############################################################
-## The 1KG GDS file and the 1KG SNV Annotation GDS file
-## are both required
+## Both the 1KG GDS file and the 1KG SNV Annotation GDS file
+## are required
 ##############################################################
 PATH_1KG <- PATH_REF
     
@@ -669,9 +673,11 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 gds <- snpgdsOpen(file.GDS)
 gds.Annot <- openfn.gds(file.Annot)
 
-
-# Generate the synthetic data
-# The data is saved in the GDS sample file
+##############################################################
+## The syntheticGeno() function generate the synthetic 
+## profiles.
+## The synthetic profiles are saved in the GDS Sample file
+##############################################################
 resG <- syntheticGeno(gds = gds,
                         gdsRefAnnot = gds.Annot,
                         gdsSampleFile = file.GDSSample,
@@ -711,49 +717,58 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS)
 gds <- openfn.gds(file.GDS)
 
     
-    # Path to the directory where the gds file for each sample
-    # will be create
-    PATHSAMPLEGDS <- file.path("The path")
+# Path to the directory where the gds file for each sample
+# will be create
+PATHSAMPLEGDS <- file.path("The path")
     
-    # directory which content directory name Name.ID in whihc the PCA is save
-    # 
-    PATH_OUT <- file.path("The path")
-    if(! file.exists(PATH_OUT)){
-        dir.create(PATH_OUT)
-    }
+# directory which content directory name Name.ID in whihc the PCA is save
+# 
+PATH_OUT <- file.path("The path")
+if(! file.exists(PATH_OUT)) {
+  dir.create(PATH_OUT)
+}
     
-    # Need a data.frame with study description for the
-    # synthetic data
-    studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
+# Need a data.frame with study description for the
+# synthetic data
+studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
                           study.desc = "Descripttion",
                           study.platform = "Platform string like Whole Exome",
                           stringsAsFactors = FALSE)
 
     
-    # Look at studyDF at step 3.
-    study.id <- "Id of the study"
+# Look at studyDF at step 3.
+study.id <- "Id of the study"
     
-    # The file ped defined before
-    filePED <- FILE_PED
-    ped <- readRDS(filePED)
-    # You need a list of the sample Name.ID 
-    # you can get it from other source than 
-    # filePED 
-    listSamples <- ped[, "Name.ID"]
+# The file ped defined before
+filePED <- FILE_PED
+ped <- readRDS(filePED)
+
+# You need a list of the sample Name.ID 
+# you can get it from other source than 
+# filePED 
+listSamples <- ped[, "Name.ID"]
     
-    # Get the known superPop for the reference
-    spRef <- getRef1KGPop(gds, "superPop")
+# Get the known superPop for the reference
+spRef <- getRef1KGPop(gds, "superPop")
     
-    # The set of 1KG use in the synthetic dataset
-    # if you use select1KGPop the seed must be the same 
-    # as the step 6 
+# The set of 1KG use in the synthetic dataset
+# if you use select1KGPop the seed must be the same 
+# as the step 6 
     set.seed(3043)
-    dataRef <- select1KGPop(gds, nbSamples = 30L)
     
     
-    # Split dataRef by pop 
-    #
-    sampleRM <- splitSelectByPop(dataRef)
+####################################################################
+## Fix seed as in step 6 to ensure the same results
+####################################################################    
+set.seed(3043)       
+    
+## Extract the 1KG samples used to generate the synthetic dataset
+## Already done in step 6, no need to repeat if the results have been saved
+dataRef <- select1KGPop(gds, nbSamples = 30L)
+
+# Split dataRef by pop 
+#
+sampleRM <- splitSelectByPop(dataRef)
     
     
 # Can be run in paralle or in different clusters...
@@ -765,7 +780,7 @@ for(i in seq_len(length(listSamples))){
   
   ## The directory where the output files will be created must exist      
   PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
-  if(! file.exists(PATH_OUT_SAMPLE)){
+  if(! file.exists(PATH_OUT_SAMPLE)) {
             dir.create(PATH_OUT_SAMPLE)
   }
   

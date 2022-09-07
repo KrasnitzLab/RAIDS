@@ -586,13 +586,13 @@ knitr::include_graphics("MainSteps_Step3_v01.png")
 
 Two parameters can be optimized for the ancestry inference process:
 
-- K: the number of neighbors used to call the ancestry
-- D: the number of dimensions used to create the PCA
+- _K_: the number of neighbors used to call the ancestry
+- _D_: the number of dimensions used to create the PCA
 
 The accuracy is evaluated through a synthetic dataset created from merging one 
 cancer profile with multiple 1KG samples of known ancestry. Using the synthetic 
-profiles, a range of K and D values are tested. Through that process, the K 
-and D values with satisfying accuracy can be selected.
+profiles, a range of _K_ and _D_ values are tested. Through that process, the 
+_K_ and _D_ values with satisfying accuracy can be selected.
 
 This step is divided in two sub-steps:
 
@@ -761,24 +761,28 @@ for(i in seq_len(length(listSamples))){
         
   file.GDSSample <- file.path(PATHSAMPLEGDS, 
                                       paste0(listSamples[i], ".gds"))
-        
+  
+  
+  ## The directory where the output files will be created must exist      
   PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
   if(! file.exists(PATH_OUT_SAMPLE)){
             dir.create(PATH_OUT_SAMPLE)
   }
-        
+  
+  ## Open GDS Sample file      
   gdsSample <- snpgdsOpen(file.GDSSample)
         
   # data.frame with the sample.id (Name.ID) with the study id
   KNN.list <- list()
         
-  for(j in seq_len(nrow(sampleRM))){
-      KNN.synt <- computePoolSyntheticAncestryGr(gds, gdsSample,
-                                                          sampleRM[j,],
-                                                          studyDF.syn$study.id,
-                                                          np=4L,
-                                                          spRef=spRef,
-                                                          eigen.cnt=15L)
+  for(j in seq_len(nrow(sampleRM))) {
+      KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
+                                          gdsSample = gdsSample,
+                                          sampleRM =  sampleRM[j,],
+                                          study.id.syn = studyDF.syn$study.id,
+                                          np = 4L,
+                                          spRef = spRef,
+                                          eigen.cnt = 15L)
       KNN.list[[j]] <- KNN.synt$matKNN
   }
   
@@ -813,12 +817,11 @@ knitr::include_graphics("MainSteps_Step4_v01.png")
 
 
 The PCA of the sample and KNN sample and Call the ancestry with the optimal 
-K and D parameters.
+_K_ and _D_ parameters.
 
 Note: The formal selection of _K_ and _D_ parameters is done at this step but 
 all the synthetic data is prepared in the step 3. 
 
-or in R 
 
 ```{r PCA.KNN.Sample, echo=TRUE, eval=FALSE}
 ####################################################################

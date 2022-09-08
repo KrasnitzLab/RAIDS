@@ -618,9 +618,9 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' window to compute the allelic fraction.
 #' Default: \code{10}.
 #'
-#' @param cutOff TODO . Default: \code{-3}.
+#' @param cutOff a single \code{numeric} representing TODO. Default: \code{-3}.
 #'
-#' @return The integer \code{0} when successful.
+#' @return TODO
 #'
 #' @examples
 #'
@@ -634,19 +634,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @importFrom stats median
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
-#' @export
 computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
-
-    ## The chr parameter must be a single integer value
-    if (!isSingleNumber(chr))  {
-        stop("The \'chr\' must be a single integer value representing ",
-             "a chromosome")
-    }
-
-    ## The w parameter must be a single positive numeric superior to 1
-    if (!(isSingleNumber(w) && (w >= 1)))  {
-        stop("The \'w\' must be a single numeric positive value.")
-    }
 
     listBlockAR <- list()
     j <- 1

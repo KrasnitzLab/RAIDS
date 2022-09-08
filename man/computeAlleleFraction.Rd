@@ -16,10 +16,10 @@ computeAlleleFraction(snp.pos, chr, w = 10, cutOff = -3)
 window to compute the allelic fraction.
 Default: \code{10}.}
 
-\item{cutOff}{TODO . Default: \code{-3}.}
+\item{cutOff}{a single \code{numeric} representing TODO. Default: \code{-3}.}
 }
 \value{
-The integer \code{0} when successful.
+TODO
 }
 \description{
 TODO

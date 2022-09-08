@@ -144,8 +144,11 @@ files are available at this address:</span>
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
 </span>
 
-<span style="color:darkred;font-weight:bold">The size of the 1KG GDS file is 15GB.</span>
-<span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on hg38.</span>
+<span style="color:darkred;font-weight:bold">The size of the 1KG GDS file 
+is 15GB.</span>
+
+<span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on 
+hg38 [@Lowy-Gallego2019a].</span>
 
 <span style="color:darkred;font-weight:bold">This section can be skipped if 
 you choose to use the pre-processed files.</span>
@@ -568,10 +571,10 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## such as the 1KG SNV Annotation GDS file and
 ## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
-snp.pos <- estimateAllelicFraction(gds=gds, gdsSample=gdsSample,
-                                      sampleCurrent=sampleName, 
-                                      study.id=studyDF$study.id,
-                                      chrInfo=chrInfo)
+snp.pos <- estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
+                                      sampleCurrent = sampleName, 
+                                      study.id = studyDF$study.id,
+                                      chrInfo = chrInfo)
 
 ## Close both GDS files
 closefn.gds(gdsSample)    
@@ -604,6 +607,8 @@ This step is divided in two sub-steps:
 
 1. Generate the synthetic dataset
 2. Compute the PCA-KNN ancestry call for each synthetic profile
+
+<br>
 
 ### Sub-Step 1. Generate the synthetic dataset
 
@@ -654,13 +659,15 @@ studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
 ## The GDS Sample file is needed
 file.GDSSample <- PATH_TO_GDS_SAMPLE_FILE
 
-# Just prepare the annotations for the synthetic data
-# Add the information to the GDS sample file
+##############################################################
+## The prepSynthetic() function prepares the annotations for 
+## the synthetic data
+## The information is saved into the GDS sample file
+##############################################################
 prepSynthetic(gdsSampleFile = file.GDSSample,
                 listSampleRef = listSampleRef,
                 data.id.profile = sampleName,
                 studyDF = studyDF.syn,
-                nbSim = 1,
                 prefId = "1")
 
 ##############################################################
@@ -674,7 +681,7 @@ fileName.GDS.Annot <- "matAnnot1000g.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
-## Open the 1KG GDS file     
+## Open the 1KG GDS file and 1KG SNV Annotation file    
 gds <- snpgdsOpen(file.GDS)
 gds.Annot <- openfn.gds(file.Annot)
 
@@ -688,13 +695,15 @@ resG <- syntheticGeno(gds = gds,
                         gdsSampleFile = file.GDSSample,
                         data.id.profile = sampleName,
                         listSampleRef = listSampleRef,
-                        nbSim = 1L,
                         prefId = "1")
 
 ## Close both GDS files
 closefn.gds(gds)
 closefn.gds(gds.Annot)
 ```
+
+<br>
+
 
 ### Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic data
 

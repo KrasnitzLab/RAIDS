@@ -53,8 +53,10 @@
 #'     using the information from a RDS Sample description file and the 1KG
 #'     GDS file. }
 #'     \item \code{\link{basePCASample}} { TODO }
-#'     \item \code{\link{computeAlleleFraction}} { TODO }
-#'     \item \code{\link{computeAllelicFractionDNA}} { TODO }
+#'     \item \code{\link{estimateAllelicFraction}} { This function estimates
+#'     the allelic fraction of the pruned SNVs for a specific sample and add
+#'     the information to the associated GDS Sample file. The allelic fraction
+#'     estimation method is adapted to the type of study (DNA or RNA). }
 #' }
 #'
 #' @encoding UTF-8

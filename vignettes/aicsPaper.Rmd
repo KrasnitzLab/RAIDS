@@ -274,7 +274,10 @@ metastasis, normal, etc..).
 - **Diagnosis**: The diagnosis associated to the patient.
 - **Source**: The source of the sample (example: TCGA-BRCA).
 
-This file is referred as the PED RDS file (PED for pedigree).
+This file is referred as the PED RDS file (PED for pedigree). Alternatively, 
+the PED information can be saved in another type of file (CVS, etc..) as long 
+as the data.frame information can be regenerated in R (with _read.csv()_ or 
+else). 
 
 
 ```{r pedCreation, echo=TRUE}

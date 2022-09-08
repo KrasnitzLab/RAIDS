@@ -323,7 +323,10 @@ patient.</li>
 <strong>Source</strong>: The source of the sample (example:
 TCGA-BRCA).</li>
 </ul>
-<p>This file is referred as the PED RDS file (PED for pedigree).</p>
+<p>This file is referred as the PED RDS file (PED for pedigree).
+Alternatively, the PED information can be saved in another type of file
+(CVS, etc..) as long as the data.frame information can be regenerated in
+R (with <em>read.csv()</em> or else).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##############################################################</span></span>
 <span><span class="co">## Location of the new PED RDS file</span></span>

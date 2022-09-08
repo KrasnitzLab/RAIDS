@@ -264,7 +264,7 @@ snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.
 
 A RDS file describing the samples that are part of the analysis is required.
 
-The RDS file must contain a __data.frame__ with those 5 columns:
+The RDS file must contain a *data.frame* with those 5 columns:
 
 - **Name.ID**: The unique sample identifier. The GDS Sample file associated to 
 this sample should be called "Name.ID.txt.gz". 
@@ -314,16 +314,16 @@ This step requires 4 files as input:
 - The Sample SNP pileup file (one per sample present in the study)
 - The PED RDS file
 
-A ___data.frame__ containing the general information about the study is 
-also required. The __data.frame__ must have those 3 columns:
+A *data.frame* containing the general information about the study is 
+also required. The *data.frame* must contain those 3 columns:
 
 - **study.id**: The study identifier (example: TCGA-BRCA).
 - **study.desc**: The description of the study.
 - **study.platform**: The type of sequencing (example: RNA-seq).
 
-Using all those inputs, the __createStudy2GDS1KG()_ function will 
+Using all those inputs, the *createStudy2GDS1KG()* function will 
 generate a GDS Sample file. One GDS Sample file is created for each sample 
-passed to the __listSamples__ argument.
+passed to the *listSamples* argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
 ##############################################################
@@ -902,7 +902,8 @@ library(RAIDS)
     # Can be run in parallel or in different clusters...
     for(i in seq_len(length(listSamples))){
         
-        file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+        file.GDSSample <- file.path(PATHSAMPLEGDS, 
+                                      paste0(listSamples[i], ".gds"))
         
         PATHKNN <- file.path(PATH_OUT, listSamples[i])
         listFilesName <- dir(file.path(PATHKNN), ".rds")
@@ -914,18 +915,19 @@ library(RAIDS)
         gdsSample <- snpgdsOpen(file.GDSSample)
         
         resCall <- computeAncestryFromSyntheticFile(gds = gds, 
-                                            gdsSample = gdsSample,
-                                            listFiles = listFiles,
-                                            sample.ana.id = listSamples[i],
-                                            spRef = spRef,
-                                            study.id.syn = studyDF.syn$study.id,
-                                            np = 4L)
+                                        gdsSample = gdsSample,
+                                        listFiles = listFiles,
+                                        sample.ana.id = listSamples[i],
+                                        spRef = spRef,
+                                        study.id.syn = studyDF.syn$study.id,
+                                        np = 4L)
 
         saveRDS(resCall, file.path(PATHOUT, 
-                              paste0( listSamples[i], ".infoCall",".rds")))
-        write.csv(resCall$Ancestry, file.path(PATHOUT, paste0( listSamples[i], ".Ancestry",".csv")),
-                    quote = FALSE,
-                    row.names = FALSE)
+                              paste0(listSamples[i], ".infoCall",".rds")))
+        
+        write.csv(resCall$Ancestry, 
+              file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
+              quote = FALSE, row.names = FALSE)
 
         closefn.gds(gdsSample)
     }

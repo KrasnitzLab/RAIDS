@@ -676,7 +676,7 @@ gds <- snpgdsOpen(file.GDS)
 gds.Annot <- openfn.gds(file.Annot)
 
 ##############################################################
-## The syntheticGeno() function generate the synthetic 
+## The syntheticGeno() function generates the synthetic 
 ## profiles.
 ## The synthetic profiles are saved in the GDS Sample file
 ##############################################################
@@ -733,7 +733,7 @@ if(! file.exists(PATH_OUT)) {
 # Need a data.frame with study description for the
 # synthetic data
 studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
-                          study.desc = "Descripttion",
+                          study.desc = "Description",
                           study.platform = "Platform string like Whole Exome",
                           stringsAsFactors = FALSE)
 

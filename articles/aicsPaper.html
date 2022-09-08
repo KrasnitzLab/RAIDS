@@ -194,8 +194,10 @@ pre-processed files are available at this address:</span></p>
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
-file is 15GB.</span> <span style="color:darkred;font-weight:bold">The
-1KG GDS file is mapped on hg38.</span></p>
+file is 15GB.</span></p>
+<p><span style="color:darkred;font-weight:bold">The 1KG GDS file is
+mapped on hg38 <span class="citation">(Lowy-Gallego et al.
+2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
 <p>The vignette <a href="Create_1KG_GDS_file.html">Formatting the
@@ -614,10 +616,10 @@ sample at the time.</p>
 <span><span class="co">## such as the 1KG SNV Annotation GDS file and</span></span>
 <span><span class="co">## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file </span></span>
 <span><span class="co">## for the gene annotation of the SNVs</span></span>
-<span><span class="va">snp.pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span>
-<span>                                      sampleCurrent<span class="op">=</span><span class="va">sampleName</span>, </span>
-<span>                                      study.id<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
-<span>                                      chrInfo<span class="op">=</span><span class="va">chrInfo</span><span class="op">)</span></span>
+<span><span class="va">snp.pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
+<span>                                      sampleCurrent <span class="op">=</span> <span class="va">sampleName</span>, </span>
+<span>                                      study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
+<span>                                      chrInfo <span class="op">=</span> <span class="va">chrInfo</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close both GDS files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span>    </span>
@@ -654,6 +656,7 @@ values with satisfying accuracy can be selected.</p>
 <li>Generate the synthetic dataset</li>
 <li>Compute the PCA-KNN ancestry call for each synthetic profile</li>
 </ol>
+<p><br></p>
 <div class="section level4">
 <h4 id="sub-step-1--generate-the-synthetic-dataset">Sub-Step 1. Generate the synthetic dataset<a class="anchor" aria-label="anchor" href="#sub-step-1--generate-the-synthetic-dataset"></a>
 </h4>
@@ -702,13 +705,15 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span><span class="co">## The GDS Sample file is needed</span></span>
 <span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="va">PATH_TO_GDS_SAMPLE_FILE</span></span>
 <span></span>
-<span><span class="co"># Just prepare the annotations for the synthetic data</span></span>
-<span><span class="co"># Add the information to the GDS sample file</span></span>
+<span><span class="co">##############################################################</span></span>
+<span><span class="co">## The prepSynthetic() function prepares the annotations for </span></span>
+<span><span class="co">## the synthetic data</span></span>
+<span><span class="co">## The information is saved into the GDS sample file</span></span>
+<span><span class="co">##############################################################</span></span>
 <span><span class="fu"><a href="../reference/prepSynthetic.html">prepSynthetic</a></span><span class="op">(</span>gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>,</span>
 <span>                listSampleRef <span class="op">=</span> <span class="va">listSampleRef</span>,</span>
 <span>                data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
 <span>                studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
-<span>                nbSim <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
@@ -722,7 +727,7 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span><span class="va">file.GDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS</span><span class="op">)</span></span>
 <span><span class="va">file.Annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS.Annot</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Open the 1KG GDS file     </span></span>
+<span><span class="co">## Open the 1KG GDS file and 1KG SNV Annotation file    </span></span>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span><span class="va">gds.Annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.Annot</span><span class="op">)</span></span>
 <span></span>
@@ -736,12 +741,12 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <span>                        gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>,</span>
 <span>                        data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
 <span>                        listSampleRef <span class="op">=</span> <span class="va">listSampleRef</span>,</span>
-<span>                        nbSim <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>                        prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close both GDS files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds.Annot</span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-data">Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic
@@ -1095,6 +1100,13 @@ which this document was compiled:</p>
 Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
 Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
 <em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
+</div>
+<div id="ref-Lowy-Gallego2019a" class="csl-entry">
+Lowy-Gallego, Ernesto, Susan Fairley, Xiangqun Zheng-Bradley, Magali
+Ruffier, Laura Clarke, and Paul Flicek. 2019. <span>“<span class="nocase">Variant calling on the grch38 assembly with the data from
+phase three of the 1000 genomes project [version 2; peer review: 1
+approved, 1 not approved]</span>.”</span> <em>Wellcome Open
+Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126.1" class="external-link">https://doi.org/10.12688/wellcomeopenres.15126.1</a>.
 </div>
 <div id="ref-Price2006" class="csl-entry">
 Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.

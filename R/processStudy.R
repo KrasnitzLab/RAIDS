@@ -1546,8 +1546,18 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @encoding UTF-8
 #' @export
 computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
-                                algorithm="exact", eigen.cnt=32L,
-                                missing.rate=0.025) {
+                                    algorithm="exact", eigen.cnt=32L,
+                                    missing.rate=0.025) {
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
+    }
+
+    ## The listRM must be character string
+    if (!(is.character(listRM) && length(listRM) > 0)) {
+        stop("The \'listRM\' must be vector of sample identifiers.")
+    }
 
     ## Validate that np is a single positive number
     if(!(isSingleNumber(np) && np > 0)) {
@@ -1559,8 +1569,10 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
         stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
-    if(length(listRM) < 1) {
-        stop("Number of sample in study.annot cannot be equal to 0.\n")
+    ## Validate that missing.rate is a single number or NaN
+    if(!(isSingleNumber(missing.rate) || is.nan(missing.rate))) {
+        stop("The \'missing.rate\' parameter must be a single integer ",
+                    "or \'NaN\'.")
     }
 
     sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]

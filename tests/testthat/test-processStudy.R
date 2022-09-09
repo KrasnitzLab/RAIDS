@@ -1412,6 +1412,32 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
 context("computePCARefRMMulti() results")
 
 
+test_that(paste0("computePCARefRMMulti() must return error when gdsSample is character string"), {
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
+
+    expect_error(computePCARefRMMulti(gdsSample="toto.gds",
+                    sample.ref="HG101", listRM=c("HG102", "HG103"),
+                    np=1L, algorithm="exact", eigen.cnt=32L,
+                    missing.rate=0.025), error_message)
+})
+
+
+test_that(paste0("computePCARefRMMulti() must return error when listRM is vector of numeric values"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'listRM\' must be vector of sample identifiers."
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                        sample.ref="HG101", listRM=c(1, 3),
+                        np=1L, algorithm="exact", eigen.cnt=32L,
+                        missing.rate=0.025), error_message)
+})
+
+
 test_that(paste0("computePCARefRMMulti() must return error when np is character string"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
@@ -1457,7 +1483,7 @@ test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is vec
 })
 
 
-test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is vector of integers"), {
+test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is character strings"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(gdsFIle)
@@ -1467,7 +1493,22 @@ test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is vec
 
     expect_error(computePCARefRMMulti(gdsSample=gds1KG,
                     sample.ref="HG101", listRM=c("HG102", "HG103"),
-                    np=1L, algorithm="exact", eigen.cnt=c(11, 21),
+                    np=1L, algorithm="exact", eigen.cnt="test",
                     missing.rate=0.025), error_message)
 })
 
+
+test_that(paste0("computePCARefRMMulti() must return error when missing.rate is character strings"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- paste0("The \'missing.rate\' parameter must be ",
+                                    "a single integer or \'NaN\'.")
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                    sample.ref="HG101", listRM=c("HG102", "HG103"),
+                    np=1L, algorithm="exact", eigen.cnt=32L,
+                    missing.rate="0.025"), error_message)
+})

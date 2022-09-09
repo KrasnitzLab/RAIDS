@@ -521,4 +521,18 @@ test_that("select1KGPop() must return expected result", {
 })
 
 
+test_that("select1KGPop() must return error when popName does not exist", {
+
+    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
+
+    error_message <- paste0("The population DO_NOT_EXIST is not supported ",
+                          "(not found in the 1KG GDS file).")
+
+    expect_error(getRef1KGPop(gds_1KG, popName="DO_NOT_EXIST"), error_message,
+                    fixed=TRUE)
+})
+
 

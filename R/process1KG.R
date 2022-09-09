@@ -878,12 +878,13 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     return(0L)
 }
 
-#' @title Extract the specified column from the "sample.ref" node present in
-#' the 1KG GDS file
+#' @title Extract the specified column from the 1KG GDS 'sample.ref' node
+#' for the reference samples
 #'
-#' @description The function extract the specified column for the "sample.ref"
+#' @description The function extract the specified column for the 'sample.ref'
 #' node present in the 1KG GDS file. The column must be present in the
-#' \code{data.frame} saved in the "sample.ref" node.
+#' \code{data.frame} saved in the 'sample.ref' node. Only the information for
+#' the reference samples is returned.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.

@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{getRef1KGPop}
 \alias{getRef1KGPop}
-\title{Extract the specified column from the "sample.ref" node present in
-the 1KG GDS file}
+\title{Extract the specified column from the 1KG GDS 'sample.ref' node
+for the reference samples}
 \usage{
 getRef1KGPop(gds, popName = "superPop")
 }
@@ -22,9 +22,10 @@ that will be fetched in the \code{data.frame} present in the 1KG GDS
 with the column popName.
 }
 \description{
-The function extract the specified column for the "sample.ref"
+The function extract the specified column for the 'sample.ref'
 node present in the 1KG GDS file. The column must be present in the
-\code{data.frame} saved in the "sample.ref" node.
+\code{data.frame} saved in the 'sample.ref' node. Only the information for
+the reference samples is returned.
 }
 \examples{
 

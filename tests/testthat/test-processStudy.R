@@ -1346,3 +1346,45 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSam
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                 spRef = "test", eigen.cnt = 15L), error_message)
 })
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+                sampleRM=c("1", "2"), study.id.syn="Synthetic", np="12",
+                spRef = "test", eigen.cnt = 15L), error_message)
+})
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is zero"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=0L,
+                    spRef = "test", eigen.cnt = 15L), error_message)
+})
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when algorithm is zero"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'algorithm\' parameter must be a character string."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=0L,
+                    spRef="test", algorithm=22, eigen.cnt=15L), error_message)
+})

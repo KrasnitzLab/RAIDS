@@ -1296,7 +1296,6 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 })
 
 
-
 test_that("createStudy2GDS1KG() must return error when both  fileNamePED and pedStudy are defined", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
@@ -1315,4 +1314,35 @@ test_that("createStudy2GDS1KG() must return error when both  fileNamePED and ped
                 fileNamePED=gdsFile, pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=1, studyDF=NULL, listSamples=NULL,
                 PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
+})
+
+
+#############################################################################
+### Tests computePoolSyntheticAncestryGr() results
+#############################################################################
+
+context("computePoolSyntheticAncestryGr() results")
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when gds is numeric value"), {
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(computePoolSyntheticAncestryGr(gds=33, gdsSample="test.gds",
+            sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+            spRef = "test", eigen.cnt = 15L), error_message)
+})
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSample is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample="test.gds",
+                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                spRef = "test", eigen.cnt = 15L), error_message)
 })

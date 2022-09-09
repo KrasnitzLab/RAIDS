@@ -21,8 +21,9 @@ the GDS Sample file.}
 
 \item{sample.ref}{TODO}
 
-\item{listRM}{a  \code{} list of sample from the Ref to remove
-before the PCA}
+\item{listRM}{a \code{vector} of \code{character} strings containing the
+identifiers for the reference samples that need to be removed for the
+PCA analysis.}
 
 \item{np}{a single positive \code{integer} representing the number of CPU
 that will be used. Default: \code{1L}.}

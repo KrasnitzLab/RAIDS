@@ -1497,8 +1497,9 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #'
 #' @param sample.ref TODO
 #'
-#' @param listRM a  \code{} list of sample from the Ref to remove
-#' before the PCA
+#' @param listRM a \code{vector} of \code{character} strings containing the
+#' identifiers for the reference samples that need to be removed for the
+#' PCA analysis.
 #'
 #' @param np a single positive \code{integer} representing the number of CPU
 #' that will be used. Default: \code{1L}.
@@ -1517,6 +1518,7 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA} only
 #' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' Default: \code{0.025}.
 #'
 #' @return a \code{list} containing 2 entries:
 #' \itemize{
@@ -1543,14 +1545,18 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @importFrom SNPRelate snpgdsPCA
 #' @encoding UTF-8
 #' @export
-computePCARefRMMulti <- function(gdsSample,
-                                sample.ref, listRM, np=1L,
+computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
                                 algorithm="exact", eigen.cnt=32L,
                                 missing.rate=0.025) {
 
-    ## Validate that np is a positive number
+    ## Validate that np is a single positive number
     if(!(isSingleNumber(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## Validate that eigen.cnt is a single number
+    if(!(isSingleNumber(eigen.cnt))) {
+        stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
     if(length(listRM) < 1) {

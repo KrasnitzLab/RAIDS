@@ -1403,3 +1403,71 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                 spRef="test", algorithm="exact", eigen.cnt="15"), error_message)
 })
+
+
+#############################################################################
+### Tests computePCARefRMMulti() results
+#############################################################################
+
+context("computePCARefRMMulti() results")
+
+
+test_that(paste0("computePCARefRMMulti() must return error when np is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                            sample.ref="HG101", listRM=c("HG102", "HG103"),
+                            np="1", algorithm="exact", eigen.cnt=32L,
+                            missing.rate=0.025), error_message)
+})
+
+
+test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                    sample.ref="HG101", listRM=c("HG102", "HG103"),
+                    np=1L, algorithm="exact", eigen.cnt="11",
+                    missing.rate=0.025), error_message)
+})
+
+
+test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is vector of integers"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                    sample.ref="HG101", listRM=c("HG102", "HG103"),
+                    np=1L, algorithm="exact", eigen.cnt=c(11, 21),
+                    missing.rate=0.025), error_message)
+})
+
+
+test_that(paste0("computePCARefRMMulti() must return error when eigen.cnt is vector of integers"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+
+    expect_error(computePCARefRMMulti(gdsSample=gds1KG,
+                    sample.ref="HG101", listRM=c("HG102", "HG103"),
+                    np=1L, algorithm="exact", eigen.cnt=c(11, 21),
+                    missing.rate=0.025), error_message)
+})
+

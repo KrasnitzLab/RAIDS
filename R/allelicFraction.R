@@ -561,20 +561,8 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
-#' @export
 computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
                                         cutOffEmptyBox=-3) {
-
-    ## The chr parameter must be a single integer value
-    if (!isSingleNumber(chr))  {
-        stop("The \'chr\' must be a single integer value representing ",
-             "a chromosome")
-    }
-
-    ## The wAR parameter must be a single positive numeric superior to 1
-    if (!(isSingleNumber(wAR) && (wAR >= 1)))  {
-        stop("The \'wAR\' must be a single numeric positive value.")
-    }
 
     # We use wAR - 1 because
     # process the window ex: 1 to 1+wAR
@@ -602,6 +590,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
         }
     }
     snp.pos$imbAR[which(snp.pos$LOH == 1)] <- 0
+
     return(snp.pos$imbAR)
 }
 

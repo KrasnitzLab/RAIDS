@@ -312,58 +312,6 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric abov
 
 
 #############################################################################
-### Tests computeAllelicImbDNAChr() results
-#############################################################################
-
-
-context("computeAllelicImbDNAChr() results")
-
-
-test_that("computeAllelicImbDNAChr() must return error when chr is vector of numerics", {
-
-    error_message <- paste0("The \'chr\' must be a single integer value representing ",
-                            "a chromosome")
-
-    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=c(1, 2),
-                                            wAR=10, cutOffEmptyBox=-3),
-                 error_message)
-})
-
-
-test_that("computeLOHBlocksDNAChr() must return error when chr is character string", {
-
-    error_message <- paste0("The \'chr\' must be a single integer value representing ",
-                            "a chromosome")
-
-    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr="titi",
-                                            wAR=10, cutOffEmptyBox=-3),
-                 error_message)
-})
-
-
-
-test_that("computeLOHBlocksDNAChr() must return error when wAR is character string", {
-
-    error_message <- "The \'wAR\' must be a single numeric positive value."
-
-    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=1,
-                                            wAR="10", cutOffEmptyBox=-3),
-                 error_message)
-})
-
-
-
-test_that("computeLOHBlocksDNAChr() must return error when wAR is vector of numerics", {
-
-    error_message <- "The \'wAR\' must be a single numeric positive value."
-
-    expect_error(computeAllelicImbDNAChr(snp.pos=data.frame(), chr=1,
-                                            wAR=c(11, 21), cutOffEmptyBox=-3),
-                 error_message)
-})
-
-
-#############################################################################
 ### Tests computeAllelicFractionDNA() results
 #############################################################################
 

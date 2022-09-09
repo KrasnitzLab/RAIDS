@@ -1134,11 +1134,12 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' Default: \code{3}.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
+#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#'  **This parameter is RNA specific.**
 #' Default: \code{NULL}.
 #'
 #' @param block.id a \code{character} string corresponding to the block
-#' identifier in \code{gdsRefAnnot}.  RNA specific
+#' identifier in \code{gdsRefAnnot}. **This parameter is RNA specific.**
 #' Default: \code{NULL}
 #'
 #' @return The integer \code{0L} when successful.
@@ -2159,6 +2160,15 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
                             eigen.cnt=32L,
                             missing.rate=0.025) {
 
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
+    }
 
     pca1KG <- computePCARefRMMulti(gdsSample, names(spRef),
                                     sampleRM, np=np,
@@ -2229,19 +2239,19 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #' @encoding UTF-8
 #' @export
 computePoolSyntheticAncestry <- function(gds, gdsSample,
-                                         sample.ana.id,
-                                         dataRef, spRef,
-                                         study.id.syn,
-                                         np = 1L,
-                                         listCatPop = c("EAS", "EUR",
-                                                    "AFR", "AMR", "SAS"),
-                                         fieldPopIn1KG = "superPop",
-                                         fieldPopInfAnc = "SuperPop",
-                                         kList = seq(2,15,1),
-                                         pcaList = 2:15,
-                                         algorithm="exact",
-                                         eigen.cnt=32L,
-                                         missing.rate=0.025) {
+                                            sample.ana.id,
+                                            dataRef, spRef,
+                                            study.id.syn,
+                                            np = 1L,
+                                            listCatPop = c("EAS", "EUR",
+                                                        "AFR", "AMR", "SAS"),
+                                            fieldPopIn1KG = "superPop",
+                                            fieldPopInfAnc = "SuperPop",
+                                            kList = seq(2,15,1),
+                                            pcaList = 2:15,
+                                            algorithm="exact",
+                                            eigen.cnt=32L,
+                                            missing.rate=0.025) {
 
     sampleRM <- splitSelectByPop(dataRef)
     KNN.list <- list()
@@ -2260,10 +2270,9 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
     }
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
-    pedSyn <- prepPedSynthetic1KG(gds, gdsSample,
-                                    study.id.syn, fieldPopIn1KG)
 
-
+    pedSyn <- prepPedSynthetic1KG(gds=gds, gdsSample=gdsSample,
+                            study.id=study.id.syn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
                                             fieldPopIn1KG, fieldPopInfAnc,
@@ -2274,11 +2283,9 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                             np=np, algorithm=algorithm,
                             eigen.cnt=eigen.cnt)
 
-
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
                                                 sample.ana.id,
                                                 spRef)
-
 
     return(listKNNSample)
 }

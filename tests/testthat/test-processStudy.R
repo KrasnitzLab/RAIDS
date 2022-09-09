@@ -1385,6 +1385,21 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
-                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=0L,
+                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                     spRef="test", algorithm=22, eigen.cnt=15L), error_message)
+})
+
+
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.cnt is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                spRef="test", algorithm="exact", eigen.cnt="15"), error_message)
 })

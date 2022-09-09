@@ -26,8 +26,9 @@ computePoolSyntheticAncestryGr(
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{gds} opened related to
-the sample}
+\item{gdsSample}{an object of class
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+GDS Sample file.}
 
 \item{sampleRM}{TODO}
 
@@ -35,7 +36,8 @@ the sample}
 
 \item{study.id.syn}{TODO}
 
-\item{np}{TODO}
+\item{np}{a single positive \code{integer} representing the number of
+threads. Default: \code{1L}.}
 
 \item{listCatPop}{TODO}
 
@@ -47,17 +49,21 @@ the sample}
 
 \item{pcaList}{TODO array of the pca dimension possible values}
 
-\item{algorithm}{algorithm of the PCA "exact", "randomized"
-(para snpgdsPCA)}
+\item{algorithm}{a \code{character} string representing the algorithm used
+to calculate the PCA. The 2 choices are "exact" (traditional exact
+calculation) and "randomized" (fast PCA with randomized algorithm
+introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{number of eigenvectors in PCA
-(para snpgdsPCA)}
+\item{eigen.cnt}{a single \code{integer} indicating the number of
+eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+Default: \code{32L}.}
 
 \item{missing.rate}{number of eigenvectors in PCA
 (para snpgdsPCA)}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors
+a \code{list} TODO with the sample.id and eigenvectors
 and a table with KNN callfor different K and pca dimension.
 }
 \description{
@@ -68,6 +74,12 @@ TODO
 # TODO
 listEigenvector <- "TOTO"
 
+}
+\references{
+Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
+Price AL. Fast Principal-Component Analysis Reveals Convergent Evolution
+of ADH1B in Europe and East Asia. Am J Hum Genet. 2016 Mar 3;98(3):456-72.
+doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 }
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

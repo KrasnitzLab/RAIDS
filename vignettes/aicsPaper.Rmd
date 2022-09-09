@@ -716,24 +716,21 @@ or in R
 ####################################################################
 library(RAIDS)    
     
-
-##########################################
-# Files related to the reference
-# Downloaded
-##########################################
+###################################################################
+## The 1KG GDS file is required
+###################################################################
 PATH_1KG <- PATH_REF
     
 fileName.GDS <- "matGeno1000g.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 
-##########################################
-    
+## Open the 1KG GDS file     
 gds <- openfn.gds(file.GDS)
 
-    
-# Path to the directory where the gds file for each sample
-# will be create
-PATHSAMPLEGDS <- file.path("The path")
+###################################################################
+## The path to the directory containing the GDS Sample files
+###################################################################
+PATH_SAMPLE_GDS <- file.path("The path")
     
 # directory which content directory name Name.ID in whihc the PCA is save
 # 
@@ -742,8 +739,11 @@ if(! file.exists(PATH_OUT)) {
   dir.create(PATH_OUT)
 }
     
-# Need a data.frame with study description for the
-# synthetic data
+####################################################################
+## A data.frame with the description of the study for the synthetic
+## data is required.
+## The column names must be as shown 
+#################################################################### 
 studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
                           study.desc = "Description",
                           study.platform = "Platform string like Whole Exome",
@@ -753,23 +753,19 @@ studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
 # Look at studyDF at step 3.
 study.id <- "Id of the study"
     
-# The file ped defined before
+
+
+##############################################################
+## The list of samples to analyse as obtained by the 
+## PED RDS file. The samples must have an 
+## associated GDS Sample file.
+##############################################################
 filePED <- FILE_PED
 ped <- readRDS(filePED)
-
-# You need a list of the sample Name.ID 
-# you can get it from other source than 
-# filePED 
 listSamples <- ped[, "Name.ID"]
     
 # Get the known superPop for the reference
 spRef <- getRef1KGPop(gds, "superPop")
-    
-# The set of 1KG use in the synthetic dataset
-# if you use select1KGPop the seed must be the same 
-# as the step 6 
-    set.seed(3043)
-    
     
 ####################################################################
 ## Fix seed as in step 6 to ensure the same results
@@ -788,9 +784,8 @@ sampleRM <- splitSelectByPop(dataRef)
 # Can be run in paralle or in different clusters...
 for(i in seq_len(length(listSamples))){
         
-  file.GDSSample <- file.path(PATHSAMPLEGDS, 
+  file.GDSSample <- file.path(PATH_SAMPLE_GDS, 
                                       paste0(listSamples[i], ".gds"))
-  
   
   ## The directory where the output files will be created must exist      
   PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
@@ -819,11 +814,11 @@ for(i in seq_len(length(listSamples))){
   saveRDS(KNN.sample.syn, file.path(PATH_OUT_SAMPLE, 
                         paste0("KNN.synt.", listSamples[i], ".", i, ".rds")))
         
-  ## Close GDS Sample file
+  ## Close GDS Sample file (important)
   closefn.gds(gdsSample)
 }
     
-## Close both 1KG GDS file  
+## Close 1KG GDS file (important)
 closefn.gds(gds)
 ```
 

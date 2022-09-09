@@ -752,8 +752,6 @@ studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
     
 # Look at studyDF at step 3.
 study.id <- "Id of the study"
-    
-
 
 ##############################################################
 ## The list of samples to analyse as obtained by the 

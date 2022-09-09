@@ -28,9 +28,15 @@ the sample}
 \item{study.annot}{a  \code{data.frame} with one entry from study.annot in
 the gds}
 
-\item{algorithm}{algorithm of the PCA "exact", "randomized"}
+\item{algorithm}{a \code{character} string representing the algorithm used
+to calculate the PCA. The 2 choices are "exact" (traditional exact
+calculation) and "randomized" (fast PCA with randomized algorithm
+introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{number of eigenvectors in PCA}
+\item{eigen.cnt}{a single \code{integer} indicating the number of
+eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+Default: \code{32L}.}
 }
 \value{
 A \code{list} TODO with the sample.id and eigenvectors.
@@ -43,6 +49,12 @@ TODO Deprecated
 # TODO
 gds <- "TOTO"
 
+}
+\references{
+Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
+Price AL. Fast Principal-Component Analysis Reveals Convergent Evolution
+of ADH1B in Europe and East Asia. Am J Hum Genet. 2016 Mar 3;98(3):456-72.
+doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 }
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

@@ -23,7 +23,7 @@ which compute the PCA.}
 threads. Default: \code{1L}.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 This function calculates the patient eigenvectors using

@@ -1418,7 +1418,10 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt number of eigenvectors in PCA
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
 #' @return A \code{list} TODO with the sample.id and eigenvectors.
 #'
@@ -1485,7 +1488,9 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 
 #' @title Calculate Principal Component Analysis (PCA) on SNV genotype dataset
 #'
-#' @description TODO
+#' @description The functions calculates the principal component analysis (PCA)
+#' for a list of pruned SNVs present in a GDS Sample file. The
+#' \link[SNPRelate]{snpgdsPCA} function is used to do the calculation.
 #'
 #' @param gdsSample an object of class \link[SNPRelate]{SNPGDSFileClass},
 #' the GDS Sample file.
@@ -1495,18 +1500,23 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @param listRM a  \code{} list of sample from the Ref to remove
 #' before the PCA
 #'
-#' @param np TODO
+#' @param np a single positive \code{integer} representing the number of CPU
+#' that will be used. Default: \code{1L}.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA. The 2 choices are "exact" (traditional exact
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
-#' @param missing.rate number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA} only
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
 #'
 #' @return a \code{list} containing 2 entries:
 #' \itemize{
@@ -1538,11 +1548,16 @@ computePCARefRMMulti <- function(gdsSample,
                                 algorithm="exact", eigen.cnt=32L,
                                 missing.rate=0.025) {
 
-    if(length(listRM) < 1) {
-        stop("Number of sample in study.annot not equal 0\n")
+    ## Validate that np is a positive number
+    if(!(isSingleNumber(np) && np > 0)) {
+        stop("The \'np\' parameter must be a single positive integer.")
     }
 
-    sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM) )]
+    if(length(listRM) < 1) {
+        stop("Number of sample in study.annot cannot be equal to 0.\n")
+    }
+
+    sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]
 
     listPCA <- list()
 
@@ -1650,7 +1665,10 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt TODO. Default: \code{32L}.
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
 #' @references
 #'
@@ -2167,13 +2185,15 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
 #' @param missing.rate number of eigenvectors in PCA
 #' (para snpgdsPCA)
 #'
-#' @return A \code{list} TODO with the sample.id and eigenvectors
+#' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
 #'
 #' @references
@@ -2214,6 +2234,11 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
         stop("The \'gdsSample\' must be an object of class \'gds.class\'")
     }
 
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np > 0))) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
     ## Validate that algorithm is a string
     if(!(is.character(algorithm))) {
         stop("The \'algorithm\' parameter must be a character string.")
@@ -2222,9 +2247,9 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     ## Set algorithm
     algorithm <- match.arg(algorithm)
 
-    ## The parameter np must be a single positive integer
-    if(!(isSingleNumber(np) && (np > 0))) {
-        stop("The \'np\' parameter must be a single positive integer.")
+    ## The parameter eigen.cnt must be a single integer
+    if(!(isSingleNumber(eigen.cnt))) {
+        stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
@@ -2280,8 +2305,10 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
 #' @param missing.rate number of eigenvectors in PCA
 #' (para snpgdsPCA)
@@ -2391,8 +2418,10 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' Default: \code{32L}.
 #'
 #' @param missing.rate number of eigenvectors in PCA
 #' (para snpgdsPCA)

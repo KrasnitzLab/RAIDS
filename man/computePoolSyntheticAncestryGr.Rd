@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computePoolSyntheticAncestryGr}
 \alias{computePoolSyntheticAncestryGr}
-\title{TODO}
+\title{Run a PCA analysis and a K nearest neighbor analysis on a small set
+of synthetic data}
 \usage{
 computePoolSyntheticAncestryGr(
   gds,
@@ -81,7 +82,7 @@ from each sub-continental population. The reference samples used to
 create those synthetic profiles are first removed from the 1KG list
 of samples that generates the reference PCA. Then, the retained synthetic
 profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
-analysis  using a range of K and D values is done.
+analysis using a range of K and D values is done.
 }
 \examples{
 

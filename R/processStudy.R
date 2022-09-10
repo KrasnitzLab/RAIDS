@@ -2184,7 +2184,9 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 #' GDS Sample file.
 #'
-#' @param sampleRM TODO
+#' @param sampleRM a \code{vector} of \code{character} strings representing
+#' the identifiers of the 1KG reference samples that should not be used to
+#' create the reference PCA.
 #'
 #' @param spRef TODO
 #'
@@ -2250,7 +2252,7 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
                             fieldPopInfAnc="SuperPop",
                             kList=seq(2,15,1),
                             pcaList=seq(2,15,1),
-                            algorithm="exact",
+                            algorithm=c("exact", "randomized"),
                             eigen.cnt=32L,
                             missing.rate=0.025) {
 
@@ -2262,6 +2264,12 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     ## The gdsSample must be an object of class "gds.class"
     if (!inherits(gdsSample, "gds.class")) {
         stop("The \'gdsSample\' must be an object of class \'gds.class\'")
+    }
+
+    ## The parameter sampleRM must be a single positive integer
+    if(!(is.character(sampleRM))) {
+        stop("The \'sampleRM\' parameter must be a vector of character ",
+                "strings.")
     }
 
     ## The parameter np must be a single positive integer

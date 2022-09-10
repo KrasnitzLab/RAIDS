@@ -17,7 +17,7 @@ computePoolSyntheticAncestryGr(
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1),
-  algorithm = "exact",
+  algorithm = c("exact", "randomized"),
   eigen.cnt = 32L,
   missing.rate = 0.025
 )
@@ -30,7 +30,9 @@ computePoolSyntheticAncestryGr(
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 GDS Sample file.}
 
-\item{sampleRM}{TODO}
+\item{sampleRM}{a \code{vector} of \code{character} strings representing
+the identifiers of the 1KG reference samples that should not be used to
+create the reference PCA.}
 
 \item{spRef}{TODO}
 

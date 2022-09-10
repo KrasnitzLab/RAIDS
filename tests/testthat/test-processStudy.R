@@ -1348,6 +1348,20 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSam
 })
 
 
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when sampleRM is vector of numeric values"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'sampleRM\' parameter must be a vector of character strings."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+            sampleRM=c(1, 2), study.id.syn="Synthetic", np=1L,
+            spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+})
+
+
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is character string"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
@@ -1389,6 +1403,17 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
                     spRef="test", algorithm=22, eigen.cnt=15L), error_message)
 })
 
+
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when algorithm is not in the list of choices"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                spRef="test", algorithm="Hello", eigen.cnt=15L))
+})
 
 
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.cnt is character string"), {

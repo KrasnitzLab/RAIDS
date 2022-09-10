@@ -116,15 +116,17 @@ threads. Default: <code>1L</code>.</p></dd>
 
 
 <dt>fieldPopIn1KG</dt>
-<dd><p>TODO</p></dd>
+<dd><p>TODO. Default: <code>"superPop"</code>.</p></dd>
 
 
 <dt>fieldPopInfAnc</dt>
-<dd><p>TODO</p></dd>
+<dd><p>TODO. Default: <code>"SuperPop"</code>.</p></dd>
 
 
 <dt>kList</dt>
-<dd><p>TODO array of the k possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _K_ parameter.
+Default: <code>seq(2,15,1)</code>.</p></dd>
 
 
 <dt>pcaList</dt>
@@ -146,8 +148,11 @@ Default: <code>32L</code>.</p></dd>
 
 
 <dt>missing.rate</dt>
-<dd><p>number of eigenvectors in PCA
-(para snpgdsPCA)</p></dd>
+<dd><p>a <code>numeric</code> value representing the threshold
+missing rate at with the SNVs are discarded; the SNVs are retained in the
+<a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsPCA.html" class="external-link">snpgdsPCA</a> only
+with "&lt;= missing.rate" only; if <code>NaN</code>, no missing threshold.
+Default: <code>0.025</code>.</p></dd>
 
 </dl></div>
     <div id="value">

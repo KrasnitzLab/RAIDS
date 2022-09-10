@@ -616,7 +616,7 @@ sample at the time.</p>
 <span><span class="co">## such as the 1KG SNV Annotation GDS file and</span></span>
 <span><span class="co">## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file </span></span>
 <span><span class="co">## for the gene annotation of the SNVs</span></span>
-<span><span class="va">snp.pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
+<span><span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
 <span>                                      sampleCurrent <span class="op">=</span> <span class="va">sampleName</span>, </span>
 <span>                                      study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
 <span>                                      chrInfo <span class="op">=</span> <span class="va">chrInfo</span><span class="op">)</span></span>
@@ -671,6 +671,15 @@ extracted from the 1KG study. The information is saved in the GDS Sample
 file associated to the selected cancer profile. A synthetic profile is
 created for each combination of the 1KG samples and cancer profile. The
 synthetic profile is then saved in the GDS Sample file.</p>
+<p>The three functions <em>select1KGPop()</em>, <em>prepSynthetic()</em>
+and <em>syntheticGeno()</em> are association to the creation of the
+synthetic dataset.</p>
+<p>Those 3 files are required:</p>
+<ol style="list-style-type: decimal">
+<li>The GDS Sample file</li>
+<li>The 1KG GDS file</li>
+<li>The 1KG SNv Annotation GDS file</li>
+</ol>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
@@ -749,10 +758,9 @@ synthetic profile is then saved in the GDS Sample file.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-data">Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic
-data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-data"></a>
+<h4 id="sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-profile">Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic
+profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-profile"></a>
 </h4>
-<p>or in R</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
@@ -776,8 +784,9 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span><span class="va">PATH_SAMPLE_GDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## The path to the directory where the PCA results will be saved</span></span>
-<span><span class="co">## The directory must exist</span></span>
+<span><span class="co">## The path to the directory where the PCA results will be saved </span></span>
+<span><span class="co">## in RDS files.</span></span>
+<span><span class="co">## The directory must exist.</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">PATH_OUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"The path"</span><span class="op">)</span></span>
 <span></span>
@@ -796,8 +805,8 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## The list of samples to analyse as obtained by the </span></span>
-<span><span class="co">## PED RDS file. The samples must have an </span></span>
+<span><span class="co">## The list of cancer samples used to generate the synthetic data </span></span>
+<span><span class="co">## as obtained by the PED RDS file. The samples must have an </span></span>
 <span><span class="co">## associated GDS Sample file.</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="va">FILE_PED</span></span>
@@ -806,6 +815,7 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## Get the super-population information for the reference samples</span></span>
+<span><span class="co">## This is the ground truth for the 1KG samples</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>    </span>
@@ -820,17 +830,20 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## The function splitSelectByPop() generates a matrix with the</span></span>
-<span><span class="co">##reference samples split by population</span></span>
+<span><span class="co">## reference samples split by sub-continental population</span></span>
 <span><span class="co">####################################################################  </span></span>
 <span><span class="va">sampleRM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/splitSelectByPop.html">splitSelectByPop</a></span><span class="op">(</span><span class="va">dataRef</span><span class="op">)</span></span>
 <span>    </span>
-<span><span class="co"># Can be run in parallel or in different clusters...</span></span>
+<span><span class="co">## Loop for all cancer samples with associated synthetic data</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        </span>
+<span>  </span>
+<span>  <span class="co">## The GDS Sample associated to the cancer sample     </span></span>
 <span>  <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_SAMPLE_GDS</span>, </span>
 <span>                                      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="co">## The directory where the output files will be created must exist      </span></span>
+<span>  <span class="co">## A sub-directory is created for the cancer sample</span></span>
+<span>  <span class="co">## Beware that the number of files created will correspond to the </span></span>
+<span>  <span class="co">## number of rows in the sampleRM matrix</span></span>
 <span>  <span class="va">PATH_OUT_SAMPLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span></span>
@@ -839,10 +852,16 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span>  <span class="co">## Open GDS Sample file      </span></span>
 <span>  <span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span>        </span>
-<span>  <span class="co"># data.frame with the sample.id (Name.ID) with the study id</span></span>
+<span>  <span class="co">## This variable will contain the results from the PCA analyses</span></span>
 <span>  <span class="va">KNN.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>        </span>
+<span>  </span>
+<span>  <span class="co">## For each row of the sampleRM matrix      </span></span>
 <span>  <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="co">## Run a PCA analysis using 1 synthetic profile for each sub-continental</span></span>
+<span>      <span class="co">## The synthetic profiles are projected on the 1KG PCA space </span></span>
+<span>      <span class="co">## (the reference samples used to generate the synthetic profiles are </span></span>
+<span>      <span class="co">##  removed from this PCA)</span></span>
+<span>      <span class="co">## A K nearest neighbor analysis is done using a range of K and D values</span></span>
 <span>      <span class="va">KNN.synt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computePoolSyntheticAncestryGr.html">computePoolSyntheticAncestryGr</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, </span>
 <span>                                          gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
 <span>                                          sampleRM <span class="op">=</span>  <span class="va">sampleRM</span><span class="op">[</span><span class="va">j</span>,<span class="op">]</span>,</span>
@@ -850,13 +869,12 @@ data<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn
 <span>                                          np <span class="op">=</span> <span class="fl">4L</span>,</span>
 <span>                                          spRef <span class="op">=</span> <span class="va">spRef</span>,</span>
 <span>                                          eigen.cnt <span class="op">=</span> <span class="fl">15L</span><span class="op">)</span></span>
-<span>      <span class="va">KNN.list</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">KNN.synt</span><span class="op">$</span><span class="va">matKNN</span></span>
+<span>      </span>
+<span>      <span class="co">## Results are saved</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">KNN.synt</span><span class="op">$</span><span class="va">matKNN</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span>, </span>
+<span>                        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"KNN.synt."</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"."</span>, <span class="va">j</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  </span>
-<span>  <span class="va">KNN.sample.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">KNN.list</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">KNN.sample.syn</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span>, </span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"KNN.synt."</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"."</span>, <span class="va">i</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>        </span>
 <span>  <span class="co">## Close GDS Sample file (important)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>

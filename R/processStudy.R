@@ -1912,20 +1912,21 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #' @encoding UTF-8
 #' @export
 computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
-                                   listCatPop, study.id.syn,
-                                   spRef, fieldPopInfAnc="SuperPop",
-                                   kList = seq_len(15),
-                                   pcaList = 2:15) {
+                                    listCatPop, study.id.syn,
+                                    spRef, fieldPopInfAnc="SuperPop",
+                                    kList=seq_len(15),
+                                    pcaList=2:15) {
 
     ## The number of rows in study.annot must be one.
     # if(nrow(study.annot) < 1) {
     #     stop("Number of samples in study.annot not equal to 1\n")
     # }
 
-    if(is.null(kList)){
-        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+    if(is.null(kList)) {
+        kList <- seq_len(15) #c(seq_len(14), seq(15,100, by=5))
     }
-    if(is.null(pcaList)){
+
+    if(is.null(pcaList)) {
         pcaList <- 2:15
     }
 
@@ -1945,8 +1946,6 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                         # SuperPop=character(length(pcaList) * length(kList)),
                              stringsAsFactors=FALSE)
         resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
-
-
 
 
         eigenvect <- rbind(listEigenvector$eigenvector.ref,
@@ -1977,6 +1976,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
         listMat[[i]] <- resMat
     }
     resMat <- do.call(rbind, listMat)
+
     listKNN <- list(sample.id=listEigenvector$sample.id,
                     sample1Kg=study.annot$case.id,
                     sp=spRef[study.annot$case.id],
@@ -2190,11 +2190,13 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param listCatPop TODO
 #'
-#' @param fieldPopIn1KG TODO
+#' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
 #'
-#' @param fieldPopInfAnc TODO
+#' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param pcaList TODO array of the pca dimension possible values
 #'
@@ -2208,8 +2210,11 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA} only
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' Default: \code{0.025}.
 #'
 #' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
@@ -2279,10 +2284,10 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
                         sampleRef=sampleRM, study.id.syn=study.id.syn)
 
-    KNN.synt <- computeKNNRefSynthetic(gdsSample, resPCA,
-                                        listCatPop,
-                                        study.id.syn, spRef,
-                                        fieldPopInfAnc=fieldPopInfAnc)
+    KNN.synt <- computeKNNRefSynthetic(gdsSample=gdsSample,
+                        listEigenvector=resPCA, listCatPop=listCatPop,
+                        study.id.syn=study.id.syn, spRef=spRef,
+                        fieldPopInfAnc=fieldPopInfAnc)
 
     return(KNN.synt)
 }

@@ -41,11 +41,13 @@ threads. Default: \code{1L}.}
 
 \item{listCatPop}{TODO}
 
-\item{fieldPopIn1KG}{TODO}
+\item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
 
-\item{fieldPopInfAnc}{TODO}
+\item{fieldPopInfAnc}{TODO. Default: \code{"SuperPop"}.}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter.
+Default: \code{seq(2,15,1)}.}
 
 \item{pcaList}{TODO array of the pca dimension possible values}
 
@@ -59,8 +61,11 @@ eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
-\item{missing.rate}{number of eigenvectors in PCA
-(para snpgdsPCA)}
+\item{missing.rate}{a \code{numeric} value representing the threshold
+missing rate at with the SNVs are discarded; the SNVs are retained in the
+\link[SNPRelate]{snpgdsPCA} only
+with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+Default: \code{0.025}.}
 }
 \value{
 a \code{list} TODO with the sample.id and eigenvectors

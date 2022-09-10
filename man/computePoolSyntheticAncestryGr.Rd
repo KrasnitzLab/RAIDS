@@ -16,7 +16,7 @@ computePoolSyntheticAncestryGr(
   fieldPopIn1KG = "superPop",
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
-  pcaList = 2:15,
+  pcaList = seq(2, 15, 1),
   algorithm = "exact",
   eigen.cnt = 32L,
   missing.rate = 0.025
@@ -39,7 +39,9 @@ GDS Sample file.}
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
 
-\item{listCatPop}{TODO}
+\item{listCatPop}{TODO a \code{vector} of \code{character} string
+representing the list of possible ancestry assignation. Default:
+\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
 
@@ -72,7 +74,12 @@ a \code{list} TODO with the sample.id and eigenvectors
 and a table with KNN callfor different K and pca dimension.
 }
 \description{
-TODO
+The function runs a PCA analysis using 1 synthetic profile
+from each sub-continental population. The reference samples used to
+create those synthetic profiles are first removed from the 1KG list
+of samples that generates the reference PCA. Then, the retained synthetic
+profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
+analysis  using a range of K and D values is done.
 }
 \examples{
 

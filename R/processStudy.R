@@ -2170,7 +2170,12 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 
 #' @title TODO
 #'
-#' @description TODO
+#' @description The function runs a PCA analysis using 1 synthetic profile
+#' from each sub-continental population. The reference samples used to
+#' create those synthetic profiles are first removed from the 1KG list
+#' of samples that generates the reference PCA. Then, the retained synthetic
+#' profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
+#' analysis  using a range of K and D values is done.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1KG GDS file.
@@ -2188,7 +2193,9 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
 #'
-#' @param listCatPop TODO
+#' @param listCatPop TODO a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignation. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
 #'
@@ -2237,12 +2244,12 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 computePoolSyntheticAncestryGr <- function(gds, gdsSample,
                             sampleRM, spRef,
                             study.id.syn,
-                            np = 1L,
-                            listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
-                            fieldPopIn1KG = "superPop",
-                            fieldPopInfAnc = "SuperPop",
-                            kList = seq(2,15,1),
-                            pcaList = 2:15,
+                            np=1L,
+                            listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                            fieldPopIn1KG="superPop",
+                            fieldPopInfAnc="SuperPop",
+                            kList=seq(2,15,1),
+                            pcaList=seq(2,15,1),
                             algorithm="exact",
                             eigen.cnt=32L,
                             missing.rate=0.025) {
@@ -2287,7 +2294,8 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     KNN.synt <- computeKNNRefSynthetic(gdsSample=gdsSample,
                         listEigenvector=resPCA, listCatPop=listCatPop,
                         study.id.syn=study.id.syn, spRef=spRef,
-                        fieldPopInfAnc=fieldPopInfAnc)
+                        fieldPopInfAnc=fieldPopInfAnc, kList=kList,
+                        pcaList=pcaList)
 
     return(KNN.synt)
 }

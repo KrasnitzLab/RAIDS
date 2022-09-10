@@ -41,7 +41,8 @@ Default: \code{32L}.}
 \item{missing.rate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} only
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.}
+with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+Default: \code{0.025}.}
 }
 \value{
 a \code{list} containing 2 entries:

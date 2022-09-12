@@ -1430,6 +1430,21 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
 })
 
 
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when missing.rate is character string"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- paste0("The \'missing.rate\' parameter must be a single positive ",
+                                    "numeric between zero and one or NaN.")
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+        sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L, spRef="test",
+        algorithm="exact", eigen.cnt=15L, missing.rate="0.02"), error_message)
+})
+
+
 #############################################################################
 ### Tests computePCARefRMMulti() results
 #############################################################################

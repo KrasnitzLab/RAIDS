@@ -1877,26 +1877,36 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     return(listKNN)
 }
 
-#' @title TODO
+#' @title Run a k-nearest neighbor analysis on a subset of the
+## synthetic dataset
 #'
 #' @description TODO
 #'
-#' @param gdsSample an object of class \code{gds} opened related to
-#' the sample
+#' @param gdsSample an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+#' GDS Sample file.
 #'
 #' @param listEigenvector TODO see return of computePCAsynthetic
 #'
-#' @param listCatPop TODO
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param study.id.syn a the study.id of the synthetic data
 #'
 #' @param spRef TODO
 #'
-#' @param fieldPopInfAnc TODO
+#' @param fieldPopInfAnc TODO . Default: \code{"SuperPop"}.
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList  a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis.
+#' Default: \code{seq_len(15)}.
 #'
-#' @param pcaList TODO array of the pca dimension possible values
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @return A \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
@@ -1915,7 +1925,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                     listCatPop, study.id.syn,
                                     spRef, fieldPopInfAnc="SuperPop",
                                     kList=seq_len(15),
-                                    pcaList=2:15) {
+                                    pcaList=seq(2,15,1)) {
 
     ## The number of rows in study.annot must be one.
     # if(nrow(study.annot) < 1) {
@@ -2196,8 +2206,8 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
 #'
-#' @param listCatPop TODO a \code{vector} of \code{character} string
-#' representing the list of possible ancestry assignation. Default:
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
@@ -2205,10 +2215,14 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
-#' values tested for the  _K_ parameter.
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis.
 #' Default: \code{seq(2,15,1)}.
 #'
-#' @param pcaList TODO array of the pca dimension possible values
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA. The 2 choices are "exact" (traditional exact
@@ -2291,6 +2305,14 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
         stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
+    ## The parameter missing.rate must be a single positive numeric between
+    ## zero and one or NaN
+    if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
+            missing.rate <= 1.0)) || is.nan(missing.rate)))  {
+        stop("The \'missing.rate\' parameter must be a single positive ",
+                "numeric between zero and one or NaN.")
+    }
+
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,
                         sample.ref=names(spRef), listRM=sampleRM, np=np,
@@ -2300,6 +2322,8 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
                         sampleRef=sampleRM, study.id.syn=study.id.syn)
 
+    ## Calculate the k-nearest neighbor analyses on a subset of the
+    ## synthetic dataset
     KNN.synt <- computeKNNRefSynthetic(gdsSample=gdsSample,
                         listEigenvector=resPCA, listCatPop=listCatPop,
                         study.id.syn=study.id.syn, spRef=spRef,

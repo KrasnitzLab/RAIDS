@@ -187,10 +187,10 @@ executed for each of chromosome</p>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Create one directory for the specific chromosome</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Two variables need to be assigned</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable PATHGENO is the path where the split 1KG genotyping </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable PATHGENO is the path where the split 1KG genotyping</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   files will be located</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory </span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   with the name of the chromosome will be created. The variable must </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   with the name of the chromosome will be created. The variable must</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   include the prefix "chr".</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: PATHGENO=./genotypingPerSample</span></span>
@@ -199,9 +199,9 @@ executed for each of chromosome</p>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>mkdir <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>cd <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR is the associated 1KG genotyping VCF file for the </span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR is the associated 1KG genotyping VCF file for the</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">##     specific chromosome</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR must also contain the relative or complete path to </span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR must also contain the relative or complete path to</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">##     the VCF file</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -260,12 +260,12 @@ pedigree file in RDS format:</p>
 <span><span class="va">filePED1KGOri</span> <span class="op">&lt;-</span> <span class="st">"20130606_g1k.ped"</span></span>
 <span></span>
 <span><span class="co">## Extract needed information from the pedigree file from 1KG into a data.frame</span></span>
-<span><span class="co">## Only the samples with genotyping information (sample file present </span></span>
+<span><span class="co">## Only the samples with genotyping information (sample file present</span></span>
 <span><span class="co">## in PATHGENO parameter) are retained to create the final data.frame</span></span>
-<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">filePED1KGOri</span>, </span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">filePED1KGOri</span>,</span>
 <span>                    PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Save the pedigree information data.frame as a RDS file </span></span>
+<span><span class="co">## Save the pedigree information data.frame as a RDS file</span></span>
 <span><span class="co">## In this example, the file is saved here ./data/metadata/ped1KG.rds</span></span>
 <span><span class="va">filePED1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"metadata"</span>,<span class="st">"ped1KG.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">ped</span>,  <span class="va">filePED1KG</span><span class="op">)</span></span></code></pre></div>
@@ -281,7 +281,7 @@ file using Bioconductor <a href="https://bioconductor.org/packages/gdsfmt/" clas
 the frequency in each super population.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is not done in R</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The python script is in the 'scriptsPy' directory</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span><span class="st">`</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>do</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  chr<span class="ot">=</span><span class="er">$</span>(echo <span class="sc">$</span>FILECUR<span class="sc">|</span>perl <span class="sc">-</span>n <span class="sc">-</span>e <span class="st">'/ALL\.(chr[^\.]+)/;print $1'</span>)</span>
@@ -343,15 +343,15 @@ the GDS file that will contain the information related to 1KG:</p>
 <span><span class="co">## The path and file names of the required files</span></span>
 <span><span class="co">## First, the RDS file containing the pedigree information</span></span>
 <span><span class="co">## Second, the RDS file with the indexes of the retained SNPs</span></span>
-<span><span class="co">## Third, the RDS file with the filtered SNP information </span></span>
+<span><span class="co">## Third, the RDS file with the filtered SNP information</span></span>
 <span><span class="va">filePED1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHMETA</span>,<span class="st">"ped1KG.rds"</span><span class="op">)</span></span>
 <span><span class="va">fileLSNP.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
 <span><span class="va">fileFREQ.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"mapSNVSel.rds"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## The name of the GDS file that will be created    </span></span>
+<span><span class="co">## The name of the GDS file that will be created</span></span>
 <span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
 <span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="va">fileNameGDS</span><span class="op">)</span></span>
-<span>    </span>
+<span></span>
 <span><span class="co">## Generate GDS file containing the 1KG information</span></span>
 <span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
 <span>                    fileNamePED<span class="op">=</span><span class="va">filePED1KG</span>,</span>
@@ -374,9 +374,9 @@ well as a RDS file with the kinship coefficient between the patients
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## TODO: what is PATHMETA </span></span>
+<span><span class="co">## TODO: what is PATHMETA</span></span>
 <span></span>
-<span><span class="co">## The name of the GDS file that contains the 1KG information    </span></span>
+<span><span class="co">## The name of the GDS file that contains the 1KG information</span></span>
 <span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="st">"matGeno1000g.gds"</span></span>
 <span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="va">fileNameGDS</span><span class="op">)</span></span>
 <span></span>
@@ -409,7 +409,7 @@ external file.</p>
 information about the unrelated patients to the GDS 1KG file using the
 intermediate external file.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Add the information about the unrelated 1KG patients to the 1KG GDS file </span></span>
+<code class="sourceCode R"><span><span class="co">## Add the information about the unrelated 1KG patients to the 1KG GDS file</span></span>
 <span><span class="fu"><a href="../reference/addRef2GDS1KG.html">addRef2GDS1KG</a></span><span class="op">(</span>fileGDS<span class="op">=</span><span class="va">gds</span>,  filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
@@ -453,7 +453,7 @@ file:</p>
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Open the 1KG GDS file    </span></span>
+<span><span class="co">## Open the 1KG GDS file</span></span>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS1kg</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The VCF file that will be created</span></span>
@@ -462,7 +462,7 @@ file:</p>
 <span><span class="co">## Generate the VCF with the retained SNP position</span></span>
 <span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds</span>, fileOUT<span class="op">=</span><span class="va">fileOUT</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Close the 1KG GDS file </span></span>
+<span><span class="co">## Close the 1KG GDS file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
 <p>You should compress and indexing the newly created VCF file. Do do
 so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
@@ -534,7 +534,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [29] RCurl_1.98-1.8              jsonlite_1.8.0             </span></span>
 <span><span class="co">##  [31] survival_3.4-0              zoo_1.8-10                 </span></span>
 <span><span class="co">##  [33] glue_1.6.2                  zlibbioc_1.40.0            </span></span>
-<span><span class="co">##  [35] XVector_0.34.0              MatrixModels_0.5-0         </span></span>
+<span><span class="co">##  [35] XVector_0.34.0              MatrixModels_0.5-1         </span></span>
 <span><span class="co">##  [37] DelayedArray_0.20.0         SeqVarTools_1.32.0         </span></span>
 <span><span class="co">##  [39] BiocGenerics_0.40.0         SparseM_1.81               </span></span>
 <span><span class="co">##  [41] DBI_1.1.3                   Rcpp_1.0.9                 </span></span>
@@ -549,7 +549,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [59] rlang_1.0.5                 AnnotationDbi_1.56.2       </span></span>
 <span><span class="co">##  [61] tools_4.1.3                 cachem_1.0.6               </span></span>
 <span><span class="co">##  [63] cli_3.4.0                   generics_0.1.3             </span></span>
-<span><span class="co">##  [65] RSQLite_2.2.16              broom_1.0.1                </span></span>
+<span><span class="co">##  [65] RSQLite_2.2.17              broom_1.0.1                </span></span>
 <span><span class="co">##  [67] evaluate_0.16               stringr_1.4.1              </span></span>
 <span><span class="co">##  [69] fastmap_1.1.0               yaml_2.3.5                 </span></span>
 <span><span class="co">##  [71] ragg_1.2.2                  bit64_4.0.5                </span></span>
@@ -564,8 +564,8 @@ which this document was compiled:</p>
 <span><span class="co">##  [89] stringi_1.7.8               highr_0.9                  </span></span>
 <span><span class="co">##  [91] GenomicFeatures_1.46.5      desc_1.4.2                 </span></span>
 <span><span class="co">##  [93] lattice_0.20-45             ProtGenerics_1.26.0        </span></span>
-<span><span class="co">##  [95] Matrix_1.4-1                vctrs_0.4.1                </span></span>
-<span><span class="co">##  [97] pillar_1.8.1                lifecycle_1.0.1            </span></span>
+<span><span class="co">##  [95] Matrix_1.5-0                vctrs_0.4.1                </span></span>
+<span><span class="co">##  [97] pillar_1.8.1                lifecycle_1.0.2            </span></span>
 <span><span class="co">##  [99] BiocManager_1.30.18         lmtest_0.9-40              </span></span>
 <span><span class="co">## [101] jquerylib_0.1.4             data.table_1.14.2          </span></span>
 <span><span class="co">## [103] bitops_1.0-7                rtracklayer_1.54.0         </span></span>

@@ -399,7 +399,7 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
     ## The verbose parameter must be a logical
     if (!(is.logical(verbose) && length(verbose) == 1)) {
         stop("The \'verbose\' parameters must be a single logical value ",
-             "(TRUE or FALSE).")
+                "(TRUE or FALSE).")
     }
 
     sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
@@ -414,7 +414,7 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
         matSample <- matrix(as.numeric(unlist(strsplit(matSample[, 1],
-                                                      "\\|"))), nrow=2)[1,]
+                                                        "\\|"))), nrow=2)[1,]
 
         if (verbose) { message("GDS ", i, " ", Sys.time()) }
 
@@ -1068,10 +1068,11 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
             #    user  system elapsed
             #    26.116   0.074  26.201
             # see blockAnnotation.R for slower alternatives
-            for(genePos in seq_len(nrow(dfGenneAllChr))){
+            for (genePos in seq_len(nrow(dfGenneAllChr))) {
                 # the gene is where SNV exists
-                if(dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
-                   dfGenneAllChr$start[genePos] <=  matFreq$pos[nrow(matFreq)]){
+                if (dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
+                    dfGenneAllChr$start[genePos] <=
+                            matFreq$pos[nrow(matFreq)]) {
                     # In which partitions from the index the gene is located
                     vStart <- max(c(which(matFreq$pos[startIndex] <=
                                             dfGenneAllChr$start[genePos]), 1))
@@ -1131,7 +1132,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
         # dfGeneChr are reduced (merge all the overlap interval)
         z <- cbind(c(dfGeneChr$start, dfGeneChr$end, as.integer(matFreq$pos)),
-                   c(seq_len(nrow(dfGeneChr)), -1 * seq_len(nrow(dfGeneChr)),
+                    c(seq_len(nrow(dfGeneChr)), -1 * seq_len(nrow(dfGeneChr)),
                                 rep(0, nrow(matFreq))))
         z <- z[order(z[,1], -1 * z[,2]),]
 

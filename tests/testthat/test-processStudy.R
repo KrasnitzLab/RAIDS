@@ -1390,6 +1390,21 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 })
 
 
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaList is a vector with zero"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- paste0("The \'pcaList\' parameter must be a ",
+                                "vector of positive integers.")
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+        sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+        pcaList=c(0, 1, 2), spRef = "test", eigen.cnt = 15L), error_message)
+})
+
+
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when algorithm is zero"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")

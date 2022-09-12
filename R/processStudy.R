@@ -2265,6 +2265,7 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' listEigenvector <- "TOTO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computePoolSyntheticAncestryGr <- function(gds, gdsSample,
@@ -2299,6 +2300,12 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
         stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## The parameter pcaList must be positive integer values
+    if(!(is.numeric(pcaList) && is.vector(pcaList) && all(pcaList>0))) {
+        stop("The \'pcaList\' parameter must be a vector of positive ",
+                    "integers.")
     }
 
     ## Validate that algorithm is a string

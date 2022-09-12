@@ -23,7 +23,7 @@ test_that("snvListVCF() must return error when offset is a character string", {
     put.attr.gdsn(gdsFileTMP$root, "FileFormat", "SNP_ARRAY")
     add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
 
-    samp.annot <- data.frame(sex=c("1","2"),
+    samp.annot <- data.frame(sex=c("1", "2"),
                              pop.group=c("ACB", "ACB"),
                              superPop=c("AFR", "AFR"),
                              batch=c("0", "0"),
@@ -35,7 +35,7 @@ test_that("snvListVCF() must return error when offset is a character string", {
     add.gdsn(gdsFileTMP, "snp.chromosome", c(1L, 1L), storage = "uint16")
     add.gdsn(gdsFileTMP, "snp.position", c(10L, 12L), storage = "int32")
     add.gdsn(gdsFileTMP, "snp.allele", c("0/1", "1/1"))
-    add.gdsn(gdsFileTMP, "genotype", valdim=c(2,2), storage="bit2")
+    add.gdsn(gdsFileTMP, "genotype", valdim=c(2, 2), storage="bit2")
 
     closefn.gds(gdsFileTMP)
 
@@ -76,14 +76,14 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
     put.attr.gdsn(gdsFileTMP$root, "FileFormat", "SNP_ARRAY")
     add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
 
-    samp.annot <- data.frame(sex=c("1","2"),
+    samp.annot <- data.frame(sex=c("1", "2"),
                              pop.group=c("ACB", "ACB"),
                              superPop=c("AFR", "AFR"),
                              batch=c("0", "0"),
                              stringsAsFactors=FALSE)
     add.gdsn(gdsFileTMP, "sample.annot", samp.annot)
 
-    add.gdsn(gdsFileTMP, "snp.id", paste0("s",seq_len(2)))
+    add.gdsn(gdsFileTMP, "snp.id", paste0("s", seq_len(2)))
     add.gdsn(gdsFileTMP, "snp.chromosome", c(1L, 1L), storage = "uint16")
     add.gdsn(gdsFileTMP, "snp.position", c(10L, 12L), storage = "int32")
     add.gdsn(gdsFileTMP, "snp.allele", c("0/1", "1/1"))
@@ -124,7 +124,7 @@ test_that("snvListVCF() must return expected results when freqCutoff is NULL", {
     tmp_vcf_data <- read.table(fileOUT, stringsAsFactors=FALSE)
 
     # filter for the columns names
-    tmp_vcf <- tmp_vcf[-(grep("#CHROM",tmp_vcf)+1):-(length(tmp_vcf))]
+    tmp_vcf <- tmp_vcf[-(grep("#CHROM", tmp_vcf)+1):-(length(tmp_vcf))]
     vcf_names <- unlist(strsplit(tmp_vcf[length(tmp_vcf)],"\t"))
     names(tmp_vcf_data) <- vcf_names
 

@@ -485,12 +485,12 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 
         ## Create data frame containing sample information
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
-                                  case.id=pedDF[, "Case.ID"],
-                                  sample.type=pedDF[, "Sample.Type"],
-                                  diagnosis=pedDF[, "Diagnosis"],
-                                  source=pedDF[, "Source"],
-                                  study.id=rep(studyDF$study.id, nrow(pedDF)),
-                                  stringsAsFactors=FALSE)
+                                    case.id=pedDF[, "Case.ID"],
+                                    sample.type=pedDF[, "Sample.Type"],
+                                    diagnosis=pedDF[, "Diagnosis"],
+                                    source=pedDF[, "Source"],
+                                    study.id=rep(studyDF$study.id, nrow(pedDF)),
+                                    stringsAsFactors=FALSE)
 
         ## Append sample information to existing node
         append.gdsn(index.gdsn(gds, "study.annot/data.id"),
@@ -953,7 +953,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                 #                 listSamples[i])
             }
 
-            if(! "Ref.count" %in% ls.gdsn(gdsSample)){
+            if (! "Ref.count" %in% ls.gdsn(gdsSample)) {
                 var.Ref <- add.gdsn(gdsSample, "Ref.count",
                                         matAll$File1R,
                                         valdim=c( nrow(listPos), 1),
@@ -969,11 +969,11 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
             } else {
                 # you must append
                 var.Ref <- append.gdsn(index.gdsn(gdsSample, "Ref.count"),
-                                    matAll$File1R)
+                                            matAll$File1R)
                 var.Alt <- append.gdsn(index.gdsn(gdsSample, "Alt.count"),
-                                       matAll$File1A)
+                                            matAll$File1A)
                 var.Count <- append.gdsn(index.gdsn(gdsSample, "Total.count"),
-                                         matAll$count)
+                                            matAll$count)
             }
 
             listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy,
@@ -1041,23 +1041,25 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 
             }else{
                 var.geno <- add.gdsn(gdsSample, "geno.ref",
-                                     valdim=c(length(g),
-                                              1),
-                                     g,
-                                     storage="bit2", compress = "LZMA_RA.fast")
+                                        valdim=c(length(g), 1),
+                                        g, storage="bit2",
+                                        compress = "LZMA_RA.fast")
                 readmode.gdsn(var.geno)
             }
 
 
             rm(g)
             closefn.gds(gdsfile=gdsSample)
-            if(verbose) { message(listMat[pos], " ", i, " ", Sys.time()) }
 
-        }else{
+            if (verbose) {
+                message(listMat[pos], " ", i, " ", Sys.time())
+            }
+
+        } else {
             stop("Missing samples ", listSamples[i])
         }
     }
-
+    ## Success
     return(0L)
 }
 
@@ -1070,7 +1072,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param listSample  a \code{array} with the sample to keep TODO
+#' @param listSample a \code{array} with the sample to keep TODO
 #'
 #' @param pedOUT TODO a PATH and file name to the output file
 #'

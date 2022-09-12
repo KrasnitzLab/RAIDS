@@ -80,12 +80,12 @@
 #' @encoding UTF-8
 #' @export
 createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
-                               fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
-                               batch=1, studyDF, listSamples=NULL,
-                               PATHSAMPLEGDS=NULL, verbose=TRUE) {
+                                fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
+                                batch=1, studyDF, listSamples=NULL,
+                                PATHSAMPLEGDS=NULL, verbose=TRUE) {
 
     ## When fileNamePED is defined and pedStudy is null
-    if(!(is.null(fileNamePED)) && is.null(pedStudy)) {
+    if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
         ## The fileNamePED must be a character string and the file must exists
         if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
             stop("The \'fileNamePED\' must be a character string ",
@@ -94,25 +94,25 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
         }
         ## Open the RDS Sample information file
         pedStudy <- readRDS(file=fileNamePED)
-    } else if(!(is.null(fileNamePED) || is.null(pedStudy))) {
+    } else if (!(is.null(fileNamePED) || is.null(pedStudy))) {
         stop("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
                 "defined at the same time.")
-    } else if(is.null(fileNamePED) && is.null(pedStudy)) {
+    } else if (is.null(fileNamePED) && is.null(pedStudy)) {
         stop("One of the parameter \'fineNamePED\' of \'pedStudy\' must ",
                 "be defined.")
     }
 
     ## The PED study must have the mandatory columns
-    if(!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
-             %in% colnames(pedStudy)))) {
-        stop(paste0("The PED study data frame is incomplete. ",
-                        "One or more mandatory columns are missing."))
+    if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
+                %in% colnames(pedStudy)))) {
+        stop("The PED study data frame is incomplete. ",
+                        "One or more mandatory columns are missing.")
     }
 
     ## The fileNameGDS must be a character string and the file must exists
-    if(!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
         stop("The \'fileNameGDS\' must be a character string representing ",
-             "the GDS 1KG file. The file must exist.")
+                "the GDS 1KG file. The file must exist.")
     }
 
     ## The batch must be a single numeric
@@ -121,13 +121,13 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     }
 
     ## The listSamples must be a vector of character string
-    if(!(is.character(listSamples) || is.null(listSamples))) {
+    if (!(is.character(listSamples) || is.null(listSamples))) {
         stop("The \'listSamples\' must be a vector ",
-             "of character strings (1 entry or more) or NULL.")
+                "of character strings (1 entry or more) or NULL.")
     }
 
     ## The verbose parameter must be a logical
-    if(!(is.logical(verbose))) {
+    if (!(is.logical(verbose))) {
         stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
     }
 
@@ -245,7 +245,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     ## The fileNamePED must be a character string and the file must exists
     if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
         stop("The \'fileNamePED\' must be a character string representing ",
-             "the RDS Sample information file. The file must exist.")
+                "the RDS Sample information file. The file must exist.")
     }
 
     ## The fileNameGDS must be a character string and the file must exists
@@ -420,7 +420,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     }
 
     ## The parameter sampleCurrent must be a character string
-    if(!(is.character(sampleCurrent))) {
+    if (!(is.character(sampleCurrent))) {
         stop("The \'sampleCurrent\' parameter must be a character string.")
     }
 
@@ -433,43 +433,43 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     method <- match.arg(method, several.ok=FALSE)
 
     ## The parameter ld.threshold.v must be a single positive integer
-    if(!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
+    if (!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
         stop("The \'ld.threshold.v\' parameter must be a single positive ",
                 "numeric value.")
     }
 
     ## The parameter slide.max.bp.v must be a single positive integer
-    if(!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
+    if (!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
         stop("The \'slide.max.bp.v\' parameter must be a single positive ",
                 "numeric value.")
     }
 
     ## The parameter np must be a single positive integer
-    if(!(isSingleNumber(np) && (np >= 0.0))) {
+    if (!(isSingleNumber(np) && (np >= 0.0))) {
         stop("The \'np\' parameter must be a single positive numeric value.")
     }
 
     ## The parameter keepGDSpruned must be a logical
-    if(!is.logical(keepGDSpruned)) {
+    if (!is.logical(keepGDSpruned)) {
         stop("The \'keepGDSpruned\' parameter must be a logical ",
                 "(TRUE or FALSE).")
     }
 
     ## The parameter PATHSAMPLEGDS must be a character string representing an
     ## existing path
-    if(!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
+    if (!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
         stop("The \'PATHSAMPLEGDS\' parameter must be a character string ",
              "representing an existing directory.")
     }
 
     ## The parameter keepFile must be a logical
-    if(!is.logical(keepFile)) {
+    if (!is.logical(keepFile)) {
         stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
     }
 
     ## The parameter PATHPRUNED must be a character string representing an
     ## existing path
-    if(!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
+    if (!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
         stop("The \'PATHPRUNED\' parameter must be a character string ",
                 "representing an existing directory.")
     }
@@ -477,7 +477,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent, ".gds"))
 
     ## The GDS Sample file must exists
-    if(!(file.exists(fileGDSSample))) {
+    if (!(file.exists(fileGDSSample))) {
         stop("The GDS Sample file \'", fileGDSSample, " does not exist.")
     }
 
@@ -658,8 +658,8 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 
         if(! ("genotype" %in% ls.gdsn(gdsSample))){
             var.geno <- add.gdsn(gdsSample, "genotype",
-                                 valdim=c(length(listSNP), 1),
-                                 g, storage="bit2")
+                                    valdim=c(length(listSNP), 1),
+                                    g, storage="bit2")
 
         }else {
             if(is.null(var.geno)) {
@@ -679,16 +679,15 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     posCur <- which(study.annot$data.id == sampleCurrent &
-                           study.annot$study.id == study.id)
+                            study.annot$study.id == study.id)
 
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur),
                         count=c(-1, 1))[listSNP]
     append.gdsn(var.geno, g)
 
     add.gdsn(gdsSample, "lap",
-             rep(0.5, objdesp.gdsn(index.gdsn(gdsSample, "genotype"))$dim[1]),
-             storage="packedreal8")
-
+        rep(0.5, objdesp.gdsn(index.gdsn(gdsSample, "genotype"))$dim[1]),
+        storage="packedreal8")
 
     ## Close the GDS Sample file
     closefn.gds(gdsSample)
@@ -760,13 +759,12 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS, PATHGENO,
         matSample <- matrix(as.numeric(unlist(strsplit(matSample[,1],
                                                         "\\|"))), nrow=2)[1,]
         var.phase <- NULL
-        if(!("phase" %in% ls.gdsn(gdsSample))) {
+        if (!("phase" %in% ls.gdsn(gdsSample))) {
             var.phase <- add.gdsn(gdsSample, "phase",
-                                 valdim=c(length(indexAll),
-                                          1),
-                                 matSample, storage="bit2")
-        }else {
-            if(is.null(var.phase)) {
+                                    valdim=c(length(indexAll), 1),
+                                    matSample, storage="bit2")
+        } else {
+            if (is.null(var.phase)) {
                 var.phase <- index.gdsn(node=gdsSample, "phase")
             }
             append.gdsn(node=var.phase, val=matSample)
@@ -775,6 +773,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS, PATHGENO,
 
     closefn.gds(gdsfile=gdsSample)
 
+    ## Success
     return(0L)
 }
 
@@ -847,14 +846,13 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
         i<-i+1
 
         var.phase <- NULL
-        if(! ("phase" %in% ls.gdsn(gdsSample))){
+        if (! ("phase" %in% ls.gdsn(gdsSample))) {
             var.phase <- add.gdsn(gdsSample, "phase",
-                                  valdim=c(length(indexAll),
-                                           1),
-                                  matSample, storage="bit2")
+                                    valdim=c(length(indexAll), 1),
+                                    matSample, storage="bit2")
 
-        }else{
-            if(is.null(var.phase)){
+        } else {
+            if (is.null(var.phase)) {
                 var.phase <- index.gdsn(gdsSample, "phase")
             }
             append.gdsn(var.phase, matSample)
@@ -863,6 +861,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
 
     closefn.gds(gdsSample)
 
+    ## Successful
     return(0L)
 }
 

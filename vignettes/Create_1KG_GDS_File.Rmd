@@ -138,10 +138,10 @@ The splitting is done through a bash script:
 ## Create one directory for the specific chromosome
 ##
 ## Two variables need to be assigned
-## The variable PATHGENO is the path where the split 1KG genotyping 
+## The variable PATHGENO is the path where the split 1KG genotyping
 ##   files will be located
 ## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory 
-##   with the name of the chromosome will be created. The variable must 
+##   with the name of the chromosome will be created. The variable must
 ##   include the prefix "chr".
 ##
 ## Ex: PATHGENO=./genotypingPerSample
@@ -150,9 +150,9 @@ The splitting is done through a bash script:
 mkdir ${PATHGENO}/${chrCur}
 cd ${PATHGENO}/${chrCur}
 
-## The variable FILECUR is the associated 1KG genotyping VCF file for the 
+## The variable FILECUR is the associated 1KG genotyping VCF file for the
 ##     specific chromosome
-## The variable FILECUR must also contain the relative or complete path to 
+## The variable FILECUR must also contain the relative or complete path to
 ##     the VCF file
 ## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
 
@@ -219,16 +219,16 @@ library(RAIDS)
 filePED1KGOri <- "20130606_g1k.ped"
 
 ## Extract needed information from the pedigree file from 1KG into a data.frame
-## Only the samples with genotyping information (sample file present 
+## Only the samples with genotyping information (sample file present
 ## in PATHGENO parameter) are retained to create the final data.frame
-ped <- prepPed1KG(pedFile=filePED1KGOri, 
+ped <- prepPed1KG(pedFile=filePED1KGOri,
                     PATHGENO=file.path("data", "sampleGeno"))
 
-## Save the pedigree information data.frame as a RDS file 
+## Save the pedigree information data.frame as a RDS file
 ## In this example, the file is saved here ./data/metadata/ped1KG.rds
 filePED1KG <- file.path("data", "metadata","ped1KG.rds")
 saveRDS(ped,  filePED1KG)
-    
+
 ```
 
 
@@ -247,7 +247,7 @@ frequency in each super population.
 ```{r intermediateVCF, echo=TRUE, eval=FALSE}
 ## This is not done in R
 ## The python script is in the 'scriptsPy' directory
-    
+
 for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
 do
   chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
@@ -259,7 +259,7 @@ do
   cat matFreq.chr${i}.txt >matFreqSNV.txt
   bzip2 matFreqSNV.txt
 done
-    
+
 ```
 
 The bulk SNP info file is called __matFreqSNV.txt.bz2__.
@@ -321,15 +321,15 @@ contain the information related to 1KG:
 ## The path and file names of the required files
 ## First, the RDS file containing the pedigree information
 ## Second, the RDS file with the indexes of the retained SNPs
-## Third, the RDS file with the filtered SNP information 
+## Third, the RDS file with the filtered SNP information
 filePED1KG <- file.path(PATHMETA,"ped1KG.rds")
 fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
 fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 
-## The name of the GDS file that will be created    
+## The name of the GDS file that will be created
 fileNameGDS <- "matGeno1000g.gds"
 fileGDS <- file.path(PATHGDS, fileNameGDS)
-    
+
 ## Generate GDS file containing the 1KG information
 generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                     fileNamePED=filePED1KG,
@@ -356,9 +356,9 @@ coefficient between the patients (_fileIBD_ parameter).
 ## Load required package
 library(gdsfmt)
 
-## TODO: what is PATHMETA 
+## TODO: what is PATHMETA
 
-## The name of the GDS file that contains the 1KG information    
+## The name of the GDS file that contains the 1KG information
 fileNameGDS <- "matGeno1000g.gds"
 fileGDS <- file.path(PATHGDS, fileNameGDS)
 
@@ -394,7 +394,7 @@ The function __addRef2GDS1KG()__ is adding the information about the unrelated
 patients to the GDS 1KG file using the intermediate external file.
 
 ```{r addRef2GDS1KG, echo=TRUE, eval=FALSE}
-## Add the information about the unrelated 1KG patients to the 1KG GDS file 
+## Add the information about the unrelated 1KG patients to the 1KG GDS file
 addRef2GDS1KG(fileGDS=gds,  filePart=filePart)
 ```
 
@@ -444,7 +444,7 @@ the information of all retained SNPs from 1KG GDS file:
 ## Load required package
 library(RAIDS)
 
-## Open the 1KG GDS file    
+## Open the 1KG GDS file
 gds <- snpgdsOpen(fileGDS1kg)
 
 ## The VCF file that will be created
@@ -453,7 +453,7 @@ fileOUT <- "SNPretained.VCF"
 ## Generate the VCF with the retained SNP position
 snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
 
-## Close the 1KG GDS file 
+## Close the 1KG GDS file
 closefn.gds(gds)
 ``` 
 

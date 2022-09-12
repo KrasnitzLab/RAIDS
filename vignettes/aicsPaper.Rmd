@@ -253,8 +253,10 @@ This is the command line to run
 ## -q15 : Sets the minimum threshold for mapping quality to 15
 ## -Q20 : Sets the minimum threshold for base quality to 20
 ## -r0 : Sets the minimum read counts for a position to be output to 0
-## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the positions of all retained 1KG SNPs
-## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be compressed by the application
+## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the 
+##     positions of all retained 1KG SNPs
+## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be
+##     compressed by the application
 ## FILEBAM.bam : The aligned reads from the sample used as input
 #####################################################################
 snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
@@ -376,7 +378,7 @@ studyDF <- data.frame(study.id = "Id of the study",
                   stringsAsFactors = FALSE)
 
 #################################################################
-## The list of samples to analyzed is passed to the 
+## The list of samples to analyzed is passed to the
 ## function. The samples must be present in the PED RDS file
 ## and must have an associated Sample SNP pileup file.
 ## Not all samples present in the PED file need to be selected.
@@ -384,7 +386,7 @@ studyDF <- data.frame(study.id = "Id of the study",
 listSamples <- ped[, "Name.ID"]
     
 #################################################################
-## This function creates one GDS Sample file for each 
+## This function creates one GDS Sample file for each
 ## sample present in the 'listSamples' parameter.
 #################################################################
 createStudy2GDS1KG(PATHGENO = PATHGENO,
@@ -442,8 +444,8 @@ ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
 #################################################################
-## The study information passed to the function must correspond 
-## the information present in the previously defined study 
+## The study information passed to the function must correspond
+## the information present in the previously defined study
 ## data.frame (see previous step).
 #################################################################
 studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
@@ -463,7 +465,7 @@ for(i in seq_len(length(listSamples))) {
   pruningSample(gds=gds_1KG,
           sampleCurrent = listSamples[i],
           study.id = studyDF$study.id, 
-          PATHSAMPLEGDS = PATHSAMPLEGDS) 
+          PATHSAMPLEGDS = PATHSAMPLEGDS)
   
   ## GDS Sample file for the current sample
   ## The file name corresponds to the path + sample identifier + ".gds"
@@ -475,7 +477,7 @@ for(i in seq_len(length(listSamples))) {
   add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
                       sampleCurrent = listSamples[1], 
                       study.id = studyDF$study.id))
-  
+
   ## Add annotation from the 1KG GDS file to the GDS Sample file
   ## This is required.
   addStudy1Kg(gds_1KG, file.GDSSample)
@@ -533,7 +535,7 @@ fileName.GDS.Annot <- "matAnnot1000g.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
-## Open the 1KG GDS file     
+## Open the 1KG GDS file
 gds <- snpgdsOpen(file.GDS)
     
 ###################################################################
@@ -554,7 +556,7 @@ chrInfo[25] <- length(Hsapiens[["chrM"]])
 ## The GDS Sample file is required
 ###################################################################
 
-## Name of the GDS Sample file 
+## Name of the GDS Sample file
 ## The name must corresponds to the sample identifier
 file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
@@ -565,19 +567,19 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## The estimation of the allelic fraction
 ###################################################################
 
-## Estimate the allelic fraction of the pruned SNVs 
+## Estimate the allelic fraction of the pruned SNVs
 ## The current example is for a DNA sample
 ## In the case of RNA sample, the function needs different inputs
 ## such as the 1KG SNV Annotation GDS file and
 ## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
-                                      sampleCurrent = sampleName, 
+                                      sampleCurrent = sampleName,
                                       study.id = studyDF$study.id,
                                       chrInfo = chrInfo)
 
 ## Close both GDS files
-closefn.gds(gdsSample)    
+closefn.gds(gdsSample)
 closefn.gds(gds)
 ```
 
@@ -640,17 +642,17 @@ Those 3 files are required:
 ## Load required package
 ####################################################################
 library(RAIDS)    
-    
+
 ####################################################################
 ## Fix seed to ensure reproducible results
-####################################################################    
+####################################################################
 set.seed(3043)   
 
 ####################################################################
-## Randomly extract a fixed number of samples for each 
+## Randomly extract a fixed number of samples for each
 ## subcontinental population present in the 1KG GDS file.
 ## When not enough samples are available, all samples are selected.  
-####################################################################        
+####################################################################   
 dataRef <- select1KGPop(gds, nbSamples = 30L)
 
 ## Extract the list of selected 1KG sample identifiers
@@ -659,7 +661,7 @@ listSampleRef <- dataRef$sample.id
 ####################################################################
 ## A data.frame with the description of the study for the synthetic
 ## data is required.
-## The column names must be as shown 
+## The column names must be as shown
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
                             study.desc = "TCGA.BRCA synthetic data",
@@ -670,7 +672,7 @@ studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
 file.GDSSample <- PATH_TO_GDS_SAMPLE_FILE
 
 ##############################################################
-## The prepSynthetic() function prepares the annotations for 
+## The prepSynthetic() function prepares the annotations for
 ## the synthetic data
 ## The information is saved into the GDS sample file
 ##############################################################
@@ -931,9 +933,8 @@ studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
         # List of the KNN result from PCA on synthetic data with path
         listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-        
         gdsSample <- snpgdsOpen(file.GDSSample)
-        
+
         resCall <- computeAncestryFromSyntheticFile(gds = gds, 
                                         gdsSample = gdsSample,
                                         listFiles = listFiles,
@@ -942,17 +943,17 @@ studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
                                         study.id.syn = studyDF.syn$study.id,
                                         np = 4L)
 
-        saveRDS(resCall, file.path(PATHOUT, 
+        saveRDS(resCall, file.path(PATHOUT,
                               paste0(listSamples[i], ".infoCall",".rds")))
-        
-        write.csv(resCall$Ancestry, 
+
+        write.csv(resCall$Ancestry,
               file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
               quote = FALSE, row.names = FALSE)
 
         closefn.gds(gdsSample)
     }
-    
-## Close both 1KG GDS file   
+
+## Close both 1KG GDS file
 closefn.gds(gds)
 ```
 

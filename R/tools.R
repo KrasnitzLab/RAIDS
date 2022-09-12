@@ -114,7 +114,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 
     cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOUT)
     cat(paste0('##FILTER=<ID=PASS,Description="All filters passed">',
-               "\n"), file = fileOUT, append=TRUE)
+                "\n"), file = fileOUT, append=TRUE)
     cat(paste0('##INFO=<ID=AF,Number=A,Type=Float,',
                 'Description="Estimated allele frequency in the range (0,1)">',
                 "\n"), file = fileOUT, append=TRUE)

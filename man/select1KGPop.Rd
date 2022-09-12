@@ -53,7 +53,7 @@ gdsFileOpen <- openfn.gds(gdsFile)
 ## In the 1KG GDS Demo file, there is one subcontinental population
 dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
 
-## Important to close the 1KG GDS Demo file
+## Close the 1KG GDS Demo file (important)
 closefn.gds(gdsFileOpen)
 
 }

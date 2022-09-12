@@ -43,7 +43,7 @@
 #' ## In the 1KG GDS Demo file, there is one subcontinental population
 #' dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
 #'
-#' ## Important to close the 1KG GDS Demo file
+#' ## Close the 1KG GDS Demo file (important)
 #' closefn.gds(gdsFileOpen)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -236,7 +236,7 @@ prepSynthetic <- function(gdsSampleFile,
     ## The study.id must have the 2 mandatory columns
     if(sum(c("study.id", "study.desc") %in% colnames(studyDF)) != 2 ) {
         stop("The \'studyDF\' data frame is incomplete. ",
-             "One or more mandatory column is missing.\n")
+                "One or more mandatory column is missing.\n")
     }
 
     ## The nbSim must be a single positive numeric
@@ -278,9 +278,9 @@ prepSynthetic <- function(gdsSampleFile,
     ## The synthetic samples will be associated to this information
     ## The study platform is always set to "Synthetic"
     study.list <- data.frame(study.id=studyDF$study.id,
-                     study.desc=studyDF$study.desc,
-                     study.platform="Synthetic",
-                     stringsAsFactors=FALSE)
+                        study.desc=studyDF$study.desc,
+                        study.platform="Synthetic",
+                        stringsAsFactors=FALSE)
 
     ## Create Pedigree information data frame for the synthetic samples
     ## The sample type is always set to "Synthetic" (idem for the source)
@@ -370,65 +370,14 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                             minProb=0.999,
                             seqError=0.001) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsRefAnnot must be an object of class "gds.class"
-    if (!inherits(gdsRefAnnot, "gds.class")) {
-        stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSampleFile must be an character string and the file must exist
-    if (!(is.character(gdsSampleFile) && file.exists(gdsSampleFile))) {
-        stop("The \'gdsSampleFile\' must be a character string and the file ",
-                "must exist.")
-    }
-
-    ## The data.id.profile must be a character string
-    if (!(is.character(data.id.profile) && length(data.id.profile) == 1)) {
-        stop("The \'data.id.profile\' must be a character string.")
-    }
-
-    ## The listSampleRef must be a character string
-    if(!is.character(listSampleRef)) {
-        stop("The \'listSampleRef\' must be a vector of character strings.")
-    }
-
-    ## The parameter nbSim must be a single positive integer
-    if(!(isSingleNumber(nbSim) && (nbSim >= 0))) {
-        stop("The \'nbSim\' parameter must be a single positive ",
-             "numeric value.")
-    }
-
-    ## The parameter prefId must be a single character string
-    if(!(is.character(prefId) && (length(prefId) == 1))) {
-        stop("The \'prefId\' parameter must be a single character ",
-             "string.")
-    }
-
-    ## The parameter pRecomb must be a single positive integer
-    if(!(isSingleNumber(pRecomb) && (pRecomb >= 0.0) && (pRecomb <= 1.0))) {
-        stop("The \'pRecomb\' parameter must be a single positive ",
-             "numeric value between 0 and 1.")
-    }
-
-    ## The parameter minProb must be a single positive integer
-    if(!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
-        stop("The \'minProb\' parameter must be a single positive ",
-             "numeric value between 0 and 1.")
-    }
-
-    ## The parameter seqError must be a single positive integer
-    if(!(isSingleNumber(seqError) && (seqError >= 0.0) && (seqError <= 1.0))) {
-        stop("The \'seqError\' parameter must be a single positive ",
-             "numeric value between 0 and 1.")
-    }
+    ## Validate the input parameters
+    validateSyntheticGeno(gds=gds, gdsRefAnnot=gdsRefAnnot,
+                gdsSampleFile=gdsSampleFile, data.id.profile=data.id.profile,
+                listSampleRef=listSampleRef, nbSim=nbSim, prefId=prefId,
+                pRecomb=pRecomb, minProb=minProb, seqError=seqError)
 
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
-
 
     ## The name of the simulated profiles
     sampleSim <- paste(paste0(prefId, ".", data.id.profile),
@@ -437,7 +386,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
     sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
 
-    if(length(which(sampleSim %in% sample.id)) > 0) {
+    if (length(which(sampleSim %in% sample.id)) > 0) {
         closefn.gds(gdsSample)
         stop("Error data.id of the simulation exists change prefId\n")
     }
@@ -448,11 +397,10 @@ syntheticGeno <- function(gds, gdsRefAnnot,
     listPosRef <- which(sample.id %in% listSampleRef)
     listPosRef.1kg <- which(sample.1kg %in% listSampleRef)
 
-
     superPop <- read.gdsn(index.gdsn(gds,
                                 "sample.annot/superPop"))[listPosRef.1kg]
 
-    if(! all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg])) {
+    if (! all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg])) {
         stop("The order between 1kg and the list of samples is not ",
                 "the same.\n")
     }
@@ -493,20 +441,14 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
     blockDF <- data.frame(EAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$EAS), count = c(-1,1))[list1KG],
-                          EUR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                        EUR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$EUR), count = c(-1,1))[list1KG],
-                          AFR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                        AFR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$AFR), count = c(-1,1))[list1KG],
-                          AMR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                        AMR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$AMR), count = c(-1,1))[list1KG],
-                          SAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
+                        SAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$SAS), count = c(-1,1))[list1KG])
-    # prec <- -1
-    # minCur <- 3
-
-    # Better to have a field with the seg in the GDS
-    #infoSNV$zone <- read.gdsn(index.gdsn(gdsSample, "segment"))
-
 
     # For each reference simulate
     for(r in seq_len(length(listPosRef))) {
@@ -536,21 +478,19 @@ syntheticGeno <- function(gds, gdsRefAnnot,
             hetero <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 1)
             nbHetero <- length(hetero)
             # Define the tree prob for the muultinomial
-            p1 <- lap * (1- 3 *seqError) +
-                (1 - lap) * seqError
+            p1 <- lap * (1- 3 *seqError) + (1 - lap) * seqError
 
-            p2 <- (1 - lap) * (1- 3 *seqError) +
-                lap * seqError
+            p2 <- (1 - lap) * (1- 3 *seqError) + lap * seqError
 
             p3 <- 2 * seqError
 
             tmp <- rmultinom(nbHetero * nbSim,
-                             as.numeric(as.character(df$count.tot[i])),
-                             c(p1, p2, p3))
-            # depht of allele 1
+                                as.numeric(as.character(df$count.tot[i])),
+                                c(p1, p2, p3))
+            # depth of allele 1
             matSim1[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[1,],
                                                                     ncol=nbSim)
-            # depht of allele 2
+            # depth of allele 2
             matSim2[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[2,],
                                                                     ncol=nbSim)
 
@@ -559,20 +499,17 @@ syntheticGeno <- function(gds, gdsRefAnnot,
             nbHomo <- df$Freq[i] - nbHetero
             homo <- which(gOrder[(posDF[i]+1):(posDF[i+1])] != 1)
 
-
-
             tmpHomo <- rmultinom(nbHomo * nbSim,
-                                 as.numeric(as.character(df$count.tot[i])),
-                                 c(1- 3 * seqError,
-                                   seqError,
-                                   2*seqError))
+                                    as.numeric(as.character(df$count.tot[i])),
+                                    c(1- 3 * seqError, seqError,
+                                        2*seqError))
 
             # The order between between ref and alt is done with the phase
             # later
             matSim1[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[1,],
-                                                              ncol=nbSim)
+                                                                ncol=nbSim)
             matSim2[listOrderSNP[homo + posDF[i]],] <- matrix(tmpHomo[2,],
-                                                              ncol=nbSim)
+                                                                ncol=nbSim)
         }
 
         # superPop of the 1kg sample r is the same
@@ -623,7 +560,6 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                                 start = c(1,listPosRef.1kg[r]),
                                 count = c(-1,1))[list1KG]
 
-
         # mat1 is lap mat2 is 1-lap
         # LAPparent if 0 lap left and 1 lap is right
 
@@ -662,11 +598,11 @@ syntheticGeno <- function(gds, gdsRefAnnot,
             (infoSNV$count.tot - (refC + altC) <
                 cutOffA[as.character(infoSNV$count.tot), "count"]) *
             ((refC == 0 |  altC == 0) + # 1 if homozygot
-                  (refC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) *
-                  (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) # 1 if both allele are higher than cutoff hetero
+                (refC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) *
+                (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) # 1 if both allele are higher than cutoff hetero
             ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
             (1 + (altC > 0) * (1 + (refC == 0) ) )
-              # if altC == 0 than 1, altC > 0 and refC == 0 than 3
+            # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
         ## Append the name of the samples to the GDS Sample file "sample.id"
         ## node
@@ -903,11 +839,11 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
 computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
 
     matAccuracy <- data.frame(pcaD=matKNN$D[1],
-                             K=matKNN$K[1],
-                             ROC.AUC=numeric(1),
-                             ROC.CI=numeric(1),
-                             N=nrow(matKNN),
-                             NBNA=length(which(is.na(matKNN[[predCall]]))))
+                                K=matKNN$K[1],
+                                ROC.AUC=numeric(1),
+                                ROC.CI=numeric(1),
+                                N=nrow(matKNN),
+                                NBNA=length(which(is.na(matKNN[[predCall]]))))
 
     i <- 1
 
@@ -944,7 +880,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
 
     # matAccuracy[i, 6] <- ciBS(fCall[listKeep], predMat, 1,100)
     listROC <- list()
-    for(j in seq_len(length(listCall))) {
+    for (j in seq_len(length(listCall))) {
         fCur <- rep(0, length(listKeep))
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
@@ -952,10 +888,10 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
             listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
                                                             ci=TRUE))
             pos <- which(df$Call == listCall[j])
-            for(r in seq_len(3)){
+            for (r in seq_len(3)) {
                 df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])
             }
-        }else{
+        } else {
             listROC[[listCall[j]]] <- NA
         }
     }

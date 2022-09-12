@@ -110,8 +110,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
     ## Extract SNV coverage from GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
-                            start=c(1, posCur), count=c(-1,1))
-    #read.gdsn(index.gdsn(gdsSample, "Total.count"))
+                            start=c(1, posCur), count=c(-1, 1))
 
     ## Only retained the SNV with the minimum required coverage
     listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
@@ -120,16 +119,16 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     snp.pos <- data.frame(cnt.tot=cnt.total[listKeep],
                     cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
                                             start=c(1, posCur),
-                                            count=c(-1,1))[listKeep],
+                                            count=c(-1, 1))[listKeep],
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                                             start=c(1, posCur),
-                                            count=c(-1,1))[listKeep],
+                                            count=c(-1, 1))[listKeep],
                     snp.pos=read.gdsn(index.gdsn(node=gds,
                                             "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gds,
                                             "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3,length(listKeep)),#ormal genotype unknown
-                    pruned=rep(FALSE, length(listKeep)),#bit(length(listKeep)),
+                    normal.geno=rep(3, length(listKeep)),#ormal genotype unknown
+                    pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep)),
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
 
@@ -141,11 +140,13 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     rm(cnt.total, snp.pruned, listKeepPruned)
 
     # Add snv info for snv not in Reference
-    if("normal.geno" %in% ls.gdsn(node=gdsSample)) {
+    if ("normal.geno" %in% ls.gdsn(node=gdsSample)) {
         # if normal.geno exist mean there is count not in the ref
 
         # I have other genotype than 1KG
-        if (verbose) { message("Genotype") }
+        if (verbose) {
+            message("Genotype")
+        }
 
         cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
         listKeep.o <- which(cnt.total >= minCov)
@@ -177,8 +178,8 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
         z <- z[order(z[,1], z[,2], z[,3]), ]
         vCum <- cumsum(z[,3])
 
-        snp.pos[z[ vCum < 0 & z[,3] == 0,4],
-                "normal.geno"] <- snp.pos.o[vCum[vCum < 0 & z[,3] == 0],
+        snp.pos[z[ vCum < 0 & z[,3] == 0, 4],
+                "normal.geno"] <- snp.pos.o[vCum[vCum < 0 & z[, 3] == 0],
                                                     "normal.geno"]
         rm(z)
 
@@ -199,7 +200,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
     cutOffA <- data.frame(count = unlist(vapply(listCnt,
                     FUN=function(x, minProb, eProb){
-                            return(max(2,qbinom(minProb, x,eProb)))},
+                            return(max(2, qbinom(minProb, x,eProb)))},
                         FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)),
                     allele = unlist(vapply(listCnt,
                         FUN=function(x, minProb, eProb){
@@ -228,7 +229,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                         rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] > 0) == 2 &
                         snp.pos$normal.geno == 1)
 
-    if(length(listHeteroN) > 0) {
+    if (length(listHeteroN) > 0) {
         snp.pos$hetero[listHeteroN] <- TRUE
         snp.pos$homo <- FALSE
     }
@@ -326,10 +327,10 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                         rep(0, length(homoBlock$start)),
                         seq_len(length(which(snp.pos$homo == TRUE)))))
 
-    z <- z[order(z[,1]),]
+    z <- z[order(z[, 1]), ]
 
-    blcSNV <- data.frame(block = cumsum(z[,2])[z[,2] == 0],
-                snv = z[z[,2] == 0, 3])
+    blcSNV <- data.frame(block = cumsum(z[, 2])[z[, 2] == 0],
+                snv = z[z[, 2] == 0, 3])
 
     listAF <- read.gdsn(index.gdsn(gds, "snp.AF"))
 
@@ -344,15 +345,15 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     homoBlock$nbNorm <- rep(0, nrow(homoBlock))
     # Include a field for LOH but will be fill elsewhere
     homoBlock$LOH <- rep(0, nrow(homoBlock))
-    for(i in seq_len(nrow(homoBlock))){
-        blcCur <- blcSNV[blcSNV$block == i,]
-        snvH <- snp.pos[blcCur$snv,]
+    for (i in seq_len(nrow(homoBlock))) {
+        blcCur <- blcSNV[blcSNV$block == i, ]
+        snvH <- snp.pos[blcCur$snv, ]
         lH1 <- 0
         lM1 <- 0
         logLHR <- 0
         homoBlock$nbSNV[i] <- nrow(blcCur)
         homoBlock$nbPruned[i] <- length(which(snvH$pruned))
-        if(length(which(snvH$normal.geno != 3)) > 0) {
+        if (length(which(snvH$normal.geno != 3)) > 0) {
 
             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
             homoBlock$nbNorm[i] <- length(listCount)
@@ -372,7 +373,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                             })))
             logLHR <- -100
 
-        } else if(length(which(snvH$pruned)) > 2) {
+        } else if (length(which(snvH$pruned)) > 2) {
 
             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
             afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
@@ -439,7 +440,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
     vMean <- 0.5
     matCov$pWin <- rep(1, nrow(matCov))
 
-    for(i in seq_len(nrow(matCov))){
+    for (i in seq_len(nrow(matCov))) {
 
         vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
                             matCov$cnt.alt[i], matCov$cnt.ref[i])
@@ -456,6 +457,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
         p <- p + log10(max(pCur,0.01))
         pO <- pO + log10(pCurO)
     }
+
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                                 matCov$pWin[1] < 0.5 &
                                 (matCov$pWin[nrow(matCov)] < 0.5) &
@@ -519,10 +521,9 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 
         matCov$pWin[i] <- pCur
 
+        pCurO <- max(1 - max(pCur, 0.01), 0.01)
 
-        pCurO <- max(1 - max(pCur,0.01),0.01)
-
-        p <- p + log10(max(pCur,0.01))
+        p <- p + log10(max(pCur, 0.01))
         pO <- pO + log10(pCurO)
     }
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
@@ -574,7 +575,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
         listHetero <- which(snp.pos$hetero == TRUE)
     }
 
-    heteroSNV <- snp.pos[listHetero,]
+    heteroSNV <- snp.pos[listHetero, ]
 
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
@@ -941,9 +942,9 @@ calcAF.MLRNA <- function(snp.pos.Hetero) {
     listPhase <- which(snp.pos.Hetero$phase < 2)
     m <- data.frame(aL = rep(0, nrow(snp.pos.Hetero)),
                     aH = rep(0, nrow(snp.pos.Hetero)))
-    if(length(listPhase) > 0){
+    if (length(listPhase) > 0) {
         mPhase <- data.frame(a1 = rep(0, length(listPhase)),
-                             a2 = rep(0, length(listPhase)))
+                                a2 = rep(0, length(listPhase)))
         if(length(which(snp.pos.Hetero$phase == 0)) > 0){
             mPhase[which(snp.pos.Hetero$phase == 0), "a1"] <-
                     snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.ref"]
@@ -962,7 +963,6 @@ calcAF.MLRNA <- function(snp.pos.Hetero) {
         minPhase <- which.min(c(m1,m2))
         m[listPhase, "aL"] <- mPhase[, minPhase]
         m[listPhase, "aH"] <- mPhase[, (minPhase+1)%%2]
-
     }
 
     listUnphase <- which(snp.pos.Hetero$phase > 1)
@@ -1013,35 +1013,32 @@ tableBlockAF <- function(snp.pos) {
 
 
     resBlock <- data.frame(block = listBlocks,
-                           aRF = rep(-1, length(listBlocks)),
-                           aFraction = rep(-1, length(listBlocks)),
-                           lR = rep(-1, length(listBlocks)),
-                           nPhase = rep(-1, length(listBlocks)),
-                           sumAlleleLow = rep(-1, length(listBlocks)),
-                           sumAlleleHigh = rep(-1, length(listBlocks)),
-                           lH = rep(-1, length(listBlocks)),
-                           lM = rep(-1, length(listBlocks)),
-                           lRhomo = rep(1, length(listBlocks)))
+                            aRF = rep(-1, length(listBlocks)),
+                            aFraction = rep(-1, length(listBlocks)),
+                            lR = rep(-1, length(listBlocks)),
+                            nPhase = rep(-1, length(listBlocks)),
+                            sumAlleleLow = rep(-1, length(listBlocks)),
+                            sumAlleleHigh = rep(-1, length(listBlocks)),
+                            lH = rep(-1, length(listBlocks)),
+                            lM = rep(-1, length(listBlocks)),
+                            lRhomo = rep(1, length(listBlocks)))
 
-    tmp <- aggregate(snp.pos[, c( "homo"),
-                             drop = FALSE],
-                     by = list(block=snp.pos$block.id) ,sum)
+    tmp <- aggregate(snp.pos[, c( "homo"), drop = FALSE],
+                        by = list(block=snp.pos$block.id) ,sum)
     row.names(tmp) <- as.character(tmp[,1])
     resBlock$nbHomo <- tmp[as.character(listBlocks),2]
-    tmp <- aggregate(snp.pos[, c( "keep"),
-                             drop = FALSE],
-                     by = list(block=snp.pos$block.id) ,sum)
+    tmp <- aggregate(snp.pos[, c( "keep"), drop = FALSE],
+                        by = list(block=snp.pos$block.id) ,sum)
     row.names(tmp) <- as.character(tmp[,1])
     resBlock$nbKeep <- tmp[as.character(listBlocks),2]
 
-    tmp <- aggregate(snp.pos[, c( "hetero"),
-                             drop = FALSE],
-                     by = list(block=snp.pos$block.id) ,sum)
+    tmp <- aggregate(snp.pos[, c( "hetero"), drop = FALSE],
+                        by = list(block=snp.pos$block.id) ,sum)
     row.names(tmp) <- as.character(tmp[,1])
     resBlock$nbHetero <- tmp[as.character(listBlocks),2]
 
 
-    for(i in seq_len(length(listBlocks))){
+    for (i in seq_len(length(listBlocks))) {
         # start with LOH
 
         lH <- 1
@@ -1053,7 +1050,7 @@ tableBlockAF <- function(snp.pos) {
             # Check if 1 hetero with allelic fraction (<=0.05)
             # it is considered as all homozygote
             flag <- TRUE
-            if(resBlock[i, "nbHetero"] == 1){
+            if (resBlock[i, "nbHetero"] == 1) {
                 tmp <- min(snp.pos[snp.pos$block.id == resBlock$block[i] &
                                 snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
                             sum(snp.pos[snp.pos$block.id == resBlock$block[i] &
@@ -1062,18 +1059,18 @@ tableBlockAF <- function(snp.pos) {
             }
             if(flag){
                 listRef <- which(snp.pos$block.id == resBlock$block[i] &
-                                     snp.pos$homo &
-                                     snp.pos$cnt.ref > snp.pos$cnt.alt)
+                                        snp.pos$homo &
+                                        snp.pos$cnt.ref > snp.pos$cnt.alt)
                 listAlt <- which(snp.pos$block.id == resBlock$block[i] &
-                                     snp.pos$homo &
-                                     snp.pos$cnt.ref < snp.pos$cnt.alt)
+                                        snp.pos$homo &
+                                        snp.pos$cnt.ref < snp.pos$cnt.alt)
                 tmp <- snp.pos$freq[listRef]
                 tmp[which(tmp < 0.01)] <- 0.01
-                lH <- ifelse(length(listRef) > 0,sum(log10(1-tmp)*2), 0)
+                lH <- ifelse(length(listRef) > 0, sum(log10(1-tmp)*2), 0)
 
                 tmp <- snp.pos$freq[listAlt]
                 tmp[which(tmp < 0.01)] <- 0.01
-                lH <- lH + ifelse(length(listAlt) > 0,sum(log10(tmp)*2), 0)
+                lH <- lH + ifelse(length(listAlt) > 0, sum(log10(tmp)*2), 0)
 
                 lM <- sum(log10(apply(snp.pos[which(snp.pos$block.id ==
                                             resBlock$block[i] & snp.pos$homo),

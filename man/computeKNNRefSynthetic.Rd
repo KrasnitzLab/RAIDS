@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNRefSynthetic}
 \alias{computeKNNRefSynthetic}
-\title{TODO}
+\title{Run a k-nearest neighbor analysis on a subset of the}
 \usage{
 computeKNNRefSynthetic(
   gdsSample,
@@ -13,26 +13,35 @@ computeKNNRefSynthetic(
   spRef,
   fieldPopInfAnc = "SuperPop",
   kList = seq_len(15),
-  pcaList = 2:15
+  pcaList = seq(2, 15, 1)
 )
 }
 \arguments{
-\item{gdsSample}{an object of class \code{gds} opened related to
-the sample}
+\item{gdsSample}{an object of class
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+GDS Sample file.}
 
 \item{listEigenvector}{TODO see return of computePCAsynthetic}
 
-\item{listCatPop}{TODO}
+\item{listCatPop}{a \code{vector} of \code{character} string
+representing the list of possible ancestry assignations. Default:
+\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{study.id.syn}{a the study.id of the synthetic data}
 
 \item{spRef}{TODO}
 
-\item{fieldPopInfAnc}{TODO}
+\item{fieldPopInfAnc}{TODO . Default: \code{"SuperPop"}.}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis.
+Default: \code{seq_len(15)}.}
 
-\item{pcaList}{TODO array of the pca dimension possible values}
+\item{pcaList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.
+Default: \code{seq(2,15,1)}.}
 }
 \value{
 A \code{list} TODO with the sample.id and eigenvectors

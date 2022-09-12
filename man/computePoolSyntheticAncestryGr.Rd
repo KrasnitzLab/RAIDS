@@ -42,8 +42,8 @@ create the reference PCA.}
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
 
-\item{listCatPop}{TODO a \code{vector} of \code{character} string
-representing the list of possible ancestry assignation. Default:
+\item{listCatPop}{a \code{vector} of \code{character} string
+representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
@@ -51,10 +51,14 @@ representing the list of possible ancestry assignation. Default:
 \item{fieldPopInfAnc}{TODO. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter.
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis.
 Default: \code{seq(2,15,1)}.}
 
-\item{pcaList}{TODO array of the pca dimension possible values}
+\item{pcaList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.
+Default: \code{seq(2,15,1)}.}
 
 \item{algorithm}{a \code{character} string representing the algorithm used
 to calculate the PCA. The 2 choices are "exact" (traditional exact

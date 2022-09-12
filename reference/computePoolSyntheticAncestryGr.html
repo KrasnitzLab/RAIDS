@@ -140,13 +140,6 @@ representing the list of possible ancestry assignations. Default:
 <dd><p>TODO. Default: <code>"SuperPop"</code>.</p></dd>
 
 
-<dt>kList</dt>
-<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis.
-Default: <code>seq(2,15,1)</code>.</p></dd>
-
-
 <dt>pcaList</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
 values tested for the  _D_ parameter. The _D_ parameter represents the
@@ -175,13 +168,21 @@ missing rate at with the SNVs are discarded; the SNVs are retained in the
 with "&lt;= missing.rate" only; if <code>NaN</code>, no missing threshold.
 Default: <code>0.025</code>.</p></dd>
 
+
+<dt>a</dt>
+<dd><p><code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If <code>NULL</code>,
+the value <code>seq(2,15,1)</code> is assigned.
+Default: <code>seq(2,15,1)</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
 <p>a <code>list</code> TODO with the sample.id and eigenvectors
-and a table with KNN callfor different K and pca dimension.</p>
+and a table with KNN call for different K and pca dimension.</p>
     </div>
     <div id="references">
     <h2>References</h2>

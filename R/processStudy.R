@@ -1878,7 +1878,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 }
 
 #' @title Run a k-nearest neighbor analysis on a subset of the
-## synthetic dataset
+#' synthetic dataset
 #'
 #' @description TODO
 #'

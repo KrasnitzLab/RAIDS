@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computeKNNRefSynthetic}
 \alias{computeKNNRefSynthetic}
-\title{Run a k-nearest neighbor analysis on a subset of the}
+\title{Run a k-nearest neighbor analysis on a subset of the
+synthetic dataset}
 \usage{
 computeKNNRefSynthetic(
   gdsSample,

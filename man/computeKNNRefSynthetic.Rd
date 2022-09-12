@@ -13,7 +13,7 @@ computeKNNRefSynthetic(
   study.id.syn,
   spRef,
   fieldPopInfAnc = "SuperPop",
-  kList = seq_len(15),
+  kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1)
 )
 }
@@ -37,8 +37,8 @@ representing the list of possible ancestry assignations. Default:
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
 number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-the value \code{seq_len(15)} is assigned.
-Default: \code{seq_len(15)}.}
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _D_ parameter. The _D_ parameter represents the

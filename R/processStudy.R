@@ -1901,8 +1901,8 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #' @param kList  a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
 #' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq_len(15)} is assigned.
-#' Default: \code{seq_len(15)}.
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
@@ -1932,7 +1932,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                     listCatPop, study.id.syn,
                                     spRef, fieldPopInfAnc="SuperPop",
-                                    kList=seq_len(15),
+                                    kList=seq(2,15,1),
                                     pcaList=seq(2,15,1)) {
 
     ## The number of rows in study.annot must be one.
@@ -1941,7 +1941,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     # }
 
     if(is.null(kList)) {
-        kList <- seq_len(15) #c(seq_len(14), seq(15,100, by=5))
+        kList <- seq(2,15,1) #c(seq_len(14), seq(15,100, by=5))
     }
 
     if(is.null(pcaList)) {
@@ -2223,9 +2223,10 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
 #'
-#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' @param  a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis.
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
 #' Default: \code{seq(2,15,1)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
@@ -2250,7 +2251,7 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #' Default: \code{0.025}.
 #'
 #' @return a \code{list} TODO with the sample.id and eigenvectors
-#' and a table with KNN callfor different K and pca dimension.
+#' and a table with KNN call for different K and pca dimension.
 #'
 #' @references
 #'

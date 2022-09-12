@@ -50,11 +50,6 @@ representing the list of possible ancestry assignations. Default:
 
 \item{fieldPopInfAnc}{TODO. Default: \code{"SuperPop"}.}
 
-\item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis.
-Default: \code{seq(2,15,1)}.}
-
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _D_ parameter. The _D_ parameter represents the
 number of dimensions used in the PCA analysis.
@@ -75,10 +70,16 @@ missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} only
 with "<= missing.rate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
+
+\item{a}{\code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 }
 \value{
 a \code{list} TODO with the sample.id and eigenvectors
-and a table with KNN callfor different K and pca dimension.
+and a table with KNN call for different K and pca dimension.
 }
 \description{
 The function runs a PCA analysis using 1 synthetic profile

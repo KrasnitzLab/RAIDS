@@ -819,7 +819,8 @@ for(i in seq_len(length(listSamples))) {
       ## The synthetic profiles are projected on the 1KG PCA space 
       ## (the reference samples used to generate the synthetic profiles are 
       ##  removed from this PCA)
-      ## A K nearest neighbor analysis is done using a range of K and D values
+      ## The K-nearest neighbor analysis is done using 
+      ##  a range of K and D values
       KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
                                           gdsSample = gdsSample,
                                           sampleRM =  sampleRM[j,],

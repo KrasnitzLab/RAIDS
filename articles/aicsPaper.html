@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-09-10<br><strong>License</strong>: Apache License (== 2.0) | file
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.0<br><strong>Compiled date</strong>: 2022-09-12<br><strong>License</strong>: Apache License (== 2.0) | file
 LICENSE<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
@@ -861,7 +861,8 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span>      <span class="co">## The synthetic profiles are projected on the 1KG PCA space </span></span>
 <span>      <span class="co">## (the reference samples used to generate the synthetic profiles are </span></span>
 <span>      <span class="co">##  removed from this PCA)</span></span>
-<span>      <span class="co">## A K nearest neighbor analysis is done using a range of K and D values</span></span>
+<span>      <span class="co">## The K-nearest neighbor analysis is done using </span></span>
+<span>      <span class="co">##  a range of K and D values</span></span>
 <span>      <span class="va">KNN.synt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computePoolSyntheticAncestryGr.html">computePoolSyntheticAncestryGr</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, </span>
 <span>                                          gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
 <span>                                          sampleRM <span class="op">=</span>  <span class="va">sampleRM</span><span class="op">[</span><span class="va">j</span>,<span class="op">]</span>,</span>

@@ -127,8 +127,8 @@ threads. Default: <code>1L</code>.</p></dd>
 
 
 <dt>listCatPop</dt>
-<dd><p>TODO a <code>vector</code> of <code>character</code> string
-representing the list of possible ancestry assignation. Default:
+<dd><p>a <code>vector</code> of <code>character</code> string
+representing the list of possible ancestry assignations. Default:
 <code>("EAS", "EUR", "AFR", "AMR", "SAS")</code>.</p></dd>
 
 
@@ -142,12 +142,16 @@ representing the list of possible ancestry assignation. Default:
 
 <dt>kList</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
-values tested for the  _K_ parameter.
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis.
 Default: <code>seq(2,15,1)</code>.</p></dd>
 
 
 <dt>pcaList</dt>
-<dd><p>TODO array of the pca dimension possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.
+Default: <code>seq(2,15,1)</code>.</p></dd>
 
 
 <dt>algorithm</dt>

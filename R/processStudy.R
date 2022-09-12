@@ -1940,10 +1940,12 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     #     stop("Number of samples in study.annot not equal to 1\n")
     # }
 
+    ## Assign default value if kList is NULL
     if(is.null(kList)) {
         kList <- seq(2,15,1) #c(seq_len(14), seq(15,100, by=5))
     }
 
+    ## Assign default value if pcaList is NULL
     if(is.null(pcaList)) {
         pcaList <- 2:15
     }
@@ -2223,7 +2225,7 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
 #'
-#' @param  a \code{vector} of \code{integer} representing  the list of
+#' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
 #' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
 #' the value \code{seq(2,15,1)} is assigned.
@@ -2231,7 +2233,8 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
-#' number of dimensions used in the PCA analysis.
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
 #' Default: \code{seq(2,15,1)}.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
@@ -2301,6 +2304,22 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
         stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## Assign default value is kList is NULL
+    if(is.null(kList)) {
+        kList <- seq(2,15,1)
+    }
+
+    ## The parameter kList must be positive integer values
+    if(!(is.numeric(kList) && is.vector(kList) && all(kList>0))) {
+        stop("The \'kList\' parameter must be a vector of positive ",
+                "integers.")
+    }
+
+    ## Assign default value is pcaList is NULL
+    if(is.null(pcaList)) {
+        pcaList <- seq(2,15,1)
     }
 
     ## The parameter pcaList must be positive integer values

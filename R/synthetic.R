@@ -657,14 +657,16 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         # g <- 2 if altR == 0 & infoSNV$count.tot - (refC + altC) <
         #                   cutOffA[as.character(infoSNV$count.tot), "count"]
 
+        # count total multiply by 0 if too much error
         gSyn <- gSyn +
             (infoSNV$count.tot - (refC + altC) <
-                cutOffA[as.character(infoSNV$count.tot), "count"]) * # multiply by 0 if too much error
+                cutOffA[as.character(infoSNV$count.tot), "count"]) *
             ((refC == 0 |  altC == 0) + # 1 if homozygot
                   (refC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) *
                   (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) # 1 if both allele are higher than cutoff hetero
             ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
-            (1 + (altC > 0) * (1 + (refC == 0) ) ) # if altC == 0 than 1, altC > 0 and refC == 0 than 3
+            (1 + (altC > 0) * (1 + (refC == 0) ) )
+              # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
         ## Append the name of the samples to the GDS Sample file "sample.id"
         ## node

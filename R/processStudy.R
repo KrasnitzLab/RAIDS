@@ -1878,7 +1878,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 }
 
 #' @title Run a k-nearest neighbor analysis on a subset of the
-## synthetic dataset
+#' synthetic dataset
 #'
 #' @description TODO
 #'
@@ -1900,16 +1900,24 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #'
 #' @param kList  a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis.
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq_len(15)} is assigned.
 #' Default: \code{seq_len(15)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
-#' number of dimensions used in the PCA analysis.
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
 #' Default: \code{seq(2,15,1)}.
 #'
-#' @return A \code{list} TODO with the sample.id and eigenvectors
-#' and a table with KNN callfor different K and pca dimension.
+#' @return a \code{list} TODO with the sample.id and eigenvectors
+#' and a table with KNN call for different K and PCA dimensions.
+#' \itemize{
+#' \item{sample.id} {TODO}
+#' \item{sample1Kg} {TODO}
+#' \item{sp} {TODO}
+#' \item{matKNN} {TODO}
+#' }
 #'
 #' @examples
 #'
@@ -1940,6 +1948,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
         pcaList <- 2:15
     }
 
+    ## Get study information from the GDS Sample file
     study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     study.annot <- study.annot.all[which(study.annot.all$study.id ==

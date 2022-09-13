@@ -1553,7 +1553,9 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
 #' @param sampleRef a \code{vector} of sample.id from 1KG with one entry for
 #' each synthetic to project.
 #'
-#' @param study.id.syn a the study.id of the synthetic data
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier.
+#' The study identifier must be present in the GDS Sample file.
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
@@ -2159,7 +2161,9 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param spRef TODO
 #'
-#' @param study.id.syn TODO
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier.
+#' The study identifier must be present in the GDS Sample file.
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
@@ -2246,6 +2250,11 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     if(!(is.character(sampleRM))) {
         stop("The \'sampleRM\' parameter must be a vector of character ",
                 "strings.")
+    }
+
+    ## The parameter study.id.syn must be a character string
+    if(!(is.character(study.id.syn))) {
+        stop("The \'study.id.syn\' parameter must be a character string.")
     }
 
     ## The parameter np must be a single positive integer

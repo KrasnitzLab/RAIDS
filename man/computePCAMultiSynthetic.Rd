@@ -16,7 +16,9 @@ the sample}
 \item{sampleRef}{a \code{vector} of sample.id from 1KG with one entry for
 each synthetic to project.}
 
-\item{study.id.syn}{a the study.id of the synthetic data}
+\item{study.id.syn}{a \code{character} string corresponding to the study
+identifier.
+The study identifier must be present in the GDS Sample file.}
 }
 \value{
 a \code{list} containing 3 entries:

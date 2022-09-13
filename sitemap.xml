@@ -255,4 +255,7 @@
   <url>
     <loc>/reference/testEmptyBox.html</loc>
   </url>
+  <url>
+    <loc>/reference/validateSyntheticGeno.html</loc>
+  </url>
 </urlset>

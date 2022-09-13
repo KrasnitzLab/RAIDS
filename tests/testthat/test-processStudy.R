@@ -1362,6 +1362,20 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when sample
 })
 
 
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when study.id.syn is numeric value"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- "The \'study.id.syn\' parameter must be a character string."
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+        sampleRM=c("Sample01", "Sample02"), study.id.syn=11, np=1L,
+        spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+})
+
+
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is character string"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")

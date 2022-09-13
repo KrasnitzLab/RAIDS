@@ -395,7 +395,6 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
@@ -414,66 +413,18 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             PATHPRUNED=".",
                             outPref="pruned") {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The parameter sampleCurrent must be a character string
-    if (!(is.character(sampleCurrent))) {
-        stop("The \'sampleCurrent\' parameter must be a character string.")
-    }
-
-    ## The parameter method must be a character string
-    if(!(is.character(method))) {
-        stop("The \'method\' parameter must be a character string.")
-    }
+    ## Validate input parameters
+    validatePruningSample(gds=gds, method=method, sampleCurrent=sampleCurrent,
+            study.id=study.id, listSNP=listSNP, slide.max.bp.v=slide.max.bp.v,
+            ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose.v, chr=chr,
+            minAF.SuperPop=minAF.SuperPop, keepGDSpruned=keepGDSpruned,
+            PATHSAMPLEGDS=PATHSAMPLEGDS, keepFile=keepFile,
+            PATHPRUNED=PATHPRUNED, outPref=outPref)
 
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
 
-    ## The parameter ld.threshold.v must be a single positive integer
-    if (!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
-        stop("The \'ld.threshold.v\' parameter must be a single positive ",
-                "numeric value.")
-    }
-
-    ## The parameter slide.max.bp.v must be a single positive integer
-    if (!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
-        stop("The \'slide.max.bp.v\' parameter must be a single positive ",
-                "numeric value.")
-    }
-
-    ## The parameter np must be a single positive integer
-    if (!(isSingleNumber(np) && (np >= 0.0))) {
-        stop("The \'np\' parameter must be a single positive numeric value.")
-    }
-
-    ## The parameter keepGDSpruned must be a logical
-    if (!is.logical(keepGDSpruned)) {
-        stop("The \'keepGDSpruned\' parameter must be a logical ",
-                "(TRUE or FALSE).")
-    }
-
-    ## The parameter PATHSAMPLEGDS must be a character string representing an
-    ## existing path
-    if (!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
-        stop("The \'PATHSAMPLEGDS\' parameter must be a character string ",
-             "representing an existing directory.")
-    }
-
-    ## The parameter keepFile must be a logical
-    if (!is.logical(keepFile)) {
-        stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
-    }
-
-    ## The parameter PATHPRUNED must be a character string representing an
-    ## existing path
-    if (!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
-        stop("The \'PATHPRUNED\' parameter must be a character string ",
-                "representing an existing directory.")
-    }
-
+    ## GDS sample file name
     fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent, ".gds"))
 
     ## The GDS Sample file must exists
@@ -525,7 +476,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     if(!is.null(minAF.SuperPop)) {
         listTMP <- NULL
         for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
-            snpAF <- read.gdsn(index.gdsn(gds, paste0("snp.", sp, "_AF") ))
+            snpAF <- read.gdsn(index.gdsn(gds, paste0("snp.", sp, "_AF")))
             listTMP <- union(listTMP,
                 which(snpAF >= minAF.SuperPop & snpAF <= 1 - minAF.SuperPop))
         }
@@ -542,12 +493,9 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     listSamples <- sample.id[which(sample.ref == 1)]
 
     ## Use a LD analysis to generate a subset of SNPs
-    snpset <- runLDPruning(gds=gds, method=method,
-                            listSamples=listSamples,
-                            listKeep=listKeep,
-                            slide.max.bp.v=slide.max.bp.v,
-                            ld.threshold.v=ld.threshold.v, np=np,
-                            verbose.v=verbose.v)
+    snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
+                listKeep=listKeep, slide.max.bp.v=slide.max.bp.v,
+                ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose.v)
 
     pruned <- unlist(snpset, use.names=FALSE)
 

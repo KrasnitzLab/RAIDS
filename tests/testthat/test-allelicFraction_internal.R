@@ -14,7 +14,7 @@ context("validateGetTableSNV() results")
 
 test_that("validateGetTableSNV() must return epxected results when all input are valid", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
+    data.dir <- test_path("fixtures")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFIle)

@@ -2236,41 +2236,9 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
                             eigen.cnt=32L,
                             missing.rate=0.025) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
-    }
-
-    ## The parameter sampleRM must be a single positive integer
-    if(!(is.character(sampleRM))) {
-        stop("The \'sampleRM\' parameter must be a vector of character ",
-                "strings.")
-    }
-
-    ## The parameter study.id.syn must be a character string
-    if(!(is.character(study.id.syn))) {
-        stop("The \'study.id.syn\' parameter must be a character string.")
-    }
-
-    ## The parameter np must be a single positive integer
-    if(!(isSingleNumber(np) && (np > 0))) {
-        stop("The \'np\' parameter must be a single positive integer.")
-    }
-
     ## Assign default value is kList is NULL
     if(is.null(kList)) {
         kList <- seq(2,15,1)
-    }
-
-    ## The parameter kList must be positive integer values
-    if(!(is.numeric(kList) && is.vector(kList) && all(kList>0))) {
-        stop("The \'kList\' parameter must be a vector of positive ",
-                "integers.")
     }
 
     ## Assign default value is pcaList is NULL
@@ -2278,32 +2246,15 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
         pcaList <- seq(2,15,1)
     }
 
-    ## The parameter pcaList must be positive integer values
-    if(!(is.numeric(pcaList) && is.vector(pcaList) && all(pcaList>0))) {
-        stop("The \'pcaList\' parameter must be a vector of positive ",
-                    "integers.")
-    }
-
-    ## Validate that algorithm is a string
-    if(!(is.character(algorithm))) {
-        stop("The \'algorithm\' parameter must be a character string.")
-    }
+    ## Validate the input parameters
+    validateComputePoolSyntheticAncestryGr(gds=gds, gdsSample=gdsSample,
+        sampleRM=sampleRM, spRef=spRef, study.id.syn=study.id.syn,
+        np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
-
-    ## The parameter eigen.cnt must be a single integer
-    if(!(isSingleNumber(eigen.cnt))) {
-        stop("The \'eigen.cnt\' parameter must be a single integer.")
-    }
-
-    ## The parameter missing.rate must be a single positive numeric between
-    ## zero and one or NaN
-    if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
-            missing.rate <= 1.0)) || is.nan(missing.rate)))  {
-        stop("The \'missing.rate\' parameter must be a single positive ",
-                "numeric between zero and one or NaN.")
-    }
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,

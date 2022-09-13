@@ -153,3 +153,169 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
 
     return(0L)
 }
+
+
+#' @title Validate input parameters for pruningSample() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{pruningSample}} function.
+#'
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
+#'
+#' @param gdsSample an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+#' GDS Sample file.
+#'
+#' @param sampleRM a \code{vector} of \code{character} strings representing
+#' the identifiers of the 1KG reference samples that should not be used to
+#' create the reference PCA.
+#'
+#' @param spRef TODO
+#'
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier.
+#' The study identifier must be present in the GDS Sample file.
+#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads.
+#'
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations.
+#'
+#' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
+#'
+#' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
+#'
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#'
+#' @param algorithm a \code{character} string representing the algorithm used
+#' to calculate the PCA. The 2 choices are "exact" (traditional exact
+#' calculation) and "randomized" (fast PCA with randomized algorithm
+#' introduced in Galinsky et al. 2016).
+#'
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#'
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA} only
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @references
+#'
+#' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
+#' Price AL. Fast Principal-Component Analysis Reveals Convergent Evolution
+#' of ADH1B in Europe and East Asia. Am J Hum Genet. 2016 Mar 3;98(3):456-72.
+#' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The 1KG GDS file (opened)
+#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#'
+#'
+#' ## The GDS Sample (opened)
+#' gdsSample <- openfn.gds(file.path(data.dir,
+#'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateComputePoolSyntheticAncestryGr(gds=gds1KG,
+#'      gdsSample=gdsSample, sampleRM="TGCA_01", spRef="TCGA",
+#'      study.id.syn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
+#'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
+#'      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
+#'      missing.rate=0.02)
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gds1KG)
+#' closefn.gds(gdsfile=gdsSample)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
+        spRef, study.id.syn, np, listCatPop, fieldPopIn1KG,
+        fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missing.rate) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
+    }
+
+    ## The parameter sampleRM must be a single positive integer
+    if(!(is.character(sampleRM))) {
+        stop("The \'sampleRM\' parameter must be a vector of character ",
+             "strings.")
+    }
+
+    ## The parameter study.id.syn must be a character string
+    if(!(is.character(study.id.syn))) {
+        stop("The \'study.id.syn\' parameter must be a character string.")
+    }
+
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np > 0))) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## The parameter listCatPop must be a character string
+    if(!(is.character(listCatPop))) {
+        stop("The \'listCatPop\' parameter must be a vector of ",
+             "character strings.")
+    }
+
+    ## The parameter kList must be positive integer values
+    if(!(is.numeric(kList) && is.vector(kList) && all(kList>0))) {
+        stop("The \'kList\' parameter must be a vector of positive ",
+             "integers.")
+    }
+
+    ## The parameter pcaList must be positive integer values
+    if(!(is.numeric(pcaList) && is.vector(pcaList) && all(pcaList>0))) {
+        stop("The \'pcaList\' parameter must be a vector of positive ",
+             "integers.")
+    }
+
+    ## Validate that algorithm is a string
+    if(!(is.character(algorithm))) {
+        stop("The \'algorithm\' parameter must be a character string.")
+    }
+
+    ## The parameter eigen.cnt must be a single integer
+    if(!(isSingleNumber(eigen.cnt))) {
+        stop("The \'eigen.cnt\' parameter must be a single integer.")
+    }
+
+    ## The parameter missing.rate must be a single positive numeric between
+    ## zero and one or NaN
+    if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
+           missing.rate <= 1.0)) || is.nan(missing.rate)))  {
+        stop("The \'missing.rate\' parameter must be a single positive ",
+             "numeric between zero and one or NaN.")
+    }
+
+    return(0L)
+}
+
+

@@ -1376,6 +1376,22 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when study.
 })
 
 
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when listCatPop is numeric value"), {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(gdsFIle)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- paste0("The \'listCatPop\' parameter must be a vector of ",
+                                "character strings.")
+
+    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+        sampleRM=c("Sample01", "Sample02"), study.id.syn="Test", np=1L,
+        listCatPop=11,
+        spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+})
+
+
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is character string"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")

@@ -64,6 +64,11 @@
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001, verbose=FALSE) {
 
+    ## Validate the input parameters
+    validateGetTableSNV(gds=gds, gdsSample=gdsSample,
+            sampleCurrent=sampleCurrent, study.id=study.id, minCov=minCov,
+            minProb=minProb, eProb=eProb, verbose=verbose)
+
     ## The gds must be an object of class "gds.class"
     if (!inherits(gds, "gds.class")) {
         stop("The \'gds\' must be an object of class \'gds.class\'.")
@@ -102,11 +107,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     ## Retain the specified sample in the specified study
     posCur <- which(study.annot$data.id == sampleCurrent &
                         study.annot$study.id == study.id)
-
-    # g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur),
-    #            count = c(-1,1))[listSNP]
-    # g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
-    #            count = c(-1,1))[listSNP]
 
     ## Extract SNV coverage from GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),

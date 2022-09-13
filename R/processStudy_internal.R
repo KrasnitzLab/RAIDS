@@ -95,9 +95,7 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
                         keepFile, PATHPRUNED, outPref) {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
+    validateGDSClass(gds=gds, name="gds")
 
     ## The parameter sampleCurrent must be a character string
     if (!(is.character(sampleCurrent))) {
@@ -127,25 +125,18 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
     }
 
     ## The parameter keepGDSpruned must be a logical
-    if (!is.logical(keepGDSpruned)) {
-        stop("The \'keepGDSpruned\' parameter must be a logical ",
-                "(TRUE or FALSE).")
-    }
+    validateLogical(logical=keepGDSpruned, "keepGDSpruned")
 
-    ## The parameter PATHSAMPLEGDS must be a character string representing an
-    ## existing path
+    ## The parameter PATHSAMPLEGDS must be a character string for existing path
     if (!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
         stop("The \'PATHSAMPLEGDS\' parameter must be a character string ",
                 "representing an existing directory.")
     }
 
     ## The parameter keepFile must be a logical
-    if (!is.logical(keepFile)) {
-        stop("The \'keepFile\' parameter must be a logical (TRUE or FALSE).")
-    }
+    validateLogical(logical=keepFile, "keepFile")
 
-    ## The parameter PATHPRUNED must be a character string representing an
-    ## existing path
+    ## The parameter PATHPRUNED must be a character string for existing path
     if (!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
         stop("The \'PATHPRUNED\' parameter must be a character string ",
                 "representing an existing directory.")
@@ -253,15 +244,9 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
         spRef, study.id.syn, np, listCatPop, fieldPopIn1KG,
         fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missing.rate) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
-    }
+    ## The gds and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gds, "gds")
+    validateGDSClass(gdsSample, "gdsSample")
 
     ## The parameter sampleRM must be a single positive integer
     if(!(is.character(sampleRM))) {

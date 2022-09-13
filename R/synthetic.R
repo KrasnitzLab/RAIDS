@@ -768,11 +768,8 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
                                         predCall, listCall) {
 
-    matAccuracy <- data.frame(pcaD=matKNN$D[1],
-                        K=matKNN$K[1],
-                        Accu.CM=numeric(1),
-                        CM.CI=numeric(1),
-                        N=nrow(matKNN),
+    matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
+                        Accu.CM=numeric(1), CM.CI=numeric(1), N=nrow(matKNN),
                         NBNA=length(which(is.na(matKNN[[predCall]]))))
     i <- 1
     if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
@@ -838,12 +835,9 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
 #' @export
 computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
 
-    matAccuracy <- data.frame(pcaD=matKNN$D[1],
-                                K=matKNN$K[1],
-                                ROC.AUC=numeric(1),
-                                ROC.CI=numeric(1),
-                                N=nrow(matKNN),
-                                NBNA=length(which(is.na(matKNN[[predCall]]))))
+    matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
+                        ROC.AUC=numeric(1), ROC.CI=numeric(1), N=nrow(matKNN),
+                        NBNA=length(which(is.na(matKNN[[predCall]]))))
 
     i <- 1
 
@@ -851,10 +845,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
         stop("Compute synthetic accuracy with different pca dimension or K\n")
     }
 
-    #matCur <- matKNN[which(matKNN$D == pcaD & matKNN$K == k),]
     listKeep <- which(!(is.na(matKNN[[predCall]])) )
-    #listKeep <- which(!(is.na(pedCall[matKNN$sample.id, refCall])) &
-    #               fCall %in% listCall)
 
     fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
                         levels=listCall, labels=listCall)
@@ -884,7 +875,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
         fCur <- rep(0, length(listKeep))
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
-        if(length(which(fCur == 1))>0) {
+        if (length(which(fCur == 1))>0) {
             listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
                                                             ci=TRUE))
             pos <- which(df$Call == listCall[j])
@@ -896,8 +887,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
         }
     }
 
-    res <- list(matAUROC.All=matAccuracy,
-                    matAUROC.Call=df,
+    res <- list(matAUROC.All=matAccuracy,  matAUROC.Call=df,
                     listROC.Call=listROC)
 
     return(res)

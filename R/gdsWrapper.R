@@ -906,32 +906,26 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
             #
             # below same as the merge above but faster
 
-            z <- cbind(c(listPos$snp.chromosome,
-                            matSample$Chromosome,
+            z <- cbind(c(listPos$snp.chromosome, matSample$Chromosome,
                             matSample$Chromosome),
-                        c(listPos$snp.position,
-                            matSample$Position,
+                        c(listPos$snp.position, matSample$Position,
                             matSample$Position),
-                        c(rep(1,nrow(listPos)),
-                            rep(0,nrow(matSample)),
+                        c(rep(1,nrow(listPos)), rep(0,nrow(matSample)),
                             rep(2,nrow(matSample))),
-                        c(rep(0,nrow(listPos)),
-                            matSample[, "File1R"],
+                        c(rep(0,nrow(listPos)), matSample[, "File1R"],
                             -1 * matSample[, "File1R"]),
-                        c(rep(0,nrow(listPos)),
-                            matSample[, "File1A"],
+                        c(rep(0,nrow(listPos)), matSample[, "File1A"],
                             -1 * matSample[, "File1A"]),
-                        c(rep(0,nrow(listPos)),
-                            matSample[, "count"],
+                        c(rep(0,nrow(listPos)), matSample[, "count"],
                             -1 * matSample[, "count"]))
             rm(matSample)
             z <- z[order(z[,1], z[,2], z[,3]),]
 
-            matAll <- data.frame(Chromosome=z[z[,3]==1, 1],
-                                    Position=z[z[,3]==1, 2],
-                                    File1R=cumsum(z[,4])[z[,3]==1],
-                                    File1A=cumsum(z[,5])[z[,3]==1],
-                                    count=cumsum(z[,6])[z[,3]==1])
+            matAll <- data.frame(Chromosome=z[z[, 3] == 1, 1],
+                                    Position=z[z[, 3] == 1, 2],
+                                    File1R=cumsum(z[, 4])[z[, 3] == 1],
+                                    File1A=cumsum(z[,5])[z[, 3] == 1],
+                                    count=cumsum(z[, 6])[z[, 3] == 1])
             rm(z)
 
             if(is.null(PATHGDSSAMPLE)){
@@ -981,10 +975,6 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                                 listSamples=c(listSamples[i]),
                                                 studyDF=studyDF)
 
-                #closefn.gds(gdsSample)
-
-
-
             listCount <- table(matAll$count[matAll$count >= minCov])
             cutOffA <-
                 data.frame(count=unlist(vapply(as.integer(names(listCount)),
@@ -1003,9 +993,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
             # Select the position where the coverage of the 2 alleles is enough
             listCov <- which(rowSums(matAll[, c("File1R", "File1A")]) >= minCov)
 
-
             matAllC <- matAll[listCov,]
-
 
             # The difference  depth - (nb Ref + nb Alt) can be realistically
             # explain by sequencing error
@@ -1046,7 +1034,6 @@ generateGDS1KGgenotypeFromSNPPileup <- function(PATHGENO,
                                         compress = "LZMA_RA.fast")
                 readmode.gdsn(var.geno)
             }
-
 
             rm(g)
             closefn.gds(gdsfile=gdsSample)

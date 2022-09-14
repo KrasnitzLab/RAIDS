@@ -887,16 +887,16 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS)
 gds <- openfn.gds(file.GDS)
     
     
-    # Path to the directory where the gds file for each sample
-    # will be create
-    PATHSAMPLEGDS <- file.path("The path")
+# Path to the directory where the gds file for each sample
+# will be create
+PATHSAMPLEGDS <- file.path("The path")
     
-    # directory which content directory name Name.ID in which the PCA is save
-    # 
-    PATH_OUT <- file.path("The path")
-    if(! file.exists(PATH_OUT)){
-        dir.create(PATH_OUT)
-    }
+# directory which content directory name Name.ID in which the PCA is save
+# 
+PATH_OUT <- file.path("The path")
+if(! file.exists(PATH_OUT)){
+  dir.create(PATH_OUT)
+}
     
 ####################################################################
 ## A data.frame with the description of the study for the synthetic
@@ -908,50 +908,55 @@ studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
                           study.platform = "Platform string like Whole Exome",
                           stringsAsFactors = FALSE)
     
-    # The file ped defined before
-    filePED <- FILE_PED
-    ped <- readRDS(filePED)
-    # You need a list of the sample Name.ID 
-    # you can get it from other source than 
-    # filePED 
-    listSamples <- ped[, "Name.ID"]
+####################################################################
+## The list of samples to analyse as obtained by the PED RDS file.
+## The samples must have an associated GDS Sample files.
+## Not needed if the list of samples is already available.
+####################################################################
+filePED <- FILE_PED
+ped <- readRDS(filePED)
+listSamples <- ped[, "Name.ID"]
+
+####################################################################
+## The getRef1KGPop() function extract the known super-population 
+## of the reference samples.
+## We expect the ancestry call from a synthetic profile to 
+## correspond to the known ancestry of the reference sample used to 
+## generate it.
+####################################################################
+spRef <- getRef1KGPop(gds, "superPop")
     
-    # Get the known superPop for the reference
-    spRef <- getRef1KGPop(gds, "superPop")
-    
-    
-    
-    # Can be run in parallel or in different clusters...
-    for(i in seq_len(length(listSamples))){
+# Can be run in parallel or in different clusters...
+for(i in seq_len(length(listSamples))){
         
-        file.GDSSample <- file.path(PATHSAMPLEGDS, 
-                                      paste0(listSamples[i], ".gds"))
+  file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
         
-        PATHKNN <- file.path(PATH_OUT, listSamples[i])
-        listFilesName <- dir(file.path(PATHKNN), ".rds")
+  PATHKNN <- file.path(PATH_OUT, listSamples[i])
+  listFilesName <- dir(file.path(PATHKNN), ".rds")
 
-        # List of the KNN result from PCA on synthetic data with path
-        listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+  # List of the KNN result from PCA on synthetic data with path
+  listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-        gdsSample <- snpgdsOpen(file.GDSSample)
+  gdsSample <- snpgdsOpen(file.GDSSample)
 
-        resCall <- computeAncestryFromSyntheticFile(gds = gds, 
-                                        gdsSample = gdsSample,
-                                        listFiles = listFiles,
-                                        sample.ana.id = listSamples[i],
-                                        spRef = spRef,
-                                        study.id.syn = studyDF.syn$study.id,
-                                        np = 4L)
+  resCall <- computeAncestryFromSyntheticFile(gds = gds, 
+                                    gdsSample = gdsSample,
+                                    listFiles = listFiles,
+                                    sample.ana.id = listSamples[i],
+                                    spRef = spRef,
+                                    study.id.syn = studyDF.syn$study.id,
+                                    np = 4L)
 
-        saveRDS(resCall, file.path(PATHOUT,
+  saveRDS(resCall, file.path(PATHOUT,
                               paste0(listSamples[i], ".infoCall",".rds")))
 
-        write.csv(resCall$Ancestry,
-              file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
-              quote = FALSE, row.names = FALSE)
+  write.csv(resCall$Ancestry,
+          file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
+          quote = FALSE, row.names = FALSE)
 
-        closefn.gds(gdsSample)
-    }
+  ## Close GDS Sample file
+  closefn.gds(gdsSample)
+}
 
 ## Close both 1KG GDS file
 closefn.gds(gds)

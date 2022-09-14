@@ -9,7 +9,7 @@
 ## If you wish to be notified when the package is released, please send an e-mail with "RAIDS Paper" as the subject line to: pascal_belleau@hotmail.com ##
 
 
-# Accurate inference of genetic ancestry from cancer-derived molecular data with **RAIDS** #
+# Accurate genetic ancestry inference from cancer-derived molecular data with **RAIDS** #
 
 The Robust Ancestry Inference using Data Synthesis (**_RAIDS_**) package 
 enables accurate and robust inference of genetic 
@@ -33,7 +33,7 @@ David A. Tuveson and
 
 ## Citing ##
 
-If you use the **RAIDS** package for a publication, we would ask you to cite 
+If you use the **_RAIDS_** package for a publication, we would ask you to cite 
 the following:
 
 >  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 

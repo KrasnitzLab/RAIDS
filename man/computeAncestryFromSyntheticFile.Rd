@@ -20,7 +20,7 @@ computeAncestryFromSyntheticFile(
   pcaList = 2:15,
   algorithm = "exact",
   eigen.cnt = 32L,
-  missing.rate = 0.025
+  missing.rate = NaN
 )
 }
 \arguments{
@@ -62,8 +62,11 @@ eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
-\item{missing.rate}{number of eigenvectors in PCA
-(para snpgdsPCA)}
+\item{missing.rate}{a \code{numeric} value representing the threshold
+missing rate at with the SNVs are discarded; the SNVs are retained in the
+\link[SNPRelate]{snpgdsPCA}
+with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+Default: \code{NaN}.}
 }
 \value{
 a \code{list} TODO with the sample.id and eigenvectors

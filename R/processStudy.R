@@ -1463,7 +1463,7 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #'
 #' @param missing.rate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
-#' \link[SNPRelate]{snpgdsPCA} only
+#' \link[SNPRelate]{snpgdsPCA} function
 #' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{0.025}.
 #'
@@ -1612,7 +1612,8 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 }
 
 
-#' @title TODO
+#' @title Compute Principal Component Analysis (PCA) on SNV genotype for
+#' data from a sample
 #'
 #' @description TODO
 #'
@@ -1636,6 +1637,12 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
+#'
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA}
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' Default: \code{NaN}.
 #'
 #' @references
 #'
@@ -1664,7 +1671,7 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' @export
 computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
-                            eigen.cnt=32L) {
+                            eigen.cnt=32L, missing.rate=NaN) {
 
     ## Validate that name.id is a string
     if(!(is.character(name.id))) {
@@ -1709,6 +1716,7 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
                                             num.thread=np,
                                             algorithm=algorithm,
                                             eigen.cnt=eigen.cnt,
+                                            missing.rate=missing.rate,
                                             verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
@@ -2200,7 +2208,7 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param missing.rate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
-#' \link[SNPRelate]{snpgdsPCA} only
+#' \link[SNPRelate]{snpgdsPCA} function
 #' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{0.025}.
 #'
@@ -2317,8 +2325,12 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA}
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' Default: \code{0.025}.
+#'
 #'
 #' @return A \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
@@ -2379,7 +2391,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
                             name.id=sample.ana.id, study.id.ref="Ref.1KG",
                             np=np, algorithm=algorithm,
-                            eigen.cnt=eigen.cnt)
+                            eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
                                                 sample.ana.id,
@@ -2430,8 +2442,11 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate number of eigenvectors in PCA
-#' (para snpgdsPCA)
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA}
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' Default: \code{NaN}.
 #'
 #' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
@@ -2464,7 +2479,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                             pcaList=2:15,
                             algorithm="exact",
                             eigen.cnt=32L,
-                            missing.rate=0.025) {
+                            missing.rate=NaN) {
 
     KNN.list <- list()
 
@@ -2485,9 +2500,8 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                                             listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample, sample.ana.id,
-                                            study.id.ref="Ref.1KG", np=np,
-                                            algorithm=algorithm,
-                                            eigen.cnt=eigen.cnt)
+                            study.id.ref="Ref.1KG", np=np, algorithm=algorithm,
+                            eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
 
     listKNNSample <- computeKNNRefSample(listPCASample,

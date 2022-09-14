@@ -1134,7 +1134,6 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
@@ -1142,91 +1141,32 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
     gdsRefAnnot=NULL, block.id=NULL) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The sampleCurrent must be a character string
-    if (!is.character(sampleCurrent)) {
-        stop("The \'sampleCurrent\' must be a character string.")
-    }
-
-    ## The study.id must be a character string
-    if (!is.character(study.id)) {
-        stop("The \'study.id\' must be a character string.")
-    }
-
-    ## The studyType must be a character string
-    if (!is.character(studyType)) {
-        stop("The \'studyType\' must be a character string.")
-    }
+    ## Validate input parameters
+    validateEstimateAllelicFraction(gds=gds, gdsSample=gdsSample,
+        sampleCurrent=sampleCurrent, study.id=study.id, chrInfo=chrInfo,
+        studyType=studyType, minCov=minCov, minProb=minProb, eProb=eProb,
+        cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore, wAR=wAR,
+        cutOffAR=cutOffAR, gdsRefAnnot=gdsRefAnnot, block.id=block.id)
 
     ## Set study type
     studyType <- match.arg(studyType)
-
-    ## The minCov parameter must be a single positive integer
-    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
-        stop("The \'minCov\' must be a single numeric positive value")
-    }
-
-    ## The minProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
-        stop("The \'minProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The eProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
-        stop("The \'eProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The wAR parameter must be a single positive numeric superior to 1
-    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
-        stop("The \'wAR\' parameter must be a single numeric positive value.")
-    }
-
-    ## The cutOffLOH parameter must be a single numeric
-    if (!(isSingleNumber(cutOffLOH))) {
-        stop("The \'cutOffLOH\' parameter must be a single numeric value.")
-    }
-
-    ## The cutOffHomoScore parameter must be a single numeric
-    if (!(isSingleNumber(cutOffHomoScore))) {
-        stop("The \'cutOffHomoScore\' parameter must be a single ",
-                        "numeric value.")
-    }
 
     snp.pos <- NULL
 
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
         snp.pos <- computeAllelicFractionDNA(gds=gds, gdsSample=gdsSample,
-                                            sampleCurrent=sampleCurrent,
-                                            study.id, chrInfo,
-                                            minCov=minCov, minProb=minProb,
-                                            eProb=eProb,
-                                            cutOffLOH=cutOffLOH,
-                                            cutOffHomoScore=cutOffHomoScore,
-                                            wAR=wAR)
-
+                        sampleCurrent=sampleCurrent, study.id=study.id,
+                        chrInfo=chrInfo, minCov=minCov, minProb=minProb,
+                        eProb=eProb, cutOffLOH=cutOffLOH,
+                        cutOffHomoScore=cutOffHomoScore, wAR=wAR)
 
     } else if(studyType == "RNA") {
         snp.pos <- computeAllelicFractionRNA(gds=gds, gdsSample=gdsSample,
-                                    gdsRefAnnot=gdsRefAnnot,
-                                    sampleCurrent=sampleCurrent,
-                                    study.id=study.id, block.id=block.id,
-                                    chrInfo=chrInfo,
-                                    minCov=minCov, minProb=minProb,
-                                    eProb=eProb,
-                                    cutOffLOH=cutOffLOH,
-                                    cutOffAR=cutOffAR)
+                        gdsRefAnnot=gdsRefAnnot, sampleCurrent=sampleCurrent,
+                        study.id=study.id, block.id=block.id, chrInfo=chrInfo,
+                        minCov=minCov, minProb=minProb, eProb=eProb,
+                        cutOffLOH=cutOffLOH, cutOffAR=cutOffAR)
     }
 
     snp.pos$seg <- rep(0, nrow(snp.pos))
@@ -1234,19 +1174,16 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     # Find segment with same lap
     for(chr in seq_len(22)) {
         snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
-        tmp <- c(0,
-                 abs(snpChr[2:nrow(snpChr), "lap"] -
+        tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
                          snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
         snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
         k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
     }
 
     ## Save information into the "lap" node in the GDS Sample file
-    ## Suppose we keep only the pruned SNVs
-    addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
-
     ## Save information into the "segment" node in the GDS Sample file
     ## Suppose we keep only the pruned SNVs
+    addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
     addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
     # Successful
@@ -1286,9 +1223,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
 addStudy1Kg <- function(gds, gdsSampleFile) {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
+    validateGDSClass(gds, "gds")
 
     ## The gdsSampleFile must be a character string and the file must exists
     if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
@@ -1318,8 +1253,7 @@ addStudy1Kg <- function(gds, gdsSampleFile) {
                         stringsAsFactors=FALSE)
 
         ## Create the pedigree information  for the 1KG samples
-        ped1KG <- data.frame(Name.ID=sample.id,
-                            Case.ID=sample.id,
+        ped1KG <- data.frame(Name.ID=sample.id, Case.ID=sample.id,
                             Sample.Type=rep("Reference", length(sample.id)),
                             Diagnosis=rep("Reference", length(sample.id)),
                             Source=rep("IGSR", length(sample.id)),
@@ -1497,9 +1431,7 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
                                     missing.rate=0.025) {
 
     ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'")
-    }
+    validateGDSClass(gdsSample, "gdsSample")
 
     ## The listRM must be character string
     if (!(is.character(listRM) && length(listRM) > 0)) {
@@ -1704,30 +1636,23 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
     sample.Unrel <- study.annot.all[which(study.annot.all$study.id ==
                                                 study.id.ref), "data.id"]
 
-
     listPCA <- list()
 
     listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
 
     ## Calculate the eigenvectors and eigenvalues for PCA
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample,
-                                            sample.id=sample.Unrel,
-                                            snp.id=listPCA[["pruned"]],
-                                            num.thread=np,
-                                            algorithm=algorithm,
-                                            eigen.cnt=eigen.cnt,
-                                            missing.rate=missing.rate,
-                                            verbose=TRUE)
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample, sample.id=sample.Unrel,
+                                snp.id=listPCA[["pruned"]], num.thread=np,
+                                algorithm=algorithm, eigen.cnt=eigen.cnt,
+                                missing.rate=missing.rate, verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                    gdsobj=gdsSample,
-                                                    num.thread=np,
-                                                    verbose=TRUE)
+                                gdsobj=gdsSample, num.thread=np, verbose=TRUE)
 
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                            gdsobj=gdsSample,
-                                            sample.id=sample.id[sample.pos],
-                                            num.thread=np, verbose=TRUE)
+                                gdsobj=gdsSample,
+                                sample.id=sample.id[sample.pos],
+                                num.thread=np, verbose=TRUE)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
                                         listPCA[["pca.unrel"]]$sample.id

@@ -219,7 +219,6 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
 #' ## The 1KG GDS file (opened)
 #' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 #'
-#'
 #' ## The GDS Sample (opened)
 #' gdsSample <- openfn.gds(file.path(data.dir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
@@ -302,5 +301,152 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
 
     return(0L)
 }
+
+
+#' @title Validate input parameters for estimateAllelicFraction() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{estimateAllelicFraction}} function.
+#'
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
+#'
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier as used in \code{\link{pruningSample}} function.
+#'
+#' @param study.id a \code{character} string corresponding to the name of
+#' the study as
+#' used in \code{\link{pruningSample}} function.
+#'
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes.
+#'
+#' @param studyType a \code{character} string representing the type of study.
+#' The possible choices are: "DNA" and "RNA". The type of study affects the
+#' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
+#'
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage.
+#'
+#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#'
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error.
+#'
+#' @param cutOffLOH a single \code{numeric} representing the cutoff, in log,
+#' for the homozygote score to assign a region as LOH.
+#'
+#' @param cutOffHomoScore a single \code{numeric} representing the cutoff, in
+#' log, that the SNVs in a block are called homozygote by error.
+#'
+#' @param wAR a single positive \code{integer} representing the size-1 of
+#' the window used to compute an empty box.
+#'
+#' @param cutOffAR a single \code{numeric} representing the cutoff, in
+#' log score, that the SNVs in a gene are allelic fraction different from 0.5.
+#'
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#'  **This parameter is RNA specific.**
+#'
+#' @param block.id a \code{character} string corresponding to the block
+#' identifier in \code{gdsRefAnnot}. **This parameter is RNA specific.**
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Required libraries
+#' library(BSgenome.Hsapiens.UCSC.hg38)
+#'
+#' ## Directory where demo GDS files are located
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The 1KG GDS file (opened)
+#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#'
+#' ## The GDS Sample (opened)
+#' gdsSample <- openfn.gds(file.path(data.dir,
+#'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
+#'
+#' ## Get chromosome length information
+#' chrInfo <- integer(25L)
+#' for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
+#' chrInfo[23] <- length(Hsapiens[["chrX"]])
+#' chrInfo[24] <- length(Hsapiens[["chrY"]])
+#' chrInfo[25] <- length(Hsapiens[["chrM"]])
+#'
+#'
+#' ## The validatiion should be successful
+#' RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
+#'     sampleCurrent="Sample01", study.id="Synthetic", chrInfo=chrInfo,
+#'     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
+#'     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
+#'     block.id="1")
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gds1KG)
+#' closefn.gds(gdsfile=gdsSample)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
+        study.id, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
+        cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, block.id) {
+
+    ## The gds and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gds, "gds")
+    validateGDSClass(gdsSample, "gdsSample")
+
+    ## The sampleCurrent must be a character string
+    if (!is.character(sampleCurrent)) {
+        stop("The \'sampleCurrent\' must be a character string.")
+    }
+
+    ## The study.id must be a character string
+    if (!is.character(study.id)) {
+        stop("The \'study.id\' must be a character string.")
+    }
+
+    ## The studyType must be a character string
+    if (!is.character(studyType)) {
+        stop("The \'studyType\' must be a character string.")
+    }
+
+    ## The minCov parameter must be a single positive integer
+    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
+        stop("The \'minCov\' must be a single numeric positive value")
+    }
+
+    ## The minProb and eProb must be single positive numeric between 0 and 1
+    validateSingleRatio(minProb, "minProb")
+    validateSingleRatio(eProb, "eProb")
+
+    ## The wAR parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
+        stop("The \'wAR\' parameter must be a single numeric positive value.")
+    }
+
+    ## The cutOffLOH parameter must be a single numeric
+    if (!(isSingleNumber(cutOffLOH))) {
+        stop("The \'cutOffLOH\' parameter must be a single numeric value.")
+    }
+
+    ## The cutOffHomoScore parameter must be a single numeric
+    if (!(isSingleNumber(cutOffHomoScore))) {
+        stop("The \'cutOffHomoScore\' parameter must be a single ",
+             "numeric value.")
+    }
+
+    return(0L)
+}
+
+
+
 
 

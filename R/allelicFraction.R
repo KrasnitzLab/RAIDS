@@ -69,38 +69,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
             sampleCurrent=sampleCurrent, study.id=study.id, minCov=minCov,
             minProb=minProb, eProb=eProb, verbose=verbose)
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The minCov must be a single positive number
-    if (!(isSingleNumber(minCov) && (minCov >= 0)))  {
-        stop("The \'minCov\' must be a single numeric positive value.")
-    }
-
-    ## The minProb must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0)))  {
-        stop("The \'minProb\' must be a single numeric positive ",
-                "value between 0 and 1.")
-    }
-
-    ## The eProb must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0)))  {
-        stop("The \'eProb\' must be a single numeric positive ",
-                "value between 0 and 1.")
-    }
-
-    ## The verbose parameter must be a logical
-    if (!(is.logical(verbose))) {
-        stop("The \'verbose\' parameter must be a logical.")
-    }
-
     ## Extract study information (data.frame) from GDS Sample file
     study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
 

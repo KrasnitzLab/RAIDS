@@ -58,14 +58,10 @@ validateGetTableSNV <- function(gds, gdsSample, sampleCurrent, study.id,
                                     minCov, minProb, eProb, verbose) {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
+    validateGDSClass(gds=gds, name="gds")
 
     ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
-    }
+    validateGDSClass(gds=gdsSample, name="gdsSample")
 
     ## The minCov must be a single positive number
     if (!(isSingleNumber(minCov) && (minCov >= 0)))  {
@@ -85,9 +81,7 @@ validateGetTableSNV <- function(gds, gdsSample, sampleCurrent, study.id,
     }
 
     ## The verbose parameter must be a logical
-    if (!(is.logical(verbose))) {
-        stop("The \'verbose\' parameter must be a logical.")
-    }
+    validateLogical(logical=verbose, "verbose")
 
     ## Successful
     return(0L)

@@ -6,7 +6,7 @@ library(gdsfmt)
 
 
 #############################################################################
-### Tests getTableSNV() results
+### Tests validateGetTableSNV() results
 #############################################################################
 
 context("validateGetTableSNV() results")

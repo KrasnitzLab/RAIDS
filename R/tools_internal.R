@@ -72,3 +72,39 @@ validateLogical <- function(logical, name) {
 
     return(0L)
 }
+
+
+#' @title Validate that the input parameter is a single positive numeric
+#' between zero and one (included)
+#'
+#' @description This function validates that the input parameter is
+#' a single numeric between zero and one (included). If the parameter is not,
+#' the function generates an error with a specific message.
+#'
+#' @param value a single positive \code{numeric} that will be validated.
+#'
+#' @param name a \code{character} string that represents the name of the
+#' parameter that is tested.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateSingleRatio(value=0.02, name="test")
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateSingleRatio <- function(value, name) {
+
+    ## The parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(value) && (value >= 0.0) && (value <= 1.0))) {
+        stop("The \'", name, "\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    return(0L)
+}
+

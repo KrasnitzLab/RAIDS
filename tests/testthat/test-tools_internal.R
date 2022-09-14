@@ -58,3 +58,38 @@ test_that("validateLogical() must return error when input is not valid", {
                     expected, fixed=TRUE)
 })
 
+
+#############################################################################
+### Tests validateSingleRatio() results
+#############################################################################
+
+context("validateSingleRatio() results")
+
+
+test_that("validateSingleRatio() must return expected results when all input are valid", {
+
+    result1 <- RAIDS:::validateSingleRatio(value=0.02, name="parameter_01")
+
+    expect_identical(result1, 0L)
+})
+
+
+test_that("validateSingleRatio() must return error when input is not valid", {
+
+    expected <- paste0("The \'param_01\' must be a single numeric positive ",
+                        "value between 0 and 1.")
+
+    expect_error(RAIDS:::validateSingleRatio(value="toto", name="param_01"),
+                    expected, fixed=TRUE)
+})
+
+
+test_that("validateSingleRatio() must return error when input is negative value", {
+
+    expected <- paste0("The \'param_02\' must be a single numeric positive ",
+                        "value between 0 and 1.")
+
+    expect_error(RAIDS:::validateSingleRatio(value=-0.01, name="param_02"),
+                 expected, fixed=TRUE)
+})
+

@@ -259,7 +259,13 @@
     <loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc>
   </url>
   <url>
+    <loc>/reference/validateGDSClass.html</loc>
+  </url>
+  <url>
     <loc>/reference/validateGetTableSNV.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateLogical.html</loc>
   </url>
   <url>
     <loc>/reference/validatePruningSample.html</loc>

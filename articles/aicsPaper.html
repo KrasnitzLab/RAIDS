@@ -964,17 +964,21 @@ done at this step but all the synthetic data is prepared in the step
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>    </span>
-<span><span class="co"># Can be run in parallel or in different clusters...</span></span>
+<span><span class="co">## Loop on each sample </span></span>
+<span><span class="co">## Can also be run in parallel or on different clusters...</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>        </span>
+<span>  </span>
+<span>  <span class="co">## Extract the GDS file name and path for the current sample      </span></span>
 <span>  <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
-<span>        </span>
+<span>  </span>
+<span>  <span class="co">## Directory where the KNN results have been saved      </span></span>
 <span>  <span class="va">PATHKNN</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">listFilesName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHKNN</span><span class="op">)</span>, <span class="st">".rds"</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="co"># List of the KNN result from PCA on synthetic data with path</span></span>
+<span>  <span class="co">## List of the KNN result files from PCA on synthetic data</span></span>
 <span>  <span class="va">listFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHKNN</span><span class="op">)</span> , <span class="va">listFilesName</span><span class="op">)</span></span>
 <span></span>
+<span>  <span class="co">## Open GDS Sample file</span></span>
 <span>  <span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">resCall</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeAncestryFromSyntheticFile.html">computeAncestryFromSyntheticFile</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, </span>
@@ -1085,7 +1089,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [89] stringi_1.7.8               highr_0.9                  </span></span>
 <span><span class="co">##  [91] GenomicFeatures_1.46.5      desc_1.4.2                 </span></span>
 <span><span class="co">##  [93] lattice_0.20-45             ProtGenerics_1.26.0        </span></span>
-<span><span class="co">##  [95] Matrix_1.5-0                vctrs_0.4.1                </span></span>
+<span><span class="co">##  [95] Matrix_1.5-1                vctrs_0.4.1                </span></span>
 <span><span class="co">##  [97] pillar_1.8.1                lifecycle_1.0.2            </span></span>
 <span><span class="co">##  [99] BiocManager_1.30.18         lmtest_0.9-40              </span></span>
 <span><span class="co">## [101] jquerylib_0.1.4             data.table_1.14.2          </span></span>

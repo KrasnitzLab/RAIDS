@@ -940,12 +940,12 @@ for(i in seq_len(length(listSamples))){
   gdsSample <- snpgdsOpen(file.GDSSample)
 
   resCall <- computeAncestryFromSyntheticFile(gds = gds, 
-                                        gdsSample = gdsSample,
-                                        listFiles = listFiles,
-                                        sample.ana.id = listSamples[i],
-                                        spRef = spRef,
-                                        study.id.syn = studyDF.syn$study.id,
-                                        np = 4L)
+                                    gdsSample = gdsSample,
+                                    listFiles = listFiles,
+                                    sample.ana.id = listSamples[i],
+                                    spRef = spRef,
+                                    study.id.syn = studyDF.syn$study.id,
+                                    np = 4L)
 
   saveRDS(resCall, file.path(PATHOUT,
                               paste0(listSamples[i], ".infoCall",".rds")))

@@ -926,17 +926,21 @@ listSamples <- ped[, "Name.ID"]
 ####################################################################
 spRef <- getRef1KGPop(gds, "superPop")
     
-# Can be run in parallel or in different clusters...
+## Loop on each sample 
+## Can also be run in parallel or on different clusters...
 for(i in seq_len(length(listSamples))){
-        
+  
+  ## Extract the GDS file name and path for the current sample      
   file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
-        
+  
+  ## Directory where the KNN results have been saved      
   PATHKNN <- file.path(PATH_OUT, listSamples[i])
   listFilesName <- dir(file.path(PATHKNN), ".rds")
 
-  # List of the KNN result from PCA on synthetic data with path
+  ## List of the KNN result files from PCA on synthetic data
   listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
+  ## Open GDS Sample file
   gdsSample <- snpgdsOpen(file.GDSSample)
 
   resCall <- computeAncestryFromSyntheticFile(gds = gds, 

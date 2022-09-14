@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computePCARefSample}
 \alias{computePCARefSample}
-\title{TODO}
+\title{Compute Principal Component Analysis (PCA) on SNV genotype for
+data from a sample}
 \usage{
 computePCARefSample(
   gdsSample,
@@ -11,7 +12,8 @@ computePCARefSample(
   study.id.ref = "Ref.1KG",
   np = 1L,
   algorithm = c("exact", "randomized"),
-  eigen.cnt = 32L
+  eigen.cnt = 32L,
+  missing.rate = NaN
 )
 }
 \arguments{
@@ -35,6 +37,12 @@ introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
+
+\item{missing.rate}{a \code{numeric} value representing the threshold
+missing rate at with the SNVs are discarded; the SNVs are retained in the
+\link[SNPRelate]{snpgdsPCA}
+with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+Default: \code{NaN}.}
 }
 \value{
 a \code{list} containing 3 entries:

@@ -259,6 +259,9 @@
     <loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc>
   </url>
   <url>
+    <loc>/reference/validateEstimateAllelicFraction.html</loc>
+  </url>
+  <url>
     <loc>/reference/validateGDSClass.html</loc>
   </url>
   <url>
@@ -269,6 +272,9 @@
   </url>
   <url>
     <loc>/reference/validatePruningSample.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateSingleRatio.html</loc>
   </url>
   <url>
     <loc>/reference/validateSyntheticGeno.html</loc>

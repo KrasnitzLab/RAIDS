@@ -2341,8 +2341,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{gds} opened related to
-#' the sample
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
 #'
 #' @param listFiles TODO.
 #'
@@ -2360,7 +2360,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param fieldPopIn1KG TODO
+#' @param fieldPopIn1KG a \code{character} string representing the name of TODO
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
@@ -2423,9 +2423,28 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                             fieldPopInfAnc="SuperPop",
                             kList=seq(2, 15, 1),
                             pcaList=seq(2, 15, 1),
-                            algorithm="exact",
+                            algorithm=c("exact", "randomized"),
                             eigen.cnt=32L,
                             missing.rate=NaN) {
+
+    if(is.null(pcaList)) {
+        pcaList <- seq(2, 15, 1)
+    }
+
+    if (is.null(kList)) {
+        kList <- seq(2, 15, 1)
+    }
+
+    ## Validate input parameters
+    validateComputeAncestryFromSyntheticFile(gds=gds, gdsSample=gdsSample,
+        listFiles=listFiles, sample.ana.id=sample.ana.id, spRef=spRef,
+        study.id.syn=study.id.syn, np=np, listCatPop=listCatPop,
+        fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
+        kList=kList, pcaList=pcaList, algorithm=algorithm,
+        eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+
+    ## Matches a character method against a table of candidate values
+    method <- match.arg(method, several.ok=FALSE)
 
     KNN.list <- list()
 

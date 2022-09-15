@@ -73,7 +73,8 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
             Case.ID=c("TCGA-H01", "TCGA-H02"),
             Sample.Type=c("DNA", "DNA"),
             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
-## TODO
+
+## The validatiion should be successful
 RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
             batch=1, studyDF=studyInfo,
             listSamples=c("Sample_01", "Sample_02"),

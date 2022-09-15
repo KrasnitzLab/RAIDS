@@ -379,7 +379,6 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
 #' chrInfo[24] <- length(Hsapiens[["chrY"]])
 #' chrInfo[25] <- length(Hsapiens[["chrM"]])
 #'
-#'
 #' ## The validatiion should be successful
 #' RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
 #'     sampleCurrent="Sample01", study.id="Synthetic", chrInfo=chrInfo,
@@ -504,7 +503,8 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #'             Case.ID=c("TCGA-H01", "TCGA-H02"),
 #'             Sample.Type=c("DNA", "DNA"),
 #'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
-#' ## TODO
+#'
+#' ## The validatiion should be successful
 #' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
 #'             batch=1, studyDF=studyInfo,
 #'             listSamples=c("Sample_01", "Sample_02"),
@@ -547,5 +547,136 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
     return(0L)
 }
 
+
+#' @title Validate input parameters for createStudy2GDS1KG() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{createStudy2GDS1KG}} function.
+#'
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
+#'
+#' @param listFiles TODO.
+#'
+#' @param sample.ana.id TODO
+#'
+#' @param spRef TODO
+#'
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier. The study identifier must be present in the GDS Sample file.
+#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads.
+#'
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations.
+#'
+#' @param fieldPopIn1KG a \code{character} string representing the name of TODO
+#'
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
+#'
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.
+#'
+#' @param algorithm a \code{character} string representing the algorithm used
+#' to calculate the PCA.
+#'
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#'
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA}
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @references
+#'
+#' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
+#' Price AL. Fast Principal-Component Analysis Reveals Convergent Evolution
+#' of ADH1B in Europe and East Asia. Am J Hum Genet. 2016 Mar 3;98(3):456-72.
+#' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The 1KG GDS file (opened)
+#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#'
+#' ## The GDS Sample (opened)
+#' gdsSample <- openfn.gds(file.path(data.dir,
+#'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
+#'
+#' listFiles <- file.path(data.dir,  "listSNPIndexes_Demo.rds")
+#'
+#' ## The validatiion should be successful
+#' RAIDS:::valdiatecomputeAncestryFromSyntheticFile(gds=gds1KG,
+#'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
+#'     spRef=NULL, study.id.syn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
+#'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
+#'     pcaList=c(3, 4, 5), algorithm="exact", eigen.cnt=32L, missing.rate=0.2)
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gds1KG)
+#' closefn.gds(gdsfile=gdsSample)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
+                listFiles, sample.ana.id, spRef, study.id.syn, np, listCatPop,
+                fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
+                algorithm, eigen.cnt, missing.rate) {
+
+    ## The gds and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gds, "gds")
+    validateGDSClass(gdsSample, "gdsSample")
+
+    ## The study.id.syn must be a character string
+    if (!is.character(study.id.syn)) {
+        stop("The \'study.id.syn\' must be a character string.")
+    }
+
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np > 0))) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## The parameter listCatPop must be a character string
+    if(!(is.character(listCatPop))) {
+        stop("The \'listCatPop\' parameter must be a vector of ",
+             "character strings.")
+    }
+
+    ## Validate that algorithm is a string
+    if(!(is.character(algorithm))) {
+        stop("The \'algorithm\' parameter must be a character string.")
+    }
+
+    ## The missing.rate must be a positive numeric between zero and one or NaN
+    if (!is.nan(missing.rate)) {
+        if (!(isSingleNumber(missing.rate) && (missing.rate >= 0.0) &&
+                    (missing.rate <= 1.0))) {
+            stop("The \'missing.rate\' must be a single numeric positive ",
+                        "value between 0 and 1 or NaN.")
+        }
+    }
+
+    return(0L)
+}
 
 

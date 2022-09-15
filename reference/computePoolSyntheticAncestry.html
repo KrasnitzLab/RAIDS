@@ -75,7 +75,7 @@
 <span>  fieldPopIn1KG <span class="op">=</span> <span class="st">"superPop"</span>,</span>
 <span>  fieldPopInfAnc <span class="op">=</span> <span class="st">"SuperPop"</span>,</span>
 <span>  kList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  pcaList <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span>,</span>
+<span>  pcaList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  algorithm <span class="op">=</span> <span class="st">"exact"</span>,</span>
 <span>  eigen.cnt <span class="op">=</span> <span class="fl">32L</span>,</span>
 <span>  missing.rate <span class="op">=</span> <span class="fl">0.025</span></span>
@@ -107,15 +107,19 @@ the sample</p></dd>
 
 
 <dt>study.id.syn</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string corresponding to the study
+identifier. The study identifier must be present in the GDS Sample file.</p></dd>
 
 
 <dt>np</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a single positive <code>integer</code> representing the number of
+threads. Default: <code>1L</code>.</p></dd>
 
 
 <dt>listCatPop</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>vector</code> of <code>character</code> string
+representing the list of possible ancestry assignations. Default:
+<code>("EAS", "EUR", "AFR", "AMR", "SAS")</code>.</p></dd>
 
 
 <dt>fieldPopIn1KG</dt>
@@ -123,15 +127,25 @@ the sample</p></dd>
 
 
 <dt>fieldPopInfAnc</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset. Default: <code>"SuperPop"</code>.</p></dd>
 
 
 <dt>kList</dt>
-<dd><p>TODO array of the k possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If <code>NULL</code>,
+the value <code>seq(2,15,1)</code> is assigned.
+Default: <code>seq(2,15,1)</code>.</p></dd>
 
 
 <dt>pcaList</dt>
-<dd><p>TODO array of the pca dimension possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.  If <code>NULL</code>,
+the value <code>seq(2,15,1)</code> is assigned.
+Default: <code>seq(2,15,1)</code>.</p></dd>
 
 
 <dt>algorithm</dt>

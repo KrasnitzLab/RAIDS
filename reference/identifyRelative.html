@@ -136,9 +136,9 @@ The extension of the file must be '.rds'.</p></dd>
 <span class="r-in"><span><span class="co">## Temporary output files</span></span></span>
 <span class="r-in"><span><span class="co">## The first RDS file will contain the list of unrelated patients</span></span></span>
 <span class="r-in"><span><span class="co">## The second RDS file will contain the kinship information between patients</span></span></span>
-<span class="r-in"><span><span class="va">patientTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>,</span></span>
+<span class="r-in"><span><span class="va">patientTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"unrelatedPatients_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ibdTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>,<span class="st">"ibd_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ibdTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>,<span class="st">"ibd_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Identify unrelated patients in 1KG GDS file</span></span></span>
 <span class="r-in"><span><span class="fu">identifyRelative</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gdsFile</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span></span>
@@ -153,9 +153,9 @@ The extension of the file must be '.rds'.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relationship inference in the presence of population stratification.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> KING IBD:    the sum of all selected genotypes (0,1,2) = 37</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPU capabilities: Double-Precision SSE2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Sep 15 00:11:13 2022    (internal increment: 65536)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Sep 15 18:59:03 2022    (internal increment: 65536)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [..................................................]  0%, ETC: ---        [==================================================] 100%, completed, 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Sep 15 00:11:13 2022    Done.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Sep 15 18:59:03 2022    Done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using kinobj and divobj to partition samples into unrelated and related sets</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Working with 10 samples</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Identifying relatives for each sample using kinship threshold 0.0220970869120796</span>
@@ -166,7 +166,7 @@ The extension of the file must be '.rds'.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/withr/man/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

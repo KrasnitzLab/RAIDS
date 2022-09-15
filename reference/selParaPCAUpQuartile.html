@@ -69,8 +69,8 @@
 <span>  <span class="va">refCall</span>,</span>
 <span>  <span class="va">predCall</span>,</span>
 <span>  <span class="va">listCall</span>,</span>
-<span>  kList <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">15</span>,</span>
-<span>  pcaList <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span></span>
+<span>  kList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  pcaList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,11 +98,19 @@ computeKNNSuperPoprSynthetic return from group synthetic data</p></dd>
 
 
 <dt>kList</dt>
-<dd><p>TODO array of the k possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If <code>NULL</code>,
+the value <code>seq(3,15,1)</code> is assigned.
+Default: <code>seq(3,15,1)</code>.</p></dd>
 
 
 <dt>pcaList</dt>
-<dd><p>TODO array of the pca dimension possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.  If <code>NULL</code>,
+the value <code>seq(2,15,1)</code> is assigned.
+Default: <code>seq(2,15,1)</code>.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -69,7 +69,7 @@
 <span>  <span class="va">study.annot</span>,</span>
 <span>  <span class="va">spRef</span>,</span>
 <span>  kList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">15</span><span class="op">)</span>,</span>
-<span>  pcaList <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">15</span></span>
+<span>  pcaList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,7 +93,11 @@ the gds</p></dd>
 
 
 <dt>kList</dt>
-<dd><p>TODO array of the k possible values</p></dd>
+<dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If <code>NULL</code>,
+the value <code>seq_len(15)</code> is assigned.
+Default: <code>seq_len(15)</code>.</p></dd>
 
 
 <dt>pcaList</dt>

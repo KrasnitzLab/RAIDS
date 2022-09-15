@@ -56,3 +56,31 @@ test_that("validateComputePoolSyntheticAncestryGr() must return epxected results
     expect_identical(result1, 0L)
 })
 
+
+#############################################################################
+### Tests validateCreateStudy2GDS1KG() results
+#############################################################################
+
+context("validateCreateStudy2GDS1KG() results")
+
+
+test_that("validateCreateStudy2GDS1KG() must return epxected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+            Case.ID=c("TCGA-H01", "TCGA-H02"), Sample.Type=c("DNA", "DNA"),
+            Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study",
+                        study.platform="WES", stringsAsFactors=FALSE)
+
+    result1 <- RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped,
+            fileNameGDS=gdsFile, batch=12, studyDF=studyInfo,
+            listSamples=c("TCGA-H01", "TCGA-H02"), PATHSAMPLEGDS=data.dir,
+            verbose=TRUE)
+
+    expect_identical(result1, 0L)
+})

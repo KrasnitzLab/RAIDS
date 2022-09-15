@@ -11,8 +11,8 @@ selParaPCAUpQuartile(
   refCall,
   predCall,
   listCall,
-  kList = 3:15,
-  pcaList = 2:15
+  kList = seq(3, 15, 1),
+  pcaList = seq(2, 15, 1)
 )
 }
 \arguments{
@@ -27,9 +27,17 @@ computeKNNSuperPoprSynthetic return from group synthetic data}
 
 \item{listCall}{TODO array of the possible call}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+the value \code{seq(3,15,1)} is assigned.
+Default: \code{seq(3,15,1)}.}
 
-\item{pcaList}{TODO array of the pca dimension possible values}
+\item{pcaList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.  If \code{NULL},
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 }
 \value{
 a \code{list} containing 5 entries:

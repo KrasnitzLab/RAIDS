@@ -50,7 +50,9 @@ representing the list of possible ancestry assignations. Default:
 
 \item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
 
-\item{fieldPopInfAnc}{TODO. Default: \code{"SuperPop"}.}
+\item{fieldPopInfAnc}{a \code{character} string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the

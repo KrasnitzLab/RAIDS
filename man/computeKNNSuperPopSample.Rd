@@ -20,7 +20,11 @@ computeKNNSuperPopSample(
 
 \item{spRef}{TODO}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+the value \code{seq_len(15)} is assigned.
+Default: \code{seq_len(15)}.}
 
 \item{pcaList}{TODO array of the pca dimension possible values}
 

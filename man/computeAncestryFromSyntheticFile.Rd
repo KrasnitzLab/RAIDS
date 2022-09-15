@@ -19,7 +19,7 @@ computeAncestryFromSyntheticFile(
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1),
-  algorithm = "exact",
+  algorithm = c("exact", "randomized"),
   eigen.cnt = 32L,
   missing.rate = NaN
 )
@@ -28,8 +28,8 @@ computeAncestryFromSyntheticFile(
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{gds} opened related to
-the sample}
+\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the GDS Sample file.}
 
 \item{listFiles}{TODO.}
 
@@ -47,7 +47,7 @@ threads. Default: \code{1L}.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{fieldPopIn1KG}{TODO}
+\item{fieldPopIn1KG}{a \code{character} string representing the name of TODO}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified

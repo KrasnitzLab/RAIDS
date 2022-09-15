@@ -995,7 +995,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                 "GENESEQEND", "SEQNAME")
 
     annot <- select(edb, keys=listEnsId, columns=cols, keytype="GENEID")
-    annot <- annot[which(annot$SEQNAME %in% c(1:22, "X")),]
+    annot <- annot[which(annot$SEQNAME %in% c(seq_len(22), "X")),]
 
     # All the genes
     grGene <- GRanges(
@@ -1044,7 +1044,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
         # colnames(matFreq) <- c("chr", "pos", "ref", "alt", "af", "EAS_AF",
         #                        "EUR_AF","AFR_AF", "AMR_AF", "SAS_AF")
-        print(system.time({
+        message(system.time({
             # SNV in the GDS
             matFreq <- matFreqAll[which(matFreqAll$chr == chr),]
             # create two vector (one for the exon and one for the gene) of char

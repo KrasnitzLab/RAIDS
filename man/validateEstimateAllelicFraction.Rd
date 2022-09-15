@@ -100,7 +100,6 @@ chrInfo[23] <- length(Hsapiens[["chrX"]])
 chrInfo[24] <- length(Hsapiens[["chrY"]])
 chrInfo[25] <- length(Hsapiens[["chrM"]])
 
-
 ## The validatiion should be successful
 RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
     sampleCurrent="Sample01", study.id="Synthetic", chrInfo=chrInfo,

@@ -1612,3 +1612,131 @@ test_that(paste0("computePCARefRMMulti() must return error when missing.rate is 
                     np=1L, algorithm="exact", eigen.cnt=32L,
                     missing.rate="0.025"), error_message)
 })
+
+#############################################################################
+### Tests computePCARefRMMulti() results
+#############################################################################
+
+context("computeAncestryFromSyntheticFile() results")
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when gds is character string"), {
+
+    gdsFile <- test_path("fixtures", "GDS_Sample_with_study_demo.gds")
+    gdsSample <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(computeAncestryFromSyntheticFile(gds="test.gds",
+        gdsSample=gdsFile, listFiles, sample.ana.id, spRef, study.id.syn, np=1L,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=NaN), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsSample is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF,
+        gdsSample="sample.gds", listFiles, sample.ana.id, spRef, study.id.syn,
+        np=1L,  listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=NaN), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when study.id.syn is integer"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'study.id.syn\' must be a character string."
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=NaN), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when algorithm is numeric"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'algorithm\' parameter must be a character string."
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm=23,
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when np is negative"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when listCatPop is numeric"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'listCatPop\' parameter must be a vector of ",
+                                    "character strings.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when missing.rate is negative"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'missing.rate\' must be a single ",
+                        "numeric positive value between 0 and 1 or NaN.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=-0.2), error_message)
+})
+

@@ -84,3 +84,30 @@ test_that("validateCreateStudy2GDS1KG() must return epxected results when all in
 
     expect_identical(result1, 0L)
 })
+
+
+#############################################################################
+### Tests validateComputeAncestryFromSyntheticFile() results
+#############################################################################
+
+context("validateComputeAncestryFromSyntheticFile() results")
+
+
+test_that("validateComputeAncestryFromSyntheticFile() must return epxected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gdsF,
+                    gdsSample=gdsF, listFiles, sample.ana.id,
+                    spRef, study.id.syn="Synthetic", np=1L,
+                    listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                    fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+                    kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",
+                    eigen.cnt=32L, missing.rate=0.02)
+
+    expect_identical(result1, 0L)
+})

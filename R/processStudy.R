@@ -88,9 +88,8 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
         ## The fileNamePED must be a character string and the file must exists
         if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
-            stop("The \'fileNamePED\' must be a character string ",
-                    "representing the RDS Sample information file. ",
-                    "The file must exist.")
+            stop("The \'fileNamePED\' must be a character string representing",
+                    " the RDS Sample information file. The file must exist.")
         }
         ## Open the RDS Sample information file
         pedStudy <- readRDS(file=fileNamePED)
@@ -102,34 +101,10 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                 "be defined.")
     }
 
-    ## The PED study must have the mandatory columns
-    if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
-                %in% colnames(pedStudy)))) {
-        stop("The PED study data frame is incomplete. ",
-                        "One or more mandatory columns are missing.")
-    }
-
-    ## The fileNameGDS must be a character string and the file must exists
-    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
-        stop("The \'fileNameGDS\' must be a character string representing ",
-                "the GDS 1KG file. The file must exist.")
-    }
-
-    ## The batch must be a single numeric
-    if(!(isSingleNumber(batch))) {
-        stop("The \'batch\' must be a single integer.")
-    }
-
-    ## The listSamples must be a vector of character string
-    if (!(is.character(listSamples) || is.null(listSamples))) {
-        stop("The \'listSamples\' must be a vector ",
-                "of character strings (1 entry or more) or NULL.")
-    }
-
-    ## The verbose parameter must be a logical
-    if (!(is.logical(verbose))) {
-        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
-    }
+    ## Validate input parameters
+    validateCreateStudy2GDS1KG(pedStudy=pedStudy, fileNameGDS=fileNameGDS,
+                batch=batch, studyDF=studyDF, listSamples=listSamples,
+                PATHSAMPLEGDS=PATHSAMPLEGDS, verbose=verbose)
 
     ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
@@ -1680,7 +1655,11 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
 #'
 #' @param spRef TODO
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq_len(15)} is assigned.
+#' Default: \code{seq_len(15)}.
 #'
 #' @param pcaList TODO array of the pca dimension possible values
 #'
@@ -1699,8 +1678,8 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
 #' @encoding UTF-8
 #' @keywords internal
 computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
-                                         study.annot, spRef,
-                                         kList = seq_len(15), pcaList = 2:15) {
+                                    study.annot, spRef, kList=seq_len(15),
+                                    pcaList=seq(2, 15, 1)) {
 
     ## The number of rows in study.annot must be one.
     if(nrow(study.annot) != 1) {
@@ -1708,10 +1687,10 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     }
 
     if(is.null(kList)){
-        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+        kList <- seq_len(15) #c(seq_len(14), seq(15,100, by=5))
     }
     if(is.null(pcaList)){
-        pcaList <- 2:15
+        pcaList <- seq(2, 15, 1)
     }
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
@@ -1753,8 +1732,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     } # end pca Dim
     listKNN <- list(sample.id=listEigenvector$sample.id,
                         sample1Kg=study.annot$case.id[1],
-                        sp=spRef[study.annot$case.id[1]],
-                        matKNN=resMat)
+                        sp=spRef[study.annot$case.id[1]], matKNN=resMat)
 
     return(listKNN)
 }
@@ -1778,19 +1756,21 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #'
 #' @param spRef TODO
 #'
-#' @param fieldPopInfAnc TODO . Default: \code{"SuperPop"}.
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
 #'
 #' @param kList  a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
 #' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq(2,15,1)} is assigned.
-#' Default: \code{seq(2,15,1)}.
+#' the value \code{seq(2, 15, 1)} is assigned.
+#' Default: \code{seq(2, 15, 1)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
 #' number of dimensions used in the PCA analysis.  If \code{NULL},
-#' the value \code{seq(2,15,1)} is assigned.
-#' Default: \code{seq(2,15,1)}.
+#' the value \code{seq(2, 15, 1)} is assigned.
+#' Default: \code{seq(2, 15, 1)}.
 #'
 #' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN call for different K and PCA dimensions.
@@ -1814,8 +1794,8 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                     listCatPop, study.id.syn,
                                     spRef, fieldPopInfAnc="SuperPop",
-                                    kList=seq(2,15,1),
-                                    pcaList=seq(2,15,1)) {
+                                    kList=seq(2, 15, 1),
+                                    pcaList=seq(2, 15, 1)) {
 
     ## The number of rows in study.annot must be one.
     # if(nrow(study.annot) < 1) {
@@ -1824,12 +1804,12 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
 
     ## Assign default value if kList is NULL
     if(is.null(kList)) {
-        kList <- seq(2,15,1) #c(seq_len(14), seq(15,100, by=5))
+        kList <- seq(2, 15, 1) #c(seq_len(14), seq(15,100, by=5))
     }
 
     ## Assign default value if pcaList is NULL
     if(is.null(pcaList)) {
-        pcaList <- 2:15
+        pcaList <- seq(2, 15, 1)
     }
 
     ## Get study information from the GDS Sample file
@@ -1882,8 +1862,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
 
     listKNN <- list(sample.id=listEigenvector$sample.id,
                     sample1Kg=study.annot$case.id,
-                    sp=spRef[study.annot$case.id],
-                    matKNN=resMat)
+                    sp=spRef[study.annot$case.id], matKNN=resMat)
 
     return(listKNN)
 }
@@ -1902,7 +1881,11 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
 #'
 #' @param spRef TODO
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq_len(15)} is assigned.
+#' Default: \code{seq_len(15)}.
 #'
 #' @param pcaList TODO array of the pca dimension possible values
 #'
@@ -1991,13 +1974,21 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
 #'
 #' @param listEigenvector TODO see return of computePCARefSample
 #'
-#' @param listCatPop TODO
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param spRef TODO
 #'
-#' @param fieldPopInfAnc TODO
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param pcaList TODO array of the pca dimension possible values
 #'
@@ -2013,7 +2004,8 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
 #' @importFrom class knn
 #' @encoding UTF-8
 #' @export
-computeKNNRefSample <- function(listEigenvector, listCatPop,
+computeKNNRefSample <- function(listEigenvector,
+                            listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                             spRef, fieldPopInfAnc="SuperPop",
                             kList=seq(2, 15, 1), pcaList=seq(2, 15, 1)) {
 
@@ -2107,7 +2099,9 @@ computeKNNRefSample <- function(listEigenvector, listCatPop,
 #'
 #' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
 #'
-#' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -2226,19 +2220,33 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #'
 #' @param spRef TODO
 #'
-#' @param study.id.syn TODO
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier. The study identifier must be present in the GDS Sample file.
 #'
-#' @param np TODO
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1L}.
 #'
-#' @param listCatPop TODO
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param fieldPopIn1KG TODO
 #'
-#' @param fieldPopInfAnc TODO
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
-#' @param pcaList TODO array of the pca dimension possible values
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA. The 2 choices are "exact" (traditional exact
@@ -2284,8 +2292,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                                                         "AFR", "AMR", "SAS"),
                                             fieldPopIn1KG = "superPop",
                                             fieldPopInfAnc = "SuperPop",
-                                            kList = seq(2,15,1),
-                                            pcaList = 2:15,
+                                            kList = seq(2, 15, 1),
+                                            pcaList = seq(2, 15, 1),
                                             algorithm="exact",
                                             eigen.cnt=32L,
                                             missing.rate=0.025) {
@@ -2325,7 +2333,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
     return(listKNNSample)
 }
 
-#' @title TODO
+#' @title Select the optimal K and D parameters using the synthetic data and
+#' infer the ancestry of a specific sample
 #'
 #' @description TODO
 #'
@@ -2341,21 +2350,33 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #'
 #' @param spRef TODO
 #'
-#' @param study.id.syn TODO
+#' @param study.id.syn a \code{character} string corresponding to the study
+#' identifier. The study identifier must be present in the GDS Sample file.
 #'
-#' @param np a single \code{integer} representing the number of CPU to use.
-#' Default: \code{1L}.
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1L}.
 #'
-#' @param listCatPop TODO,
-#' Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param fieldPopIn1KG TODO
 #'
-#' @param fieldPopInfAnc TODO
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
-#' @param pcaList TODO array of the pca dimension possible values
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA. The 2 choices are "exact" (traditional exact
@@ -2400,8 +2421,8 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
                             listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                             fieldPopIn1KG="superPop",
                             fieldPopInfAnc="SuperPop",
-                            kList=seq(2,15,1),
-                            pcaList=2:15,
+                            kList=seq(2, 15, 1),
+                            pcaList=seq(2, 15, 1),
                             algorithm="exact",
                             eigen.cnt=32L,
                             missing.rate=NaN) {
@@ -2462,9 +2483,17 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #'
 #' @param listCall TODO array of the possible call
 #'
-#' @param kList TODO array of the k possible values
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+#' the value \code{seq(3,15,1)} is assigned.
+#' Default: \code{seq(3,15,1)}.
 #'
-#' @param pcaList TODO array of the pca dimension possible values
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
 #'
 #' @return a \code{list} containing 5 entries:
 #' \itemize{
@@ -2485,8 +2514,9 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @encoding UTF-8
 #' @export
 selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
-                                    predCall, listCall,
-                                    kList = 3:15, pcaList = 2:15) {
+                            predCall, listCall, kList=seq(3,15,1),
+                            pcaList=seq(2,15,1)) {
+
     if(min(kList) < 3) {
         warning("A K smaller than 3 could not give robust results.\n")
     }
@@ -2507,9 +2537,7 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
             resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
                                             predCall, listCall)
 
-            df <- data.frame(D=D,
-                                K=K,
-                                AUROC.min=min(resROC$matAUROC.Call$AUC),
+            df <- data.frame(D=D, K=K, AUROC.min=min(resROC$matAUROC.Call$AUC),
                                 AUROC=resROC$matAUROC.All$ROC.AUC,
                                 Accu.CM=res$matAccuracy$Accu.CM)
 
@@ -2542,12 +2570,8 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
     tmp <- max(dfPCA$upQuartile)
     listD <- dfPCA$D[which(abs(dfPCA$upQuartile - tmp) < 1e-3)]
 
-    res <- list(dfPCA=dfPCA,
-                dfPop=dfCall,
-                dfAUROC=dfAUROC,
-                D = selD,
-                K = selK,
-                listD = listD)
+    res <- list(dfPCA=dfPCA, dfPop=dfCall, dfAUROC=dfAUROC,
+                            D=selD, K=selK, listD=listD)
     return(res)
 }
 

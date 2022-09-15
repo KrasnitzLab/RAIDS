@@ -7,7 +7,7 @@
 \usage{
 computeKNNRefSample(
   listEigenvector,
-  listCatPop,
+  listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
   spRef,
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
@@ -17,13 +17,21 @@ computeKNNRefSample(
 \arguments{
 \item{listEigenvector}{TODO see return of computePCARefSample}
 
-\item{listCatPop}{TODO}
+\item{listCatPop}{a \code{vector} of \code{character} string
+representing the list of possible ancestry assignations. Default:
+\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{spRef}{TODO}
 
-\item{fieldPopInfAnc}{TODO}
+\item{fieldPopInfAnc}{a \code{character} string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset. Default: \code{"SuperPop"}.}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 
 \item{pcaList}{TODO array of the pca dimension possible values}
 }

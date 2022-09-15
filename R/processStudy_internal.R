@@ -440,13 +440,112 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
     ## The cutOffHomoScore parameter must be a single numeric
     if (!(isSingleNumber(cutOffHomoScore))) {
         stop("The \'cutOffHomoScore\' parameter must be a single ",
-             "numeric value.")
+                "numeric value.")
     }
 
     return(0L)
 }
 
 
+#' @title Validate input parameters for createStudy2GDS1KG() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{createStudy2GDS1KG}} function.
+#'
+#' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings (no factor). The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param fileNameGDS a \code{character} string representing the file name of
+#' the 1KG GDS file. The file must exist.
+#'
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
+#'
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to the sample identifiers that will have a GDS Sample file created. The
+#' sample identifiers must be present in the "Name.ID" column of the RDS file
+#' passed to the \code{fileNamePED} parameter.
+#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#'
+#' @param PATHSAMPLEGDS a \code{character} string representing the path to
+#' the directory where the GDS Sample files will be created.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' gds1KG <- file.path(data.dir, "gds1KG.gds")
+#'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyInfo <- data.frame(study.id="Pancreatic.WES",
+#'                 study.desc="Pancreatic study",
+#'                 study.platform="WES",
+#'                 stringsAsFactors=FALSE)
+#'
+#' ## PED Study
+#' ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+#'             Case.ID=c("TCGA-H01", "TCGA-H02"),
+#'             Sample.Type=c("DNA", "DNA"),
+#'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+#' ## TODO
+#' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
+#'             batch=1, studyDF=studyInfo,
+#'             listSamples=c("Sample_01", "Sample_02"),
+#'             PATHSAMPLEGDS=data.dir, verbose=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
+                                        listSamples, PATHSAMPLEGDS, verbose) {
+
+    ## The PED study must have the mandatory columns
+    if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
+              %in% colnames(pedStudy)))) {
+        stop("The PED study data frame is incomplete. ",
+                "One or more mandatory columns are missing.")
+    }
+
+    ## The fileNameGDS must be a character string and the file must exists
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+        stop("The \'fileNameGDS\' must be a character string representing ",
+                "the GDS 1KG file. The file must exist.")
+    }
+
+    ## The batch must be a single numeric
+    if(!(isSingleNumber(batch))) {
+        stop("The \'batch\' must be a single integer.")
+    }
+
+    ## The listSamples must be a vector of character string
+    if (!(is.character(listSamples) || is.null(listSamples))) {
+        stop("The \'listSamples\' must be a vector ",
+                "of character strings (1 entry or more) or NULL.")
+    }
+
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, "verbose")
+
+    return(0L)
+}
 
 
 

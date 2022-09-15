@@ -279,8 +279,7 @@ prepSynthetic <- function(gdsSampleFile,
     ## The study platform is always set to "Synthetic"
     study.list <- data.frame(study.id=studyDF$study.id,
                         study.desc=studyDF$study.desc,
-                        study.platform="Synthetic",
-                        stringsAsFactors=FALSE)
+                        study.platform="Synthetic", stringsAsFactors=FALSE)
 
     ## Create Pedigree information data frame for the synthetic samples
     ## The sample type is always set to "Synthetic" (idem for the source)

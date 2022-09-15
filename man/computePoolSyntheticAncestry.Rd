@@ -17,7 +17,7 @@ computePoolSyntheticAncestry(
   fieldPopIn1KG = "superPop",
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
-  pcaList = 2:15,
+  pcaList = seq(2, 15, 1),
   algorithm = "exact",
   eigen.cnt = 32L,
   missing.rate = 0.025
@@ -36,19 +36,33 @@ the sample}
 
 \item{spRef}{TODO}
 
-\item{study.id.syn}{TODO}
+\item{study.id.syn}{a \code{character} string corresponding to the study
+identifier. The study identifier must be present in the GDS Sample file.}
 
-\item{np}{TODO}
+\item{np}{a single positive \code{integer} representing the number of
+threads. Default: \code{1L}.}
 
-\item{listCatPop}{TODO}
+\item{listCatPop}{a \code{vector} of \code{character} string
+representing the list of possible ancestry assignations. Default:
+\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{fieldPopIn1KG}{TODO}
 
-\item{fieldPopInfAnc}{TODO}
+\item{fieldPopInfAnc}{a \code{character} string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset. Default: \code{"SuperPop"}.}
 
-\item{kList}{TODO array of the k possible values}
+\item{kList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _K_ parameter. The _K_ parameter represents the
+number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 
-\item{pcaList}{TODO array of the pca dimension possible values}
+\item{pcaList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the  _D_ parameter. The _D_ parameter represents the
+number of dimensions used in the PCA analysis.  If \code{NULL},
+the value \code{seq(2,15,1)} is assigned.
+Default: \code{seq(2,15,1)}.}
 
 \item{algorithm}{a \code{character} string representing the algorithm used
 to calculate the PCA. The 2 choices are "exact" (traditional exact

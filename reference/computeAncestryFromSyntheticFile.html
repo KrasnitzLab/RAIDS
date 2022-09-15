@@ -79,7 +79,7 @@ infer the ancestry of a specific sample</h1>
 <span>  fieldPopInfAnc <span class="op">=</span> <span class="st">"SuperPop"</span>,</span>
 <span>  kList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  pcaList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  algorithm <span class="op">=</span> <span class="st">"exact"</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"randomized"</span><span class="op">)</span>,</span>
 <span>  eigen.cnt <span class="op">=</span> <span class="fl">32L</span>,</span>
 <span>  missing.rate <span class="op">=</span> <span class="cn">NaN</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -93,8 +93,8 @@ infer the ancestry of a specific sample</h1>
 
 
 <dt>gdsSample</dt>
-<dd><p>an object of class <code>gds</code> opened related to
-the sample</p></dd>
+<dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
+(a GDS file), the GDS Sample file.</p></dd>
 
 
 <dt>listFiles</dt>
@@ -126,7 +126,7 @@ representing the list of possible ancestry assignations. Default:
 
 
 <dt>fieldPopIn1KG</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string representing the name of TODO</p></dd>
 
 
 <dt>fieldPopInfAnc</dt>

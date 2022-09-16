@@ -16,7 +16,7 @@ Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("aut"), comment = c(ORCID = "0000-0001-7846-6749")),
     person("Alexander", "Krasnitz", email="krasnitz@cshl.edu",
     role=c("aut")))
-License: Apache License (== 2.0) | file LICENSE
+License: Apache License (>= 2)
 Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr

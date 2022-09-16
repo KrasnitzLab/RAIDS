@@ -256,6 +256,12 @@
     <loc>/reference/testEmptyBox.html</loc>
   </url>
   <url>
+    <loc>/reference/validateCharacterString.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateComputeAncestryFromSyntheticFile.html</loc>
+  </url>
+  <url>
     <loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc>
   </url>
   <url>
@@ -272,6 +278,9 @@
   </url>
   <url>
     <loc>/reference/validateLogical.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validatePositiveIntegerVector.html</loc>
   </url>
   <url>
     <loc>/reference/validatePruningSample.html</loc>

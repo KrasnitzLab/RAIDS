@@ -71,6 +71,24 @@ test_that("projectSample2PCA() must return error when sample.current is number",
 
 context("appendStudy2GDS1KG() results")
 
+test_that("appendStudy2GDS1KG() must return error when PATHGENO is a numeric", {
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                            study.desc="Pancreatic study", study.platform="WES",
+                            stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'PATHGENO\' must be a character string ",
+                            "representing a path. The path must exist.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=22, fileNamePED=sampleRDS,
+                fileNameGDS=gdsFIle, batch=2,
+                studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+                verbose="TRUE"), error_message, fixed=TRUE)
+})
+
 
 test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", {
 
@@ -81,12 +99,13 @@ test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", 
                         study.desc="Pancreatic study", study.platform="WES",
                         stringsAsFactors=FALSE)
 
-    error_message <- paste0("The \'fileNamePED\' must be a character string representing ",
-                        "the RDS Sample information file. The file must exist.")
+    error_message <- paste0("The \'fileNamePED\' must be a character string ",
+        "representing the RDS Sample information file. The file must exist.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=21, fileNameGDS=gdsFIle, batch=1,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        verbose=TRUE), error_message)
 })
 
 
@@ -99,12 +118,13 @@ test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", 
                     study.desc="Pancreatic study", study.platform="WES",
                     stringsAsFactors=FALSE)
 
-    error_message <- paste0("The \'fileNameGDS\' must be a character string representing ",
-                                "the GDS 1KG file. The file must exist.")
+    error_message <- paste0("The \'fileNameGDS\' must be a character string ",
+                        "representing the GDS 1KG file. The file must exist.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=33, batch=1,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        verbose=TRUE), error_message)
 })
 
 
@@ -118,9 +138,10 @@ test_that("appendStudy2GDS1KG() must return error when batch is a vector of nume
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=c(1,2),
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        verbose=TRUE), error_message)
 })
 
 test_that("appendStudy2GDS1KG() must return error when batch is a character string", {
@@ -134,9 +155,29 @@ test_that("appendStudy2GDS1KG() must return error when batch is a character stri
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch="2",
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        verbose=TRUE), error_message)
+})
+
+
+test_that("appendStudy2GDS1KG() must return error when studyDF is missing mandatory column", {
+
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures",  "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.descption="Pancreatic study", study.platform="WES",
+                    stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'studyDF\' must be a data.frame and contain ",
+        "those 3 columns: \'study.id\', \'study.desc\' and \'study.platform\'.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+            fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=1,
+            studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+            verbose=TRUE), error_message)
 })
 
 
@@ -152,9 +193,10 @@ test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric"
     error_message <- paste0("The \'listSamples\' must be a vector ",
         "of character strings (1 entry or more) or NULL.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
-        studyDF=studyInfo, listSamples=33, PATHSAMPLEGDS=NULL, verbose=FALSE), error_message, fixed=TRUE)
+        studyDF=studyInfo, listSamples=33, PATHSAMPLEGDS=NULL,
+        verbose=FALSE), error_message, fixed=TRUE)
 })
 
 
@@ -169,9 +211,10 @@ test_that("appendStudy2GDS1KG() must return error when verbose is a character st
 
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL, verbose="TRUE"), error_message, fixed=TRUE)
+        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        verbose="TRUE"), error_message, fixed=TRUE)
 })
 
 

@@ -39,6 +39,9 @@ function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 threshold.}
 }
+\value{
+The function returns \code{0L} when successful.
+}
 \description{
 This function validates the input parameters for the
 \code{\link{computePCARefSample}} function.

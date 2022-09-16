@@ -704,6 +704,7 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 #' threshold.
 #'
+#' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -765,6 +766,178 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
             stop("The \'missing.rate\' must be a single numeric positive ",
                     "value between 0 and 1 or NaN.")
         }
+    }
+
+    return(0L)
+}
+
+#' @title Validate input parameters for appendStudy2GDS1KG() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{appendStudy2GDS1KG}} function.
+#'
+#' @param PATHGENO a \code{character} string representing the path to the
+#' directory containing the output of SNP-pileup, a VCF Sample file, for
+#' each sample.
+#'
+#' @param fileNamePED a \code{character} string representing the path to the
+#' RDS file that contains the information about the sample to analyse.
+#'
+#' @param fileNameGDS a \code{character} string representing the file name of
+#' the 1KG GDS file. The file must exist.
+#'
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings.
+#'
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to the sample identifiers that will have a GDS Sample file created. The
+#' sample identifiers must be present in the "Name.ID" column of the RDS file
+#' passed to the \code{fileNamePED} parameter.
+#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#'
+#' @param PATHSAMPLEGDS a \code{character} string representing the path to
+#' the directory where the GDS Sample files will be created.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' gds1KG <- file.path(data.dir, "1KG_Demo.gds")
+#' ped <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+#'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyInfo <- data.frame(study.id="Pancreatic.WES",
+#'                 study.desc="Pancreatic study",
+#'                 study.platform="WES",
+#'                 stringsAsFactors=FALSE)
+#'
+#' ## The validatiion should be successful
+#' RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=data.dir,
+#'     fileNamePED=ped, fileNameGDS=gds1KG,
+#'     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
+#'     PATHSAMPLEGDS=data.dir, verbose=TRUE)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
+                                batch, studyDF, listSamples, PATHSAMPLEGDS,
+                                verbose) {
+
+    ## The PATHGENO must be a character string and the path must exists
+    if (!(is.character(PATHGENO) && (dir.exists(PATHGENO)))) {
+        stop("The \'PATHGENO\' must be a character string representing ",
+                "a path. The path must exist.")
+    }
+
+    ## The fileNamePED must be a character string and the file must exists
+    if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
+        stop("The \'fileNamePED\' must be a character string representing ",
+                "the RDS Sample information file. The file must exist.")
+    }
+
+    ## The fileNameGDS must be a character string and the file must exists
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+        stop("The \'fileNameGDS\' must be a character string representing ",
+                "the GDS 1KG file. The file must exist.")
+    }
+
+    ## The batch must be a single numeric
+    if (!(isSingleNumber(batch))) {
+        stop("The \'batch\' must be a single integer.")
+    }
+
+    if (!(is.data.frame(studyDF) && all(c("study.id", "study.desc",
+                        "study.platform") %in% colnames(studyDF)))) {
+        stop("The \'studyDF\' must be a data.frame and contain those 3 ",
+            "columns: \'study.id\', \'study.desc\' and \'study.platform\'.")
+    }
+
+    ## The listSamples must be a vector of character string
+    if (!(is.character(listSamples) || is.null(listSamples))) {
+        stop("The \'listSamples\' must be a vector ",
+                "of character strings (1 entry or more) or NULL.")
+    }
+
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, name="verbose")
+
+    return(0L)
+}
+
+#' @title Validate input parameters for add1KG2SampleGDS() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{add1KG2SampleGDS}} function.
+#'
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#'
+#' @param gdsSampleFile a \code{character} string representing the path and
+#' file name of the GDS Sample file. The GDS Sample file must exist.
+#'
+#' @param sampleCurrent a \code{character} string corresponding to the sample
+#' identifier associated to the current list of pruned SNVs.
+#'
+#' @param study.id a \code{character} string corresponding to the study
+#' identifier associated to the current list of pruned SNVs.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The 1KG GDS file (opened)
+#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#'
+#' ## The validatiion should be successful
+#' RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
+#'     gdsSampleFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
+#'     sampleCurrent="Sample01", study.id="Synthetic")
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gds1KG)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateAdd1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
+                                       study.id) {
+
+    ## The gds must be an object of class "gds.class"
+    validateGDSClass(gds=gds, name="gds")
+
+    ## The gdsSampleFile must be a character string and the file must exists
+    if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
+        stop("The \'gdsSampleFile\' must be a character string representing ",
+                "the GDS Sample file. The file must exist.")
+    }
+
+    ## The sampleCurrent must be a character string
+    if(!(is.character(sampleCurrent))) {
+        stop("The \'sampleCurrent\' must be a character string.")
+    }
+
+    ## The study.id must be a character string
+    if(!(is.character(study.id))) {
+        stop("The \'study.id\' must be a character string.")
     }
 
     return(0L)

@@ -12,7 +12,7 @@ library(gdsfmt)
 context("validatePruningSample() results")
 
 
-test_that("validatePruningSample() must return epxected results when all input are valid", {
+test_that("validatePruningSample() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -38,7 +38,7 @@ test_that("validatePruningSample() must return epxected results when all input a
 context("validateComputePoolSyntheticAncestryGr() results")
 
 
-test_that("validateComputePoolSyntheticAncestryGr() must return epxected results when all input are valid", {
+test_that("validateComputePoolSyntheticAncestryGr() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
     gdsFIle <- file.path(data.dir, "1KG_Test.gds")
@@ -64,7 +64,7 @@ test_that("validateComputePoolSyntheticAncestryGr() must return epxected results
 context("validateCreateStudy2GDS1KG() results")
 
 
-test_that("validateCreateStudy2GDS1KG() must return epxected results when all input are valid", {
+test_that("validateCreateStudy2GDS1KG() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
     gdsFile <- file.path(data.dir, "1KG_Test.gds")
@@ -93,7 +93,7 @@ test_that("validateCreateStudy2GDS1KG() must return epxected results when all in
 context("validateComputeAncestryFromSyntheticFile() results")
 
 
-test_that("validateComputeAncestryFromSyntheticFile() must return epxected results when all input are valid", {
+test_that("validateComputeAncestryFromSyntheticFile() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
     gdsFile <- file.path(data.dir, "1KG_Test.gds")
@@ -120,7 +120,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return epxected resul
 context("validateComputePCARefSample() results")
 
 
-test_that("validateComputePCARefSample() must return epxected results when all input are valid", {
+test_that("validateComputePCARefSample() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
     gdsFile <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
@@ -134,3 +134,58 @@ test_that("validateComputePCARefSample() must return epxected results when all i
 
     expect_identical(result1, 0L)
 })
+
+
+
+#############################################################################
+### Tests validateAppendStudy2GDS1KG() results
+#############################################################################
+
+context("validateAppendStudy2GDS1KG() results")
+
+
+test_that("validateAppendStudy2GDS1KG() must return expected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
+    rdsFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study",  study.platform="WES",
+                        stringsAsFactors=FALSE)
+
+    result1 <- RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+                    fileNamePED=rdsFile, fileNameGDS=gdsFile,
+                    batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
+                    PATHSAMPLEGDS=test_path("fixtures"), verbose=TRUE)
+
+    expect_identical(result1, 0L)
+})
+
+
+#############################################################################
+### Tests validateAdd1KG2SampleGDS() results
+#############################################################################
+
+context("validateAdd1KG2SampleGDS() results")
+
+
+test_that("validateAdd1KG2SampleGDS() must return expected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study",  study.platform="WES",
+                        stringsAsFactors=FALSE)
+
+    result1 <- RAIDS:::validateAdd1KG2SampleGDS(gds=gdsF,
+                gdsSampleFile=gdsFile, sampleCurrent="Sample01",
+                study.id="Synthetic")
+
+    expect_identical(result1, 0L)
+})
+

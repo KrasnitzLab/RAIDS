@@ -54,8 +54,8 @@ dataset. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-the value \code{seq(2,15,1)} is assigned.
+number of neighbors used in the K-nearest neighbors analysis. If
+\code{NULL}, the value \code{seq(2,15,1)} is assigned.
 Default: \code{seq(2,15,1)}.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of

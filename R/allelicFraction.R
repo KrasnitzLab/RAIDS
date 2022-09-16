@@ -1011,9 +1011,9 @@ tableBlockAF <- function(snp.pos) {
 
         lH <- 1
         lM <- 1
-        if(resBlock[i, "nbKeep"] > 0 &
-           (resBlock[i, "nbKeep"] == resBlock[i, "nbHomo"] |
-            (resBlock[i, "nbHomo"] > 0 & resBlock[i, "nbHetero"] == 1)) ){
+        if (resBlock[i, "nbKeep"] > 0 &
+            (resBlock[i, "nbKeep"] == resBlock[i, "nbHomo"] |
+            (resBlock[i, "nbHomo"] > 0 & resBlock[i, "nbHetero"] == 1)) ) {
 
             # Check if 1 hetero with allelic fraction (<=0.05)
             # it is considered as all homozygote
@@ -1056,8 +1056,7 @@ tableBlockAF <- function(snp.pos) {
 
 
         # get hetero and compute AF
-        if(resBlock[i, "nbKeep"] > 0 &
-           resBlock[i, "nbHetero"] > 1){
+        if (resBlock[i, "nbKeep"] > 0 & resBlock[i, "nbHetero"] > 1) {
 
             resML <- calcAF.MLRNA(snp.pos[which(snp.pos$block.id ==
                                                         resBlock$block[i] &
@@ -1185,13 +1184,13 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     ## The minProb parameter must be a single positive numeric between 0 and 1
     if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
         stop("The \'minProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
+                "value between 0 and 1.")
     }
 
     ## The eProb parameter must be a single positive numeric between 0 and 1
     if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
         stop("The \'eProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
+                "value between 0 and 1.")
     }
 
     ## The cutOffAR parameter must be a single numeric
@@ -1202,13 +1201,13 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     ## The verbose parameter must be a logical
     if (!(is.logical(verbose) && length(verbose) == 1)) {
         stop("The \'verbose\' parameters must be a single logical value ",
-             "(TRUE or FALSE).")
+                "(TRUE or FALSE).")
     }
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
-                           minCov, minProb, eProb)
+                                minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
 
@@ -1217,7 +1216,7 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
                                                                 block.id)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
-    if("phase" %in% ls.gdsn(node=gdsSample) ) {
+    if ("phase" %in% ls.gdsn(node=gdsSample)) {
         snp.pos$phase <- read.gdsn(index.gdsn(gdsSample,
                                                 "phase"))[snp.pos$snp.index]
     }

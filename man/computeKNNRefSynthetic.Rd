@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNRefSynthetic}
 \alias{computeKNNRefSynthetic}
-\title{Run a k-nearest neighbor analysis on a subset of the
+\title{Run a k-nearest neighbors analysis on a subset of the
 synthetic dataset}
 \usage{
 computeKNNRefSynthetic(
@@ -37,13 +37,13 @@ the column that will contain the inferred ancestry for the specified
 dataset. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-the value \code{seq(2, 15, 1)} is assigned.
+values tested for the  K parameter. The K parameter represents the
+number of neighbors used in the K-nearest neighbors analysis. If
+\code{NULL}, the value \code{seq(2, 15, 1)} is assigned.
 Default: \code{seq(2, 15, 1)}.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _D_ parameter. The _D_ parameter represents the
+values tested for the  D parameter. The D parameter represents the
 number of dimensions used in the PCA analysis.  If \code{NULL},
 the value \code{seq(2, 15, 1)} is assigned.
 Default: \code{seq(2, 15, 1)}.}

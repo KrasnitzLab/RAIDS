@@ -110,10 +110,10 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     gds <- snpgdsOpen(filename=fileNameGDS)
 
     ## Extract the chromosome and position information for all SNPs in 1KG GDS
-    ## Create a data.frame containing the information
     snpCHR <- index.gdsn(node=gds, "snp.chromosome")
     snpPOS <- index.gdsn(node=gds, "snp.position")
 
+    ## Create a data.frame containing the information
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
                             snp.position=read.gdsn(snpPOS))
 
@@ -209,7 +209,6 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
@@ -217,33 +216,10 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 studyDF, listSamples=NULL,
                                 PATHSAMPLEGDS=NULL, verbose=TRUE) {
 
-    ## The fileNamePED must be a character string and the file must exists
-    if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
-        stop("The \'fileNamePED\' must be a character string representing ",
-                "the RDS Sample information file. The file must exist.")
-    }
-
-    ## The fileNameGDS must be a character string and the file must exists
-    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
-        stop("The \'fileNameGDS\' must be a character string representing ",
-                "the GDS 1KG file. The file must exist.")
-    }
-
-    ## The batch must be a single numeric
-    if (!(isSingleNumber(batch))) {
-        stop("The \'batch\' must be a single integer.")
-    }
-
-    ## The listSamples must be a vector of character string
-    if (!(is.character(listSamples) || is.null(listSamples))) {
-        stop("The \'listSamples\' must be a vector ",
-                "of character strings (1 entry or more) or NULL.")
-    }
-
-    ## The verbose parameter must be a logical
-    if (!(is.logical(verbose))) {
-        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
-    }
+    ## Validate inputs
+    validateAppendStudy2GDS1KG(PATHGENO=PATHGENO, fileNamePED=fileNamePED,
+        fileNameGDS=fileNameGDS, batch=batch, studyDF=studyDF,
+        listSamples=listSamples, PATHSAMPLEGDS=PATHSAMPLEGDS, verbose=verbose)
 
     ## Open the RDS Sample information file
     pedStudy <- readRDS(file=fileNamePED)
@@ -526,26 +502,9 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
                                 study.id) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSampleFile must be a character string and the file must exists
-    if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
-        stop("The \'gdsSampleFile\' must be a character string representing ",
-                "the GDS Sample file. The file must exist.")
-    }
-
-    ## The sampleCurrent must be a character string
-    if(!(is.character(sampleCurrent))) {
-        stop("The \'sampleCurrent\' must be a character string.")
-    }
-
-    ## The study.id must be a character string
-    if(!(is.character(study.id))) {
-        stop("The \'study.id\' must be a character string.")
-    }
+    ## Validate inputs
+    validateAdd1KG2SampleGDS(gds=gds, gdsSampleFile=gdsSampleFile,
+                sampleCurrent=sampleCurrent, study.id=study.id)
 
     ## Open GDS Sample file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
@@ -622,10 +581,12 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
-#' the sample
+#' @param PATHSAMPLEGDS a \code{character} string representing the path to
+#' the directory that contains the GDS Sample files. The directory must
+#' exist.
 #'
 #' @param PATHGENO TODO
 #'
@@ -1641,9 +1602,9 @@ computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
 #' @param spRef TODO
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
-#' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq_len(15)} is assigned.
+#' values tested for the  K parameter. The K parameter represents the
+#' number of neighbors used in the K-nearest neighbors analysis. If
+#' \code{NULL}, the value \code{seq_len(15)} is assigned.
 #' Default: \code{seq_len(15)}.
 #'
 #' @param pcaList TODO array of the pca dimension possible values
@@ -1722,7 +1683,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     return(listKNN)
 }
 
-#' @title Run a k-nearest neighbor analysis on a subset of the
+#' @title Run a k-nearest neighbors analysis on a subset of the
 #' synthetic dataset
 #'
 #' @description TODO
@@ -1746,13 +1707,13 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #' dataset. Default: \code{"SuperPop"}.
 #'
 #' @param kList  a \code{vector} of \code{integer} representing  the list of
-#' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq(2, 15, 1)} is assigned.
+#' values tested for the  K parameter. The K parameter represents the
+#' number of neighbors used in the K-nearest neighbors analysis. If
+#' \code{NULL}, the value \code{seq(2, 15, 1)} is assigned.
 #' Default: \code{seq(2, 15, 1)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
-#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' values tested for the  D parameter. The D parameter represents the
 #' number of dimensions used in the PCA analysis.  If \code{NULL},
 #' the value \code{seq(2, 15, 1)} is assigned.
 #' Default: \code{seq(2, 15, 1)}.
@@ -2222,8 +2183,8 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq(2,15,1)} is assigned.
+#' number of neighbors used in the K-nearest neighbors analysis. If
+#' \code{NULL}, the value \code{seq(2,15,1)} is assigned.
 #' Default: \code{seq(2,15,1)}.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
@@ -2286,6 +2247,11 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 
     KNN.list <- list()
     for(j in seq_len(nrow(sampleRM))) {
+        ## Run a PCA analysis using 1 synthetic profile from each
+        ##  sub-continental ancestry
+        ## The synthetic profiles are projected on the 1KG PCA space
+        ##  (the reference samples used to generate the synthetic profiles are
+        ##  removed from this PCA)
         KNN.list[[j]] <- computePoolSyntheticAncestryGr(gds=gds,
                             gdsSample=gdsSample, sampleRM=sampleRM[j,],
                             spRef=spRef, study.id.syn=study.id.syn,

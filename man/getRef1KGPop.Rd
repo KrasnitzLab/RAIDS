@@ -18,8 +18,9 @@ that will be fetched in the \code{data.frame} present in the 1KG GDS
  Default: \code{"superPop"}.}
 }
 \value{
-\code{data.frame} TODO study.annot with study.annot == study.id and
-with the column popName.
+\code{vector} of \code{character} strings representing the content
+of the extracted column for the 1KG GDS 'sample.ref' node. The sample
+identifier are used as names for the \code{vector}.
 }
 \description{
 The function extract the specified column for the 'sample.ref'

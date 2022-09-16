@@ -14,10 +14,12 @@ addPhase1KG2SampleGDSFromFile(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{PATHSAMPLEGDS}{the path of an object of class \code{gds} related to
-the sample}
+\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
+the directory that contains the GDS Sample files. The directory must
+exist.}
 
 \item{PATHGENO}{TODO}
 

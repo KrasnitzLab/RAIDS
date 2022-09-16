@@ -894,8 +894,9 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' "sample.ref" node. The column must be present in the \code{data.frame}.
 #'  Default: \code{"superPop"}.
 #'
-#' @return \code{data.frame} TODO study.annot with study.annot == study.id and
-#' with the column popName.
+#' @return \code{vector} of \code{character} strings representing the content
+#' of the extracted column for the 1KG GDS 'sample.ref' node. The sample
+#' identifier are used as names for the \code{vector}.
 #'
 #' @examples
 #'

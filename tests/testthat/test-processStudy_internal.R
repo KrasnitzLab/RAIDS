@@ -134,3 +134,31 @@ test_that("validateComputePCARefSample() must return epxected results when all i
 
     expect_identical(result1, 0L)
 })
+
+
+
+#############################################################################
+### Tests validateAppendStudy2GDS1KG() results
+#############################################################################
+
+context("validateAppendStudy2GDS1KG() results")
+
+
+test_that("validateAppendStudy2GDS1KG() must return epxected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
+    rdsFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                        study.desc="Pancreatic study",  study.platform="WES",
+                        stringsAsFactors=FALSE)
+
+    result1 <- RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+                    fileNamePED=rdsFile, fileNameGDS=gdsFile,
+                    batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
+                    PATHSAMPLEGDS=test_path("fixtures"), verbose=TRUE)
+
+    expect_identical(result1, 0L)
+})
+

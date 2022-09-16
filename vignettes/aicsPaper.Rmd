@@ -466,11 +466,11 @@ for(i in seq_len(length(listSamples))) {
                     sampleCurrent = listSamples[i],
                     study.id = studyDF$study.id, 
                     PATHSAMPLEGDS = PATHSAMPLEGDS)
-  
+    
     ## GDS Sample file for the current sample
     ## The file name corresponds to the path + sample identifier + ".gds"
     file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
-        
+    
     ## Add the genotype information for the list of pruned SNVs 
     ## into the GDS Sample file
     ## The genotype information is extracted from the 1KG GDS file
@@ -574,9 +574,9 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
-                                      sampleCurrent = sampleName,
-                                      study.id = studyDF$study.id,
-                                      chrInfo = chrInfo)
+                                        sampleCurrent = sampleName,
+                                        study.id = studyDF$study.id,
+                                        chrInfo = chrInfo)
 
 ## Close both GDS files
 closefn.gds(gdsSample)
@@ -751,7 +751,7 @@ PATH_SAMPLE_GDS <- file.path("The path")
 PATH_OUT <- file.path("The path")
 
 if(! file.exists(PATH_OUT)) {
-  dir.create(PATH_OUT)
+    dir.create(PATH_OUT)
 }
     
 ####################################################################
@@ -760,9 +760,9 @@ if(! file.exists(PATH_OUT)) {
 ## The column names must be as shown 
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
-                          study.desc = "Description",
-                          study.platform = "Platform string like Whole Exome",
-                          stringsAsFactors = FALSE)
+                            study.desc = "Description",
+                            study.platform = "Platform string like Whole Exome",
+                            stringsAsFactors = FALSE)
 
 ####################################################################
 ## The list of cancer samples used to generate the synthetic data 
@@ -796,11 +796,11 @@ sampleRM <- splitSelectByPop(dataRef)
     
 ## Loop for all cancer samples with associated synthetic data
 for(i in seq_len(length(listSamples))) {
-  
+
     ## The GDS Sample associated to the cancer sample     
     file.GDSSample <- file.path(PATH_SAMPLE_GDS, 
-                                      paste0(listSamples[i], ".gds"))
-  
+                                    paste0(listSamples[i], ".gds"))
+
     ## A sub-directory is created for the cancer sample
     ## Beware that the number of files created will correspond to the 
     ## number of rows in the sampleRM matrix
@@ -808,13 +808,13 @@ for(i in seq_len(length(listSamples))) {
     if(! file.exists(PATH_OUT_SAMPLE)) {
             dir.create(PATH_OUT_SAMPLE)
     }
-  
+
     ## Open GDS Sample file      
     gdsSample <- snpgdsOpen(file.GDSSample)
-        
+
     ## This variable will contain the results from the PCA analyses
     KNN.list <- list()
-  
+
     ## For each row of the sampleRM matrix      
     for(j in seq_len(nrow(sampleRM))) {
         ## Run a PCA analysis using 1 synthetic profile for each sub-continental
@@ -824,18 +824,18 @@ for(i in seq_len(length(listSamples))) {
         ## The K-nearest neighbor analysis is done using 
         ##  a range of K and D values
         KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
-                                          gdsSample = gdsSample,
-                                          sampleRM =  sampleRM[j,],
-                                          study.id.syn = studyDF.syn$study.id,
-                                          np = 4L,
-                                          spRef = spRef,
-                                          eigen.cnt = 15L)
-      
+                                            gdsSample = gdsSample,
+                                            sampleRM =  sampleRM[j,],
+                                            study.id.syn = studyDF.syn$study.id,
+                                            np = 4L,
+                                            spRef = spRef,
+                                            eigen.cnt = 15L)
+        
         ## Results are saved
         saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE, 
                         paste0("KNN.synt.", listSamples[i], ".", j, ".rds")))
     }
-  
+    
     ## Close GDS Sample file (important)
     closefn.gds(gdsSample)
 }
@@ -904,9 +904,9 @@ if(! file.exists(PATH_OUT)){
 ## The column names must be as shown 
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
-                          study.desc = "Description",
-                          study.platform = "Platform string like Whole Exome",
-                          stringsAsFactors = FALSE)
+                            study.desc = "Description",
+                            study.platform = "Platform string like Whole Exome",
+                            stringsAsFactors = FALSE)
     
 ####################################################################
 ## The list of samples to analyse as obtained by the PED RDS file.
@@ -929,21 +929,21 @@ spRef <- getRef1KGPop(gds, "superPop")
 ## Loop on each sample 
 ## Can also be run in parallel or on different clusters...
 for(i in seq_len(length(listSamples))){
-  
-  ## Extract the GDS file name and path for the current sample      
-  file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
-  
-  ## Directory where the KNN results have been saved      
-  PATHKNN <- file.path(PATH_OUT, listSamples[i])
-  listFilesName <- dir(file.path(PATHKNN), ".rds")
+    
+    ## Extract the GDS file name and path for the current sample      
+    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+    
+    ## Directory where the KNN results have been saved      
+    PATHKNN <- file.path(PATH_OUT, listSamples[i])
+    listFilesName <- dir(file.path(PATHKNN), ".rds")
 
-  ## List of the KNN result files from PCA on synthetic data
-  listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+    ## List of the KNN result files from PCA on synthetic data
+    listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-  ## Open GDS Sample file
-  gdsSample <- snpgdsOpen(file.GDSSample)
+    ## Open GDS Sample file
+    gdsSample <- snpgdsOpen(file.GDSSample)
 
-  resCall <- computeAncestryFromSyntheticFile(gds = gds, 
+    resCall <- computeAncestryFromSyntheticFile(gds = gds, 
                                     gdsSample = gdsSample,
                                     listFiles = listFiles,
                                     sample.ana.id = listSamples[i],
@@ -951,15 +951,15 @@ for(i in seq_len(length(listSamples))){
                                     study.id.syn = studyDF.syn$study.id,
                                     np = 4L)
 
-  saveRDS(resCall, file.path(PATHOUT,
-                              paste0(listSamples[i], ".infoCall",".rds")))
+    saveRDS(resCall, file.path(PATHOUT,
+                                paste0(listSamples[i], ".infoCall", ".rds")))
 
-  write.csv(resCall$Ancestry,
-          file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
-          quote = FALSE, row.names = FALSE)
-
-  ## Close GDS Sample file
-  closefn.gds(gdsSample)
+    write.csv(resCall$Ancestry,
+            file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
+            quote = FALSE, row.names = FALSE)
+    
+    ## Close GDS Sample file
+    closefn.gds(gdsSample)
 }
 
 ## Close both 1KG GDS file

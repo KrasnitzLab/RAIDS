@@ -31,7 +31,7 @@ Only the rows corresponding to the specified study ('study.id' parameter)
 are returned.
 }
 \description{
-The function extract the information for the profiles
+The function extracts the information for the profiles
 associated to a specific study in the GDS Sample file. The information is
 extracted from the 'study.annot' node as a 'data.frame'.
 

@@ -20,10 +20,11 @@ computePCARefSample(
 \item{gdsSample}{an object of class \link[gdsfmt]{gds.class},
 a GDS Sample file.}
 
-\item{name.id}{a \code{character} string representing the sample
+\item{name.id}{a single \code{character} string representing the sample
 identifier.}
 
-\item{study.id.ref}{id of the reference in study.annot}
+\item{study.id.ref}{a single \code{character} string representing the
+study identifier.}
 
 \item{np}{a single positive \code{integer} representing the number of CPU
 that will be used. Default: \code{1L}.}

@@ -623,7 +623,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #' @title Extract the sample information from the 1KG GDS file for a list
 #' of profiles associated to a specific study in the GDS Sample file
 #'
-#' @description The function extract the information for the profiles
+#' @description The function extracts the information for the profiles
 #' associated to a specific study in the GDS Sample file. The information is
 #' extracted from the 'study.annot' node as a 'data.frame'.
 #'
@@ -692,25 +692,22 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
 prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds,  "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class ",
-                "\'gds.class\'.")
-    }
+    ## The gds and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gds=gds, "gds")
+    validateGDSClass(gds=gdsSample, "gdsSample")
 
     ## The study.id must be a character string
-    if (!is.character(study.id)) {
+    if (!(is.character(study.id) && length(study.id) == 1)) {
         stop("The \'study.id\' parameter must be a character string.")
+    }
+
+    ## The popName must be a character string
+    if (!(is.character(popName) && length(popName) == 1)) {
+        stop("The \'popName\' parameter must be a character string.")
     }
 
     ## Extract study information from the GDS Sample file

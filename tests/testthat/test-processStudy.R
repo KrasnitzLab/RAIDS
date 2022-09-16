@@ -522,6 +522,46 @@ test_that("add1KG2SampleGDS() must return error when study.id is a numeric value
 context("computePCARefSample() results")
 
 
+test_that("computePCARefSample() must return error when gdsSample isnumeric value", {
+
+    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+
+    expect_error(computePCARefSample(gdsSample="test.gds", name.id="test",
+                            study.id.ref="Ref.1KG", np=1L, algorithm="exact",
+                            eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return error when name.id is numeric value", {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'name.id\' parameter must be a single character string."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id=22,
+                            study.id.ref="Ref.1KG", np=1L, algorithm="exact",
+                            eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return error when study.id.ref is numeric value", {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'study.id.ref\' parameter must be a character string."
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="Synthetic",
+                            study.id.ref=33, np=1L, algorithm="exact",
+                            eigen.cnt=32L), error_message, fixed=TRUE)
+})
+
+
 test_that("computePCARefSample() must return error when np is a character string", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
@@ -548,11 +588,9 @@ test_that("computePCARefSample() must return error when np is a numeric value", 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                                study.id.ref="Ref.1KG",
-                                np=1L, algorithm=33,
+                                study.id.ref="Ref.1KG", np=1L, algorithm=33,
                                 eigen.cnt=32L), error_message, fixed=TRUE)
 })
-
 
 
 test_that("computePCARefSample() must return error when algorithm is a numeric value", {
@@ -565,9 +603,8 @@ test_that("computePCARefSample() must return error when algorithm is a numeric v
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                                     study.id.ref="Ref.1KG",
-                                     np=1L, algorithm=33,
-                                     eigen.cnt=32L), error_message, fixed=TRUE)
+            study.id.ref="Ref.1KG", np=1L, algorithm=33,
+            eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
 
@@ -579,25 +616,38 @@ test_that("computePCARefSample() must return error when algorithm is not a valid
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                                        study.id.ref="Ref.1KG",
-                                        np=1L, algorithm="sun",
-                                        eigen.cnt=32L))
+            study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L))
 })
 
 
-test_that("computePCARefSample() must return error when name.id isnumeric value", {
+test_that("computePCARefSample() must return error when eigen.cnt is a string", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'name.id\' parameter must be a character string."
+    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id=22,
-                                    study.id.ref="Ref.1KG",
-                                    np=1L, algorithm="exact",
-                                    eigen.cnt=32L), error_message, fixed=TRUE)
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+        study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt="32L"),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return error when missing.rate is negative value", {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'missing.rate\' must be a single numeric ",
+                                "positive value between 0 and 1 or NaN.")
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+        study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
+        missing.rate=-0.02), error_message, fixed=TRUE)
 })
 
 

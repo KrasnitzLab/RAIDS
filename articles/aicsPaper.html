@@ -423,9 +423,9 @@ sample passed to the <em>listSamples</em> argument.</p>
 <span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="do">## those 3 columns: "study.id", "study.desc", "study.platform"</span></span>
 <span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="do">## The list of samples to analyzed is passed to the</span></span>
@@ -440,11 +440,11 @@ sample passed to the <em>listSamples</em> argument.</p>
 <span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="do">## sample present in the 'listSamples' parameter.</span></span>
 <span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="fu">createStudy2GDS1KG</span>(<span class="at">PATHGENO =</span> PATHGENO,</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pedStudy =</span> ped,</span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fileNameGDS =</span> file.GDS,</span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>                      <span class="at">listSamples =</span> listSamples,</span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>                      <span class="at">studyDF =</span> studyDF,</span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>                      <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)<span class="er">))</span></span></code></pre></div>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pedStudy =</span> ped,</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fileNameGDS =</span> file.GDS,</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>                        <span class="at">listSamples =</span> listSamples,</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>                        <span class="at">studyDF =</span> studyDF,</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>                        <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)<span class="er">))</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -495,38 +495,38 @@ file as input. It also requires the path to the GDS Sample files.</p>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="do">## data.frame (see previous step).</span></span>
 <span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>studyDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">study.id =</span> <span class="st">"Id of the study"</span>,  <span class="do">## IMPORTANT INFORMATION</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                  <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.desc =</span> <span class="st">"Description"</span>,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.platform =</span> <span class="st">"Whole-Exome"</span>,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
 <span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="do">## The pruning function is called on one sample at the time</span></span>
 <span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="do">##############################################################</span></span>
 <span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))) {</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the SNV pruned subset</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="do">## study.id: Study identifier as defined in the previous step.</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="do">##           The study identifier must be the same that the one present in</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="do">##           GDS Sample file.</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  <span class="do">## PATHSAMPLEGDS: All GDS Sample files must be in the same directory.</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pruningSample</span>(<span class="at">gds=</span>gds_1KG,</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>          <span class="at">sampleCurrent =</span> listSamples[i],</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>          <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id, </span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>          <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Compute the SNV pruned subset</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="do">## study.id: Study identifier as defined in the previous step.</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    <span class="do">##           The study identifier must be the same that the one present in</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="do">##           GDS Sample file.</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="do">## PATHSAMPLEGDS: All GDS Sample files must be in the same directory.</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pruningSample</span>(<span class="at">gds=</span>gds_1KG,</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sampleCurrent =</span> listSamples[i],</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>                    <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id, </span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>                    <span class="at">PATHSAMPLEGDS =</span> PATHSAMPLEGDS)</span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="do">## GDS Sample file for the current sample</span></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  <span class="do">## The file name corresponds to the path + sample identifier + ".gds"</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    <span class="do">## GDS Sample file for the current sample</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="do">## The file name corresponds to the path + sample identifier + ".gds"</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>)</span>
 <span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add the genotype information for the list of pruned SNVs </span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  <span class="do">## into the GDS Sample file</span></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>  <span class="do">## The genotype information is extracted from the 1KG GDS file</span></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add1KG2SampleGDS</span>(<span class="at">gds =</span> gds_1KG, <span class="at">gdsSampleFile =</span> file.GDSSample, </span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sampleCurrent =</span> listSamples[<span class="dv">1</span>], </span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>                      <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id))</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add the genotype information for the list of pruned SNVs </span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    <span class="do">## into the GDS Sample file</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    <span class="do">## The genotype information is extracted from the 1KG GDS file</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add1KG2SampleGDS</span>(<span class="at">gds =</span> gds_1KG, <span class="at">gdsSampleFile =</span> file.GDSSample, </span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sampleCurrent =</span> listSamples[<span class="dv">1</span>], </span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id))</span>
 <span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add annotation from the 1KG GDS file to the GDS Sample file</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>  <span class="do">## This is required.</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addStudy1Kg</span>(gds_1KG, file.GDSSample)</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add annotation from the 1KG GDS file to the GDS Sample file</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="do">## This is required.</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addStudy1Kg</span>(gds_1KG, file.GDSSample)</span>
 <span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="do">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span>
@@ -839,33 +839,33 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span><span class="co">## Loop for all cancer samples with associated synthetic data</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
-<span>  <span class="co">## The GDS Sample associated to the cancer sample     </span></span>
-<span>  <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_SAMPLE_GDS</span>, </span>
+<span>    <span class="co">## The GDS Sample associated to the cancer sample     </span></span>
+<span>    <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_SAMPLE_GDS</span>, </span>
 <span>                                      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="co">## A sub-directory is created for the cancer sample</span></span>
-<span>  <span class="co">## Beware that the number of files created will correspond to the </span></span>
-<span>  <span class="co">## number of rows in the sampleRM matrix</span></span>
-<span>  <span class="va">PATH_OUT_SAMPLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co">## A sub-directory is created for the cancer sample</span></span>
+<span>    <span class="co">## Beware that the number of files created will correspond to the </span></span>
+<span>    <span class="co">## number of rows in the sampleRM matrix</span></span>
+<span>    <span class="va">PATH_OUT_SAMPLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
 <span>  </span>
-<span>  <span class="co">## Open GDS Sample file      </span></span>
-<span>  <span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDSSample</span><span class="op">)</span></span>
+<span>    <span class="co">## Open GDS Sample file      </span></span>
+<span>    <span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span>        </span>
-<span>  <span class="co">## This variable will contain the results from the PCA analyses</span></span>
-<span>  <span class="va">KNN.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="co">## This variable will contain the results from the PCA analyses</span></span>
+<span>    <span class="va">KNN.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="co">## For each row of the sampleRM matrix      </span></span>
-<span>  <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="co">## Run a PCA analysis using 1 synthetic profile for each sub-continental</span></span>
-<span>      <span class="co">## The synthetic profiles are projected on the 1KG PCA space </span></span>
-<span>      <span class="co">## (the reference samples used to generate the synthetic profiles are </span></span>
-<span>      <span class="co">##  removed from this PCA)</span></span>
-<span>      <span class="co">## The K-nearest neighbor analysis is done using </span></span>
-<span>      <span class="co">##  a range of K and D values</span></span>
-<span>      <span class="va">KNN.synt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computePoolSyntheticAncestryGr.html">computePoolSyntheticAncestryGr</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, </span>
+<span>    <span class="co">## For each row of the sampleRM matrix      </span></span>
+<span>    <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="co">## Run a PCA analysis using 1 synthetic profile for each sub-continental</span></span>
+<span>        <span class="co">## The synthetic profiles are projected on the 1KG PCA space </span></span>
+<span>        <span class="co">## (the reference samples used to generate the synthetic profiles are </span></span>
+<span>        <span class="co">##  removed from this PCA)</span></span>
+<span>        <span class="co">## The K-nearest neighbor analysis is done using </span></span>
+<span>        <span class="co">##  a range of K and D values</span></span>
+<span>        <span class="va">KNN.synt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computePoolSyntheticAncestryGr.html">computePoolSyntheticAncestryGr</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, </span>
 <span>                                          gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
 <span>                                          sampleRM <span class="op">=</span>  <span class="va">sampleRM</span><span class="op">[</span><span class="va">j</span>,<span class="op">]</span>,</span>
 <span>                                          study.id.syn <span class="op">=</span> <span class="va">studyDF.syn</span><span class="op">$</span><span class="va">study.id</span>,</span>
@@ -873,13 +873,13 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span>                                          spRef <span class="op">=</span> <span class="va">spRef</span>,</span>
 <span>                                          eigen.cnt <span class="op">=</span> <span class="fl">15L</span><span class="op">)</span></span>
 <span>      </span>
-<span>      <span class="co">## Results are saved</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">KNN.synt</span><span class="op">$</span><span class="va">matKNN</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span>, </span>
+<span>        <span class="co">## Results are saved</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">KNN.synt</span><span class="op">$</span><span class="va">matKNN</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_OUT_SAMPLE</span>, </span>
 <span>                        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"KNN.synt."</span>, <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"."</span>, <span class="va">j</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
 <span>  </span>
-<span>  <span class="co">## Close GDS Sample file (important)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span></span>
+<span>    <span class="co">## Close GDS Sample file (important)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span>    </span>
 <span><span class="co">## Close 1KG GDS file (important)</span></span>

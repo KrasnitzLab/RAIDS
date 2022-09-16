@@ -35,11 +35,13 @@ data.dir <- system.file("extdata", package="RAIDS")
 ## The 1KG GDS file (opened)
 gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 
-## TODO
+## The validatiion should be successful
 RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
     gdsSampleFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
     sampleCurrent="Sample01", study.id="Synthetic")
 
+## All GDS file must be closed
+closefn.gds(gdsfile=gds1KG)
 
 }
 \author{

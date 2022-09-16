@@ -162,6 +162,25 @@ test_that("appendStudy2GDS1KG() must return error when batch is a character stri
 })
 
 
+test_that("appendStudy2GDS1KG() must return error when studyDF is missing mandatory column", {
+
+    gdsFIle <- test_path("fixtures",  "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures",  "Sample_Info_Test.RDS")
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.descption="Pancreatic study", study.platform="WES",
+                    stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'studyDF\' must be a data.frame and contain ",
+        "those 3 columns: \'study.id\', \'study.desc\' and \'study.platform\'.")
+
+    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+            fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=1,
+            studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+            verbose=TRUE), error_message)
+})
+
+
 test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric", {
 
     gdsFIle <- test_path("fixtures",  "1KG_Test.gds")

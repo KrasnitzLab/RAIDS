@@ -817,9 +817,10 @@ for(i in seq_len(length(listSamples))) {
 
     ## For each row of the sampleRM matrix      
     for(j in seq_len(nrow(sampleRM))) {
-        ## Run a PCA analysis using 1 synthetic profile for each sub-continental
+        ## Run a PCA analysis using 1 synthetic profile from each 
+        ##  sub-continental ancestry
         ## The synthetic profiles are projected on the 1KG PCA space 
-        ## (the reference samples used to generate the synthetic profiles are 
+        ##  (the reference samples used to generate the synthetic profiles are 
         ##  removed from this PCA)
         ## The K-nearest neighbor analysis is done using 
         ##  a range of K and D values

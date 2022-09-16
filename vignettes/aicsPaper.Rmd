@@ -2,28 +2,28 @@
 title: "Accurate Inference of Genetic Ancestry from Cancer Sequencing"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
-  BiocStyle::html_document:
-    number_sections: yes
-    toc: true
-  pkgdown:
-    number_sections: yes
-    as_is: true
+    BiocStyle::html_document:
+        number_sections: yes
+        toc: true
+    pkgdown:
+        number_sections: yes
+        as_is: true
 urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-  %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
-  %\VignettePackage{RAIDS}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
+    %\VignettePackage{RAIDS}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
-  library(knitr)
-  library(RAIDS)
+    library(knitr)
+    library(RAIDS)
 })
 
 set.seed(121444)
@@ -373,9 +373,9 @@ ped <- readRDS(filePED)
 ## those 3 columns: "study.id", "study.desc", "study.platform"
 #################################################################
 studyDF <- data.frame(study.id = "Id of the study",
-                  study.desc = "Description",
-                  study.platform = "Whole-Exome",
-                  stringsAsFactors = FALSE)
+                        study.desc = "Description",
+                        study.platform = "Whole-Exome",
+                        stringsAsFactors = FALSE)
 
 #################################################################
 ## The list of samples to analyzed is passed to the
@@ -390,11 +390,11 @@ listSamples <- ped[, "Name.ID"]
 ## sample present in the 'listSamples' parameter.
 #################################################################
 createStudy2GDS1KG(PATHGENO = PATHGENO,
-                      pedStudy = ped,
-                      fileNameGDS = file.GDS,
-                      listSamples = listSamples,
-                      studyDF = studyDF,
-                      PATHSAMPLEGDS = PATHSAMPLEGDS)))
+                        pedStudy = ped,
+                        fileNameGDS = file.GDS,
+                        listSamples = listSamples,
+                        studyDF = studyDF,
+                        PATHSAMPLEGDS = PATHSAMPLEGDS)))
 ```
 
 <br>
@@ -449,38 +449,38 @@ listSamples <- ped[, "Name.ID"]
 ## data.frame (see previous step).
 #################################################################
 studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
-                  study.desc = "Description",
-                  study.platform = "Whole-Exome",
-                  stringsAsFactors = FALSE)
+                        study.desc = "Description",
+                        study.platform = "Whole-Exome",
+                        stringsAsFactors = FALSE)
 
 ##############################################################
 ## The pruning function is called on one sample at the time
 ##############################################################
 for(i in seq_len(length(listSamples))) {
-  ## Compute the SNV pruned subset
-  ## study.id: Study identifier as defined in the previous step.
-  ##           The study identifier must be the same that the one present in
-  ##           GDS Sample file.
-  ## PATHSAMPLEGDS: All GDS Sample files must be in the same directory.
-  pruningSample(gds=gds_1KG,
-          sampleCurrent = listSamples[i],
-          study.id = studyDF$study.id, 
-          PATHSAMPLEGDS = PATHSAMPLEGDS)
+    ## Compute the SNV pruned subset
+    ## study.id: Study identifier as defined in the previous step.
+    ##           The study identifier must be the same that the one present in
+    ##           GDS Sample file.
+    ## PATHSAMPLEGDS: All GDS Sample files must be in the same directory.
+    pruningSample(gds=gds_1KG,
+                    sampleCurrent = listSamples[i],
+                    study.id = studyDF$study.id, 
+                    PATHSAMPLEGDS = PATHSAMPLEGDS)
   
-  ## GDS Sample file for the current sample
-  ## The file name corresponds to the path + sample identifier + ".gds"
-  file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
+    ## GDS Sample file for the current sample
+    ## The file name corresponds to the path + sample identifier + ".gds"
+    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
         
-  ## Add the genotype information for the list of pruned SNVs 
-  ## into the GDS Sample file
-  ## The genotype information is extracted from the 1KG GDS file
-  add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
-                      sampleCurrent = listSamples[1], 
-                      study.id = studyDF$study.id))
+    ## Add the genotype information for the list of pruned SNVs 
+    ## into the GDS Sample file
+    ## The genotype information is extracted from the 1KG GDS file
+    add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
+                        sampleCurrent = listSamples[1], 
+                        study.id = studyDF$study.id))
 
-  ## Add annotation from the 1KG GDS file to the GDS Sample file
-  ## This is required.
-  addStudy1Kg(gds_1KG, file.GDSSample)
+    ## Add annotation from the 1KG GDS file to the GDS Sample file
+    ## This is required.
+    addStudy1Kg(gds_1KG, file.GDSSample)
 }
     
 ## Close the 1KG GDS file (it is important to always close the GDS files)
@@ -797,33 +797,33 @@ sampleRM <- splitSelectByPop(dataRef)
 ## Loop for all cancer samples with associated synthetic data
 for(i in seq_len(length(listSamples))) {
   
-  ## The GDS Sample associated to the cancer sample     
-  file.GDSSample <- file.path(PATH_SAMPLE_GDS, 
+    ## The GDS Sample associated to the cancer sample     
+    file.GDSSample <- file.path(PATH_SAMPLE_GDS, 
                                       paste0(listSamples[i], ".gds"))
   
-  ## A sub-directory is created for the cancer sample
-  ## Beware that the number of files created will correspond to the 
-  ## number of rows in the sampleRM matrix
-  PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
-  if(! file.exists(PATH_OUT_SAMPLE)) {
+    ## A sub-directory is created for the cancer sample
+    ## Beware that the number of files created will correspond to the 
+    ## number of rows in the sampleRM matrix
+    PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
+    if(! file.exists(PATH_OUT_SAMPLE)) {
             dir.create(PATH_OUT_SAMPLE)
-  }
+    }
   
-  ## Open GDS Sample file      
-  gdsSample <- snpgdsOpen(file.GDSSample)
+    ## Open GDS Sample file      
+    gdsSample <- snpgdsOpen(file.GDSSample)
         
-  ## This variable will contain the results from the PCA analyses
-  KNN.list <- list()
+    ## This variable will contain the results from the PCA analyses
+    KNN.list <- list()
   
-  ## For each row of the sampleRM matrix      
-  for(j in seq_len(nrow(sampleRM))) {
-      ## Run a PCA analysis using 1 synthetic profile for each sub-continental
-      ## The synthetic profiles are projected on the 1KG PCA space 
-      ## (the reference samples used to generate the synthetic profiles are 
-      ##  removed from this PCA)
-      ## The K-nearest neighbor analysis is done using 
-      ##  a range of K and D values
-      KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
+    ## For each row of the sampleRM matrix      
+    for(j in seq_len(nrow(sampleRM))) {
+        ## Run a PCA analysis using 1 synthetic profile for each sub-continental
+        ## The synthetic profiles are projected on the 1KG PCA space 
+        ## (the reference samples used to generate the synthetic profiles are 
+        ##  removed from this PCA)
+        ## The K-nearest neighbor analysis is done using 
+        ##  a range of K and D values
+        KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
                                           gdsSample = gdsSample,
                                           sampleRM =  sampleRM[j,],
                                           study.id.syn = studyDF.syn$study.id,
@@ -831,13 +831,13 @@ for(i in seq_len(length(listSamples))) {
                                           spRef = spRef,
                                           eigen.cnt = 15L)
       
-      ## Results are saved
-      saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE, 
+        ## Results are saved
+        saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE, 
                         paste0("KNN.synt.", listSamples[i], ".", j, ".rds")))
-  }
+    }
   
-  ## Close GDS Sample file (important)
-  closefn.gds(gdsSample)
+    ## Close GDS Sample file (important)
+    closefn.gds(gdsSample)
 }
     
 ## Close 1KG GDS file (important)

@@ -111,3 +111,26 @@ test_that("validateComputeAncestryFromSyntheticFile() must return epxected resul
 
     expect_identical(result1, 0L)
 })
+
+
+#############################################################################
+### Tests validateComputePCARefSample() results
+#############################################################################
+
+context("validateComputePCARefSample() results")
+
+
+test_that("validateComputePCARefSample() must return epxected results when all input are valid", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
+                name.id="HCC01", study.id.ref="1KG", np=1L, algorithm="exact",
+                eigen.cnt=32L, missing.rate=0.02)
+
+    expect_identical(result1, 0L)
+})

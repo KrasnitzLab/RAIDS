@@ -169,7 +169,7 @@ validateCharacterString <- function(value, name) {
 validatePositiveIntegerVector <- function(value, name) {
 
     ## The parameter value must be a character string
-    if(!(is.numeric(value) && all(value > 0))) {
+    if(!(is.numeric(value) && is.vector(value) && all(value > 0))) {
         stop("The \'", name, "\' parameter must be a vector of positive ",
                     "integers.")
     }

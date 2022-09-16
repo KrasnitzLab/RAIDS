@@ -269,17 +269,9 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
                 "character strings.")
     }
 
-    ## The parameter kList must be positive integer values
-    if(!(is.numeric(kList) && is.vector(kList) && all(kList>0))) {
-        stop("The \'kList\' parameter must be a vector of positive ",
-                "integers.")
-    }
-
-    ## The parameter pcaList must be positive integer values
-    if(!(is.numeric(pcaList) && is.vector(pcaList) && all(pcaList>0))) {
-        stop("The \'pcaList\' parameter must be a vector of positive ",
-                "integers.")
-    }
+    ## The parameters must be vectors of positive integers
+    validatePositiveIntegerVector(kList, "kList")
+    validatePositiveIntegerVector(pcaList, "pcaList")
 
     ## Validate that algorithm is a string
     if(!(is.character(algorithm))) {
@@ -291,8 +283,7 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
         stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
-    ## The parameter missing.rate must be a single positive numeric between
-    ## zero and one or NaN
+    ## The parameter missing.rate must be a single numer [0,1] or NaN
     if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
                     missing.rate <= 1.0)) || is.nan(missing.rate)))  {
         stop("The \'missing.rate\' parameter must be a single positive ",
@@ -684,4 +675,98 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
     return(0L)
 }
 
+
+#' @title Validate input parameters for computePCARefSample() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{computePCARefSample}} function.
+#'
+#' @param gdsSample an object of class \link[gdsfmt]{gds.class},
+#' a GDS Sample file.
+#'
+#' @param name.id a single \code{character} string representing the sample
+#' identifier.
+#'
+#' @param study.id.ref a single \code{character} string representing the
+#' study identifier.
+#'
+#' @param np a single positive \code{integer} representing the number of CPU
+#' that will be used.
+#'
+#' @param algorithm a \code{character} string representing the algorithm used
+#' to calculate the PCA.
+#'
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#'
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; if \code{NaN}, no missing
+#' threshold.
+#'
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The GDS Sample (opened)
+#' gdsSample <- openfn.gds(file.path(data.dir,
+#'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
+#'
+#' ## The validatiion should be successful
+#' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
+#'     study.id.ref="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
+#'     missing.rate=0.02)
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gdsSample)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
+                                            np, algorithm,
+                                            eigen.cnt, missing.rate) {
+
+    ## The gdsSample must be object of class "gds.class"
+    validateGDSClass(gdsSample, "gdsSample")
+
+    ## Validate that name.id is a string
+    if(!(is.character(name.id) && length(name.id) == 1)) {
+        stop("The \'name.id\' parameter must be a single character string.")
+    }
+
+    ## Validate that study.id.ref is a string
+    if(!(is.character(study.id.ref) && length(name.id) == 1)) {
+        stop("The \'study.id.ref\' parameter must be a character string.")
+    }
+
+    ## The parameter np must be a single positive integer
+    if(!(isSingleNumber(np) && (np > 0))) {
+        stop("The \'np\' parameter must be a single positive integer.")
+    }
+
+    ## Validate that algorithm is a string
+    if(!(is.character(algorithm))) {
+        stop("The \'algorithm\' parameter must be a character string.")
+    }
+
+    ## The parameter eigen.cnt must be a single integer
+    if(!(isSingleNumber(eigen.cnt))) {
+        stop("The \'eigen.cnt\' parameter must be a single integer.")
+    }
+
+    ## The missing.rate must be a positive numeric between zero and one or NaN
+    if (!is.nan(missing.rate)) {
+        if (!(isSingleNumber(missing.rate) && (missing.rate >= 0.0) &&
+                (missing.rate <= 1.0))) {
+            stop("The \'missing.rate\' must be a single numeric positive ",
+                    "value between 0 and 1 or NaN.")
+        }
+    }
+
+    return(0L)
+}
 

@@ -1526,10 +1526,11 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' @param gdsSample an object of class \link[gdsfmt]{gds.class},
 #' a GDS Sample file.
 #'
-#' @param name.id a \code{character} string representing the sample
+#' @param name.id a single \code{character} string representing the sample
 #' identifier.
 #'
-#' @param study.id.ref id of the reference in study.annot
+#' @param study.id.ref a single \code{character} string representing the
+#' study identifier.
 #'
 #' @param np a single positive \code{integer} representing the number of CPU
 #' that will be used. Default: \code{1L}.
@@ -1572,34 +1573,19 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading snpgdsPCASampLoading
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 computePCARefSample <- function(gdsSample, name.id, study.id.ref="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
                             eigen.cnt=32L, missing.rate=NaN) {
 
-    ## Validate that name.id is a string
-    if(!(is.character(name.id))) {
-        stop("The \'name.id\' parameter must be a character string.")
-    }
-
-    ## Validate that np is a positive number
-    if(!(isSingleNumber(np) && np > 0)) {
-        stop("The \'np\' parameter must be a single positive integer.")
-    }
-
-    ## Validate that algorithm is a string
-    if(!(is.character(algorithm))) {
-        stop("The \'algorithm\' parameter must be a character string.")
-    }
+    ## Validate parameters
+    validateComputePCARefSample(gdsSample=gdsSample, name.id=name.id,
+        study.id.ref=study.id.ref, np=np, algorithm=algorithm,
+        eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
-
-    if(length(name.id) != 1) {
-        stop("Number of sample in study.annot not equal to 1\n")
-    }
 
     sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
 
@@ -2444,15 +2430,16 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
 
+    ## Merge results from PCA run on synthetic data present in RDS files
     KNN.list <- list()
-
     for(j in seq_len(length(listFiles))) {
         # We have to test if the file exist and format is OK
         KNN.list[[j]] <- readRDS(listFiles[j])
     }
-
     KNN.sample.syn <- do.call(rbind, KNN.list)
 
+    ## Extract the sample super-population information from the 1KG GDS file
+    ## for profiles associated to the specified study in the GDS Sample file
     pedSyn <- prepPedSynthetic1KG(gds=gds, gdsSample=gdsSample,
         study.id=study.id.syn, popName=fieldPopIn1KG)
 
@@ -2530,20 +2517,23 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                             predCall, listCall, kList=seq(3,15,1),
                             pcaList=seq(2,15,1)) {
 
-    if(min(kList) < 3) {
+    if (min(kList) < 3) {
         warning("A K smaller than 3 could not give robust results.\n")
     }
+
     tableSyn <- list()
     tableCall <- list()
     tableAUROC <- list()
     i <- 1
 
-    for(D in pcaList) {
+    ## Loop on all PCA dimension values
+    for (D in pcaList) {
         matKNNCurD <- matKNN.All[which(matKNN.All$D == D ), ]
         listTMP <- list()
         listTMP.AUROC <- list()
         j <- 1
-        for(K in kList) {
+        ## Loop on all k neighbor values
+        for (K in kList) {
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
             res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall,
                                             predCall, listCall)

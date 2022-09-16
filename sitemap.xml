@@ -256,6 +256,12 @@
     <loc>/reference/testEmptyBox.html</loc>
   </url>
   <url>
+    <loc>/reference/validateAdd1KG2SampleGDS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateAppendStudy2GDS1KG.html</loc>
+  </url>
+  <url>
     <loc>/reference/validateCharacterString.html</loc>
   </url>
   <url>

@@ -858,9 +858,10 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span></span>
 <span>    <span class="co">## For each row of the sampleRM matrix      </span></span>
 <span>    <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sampleRM</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="co">## Run a PCA analysis using 1 synthetic profile for each sub-continental</span></span>
+<span>        <span class="co">## Run a PCA analysis using 1 synthetic profile from each </span></span>
+<span>        <span class="co">##  sub-continental ancestry</span></span>
 <span>        <span class="co">## The synthetic profiles are projected on the 1KG PCA space </span></span>
-<span>        <span class="co">## (the reference samples used to generate the synthetic profiles are </span></span>
+<span>        <span class="co">##  (the reference samples used to generate the synthetic profiles are </span></span>
 <span>        <span class="co">##  removed from this PCA)</span></span>
 <span>        <span class="co">## The K-nearest neighbor analysis is done using </span></span>
 <span>        <span class="co">##  a range of K and D values</span></span>

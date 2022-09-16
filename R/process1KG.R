@@ -1084,7 +1084,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                                 matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
 
                     # if SNV in the gene
-                    if(length(listP) > 0 ) {
+                    if (length(listP) > 0) {
                         # listPos in the gene
                         listP <-
                             listPos[startIndex[vStart]:startIndex[vEnd]][listP]
@@ -1104,7 +1104,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                         k <- 1
 
                         listE <- list()
-                        for(pos in listP) {
+                        for (pos in listP) {
                             if(length(which(dfExon$Start <= matFreq$pos[pos] &
                                         dfExon$End >= matFreq$pos[pos])) > 0) {
                                 listE[[k]] <- pos
@@ -1112,7 +1112,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                             }
                         }
 
-                        if(length(listE) > 0) {
+                        if (length(listE) > 0) {
                             listE <- do.call(c, listE)
                             listSNVExons[listE] <- paste0(listSNVExons[listE],
                                     ":", dfGenneAllChr$mcols.GENEID[genePos])

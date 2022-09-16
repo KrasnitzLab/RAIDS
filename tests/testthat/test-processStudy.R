@@ -1660,7 +1660,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when stud
     gdsF <- openfn.gds(gdsFile)
     withr::defer(closefn.gds(gdsF), envir=parent.frame())
 
-    error_message <- "The \'study.id.syn\' must be a character string."
+    error_message <- "The \'study.id.syn\' parameter must be a character string."
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
@@ -1738,5 +1738,77 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when miss
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=-0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when fieldPopIn1KG is numeric"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'fieldPopIn1KG\' parameter must be a ",
+                                "character string.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG=22, fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when fieldPopInfAnc is vector of strings"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'fieldPopInfAnc\' parameter must be a ",
+                                    "character string.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="test", fieldPopInfAnc=c("SuperPop", "test"),
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when kList has one negative numeric"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'kList\' parameter must be a vector of ",
+                                "positive integers.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
+        kList=c(1, 2, -3, 4), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaList has one negative numeric"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'pcaList\' parameter must be a vector of ",
+                                "positive integers.")
+
+    expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
+        listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
+        kList=c(1, 2, 3, 4), pcaList=c(2, -15, 1), algorithm="exact",
+        eigen.cnt=32L,  missing.rate=0.2), error_message)
 })
 

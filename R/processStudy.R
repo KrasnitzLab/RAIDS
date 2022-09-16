@@ -1150,7 +1150,7 @@ estimateAllelicFraction <- function(gds, gdsSample, sampleCurrent, study.id,
     for(chr in seq_len(22)) {
         snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
         tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
-                         snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+                            snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
         snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
         k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
     }
@@ -1490,14 +1490,13 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
     study.annot <- study.annot[which(study.annot$study.id == study.id.syn &
-                                         study.annot$case.id %in% sampleRef),]
+                                        study.annot$case.id %in% sampleRef),]
 
 
     ## SNP loadings in principal component analysis
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
                                                     gdsobj=gdsSample,
-                                                    num.thread=1,
-                                                    verbose=TRUE)
+                                                    num.thread=1, verbose=TRUE)
 
     ## Project samples onto existing principal component axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
@@ -1823,19 +1822,18 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     listMat <- list()
     for(i in seq_len(length(listEigenvector$sample.id))){
         resMat <- data.frame(sample.id=rep(listEigenvector$sample.id[i],
-                                           length(pcaList) * length(kList)),
-                             D=rep(0,length(pcaList) * length(kList)),
-                             K=rep(0,length(pcaList) * length(kList)),
+                                            length(pcaList) * length(kList)),
+                                D=rep(0,length(pcaList) * length(kList)),
+                                K=rep(0,length(pcaList) * length(kList)),
                         # SuperPop=character(length(pcaList) * length(kList)),
-                             stringsAsFactors=FALSE)
+                                stringsAsFactors=FALSE)
         resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
 
-
         eigenvect <- rbind(listEigenvector$eigenvector.ref,
-                           listEigenvector$eigenvector[i,,drop=FALSE])
+                                listEigenvector$eigenvector[i,,drop=FALSE])
 
         totR <- 1
-        for(pcaD in pcaList) {
+        for (pcaD in pcaList) {
             for(kV in  seq_len(length(kList))) {
                 dCur <- paste0("d", pcaD)
                 kCur <- paste0("k", kList[kV])
@@ -1926,17 +1924,17 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
                                                 study.id.ref), "data.id"]
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
-                                       length(pcaList) * length(kList)),
-                         D=rep(0,length(pcaList) * length(kList)),
-                         K=rep(0,length(pcaList) * length(kList)),
-                         SuperPop=character(length(pcaList) * length(kList)),
-                         stringsAsFactors=FALSE)
+                                        length(pcaList) * length(kList)),
+                            D=rep(0,length(pcaList) * length(kList)),
+                            K=rep(0,length(pcaList) * length(kList)),
+                            SuperPop=character(length(pcaList) * length(kList)),
+                            stringsAsFactors=FALSE)
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
     #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
     eigenvect <- rbind(listEigenvector$eigenvector.ref,
-                        listEigenvector$eigenvector)
+                            listEigenvector$eigenvector)
 
     rownames(eigenvect) <- c(sample.ref,
                                 listEigenvector$sample.id)
@@ -2020,18 +2018,18 @@ computeKNNRefSample <- function(listEigenvector,
     }
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
-                                       length(pcaList) * length(kList)),
-                         D=rep(0,length(pcaList) * length(kList)),
-                         K=rep(0,length(pcaList) * length(kList)),
-#                         SuperPop=character(length(pcaList) * length(kList)),
-                         stringsAsFactors=FALSE)
+                                        length(pcaList) * length(kList)),
+                            D=rep(0,length(pcaList) * length(kList)),
+                            K=rep(0,length(pcaList) * length(kList)),
+                        # SuperPop=character(length(pcaList) * length(kList)),
+                            stringsAsFactors=FALSE)
     resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
     #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
     eigenvect <- rbind(listEigenvector$eigenvector.ref,
-                       listEigenvector$eigenvector)
+                            listEigenvector$eigenvector)
 
     # rownames(eigenvect) <- c(sample.ref,
     #                          listEigenvector$sample.id)
@@ -2439,9 +2437,9 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
     validateComputeAncestryFromSyntheticFile(gds=gds, gdsSample=gdsSample,
         listFiles=listFiles, sample.ana.id=sample.ana.id, spRef=spRef,
         study.id.syn=study.id.syn, np=np, listCatPop=listCatPop,
-        fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
-        kList=kList, pcaList=pcaList, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+        fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
+        pcaList=pcaList, algorithm=algorithm, eigen.cnt=eigen.cnt,
+        missing.rate=missing.rate)
 
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
@@ -2455,27 +2453,23 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
 
-    pedSyn <- prepPedSynthetic1KG(gds, gdsSample,
-                                    study.id.syn, fieldPopIn1KG)
-
-
+    pedSyn <- prepPedSynthetic1KG(gds=gds, gdsSample=gdsSample,
+        study.id=study.id.syn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
-                                            fieldPopIn1KG, fieldPopInfAnc,
-                                            listCatPop)
+        fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample, sample.ana.id,
-                            study.id.ref="Ref.1KG", np=np, algorithm=algorithm,
-                            eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+    listPCASample <- computePCARefSample(gdsSample=gdsSample,
+        name.id=sample.ana.id, study.id.ref="Ref.1KG", np=np,
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
+    listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
+        listCatPop=listCatPop, spRef=spRef,fieldPopInfAnc=fieldPopInfAnc,
+        kList=kList, pcaList=pcaList)
 
-    listKNNSample <- computeKNNRefSample(listPCASample,
-                                            listCatPop, spRef,
-                                            kList = seq(2, 15, 1),
-                                            pcaList = seq(2, 15, 1))
     resCall <- listKNNSample$matKNN[
         which(listKNNSample$matKNN$D == listParaSample$D &
-                  listKNNSample$matKNN$K == listParaSample$K ) ,]
+                        listKNNSample$matKNN$K == listParaSample$K ) ,]
 
     res <- list(pcaSample=listPCASample, # PCA of the sample + 1KG
                 paraSample=listParaSample, # Result of the parameter selection
@@ -2571,12 +2565,12 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         maxAUROC <- max(df[df$K %in% kList, "AUROC.min"])
         kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3, "K"]
         kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
-        dfPCA <- data.frame(D = D,
-                           median = median(df[df$K %in% kList, "AUROC.min"]),
-                           mad = mad(df[df$K %in% kList, "AUROC.min"]),
-                           upQuartile = quantile(df[df$K %in% kList,
+        dfPCA <- data.frame(D=D,
+                    median=median(df[df$K %in% kList, "AUROC.min"]),
+                    mad=mad(df[df$K %in% kList, "AUROC.min"]),
+                    upQuartile=quantile(df[df$K %in% kList,
                                                         "AUROC.min"], 0.75),
-                           K = kV)
+                    K=kV)
         tableSyn[[i]] <- dfPCA
         i <- i + 1
     }

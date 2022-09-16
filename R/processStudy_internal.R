@@ -250,7 +250,7 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
     ## The parameter sampleRM must be a single positive integer
     if(!(is.character(sampleRM))) {
         stop("The \'sampleRM\' parameter must be a vector of character ",
-             "strings.")
+                "strings.")
     }
 
     ## The parameter study.id.syn must be a character string
@@ -266,19 +266,19 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
     ## The parameter listCatPop must be a character string
     if(!(is.character(listCatPop))) {
         stop("The \'listCatPop\' parameter must be a vector of ",
-             "character strings.")
+                "character strings.")
     }
 
     ## The parameter kList must be positive integer values
     if(!(is.numeric(kList) && is.vector(kList) && all(kList>0))) {
         stop("The \'kList\' parameter must be a vector of positive ",
-             "integers.")
+                "integers.")
     }
 
     ## The parameter pcaList must be positive integer values
     if(!(is.numeric(pcaList) && is.vector(pcaList) && all(pcaList>0))) {
         stop("The \'pcaList\' parameter must be a vector of positive ",
-             "integers.")
+                "integers.")
     }
 
     ## Validate that algorithm is a string
@@ -294,9 +294,9 @@ validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
     ## The parameter missing.rate must be a single positive numeric between
     ## zero and one or NaN
     if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
-           missing.rate <= 1.0)) || is.nan(missing.rate)))  {
+                    missing.rate <= 1.0)) || is.nan(missing.rate)))  {
         stop("The \'missing.rate\' parameter must be a single positive ",
-             "numeric between zero and one or NaN.")
+                "numeric between zero and one or NaN.")
     }
 
     return(0L)
@@ -519,7 +519,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 
     ## The PED study must have the mandatory columns
     if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
-              %in% colnames(pedStudy)))) {
+                        %in% colnames(pedStudy)))) {
         stop("The PED study data frame is incomplete. ",
                 "One or more mandatory columns are missing.")
     }
@@ -624,7 +624,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #' listFiles <- file.path(data.dir,  "listSNPIndexes_Demo.rds")
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::valdiatecomputeAncestryFromSyntheticFile(gds=gds1KG,
+#' RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
 #'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
 #'     spRef=NULL, study.id.syn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
@@ -635,6 +635,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #' closefn.gds(gdsfile=gdsSample)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
 validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
@@ -646,21 +647,25 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
     validateGDSClass(gds, "gds")
     validateGDSClass(gdsSample, "gdsSample")
 
-    ## The study.id.syn must be a character string
-    if (!is.character(study.id.syn)) {
-        stop("The \'study.id.syn\' must be a character string.")
-    }
-
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 
-    ## The parameter listCatPop must be a character string
+    ## The parameters are character strings (vector of 1 entry)
+    validateCharacterString(value=fieldPopIn1KG, "fieldPopIn1KG")
+    validateCharacterString(value=fieldPopInfAnc, "fieldPopInfAnc")
+    validateCharacterString(value=study.id.syn, "study.id.syn")
+
+    ## The parameter listCatPop must be a vector of of character strings
     if(!(is.character(listCatPop))) {
         stop("The \'listCatPop\' parameter must be a vector of ",
-             "character strings.")
+                "character strings.")
     }
+
+    ## The parameters must be vectors of positive integers
+    validatePositiveIntegerVector(kList, "kList")
+    validatePositiveIntegerVector(pcaList, "pcaList")
 
     ## Validate that algorithm is a string
     if(!(is.character(algorithm))) {

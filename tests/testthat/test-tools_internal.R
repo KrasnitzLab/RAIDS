@@ -90,6 +90,54 @@ test_that("validateSingleRatio() must return error when input is negative value"
                         "value between 0 and 1.")
 
     expect_error(RAIDS:::validateSingleRatio(value=-0.01, name="param_02"),
-                 expected, fixed=TRUE)
+                    expected, fixed=TRUE)
+})
+
+
+#############################################################################
+### Tests validateCharacterString() results
+#############################################################################
+
+context("validateCharacterString() results")
+
+
+test_that("validateCharacterString() must return expected results when all input are valid", {
+
+    result1 <- RAIDS:::validateCharacterString(value="test", name="parameter_01")
+
+    expect_identical(result1, 0L)
+})
+
+
+test_that("validateCharacterString() must return error when input is negative value", {
+
+    expected <- "The \'param_03\' parameter must be a character string."
+
+    expect_error(RAIDS:::validateCharacterString(value=-0.01, name="param_03"),
+                    expected, fixed=TRUE)
+})
+
+
+test_that("validateCharacterString() must return error when input is vector of strings", {
+
+    expected <- "The \'param_03\' parameter must be a character string."
+
+    expect_error(RAIDS:::validateCharacterString(value=c("a", "b"), name="param_03"),
+                    expected, fixed=TRUE)
+})
+
+
+#############################################################################
+### Tests validatePositiveIntegerVector() results
+#############################################################################
+
+context("validatePositiveIntegerVector() results")
+
+
+test_that("validatePositiveIntegerVector() must return expected results when all input are valid", {
+
+    result1 <- RAIDS:::validatePositiveIntegerVector(value=c(1,2,3), name="parameter_01")
+
+    expect_identical(result1, 0L)
 })
 

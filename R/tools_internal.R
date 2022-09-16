@@ -102,7 +102,76 @@ validateSingleRatio <- function(value, name) {
     ## The parameter must be a single positive numeric between 0 and 1
     if (!(isSingleNumber(value) && (value >= 0.0) && (value <= 1.0))) {
         stop("The \'", name, "\' must be a single numeric positive ",
-             "value between 0 and 1.")
+                "value between 0 and 1.")
+    }
+
+    return(0L)
+}
+
+
+#' @title Validate that the input parameter is a character sting
+#'
+#' @description This function validates that the input parameter is
+#' a character string (vector of 1 entry). If the parameter is not a
+#' character string, the function generates
+#' an error with a specific message.
+#'
+#' @param value a \code{character} string that will be validated.
+#'
+#' @param name a \code{character} string that represents the name of the
+#' parameter that is tested.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateCharacterString(value="hi", name="test")
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateCharacterString <- function(value, name) {
+
+    ## The parameter value must be a character string
+    if(!(is.character(value) && length(value) == 1)) {
+        stop("The \'", name, "\' parameter must be a character string.")
+    }
+
+    return(0L)
+}
+
+
+#' @title Validate that the input parameter is a vector of positive
+#' \code{numeric}
+#'
+#' @description This function validates that the input parameter is
+#' a \code{vector} of positive \code{numeric} values (vector of 1 entry or
+#' more). All values have to be positive (>\code{0}).
+#' If the parameter is not respecting the validation, the function generates
+#' an error with a specific message.
+#'
+#' @param value a \code{vector} of \code{numeric} that will be validated.
+#'
+#' @param name a \code{character} string that represents the name of the
+#' parameter that is tested.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## The validation should be successful
+#' RAIDS:::validatePositiveIntegerVector(value=c(1, 2 ,3, 5), name="test")
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validatePositiveIntegerVector <- function(value, name) {
+
+    ## The parameter value must be a character string
+    if(!(is.numeric(value) && all(value > 0))) {
+        stop("The \'", name, "\' parameter must be a vector of positive ",
+                    "integers.")
     }
 
     return(0L)

@@ -742,25 +742,40 @@ pruning1KG.Chr <- function(gds, method="corr",
 
 
 
-#' @title TODO
+#' @title Compute principal component axes (PCA) on SNV data using the
+#' reference samples
 #'
-#' @description TODO
+#' @description The function runs a Principal Component Analysis (PCA) on
+#' the SNv genotype data. The function also loads SNVs into the PCA to
+#' calculate the SNV eigenvectors. Those 2 steps are done with the
+#'  \code{\link[SNPRelate]{snpgdsPCA}} and
+#'  \code{\link[SNPRelate]{snpgdsPCASNPLoading}}
+#' functions.
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param listSample.Ref  A \code{vector} of \code{string} corresponding to
-#' the sample.ids
+#' @param listSample.Ref  a \code{vector} of \code{character} strings
+#' corresponding to
+#' the sample identifiers that will be used for the PCA.
 #'
-#' @param listSNP the list of snp.id keep
+#' @param listSNP a \code{vector} of \code{character} strings representing
+#' the SNV identifiers retained for the PCA.
 #'
 #' @param np a single positive \code{integer} representing the number of
-#' threads. Default: \code{1}.
+#' threads. Default: \code{1L}.
 #'
-#' @return TODO a \code{list}  with with two objects
-#' pca.unrel -> \code{snpgdsPCAClass}
-#' and a snp.load -> \code{snpgdsPCASNPLoading}
+#' @return a \code{list} with 3 entries:
+#' \itemize{
+#' \item{"SNP"}{a \code{vector} of \code{character} strings representing the
+#' SNV identifiers used in the PCA.}
+#' \item{"pca.unrel"}{a
+#' \code{\link[SNPRelate:snpgdsPCAClass]{SNPRelate::snpgdsPCAClass}} object.}
+#' \item{"snp.load"}{a
+#' \code{\link[SNPRelate:snpgdsPCASNPLoading ]{SNPRelate::snpgdsPCASNPLoading}}
+#' object.}
+#' }
 #'
 #' @examples
 #'
@@ -773,22 +788,26 @@ pruning1KG.Chr <- function(gds, method="corr",
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading
 #' @encoding UTF-8
 #' @export
-basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1) {
+basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 
     listPCA <- list()
 
+    ## Save the SNV list
     listPCA[["SNP"]] <- listSNP
 
+    ## Calculate the PCA and save the results
     listPCA[["pca.unrel"]] <- snpgdsPCA(gds, sample.id=listSample.Ref,
                                             snp.id=listSNP,
                                             num.thread=np,
                                             verbose=TRUE)
 
+    ## Calculate the SNV eigenvectors and save the results
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
                                                     gdsobj=gds,
                                                     num.thread=np,
                                                     verbose=TRUE)
 
+    ## Return a list with 3 entries
     return(listPCA)
 }
 

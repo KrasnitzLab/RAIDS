@@ -919,7 +919,7 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' @encoding UTF-8
 #' @keywords internal
 validateAdd1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
-                                       study.id) {
+                                        study.id) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")

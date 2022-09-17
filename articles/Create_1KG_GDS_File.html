@@ -283,14 +283,14 @@ the frequency in each super population.</p>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span><span class="st">`</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  chr<span class="ot">=</span><span class="er">$</span>(echo <span class="sc">$</span>FILECUR<span class="sc">|</span>perl <span class="sc">-</span>n <span class="sc">-</span>e <span class="st">'/ALL\.(chr[^\.]+)/;print $1'</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  python PATH2SCRIPT<span class="sc">/</span>extract1000gFreq.py <span class="sc">$</span>{FILECUR} matFreq.<span class="sc">$</span>{chr}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    chr<span class="ot">=</span><span class="er">$</span>(echo <span class="sc">$</span>FILECUR<span class="sc">|</span>perl <span class="sc">-</span>n <span class="sc">-</span>e <span class="st">'/ALL\.(chr[^\.]+)/;print $1'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    python PATH2SCRIPT<span class="sc">/</span>extract1000gFreq.py <span class="sc">$</span>{FILECUR} matFreq.<span class="sc">$</span>{chr}</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>done</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">seq 1 22</span><span class="st">`</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  cat matFreq.chr<span class="sc">$</span>{i}.txt <span class="sc">&gt;</span>matFreqSNV.txt</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  bzip2 matFreqSNV.txt</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    cat matFreq.chr<span class="sc">$</span>{i}.txt <span class="sc">&gt;</span>matFreqSNV.txt</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    bzip2 matFreqSNV.txt</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>done</span></code></pre></div>
 <p>The bulk SNP info file is called
 <strong>matFreqSNV.txt.bz2</strong>.</p>
@@ -324,8 +324,8 @@ the SNP file and generated the needed RDS files:</p>
 <span><span class="co">## Create a RDS with filter SNPs (fileFREQ parameter)</span></span>
 <span><span class="co">## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)</span></span>
 <span><span class="fu"><a href="../reference/generateMapSnvSel.html">generateMapSnvSel</a></span><span class="op">(</span>cutOff<span class="op">=</span><span class="fl">0.01</span>, fileSNV<span class="op">=</span><span class="va">fileSNV.v</span>,</span>
-<span>                      fileLSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
-<span>                      fileFREQ<span class="op">=</span><span class="va">fileFREQ.v</span><span class="op">)</span></span></code></pre></div>
+<span>                         fileLSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
+<span>                         fileFREQ<span class="op">=</span><span class="va">fileFREQ.v</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level3">
@@ -390,7 +390,7 @@ well as a RDS file with the kinship coefficient between the patients
 <span></span>
 <span><span class="co">## Identify the genetically related patients in 1KG</span></span>
 <span><span class="fu"><a href="../reference/identifyRelative.html">identifyRelative</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">fileGDS</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>                     fileIBD<span class="op">=</span><span class="va">fileIBD</span>, filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span>
+<span>                        fileIBD<span class="op">=</span><span class="va">fileIBD</span>, filePart<span class="op">=</span><span class="va">filePart</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close the 1KG GDS file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>

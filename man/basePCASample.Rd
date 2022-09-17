@@ -3,30 +3,45 @@
 \encoding{UTF-8}
 \name{basePCASample}
 \alias{basePCASample}
-\title{TODO}
+\title{Compute principal component axes (PCA) on SNV data using the
+reference samples}
 \usage{
-basePCASample(gds, listSample.Ref = NULL, listSNP = NULL, np = 1)
+basePCASample(gds, listSample.Ref = NULL, listSNP = NULL, np = 1L)
 }
 \arguments{
 \item{gds}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{listSample.Ref}{A \code{vector} of \code{string} corresponding to
-the sample.ids}
+\item{listSample.Ref}{a \code{vector} of \code{character} strings
+corresponding to
+the sample identifiers that will be used for the PCA.}
 
-\item{listSNP}{the list of snp.id keep}
+\item{listSNP}{a \code{vector} of \code{character} strings representing
+the SNV identifiers retained for the PCA.}
 
 \item{np}{a single positive \code{integer} representing the number of
-threads. Default: \code{1}.}
+threads. Default: \code{1L}.}
 }
 \value{
-TODO a \code{list}  with with two objects
-pca.unrel -> \code{snpgdsPCAClass}
-and a snp.load -> \code{snpgdsPCASNPLoading}
+a \code{list} with 3 entries:
+\itemize{
+\item{"SNP"}{a \code{vector} of \code{character} strings representing the
+SNV identifiers used in the PCA.}
+\item{"pca.unrel"}{a
+\code{\link[SNPRelate:snpgdsPCAClass]{SNPRelate::snpgdsPCAClass}} object.}
+\item{"snp.load"}{a
+\code{\link[SNPRelate:snpgdsPCASNPLoading ]{SNPRelate::snpgdsPCASNPLoading}}
+object.}
+}
 }
 \description{
-TODO
+The function runs a Principal Component Analysis (PCA) on
+the SNv genotype data. The function also loads SNVs into the PCA to
+calculate the SNV eigenvectors. Those 2 steps are done with the
+ \code{\link[SNPRelate]{snpgdsPCA}} and
+ \code{\link[SNPRelate]{snpgdsPCASNPLoading}}
+functions.
 }
 \examples{
 

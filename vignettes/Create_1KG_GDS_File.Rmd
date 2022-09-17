@@ -2,28 +2,28 @@
 title: "Formatting the information from 1000 Genomes (optional)"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
-  BiocStyle::html_document:
-    number_sections: yes
-    toc: true
-  pkgdown:
-    number_sections: yes
-    as_is: true
+    BiocStyle::html_document:
+        number_sections: yes
+        toc: true
+    pkgdown:
+        number_sections: yes
+        as_is: true
 urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-  %\VignetteIndexEntry{Formatting the information from 1000 Genomes (optional)}
-  %\VignettePackage{RAIDS}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{Formatting the information from 1000 Genomes (optional)}
+    %\VignettePackage{RAIDS}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
-  library(knitr)
-  library(RAIDS)
+    library(knitr)
+    library(RAIDS)
 })
 
 set.seed(121444)
@@ -250,14 +250,14 @@ frequency in each super population.
 
 for i in `ls PATHVCF/*shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz`
 do
-  chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
-  python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
+    chr=$(echo $FILECUR|perl -n -e '/ALL\.(chr[^\.]+)/;print $1')
+    python PATH2SCRIPT/extract1000gFreq.py ${FILECUR} matFreq.${chr}
 done
 
 for i in `seq 1 22`
 do
-  cat matFreq.chr${i}.txt >matFreqSNV.txt
-  bzip2 matFreqSNV.txt
+    cat matFreq.chr${i}.txt >matFreqSNV.txt
+    bzip2 matFreqSNV.txt
 done
 
 ```
@@ -297,8 +297,8 @@ fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 ## Create a RDS with filter SNPs (fileFREQ parameter)
 ## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
 generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
-                      fileLSNP=fileLSNP.v,
-                      fileFREQ=fileFREQ.v)
+                         fileLSNP=fileLSNP.v,
+                         fileFREQ=fileFREQ.v)
 ```
 
 
@@ -373,7 +373,7 @@ gds <- snpgdsOpen(fileGDS)
 
 ## Identify the genetically related patients in 1KG
 identifyRelative(gds=fileGDS, maf=0.05, thresh = 2^(-11/2),
-                     fileIBD=fileIBD, filePart=filePart)
+                        fileIBD=fileIBD, filePart=filePart)
 
 ## Close the 1KG GDS file
 closefn.gds(gds)

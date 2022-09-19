@@ -14,7 +14,7 @@ computePrunedPCARef(gds, listRef, np = 1L)
 GDS file.}
 
 \item{listRef}{a \code{vector} of string representing the
-identifiant of the samples in the reference (unrelated).}
+identifier of the samples in the reference (unrelated).}
 
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}

@@ -26,13 +26,15 @@ threads. Default: \code{1L}.}
 \value{
 a \code{list} with 3 entries:
 \itemize{
-\item{"SNP"}{a \code{vector} of \code{character} strings representing the
+\item{SNP}{ a \code{vector} of \code{character} strings representing the
 SNV identifiers used in the PCA.}
-\item{"pca.unrel"}{a
-\code{\link[SNPRelate:snpgdsPCAClass]{SNPRelate::snpgdsPCAClass}} object.}
-\item{"snp.load"}{a
-\code{\link[SNPRelate:snpgdsPCASNPLoading ]{SNPRelate::snpgdsPCASNPLoading}}
-object.}
+\item{pca.unrel}{ an object of class \code{snpgdsPCAClass} as generated
+by the
+\code{\link[SNPRelate:snpgdsPCA]{SNPRelate::snpgdsPCA}} function. }
+\item{snp.load}{ an object of class \code{snpgdsPCASNPLoading} as generated
+by the
+\code{\link[SNPRelate:snpgdsPCASNPLoading]{SNPRelate::snpgdsPCASNPLoading}}
+function. }
 }
 }
 \description{

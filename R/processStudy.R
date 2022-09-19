@@ -761,7 +761,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
 #' GDS file.
 #'
 #' @param listRef a \code{vector} of string representing the
-#' identifiant of the samples in the reference (unrelated).
+#' identifier of the samples in the reference (unrelated).
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
@@ -1913,7 +1913,7 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
 }
 
 
-#' @title TODO
+#' @title Run a k-nearest neighbors analysis on a referenc sample
 #'
 #' @description TODO
 #'

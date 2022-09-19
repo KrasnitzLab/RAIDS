@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNRefSample}
 \alias{computeKNNRefSample}
-\title{TODO}
+\title{Run a k-nearest neighbors analysis on a referenc sample}
 \usage{
 computeKNNRefSample(
   listEigenvector,

@@ -38,7 +38,7 @@ env:
   run_covr: 'false'
   run_pkgdown: 'true'
   has_RUnit: 'false'
-  cache-version: 'cache-v6'
+  cache-version: 'cache-v7'
 
 jobs:
   build-check:

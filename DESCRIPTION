@@ -9,7 +9,7 @@ Description: This package implements specialized algorithms that enable
     following publication: Belleau, P et al. Accurate and robust inference of 
     genetic ancestry from cancer-derived molecular data across 
     genomic platforms. bioRxiv 2022.02.01.478737.
-Version: 0.50.0
+Version: 0.50.1
 Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("cre", "aut"), comment = c(ORCID = "0000-0002-0802-1071")),
     person("Astrid", "Deschênes", email="adeschen@hotmail.com",

@@ -279,6 +279,8 @@ metastasis, normal, etc..).
 - **Diagnosis**: The diagnosis associated to the patient.
 - **Source**: The source of the sample (example: TCGA-BRCA).
 
+The row names of the *data.frame* must be the **Name.ID**.
+
 This file is referred as the PED RDS file (PED for pedigree). Alternatively, 
 the PED information can be saved in another type of file (CVS, etc..) as long 
 as the data.frame information can be regenerated in R (with _read.csv()_ or 
@@ -302,6 +304,11 @@ pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                     Diagnosis = rep("Cancer", 3),
                     Source = rep("Databank B", 3),
                     stringsAsFactors = FALSE)
+
+##############################################################
+## The rownames must correspond to the name of the samples
+##############################################################
+rownames(pedDF) <- pedDF$Name.ID
 
 ##############################################################
 ## Save the data frame into a RDS file

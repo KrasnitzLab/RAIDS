@@ -559,6 +559,17 @@ chrInfo[23] <- length(Hsapiens[["chrX"]])
 chrInfo[24] <- length(Hsapiens[["chrY"]])
 chrInfo[25] <- length(Hsapiens[["chrM"]])
 
+##############################################################
+## The function must be called for each sample
+## This example only uses one sample
+##############################################################
+filePED <- FILE_PED
+ped <- readRDS(filePED)
+listSamples <- ped[, "Name.ID"]
+
+## The first sample is used in the demo
+sampleName <- listSamples[1]
+
 ###################################################################
 ## The GDS Sample file is required
 ###################################################################
@@ -589,6 +600,8 @@ estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
 closefn.gds(gdsSample)
 closefn.gds(gds)
 ```
+
+This step must be run for each sample present in the study.
 
 <br>
 

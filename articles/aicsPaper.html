@@ -603,6 +603,17 @@ sample at the time.</p>
 <span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">24</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrY"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">25</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrM"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">##############################################################</span></span>
+<span><span class="co">## The function must be called for each sample</span></span>
+<span><span class="co">## This example only uses one sample</span></span>
+<span><span class="co">##############################################################</span></span>
+<span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="va">FILE_PED</span></span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
+<span><span class="va">listSamples</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">[</span>, <span class="st">"Name.ID"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## The first sample is used in the demo</span></span>
+<span><span class="va">sampleName</span> <span class="op">&lt;-</span> <span class="va">listSamples</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span></span>
 <span><span class="co">###################################################################</span></span>
 <span><span class="co">## The GDS Sample file is required</span></span>
 <span><span class="co">###################################################################</span></span>
@@ -632,6 +643,7 @@ sample at the time.</p>
 <span><span class="co">## Close both GDS files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
+<p>This step must be run for each sample present in the study.</p>
 <p><br></p>
 </div>
 </div>

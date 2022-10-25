@@ -482,7 +482,7 @@ for(i in seq_len(length(listSamples))) {
     ## into the GDS Sample file
     ## The genotype information is extracted from the 1KG GDS file
     add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
-                        sampleCurrent = listSamples[1], 
+                        sampleCurrent = listSamples[i], 
                         study.id = studyDF$study.id))
 
     ## Add annotation from the 1KG GDS file to the GDS Sample file

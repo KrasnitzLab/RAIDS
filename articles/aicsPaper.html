@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.1<br><strong>Compiled date</strong>: 2022-10-21<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.1<br><strong>Compiled date</strong>: 2022-10-25<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -527,7 +527,7 @@ file as input. It also requires the path to the GDS Sample files.</p>
 <span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    <span class="do">## into the GDS Sample file</span></span>
 <span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    <span class="do">## The genotype information is extracted from the 1KG GDS file</span></span>
 <span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add1KG2SampleGDS</span>(<span class="at">gds =</span> gds_1KG, <span class="at">gdsSampleFile =</span> file.GDSSample, </span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sampleCurrent =</span> listSamples[<span class="dv">1</span>], </span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sampleCurrent =</span> listSamples[i], </span>
 <span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>                        <span class="at">study.id =</span> studyDF<span class="sc">$</span>study.id))</span>
 <span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add annotation from the 1KG GDS file to the GDS Sample file</span></span>
@@ -1064,7 +1064,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [23] blob_1.2.3                  rappdirs_0.3.3             </span></span>
 <span><span class="co">##  [25] textshaping_0.3.6           xfun_0.34                  </span></span>
 <span><span class="co">##  [27] dplyr_1.0.10                crayon_1.5.2               </span></span>
-<span><span class="co">##  [29] RCurl_1.98-1.9              jsonlite_1.8.2             </span></span>
+<span><span class="co">##  [29] RCurl_1.98-1.9              jsonlite_1.8.3             </span></span>
 <span><span class="co">##  [31] survival_3.4-0              zoo_1.8-11                 </span></span>
 <span><span class="co">##  [33] glue_1.6.2                  zlibbioc_1.42.0            </span></span>
 <span><span class="co">##  [35] XVector_0.36.0              MatrixModels_0.5-1         </span></span>
@@ -1097,7 +1097,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [89] stringi_1.7.8               highr_0.9                  </span></span>
 <span><span class="co">##  [91] GenomicFeatures_1.48.4      desc_1.4.2                 </span></span>
 <span><span class="co">##  [93] lattice_0.20-45             ProtGenerics_1.28.0        </span></span>
-<span><span class="co">##  [95] Matrix_1.5-1                vctrs_0.4.2                </span></span>
+<span><span class="co">##  [95] Matrix_1.5-1                vctrs_0.5.0                </span></span>
 <span><span class="co">##  [97] pillar_1.8.1                lifecycle_1.0.3            </span></span>
 <span><span class="co">##  [99] BiocManager_1.30.18         lmtest_0.9-40              </span></span>
 <span><span class="co">## [101] jquerylib_0.1.4             data.table_1.14.4          </span></span>
@@ -1110,7 +1110,7 @@ which this document was compiled:</p>
 <span><span class="co">## [115] rjson_0.2.21                withr_2.5.0                </span></span>
 <span><span class="co">## [117] GenomicAlignments_1.32.1    Rsamtools_2.12.0           </span></span>
 <span><span class="co">## [119] S4Vectors_0.34.0            GenomeInfoDbData_1.2.8     </span></span>
-<span><span class="co">## [121] mgcv_1.8-40                 parallel_4.2.1             </span></span>
+<span><span class="co">## [121] mgcv_1.8-41                 parallel_4.2.1             </span></span>
 <span><span class="co">## [123] hms_1.1.2                   grid_4.2.1                 </span></span>
 <span><span class="co">## [125] tidyr_1.2.1                 class_7.3-20               </span></span>
 <span><span class="co">## [127] rmarkdown_2.17              MatrixGenerics_1.8.1       </span></span>

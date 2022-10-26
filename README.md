@@ -71,8 +71,6 @@ For more information on Apache-2.0 License see
 
 ## Bugs/Feature requests ##
 
-If you have any bugs or feature requests, 
-[let us know](https://github.com/KrasnitzLab/RAIDS/issues). 
-
+Please [contact us](https://github.com/KrasnitzLab/RAIDS/issues) for bug fixes or with feature requests. 
 
 Thanks!

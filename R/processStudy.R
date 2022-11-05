@@ -1454,7 +1454,7 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
                                         study.annot$case.id %in% sampleRef),]
 
 
-    ## SNP loadings in principal component analysis
+    ## SNP loading in principal component analysis
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
                                                     gdsobj=gdsSample,
                                                     num.thread=1, verbose=TRUE)
@@ -1972,14 +1972,9 @@ computeKNNRefSample <- function(listEigenvector,
                             stringsAsFactors=FALSE)
     resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
 
-    listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
-
     #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
     eigenvect <- rbind(listEigenvector$eigenvector.ref,
                             listEigenvector$eigenvector)
-
-    # rownames(eigenvect) <- c(sample.ref,
-    #                          listEigenvector$sample.id)
 
     totR <- 1
     for(pcaD in pcaList) {
@@ -1997,7 +1992,7 @@ computeKNNRefSample <- function(listEigenvector,
                     k=kList[kV],
                     prob=FALSE)
 
-            resMat[totR, fieldPopInfAnc] <- listSuperPop[as.integer(y_pred)]
+            resMat[totR, fieldPopInfAnc] <- listCatPop[as.integer(y_pred)]
 
             totR <- totR + 1
         } # end k

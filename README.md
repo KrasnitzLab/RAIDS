@@ -32,7 +32,7 @@ David A. Tuveson and
 If you use the **_RAIDS_** package for a publication, we would ask you to cite 
 the following:
 
->  Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737 
+>  Belleau P, Deschênes A, Chambwe N, Tuveson DA, Krasnitz A. Genetic ancestry inference from cancer-derived molecular data across genomic and transcriptomic platforms. Cancer Res. 2022 Nov 9:CAN-22-0682. doi: 10.1158/0008-5472.CAN-22-0682. Epub ahead of print. PMID: 36351074.
 
 
 ## Installation ##

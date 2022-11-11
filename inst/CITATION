@@ -1,11 +1,13 @@
 
 ## Paper
 bibentry(bibtype = "Article",
-         title = "Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms",
+         title = "Genetic ancestry inference from cancer-derived molecular data across genomic and transcriptomic platforms",
          author = c(person(c("Pascal"), "Belleau"),
                     person(c("Astrid"), "Deschênes"),
+                    person(c("Nyasha"), "Chambwe"),
                     person(c("David", "A"), "Tuveson"),
                     person(c("Alexander"), "Krasnitz")),
-         year = "2022", journal = "bioRxiv",
-         doi = "10.1101/2022.02.01.478737",
-         textVersion="Belleau P, Deschênes A, Tuveson DA, Krasnitz A. Accurate and robust inference of genetic ancestry from cancer-derived molecular data across genomic platforms. bioRxiv 2022.02.01.478737; doi: https://doi.org/10.1101/2022.02.01.478737")
+         year = "2022", month = "nov", journal = "Cancer Research",
+         doi = "10.1158/0008-5472.CAN-22-0682", issn = "0008-5472",
+         textVersion="Belleau P, Deschênes A, Chambwe N, Tuveson DA, Krasnitz A. Genetic ancestry inference from cancer-derived molecular data across genomic and transcriptomic platforms. Cancer Res. 2022 Nov 9:CAN-22-0682. Epub ahead of print. PMID: 36351074.; doi: https://doi.org/10.1158/0008-5472.CAN-22-0682")
+

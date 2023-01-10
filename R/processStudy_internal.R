@@ -1130,7 +1130,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
             y_pred <- knn(train=pcaND[rownames(eigenvect)[-1*nrow(eigenvect)],],
                         test=pcaND[rownames(eigenvect)[nrow(eigenvect)],,
                                                     drop=FALSE],
-                        cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
+                    cl=factor(spRef[rownames(eigenvect)[-1*nrow(eigenvect)]],
                                 levels=listSuperPop, labels=listSuperPop),
                         k=kList[kV],
                         prob=FALSE)

@@ -1,8 +1,8 @@
 pandoc: '2.18'
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   Create_1KG_GDS_File: Create_1KG_GDS_File.html
   aicsPaper: aicsPaper.html
-last_built: 2022-11-11T05:53Z
+last_built: 2023-01-10T21:31Z
 

@@ -1116,8 +1116,8 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
                             listEigenvector$eigenvector)
 
     rownames(eigenvect) <- c(sample.ref[which(sample.ref !=
-                                                  study.annot$case.id[1])],
-                                listEigenvector$sample.id)
+                                            study.annot$case.id[1])],
+                                        listEigenvector$sample.id)
 
     totR <- 1
     for(pcaD in pcaList) {

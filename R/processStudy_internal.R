@@ -1028,7 +1028,7 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
     ## Validate that missing.rate is a single number or NaN
     if(!(isSingleNumber(missing.rate) || is.nan(missing.rate))) {
         stop("The \'missing.rate\' parameter must be a single integer ",
-             "or \'NaN\'.")
+                "or \'NaN\'.")
     }
 
     sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]
@@ -1087,8 +1087,8 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
 #' @encoding UTF-8
 #' @keywords internal
 computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
-                                         study.annot, spRef, kList=seq_len(15),
-                                         pcaList=seq(2, 15, 1)) {
+                                    study.annot, spRef, kList=seq_len(15),
+                                    pcaList=seq(2, 15, 1)) {
 
     ## The number of rows in study.annot must be one.
     if(nrow(study.annot) != 1) {
@@ -1103,21 +1103,21 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
     }
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
-                                       length(pcaList) * length(kList)),
-                         D=rep(0,length(pcaList) * length(kList)),
-                         K=rep(0,length(pcaList) * length(kList)),
-                         SuperPop=character(length(pcaList) * length(kList)),
-                         stringsAsFactors=FALSE)
+                                            length(pcaList) * length(kList)),
+                            D=rep(0,length(pcaList) * length(kList)),
+                            K=rep(0,length(pcaList) * length(kList)),
+                            SuperPop=character(length(pcaList) * length(kList)),
+                            stringsAsFactors=FALSE)
 
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
 
     #curPCA <- listPCA.Samples[[sample.id[sample.pos]]]
     eigenvect <- rbind(listEigenvector$eigenvector.ref,
-                       listEigenvector$eigenvector)
+                            listEigenvector$eigenvector)
 
     rownames(eigenvect) <- c(sample.ref[which(sample.ref !=
                                                   study.annot$case.id[1])],
-                             listEigenvector$sample.id)
+                                listEigenvector$sample.id)
 
     totR <- 1
     for(pcaD in pcaList) {
@@ -1288,7 +1288,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
     for(i in seq_len(length(listSamples)) ){
 
         gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS,
-                                          paste0(listSamples[i], ".gds")))
+                                            paste0(listSamples[i], ".gds")))
         study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
         if(length(which(study.annot$study.id == "Ref.1KG")) == 0) {
@@ -1371,7 +1371,7 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
     sample.Unrel <- sample.ref[which(sample.ref != study.annot$case.id[1])]
 
     g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
-                   start=c(1, sample.pos), count=c(-1, 1))
+                        start=c(1, sample.pos), count=c(-1, 1))
 
     listPCA <- list()
 

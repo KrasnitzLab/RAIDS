@@ -1,13 +1,21 @@
 
 ## Paper
 bibentry(bibtype = "Article",
-         title = "Genetic ancestry inference from cancer-derived molecular data across genomic and transcriptomic platforms",
-         author = c(person(c("Pascal"), "Belleau"),
+    author = c(person(c("Pascal"), "Belleau"),
                     person(c("Astrid"), "Deschênes"),
                     person(c("Nyasha"), "Chambwe"),
                     person(c("David", "A"), "Tuveson"),
                     person(c("Alexander"), "Krasnitz")),
-         year = "2022", month = "nov", journal = "Cancer Research",
-         doi = "10.1158/0008-5472.CAN-22-0682", issn = "0008-5472",
-         textVersion="Belleau P, Deschênes A, Chambwe N, Tuveson DA, Krasnitz A. Genetic ancestry inference from cancer-derived molecular data across genomic and transcriptomic platforms. Cancer Res. 2022 Nov 9:CAN-22-0682. Epub ahead of print. PMID: 36351074.; doi: https://doi.org/10.1158/0008-5472.CAN-22-0682")
-
+    title = "Genetic Ancestry Inference from Cancer-Derived Molecular Data across Genomic and Transcriptomic Platforms",
+    journal = "Cancer Research",
+    volume = "83",
+    number = "1",
+    pages = {49-58},
+    year = "2023",
+    month = "01",
+    issn = "0008-5472",
+    doi = "10.1158/0008-5472.CAN-22-0682",
+    url = "https://doi.org/10.1158/0008-5472.CAN-22-0682",
+    eprint = "https://aacrjournals.org/cancerres/article-pdf/83/1/49/3234487/49.pdf",
+    textVersion="Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson, Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1 January 2023; 83 (1): 49–58. https://doi.org/10.1158/0008-5472.CAN-22-0682"
+)

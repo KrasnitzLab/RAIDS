@@ -65,7 +65,7 @@ as an extra column to the final 'data.frame'."><!-- mathjax --><script src="http
     <div class="page-header">
     <h1>Extract the sample information from the 1KG GDS file for a list
 of profiles associated to a specific study in the GDS Sample file</h1>
-    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/synthetic.R" class="external-link"><code>R/synthetic.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/synthetic_internal.R" class="external-link"><code>R/synthetic_internal.R</code></a></small>
     <div class="hidden name"><code>prepPedSynthetic1KG.Rd</code></div>
     </div>
 
@@ -149,7 +149,7 @@ as an extra column to the final 'data.frame'. In that situation, the
 <span class="r-in"><span><span class="co">## returned data.frame</span></span></span>
 <span class="r-in"><span><span class="co">## This function enables to extract the super-population associated to the</span></span></span>
 <span class="r-in"><span><span class="co">## 1KG samples that has been used to create the synthetic profiles</span></span></span>
-<span class="r-in"><span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
 <span class="r-in"><span>    study.id<span class="op">=</span><span class="st">"TCGA.Synthetic"</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   data.id case.id sample.type diagnosis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> HG00101.Synthetic.01 HG00101.Synthetic.01 HG00101   Synthetic         C</span>

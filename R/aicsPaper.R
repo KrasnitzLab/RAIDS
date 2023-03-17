@@ -11,10 +11,12 @@
 #' following publication:
 #'
 #' @references
-#' Belleau, P, Deschênes A, Tuveson DA, Krasnitz A. Accurate and robust
-#' inference of genetic ancestry from cancer-derived molecular data across
-#' genomic platforms. bioRxiv 2022.02.01.478737
-#' [link to bioRxiv](https://doi.org/10.1101/2022.02.01.478737)
+#' Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
+#' Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
+#' Molecular Data across Genomic and Transcriptomic Platforms.
+#' Cancer Res 1 January 2023; 83 (1): 49–58.
+#' https://doi.org/10.1158/0008-5472.CAN-22-0682
+#' [link to paper](https://doi.org/10.1158/0008-5472.CAN-22-0682)
 #'
 #'
 #' @docType package

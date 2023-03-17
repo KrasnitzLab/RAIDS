@@ -196,7 +196,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' ## returned data.frame
 #' ## This function enables to extract the super-population associated to the
 #' ## 1KG samples that has been used to create the synthetic profiles
-#' prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
+#' RAIDS:::prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
 #'     study.id="TCGA.Synthetic", popName="superPop")
 #'
 #' ## The GDS files must be closed

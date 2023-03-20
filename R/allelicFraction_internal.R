@@ -86,3 +86,369 @@ validateGetTableSNV <- function(gds, gdsSample, sampleCurrent, study.id,
     ## Successful
     return(0L)
 }
+
+
+#' @title Estimate the allelic fraction of the pruned SNVs for a specific
+#' DNA-seq sample
+#'
+#' @description The function creates a \code{data.frame} containing the
+#' allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
+#'
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
+#'
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier as used in \code{\link{pruningSample}} function.
+#'
+#' @param study.id a \code{character} string corresponding to the name of
+#' the study as
+#' used in \code{\link{pruningSample}} function.
+#'
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes.
+#'
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage. Default: \code{10L}.
+#'
+#' @param minProb a single \code{numeric} between \code{0} and \code{1}
+#' representing the probability that the calculated genotype call is correct.
+#' Default: \code{0.999}.
+#'
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.001}.
+#'
+#' @param cutOffLOH a single \code{numeric} representing the cutoff, in log,
+#' for the homozygote score to assign a region as LOH.
+#' Default: \code{-5}.
+#'
+#' @param cutOffHomoScore a single \code{numeric} representing the cutoff, in
+#' log, that the SNVs in a block are called homozygote by error.
+#' Default: \code{-3}.
+#'
+#' @param wAR a single positive \code{integer} representing the size-1 of
+#' the window used to compute an empty box. Default: \code{9L}.
+#'
+#' @param verbose a \code{logicial} indicating if the function should print
+#' message when running. Default: \code{FALSE}.
+#'
+#' @return a \code{data.frame} with lap for the pruned SNV dataset with
+#' coverage > \code{minCov}. TODO
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
+                                chrInfo, minCov=10L, minProb=0.999,
+                                eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+                                wAR=9L, verbose=FALSE) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The minCov parameter must be a single positive integer
+    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
+        stop("The \'minCov\' must be a single numeric positive value")
+    }
+
+    ## The minProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The eProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
+        stop("The \'eProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The wAR parameter must be a single positive numeric superior to 1
+    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
+        stop("The \'wAR\' must be a single numeric positive value.")
+    }
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose) && length(verbose) == 1)) {
+        stop("The \'verbose\' parameters must be a single logical value ",
+             "(TRUE or FALSE).")
+    }
+
+    ## Extract the genotype information for a SNV dataset using
+    ## the GDS Sample file and the 1KG GDS file
+    snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
+                           minCov, minProb, eProb)
+
+    snp.pos$lap <- rep(-1, nrow(snp.pos))
+    snp.pos$LOH <- rep(0, nrow(snp.pos))
+    snp.pos$imbAR <- rep(-1, nrow(snp.pos))
+
+    homoBlock <- list()
+
+    for(chr in unique(snp.pos$snp.chr)) {
+
+        if (verbose) {
+            message("chr ", chr)
+            message("Step 1 ", Sys.time())
+        }
+
+        #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
+        listChr <- which(snp.pos$snp.chr == chr)
+        # snp.pos.chr <- snp.pos[listChr,]
+
+
+        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
+                                                   snp.pos=snp.pos[listChr,], chr=chr)
+
+        if (verbose) { message("Step 2 ", Sys.time()) }
+
+        homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
+                                               cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
+
+        z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
+                     snp.pos[listChr, "snp.pos"]),
+                   c(rep(0,  2* nrow(homoBlock[[chr]])),
+                     rep(1, length(listChr))),
+                   c(homoBlock[[chr]]$LOH,
+                     -1 * homoBlock[[chr]]$LOH,
+                     rep(0, length(listChr)) ),
+                   c(rep(0, 2 * nrow(homoBlock[[chr]])),
+                     seq_len(length(listChr))))
+
+        z <- z[order(z[,1], z[,2]), ]
+        pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
+        snp.pos[listChr[pos], "lap"] <- 0
+        snp.pos[listChr[pos], "LOH"] <- 1
+
+        if (verbose) { message("Step 3 ", Sys.time()) }
+
+        snp.pos[listChr, "imbAR"] <-
+            computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
+                                    wAR=10, cutOffEmptyBox=-3)
+
+        if (verbose) { message("Step 4 ", Sys.time()) }
+
+        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
+                                         w=10, cutOff=-3)
+
+        if (verbose) { message("Step 5 ", Sys.time()) }
+
+        if(! is.null(blockAF)) {
+            for(i in seq_len(nrow(blockAF))) {
+                snp.pos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                    blockAF[i, 3]
+            }
+        }
+    }
+
+    snp.pos[which(snp.pos[, "lap"] == -1), "lap"] <- 0.5
+
+    return(snp.pos)
+}
+
+
+#' @title Estimate the allelic fraction of the pruned SNVs for a specific
+#' RNA-seq sample
+#'
+#' @description The function creates a \code{data.frame} containing the
+#' allelic fraction for the pruned SNV dataset specific to a RNA-seq sample.
+#' TODO
+#'
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the 1KG GDS file.
+#'
+#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the GDS Sample file.
+#'
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#'
+#' @param sampleCurrent a \code{character} string corresponding to
+#' the sample identifier as used in \code{\link{pruningSample}} function.
+#'
+#' @param study.id a \code{character} string corresponding to the name of
+#' the study as
+#' used in \code{\link{pruningSample}} function.
+#'
+#' @param block.id a \code{character} corresponding to the field gene block
+#' in the GDS \code{gdsRefAnnot} to use split by gene.
+#'
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes.
+#'
+#' @param minCov a single positive \code{integer} representing the minimum
+#' required coverage. Default: \code{10L}.
+#'
+#' @param minProb a single \code{numeric} between \code{0} and \code{1}
+#' representing the probability that the calculated genotype call is correct.
+#' Default: \code{0.999}.
+#'
+#' @param eProb a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.001}.
+#'
+#' @param cutOffLOH a single log of the score to be LOH TODO.
+#' Default: \code{-5}.
+#'
+#' @param cutOffAR a single \code{numeric} representing the cutoff, in
+#' log score, to tag SNVs located in a gene has having an allelic fraction
+#' different 0.5
+#' Default: \code{3}.
+#'
+#' @param verbose a \code{logicial} indicating if the function should print
+#' message when running. Default: \code{FALSE}.
+#'
+#' @return a \code{data.frame} with lap for the pruned SNV dataset with
+#' coverage > \code{minCov}. TODO
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn ls.gdsn
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
+                                      sampleCurrent, study.id, block.id, chrInfo, minCov=10L,
+                                      minProb=0.999, eProb=0.001, cutOffLOH=-5,
+                                      cutOffAR=3, verbose=FALSE) {
+
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsSample must be an object of class "gds.class"
+    if (!inherits(gdsSample, "gds.class")) {
+        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The gdsRefAnnot must be an object of class "gds.class"
+    if (!inherits(gdsRefAnnot, "gds.class")) {
+        stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
+    }
+
+    ## The sampleCurrent parameter must be a single character string
+    if (!(is.character(sampleCurrent) && length(sampleCurrent) == 1)) {
+        stop("The \'sampleCurrent\' must be a single character string.")
+    }
+
+    ## The study.id parameter must be a single character string
+    if (!(is.character(study.id) && length(study.id) == 1)) {
+        stop("The \'study.id\' must be a single character string.")
+    }
+
+    ## The block.id parameter must be a single character string
+    if (!(is.character(block.id) && length(block.id) == 1)) {
+        stop("The \'block.id\' must be a single character string.")
+    }
+
+    ## The minCov parameter must be a single positive integer
+    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
+        stop("The \'minCov\' must be a single numeric positive value.")
+    }
+
+    ## The minProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
+        stop("The \'minProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The eProb parameter must be a single positive numeric between 0 and 1
+    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
+        stop("The \'eProb\' must be a single numeric positive ",
+             "value between 0 and 1.")
+    }
+
+    ## The cutOffAR parameter must be a single numeric
+    if (!(isSingleNumber(cutOffAR))) {
+        stop("The \'cutOffAR\' must be a single numeric value.")
+    }
+
+    ## The verbose parameter must be a logical
+    if (!(is.logical(verbose) && length(verbose) == 1)) {
+        stop("The \'verbose\' parameters must be a single logical value ",
+             "(TRUE or FALSE).")
+    }
+
+    ## Extract the genotype information for a SNV dataset using
+    ## the GDS Sample file and the 1KG GDS file
+    snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
+                           minCov, minProb, eProb)
+    # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
+    snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
+
+    # Get the block structure base on genes from gdsRefAnnot
+    snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index,
+                                       block.id)
+
+    snp.pos$phase <- rep(3, nrow(snp.pos))
+    if ("phase" %in% ls.gdsn(node=gdsSample)) {
+        snp.pos$phase <- read.gdsn(index.gdsn(gdsSample,
+                                              "phase"))[snp.pos$snp.index]
+    }
+    snp.pos$lap <- rep(-1, nrow(snp.pos))
+    snp.pos$LOH <- rep(0, nrow(snp.pos))
+    snp.pos$imbAR <- rep(-1, nrow(snp.pos))
+    snp.pos$freq <- read.gdsn(index.gdsn(gds, "snp.AF"))[snp.pos$snp.index]
+    # for each chromosome
+    listBlock <- list()
+    for(chr in unique(snp.pos$snp.chr)) {
+
+        if (verbose) {
+            message("chr ", chr)
+            message("Step 1 ", Sys.time())
+        }
+
+        #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
+        listChr <- which(snp.pos$snp.chr == chr)
+        # snp.pos.chr <- snp.pos[listChr,]
+
+        blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
+        # LOH
+        blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
+        blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
+                                                                 >= cutOffAR]
+        blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
+
+        listBlock[[chr]] <- blockAF
+
+        if (verbose) {
+            message("Step 1 done ", Sys.time())
+        }
+    }
+
+    blockAF <- do.call(rbind, listBlock)
+    listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
+    blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
+                                          length(listMissing),
+                                          replace=TRUE)
+
+    for(b in seq_len(nrow(blockAF))) {
+        snp.pos$lap[snp.pos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
+    }
+
+    return(snp.pos)
+}

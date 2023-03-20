@@ -322,7 +322,7 @@ test_that("computeAllelicFractionDNA() must return error when gds is character s
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionDNA(gds="test.gds", gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds="test.gds", gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -340,7 +340,7 @@ test_that("computeAllelicFractionDNA() must return error when gdsSample is chara
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample="toto.gds",
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample="toto.gds",
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -358,7 +358,7 @@ test_that("computeAllelicFractionDNA() must return error when minCov is characte
 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov="10", minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -376,7 +376,7 @@ test_that("computeAllelicFractionDNA() must return error when minCov is vextor o
 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=c(10, 11), minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -394,7 +394,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is character s
 
     error_message <- "The \'wAR\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
@@ -412,7 +412,7 @@ test_that("computeAllelicFractionDNA() must return error when wAR is vector of n
 
     error_message <- "The \'wAR\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
                             sampleCurrent="test", study.id="test",
                             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
                             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
@@ -432,7 +432,7 @@ test_that("computeAllelicFractionDNA() must return error when minProb is vector 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=c(0.22, 0.999),
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -451,7 +451,7 @@ test_that("computeAllelicFractionDNA() must return error when minProb is charact
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb="0.2",
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -470,7 +470,7 @@ test_that("computeAllelicFractionDNA() must return error when minProb is negativ
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=-0.11,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -489,7 +489,7 @@ test_that("computeAllelicFractionDNA() must return error when minProb is negativ
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=1.001,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -508,7 +508,7 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
             sampleCurrent="test", study.id="test",
             chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.901,
             eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -527,7 +527,7 @@ test_that("computeAllelicFractionDNA() must return error when eProb is vector of
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.999,
         eProb=c(0.22, 0.999), cutOffLOH=-5, cutOffHomoScore=-3, wAR=10,
@@ -546,7 +546,7 @@ test_that("computeAllelicFractionDNA() must return error when eProb is character
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test", chrInfo=c("chr1", "chr2"),
         minCov=10, minProb=0.2, eProb="0.001", cutOffLOH=-5,
         cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -565,7 +565,7 @@ test_that("computeAllelicFractionDNA() must return error when eProb is negative 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test",
         chrInfo=c("chr1", "chr2"), minCov=10, minProb=0.11,
         eProb=-0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=10, verbose=FALSE),
@@ -584,7 +584,7 @@ test_that("computeAllelicFractionDNA() must return error when verbose is numeric
     error_message <- paste0("The \'verbose\' parameters must be a ",
                                 "single logical value (TRUE or FALSE).")
 
-    expect_error(computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionDNA(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="test", study.id="test", chrInfo=c("chr1", "chr2"),
         minCov=10, minProb=0.11,  eProb=0.001, cutOffLOH=-5,
         cutOffHomoScore=-3, wAR=10, verbose=22), error_message, fixed=TRUE)
@@ -603,7 +603,7 @@ test_that("computeAllelicFractionRNA() must return error when gds is character s
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionRNA(gds="test.gds", gdsSample=NULL,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds="test.gds", gdsSample=NULL,
         gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -620,7 +620,7 @@ test_that("computeAllelicFractionRNA() must return error when gds is character s
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
         gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -637,7 +637,7 @@ test_that("computeAllelicFractionRNA() must return error when gdsSample is chara
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample="toto.gds",
         gdsRefAnnot=NULL, sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -654,7 +654,7 @@ test_that("computeAllelicFractionRNA() must return error when gdsRefAnnot is cha
 
     error_message <- "The \'gdsRefAnnot\' must be an object of class \'gds.class\'."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot="titi.gds", sampleCurrent=NULL, study.id="TCGA", block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -671,7 +671,7 @@ test_that("computeAllelicFractionRNA() must return error when sampleCurrent is n
 
     error_message <- "The \'sampleCurrent\' must be a single character string."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent=1, study.id="TCGA", block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -688,7 +688,7 @@ test_that("computeAllelicFractionRNA() must return error when study.id is numeri
 
     error_message <- "The \'study.id\' must be a single character string."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id=33, block.id=NULL,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -705,7 +705,7 @@ test_that("computeAllelicFractionRNA() must return error when block.id is numeri
 
     error_message <- "The \'block.id\' must be a single character string."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=33,
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -722,7 +722,7 @@ test_that("computeAllelicFractionRNA() must return error when block.id is vector
 
     error_message <- "The \'block.id\' must be a single character string."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=c("1", "2"),
         chrInfo=NULL, minCov=10L,minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -739,7 +739,7 @@ test_that("computeAllelicFractionRNA() must return error when block.id is vector
 
     error_message <- "The \'block.id\' must be a single character string."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id=c("1", "2"),
         chrInfo=NULL, minCov=10L, minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -756,7 +756,7 @@ test_that("computeAllelicFractionRNA() must return error when minCov is a charac
 
     error_message <- "The \'minCov\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov="10", minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -773,7 +773,7 @@ test_that("computeAllelicFractionRNA() must return error when minCov is a vector
 
     error_message <- "The \'minCov\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=c(10, 12), minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -790,7 +790,7 @@ test_that("computeAllelicFractionRNA() must return error when minCov is negative
 
     error_message <- "The \'minCov\' must be a single numeric positive value."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=-2, minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -808,7 +808,7 @@ test_that("computeAllelicFractionRNA() must return error when minProb is a chara
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb="CANADA", eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -826,7 +826,7 @@ test_that("computeAllelicFractionRNA() must return error when minProb is a negat
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=-0.2, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -844,7 +844,7 @@ test_that("computeAllelicFractionRNA() must return error when minProb is superio
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
             gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
             chrInfo=NULL, minCov=2, minProb=1.1, eProb=0.001, cutOffLOH=-5,
             cutOffAR=3, verbose=FALSE), error_message)
@@ -862,7 +862,7 @@ test_that("computeAllelicFractionRNA() must return error when minProb is vector 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
             chrInfo=NULL, minCov=2, minProb=c(0.1, 0.2), eProb=0.001, cutOffLOH=-5,
             cutOffAR=3, verbose=FALSE), error_message)
@@ -880,7 +880,7 @@ test_that("computeAllelicFractionRNA() must return error when eProb is vector of
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=c(0.001, 0.2), cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -898,7 +898,7 @@ test_that("computeAllelicFractionRNA() must return error when eProb is character
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb="0.001", cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -916,7 +916,7 @@ test_that("computeAllelicFractionRNA() must return error when eProb is negative 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=-0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -934,7 +934,7 @@ test_that("computeAllelicFractionRNA() must return error when eProb is numeric s
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=1.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE), error_message)
@@ -951,7 +951,7 @@ test_that("computeAllelicFractionRNA() must return cutOffAR is character string"
 
     error_message <- "The \'cutOffAR\' must be a single numeric value."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
         cutOffAR="3", verbose=FALSE), error_message)
@@ -968,7 +968,7 @@ test_that("computeAllelicFractionRNA() must return cutOffAR is vector of numeric
 
     error_message <- "The \'cutOffAR\' must be a single numeric value."
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
         cutOffAR=c(2,3), verbose=FALSE), error_message)
@@ -986,7 +986,7 @@ test_that("computeAllelicFractionRNA() must return verbose is numerical value", 
     error_message <- paste0("The \'verbose\' parameters must be a single logical value ",
                             "(TRUE or FALSE).")
 
-    expect_error(computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::computeAllelicFractionRNA(gds=gdsF, gdsSample=gdsF,
         gdsRefAnnot=gdsF, sampleCurrent="sample01", study.id="TCGA", block.id="1",
         chrInfo=NULL, minCov=2, minProb=0.1, eProb=0.001, cutOffLOH=-5,
         cutOffAR=2, verbose=33), error_message, fixed=TRUE)

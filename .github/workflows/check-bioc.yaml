@@ -142,7 +142,7 @@ jobs:
         run: |
           ## Edit below if you have any Windows system dependencies
           message(paste('****', Sys.time(), 'installing XML ****'))
-          remotes::install_cran("XML")
+          remotes::install_cran("XML", build=FALSE)
         shell: Rscript {0}
 
       - name: Install BiocManager

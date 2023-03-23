@@ -1007,30 +1007,6 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
                                     algorithm="exact", eigen.cnt=32L,
                                     missing.rate=0.025) {
 
-    ## The gdsSample must be an object of class "gds.class"
-    validateGDSClass(gdsSample, "gdsSample")
-
-    ## The listRM must be character string
-    if (!(is.character(listRM) && length(listRM) > 0)) {
-        stop("The \'listRM\' must be vector of sample identifiers.")
-    }
-
-    ## Validate that np is a single positive number
-    if(!(isSingleNumber(np) && np > 0)) {
-        stop("The \'np\' parameter must be a single positive integer.")
-    }
-
-    ## Validate that eigen.cnt is a single number
-    if(!(isSingleNumber(eigen.cnt))) {
-        stop("The \'eigen.cnt\' parameter must be a single integer.")
-    }
-
-    ## Validate that missing.rate is a single number or NaN
-    if(!(isSingleNumber(missing.rate) || is.nan(missing.rate))) {
-        stop("The \'missing.rate\' parameter must be a single integer ",
-                "or \'NaN\'.")
-    }
-
     sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]
 
     listPCA <- list()

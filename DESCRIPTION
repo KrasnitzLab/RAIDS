@@ -20,7 +20,7 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
-Depends: R (>= 4.0),
+Depends: R (>= 4.2.0),
     gdsfmt,
     SNPRelate,
     stats,

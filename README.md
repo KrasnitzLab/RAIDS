@@ -11,7 +11,7 @@ The Robust Ancestry Inference using Data Synthesis (**_RAIDS_**) package
 enables accurate and robust inference of genetic 
 ancestry from various types of molecular data, including whole-genome, 
 whole-exome, targeted gene panels and RNA sequences, as described in our 
-bioRxiv manuscript. Our tools retain high accuracy in presence of somatic 
+manuscript. Our tools retain high accuracy in presence of somatic 
 alterations, such as those caused by cancer.
 
 **This code and analysis pipeline were designed and developed for the following publication:**

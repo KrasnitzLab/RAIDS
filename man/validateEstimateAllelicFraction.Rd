@@ -80,9 +80,6 @@ This function validates the input parameters for the
 }
 \examples{
 
-## Required libraries
-library(BSgenome.Hsapiens.UCSC.hg38)
-
 ## Directory where demo GDS files are located
 data.dir <- system.file("extdata", package="RAIDS")
 
@@ -94,11 +91,14 @@ gdsSample <- openfn.gds(file.path(data.dir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
 ## Get chromosome length information
-chrInfo <- integer(25L)
-for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
-chrInfo[23] <- length(Hsapiens[["chrX"]])
-chrInfo[24] <- length(Hsapiens[["chrY"]])
-chrInfo[25] <- length(Hsapiens[["chrM"]])
+## Information from BSgenome.Hsapiens.UCSC.hg38 package version 1.4.4
+## Order by chromosomes 1 to 25
+## chr23 is chrX, chr24 is chrY and chrM is 25
+chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+    156040895L, 57227415L,  16569L)
 
 ## The validatiion should be successful
 RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,

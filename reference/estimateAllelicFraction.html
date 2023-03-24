@@ -206,51 +206,25 @@ library.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Required libraries</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'BiocGenerics'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:stats':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:base':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: S4Vectors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'S4Vectors'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:base':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BSgenome</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomicRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biostrings</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: XVector</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'Biostrings'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:base':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     strsplit</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: rtracklayer</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Get chromosome length information</span></span></span>
-<span class="r-in"><span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">25L</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">22L</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="va">chrInfo</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="va">i</span><span class="op">)</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">23</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrX"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">24</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrY"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">chrInfo</span><span class="op">[</span><span class="fl">25</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">[[</span><span class="st">"chrM"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Chromosome length information</span></span></span>
+<span class="r-in"><span><span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span></span>
+<span class="r-in"><span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">135086622L</span>, <span class="fl">133275309L</span>, <span class="fl">114364328L</span>, <span class="fl">107043718L</span>, <span class="fl">101991189L</span>, <span class="fl">90338345L</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A formal way to get the chormosome length information</span></span></span>
+<span class="r-in"><span><span class="co">## library(BSgenome.Hsapiens.UCSC.hg38)</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo &lt;- integer(25L)</span></span></span>
+<span class="r-in"><span><span class="co">## for(i in seq_len(22L)){ chrInfo[i] &lt;-</span></span></span>
+<span class="r-in"><span><span class="co">##                          length(Hsapiens[[paste0("chr", i)]])}</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo[23] &lt;- length(Hsapiens[["chrX"]])</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## TODO</span></span></span>
 <span class="r-in"><span></span></span>

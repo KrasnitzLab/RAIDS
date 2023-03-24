@@ -24,10 +24,10 @@ test_that("snvListVCF() must return error when offset is a character string", {
     add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
 
     samp.annot <- data.frame(sex=c("1", "2"),
-                             pop.group=c("ACB", "ACB"),
-                             superPop=c("AFR", "AFR"),
-                             batch=c("0", "0"),
-                             stringsAsFactors=FALSE)
+                                pop.group=c("ACB", "ACB"),
+                                superPop=c("AFR", "AFR"),
+                                batch=c("0", "0"),
+                                stringsAsFactors=FALSE)
     add.gdsn(gdsFileTMP, "sample.annot", samp.annot)
 
 
@@ -77,10 +77,10 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
     add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
 
     samp.annot <- data.frame(sex=c("1", "2"),
-                             pop.group=c("ACB", "ACB"),
-                             superPop=c("AFR", "AFR"),
-                             batch=c("0", "0"),
-                             stringsAsFactors=FALSE)
+                                pop.group=c("ACB", "ACB"),
+                                superPop=c("AFR", "AFR"),
+                                batch=c("0", "0"),
+                                stringsAsFactors=FALSE)
     add.gdsn(gdsFileTMP, "sample.annot", samp.annot)
 
     add.gdsn(gdsFileTMP, "snp.id", paste0("s", seq_len(2)))
@@ -99,7 +99,7 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
     error_message <- "The \'freqCutoff\' must be a single numeric or NULL."
 
     expect_error(snvListVCF(gds=gds, fileOUT=fileOUT, offset=0L,
-                            freqCutoff="BED"), error_message)
+                                freqCutoff="BED"), error_message)
 })
 
 
@@ -187,6 +187,7 @@ test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", 
     expect_error(groupChr1KGSNV(PATHGENOCHR=dirNotExisting,
                                     PATHOUT=data.dir), error_message)
 })
+
 
 test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
 

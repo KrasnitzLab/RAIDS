@@ -190,7 +190,7 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #' the merged genotyping files for each sample will be created.
 #' The path must exists.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -240,70 +240,4 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
     }
 
     return(0L)
-}
-
-#' @title TODO
-#'
-#' @description TODO
-#'
-#' @param snp.keep TODO
-#'
-#' @param PATHBLOCK TODO
-#'
-#' @param superPop TODO
-#'
-#' @param chr TODO
-#'
-#'
-#' @return the a \code{array} with the sample from pedDF keept
-#'
-#' @examples
-#'
-#' # TODO
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr) {
-
-    blockChr <- read.delim(file.path(PATHBLOCK,
-                            paste0("block.sp.", superPop, ".f0.05.chr", chr,
-                                            ".blocks.det")), sep="")
-
-    z <- cbind(c(blockChr$BP1, snp.keep, blockChr$BP2+1),
-                c(seq_len(nrow(blockChr)),
-                    rep(0, length(snp.keep)), -1*seq_len(nrow(blockChr))))
-
-    z <- z[order(z[,1]),]
-    block.snp <- cumsum(z[,2])[z[,2] == 0]
-
-    curStart <- 0
-    activeBlock <- 0
-    blockState <- 0
-    block.inter <- rep(0, length(which(block.snp == 0)))
-    k <- 1
-    for(i in seq_len(length(block.snp))){
-        if(block.snp[i] == 0){
-            if(activeBlock == 1){
-                if(snp.keep[i] - curStart >= 10000) {
-                    blockState <- blockState - 1
-
-                    curStart <- snp.keep[i]
-                }
-            } else{
-                blockState <- blockState - 1
-                curStart <- snp.keep[i]
-                curStart <- snp.keep[i]
-                activeBlock <- 1
-            }
-            block.inter[k] <- blockState
-            k <- k + 1
-        }else{
-            activeBlock <- 0
-        }
-    }
-    block.snp[block.snp == 0] <- block.inter
-
-    return(block.snp)
 }

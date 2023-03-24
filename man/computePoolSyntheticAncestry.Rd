@@ -32,7 +32,7 @@ the sample}
 
 \item{sample.ana.id}{TODO}
 
-\item{dataRef}{TODO}
+\item{dataRef}{a \code{data.frame} TODO}
 
 \item{spRef}{TODO}
 

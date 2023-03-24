@@ -1690,7 +1690,7 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
 #'
 #' @param sample.ana.id TODO
 #'
-#' @param dataRef TODO
+#' @param dataRef a \code{data.frame} TODO
 #'
 #' @param spRef TODO
 #'
@@ -1771,6 +1771,29 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                                             algorithm="exact",
                                             eigen.cnt=32L,
                                             missing.rate=0.025) {
+
+    ## TODO Add parameter validation (not all done)
+
+    ## The gds and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gds=gds, "gds")
+    validateGDSClass(gds=gdsSample, "gdsSample")
+
+    ## The dataRef must be an data.frame object
+    if (!is.data.frame(dataRef)) {
+        stop("The \'dataRef\' must be a data.frame object.")
+    }
+
+    ## The study.id must be a character string
+    if (!(is.character(study.id.syn) && length(study.id.syn) == 1)) {
+        stop("The \'study.id.syn\' parameter must be a character string.")
+    }
+
+    ## The population name in 1KG must be a character string
+    if (!(is.character(fieldPopIn1KG) && length(fieldPopIn1KG) == 1)) {
+        stop("The \'fieldPopIn1KG\' parameter must be a character string.")
+    }
+
+
 
     sampleRM <- splitSelectByPop(dataRef)
 

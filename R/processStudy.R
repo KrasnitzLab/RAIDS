@@ -977,18 +977,25 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
 #'
 #' @examples
 #'
-#' ## Required libraries
-#' library(BSgenome.Hsapiens.UCSC.hg38)
-#'
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", "RAIDS")
 #'
-#' ## Get chromosome length information
-#' chrInfo <- integer(25L)
-#' for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
-#' chrInfo[23] <- length(Hsapiens[["chrX"]])
-#' chrInfo[24] <- length(Hsapiens[["chrY"]])
-#' chrInfo[25] <- length(Hsapiens[["chrM"]])
+#' ## Chromosome length information
+#' ## chr23 is chrX, chr24 is chrY and chrM is 25
+#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+#'     156040895L, 57227415L,  16569L)
+#'
+#' ## A formal way to get the chormosome length information
+#' ## library(BSgenome.Hsapiens.UCSC.hg38)
+#' ## chrInfo <- integer(25L)
+#' ## for(i in seq_len(22L)){ chrInfo[i] <-
+#' ##                          length(Hsapiens[[paste0("chr", i)]])}
+#' ## chrInfo[23] <- length(Hsapiens[["chrX"]])
+#' ## chrInfo[24] <- length(Hsapiens[["chrY"]])
+#' ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 #'
 #' ## TODO
 #'

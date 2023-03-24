@@ -129,7 +129,7 @@ for each of chromosome
 
 The splitting is done through a bash script:
 
-```{r fileGenopart1, echo=TRUE, eval=FALSE}
+```bash
 ## This in not a R script
 ## This script is in bash
 
@@ -166,7 +166,6 @@ do
     SAMPLE=$(zcat $FILECUR||head -n 1000 |grep "#CHROM"|cut -d$'\t' -f$j)
     zcat $FILECUR|grep -v "##"|cut -d$'\t' -f$j |bzip2 -c > ${SAMPLE}.${CHR}.vcf.bz2
 done
-
 ```
 
 <br>
@@ -462,7 +461,7 @@ you need to install [HTSlib](http://www.htslib.org/download/) [@Bonfield2021].
 
 In a terminal:
 
-```{r indexVCF, echo=TRUE, eval=FALSE}
+```bash
 ## This in not a R script
 ## This script is in bash
 

@@ -210,20 +210,6 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' @keywords internal
 prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 
-    ## The gds and gdsSample must be objects of class "gds.class"
-    validateGDSClass(gds=gds, "gds")
-    validateGDSClass(gds=gdsSample, "gdsSample")
-
-    ## The study.id must be a character string
-    if (!(is.character(study.id) && length(study.id) == 1)) {
-        stop("The \'study.id\' parameter must be a character string.")
-    }
-
-    ## The popName must be a character string
-    if (!(is.character(popName) && length(popName) == 1)) {
-        stop("The \'popName\' parameter must be a character string.")
-    }
-
     ## Extract study information from the GDS Sample file
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 

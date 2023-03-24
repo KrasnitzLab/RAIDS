@@ -187,7 +187,7 @@ used for the mapping must correspond to the one used to generate the
 
 The 3 required reference files can be downloaded:
 
-```{r download, echo=TRUE, eval=FALSE}
+```bash
 ####################################
 ## The 1KG GDS file
 ####################################
@@ -237,14 +237,13 @@ knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png")
 
 Beware that the name assigned to the Sample SNP pileup file will correspond to 
 the Sample identifier (Name.ID) in the following analysis. For example, a SNP 
-pileupe file called "Sample.01.txt.gz" would be associated to the 
+pileup file called "Sample.01.txt.gz" would be associated to the 
 sample "Sample.01". 
 
 This is the command line to run 
 [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode):
 
-```{r snpPileup, echo=TRUE, eval=FALSE, highlight=TRUE}
-
+```bash
 #####################################################################
 ## Description of the parameters
 ## -g : Compresses the output file with BGZF
@@ -259,7 +258,6 @@ This is the command line to run
 ## FILEBAM.bam : The aligned reads from the sample used as input
 #####################################################################
 snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
-
 ```
 
 <br>

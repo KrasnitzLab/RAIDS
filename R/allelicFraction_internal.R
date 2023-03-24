@@ -154,44 +154,6 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9L, verbose=FALSE) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The minCov parameter must be a single positive integer
-    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
-        stop("The \'minCov\' must be a single numeric positive value")
-    }
-
-    ## The minProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
-        stop("The \'minProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The eProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
-        stop("The \'eProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The wAR parameter must be a single positive numeric superior to 1
-    if (!(isSingleNumber(wAR) && (wAR >= 1))) {
-        stop("The \'wAR\' must be a single numeric positive value.")
-    }
-
-    ## The verbose parameter must be a logical
-    if (!(is.logical(verbose) && length(verbose) == 1)) {
-        stop("The \'verbose\' parameters must be a single logical value ",
-             "(TRUE or FALSE).")
-    }
-
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
@@ -216,22 +178,22 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 
 
         homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
-                                                   snp.pos=snp.pos[listChr,], chr=chr)
+                                        snp.pos=snp.pos[listChr,], chr=chr)
 
         if (verbose) { message("Step 2 ", Sys.time()) }
 
         homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
-                                               cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
+                    cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
 
         z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
-                     snp.pos[listChr, "snp.pos"]),
-                   c(rep(0,  2* nrow(homoBlock[[chr]])),
-                     rep(1, length(listChr))),
-                   c(homoBlock[[chr]]$LOH,
-                     -1 * homoBlock[[chr]]$LOH,
-                     rep(0, length(listChr)) ),
-                   c(rep(0, 2 * nrow(homoBlock[[chr]])),
-                     seq_len(length(listChr))))
+                            snp.pos[listChr, "snp.pos"]),
+                    c(rep(0,  2* nrow(homoBlock[[chr]])),
+                            rep(1, length(listChr))),
+                    c(homoBlock[[chr]]$LOH,
+                            -1 * homoBlock[[chr]]$LOH,
+                                rep(0, length(listChr)) ),
+                    c(rep(0, 2 * nrow(homoBlock[[chr]])),
+                            seq_len(length(listChr))))
 
         z <- z[order(z[,1], z[,2]), ]
         pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
@@ -242,12 +204,12 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 
         snp.pos[listChr, "imbAR"] <-
             computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
-                                    wAR=10, cutOffEmptyBox=-3)
+                                        wAR=10, cutOffEmptyBox=-3)
 
         if (verbose) { message("Step 4 ", Sys.time()) }
 
         blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
-                                         w=10, cutOff=-3)
+                                            w=10, cutOff=-3)
 
         if (verbose) { message("Step 5 ", Sys.time()) }
 
@@ -331,67 +293,9 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 #' @encoding UTF-8
 #' @keywords internal
 computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
-                                      sampleCurrent, study.id, block.id, chrInfo, minCov=10L,
-                                      minProb=0.999, eProb=0.001, cutOffLOH=-5,
-                                      cutOffAR=3, verbose=FALSE) {
-
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsSample must be an object of class "gds.class"
-    if (!inherits(gdsSample, "gds.class")) {
-        stop("The \'gdsSample\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The gdsRefAnnot must be an object of class "gds.class"
-    if (!inherits(gdsRefAnnot, "gds.class")) {
-        stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
-    }
-
-    ## The sampleCurrent parameter must be a single character string
-    if (!(is.character(sampleCurrent) && length(sampleCurrent) == 1)) {
-        stop("The \'sampleCurrent\' must be a single character string.")
-    }
-
-    ## The study.id parameter must be a single character string
-    if (!(is.character(study.id) && length(study.id) == 1)) {
-        stop("The \'study.id\' must be a single character string.")
-    }
-
-    ## The block.id parameter must be a single character string
-    if (!(is.character(block.id) && length(block.id) == 1)) {
-        stop("The \'block.id\' must be a single character string.")
-    }
-
-    ## The minCov parameter must be a single positive integer
-    if (!(isSingleNumber(minCov) && (minCov >= 0.0))) {
-        stop("The \'minCov\' must be a single numeric positive value.")
-    }
-
-    ## The minProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0))) {
-        stop("The \'minProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The eProb parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0))) {
-        stop("The \'eProb\' must be a single numeric positive ",
-             "value between 0 and 1.")
-    }
-
-    ## The cutOffAR parameter must be a single numeric
-    if (!(isSingleNumber(cutOffAR))) {
-        stop("The \'cutOffAR\' must be a single numeric value.")
-    }
-
-    ## The verbose parameter must be a logical
-    if (!(is.logical(verbose) && length(verbose) == 1)) {
-        stop("The \'verbose\' parameters must be a single logical value ",
-             "(TRUE or FALSE).")
-    }
+                    sampleCurrent, study.id, block.id, chrInfo, minCov=10L,
+                    minProb=0.999, eProb=0.001, cutOffLOH=-5,
+                    cutOffAR=3, verbose=FALSE) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file

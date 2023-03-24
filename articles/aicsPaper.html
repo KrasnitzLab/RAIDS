@@ -237,20 +237,20 @@ hg38 genome.</p>
 files<a class="anchor" aria-label="anchor" href="#sub-step-1--create-a-directory-containing-the-3-required-reference-files"></a>
 </h4>
 <p>The 3 required reference files can be downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG GDS file</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matGeno1000g.gds</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG GDS file</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG SNV Annotation GDS file</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>matAnnot1000g.gds</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Annotation GDS file</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## The 1KG SNV Retained VCF file</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">####################################</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>wget https<span class="sc">:</span><span class="er">//</span>labshare.cshl.edu<span class="sc">/</span>shares<span class="sc">/</span>krasnitzlab<span class="sc">/</span>aicsPaper<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz</span></code></pre></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Retained VCF file</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz</span></code></pre></div>
 <p>The 3 files should be stored in the same directory. For the current
 demonstration, the directory will be refered as
 <strong>PATH_REF</strong>.</p>
@@ -280,23 +280,23 @@ Generate a Sample SNP pileup file (1 file per sample)
 </div>
 <p>Beware that the name assigned to the Sample SNP pileup file will
 correspond to the Sample identifier (Name.ID) in the following analysis.
-For example, a SNP pileupe file called “Sample.01.txt.gz” would be
+For example, a SNP pileup file called “Sample.01.txt.gz” would be
 associated to the sample “Sample.01”.</p>
 <p>This is the command line to run <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Description of the parameters</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## -g : Compresses the output file with BGZF</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## -d5000 : Sets the maximum depth to 5000</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">##     positions of all retained 1KG SNPs</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">##     compressed by the application</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>snp<span class="sc">-</span>pileup <span class="sc">-</span>g <span class="sc">-</span>d5000 <span class="sc">-</span>q15 <span class="sc">-</span>Q20  <span class="sc">-</span>r0 PATH_REF<span class="sc">/</span>snvSel0.<span class="fl">01.</span>vcf.gz PATH_OUT<span class="sc">/</span>Name.ID.txt FILEBAM.bam</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Description of the parameters</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">## -g : Compresses the output file with BGZF</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">## -d5000 : Sets the maximum depth to 5000</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">## PATH_REF/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">##     positions of all retained 1KG SNPs</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">##     compressed by the application</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-pileup</span> <span class="at">-g</span> <span class="at">-d5000</span> <span class="at">-q15</span> <span class="at">-Q20</span>  <span class="at">-r0</span> PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam</span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -1077,8 +1077,8 @@ which this document was compiled:</p>
 <span><span class="co">##  [27] compiler_4.2.2              httr_1.4.5                 </span></span>
 <span><span class="co">##  [29] backports_1.4.1             Matrix_1.5-3               </span></span>
 <span><span class="co">##  [31] fastmap_1.1.1               lazyeval_0.2.2             </span></span>
-<span><span class="co">##  [33] cli_3.6.0                   prettyunits_1.1.1          </span></span>
-<span><span class="co">##  [35] htmltools_0.5.4             quantreg_5.94              </span></span>
+<span><span class="co">##  [33] cli_3.6.1                   prettyunits_1.1.1          </span></span>
+<span><span class="co">##  [35] htmltools_0.5.5             quantreg_5.94              </span></span>
 <span><span class="co">##  [37] tools_4.2.2                 glue_1.6.2                 </span></span>
 <span><span class="co">##  [39] GenomeInfoDbData_1.2.9      dplyr_1.1.1                </span></span>
 <span><span class="co">##  [41] rappdirs_0.3.3              Rcpp_1.0.10                </span></span>

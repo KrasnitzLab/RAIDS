@@ -178,42 +178,42 @@ genotyping files are split into smaller files (one per sample).</p>
 <p>As there is one genotyping file per chromosome, the process must be
 executed for each of chromosome</p>
 <p>The splitting is done through a bash script:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## This in not a R script</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">## This script is in bash</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The script has to be run separately for each chromosome</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">## The script has to be run separately for each chromosome</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Create one directory for the specific chromosome</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Two variables need to be assigned</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable PATHGENO is the path where the split 1KG genotyping</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   files will be located</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory </span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   with the name of the chromosome will be created. The variable must</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   include the prefix "chr".</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: PATHGENO=./genotypingPerSample</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: chrCur=chr1</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>mkdir <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>cd <span class="sc">$</span>{PATHGENO}<span class="sc">/</span><span class="er">$</span>{chrCur}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">## Create one directory for the specific chromosome</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">##</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Two variables need to be assigned</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">## The variable PATHGENO is the path where the split 1KG genotyping</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">##   files will be located</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">## The variable chrCur is the current chromosome (ex: "chr1"), a sub-directory </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">##   with the name of the chromosome will be created. The variable must</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">##   include the prefix "chr".</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">##</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">## Ex: PATHGENO=./genotypingPerSample</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">## Ex: chrCur=chr1</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">##</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="va">${PATHGENO}</span>/<span class="va">${chrCur}</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${PATHGENO}</span>/<span class="va">${chrCur}</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR is the associated 1KG genotyping VCF file for the</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">##     specific chromosome</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## The variable FILECUR must also contain the relative or complete path to</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">##     the VCF file</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">## The variable FILECUR is the associated 1KG genotyping VCF file for the</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">##     specific chromosome</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">## The variable FILECUR must also contain the relative or complete path to</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">##     the VCF file</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">## Ex: FILECUR=../../1KG_files/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## There is 2548 samples in one phase VCF file</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="do">## The information associated to each sample is extracted and a VCF file </span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="do">## specific to each sample for the current chromosome is generated</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="st">`</span><span class="at">seq 1 2548</span><span class="st">`</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>do</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    j<span class="ot">=</span><span class="er">$</span>(( <span class="sc">$</span>i <span class="sc">+</span> <span class="dv">9</span> ))</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    SAMPLE<span class="ot">=</span><span class="er">$</span>(zcat <span class="sc">$</span>FILECUR<span class="sc">||</span>head <span class="sc">-</span>n <span class="dv">1000</span> <span class="sc">|</span>grep <span class="st">"#CHROM"</span><span class="sc">|</span>cut <span class="sc">-</span>d<span class="sc">$</span><span class="st">'</span><span class="sc">\t</span><span class="st">'</span> <span class="sc">-</span>f<span class="sc">$</span>j)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    zcat <span class="sc">$</span>FILECUR<span class="sc">|</span>grep <span class="sc">-</span>v <span class="st">"##"</span><span class="sc">|</span>cut <span class="sc">-</span>d<span class="sc">$</span><span class="st">'</span><span class="sc">\t</span><span class="st">'</span> <span class="sc">-</span>f<span class="sc">$</span>j <span class="sc">|</span>bzip2 <span class="sc">-</span>c <span class="sc">&gt;</span> <span class="er">$</span>{SAMPLE}.<span class="sc">$</span>{CHR}.vcf.bz2</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>done</span></code></pre></div>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">## There is 2548 samples in one phase VCF file</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">## The information associated to each sample is extracted and a VCF file </span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">## specific to each sample for the current chromosome is generated</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">##</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="kw">`</span><span class="fu">seq</span> 1 2548<span class="kw">`</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="va">j</span><span class="op">=</span><span class="va">$((</span> <span class="va">$i</span> <span class="op">+</span> <span class="dv">9</span> <span class="va">))</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="va">SAMPLE</span><span class="op">=</span><span class="va">$(</span><span class="fu">zcat</span> <span class="va">$FILECUR</span><span class="kw">||</span><span class="fu">head</span> <span class="at">-n</span> 1000 <span class="kw">|</span><span class="fu">grep</span> <span class="st">"#CHROM"</span><span class="kw">|</span><span class="fu">cut</span> <span class="at">-d</span><span class="st">$'</span><span class="dt">\t</span><span class="st">'</span> <span class="at">-f</span><span class="va">$j)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">zcat</span> <span class="va">$FILECUR</span><span class="kw">|</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"##"</span><span class="kw">|</span><span class="fu">cut</span> <span class="at">-d</span><span class="st">$'</span><span class="dt">\t</span><span class="st">'</span> <span class="at">-f</span><span class="va">$j</span> <span class="kw">|</span><span class="fu">bzip2</span> <span class="at">-c</span> <span class="op">&gt;</span> <span class="va">${SAMPLE}</span>.<span class="va">${CHR}</span>.vcf.bz2</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level3">
@@ -466,15 +466,15 @@ file:</p>
 <p>You should compress and indexing the newly created VCF file. Do do
 so, you need to install <a href="http://www.htslib.org/download/" class="external-link">HTSlib</a> <span class="citation">(Bonfield et al. 2021)</span>.</p>
 <p>In a terminal:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This in not a R script</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## This script is in bash</span></span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## This in not a R script</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">## This script is in bash</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Compress the new VCF file (fileOUT parameter)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>bgzip fileOUT</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Compress the new VCF file (fileOUT parameter)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> fileOUT</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Index the new VCF file</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## HTSlib software is needed</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>tabix <span class="sc">-</span>p vcf fileOUT.gz</span></code></pre></div>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Index the new VCF file</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">## HTSlib software is needed</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf fileOUT.gz</span></code></pre></div>
 <p><br><br></p>
 </div>
 </div>
@@ -533,8 +533,8 @@ which this document was compiled:</p>
 <span><span class="co">##  [27] compiler_4.2.2              httr_1.4.5                 </span></span>
 <span><span class="co">##  [29] backports_1.4.1             Matrix_1.5-3               </span></span>
 <span><span class="co">##  [31] fastmap_1.1.1               lazyeval_0.2.2             </span></span>
-<span><span class="co">##  [33] cli_3.6.0                   prettyunits_1.1.1          </span></span>
-<span><span class="co">##  [35] htmltools_0.5.4             quantreg_5.94              </span></span>
+<span><span class="co">##  [33] cli_3.6.1                   prettyunits_1.1.1          </span></span>
+<span><span class="co">##  [35] htmltools_0.5.5             quantreg_5.94              </span></span>
 <span><span class="co">##  [37] tools_4.2.2                 glue_1.6.2                 </span></span>
 <span><span class="co">##  [39] GenomeInfoDbData_1.2.9      dplyr_1.1.1                </span></span>
 <span><span class="co">##  [41] rappdirs_0.3.3              Rcpp_1.0.10                </span></span>

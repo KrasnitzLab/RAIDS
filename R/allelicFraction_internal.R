@@ -3,11 +3,11 @@
 #' @description This function validates the input parameters for the
 #' \code{\link{getTableSNV}} function.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
-#' the opened 1KG GDS file.
+#' @param gdsRef an object of class \code{\link[gdsfmt]{gds.class}} (a GDS
+#' file), the opened 1KG GDS file (reference).
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened GDS Sample file.
+#' (a GDS file), the opened Sample GDS file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -31,18 +31,18 @@
 #'
 #' @examples
 #'
-#' ## Directory where demo GDS files are located
+#' ## Directory where demo GDS files are located (refence and sample files)
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened)
+#' ## The 1KG GDS file (opened) (reference file)
 #' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 #'
-#' ## The GDS Sample file
+#' ## The Sample GDS file (opened)
 #' gdsSample <- openfn.gds(file.path(data.dir,
 #'                          "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
-#' RAIDS:::validateGetTableSNV(gds=gds1KG, gdsSample=gdsSample,
+#' RAIDS:::validateGetTableSNV(gdsRef=gds1KG, gdsSample=gdsSample,
 #'      sampleCurrent="A101TCGA", study.id="TCGA", minCov=10L,
 #'      minProb=0.998, eProb=0.002, verbose=TRUE)
 #'
@@ -54,11 +54,11 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateGetTableSNV <- function(gds, gdsSample, sampleCurrent, study.id,
+validateGetTableSNV <- function(gdsRef, gdsSample, sampleCurrent, study.id,
                                     minCov, minProb, eProb, verbose) {
 
-    ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, name="gds")
+    ## The gdsRef must be an object of class "gds.class"
+    validateGDSClass(gds=gdsRef, name="gds")
 
     ## The gdsSample must be an object of class "gds.class"
     validateGDSClass(gds=gdsSample, name="gdsSample")

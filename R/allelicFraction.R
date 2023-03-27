@@ -1,10 +1,10 @@
 #' @title Extract the genotype information for a SNV dataset using
-#' the GDS Sample file and the 1KG GDS file
+#' the Sample GDS file (reference) and the 1KG GDS file
 #'
 #' @description The function generates a \code{data.frame} containing the
 #' genotype information from a initial list of SNVs associated to a specific
 #' sample. The function uses the
-#' information present in the 1KG GDS file and the GDS Sample file.
+#' information present in the 1KG GDS file (reference) and the Sample GDS file.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
 #' the opened 1KG GDS file.
@@ -65,7 +65,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001, verbose=FALSE) {
 
     ## Validate the input parameters
-    validateGetTableSNV(gds=gds, gdsSample=gdsSample,
+    validateGetTableSNV(gdsRef=gds, gdsSample=gdsSample,
             sampleCurrent=sampleCurrent, study.id=study.id, minCov=minCov,
             minProb=minProb, eProb=eProb, verbose=verbose)
 

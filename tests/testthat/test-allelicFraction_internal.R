@@ -11,7 +11,6 @@ library(gdsfmt)
 
 context("validateGetTableSNV() results")
 
-
 test_that("validateGetTableSNV() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
@@ -20,7 +19,7 @@ test_that("validateGetTableSNV() must return expected results when all input are
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    result1 <- RAIDS:::validateGetTableSNV(gds=gdsF, gdsSample=gdsF,
+    result1 <- RAIDS:::validateGetTableSNV(gdsRef=gdsF, gdsSample=gdsF,
                     sampleCurrent="TEST", study.id="TEST",
                     minCov=10L, minProb=0.999, eProb=0.001,verbose=TRUE)
 

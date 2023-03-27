@@ -6,7 +6,7 @@
 \title{Validate input parameters for getTableSNV() function}
 \usage{
 validateGetTableSNV(
-  gds,
+  gdsRef,
   gdsSample,
   sampleCurrent,
   study.id,
@@ -17,11 +17,11 @@ validateGetTableSNV(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
-the opened 1KG GDS file.}
+\item{gdsRef}{an object of class \code{\link[gdsfmt]{gds.class}} (a GDS
+file), the opened 1KG GDS file (reference).}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened GDS Sample file.}
+(a GDS file), the opened Sample GDS file.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}
@@ -50,18 +50,18 @@ This function validates the input parameters for the
 }
 \examples{
 
-## Directory where demo GDS files are located
+## Directory where demo GDS files are located (refence and sample files)
 data.dir <- system.file("extdata", package="RAIDS")
 
-## The 1KG GDS file (opened)
+## The 1KG GDS file (opened) (reference file)
 gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 
-## The GDS Sample file
+## The Sample GDS file (opened)
 gdsSample <- openfn.gds(file.path(data.dir,
                          "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
 ## The validation should be successful
-RAIDS:::validateGetTableSNV(gds=gds1KG, gdsSample=gdsSample,
+RAIDS:::validateGetTableSNV(gdsRef=gds1KG, gdsSample=gdsSample,
      sampleCurrent="A101TCGA", study.id="TCGA", minCov=10L,
      minProb=0.998, eProb=0.002, verbose=TRUE)
 

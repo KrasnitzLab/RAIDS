@@ -4,7 +4,7 @@
 \name{getTableSNV}
 \alias{getTableSNV}
 \title{Extract the genotype information for a SNV dataset using
-the GDS Sample file and the 1KG GDS file}
+the Sample GDS file (reference) and the 1KG GDS file}
 \usage{
 getTableSNV(
   gds,
@@ -66,7 +66,7 @@ position of the SNVs in the 1KG GDS file.}
 The function generates a \code{data.frame} containing the
 genotype information from a initial list of SNVs associated to a specific
 sample. The function uses the
-information present in the 1KG GDS file and the GDS Sample file.
+information present in the 1KG GDS file (reference) and the Sample GDS file.
 }
 \examples{
 

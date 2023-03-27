@@ -46,7 +46,7 @@
 #'      sampleCurrent="A101TCGA", study.id="TCGA", minCov=10L,
 #'      minProb=0.998, eProb=0.002, verbose=TRUE)
 #'
-#' ## All GDS file must be closed
+#' ## All GDS files must be closed
 #' closefn.gds(gdsfile=gds1KG)
 #' closefn.gds(gdsfile=gdsSample)
 #'
@@ -157,7 +157,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
-                           minCov, minProb, eProb)
+                            minCov, minProb, eProb)
 
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
@@ -300,18 +300,18 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
     snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
-                           minCov, minProb, eProb)
+                                minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
 
     # Get the block structure base on genes from gdsRefAnnot
     snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index,
-                                       block.id)
+                                            block.id)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
     if ("phase" %in% ls.gdsn(node=gdsSample)) {
         snp.pos$phase <- read.gdsn(index.gdsn(gdsSample,
-                                              "phase"))[snp.pos$snp.index]
+                                            "phase"))[snp.pos$snp.index]
     }
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
@@ -334,7 +334,7 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
         # LOH
         blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
         blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
-                                                                 >= cutOffAR]
+                                                            >= cutOffAR]
         blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
 
         listBlock[[chr]] <- blockAF
@@ -347,8 +347,7 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     blockAF <- do.call(rbind, listBlock)
     listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
     blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
-                                          length(listMissing),
-                                          replace=TRUE)
+                                        length(listMissing), replace=TRUE)
 
     for(b in seq_len(nrow(blockAF))) {
         snp.pos$lap[snp.pos$block.id == blockAF$block[b]] <- blockAF$aRF[b]

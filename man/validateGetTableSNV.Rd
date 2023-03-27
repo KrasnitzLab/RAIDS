@@ -65,7 +65,7 @@ RAIDS:::validateGetTableSNV(gds=gds1KG, gdsSample=gdsSample,
      sampleCurrent="A101TCGA", study.id="TCGA", minCov=10L,
      minProb=0.998, eProb=0.002, verbose=TRUE)
 
-## All GDS file must be closed
+## All GDS files must be closed
 closefn.gds(gdsfile=gds1KG)
 closefn.gds(gdsfile=gdsSample)
 

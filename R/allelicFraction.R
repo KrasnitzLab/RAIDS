@@ -10,7 +10,7 @@
 #' the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened GDS Sample file.
+#' (a GDS file), the opened Sample GDS file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -76,7 +76,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     posCur <- which(study.annot$data.id == sampleCurrent &
                         study.annot$study.id == study.id)
 
-    ## Extract SNV coverage from GDS file
+    ## Extract SNV coverage from Sample GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
                             start=c(1, posCur), count=c(-1, 1))
 

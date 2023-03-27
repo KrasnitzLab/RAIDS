@@ -22,7 +22,7 @@ getTableSNV(
 the opened 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened GDS Sample file.}
+(a GDS file), the opened Sample GDS file.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}

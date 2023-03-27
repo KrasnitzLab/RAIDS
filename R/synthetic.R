@@ -598,9 +598,11 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                 cutOffA[as.character(infoSNV$count.tot), "count"]) *
             ((refC == 0 |  altC == 0) + # 1 if homozygot
                 (refC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) *
-                (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"]) # 1 if both allele are higher than cutoff hetero
-            ) * # 1 if homozygote or hetero and 0 if both > 0 both can't decide if error or hetero
-            (1 + (altC > 0) * (1 + (refC == 0) ) )
+                (altC >= cutOffA[as.character(infoSNV$count.tot), "allele"])
+                # 1 if both allele are higher than cutoff hetero
+            ) * # 1 if homozygote or hetero and 0 if both > 0 both can't
+                # decide if error or hetero
+            (1 + (altC > 0) * (1 + (refC == 0)))
             # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
         ## Append the name of the samples to the GDS Sample file "sample.id"
@@ -680,7 +682,6 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
                             nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
 
     ## Generate list that will be returned
-    ##
     res <- list(confMat=cm, matAccuracy=matAccuracy)
 
     return(res)

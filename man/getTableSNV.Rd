@@ -4,7 +4,7 @@
 \name{getTableSNV}
 \alias{getTableSNV}
 \title{Extract the genotype information for a SNV dataset using
-the GDS Sample file and the 1KG GDS file}
+the Sample GDS file (reference) and the 1KG GDS file}
 \usage{
 getTableSNV(
   gds,
@@ -22,7 +22,7 @@ getTableSNV(
 the opened 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened GDS Sample file.}
+(a GDS file), the opened Sample GDS file.}
 
 \item{sampleCurrent}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}
@@ -66,7 +66,7 @@ position of the SNVs in the 1KG GDS file.}
 The function generates a \code{data.frame} containing the
 genotype information from a initial list of SNVs associated to a specific
 sample. The function uses the
-information present in the 1KG GDS file and the GDS Sample file.
+information present in the 1KG GDS file (reference) and the Sample GDS file.
 }
 \examples{
 

@@ -696,10 +696,6 @@ Those 3 files are required:
 ####################################################################
 library(RAIDS)    
 
-####################################################################
-## Fix seed to ensure reproducible results
-####################################################################
-set.seed(3043)   
 
 ####################################################################
 ## Randomly extract a fixed number of samples for each
@@ -707,6 +703,11 @@ set.seed(3043)
 ## When not enough samples are available, all samples are selected.  
 ####################################################################   
 gds <- snpgdsOpen(file.GDS)
+
+####################################################################
+## Fix seed to ensure reproducible results
+####################################################################
+set.seed(3043)   
 
 dataRef <- select1KGPop(gds, nbSamples = 2L)
 
@@ -766,7 +767,6 @@ closefn.gds(gds)
 closefn.gds(gds.Annot)
 
 showfile.gds()
-unlink(file.GDSSample, force=TRUE)
 
 ```
 
@@ -786,10 +786,6 @@ library(RAIDS)
 ####################################################################
 ## The 1KG GDS file is required
 ####################################################################
-PATH_1KG <- PATH_REF
-    
-fileName.GDS <- "matGeno1000g.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS)
 
 ## Open the 1KG GDS file     
 gds <- openfn.gds(file.GDS)
@@ -797,14 +793,14 @@ gds <- openfn.gds(file.GDS)
 ####################################################################
 ## The path to the directory containing the Sample GDS files
 ####################################################################
-PATH_SAMPLE_GDS <- file.path("The path")
+PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
 
 ####################################################################
 ## The path to the directory where the PCA results will be saved 
 ## in RDS files.
 ## The directory must exist.
 ####################################################################
-PATH_OUT <- file.path("The path")
+PATH_OUT <- file.path(PATHSAMPLEGDS)
 
 if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
@@ -815,17 +811,17 @@ if(! file.exists(PATH_OUT)) {
 ## data is required.
 ## The column names must be as shown 
 #################################################################### 
-studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
-                            study.desc = "Description",
-                            study.platform = "Platform string like Whole Exome",
-                            stringsAsFactors = FALSE)
+studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
+                          study.desc = "MYDATA synthetic data",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
 
 ####################################################################
 ## The list of cancer samples used to generate the synthetic data 
 ## as obtained by the PED RDS file. The samples must have an 
 ## associated Sample GDS file.
 ####################################################################
-filePED <- FILE_PED
+filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
@@ -854,7 +850,7 @@ sampleRM <- splitSelectByPop(dataRef)
 for(i in seq_len(length(listSamples))) {
 
     ## The Sample GDS file associated to the cancer sample     
-    file.GDSSample <- file.path(PATH_SAMPLE_GDS, 
+    file.GDSSample <- file.path(PATHSAMPLEGDS, 
                                     paste0(listSamples[i], ".gds"))
 
     ## A sub-directory is created for the cancer sample
@@ -899,6 +895,10 @@ for(i in seq_len(length(listSamples))) {
     
 ## Close 1KG GDS file (important)
 closefn.gds(gds)
+showfile.gds()
+unlink(file.GDSSample, force=TRUE)
+unlink(PATH_OUT_SAMPLE, recursive = TRUE, force=TRUE)
+
 ```
 
 

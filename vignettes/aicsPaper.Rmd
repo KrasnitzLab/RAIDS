@@ -638,7 +638,6 @@ estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
 closefn.gds(gdsSample)
 closefn.gds(gds)
 showfile.gds()
-unlink(file.GDSSample, force=TRUE)
 
 ```
 
@@ -698,7 +697,7 @@ Those 3 files are required:
 3. The **1KG SNv Annotation GDS file**
 
 
-```{r generateSynthetic, echo=TRUE, eval=FALSE}
+```{r generateSynthetic, echo=TRUE, eval=TRUE}
 ####################################################################
 ## Load required package
 ####################################################################
@@ -714,7 +713,9 @@ set.seed(3043)
 ## subcontinental population present in the 1KG GDS file.
 ## When not enough samples are available, all samples are selected.  
 ####################################################################   
-dataRef <- select1KGPop(gds, nbSamples = 30L)
+gds <- snpgdsOpen(file.GDS)
+
+dataRef <- select1KGPop(gds, nbSamples = 2L)
 
 ## Extract the list of selected 1KG sample identifiers
 listSampleRef <- dataRef$sample.id
@@ -724,13 +725,13 @@ listSampleRef <- dataRef$sample.id
 ## data is required.
 ## The column names must be as shown
 #################################################################### 
-studyDF.syn <- data.frame(study.id = "TCGA.BRCA.Synthetic",
-                            study.desc = "TCGA.BRCA synthetic data",
-                            study.platform = "WXS",
-                            stringsAsFactors = FALSE)
+studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
+                          study.desc = "MYDATA synthetic data",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
 
 ## The Sample GDS file is needed
-file.GDSSample <- PATH_TO_GDS_SAMPLE_FILE
+file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
 ####################################################################
 ## The prepSynthetic() function prepares the annotations for
@@ -747,15 +748,13 @@ prepSynthetic(gdsSampleFile = file.GDSSample,
 ## Both the 1KG GDS file and the 1KG SNV Annotation GDS file
 ## are required
 ####################################################################
-PATH_1KG <- PATH_REF
-    
-fileName.GDS <- "matGeno1000g.gds"
-fileName.GDS.Annot <- "matAnnot1000g.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS)
+PATH_1KG <- file.path(data.dir, "example", "gdsRef")
+
+fileName.GDS.Annot <- "exAnnot1kg.gds"
+
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file and 1KG SNV Annotation file    
-gds <- snpgdsOpen(file.GDS)
 gds.Annot <- openfn.gds(file.Annot)
 
 ####################################################################
@@ -772,6 +771,10 @@ resG <- syntheticGeno(gds = gds,
 ## Close both GDS files
 closefn.gds(gds)
 closefn.gds(gds.Annot)
+
+showfile.gds()
+unlink(file.GDSSample, force=TRUE)
+
 ```
 
 <br>
@@ -846,7 +849,7 @@ set.seed(3043)
     
 ## Extract the 1KG samples used to generate the synthetic dataset
 ## Already done in step 6, no need to repeat if the results have been saved
-dataRef <- select1KGPop(gds, nbSamples = 30L)
+dataRef <- select1KGPop(gds, nbSamples = 2L)
 
 ####################################################################
 ## The function splitSelectByPop() generates a matrix with the

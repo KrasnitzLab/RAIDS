@@ -214,12 +214,15 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param chrInfo a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-#'         Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)
+#' @param chrInfo a \code{vector} of \code{integer} representing the length of
+#' the chromosomes. As an example, the information ca be obtained from
+#' package \code{\link{BSgenome.Hsapiens.UCSC.hg38}}.
 #'
 #' @param snp.pos a \code{data.frame} containing TODO.
 #'
-#' @param chr a single positive \code{integer} for the chromosome.
+#' @param chr a single positive \code{integer} for the current chromosome. The
+#' \code{chrInfo} parameter must contain the value for the specified
+#' chromosome.
 #'
 #' @param  genoN a single \code{numeric} between 0 and 1 representing TODO.
 #' Default: \code{0.0001}.
@@ -244,6 +247,24 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Chromosome length information
+#' ## chr23 is chrX, chr24 is chrY and chrM is 25
+#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+#'     156040895L, 57227415L,  16569L)
+#'
+#' ## A formal way to get the chormosome length information
+#' ## library(BSgenome.Hsapiens.UCSC.hg38)
+#' ## chrInfo <- integer(25L)
+#' ## for(i in seq_len(22L)){ chrInfo[i] <-
+#' ##                          length(Hsapiens[[paste0("chr", i)]])}
+#' ## chrInfo[23] <- length(Hsapiens[["chrX"]])
+#' ## chrInfo[24] <- length(Hsapiens[["chrY"]])
+#' ## chrInfo[25] <- length(Hsapiens[["chrM"]])
+#'
+#'
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -266,15 +287,15 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
                 "value between 0 and 1.")
     }
 
-    # snp.pos <- getTableSNV(gds, gdsSample, minCov, minProb, eProb)
-    # dfHetero <- snp.pos[snp.pos$hetero == TRUE,]
-    # homoBlock <- list()
-    # for(chr in unique(snp.pos$snp.chr)){
-    #     # Define the end of chr
-    #
-    #
-    # }
-    # Cutoff genotype 0.001
+    ## The specified chromosome is not included in the chrInfo parameter
+    if (is.na(chrInfo[chr])) {
+        stop("The \'chr\' must be present in the \'chrInfo\' parameter.")
+    }
+
+    ## The snp.pos must be a data.frame
+    if (!is.data.frame(snp.pos)) {
+        stop("The \'snp.pos\' must be a data.frame.")
+    }
 
     genoN1 <- 1 - 2 * genoN
 
@@ -284,7 +305,6 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     homoBlock <- data.frame(chr=rep(chr, length(listHetero) + 1),
                                 start=c(1, listHetero + 1),
                                 end=c(listHetero, chrEnd))
-
 
     z <- cbind(c(homoBlock$start, homoBlock$end,
                         snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
@@ -313,6 +333,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     homoBlock$nbNorm <- rep(0, nrow(homoBlock))
     # Include a field for LOH but will be fill elsewhere
     homoBlock$LOH <- rep(0, nrow(homoBlock))
+
     for (i in seq_len(nrow(homoBlock))) {
         blcCur <- blcSNV[blcSNV$block == i, ]
         snvH <- snp.pos[blcCur$snv, ]
@@ -412,8 +433,6 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 
         vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
                             matCov$cnt.alt[i], matCov$cnt.ref[i])
-        #vCur2 <- ifelse(matCov$cnt.alt[i] > matCov$cnt.ref[i],
-        #                   matCov$cnt.alt[i], matCov$cnt.ref[i])
 
         pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
                         prob=vMean)

@@ -293,7 +293,6 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is negative num
 })
 
 
-
 test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric above 1", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
@@ -311,4 +310,34 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric abov
 })
 
 
+test_that("computeLOHBlocksDNAChr() must return error when chr not in chrInfo", {
 
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- paste0("The \'chr\' must be present in the ",
+                                        "\'chrInfo\' parameter.")
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsF, chrInfo=c("chr1", "chr2"),
+                                        snp.pos=data.frame(), chr=4,
+                                        genoN=0.03), error_message)
+})
+
+
+test_that("computeLOHBlocksDNAChr() must return error when snp.pos is a numeric", {
+
+    data.dir <- system.file("extdata/tests", package="RAIDS")
+    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- "The \'snp.pos\' must be a data.frame."
+
+    expect_error(computeLOHBlocksDNAChr(gds=gdsF, chrInfo=c("chr1", "chr2"),
+                                        snp.pos=33, chr=2,
+                                        genoN=0.03), error_message)
+})

@@ -12,12 +12,15 @@ computeLOHBlocksDNAChr(gds, chrInfo, snp.pos, chr, genoN = 1e-04)
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{chrInfo}{a vector chrInfo[i] = length(Hsapiens[[paste0("chr", i)]])
-Hsapiens library(BSgenome.Hsapiens.UCSC.hg38)}
+\item{chrInfo}{a \code{vector} of \code{integer} representing the length of
+the chromosomes. As an example, the information ca be obtained from
+package \code{\link{BSgenome.Hsapiens.UCSC.hg38}}.}
 
 \item{snp.pos}{a \code{data.frame} containing TODO.}
 
-\item{chr}{a single positive \code{integer} for the chromosome.}
+\item{chr}{a single positive \code{integer} for the current chromosome. The
+\code{chrInfo} parameter must contain the value for the specified
+chromosome.}
 
 \item{genoN}{a single \code{numeric} between 0 and 1 representing TODO.
 Default: \code{0.0001}.}
@@ -45,6 +48,24 @@ TODO
 
 ## Path to the demo pedigree file is located in this package
 data.dir <- system.file("extdata", package="RAIDS")
+
+## Chromosome length information
+## chr23 is chrX, chr24 is chrY and chrM is 25
+chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+    156040895L, 57227415L,  16569L)
+
+## A formal way to get the chormosome length information
+## library(BSgenome.Hsapiens.UCSC.hg38)
+## chrInfo <- integer(25L)
+## for(i in seq_len(22L)){ chrInfo[i] <-
+##                          length(Hsapiens[[paste0("chr", i)]])}
+## chrInfo[23] <- length(Hsapiens[["chrX"]])
+## chrInfo[24] <- length(Hsapiens[["chrY"]])
+## chrInfo[25] <- length(Hsapiens[["chrM"]])
+
 
 ## TODO
 

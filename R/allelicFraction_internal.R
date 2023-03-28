@@ -172,10 +172,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
             message("Step 1 ", Sys.time())
         }
 
-        #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
         listChr <- which(snp.pos$snp.chr == chr)
-        # snp.pos.chr <- snp.pos[listChr,]
-
 
         homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
                                         snp.pos=snp.pos[listChr,], chr=chr)

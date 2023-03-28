@@ -344,7 +344,7 @@ Using all those inputs, the *createStudy2GDS1KG()* function will
 generate a **Sample GDS file**. One **Sample GDS file** is created for each 
 sample passed to the *listSamples* argument.
 
-```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE}
+```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE, collapse=TRUE}
 #################################################################
 ## Load required package
 #################################################################
@@ -380,6 +380,7 @@ PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
 #################################################################
 filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
+head(ped)
 
 #################################################################
 ## A data frame containing general information about the study
@@ -410,8 +411,12 @@ createStudy2GDS1KG(PATHGENO = PATHGENO,
                         listSamples = listSamples,
                         studyDF = studyDF,
                         PATHSAMPLEGDS = PATHSAMPLEGDS)
-showfile.gds()
 
+#################################################################
+## The Sample GDS file has been created in the 
+## directory PATHSAMPLEGDS using the name of the sample (ex1) 
+#################################################################
+list.files(path = PATHSAMPLEGDS)
 ```
 
 <br>

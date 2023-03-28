@@ -66,7 +66,7 @@ getTableSNV function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateGetTableSNV</span><span class="op">(</span></span>
-<span>  <span class="va">gds</span>,</span>
+<span>  <span class="va">gdsRef</span>,</span>
 <span>  <span class="va">gdsSample</span>,</span>
 <span>  <span class="va">sampleCurrent</span>,</span>
 <span>  <span class="va">study.id</span>,</span>
@@ -79,14 +79,14 @@ getTableSNV function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
-<dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code> (a GDS file),
-the opened 1KG GDS file.</p></dd>
+    <dl><dt>gdsRef</dt>
+<dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code> (a GDS
+file), the opened 1KG GDS file (reference).</p></dd>
 
 
 <dt>gdsSample</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
-(a GDS file), the opened GDS Sample file.</p></dd>
+(a GDS file), the opened Sample GDS file.</p></dd>
 
 
 <dt>sampleCurrent</dt>
@@ -133,23 +133,23 @@ when the function is running.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Directory where demo GDS files are located</span></span></span>
+<span class="r-in"><span><span class="co">## Directory where demo GDS files are located (refence and sample files)</span></span></span>
 <span class="r-in"><span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The 1KG GDS file (opened)</span></span></span>
+<span class="r-in"><span><span class="co">## The 1KG GDS file (opened) (reference file)</span></span></span>
 <span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"gds1KG.gds"</span><span class="op">)</span>, readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The GDS Sample file</span></span></span>
+<span class="r-in"><span><span class="co">## The Sample GDS file (opened)</span></span></span>
 <span class="r-in"><span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>,</span></span>
 <span class="r-in"><span>                         <span class="st">"GDS_Sample_with_study_demo.gds"</span><span class="op">)</span>, readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateGetTableSNV</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateGetTableSNV</span><span class="op">(</span>gdsRef<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
 <span class="r-in"><span>     sampleCurrent<span class="op">=</span><span class="st">"A101TCGA"</span>, study.id<span class="op">=</span><span class="st">"TCGA"</span>, minCov<span class="op">=</span><span class="fl">10L</span>,</span></span>
 <span class="r-in"><span>     minProb<span class="op">=</span><span class="fl">0.998</span>, eProb<span class="op">=</span><span class="fl">0.002</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>
+<span class="r-in"><span><span class="co">## All GDS files must be closed</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">gdsSample</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

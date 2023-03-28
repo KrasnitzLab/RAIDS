@@ -7,7 +7,6 @@
 of synthetic data}
 \usage{
 computePoolSyntheticAncestryGr(
-  gds,
   gdsSample,
   sampleRM,
   spRef,
@@ -24,9 +23,6 @@ computePoolSyntheticAncestryGr(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1KG GDS file.}
-
 \item{gdsSample}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 GDS Sample file.}

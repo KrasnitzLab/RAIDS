@@ -151,9 +151,6 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
 #' @description This function validates the input parameters for the
 #' \code{\link{pruningSample}} function.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1KG GDS file.
-#'
 #' @param gdsSample an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 #' GDS Sample file.
@@ -216,35 +213,30 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
 #' ## Directory where demo GDS files are located
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
-#'
 #' ## The GDS Sample (opened)
 #' gdsSample <- openfn.gds(file.path(data.dir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
-#' RAIDS:::validateComputePoolSyntheticAncestryGr(gds=gds1KG,
-#'      gdsSample=gdsSample, sampleRM="TGCA_01", spRef="TCGA",
+#' RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
+#'      sampleRM="TGCA_01", spRef="TCGA",
 #'      study.id.syn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
 #'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
 #'      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
 #'      missing.rate=0.02)
 #'
 #' ## All GDS file must be closed
-#' closefn.gds(gdsfile=gds1KG)
 #' closefn.gds(gdsfile=gdsSample)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePoolSyntheticAncestryGr <- function(gds, gdsSample, sampleRM,
+validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         spRef, study.id.syn, np, listCatPop, fieldPopIn1KG,
         fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missing.rate) {
 
-    ## The gds and gdsSample must be objects of class "gds.class"
-    validateGDSClass(gds, "gds")
+    ## The gdsSample must be objects of class "gds.class"
     validateGDSClass(gdsSample, "gdsSample")
 
     ## The parameter sampleRM must be a single positive integer

@@ -1417,25 +1417,11 @@ test_that("createStudy2GDS1KG() must return error when both  fileNamePED and ped
 context("computePoolSyntheticAncestryGr() results")
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when gds is numeric value"), {
-
-    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
-
-    expect_error(computePoolSyntheticAncestryGr(gds=33, gdsSample="test.gds",
-            sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
-            spRef = "test", eigen.cnt = 15L), error_message)
-})
-
-
 test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSample is character string"), {
-
-    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(gdsFIle)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample="test.gds",
+    expect_error(computePoolSyntheticAncestryGr(gdsSample="test.gds",
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                 spRef = "test", eigen.cnt = 15L), error_message)
 })
@@ -1449,7 +1435,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when sample
 
     error_message <- "The \'sampleRM\' parameter must be a vector of character strings."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
             sampleRM=c(1, 2), study.id.syn="Synthetic", np=1L,
             spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
 })
@@ -1463,7 +1449,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when study.
 
     error_message <- "The \'study.id.syn\' parameter must be a character string."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("Sample01", "Sample02"), study.id.syn=11, np=1L,
         spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
 })
@@ -1478,7 +1464,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when listCa
     error_message <- paste0("The \'listCatPop\' parameter must be a vector of ",
                                 "character strings.")
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("Sample01", "Sample02"), study.id.syn="Test", np=1L,
         listCatPop=11,
         spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
@@ -1493,7 +1479,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np="12",
                 spRef = "test", eigen.cnt = 15L), error_message)
 })
@@ -1507,7 +1493,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                     sampleRM=c("1", "2"), study.id.syn="Synthetic", np=0L,
                     spRef = "test", eigen.cnt = 15L), error_message)
 })
@@ -1522,7 +1508,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when kList 
     error_message <- paste0("The \'kList\' parameter must be a vector of positive ",
                                 "integers.")
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L, kList=c(0, 1),
         pcaList=c(1, 2), spRef = "test", eigen.cnt = 15L), error_message)
 })
@@ -1537,7 +1523,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaLis
     error_message <- paste0("The \'pcaList\' parameter must be a ",
                                 "vector of positive integers.")
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
         pcaList=c(0, 1, 2), spRef = "test", eigen.cnt = 15L), error_message)
 })
@@ -1551,7 +1537,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                     sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                     spRef="test", algorithm=22, eigen.cnt=15L), error_message)
 })
@@ -1563,7 +1549,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
     gds1KG <- openfn.gds(gdsFIle)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                 spRef="test", algorithm="Hello", eigen.cnt=15L))
 })
@@ -1577,7 +1563,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
 
     error_message <- "The \'eigen.cnt\' parameter must be a single integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
                 spRef="test", algorithm="exact", eigen.cnt="15"), error_message)
 })
@@ -1592,7 +1578,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when missin
     error_message <- paste0("The \'missing.rate\' parameter must be a single positive ",
                                     "numeric between zero and one or NaN.")
 
-    expect_error(computePoolSyntheticAncestryGr(gds=gds1KG, gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
         sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L, spRef="test",
         algorithm="exact", eigen.cnt=15L, missing.rate="0.02"), error_message)
 })

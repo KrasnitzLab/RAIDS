@@ -8,9 +8,10 @@
 calcAF.MLRNA(snp.pos.Hetero)
 }
 \arguments{
-\item{snp.pos}{For a specific gene (block) a \code{data.frame} with lap for
-the SNV heterozygote dataset with
-coverage > \code{minCov}. TODO}
+\item{snp.pos.Hetero}{For a specific gene (block) a \code{data.frame} with
+lap for the SNV heterozygote dataset with
+coverage > \code{minCov}. The \code{data.frame} must contain those columns:
+'phase', 'cnt.ref', 'cnt.alt'. TODO}
 }
 \value{
 TODO a \code{list} of \code{numeric} for the gene lR the score

@@ -505,7 +505,6 @@ for(i in seq_len(length(listSamples))) {
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)
 showfile.gds()
-unlink(file.GDSSample, force=TRUE)
 ```
 
 <br>
@@ -567,23 +566,23 @@ The __estimateAllelicFraction()__ function processes one sample at the time,
 as shown in this example.  
 
 
-```{r estimateAllelicFraction, echo=TRUE, eval=FALSE}
+```{r estimateAllelicFraction, echo=TRUE, eval=TRUE}
 ###################################################################
 ## Load required package
 ###################################################################
 library(RAIDS)
-library(BSgenome)
+
 
 ###################################################################
 ## The 1KG GDS file is required
 ## The 1KG SNV Annotation GDS file is only required for RNA samples
 ###################################################################
-PATH_1KG <- PATH_REF
+PATH_1KG <- file.path(data.dir, "example", "gdsRef")
     
-fileName.GDS.1KG <- "matGeno1000g.gds"
-fileName.GDS.Annot <- "matAnnot1000g.gds"
+fileName.GDS.1KG <- "ex1kg.gds"
+fileName.GDS.Annot <- "exAnnot1kg.gds"
 
-file.GDS <- file.path(PATH_1KG, fileName.GDS)
+file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file
@@ -598,7 +597,6 @@ head(chrInfo)
 ## The function must be called for each sample
 ## This example only uses one sample
 ##############################################################
-filePED <- FILE_PED
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
@@ -634,6 +632,9 @@ estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
 ## Close both GDS files
 closefn.gds(gdsSample)
 closefn.gds(gds)
+showfile.gds()
+unlink(file.GDSSample, force=TRUE)
+
 ```
 
 This step must be run for each sample present in the study.

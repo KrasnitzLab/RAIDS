@@ -14,7 +14,7 @@ GDS file.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} representing the length of
 the chromosomes. As an example, the information ca be obtained from
-package \code{\link{BSgenome.Hsapiens.UCSC.hg38}}.}
+package 'BSgenome.Hsapiens.UCSC.hg38'.}
 
 \item{snp.pos}{a \code{data.frame} containing TODO.}
 

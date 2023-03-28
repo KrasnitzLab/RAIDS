@@ -110,7 +110,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     # Add snv info for snv not in Reference
     if ("normal.geno" %in% ls.gdsn(node=gdsSample)) {
         # if normal.geno exist mean there is count not in the ref
-
         # I have other genotype than 1KG
         if (verbose) {
             message("Genotype")
@@ -186,7 +185,6 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
     # We set to homo if 2th allele can be explain by error
     # can switch low allelic fraction to LOH which is less a problem
     # then reduce the allelic ratio by seq error
-
     snp.pos$homo <- snp.pos$keep == TRUE &
             rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] >=
                         cutOffA[as.character(snp.pos$cnt.tot), "allele"]) == 1
@@ -216,7 +214,7 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #'
 #' @param chrInfo a \code{vector} of \code{integer} representing the length of
 #' the chromosomes. As an example, the information ca be obtained from
-#' package \code{\link{BSgenome.Hsapiens.UCSC.hg38}}.
+#' package 'BSgenome.Hsapiens.UCSC.hg38'.
 #'
 #' @param snp.pos a \code{data.frame} containing TODO.
 #'
@@ -730,9 +728,10 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #'
 #' @description TODO
 #'
-#' @param snp.pos For a specific gene (block) a \code{data.frame} with lap for
-#' the SNV heterozygote dataset with
-#' coverage > \code{minCov}. TODO
+#' @param snp.pos.Hetero For a specific gene (block) a \code{data.frame} with
+#' lap for the SNV heterozygote dataset with
+#' coverage > \code{minCov}. The \code{data.frame} must contain those columns:
+#' 'phase', 'cnt.ref', 'cnt.alt'. TODO
 #'
 #' @return TODO a \code{list} of \code{numeric} for the gene lR the score
 #' for aFraction different than 0.5
@@ -804,7 +803,7 @@ calcAF.MLRNA <- function(snp.pos.Hetero) {
 #'
 #' @param snp.pos For a specific chromosome a \code{data.frame} with lap for
 #' the SNV dataset with
-#' coverage > \code{minCov}. TODO
+#' coverage > \code{minCov}.
 #'
 #' @return TODO a \code{data.frame} with the information related to allelic
 #' fraction for each block gene
@@ -821,7 +820,6 @@ calcAF.MLRNA <- function(snp.pos.Hetero) {
 tableBlockAF <- function(snp.pos) {
 
     listBlocks <- unique(snp.pos$block.id)
-
 
     resBlock <- data.frame(block = listBlocks,
                             aRF = rep(-1, length(listBlocks)),
@@ -896,7 +894,6 @@ tableBlockAF <- function(snp.pos) {
         }
 
         resBlock[i, c("lH", "lM", "lRhomo")] <- c(lH, lM, lH - lM)
-
 
         # get hetero and compute AF
         if (resBlock[i, "nbKeep"] > 0 & resBlock[i, "nbHetero"] > 1) {

@@ -10,7 +10,7 @@ tableBlockAF(snp.pos)
 \arguments{
 \item{snp.pos}{For a specific chromosome a \code{data.frame} with lap for
 the SNV dataset with
-coverage > \code{minCov}. TODO}
+coverage > \code{minCov}.}
 }
 \value{
 TODO a \code{data.frame} with the information related to allelic

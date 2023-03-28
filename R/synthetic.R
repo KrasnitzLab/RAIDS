@@ -435,9 +435,6 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                         AMR=which(block.Annot$block.id == "AMR.0.05.500k"),
                         SAS=which(block.Annot$block.id == "SAS.0.05.500k"))
 
-    #g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
-    #          count = c(-1,1))[listSNP]
-
     blockDF <- data.frame(EAS=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
                             start=c(1,posSP$EAS), count = c(-1,1))[list1KG],
                         EUR=read.gdsn(index.gdsn(gdsRefAnnot, "block"),
@@ -456,8 +453,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         r.1kg <- which(sample.id[listPosRef[r]] == sample.1kg)
         # get the genotype of the sample r
         g <- read.gdsn(index.gdsn(gdsSample, "genotype"),
-                        start=c(1, curSynt),
-                        count=c(-1, 1))
+                        start=c(1, curSynt), count=c(-1, 1))
 
         # Order the SNV by count.tot and, lap (low allelic proportion)
         gOrder <- g[listOrderSNP]
@@ -466,14 +462,13 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         matSim2 <- matrix(nrow=sum(df$Freq), ncol=nbSim)
 
         # Loop on the read.count and lap
-        # Faster to group the read.count and lap
-        # to run rmultinom
+        # Faster to group the read.count and lap to run rmultinom
         for(i in seq_len(nrow(df))){
 
             lap <- as.numeric(as.character(df$lap[i]))
 
-            # number of SNV heterozygote corresponding to
-            # df$count.tot[i] and df$lap[i]
+            ## Number of SNV heterozygote corresponding to
+            ## df$count.tot[i] and df$lap[i]
             hetero <- which(gOrder[(posDF[i]+1):(posDF[i+1])] == 1)
             nbHetero <- length(hetero)
             # Define the tree prob for the muultinomial
@@ -500,8 +495,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
             tmpHomo <- rmultinom(nbHomo * nbSim,
                                     as.numeric(as.character(df$count.tot[i])),
-                                    c(1- 3 * seqError, seqError,
-                                        2*seqError))
+                                    c(1- 3 * seqError, seqError, 2*seqError))
 
             # The order between between ref and alt is done with the phase
             # later
@@ -528,13 +522,10 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                                 replace=TRUE,
                                 prob=c(1-pRecomb, pRecomb)), ncol=nbSim)
 
-        #rownames(recombSwitch) <- listB
-
         # indice for each zone with the same phase
         blockZone <- apply(recombSwitch, 2, cumsum)
 
         rownames(blockZone) <- listB
-
 
         # We have to manage multipple simulation which mean
         # different number of zone for the different simulation
@@ -549,7 +540,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
                                         replace=TRUE), ncol=1)
 
             rownames(lapPos) <- listZone
-            #LAPparent <- matrix(nr=nbSNV, nc=nbSim)
+
             LAPparent[, i] <-
                         lapPos[as.character(blockZone[as.character(blockDF[,
                                                                 curSP]),i]),]
@@ -582,15 +573,6 @@ syntheticGeno <- function(gds, gdsRefAnnot,
         row.names(cutOffA) <- names(listCount)
 
         gSyn <- matrix(rep(-1, nbSim * nrow(infoSNV)), nrow=nrow(infoSNV))
-
-        # g <- -1 if infoSNV$count.tot - (refC + altC) >=
-        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 0 if altC == 0 & infoSNV$count.tot - (refC + altC) <
-        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 1 if altR > 0 & infoSNV$count.tot - (refC + altC) <
-        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
-        # g <- 2 if altR == 0 & infoSNV$count.tot - (refC + altC) <
-        #                   cutOffA[as.character(infoSNV$count.tot), "count"]
 
         # count total multiply by 0 if too much error
         gSyn <- gSyn +

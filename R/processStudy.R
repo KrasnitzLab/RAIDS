@@ -1554,9 +1554,6 @@ computeKNNRefSample <- function(listEigenvector,
 #' profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
 #' analysis using a range of K and D values is done.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1KG GDS file.
-#'
 #' @param gdsSample an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 #' GDS Sample file.
@@ -1631,10 +1628,8 @@ computeKNNRefSample <- function(listEigenvector,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computePoolSyntheticAncestryGr <- function(gds, gdsSample,
-                            sampleRM, spRef,
-                            study.id.syn,
-                            np=1L,
+computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
+                            study.id.syn, np=1L,
                             listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                             fieldPopIn1KG="superPop",
                             fieldPopInfAnc="SuperPop",
@@ -1655,7 +1650,7 @@ computePoolSyntheticAncestryGr <- function(gds, gdsSample,
     }
 
     ## Validate the input parameters
-    validateComputePoolSyntheticAncestryGr(gds=gds, gdsSample=gdsSample,
+    validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
         sampleRM=sampleRM, spRef=spRef, study.id.syn=study.id.syn,
         np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
         fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
@@ -1811,8 +1806,8 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
         ## The synthetic profiles are projected on the 1KG PCA space
         ##  (the reference samples used to generate the synthetic profiles are
         ##  removed from this PCA)
-        KNN.list[[j]] <- computePoolSyntheticAncestryGr(gds=gds,
-                            gdsSample=gdsSample, sampleRM=sampleRM[j,],
+        KNN.list[[j]] <- computePoolSyntheticAncestryGr(gdsSample=gdsSample,
+                            sampleRM=sampleRM[j,],
                             spRef=spRef, study.id.syn=study.id.syn,
                             np=np, listCatPop=listCatPop,
                             fieldPopIn1KG=fieldPopIn1KG,

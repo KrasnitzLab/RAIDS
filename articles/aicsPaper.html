@@ -221,6 +221,7 @@ sub-steps.</p>
 Step 2 - Formatting the information from an external study
 </p>
 </div>
+<p><br></p>
 <p>The required sub-steps are:</p>
 <ol style="list-style-type: decimal">
 <li>Create a directory containing the 3 reference files from 1KG</li>
@@ -585,7 +586,7 @@ into a <em>vector</em> object. This is an example on how to retrieve the
 information. There are other ways to extract the information.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">###################################################################</span></span>
-<span><span class="co">## Required library</span></span>
+<span><span class="co">## Load required library</span></span>
 <span><span class="co">###################################################################</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span>
 <span></span>
@@ -653,11 +654,11 @@ sample at the time, as shown in this example.</p>
 <span><span class="co">## The Sample GDS file is required</span></span>
 <span><span class="co">###################################################################</span></span>
 <span></span>
-<span><span class="co">## Name of the GDS Sample file</span></span>
-<span><span class="co">## The name must corresponds to the sample identifier</span></span>
+<span><span class="co">## Name of the Sample GDS file</span></span>
+<span><span class="co">## The name must correspond to the sample identifier</span></span>
 <span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Open the GDS Sample file in writing mode</span></span>
+<span><span class="co">## Open the Sample GDS file in writing mode</span></span>
 <span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.GDSSample</span>, readonly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">###################################################################</span></span>
@@ -770,7 +771,7 @@ synthetic dataset.</p>
 <span>                            study.platform <span class="op">=</span> <span class="st">"WXS"</span>,</span>
 <span>                            stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## The GDS Sample file is needed</span></span>
+<span><span class="co">## The Sample GDS file is needed</span></span>
 <span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="va">PATH_TO_GDS_SAMPLE_FILE</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
@@ -801,7 +802,7 @@ synthetic dataset.</p>
 <span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## The syntheticGeno() function generates the synthetic profiles.</span></span>
-<span><span class="co">## The synthetic profiles are saved in the GDS Sample file</span></span>
+<span><span class="co">## The synthetic profiles are saved in the Sample GDS file</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">resG</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/syntheticGeno.html">syntheticGeno</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>,</span>
 <span>                        gdsRefAnnot <span class="op">=</span> <span class="va">gds.Annot</span>,</span>
@@ -959,6 +960,7 @@ classification.</p>
 Step 4 - Run the ancestry inference on the external study
 </p>
 </div>
+<p><br></p>
 <p>The PCA of the sample and KNN sample and Call the ancestry with the
 optimal <em>K</em> and <em>D</em> parameters.</p>
 <p>Note: The formal selection of <em>K</em> and <em>D</em> parameters is

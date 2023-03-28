@@ -9,7 +9,7 @@ generateGeneBlock(gds, winSize = 10000, EnsDb)
 }
 \arguments{
 \item{gds}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file (reference).}
 
 \item{winSize}{a single positive \code{integer} representing the
 size of the window to use to group the SNVs when the SNVs are in a

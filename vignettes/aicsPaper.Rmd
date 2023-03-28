@@ -293,7 +293,7 @@ in R (with _read.csv()_ or else).
 
 ```{r pedCreation, echo=TRUE}
 ##############################################################
-## Location of the new Sample PED RDS file
+## Location of the Sample PED RDS file to be created
 ##############################################################
 data.dir <- system.file("extdata", package="RAIDS")
 demo_PED_File <- file.path(data.dir, "Demo_PED.RDS")
@@ -345,15 +345,17 @@ generate a **Sample GDS file**. One **Sample GDS file** is created for each
 sample passed to the *listSamples* argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE}
-##############################################################
+#################################################################
 ## Load required package
-##############################################################
+#################################################################
 library(RAIDS)
     
-##############################################################
+#################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file 
 ## need to be located in the same directory
-##############################################################
+## Bewared that the 1KG GDS file used for this example is a  
+## simplified version and CANNOT be used for any real analyses
+#################################################################
 data.dir <- system.file("extdata", package="RAIDS")
 PATH_1KG <- file.path(data.dir, "example", "gdsRef")
     
@@ -384,17 +386,17 @@ ped <- readRDS(filePED)
 ## is also required. The data frame must have
 ## those 3 columns: "study.id", "study.desc", "study.platform"
 #################################################################
-
 studyDF <- data.frame(study.id = "MYDATA",
                         study.desc = "Description",
                         study.platform = "PLATFORM",
                         stringsAsFactors = FALSE)
 
 #################################################################
-## The list of samples to analyzed is passed to the
-## function. The samples must be present in the PED RDS file
+## The list of samples to analyzed is passed to the function.
+## The samples must be present in the Sample PED RDS file
 ## and must have an associated Sample SNP pileup file.
-## Not all samples present in the PED file need to be selected.
+## Not all samples present in the Sample PED file need to 
+## be selected.
 #################################################################
 listSamples <- ped[, "Name.ID"]
 

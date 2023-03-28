@@ -344,7 +344,7 @@ Using all those inputs, the *createStudy2GDS1KG()* function will
 generate a **Sample GDS file**. One **Sample GDS file** is created for each 
 sample passed to the *listSamples* argument.
 
-```{r appendStudy2GDS1KG, echo=TRUE, eval=FALSE}
+```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE}
 ##############################################################
 ## Load required package
 ##############################################################
@@ -354,38 +354,40 @@ library(RAIDS)
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file 
 ## need to be located in the same directory
 ##############################################################
-PATH_1KG <- PATH_REF
+data.dir <- system.file("extdata", package="RAIDS")
+PATH_1KG <- file.path(data.dir, "example", "gdsRef")
     
-fileName.GDS <- "matGeno1000g.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS)
+fileName.GDS.1KG <- "ex1kg.gds"
+file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need  
 ## to be located in the same directory.
 #################################################################
-PATHGENO <- file.path(PATH_SAMPLE_SNP_PILEUP)
+PATHGENO <- file.path(data.dir, "example", "snpPileup")
 
 #################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
 #################################################################
-PATHSAMPLEGDS <- file.path(PATH_SAMPLE_GDS_FILES)
-    
+PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
+
 #################################################################
-## The path and file name for the PED RDS file 
+## The path and file name for the PED RDS file
 ## will the information about the analyzed samples
 #################################################################
-filePED <- FILE_PED
+filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
-    
+
 #################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
 ## those 3 columns: "study.id", "study.desc", "study.platform"
 #################################################################
-studyDF <- data.frame(study.id = "Id of the study",
+
+studyDF <- data.frame(study.id = "MYDATA",
                         study.desc = "Description",
-                        study.platform = "Whole-Exome",
+                        study.platform = "PLATFORM",
                         stringsAsFactors = FALSE)
 
 #################################################################
@@ -395,7 +397,7 @@ studyDF <- data.frame(study.id = "Id of the study",
 ## Not all samples present in the PED file need to be selected.
 #################################################################
 listSamples <- ped[, "Name.ID"]
-    
+
 #################################################################
 ## This function creates one Sample GDS file for each
 ## sample present in the 'listSamples' parameter.
@@ -405,7 +407,9 @@ createStudy2GDS1KG(PATHGENO = PATHGENO,
                         fileNameGDS = file.GDS,
                         listSamples = listSamples,
                         studyDF = studyDF,
-                        PATHSAMPLEGDS = PATHSAMPLEGDS)))
+                        PATHSAMPLEGDS = PATHSAMPLEGDS)
+showfile.gds()
+
 ```
 
 <br>
@@ -422,7 +426,7 @@ also requires the path to the **Sample GDS file(s)**.
 
 Beware that this step can requisite large disk space.
 
-```{r pruningSample, echo=TRUE, eval=FALSE}
+```{r pruningSample, echo=TRUE, eval=TRUE}
 ##############################################################
 ## Load required package
 ##############################################################
@@ -431,26 +435,28 @@ library(RAIDS)
 ##############################################################
 ## The 1KG GDS file is required 
 ##############################################################
-PATH_1KG <- PATH_REF
+PATH_1KG <- file.path(data.dir, "example", "gdsRef")
     
-fileName.GDS.1KG <- "matGeno1000g.gds"
+fileName.GDS.1KG <- "ex1kg.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
 ## Open the 1KG GDS file
 gds_1KG <- snpgdsOpen(file.GDS)
 
+
+
 ##############################################################
 ## All Sample GDS files need to be located in the same 
 ## directory.
 ##############################################################
-PATHSAMPLEGDS <- PATH_WHERE_THE_GDS_SAMPLES_FILES_ARE_LOCATED
+PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
 
 ##############################################################
 ## The list of samples to analyse as obtained by the 
 ## PED RDS file. The samples must have an 
 ## associated Sample GDS file.
 ##############################################################
-filePED <- FILE_PED
+filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
@@ -459,9 +465,9 @@ listSamples <- ped[, "Name.ID"]
 ## the information present in the previously defined study
 ## data.frame (see previous step).
 #################################################################
-studyDF <- data.frame(study.id = "Id of the study",  ## IMPORTANT INFORMATION
+studyDF <- data.frame(study.id = "MYDATA",
                         study.desc = "Description",
-                        study.platform = "Whole-Exome",
+                        study.platform = "PLATFORM",
                         stringsAsFactors = FALSE)
 
 ##############################################################
@@ -480,14 +486,14 @@ for(i in seq_len(length(listSamples))) {
     
     ## Sample GDS file for the current sample
     ## The file name corresponds to the path + sample identifier + ".gds"
-    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds")
+    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
     
     ## Add the genotype information for the list of pruned SNVs 
     ## into the Sample GDS file
     ## The genotype information is extracted from the 1KG GDS file
     add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
                         sampleCurrent = listSamples[i], 
-                        study.id = studyDF$study.id))
+                        study.id = studyDF$study.id)
 
     ## Add annotation from the 1KG GDS file to the Sample GDS file
     ## This is required.
@@ -496,6 +502,8 @@ for(i in seq_len(length(listSamples))) {
     
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)
+showfile.gds()
+unlink(file.GDSSample, force=TRUE)
 ```
 
 <br>

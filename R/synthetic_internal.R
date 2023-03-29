@@ -244,7 +244,9 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 #'
 #' @param refCall TODO column name in pedCall with the call
 #'
-#' @param predCall TODO column name in matKNN with the call
+#' @param predCall a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
 #'
 #' @param listCall TODO array of the possible call
 #'
@@ -262,12 +264,12 @@ prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
-                                    predCall, listCall) {
+computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall,
+                                            listCall) {
 
     matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
-                              Accu.CM=numeric(1), CM.CI=numeric(1), N=nrow(matKNN),
-                              NBNA=length(which(is.na(matKNN[[predCall]]))))
+                        Accu.CM=numeric(1), CM.CI=numeric(1), N=nrow(matKNN),
+                        NBNA=length(which(is.na(matKNN[[predCall]]))))
     i <- 1
     if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
         stop("Compute synthetic accuracy with different pca dimension or K\n")
@@ -277,20 +279,20 @@ computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
     listKeep <- which(!(is.na(matKNN[[predCall]])) )
 
     fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
-                    levels=listCall, labels=listCall)
+                            levels=listCall, labels=listCall)
 
     fP <- factor(matKNN[[predCall]][listKeep],
-                 levels = listCall, labels = listCall)
+                            levels = listCall, labels = listCall)
 
     cm <- table(fCall, fP)
 
 
     matAccuracy[i, 3] <- sum(diag(cm[rownames(cm) %in% listCall,
-                                     colnames(cm) %in% listCall])) /
+                                        colnames(cm) %in% listCall])) /
         nrow(pedCall[matKNN$sample.id, ][listKeep,])
 
     matAccuracy[i, 4] <- 1.96 * (matAccuracy[i, 3] * (1 - matAccuracy[i, 3]) /
-                                     nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
+                            nrow(pedCall[matKNN$sample.id, ][listKeep,]))^0.5
 
     ## Generate list that will be returned
     res <- list(confMat=cm, matAccuracy=matAccuracy)

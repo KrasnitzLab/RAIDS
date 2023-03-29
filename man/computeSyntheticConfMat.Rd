@@ -14,7 +14,9 @@ computeSyntheticConfMat(matKNN, pedCall, refCall, predCall, listCall)
 
 \item{refCall}{TODO column name in pedCall with the call}
 
-\item{predCall}{TODO column name in matKNN with the call}
+\item{predCall}{a \code{character} string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset.}
 
 \item{listCall}{TODO array of the possible call}
 }

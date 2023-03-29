@@ -1438,8 +1438,8 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         ## Loop on all k neighbor values
         for (K in kList) {
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
-            res <- computeSyntheticConfMat(matKNNCur, pedCall, refCall,
-                                           predCall, listCall)
+            res <- computeSyntheticConfMat(matKNN=matKNNCur, pedCall=pedCall,
+                        refCall=refCall, predCall=predCall, listCall=listCall)
             resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
                                           predCall, listCall)
 

@@ -785,7 +785,7 @@ showfile.gds()
 
 
 
-```{r PCA.KNN.Synthetic, echo=TRUE, eval=FALSE}
+```{r PCA.KNN.Synthetic, echo=TRUE, eval=TRUE}
 ####################################################################
 ## Load required package
 ####################################################################
@@ -868,7 +868,7 @@ for(i in seq_len(length(listSamples))) {
     if(! file.exists(PATH_OUT_SAMPLE)) {
             dir.create(PATH_OUT_SAMPLE)
     }
-
+    
     ## Open the Sample GDS file      
     gdsSample <- snpgdsOpen(file.GDSSample)
 
@@ -884,8 +884,7 @@ for(i in seq_len(length(listSamples))) {
         ##  removed from this PCA)
         ## The K-nearest neighbor analysis is done using 
         ##  a range of K and D values
-        KNN.synt <- computePoolSyntheticAncestryGr(gds = gds, 
-                                            gdsSample = gdsSample,
+        KNN.synt <- computePoolSyntheticAncestryGr(gdsSample = gdsSample,
                                             sampleRM =  sampleRM[j,],
                                             study.id.syn = studyDF.syn$study.id,
                                             np = 4L,
@@ -904,8 +903,6 @@ for(i in seq_len(length(listSamples))) {
 ## Close 1KG GDS file (important)
 closefn.gds(gds)
 showfile.gds()
-unlink(file.GDSSample, force=TRUE)
-unlink(PATH_OUT_SAMPLE, recursive = TRUE, force=TRUE)
 
 ```
 
@@ -935,7 +932,7 @@ Note: The formal selection of _K_ and _D_ parameters is done at this step but
 all the synthetic data is prepared in the step 3. 
 
 
-```{r PCA.KNN.Sample, echo=TRUE, eval=FALSE}
+```{r PCA.KNN.Sample, echo=TRUE, eval=TRUE}
 ####################################################################
 ## Load required package
 ####################################################################
@@ -944,23 +941,20 @@ library(RAIDS)
 ####################################################################
 ## The 1KG GDS file is required
 ####################################################################
-PATH_1KG <- PATH_REF
 
-fileName.GDS <- "matGeno1000g.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS)
-    
 ## Open the 1KG GDS file 
 gds <- openfn.gds(file.GDS)
     
     
 # Path to the directory where the gds file for each sample
 # will be create
-PATHSAMPLEGDS <- file.path("The path")
+PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
     
 # directory which content directory name Name.ID in which the PCA is save
 # 
-PATH_OUT <- file.path("The path")
-if(! file.exists(PATH_OUT)){
+PATH_OUT <- file.path(PATHSAMPLEGDS)
+
+if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
 }
     
@@ -969,17 +963,17 @@ if(! file.exists(PATH_OUT)){
 ## data is required.
 ## The column names must be as shown 
 #################################################################### 
-studyDF.syn <- data.frame(study.id = "Id of the synthetic dataset",
-                            study.desc = "Description",
-                            study.platform = "Platform string like Whole Exome",
-                            stringsAsFactors = FALSE)
+studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
+                          study.desc = "MYDATA synthetic data",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
     
 ####################################################################
 ## The list of samples to analyse as obtained by the PED RDS file.
 ## The samples must have an associated Sample GDS files.
 ## Not needed if the list of samples is already available.
 ####################################################################
-filePED <- FILE_PED
+filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
@@ -1015,13 +1009,13 @@ for(i in seq_len(length(listSamples))){
                                     sample.ana.id = listSamples[i],
                                     spRef = spRef,
                                     study.id.syn = studyDF.syn$study.id,
-                                    np = 4L)
+                                    np = 1L)
 
-    saveRDS(resCall, file.path(PATHOUT,
+    saveRDS(resCall, file.path(PATH_OUT,
                                 paste0(listSamples[i], ".infoCall", ".rds")))
 
     write.csv(resCall$Ancestry,
-            file.path(PATHOUT, paste0(listSamples[i], ".Ancestry",".csv")),
+            file.path(PATH_OUT, paste0(listSamples[i], ".Ancestry",".csv")),
             quote = FALSE, row.names = FALSE)
     
     ## Close the Sample GDS file (important)
@@ -1030,6 +1024,10 @@ for(i in seq_len(length(listSamples))){
 
 ## Close the 1KG GDS file (important)
 closefn.gds(gds)
+showfile.gds()
+unlink(file.GDSSample, force=TRUE)
+unlink(PATH_OUT, recursive = TRUE, force=TRUE)
+
 ```
 
 

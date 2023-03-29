@@ -1410,6 +1410,35 @@ test_that("createStudy2GDS1KG() must return error when both  fileNamePED and ped
 })
 
 
+test_that("createStudy2GDS1KG() must return expected results when all parameters ok", {
+
+    data.dir <- test_path("fixtures")
+    gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+
+    withr::defer((unlink(file.path(data.dir, "ex1.gds"))), envir=parent.frame())
+
+    pedDF <- data.frame(Name.ID = c("ex1", "ex2", "ex3"),
+                Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
+                Diagnosis = rep("Cancer", 3),
+                Sample.Type = rep("Primary Tumor", 3),
+                Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    rownames(pedDF) <- pedDF$Name.ID
+
+    studyDF <- data.frame(study.id = "MYDATA",
+                            study.desc = "Description",
+                            study.platform = "PLATFORM",
+                            stringsAsFactors = FALSE)
+
+    result <- createStudy2GDS1KG(PATHGENO=data.dir,
+                pedStudy=pedDF, fileNameGDS=gdsFile,
+                batch=1, studyDF=studyDF, listSamples=c("ex1"),
+                PATHSAMPLEGDS=data.dir, verbose=FALSE)
+
+    expect_true(file.exists(file.path(data.dir, "ex1.gds")))
+    expect_equal(result, 0L)
+})
+
+
 #############################################################################
 ### Tests computePoolSyntheticAncestryGr() results
 #############################################################################

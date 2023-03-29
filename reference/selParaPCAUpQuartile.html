@@ -54,7 +54,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>TODO</h1>
-    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/processStudy.R" class="external-link"><code>R/processStudy.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/processStudy_internal.R" class="external-link"><code>R/processStudy_internal.R</code></a></small>
     <div class="hidden name"><code>selParaPCAUpQuartile.Rd</code></div>
     </div>
 
@@ -90,7 +90,9 @@ computeKNNSuperPoprSynthetic return from group synthetic data</p></dd>
 
 
 <dt>predCall</dt>
-<dd><p>TODO column name in matKNN with the call</p></dd>
+<dd><p>a <code>character</code> string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset.</p></dd>
 
 
 <dt>listCall</dt>
@@ -100,16 +102,14 @@ computeKNNSuperPoprSynthetic return from group synthetic data</p></dd>
 <dt>kList</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis. If <code>NULL</code>,
-the value <code>seq(3,15,1)</code> is assigned.
+number of neighbors used in the K-nearest neighbor analysis.
 Default: <code>seq(3,15,1)</code>.</p></dd>
 
 
 <dt>pcaList</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> representing  the list of
 values tested for the  _D_ parameter. The _D_ parameter represents the
-number of dimensions used in the PCA analysis.  If <code>NULL</code>,
-the value <code>seq(2,15,1)</code> is assigned.
+number of dimensions used in the PCA analysis.
 Default: <code>seq(2,15,1)</code>.</p></dd>
 
 </dl></div>

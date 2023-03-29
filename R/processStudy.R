@@ -62,6 +62,7 @@
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -231,6 +232,7 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' ## TODO
 #' fileNamePED <- "TODO"
 #'
+#'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
 #' @encoding UTF-8
@@ -363,10 +365,28 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' ## Path to the demo 1KG GDS file is located in this package
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#'
+#' ## Open the 1KG GDS file (demo version)
+#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' gds_1KG <- snpgdsOpen(gdsFile)
+
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyDF <- data.frame(study.id = "MYDATA",
+#'                         study.desc = "Description",
+#'                         study.platform = "PLATFORM",
+#'                         stringsAsFactors = FALSE)
+#'
 #'
 #' ## TODO
+#' fileNamePED <- "TODO"
+#'
+#'
+#' ## Close the 1KG GDS file (it is important to always close the GDS files)
+#' closefn.gds(gds_1KG)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -489,7 +509,6 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     return(0L)
 }
-
 
 
 #' @title Add the information about the pruned SNVs into the GDS Sample file

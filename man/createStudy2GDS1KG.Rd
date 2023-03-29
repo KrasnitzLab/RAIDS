@@ -82,6 +82,7 @@ entry present in the \code{listSamples} parameter.
 
 ## Path to the demo 1KG GDS file is located in this package
 data.dir <- system.file("extdata/tests", package="RAIDS")
+gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"

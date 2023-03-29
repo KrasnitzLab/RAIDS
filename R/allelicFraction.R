@@ -419,7 +419,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 testEmptyBox <- function(matCov, pCutOff=-3) {
 
     p <- 0

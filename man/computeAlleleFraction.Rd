@@ -8,7 +8,8 @@
 computeAlleleFraction(snp.pos, chr, w = 10, cutOff = -3)
 }
 \arguments{
-\item{snp.pos}{TODO}
+\item{snp.pos}{a \code{data.frame} containing the genotype information for
+a SNV dataset. TODO}
 
 \item{chr}{a single positive \code{integer} for the chromosome.}
 

@@ -148,9 +148,9 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     }
 
     generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
-        listSamples=listSamples, listPos=listPos, offset=-1,
-        minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
-        batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
+        listSamples=listSamples, listPos=listPos, offset=-1, minCov=10,
+        minProb=0.999, seqError=0.001, pedStudy=pedStudy, batch=batch,
+        studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS, verbose=verbose)
 
     if(verbose) {
         message("Genotype DONE ", Sys.time())

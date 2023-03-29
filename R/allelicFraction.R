@@ -521,72 +521,13 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     return(res)
 }
 
-#' @title TODO
-#'
-#' @description TODO
-#'
-#' @param snp.pos TODO
-#'
-#' @param chr a single positive \code{integer} for the chromosome.
-#'
-#' @param wAR a single positive \code{integer} representing the size-1 of
-#' the window used to compute an empty box. Default: \code{10}.
-#'
-#' @param cutOffEmptyBox TODO Default: \code{-3}.
-#'
-#' @return a \code{vector} of TODO representing the imbAR TODO.
-#'
-#' @examples
-#'
-#' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
-#'
-#' ## TODO
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom S4Vectors isSingleNumber
-#' @encoding UTF-8
-#' @keywords internal
-computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
-                                        cutOffEmptyBox=-3) {
-
-    # We use wAR - 1 because
-    # process the window ex: 1 to 1+wAR
-    wAR <- wAR - 1
-    listHetero <- NULL
-    if(length(which(snp.pos$normal.geno != 3) > 0)) {
-        listHetero <- which(snp.pos$keep == TRUE & snp.pos$normal.geno == 1)
-    } else{
-        listHetero <- which(snp.pos$hetero == TRUE)
-    }
-
-    heteroSNV <- snp.pos[listHetero, ]
-
-    if(nrow(heteroSNV) > wAR) {
-        for(i in seq_len(nrow(heteroSNV)-wAR)) {
-            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
-                cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
-                                    ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
-                if(cur$pCut == 1){
-                    # Set all snv from tmpA (include homozygotes)
-                    # in the window  to 1
-                    snp.pos[listHetero[i]:listHetero[(i+wAR)], "imbAR"] <- 1
-                }
-            }
-        }
-    }
-    snp.pos$imbAR[which(snp.pos$LOH == 1)] <- 0
-
-    return(snp.pos$imbAR)
-}
-
 
 #' @title TODO
 #'
 #' @description TODO
 #'
-#' @param snp.pos TODO
+#' @param snp.pos a \code{data.frame} containing the genotype information for
+#' a SNV dataset. TODO
 #'
 #' @param chr a single positive \code{integer} for the chromosome.
 #'

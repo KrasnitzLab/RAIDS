@@ -469,10 +469,12 @@ file</strong> is created for each sample passed to the
 <span>                        listSamples <span class="op">=</span> <span class="va">listSamples</span>,</span>
 <span>                        studyDF <span class="op">=</span> <span class="va">studyDF</span>,</span>
 <span>                        PATHSAMPLEGDS <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
-<span><span class="co">## Start 2023-03-29 20:40:30</span></span>
-<span><span class="co">## Sample info DONE 2023-03-29 20:40:30</span></span>
-<span><span class="co">## study.annot DONE 2023-03-29 20:40:30</span></span>
-<span><span class="co">## Genotype DONE 2023-03-29 20:40:30</span></span>
+<span><span class="co">## Start 2023-03-29 21:11:24</span></span>
+<span><span class="co">## Sample info DONE 2023-03-29 21:11:24</span></span>
+<span><span class="co">## ex1 2023-03-29 21:11:24 1</span></span>
+<span><span class="co">## study.annot DONE 2023-03-29 21:11:24</span></span>
+<span><span class="co">## ex1.txt.gz 1 2023-03-29 21:11:24</span></span>
+<span><span class="co">## Genotype DONE 2023-03-29 21:11:24</span></span>
 <span><span class="co">## [1] 0</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
@@ -570,7 +572,7 @@ file</strong>.</p>
 <span>    <span class="co">## This is required.</span></span>
 <span>    <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds_1KG</span>, <span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 20:40:31</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-29 21:11:24</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds_1KG</span><span class="op">)</span></span>
@@ -815,7 +817,7 @@ synthetic dataset.</p>
 <span>                data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
 <span>                studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
 <span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 20:40:51</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-29 21:11:42</span></span></code></pre>
 <pre><code><span><span class="co">## [1] 0</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -976,34 +978,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1326
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 20:40:52 2023    (internal increment: 29960)
+## Wed Mar 29 21:11:42 2023    (internal increment: 35004)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:52 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 20:40:52 2023    Done.
+## Wed Mar 29 21:11:42 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 21:11:42 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1326
-## Wed Mar 29 20:40:52 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:42 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:52 2023    Done.
+## Wed Mar 29 21:11:42 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 309
-## Wed Mar 29 20:40:52 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:42 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:52 2023    Done.
+## Wed Mar 29 21:11:42 2023    Done.
 ## Principal Component Analysis (PCA) on genotypes:
 ## Excluding 0 SNP (non-autosomes or non-selection)
 ## Excluding 2 SNPs (monomorphic: TRUE, MAF: NaN, missing rate: 0.025)
@@ -1013,34 +1015,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1352
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 20:40:54 2023    (internal increment: 29960)
+## Wed Mar 29 21:11:43 2023    (internal increment: 35004)
 ## 
 [..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:54 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 20:40:54 2023    Done.
+[==================================================] 100%, completed, 1s
+## Wed Mar 29 21:11:44 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 21:11:44 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1352
-## Wed Mar 29 20:40:54 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:44 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:54 2023    Done.
+## Wed Mar 29 21:11:44 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 273
-## Wed Mar 29 20:40:54 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:44 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:40:54 2023    Done.</code></pre>
+## Wed Mar 29 21:11:44 2023    Done.</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
@@ -2987,34 +2989,34 @@ done at this step but all the synthetic data is prepared in the step
 ##     # of principal components: 32
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1592
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 20:41:02 2023    (internal increment: 24968)
+## Wed Mar 29 21:11:50 2023    (internal increment: 29168)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:41:02 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 20:41:02 2023    Done.
+## Wed Mar 29 21:11:50 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 21:11:50 2023    Done.
 ## SNP Loading:
 ##     # of samples: 156
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1592
-## Wed Mar 29 20:41:02 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:50 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:41:02 2023    Done.
+## Wed Mar 29 21:11:50 2023    Done.
 ## Sample Loading:
 ##     # of samples: 1
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 7
-## Wed Mar 29 20:41:02 2023    (internal increment: 65536)
+## Wed Mar 29 21:11:50 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 20:41:02 2023    Done.</code></pre>
+## Wed Mar 29 21:11:50 2023    Done.</code></pre>
 <div class="sourceCode" id="cb1845"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>

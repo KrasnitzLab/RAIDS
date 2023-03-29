@@ -130,23 +130,23 @@ having the possibility to infer ancestry from tumor-derived data would
 be beneficial.</p>
 <p>The <strong>RAIDS</strong> package implements an inference procedure
 that has been specifically developed to accurately infer genetic
-ancestry from cancer-derived sequencing. The covered cancer-derived
-sequencing are:</p>
+ancestry from cancer-derived sequences. The current version can handle
+cancer-derived sequences of:</p>
 <ul>
 <li>tumor exomes</li>
 <li>targeted gene panels</li>
-<li>RNA sequences</li>
+<li>RNA</li>
 </ul>
-<p>The <strong>RAIDS</strong> package includes a data synthesis method
-that enables the selection of the best parameters for a specific cancer
-profile and also permits a statistically assessment of inference
-accuracy for an individual cancer-derived molecular profile.</p>
+<p>The <strong>RAIDS</strong> package implements a data synthesis method
+that, for any given cancer-derived sequence profile, enables on the one
+hand, profile-specific inference parameter optimization and on the other
+hand, a profile-specific inference accuracy estimate.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install the latest version accessible on the <a href="https://github.com/KrasnitzLab/RAIDS" title="RAIDS Github Site" class="external-link">RAIDS Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em>
+<p>To install the latest version from the <a href="https://github.com/KrasnitzLab/RAIDS" title="RAIDS Github Site" class="external-link">RAIDS Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em>
 package is required.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required package</span></span>
@@ -168,16 +168,15 @@ An overview of the genetic ancestry inference process.
 </div>
 <p>The main steps are:</p>
 <ol style="list-style-type: decimal">
-<li>Format the information from 1000 Genomes (1KG) (optional)</li>
-<li>Format the information from an external study</li>
-<li>Find the optimized parameters for the ancestry inference</li>
-<li>Run the ancestry inference on the external study</li>
+<li>Format reference data from the 1000 Genomes (1KG) (optional)</li>
+<li>Format cancer-derived data set starting from BAM files</li>
+<li>Optimize ancestry inference parameters</li>
+<li>Infer ancestry for the subjects of the external study</li>
 </ol>
-<p>Those main steps are described in details in the following
-sections.</p>
+<p>These main steps are described in detail in the following.</p>
 <p><br><br></p>
 <div class="section level3">
-<h3 id="step-1---format-the-information-from-1000-genomes-optional">Step 1 - Format the information from 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-the-information-from-1000-genomes-optional"></a>
+<h3 id="step-1---format-reference-data-from-the-1000-genomes-optional">Step 1 - Format reference data from the 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-reference-data-from-the-1000-genomes-optional"></a>
 </h3>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step1_v01.png" alt="Step 1 - Formatting the information from 1000 Genomes (optional)" width="120%"><p class="caption">
@@ -185,14 +184,14 @@ Step 1 - Formatting the information from 1000 Genomes (optional)
 </p>
 </div>
 <hr>
-<p>This step generates 3 important reference files:</p>
+<p>At this step three important reference files are created:</p>
 <ul>
 <li>The 1KG GDS File</li>
 <li>The 1KG SNV Annotation GDS file</li>
 <li>The 1KG SNV Retained VCF file</li>
 </ul>
-<p><span style="color:darkred;font-weight:bold">Beware that the 3
-pre-processed files are available at this address:</span></p>
+<p><span style="color:darkred;font-weight:bold">Note that these
+pre-processed files are available at:</span></p>
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
@@ -202,47 +201,42 @@ mapped on hg38 <span class="citation">(Lowy-Gallego et al.
 2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
-<p>The vignette <a href="Create_1KG_GDS_file.html">Formatting the
-information from 1000 Genomes (optional)</a> is dedicated to this
-section.</p>
+<p>The execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
+Genomes (optional)</a> vignette.</p>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-2---format-information-from-an-external-study-to-get-it-ready-for-ancestry-inference">Step 2 - Format information from an external study to get it ready
-for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---format-information-from-an-external-study-to-get-it-ready-for-ancestry-inference"></a>
+<h3 id="step-2---prepare-cancer-derived-data-for-ancestry-inference">Step 2 - Prepare cancer-derived data for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---prepare-cancer-derived-data-for-ancestry-inference"></a>
 </h3>
-<p>To be able to run the ancestry inference on samples from an external
-study, the information about the samples needs to follow a specific
-format.</p>
-<p>The preparation of the external study data is divided is
-sub-steps.</p>
+<p>Molecular profiles in a cancer-derived data set must be formatted
+following a series of sub-steps.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step2_v01.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
 Step 2 - Formatting the information from an external study
 </p>
 </div>
 <p><br></p>
-<p>The required sub-steps are:</p>
+<p>These are:</p>
 <ol style="list-style-type: decimal">
 <li>Create a directory containing the 3 reference files from 1KG</li>
-<li>Generate a Sample SNP pileup file (1 file per sample)</li>
-<li>Create a Sample RDS file containing information about the
-samples</li>
+<li>Make a SNP pileup file for the profile</li>
+<li>Create an RDS file containing information about the samples (AK
+WDTM?)</li>
 <li>Create a Sample GDS file (1 GDS file per sample)</li>
 <li>Generate a pruned subset of the single nucleotide variants
 (SNVs)</li>
 <li>Estimate the allelic frequency for the pruned SNVs</li>
 </ol>
-<p>Beware that a mapped BAM file is needed for each sample (step 2). The
-reference genome used for the mapping must correspond to the one used to
-generate the 1KG GDS file. In this case, the 1KG GDS file is based on
-hg38 genome.</p>
+<p>Note that a mapped BAM file is needed for each sample (step 2). The
+reference genome used for the mapping must be the same as the one used
+to generate the 1KG GDS file. The 1KG GDS file available for download
+(AK FROM?) is based on the hg38 genome build.</p>
 <p><br></p>
 <div class="section level4">
 <h4 id="sub-step-1--create-a-directory-containing-the-3-required-reference-files">Sub-Step 1. Create a directory containing the 3 required reference
 files<a class="anchor" aria-label="anchor" href="#sub-step-1--create-a-directory-containing-the-3-required-reference-files"></a>
 </h4>
-<p>The 3 required reference files can be downloaded:</p>
+<p>The 3 required reference files may be downloaded:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG GDS file</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
@@ -258,37 +252,36 @@ files<a class="anchor" aria-label="anchor" href="#sub-step-1--create-a-directory
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz</span></code></pre></div>
 <p>The 3 files should be stored in the same directory. For the current
-demonstration, the directory will be referred as
-<strong>PATH_REF</strong>.</p>
-<p>For more information on how to generate your own reference files, you
-can refer to the vignette <a href="Create_1KG_GDS_file.html">Formatting
-the information from 1000 Genomes (optional)</a>.</p>
+(AK IN THE EXAMPLE BELOW?) demonstration, this directory is referred to
+as <strong>PATH_REF</strong>.</p>
+<p>For more information on creating your own reference files, see the
+vignette <a href="Create_1KG_GDS_file.html">Formatting the information
+from 1000 Genomes (optional)</a>.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-2--generate-a-sample-snp-pileup-file-1-file-per-sample">Sub-Step 2. Generate a Sample SNP pileup file (1 file per
-sample)<a class="anchor" aria-label="anchor" href="#sub-step-2--generate-a-sample-snp-pileup-file-1-file-per-sample"></a>
+<h4 id="sub-step-2--generate-a-snp-pileup-file-1-file-per-profile">Sub-Step 2. Generate a SNP pileup file (1 file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2--generate-a-snp-pileup-file-1-file-per-profile"></a>
 </h4>
-<p>This step requires the installation of the external code <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
+<p>This step requires installation of the external code <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
 which is associated to the facets package <span class="citation">(Shen
 and Seshan 2016)</span>. Given a VCF file containing SNP locations, <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
-application outputs, for each location, the counts of the reference and
-alternative nucleotides from an BAM input.</p>
-<p>At this step, <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
-is used to generate a <strong>Sample SNP pileup file</strong> that will
-contain the reference and alternative nucleotide counts at each SNP
-location present in the reference 1KG GDS file. The <strong>1KG SNV
-Retained VCF file</strong>, which contains the list of retained 1KG
-SNVs, is required.</p>
+application outputs, for each location, the read counts for the
+reference and alternative nucleotides from the BAM input.</p>
+<p>At this point, <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
+is used to create,for each cancer-derived profile, a <strong>Profile SNP
+pileup file</strong> containing the read counts for the reference and
+alternative nucleotides at each SNP position in the reference 1KG GDS
+file. The <strong>1KG SNV Retained VCF file</strong>, which contains the
+list of retained 1KG SNVs, is required.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png" alt="Generate a Sample SNP pileup file (1 file per sample)" width="100%"><p class="caption">
 Generate a Sample SNP pileup file (1 file per sample)
 </p>
 </div>
-<p>Beware that the name assigned to the <strong>Sample SNP pileup
-file</strong> will correspond to the Sample identifier (Name.ID) in the
+<p>Note that the name assigned to the <strong>Profile SNP pileup
+file</strong> will correspond to the profile identifier (Name.ID) in the
 following analysis. For example, a SNP pileup file called
-“Sample.01.txt.gz” would be associated to the “Sample.01” sample.</p>
+“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
 <p>This is the command line to run <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Description of the parameters</span></span>
@@ -307,34 +300,32 @@ following analysis. For example, a SNP pileup file called
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-3--create-a-sample-ped-rds-file-containing-the-information-about-the-samples">Sub-Step 3. Create a Sample PED RDS file containing the information
-about the samples<a class="anchor" aria-label="anchor" href="#sub-step-3--create-a-sample-ped-rds-file-containing-the-information-about-the-samples"></a>
+<h4 id="sub-step-3--create-a-profile-ped-rds-file-containing-the-information-about-the-profiles">Sub-Step 3. Create a profile PED RDS file containing the information
+about the profiles<a class="anchor" aria-label="anchor" href="#sub-step-3--create-a-profile-ped-rds-file-containing-the-information-about-the-profiles"></a>
 </h4>
-<p>A RDS file describing all the samples that are part of the analysis
-is required.</p>
-<p>The RDS file must contain a <em>data.frame</em> with those 5
-columns:</p>
+<p>An RDS file describing all the profiles analyzed is required.</p>
+<p>The RDS file must contain a <em>data.frame</em> with these 5 columns:
+(AK NONE OF WHICH SEEMS NECESSARY)</p>
 <ul>
 <li>
-<strong>Name.ID</strong>: The unique sample identifier. The Sample
-VCF file associated to this sample should be called
-“Name.ID.txt.gz”.</li>
+<strong>Name.ID</strong>: The unique sample identifier. The profile
+VCF file<br>
+should be called “Name.ID.txt.gz”.</li>
 <li>
 <strong>Case.ID</strong>: The patient identifier associated to the
 sample.</li>
 <li>
-<strong>Sample.Type</strong>: The information about the sample type
-(primary tumor, metastasis, normal, etc..).</li>
+<strong>Sample.Type</strong>: The information about the profile
+tissue source (primary tumor, metastatic tumor, normal, etc..).</li>
 <li>
-<strong>Diagnosis</strong>: The diagnosis associated to the
-patient.</li>
+<strong>Diagnosis</strong>: The donor’s diagnosis.</li>
 <li>
-<strong>Source</strong>: The source of the sample (example:
-dbGAP_XYZ).</li>
+<strong>Source</strong>: The source of the profile sequence data
+(example: dbGAP_XYZ). (AK REPOSITORY?)</li>
 </ul>
 <p>Important: The row names of the <em>data.frame</em> must be the
-<strong>Name.ID</strong>.</p>
-<p>This file is referred as the <strong>Sample PED RDS file</strong>
+profiles’ <strong>Name.ID</strong>.</p>
+<p>This file is referred to as the <strong>Sample PED RDS file</strong>
 (PED for pedigree). Alternatively, the PED information can be saved in
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
@@ -372,7 +363,8 @@ else).</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-4--create-a-sample-gds-file-1-gds-file-per-sample">Sub-Step 4. Create a Sample GDS file (1 GDS file per sample)<a class="anchor" aria-label="anchor" href="#sub-step-4--create-a-sample-gds-file-1-gds-file-per-sample"></a>
+<h4 id="sub-step-4--create-a-profile-gds-file-1-gds-file-per-profile-ak-sample---profile-everywhere">Sub-Step 4. Create a profile GDS file (1 GDS file per profile) (AK
+SAMPLE -&gt; PROFILE EVERYWHERE?)<a class="anchor" aria-label="anchor" href="#sub-step-4--create-a-profile-gds-file-1-gds-file-per-profile-ak-sample---profile-everywhere"></a>
 </h4>
 <p>This step requires 3 files as input:</p>
 <ul>
@@ -409,8 +401,8 @@ file</strong> is created for each sample passed to the
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file </span></span>
 <span><span class="co">## need to be located in the same directory</span></span>
-<span><span class="co">## Beware that the 1KG GDS file used for this example is a  </span></span>
-<span><span class="co">## simplified version and CANNOT be used for any real analyses</span></span>
+<span><span class="co">## Note that the 1KG GDS file used for this example is a  </span></span>
+<span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
 <span><span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
@@ -469,12 +461,12 @@ file</strong> is created for each sample passed to the
 <span>                        listSamples <span class="op">=</span> <span class="va">listSamples</span>,</span>
 <span>                        studyDF <span class="op">=</span> <span class="va">studyDF</span>,</span>
 <span>                        PATHSAMPLEGDS <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
-<span><span class="co">## Start 2023-03-29 21:11:24</span></span>
-<span><span class="co">## Sample info DONE 2023-03-29 21:11:24</span></span>
-<span><span class="co">## ex1 2023-03-29 21:11:24 1</span></span>
-<span><span class="co">## study.annot DONE 2023-03-29 21:11:24</span></span>
-<span><span class="co">## ex1.txt.gz 1 2023-03-29 21:11:24</span></span>
-<span><span class="co">## Genotype DONE 2023-03-29 21:11:24</span></span>
+<span><span class="co">## Start 2023-03-29 23:41:57</span></span>
+<span><span class="co">## Sample info DONE 2023-03-29 23:41:57</span></span>
+<span><span class="co">## ex1 2023-03-29 23:41:57 1</span></span>
+<span><span class="co">## study.annot DONE 2023-03-29 23:41:57</span></span>
+<span><span class="co">## ex1.txt.gz 1 2023-03-29 23:41:57</span></span>
+<span><span class="co">## Genotype DONE 2023-03-29 23:41:57</span></span>
 <span><span class="co">## [1] 0</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
@@ -490,14 +482,13 @@ file</strong> is created for each sample passed to the
 variants (SNVs)<a class="anchor" aria-label="anchor" href="#sub-step-5--generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs"></a>
 </h4>
 <p>The initial list of 1KG SNVs is pruned, using linkage disequilibrium
-analysis, to retained as subset of SNVs of interest for each sample. The
-list of selected SNVs is specific to each sample and the information
-about the retained SNVs is added to the <strong>Sample GDS
+analysis, and a sample-specific subset of SNVs is retained for each
+sample. This information is added to the <strong>Sample GDS
 file</strong>.</p>
 <p>The <strong>pruningSample()</strong> function requires the
 <strong>1KG GDS file</strong> as input. It also requires the path to the
 <strong>Sample GDS file(s)</strong>.</p>
-<p>Beware that this step can requisite large disk space.</p>
+<p>Note that this step can require large disk space.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##############################################################</span></span>
 <span><span class="co">## Load required package</span></span>
@@ -506,7 +497,7 @@ file</strong>.</p>
 <span>    </span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="co">## The 1KG GDS file is required (demo version)</span></span>
-<span><span class="co">## Beware that the 1KG GDS file used for this example is a  </span></span>
+<span><span class="co">## Note that the 1KG GDS file used for this example is a  </span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analyses</span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
@@ -524,8 +515,8 @@ file</strong>.</p>
 <span><span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"out"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
-<span><span class="co">## The list of samples to analyse.</span></span>
-<span><span class="co">## The samples must be present in the Sample PED RDS file. </span></span>
+<span><span class="co">## The list of samples to analyze.</span></span>
+<span><span class="co">## The samples must be listed in the Sample PED RDS file. </span></span>
 <span><span class="co">## The samples must also have an associated Sample GDS file </span></span>
 <span><span class="co">## (see previous step).</span></span>
 <span><span class="co">##############################################################</span></span>
@@ -535,8 +526,8 @@ file</strong>.</p>
 <span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## The study information passed to the function must correspond </span></span>
-<span><span class="co">## to the information present in the previously defined study</span></span>
-<span><span class="co">## data.frame (see previous step).</span></span>
+<span><span class="co">## to a row the information present in the </span></span>
+<span><span class="co">## data.frame defined in the preceding step.</span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="va">studyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA"</span>,</span>
 <span>                        study.desc <span class="op">=</span> <span class="st">"Description"</span>,</span>
@@ -544,14 +535,14 @@ file</strong>.</p>
 <span>                        stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
-<span><span class="co">## The pruning function is called on one sample at the time</span></span>
+<span><span class="co">## The pruning function is called with one sample as input at the time</span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co">## Compute the SNV pruned subset</span></span>
-<span>    <span class="co">## study.id: Study identifier as defined in the previous step.</span></span>
+<span>    <span class="co">## study.id: Study identifier as defined in the preceding step. (AK EXPLICIT STEP NUMBER)</span></span>
 <span>    <span class="co">##           The study identifier must be the same that the one present in</span></span>
 <span>    <span class="co">##           Sample GDS file.</span></span>
-<span>    <span class="co">## PATHSAMPLEGDS: All Sample GDS files must be in the same directory.</span></span>
+<span>    <span class="co">## PATHSAMPLEGDS: All Sample GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)</span></span>
 <span>    <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds_1KG</span>,</span>
 <span>                    sampleCurrent <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>                    study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, </span>
@@ -572,7 +563,7 @@ file</strong>.</p>
 <span>    <span class="co">## This is required.</span></span>
 <span>    <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds_1KG</span>, <span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 21:11:24</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-29 23:41:57</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds_1KG</span><span class="op">)</span></span>
@@ -582,8 +573,8 @@ file</strong>.</p>
 <div class="section level4">
 <h4 id="sub-step-6--estimate-the-allelic-fraction-for-the-pruned-snvs">Sub-Step 6. Estimate the allelic fraction for the pruned SNVs<a class="anchor" aria-label="anchor" href="#sub-step-6--estimate-the-allelic-fraction-for-the-pruned-snvs"></a>
 </h4>
-<p>The <strong>estimateAllelicFraction()</strong> estimates the allelic
-fraction for all SNVs present in the pruned SNV dataset. Beware that the
+<p>The <strong>estimateAllelicFraction()</strong> estimates the allele
+fraction for all SNVs present in the pruned SNV dataset. Note that the
 function requires different inputs for DNA and RNA samples.</p>
 <p>For the DNA samples, these 2 files are required:</p>
 <ol style="list-style-type: decimal">
@@ -601,7 +592,7 @@ function requires different inputs for DNA and RNA samples.</p>
 <li>The <strong>1KG SNV Annotation GDS file</strong>
 </li>
 </ol>
-<p>In both cases, the other required inputs are:</p>
+<p>In both cases, the other required input is:</p>
 <ol style="list-style-type: decimal">
 <li>The information about the length of the chromosomes</li>
 <li>The sample identifier (it corresponds to the Sample GDS file
@@ -611,7 +602,8 @@ previously)</li>
 </ol>
 <p>The information about the length of the chromosomes must be assigned
 into a <em>vector</em> object. This is an example on how to retrieve the
-information. There are other ways to extract the information.</p>
+information. There are alternative ways to retrieve this information,
+e.g.,</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">###################################################################</span></span>
 <span><span class="co">## Load required library</span></span>
@@ -620,9 +612,9 @@ information. There are other ways to extract the information.</p>
 <span></span>
 <span><span class="co">###################################################################</span></span>
 <span><span class="co">## The length of each chromosome is required</span></span>
-<span><span class="co">## Chromosomes X, Y and M need relabeling</span></span>
-<span><span class="co">## There are other ways to extract the information</span></span>
-<span><span class="co">## This is one example</span></span>
+<span><span class="co">## Chromosomes X, Y and M need relabeling (see below)</span></span>
+<span><span class="co">## There are alternative ways to retrieve this information, e.g., </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">###################################################################</span></span>
 <span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">25L</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">22L</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -642,7 +634,7 @@ information. There are other ways to extract the information.</p>
 sample at the time, as shown in this example.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">###################################################################</span></span>
-<span><span class="co">## Load required package</span></span>
+<span><span class="co">## Load the required package</span></span>
 <span><span class="co">###################################################################</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span></span>
@@ -693,11 +685,11 @@ sample at the time, as shown in this example.</p>
 <span><span class="co">## The estimation of the allelic fraction</span></span>
 <span><span class="co">###################################################################</span></span>
 <span></span>
-<span><span class="co">## Estimate the allelic fraction of the pruned SNVs</span></span>
+<span><span class="co">## Estimate the allele fraction of the pruned SNVs</span></span>
 <span><span class="co">## The current example is for a DNA sample</span></span>
 <span><span class="co">## In the case of RNA sample, the function needs different inputs</span></span>
 <span><span class="co">## such as the 1KG SNV Annotation GDS file and</span></span>
-<span><span class="co">## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file </span></span>
+<span><span class="co">## the block.id should be as listed in the 1KG SNV Annotation GDS file </span></span>
 <span><span class="co">## for the gene annotation of the SNVs</span></span>
 <span><span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
 <span>                                        sampleCurrent <span class="op">=</span> <span class="va">sampleName</span>,</span>
@@ -709,35 +701,33 @@ sample at the time, as shown in this example.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsSample</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/showfile.gds.html" class="external-link">showfile.gds</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>This step must be run for each sample present in the study.</p>
+<p>This step must be executed for each sample present in the study.</p>
 <p><br></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-3---find-the-optimized-parameters-for-the-ancestry-inference">Step 3 - Find the optimized parameters for the ancestry
-inference<a class="anchor" aria-label="anchor" href="#step-3---find-the-optimized-parameters-for-the-ancestry-inference"></a>
+<h3 id="step-3---optimize-the-ancestry-inference-parameters">Step 3 - Optimize the ancestry inference parameters<a class="anchor" aria-label="anchor" href="#step-3---optimize-the-ancestry-inference-parameters"></a>
 </h3>
-<p>At this step, the optimization of the parameters is required to
-obtained the most accurate results at the ancestry inference step.</p>
+<p>At this step, optimization of the parameters is required to maximize
+the the ancestry inference accuracy (next step).</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Step3_v01.png" alt="Step 3 - Find the optimized parameters for the ancestry inference" width="120%"><p class="caption">
 Step 3 - Find the optimized parameters for the ancestry inference
 </p>
 </div>
-<p>Two parameters can be optimized for the ancestry inference
-process:</p>
+<p>Two inference parameters to be optimized:</p>
 <ul>
 <li>
 <em>K</em>: the number of neighbors used to call the ancestry</li>
 <li>
-<em>D</em>: the number of dimensions used to create the PCA</li>
+<em>D</em>: the number of PCA components retained</li>
 </ul>
-<p>The accuracy is evaluated through a synthetic dataset created from
+<p>The accuracy is evaluated using a synthetic dataset created from
 merging one cancer profile with multiple 1KG samples of known ancestry.
 Using the synthetic profiles, a range of <em>K</em> and <em>D</em>
 values are tested. Through that process, the <em>K</em> and <em>D</em>
-values with satisfying accuracy can be selected.</p>
-<p>This step is divided in two sub-steps:</p>
+values are tuned to maximize accuracy.</p>
+<p>This step is consists of two sub-steps:</p>
 <ol style="list-style-type: decimal">
 <li>Generate the synthetic dataset</li>
 <li>Compute the PCA-KNN ancestry call for each synthetic profile</li>
@@ -759,9 +749,8 @@ profile. A synthetic profile is created for each combination of the 1KG
 samples and cancer profile. The synthetic profile is then saved in the
 <strong>Sample GDS file</strong>.</p>
 <p>The three functions <em>select1KGPop()</em>, <em>prepSynthetic()</em>
-and <em>syntheticGeno()</em> are association to the creation of the
-synthetic dataset.</p>
-<p>Those 3 files are required:</p>
+and <em>syntheticGeno()</em> are used for data synthesis.</p>
+<p>These 3 files are required:</p>
 <ol style="list-style-type: decimal">
 <li>The <strong>Sample GDS file</strong>
 </li>
@@ -808,7 +797,7 @@ synthetic dataset.</p>
 <span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## The prepSynthetic() function prepares the annotations for</span></span>
+<span><span class="co">## The prepSynthetic() function prepares the annotation for</span></span>
 <span><span class="co">## the synthetic data</span></span>
 <span><span class="co">## The information is saved into the Sample GDS file</span></span>
 <span><span class="co">####################################################################</span></span>
@@ -817,7 +806,7 @@ synthetic dataset.</p>
 <span>                data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
 <span>                studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
 <span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 21:11:42</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-29 23:42:16</span></span></code></pre>
 <pre><code><span><span class="co">## [1] 0</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -852,8 +841,8 @@ synthetic dataset.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-profile">Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic
-profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-knn-ancestry-call-for-each-synthetic-profile"></a>
+<h4 id="sub-step-2--perform-the-pca-knn-ancestry-call-for-each-synthetic-profile">Sub-Step 2. Perform the PCA-KNN ancestry call for each synthetic
+profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-knn-ancestry-call-for-each-synthetic-profile"></a>
 </h4>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -887,7 +876,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## A data.frame with the description of the study for the synthetic</span></span>
 <span><span class="co">## data is required.</span></span>
-<span><span class="co">## The column names must be as shown </span></span>
+<span><span class="co">## The column names must be as shown below</span></span>
 <span><span class="co">#################################################################### </span></span>
 <span><span class="va">studyDF.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA.Synthetic"</span>,</span>
 <span>                          study.desc <span class="op">=</span> <span class="st">"MYDATA synthetic data"</span>,</span>
@@ -896,7 +885,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## The list of cancer samples used to generate the synthetic data </span></span>
-<span><span class="co">## as obtained by the PED RDS file. The samples must have an </span></span>
+<span><span class="co">## as listed in the PED RDS file. The samples must have an </span></span>
 <span><span class="co">## associated Sample GDS file.</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"pedEx.rds"</span><span class="op">)</span></span>
@@ -910,11 +899,11 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 <span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## Fix seed as in step 6 to ensure the same results</span></span>
+<span><span class="co">## Fix the RNG seed as in step 6 to ensure the same results</span></span>
 <span><span class="co">####################################################################    </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span>       </span>
 <span>    </span>
-<span><span class="co">## Extract the 1KG samples used to generate the synthetic dataset</span></span>
+<span><span class="co">## Select the 1KG samples used to generate the synthetic dataset</span></span>
 <span><span class="co">## Already done in step 6, no need to repeat if the results have been saved</span></span>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, nbSamples <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
 <span></span>
@@ -978,34 +967,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1326
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 21:11:42 2023    (internal increment: 35004)
+## Wed Mar 29 23:42:16 2023    (internal increment: 47104)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:42 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 21:11:42 2023    Done.
+## Wed Mar 29 23:42:16 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 23:42:16 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1326
-## Wed Mar 29 21:11:42 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:16 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:42 2023    Done.
+## Wed Mar 29 23:42:16 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 309
-## Wed Mar 29 21:11:42 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:16 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:42 2023    Done.
+## Wed Mar 29 23:42:16 2023    Done.
 ## Principal Component Analysis (PCA) on genotypes:
 ## Excluding 0 SNP (non-autosomes or non-selection)
 ## Excluding 2 SNPs (monomorphic: TRUE, MAF: NaN, missing rate: 0.025)
@@ -1015,34 +1004,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1352
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 21:11:43 2023    (internal increment: 35004)
+## Wed Mar 29 23:42:18 2023    (internal increment: 47104)
 ## 
 [..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 1s
-## Wed Mar 29 21:11:44 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 21:11:44 2023    Done.
+[==================================================] 100%, completed, 0s
+## Wed Mar 29 23:42:18 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 23:42:18 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1352
-## Wed Mar 29 21:11:44 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:18 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:44 2023    Done.
+## Wed Mar 29 23:42:18 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 273
-## Wed Mar 29 21:11:44 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:18 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:44 2023    Done.</code></pre>
+## Wed Mar 29 23:42:18 2023    Done.</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
@@ -1051,7 +1040,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--compute-the-pca-
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-4---run-the-ancestry-inference-on-the-external-study">Step 4 - Run the ancestry inference on the external study<a class="anchor" aria-label="anchor" href="#step-4---run-the-ancestry-inference-on-the-external-study"></a>
+<h3 id="step-4---run-the-ancestry-inference-in-the-input-data-set">Step 4 - Run the ancestry inference in the input data set<a class="anchor" aria-label="anchor" href="#step-4---run-the-ancestry-inference-in-the-input-data-set"></a>
 </h3>
 <p>The ancestry inference is done with the optimized K and D parameters.
 More specifically, a PCA is generated using the 1KG reference samples
@@ -1069,7 +1058,7 @@ Step 4 - Run the ancestry inference on the external study
 <p>The PCA of the sample and KNN sample and Call the ancestry with the
 optimal <em>K</em> and <em>D</em> parameters.</p>
 <p>Note: The formal selection of <em>K</em> and <em>D</em> parameters is
-done at this step but all the synthetic data is prepared in the step
+done at this step but all the synthetic data are prepared in the step
 3.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -1089,8 +1078,8 @@ done at this step but all the synthetic data is prepared in the step
 <span><span class="co"># will be create</span></span>
 <span><span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"out"</span><span class="op">)</span></span>
 <span>    </span>
-<span><span class="co"># directory which content directory name Name.ID in which the PCA is save</span></span>
-<span><span class="co"># </span></span>
+<span><span class="co"># A directory for the results, where a sub-directory </span></span>
+<span><span class="co"># will be set up for each input profile </span></span>
 <span><span class="va">PATH_OUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">PATH_OUT</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -1098,8 +1087,8 @@ done at this step but all the synthetic data is prepared in the step
 <span><span class="op">}</span></span>
 <span>    </span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## A data.frame with the description of the study for the synthetic</span></span>
-<span><span class="co">## data is required.</span></span>
+<span><span class="co">## A data.frame with the description of the data used for synthesis</span></span>
+<span><span class="co">## is required.</span></span>
 <span><span class="co">## The column names must be as shown </span></span>
 <span><span class="co">#################################################################### </span></span>
 <span><span class="va">studyDF.syn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA.Synthetic"</span>,</span>
@@ -1108,7 +1097,7 @@ done at this step but all the synthetic data is prepared in the step
 <span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## The list of samples to analyse as obtained by the PED RDS file.</span></span>
+<span><span class="co">## The list of samples to be analyze as given by the PED RDS file.</span></span>
 <span><span class="co">## The samples must have an associated Sample GDS files.</span></span>
 <span><span class="co">## Not needed if the list of samples is already available.</span></span>
 <span><span class="co">####################################################################</span></span>
@@ -1121,7 +1110,7 @@ done at this step but all the synthetic data is prepared in the step
 <span><span class="co">## of the reference samples.</span></span>
 <span><span class="co">## We expect the ancestry call from a synthetic profile to </span></span>
 <span><span class="co">## correspond to the known ancestry of the reference sample used to </span></span>
-<span><span class="co">## generate it.</span></span>
+<span><span class="co">## synthesize it.</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getRef1KGPop.html">getRef1KGPop</a></span><span class="op">(</span><span class="va">gds</span>, <span class="st">"superPop"</span><span class="op">)</span></span>
 <span>    </span>
@@ -2989,34 +2978,34 @@ done at this step but all the synthetic data is prepared in the step
 ##     # of principal components: 32
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1592
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 21:11:50 2023    (internal increment: 29168)
+## Wed Mar 29 23:42:23 2023    (internal increment: 39252)
 ## 
 [..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:50 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 21:11:50 2023    Done.
+[==================================================] 100%, completed, 1s
+## Wed Mar 29 23:42:24 2023    Begin (eigenvalues and eigenvectors)
+## Wed Mar 29 23:42:24 2023    Done.
 ## SNP Loading:
 ##     # of samples: 156
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1592
-## Wed Mar 29 21:11:50 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:24 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:50 2023    Done.
+## Wed Mar 29 23:42:24 2023    Done.
 ## Sample Loading:
 ##     # of samples: 1
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 7
-## Wed Mar 29 21:11:50 2023    (internal increment: 65536)
+## Wed Mar 29 23:42:24 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 21:11:50 2023    Done.</code></pre>
+## Wed Mar 29 23:42:24 2023    Done.</code></pre>
 <div class="sourceCode" id="cb1845"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
@@ -3032,13 +3021,13 @@ done at this step but all the synthetic data is prepared in the step
 <p>Pre-processed files, such as the 1KG GDS file, are available at this
 address:</p>
 <p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
-<p>Beware that some of those files are voluminous.</p>
+<p>Beware that some of these files are large.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on
+<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> in the enviroment in
 which this document was compiled:</p>
 <pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>

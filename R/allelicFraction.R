@@ -481,7 +481,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     p <- 0
     pO <- 0
@@ -551,6 +551,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' @importFrom stats median
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
+#' @keywords internal
 computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
     listBlockAR <- list()

@@ -610,6 +610,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
 #' @importFrom stats median
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
+#' @keywords internal
 computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 
     listBlockAR <- list()

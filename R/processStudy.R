@@ -2075,7 +2075,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom stats mad median quantile
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                             predCall, listCall, kList=seq(3,15,1),
                             pcaList=seq(2,15,1)) {

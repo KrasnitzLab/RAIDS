@@ -80,19 +80,43 @@ entry present in the \code{listSamples} parameter.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+## Path to the demo 1KG GDS file is located in this package
+data.dir <- system.file("extdata/tests", package="RAIDS")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
 ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-studyInfo <- data.frame(study.id="Pancreatic.WES",
-                study.desc="Pancreatic study",
-                study.platform="WES",
-                stringsAsFactors=FALSE)
+studyDF <- data.frame(study.id = "MYDATA",
+                        study.desc = "Description",
+                        study.platform = "PLATFORM",
+                        stringsAsFactors = FALSE)
 
-## TODO
-fileNamePED <- "TODO"
+## The data.frame containing the information about the samples
+## The entries should be strings, not factors (stringsAsFactors=FALSE)
+samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
+                    Case.ID = c("Patient_h11", "Patient_h12"),
+                    Diagnosis = rep("Cancer", 2),
+                    Sample.Type = rep("Primary Tumor", 2),
+                    Source = rep("Databank B", 2), stringsAsFactors = FALSE)
+rownames(samplePED) <- samplePED$Name.ID
+
+## Create the Sample GDS file for sample in listSamples vector
+## (in this case, samples "ex1")
+## The Sample GDS file is created in the PATHSAMPLEGDS directory
+result <- createStudy2GDS1KG(PATHGENO=data.dir,
+            pedStudy=samplePED, fileNameGDS=gdsFile,
+            studyDF=studyDF, listSamples=c("ex1"),
+            PATHSAMPLEGDS=data.dir, verbose=FALSE)
+
+## The function returns OL when successful
+result
+
+## The Sample GDS file 'ex1.gds' has been created in the
+## specified directory
+list.files(data.fir)
+
+## Unlink Sample GDS file (created for demo purpose)
+unlink(file.path(data.dir, "ex1.gds"))
 
 }
 \author{

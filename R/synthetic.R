@@ -632,7 +632,7 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 computeSyntheticConfMat <- function(matKNN, pedCall, refCall,
                                         predCall, listCall) {
 

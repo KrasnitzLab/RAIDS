@@ -45,4 +45,4 @@ Suggests: testthat,
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3

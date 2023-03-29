@@ -12,7 +12,7 @@ urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-    %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer Sequencing}
+    %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer-derived Sequences}
     %\VignettePackage{RAIDS}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
@@ -68,24 +68,24 @@ from tumor-derived data would be beneficial.
 
 The **RAIDS** package implements an inference procedure that has been
 specifically developed to accurately infer genetic ancestry from 
-cancer-derived sequencing. The covered cancer-derived sequencing are:
+cancer-derived sequences. The current version can handle cancer-derived sequences of:
 
 * tumor exomes
 * targeted gene panels 
-* RNA sequences
+* RNA
 
-The **RAIDS** package includes a data synthesis method that enables 
-the selection of the
-best parameters for a specific cancer profile and also permits a 
-statistically assessment of inference accuracy for an individual 
-cancer-derived molecular profile.
+The **RAIDS** package implements a data synthesis method that, for any given
+cancer-derived sequence profile, enables 
+on the one hand, profile-specific inference
+parameter optimization and on the other hand, a profile-specific inference
+accuracy estimate.
 
 <br>
 <br>
 
 # Installation
 
-To install the latest version accessible on the 
+To install the latest version from the 
 [RAIDS Github Website](https://github.com/KrasnitzLab/RAIDS "RAIDS Github Site"), 
 the `r CRANpkg("devtools")` package is required.
 
@@ -113,17 +113,17 @@ knitr::include_graphics("MainSteps_v01.png")
 
 The main steps are:
 
-1. Format the information from 1000 Genomes (1KG) (optional)
-2. Format the information from an external study
-3. Find the optimized parameters for the ancestry inference
-4. Run the ancestry inference on the external study
+1. Format reference data from the 1000 Genomes (1KG) (optional)
+2. Format cancer-derived data set starting from BAM files
+3. Optimize ancestry inference parameters
+4. Infer ancestry for the subjects of the external study
 
-Those main steps are described in details in the following sections.
+These main steps are described in detail in the following.
 
 <br>
 <br>
 
-## Step 1 - Format the information from 1000 Genomes (optional)
+## Step 1 - Format reference data from the 1000 Genomes (optional)
 
 
 ```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
@@ -133,14 +133,14 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 
 ******
 
-This step generates 3 important reference files:
+At this step three important reference files are created:
 
 - The 1KG GDS File
 - The 1KG SNV Annotation GDS file
 - The 1KG SNV Retained VCF file
 
-<span style="color:darkred;font-weight:bold">Beware that the 3 pre-processed 
-files are available at this address:</span>
+<span style="color:darkred;font-weight:bold">Note that these pre-processed 
+files are available at:</span>
 
 <span style="color:red">
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
@@ -155,17 +155,15 @@ hg38 [@Lowy-Gallego2019a].</span>
 <span style="color:darkred;font-weight:bold">This section can be skipped if 
 you choose to use the pre-processed files.</span>
 
-The vignette [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) is dedicated to this section.
+The execution of this step is explained in the [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) 
+vignette.
 
 <br>
 
-## Step 2 - Format information from an external study to get it ready for ancestry inference
+## Step 2 - Prepare cancer-derived data for ancestry inference
 
-To be able to run the ancestry inference on samples from an external study, the 
-information about the samples needs to follow a specific format.
-
-The preparation of the external study data is divided is sub-steps.
-
+Molecular profiles in a cancer-derived data set must be formatted 
+following a series of sub-steps.
 
 ```{r graphStep2, echo = FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step2_v01.png")
@@ -173,24 +171,25 @@ knitr::include_graphics("MainSteps_Step2_v01.png")
 
 <br>
 
-The required sub-steps are:
+These are:
 
 1. Create a directory containing the 3 reference files from 1KG
-2. Generate a Sample SNP pileup file (1 file per sample)
-3. Create a Sample RDS file containing information about the samples
+2. Make a SNP pileup file for the profile
+3. Create an RDS file containing information about the samples (AK WDTM?)
 4. Create a Sample GDS file (1 GDS file per sample)
 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 6. Estimate the allelic frequency for the pruned SNVs
 
-Beware that a mapped BAM file is needed for each sample (step 2). The reference 
-genome used for the mapping must correspond to the one used to generate the 
-1KG GDS file. In this case, the 1KG GDS file is based on hg38 genome.
+Note that a mapped BAM file is needed for each sample (step 2). 
+The reference 
+genome used for the mapping must be the same as the one used to generate the
+1KG GDS file. The 1KG GDS file available for download (AK FROM?) is based on the hg38 genome build.
 
 <br>
 
 ### Sub-Step 1. Create a directory containing the 3 required reference files
 
-The 3 required reference files can be downloaded:
+The 3 required reference files may be downloaded:
 
 ```bash
 ####################################
@@ -209,29 +208,30 @@ wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
 wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
 ```
 
-The 3 files should be stored in the same directory. For the current 
-demonstration, the directory will be referred as **PATH_REF**.
+The 3 files should be stored in the same directory. For the current (AK IN THE EXAMPLE BELOW?)
+demonstration, this directory is referred to as **PATH_REF**.
 
-For more information on how to generate your own reference files, 
-you can refer to the vignette 
+For more information on creating your own reference files, 
+see the vignette 
 [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html).
 
 <br>
 
-### Sub-Step 2. Generate a Sample SNP pileup file (1 file per sample)
+### Sub-Step 2. Generate a SNP pileup file (1 file per profile)
 
-This step requires the installation of the external code 
+This step requires installation of the external code 
 [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) which 
 is associated to the facets package [@Shen2016]. Given a VCF file 
 containing SNP locations, 
 [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
 application outputs, for each location, 
-the counts of the reference and alternative nucleotides from an BAM input.
+the read counts for the reference and alternative nucleotides from the BAM input.
 
-At this step, 
+At this point, 
 [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used 
-to generate a **Sample SNP pileup file** that will contain the reference and 
-alternative nucleotide counts at each SNP location present in the 
+to create,for each cancer-derived profile,
+a **Profile SNP pileup file** containing the read counts for the reference and 
+alternative nucleotides at each SNP position in the 
 reference 1KG GDS file.
 The **1KG SNV Retained VCF file**, which contains the list of 
 retained 1KG SNVs, is required. 
@@ -241,10 +241,10 @@ retained 1KG SNVs, is required.
 knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png")
 ```
 
-Beware that the name assigned to the **Sample SNP pileup file** will correspond 
-to the Sample identifier (Name.ID) in the following analysis. For example, a 
+Note that the name assigned to the **Profile SNP pileup file** will correspond 
+to the profile identifier (Name.ID) in the following analysis. For example, a 
 SNP pileup file called "Sample.01.txt.gz" would be associated to the 
-"Sample.01" sample. 
+"Sample.01" profile. 
 
 This is the command line to run 
 [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode):
@@ -268,24 +268,24 @@ snp-pileup -g -d5000 -q15 -Q20  -r0 PATH_REF/snvSel0.01.vcf.gz PATH_OUT/Name.ID.
 
 <br>
 
-### Sub-Step 3. Create a Sample PED RDS file containing the information about the samples
+### Sub-Step 3. Create a profile PED RDS file containing the information about the profiles
 
-A RDS file describing all the samples that are part of the analysis 
+An RDS file describing all the profiles analyzed 
 is required.
 
-The RDS file must contain a *data.frame* with those 5 columns:
+The RDS file must contain a *data.frame* with these 5 columns: (AK NONE OF WHICH SEEMS NECESSARY)
 
-- **Name.ID**: The unique sample identifier. The Sample VCF file associated to 
-this sample should be called "Name.ID.txt.gz". 
+- **Name.ID**: The unique sample identifier. The profile VCF file  
+should be called "Name.ID.txt.gz". 
 - **Case.ID**: The patient identifier associated to the sample.
-- **Sample.Type**: The information about the sample type (primary tumor, 
-metastasis, normal, etc..). 
-- **Diagnosis**: The diagnosis associated to the patient.
-- **Source**: The source of the sample (example: dbGAP_XYZ).
+- **Sample.Type**: The information about the profile tissue source (primary tumor,
+metastatic tumor, normal, etc..). 
+- **Diagnosis**: The donor's diagnosis.
+- **Source**: The source of the profile sequence data (example: dbGAP_XYZ). (AK REPOSITORY?)
 
-Important: The row names of the *data.frame* must be the **Name.ID**.
+Important: The row names of the *data.frame* must be the profiles' **Name.ID**.
 
-This file is referred as the **Sample PED RDS file** (PED for pedigree). 
+This file is referred to as the **Sample PED RDS file** (PED for pedigree). 
 Alternatively, the PED information can be saved in another type of 
 file (CVS, etc..) as long as the *data.frame* information can be regenerated 
 in R (with _read.csv()_ or else). 
@@ -325,7 +325,7 @@ rm(demo_PED_File)
 
 <br>
 
-### Sub-Step 4. Create a Sample GDS file (1 GDS file per sample)
+### Sub-Step 4. Create a profile GDS file (1 GDS file per profile) (AK SAMPLE -> PROFILE EVERYWHERE?)
 
 This step requires 3 files as input:
 
@@ -353,8 +353,8 @@ library(RAIDS)
 #################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file 
 ## need to be located in the same directory
-## Beware that the 1KG GDS file used for this example is a  
-## simplified version and CANNOT be used for any real analyses
+## Note that the 1KG GDS file used for this example is a  
+## simplified version and CANNOT be used for any real analysis
 #################################################################
 data.dir <- system.file("extdata", package="RAIDS")
 PATH_1KG <- file.path(data.dir, "example", "gdsRef")
@@ -424,14 +424,13 @@ list.files(path = PATHSAMPLEGDS)
 ### Sub-Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
 The initial list of 1KG SNVs is pruned, using linkage disequilibrium analysis, 
-to retained as subset of SNVs of interest for each sample. The 
-list of selected SNVs is specific to each sample and the information about the 
-retained SNVs is added to the **Sample GDS file**.
+and a sample-specific subset of SNVs is retained for each sample. This information 
+is added to the **Sample GDS file**.
 
 The __pruningSample()__ function requires the **1KG GDS file** as input. It 
 also requires the path to the **Sample GDS file(s)**.
 
-Beware that this step can requisite large disk space.
+Note that this step can require large disk space.
 
 ```{r pruningSample, echo=TRUE, eval=TRUE}
 ##############################################################
@@ -441,7 +440,7 @@ library(RAIDS)
     
 ##############################################################
 ## The 1KG GDS file is required (demo version)
-## Beware that the 1KG GDS file used for this example is a  
+## Note that the 1KG GDS file used for this example is a  
 ## simplified version and CANNOT be used for any real analyses
 ##############################################################
 PATH_1KG <- file.path(data.dir, "example", "gdsRef")
@@ -459,8 +458,8 @@ gds_1KG <- snpgdsOpen(file.GDS)
 PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
 
 ##############################################################
-## The list of samples to analyse.
-## The samples must be present in the Sample PED RDS file. 
+## The list of samples to analyze.
+## The samples must be listed in the Sample PED RDS file. 
 ## The samples must also have an associated Sample GDS file 
 ## (see previous step).
 ##############################################################
@@ -470,8 +469,8 @@ listSamples <- ped[, "Name.ID"]
 
 #################################################################
 ## The study information passed to the function must correspond 
-## to the information present in the previously defined study
-## data.frame (see previous step).
+## to a row the information present in the 
+## data.frame defined in the preceding step.
 #################################################################
 studyDF <- data.frame(study.id = "MYDATA",
                         study.desc = "Description",
@@ -479,14 +478,14 @@ studyDF <- data.frame(study.id = "MYDATA",
                         stringsAsFactors = FALSE)
 
 ##############################################################
-## The pruning function is called on one sample at the time
+## The pruning function is called with one sample as input at the time
 ##############################################################
 for(i in seq_len(length(listSamples))) {
     ## Compute the SNV pruned subset
-    ## study.id: Study identifier as defined in the previous step.
+    ## study.id: Study identifier as defined in the preceding step. (AK EXPLICIT STEP NUMBER)
     ##           The study identifier must be the same that the one present in
     ##           Sample GDS file.
-    ## PATHSAMPLEGDS: All Sample GDS files must be in the same directory.
+    ## PATHSAMPLEGDS: All Sample GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)
     pruningSample(gds=gds_1KG,
                     sampleCurrent = listSamples[i],
                     study.id = studyDF$study.id, 
@@ -517,8 +516,8 @@ showfile.gds()
 
 ### Sub-Step 6. Estimate the allelic fraction for the pruned SNVs
 
-The __estimateAllelicFraction()__ estimates the allelic fraction for all 
-SNVs present in the pruned SNV dataset. Beware that the function requires 
+The __estimateAllelicFraction()__ estimates the allele fraction for all 
+SNVs present in the pruned SNV dataset. Note that the function requires 
 different inputs for DNA and RNA samples.
 
 For the DNA samples, these 2 files are required:
@@ -532,7 +531,7 @@ For the RNA samples, these 3 files are required:
 2. The **1KG GDS file**
 3. The **1KG SNV Annotation GDS file**
 
-In both cases, the other required inputs are:
+In both cases, the other required input is:
 
 1. The information about the length of the chromosomes
 2. The sample identifier (it corresponds to the Sample GDS file name)
@@ -540,7 +539,7 @@ In both cases, the other required inputs are:
 
 The information about the length of the chromosomes must be assigned into a 
 *vector* object. This is an example on how to retrieve the information. 
-There are other ways to extract the information. 
+There are alternative ways to retrieve this information, e.g., 
 
 ```{r extractChrLength, echo=TRUE, message=FALSE, warning=FALSE}
 ###################################################################
@@ -550,9 +549,9 @@ library(BSgenome.Hsapiens.UCSC.hg38)
 
 ###################################################################
 ## The length of each chromosome is required
-## Chromosomes X, Y and M need relabeling
-## There are other ways to extract the information
-## This is one example
+## Chromosomes X, Y and M need relabeling (see below)
+## There are alternative ways to retrieve this information, e.g., 
+## 
 ###################################################################
 chrInfo <- integer(25L)
 for(i in seq_len(22L)) {
@@ -574,7 +573,7 @@ as shown in this example.
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=TRUE}
 ###################################################################
-## Load required package
+## Load the required package
 ###################################################################
 library(RAIDS)
 
@@ -624,11 +623,11 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## The estimation of the allelic fraction
 ###################################################################
 
-## Estimate the allelic fraction of the pruned SNVs
+## Estimate the allele fraction of the pruned SNVs
 ## The current example is for a DNA sample
 ## In the case of RNA sample, the function needs different inputs
 ## such as the 1KG SNV Annotation GDS file and
-## the block.id which refers to block.id in  the 1KG SNV Annotation GDS file 
+## the block.id should be as listed in the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
                                         sampleCurrent = sampleName,
@@ -642,31 +641,31 @@ showfile.gds()
 
 ```
 
-This step must be run for each sample present in the study.
+This step must be executed for each sample present in the study.
 
 <br>
 
 
-## Step 3 - Find the optimized parameters for the ancestry inference
+## Step 3 - Optimize the ancestry inference parameters
 
-At this step, the optimization of the parameters is required to obtained the 
-most accurate results at the ancestry inference step.
+At this step, optimization of the parameters is required to maximize the 
+the ancestry inference accuracy (next step).
 
 ```{r graphStep3, echo = FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width = '120%', results='asis'}
 knitr::include_graphics("MainSteps_Step3_v01.png")
 ```
 
-Two parameters can be optimized for the ancestry inference process:
+Two inference parameters to be optimized:
 
 - _K_: the number of neighbors used to call the ancestry
-- _D_: the number of dimensions used to create the PCA
+- _D_: the number of PCA components retained
 
-The accuracy is evaluated through a synthetic dataset created from merging one 
+The accuracy is evaluated using a synthetic dataset created from merging one 
 cancer profile with multiple 1KG samples of known ancestry. Using the synthetic 
 profiles, a range of _K_ and _D_ values are tested. Through that process, the 
-_K_ and _D_ values with satisfying accuracy can be selected.
+_K_ and _D_ values are tuned to maximize accuracy.
 
-This step is divided in two sub-steps:
+This step is consists of two sub-steps:
 
 1. Generate the synthetic dataset
 2. Compute the PCA-KNN ancestry call for each synthetic profile
@@ -689,9 +688,9 @@ each combination of the 1KG samples and cancer profile. The synthetic profile
 is then saved in the **Sample GDS file**.
 
 The three functions _select1KGPop()_, _prepSynthetic()_ and _syntheticGeno()_ 
-are association to the creation of the synthetic dataset.
+are used for data synthesis.
 
-Those 3 files are required:
+These 3 files are required:
 
 1. The **Sample GDS file**
 2. The **1KG GDS file**
@@ -736,7 +735,7 @@ studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
 file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
 
 ####################################################################
-## The prepSynthetic() function prepares the annotations for
+## The prepSynthetic() function prepares the annotation for
 ## the synthetic data
 ## The information is saved into the Sample GDS file
 ####################################################################
@@ -781,7 +780,7 @@ showfile.gds()
 <br>
 
 
-### Sub-Step 2. Compute the PCA-KNN ancestry call for each synthetic profile
+### Sub-Step 2. Perform the PCA-KNN ancestry call for each synthetic profile
 
 
 
@@ -817,7 +816,7 @@ if(! file.exists(PATH_OUT)) {
 ####################################################################
 ## A data.frame with the description of the study for the synthetic
 ## data is required.
-## The column names must be as shown 
+## The column names must be as shown below
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
                           study.desc = "MYDATA synthetic data",
@@ -826,7 +825,7 @@ studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
 
 ####################################################################
 ## The list of cancer samples used to generate the synthetic data 
-## as obtained by the PED RDS file. The samples must have an 
+## as listed in the PED RDS file. The samples must have an 
 ## associated Sample GDS file.
 ####################################################################
 filePED <- file.path(data.dir, "example", "pedEx.rds")
@@ -840,11 +839,11 @@ listSamples <- ped[, "Name.ID"]
 spRef <- getRef1KGPop(gds, "superPop")
     
 ####################################################################
-## Fix seed as in step 6 to ensure the same results
+## Fix the RNG seed as in step 6 to ensure the same results
 ####################################################################    
 set.seed(3043)       
     
-## Extract the 1KG samples used to generate the synthetic dataset
+## Select the 1KG samples used to generate the synthetic dataset
 ## Already done in step 6, no need to repeat if the results have been saved
 dataRef <- select1KGPop(gds, nbSamples = 2L)
 
@@ -909,7 +908,7 @@ showfile.gds()
 
 <br>
 
-## Step 4 - Run the ancestry inference on the external study
+## Step 4 - Run the ancestry inference in the input data set
 
 The ancestry inference is done with the optimized K and D parameters. More 
 specifically, a PCA is generated using the 1KG reference samples and the 
@@ -929,7 +928,7 @@ The PCA of the sample and KNN sample and Call the ancestry with the optimal
 _K_ and _D_ parameters.
 
 Note: The formal selection of _K_ and _D_ parameters is done at this step but 
-all the synthetic data is prepared in the step 3. 
+all the synthetic data are prepared in the step 3. 
 
 
 ```{r PCA.KNN.Sample, echo=TRUE, eval=TRUE}
@@ -950,8 +949,8 @@ gds <- openfn.gds(file.GDS)
 # will be create
 PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
     
-# directory which content directory name Name.ID in which the PCA is save
-# 
+# A directory for the results, where a sub-directory 
+# will be set up for each input profile 
 PATH_OUT <- file.path(PATHSAMPLEGDS)
 
 if(! file.exists(PATH_OUT)) {
@@ -959,8 +958,8 @@ if(! file.exists(PATH_OUT)) {
 }
     
 ####################################################################
-## A data.frame with the description of the study for the synthetic
-## data is required.
+## A data.frame with the description of the data used for synthesis
+## is required.
 ## The column names must be as shown 
 #################################################################### 
 studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
@@ -969,7 +968,7 @@ studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
                           stringsAsFactors = FALSE)
     
 ####################################################################
-## The list of samples to analyse as obtained by the PED RDS file.
+## The list of samples to be analyze as given by the PED RDS file.
 ## The samples must have an associated Sample GDS files.
 ## Not needed if the list of samples is already available.
 ####################################################################
@@ -982,7 +981,7 @@ listSamples <- ped[, "Name.ID"]
 ## of the reference samples.
 ## We expect the ancestry call from a synthetic profile to 
 ## correspond to the known ancestry of the reference sample used to 
-## generate it.
+## synthesize it.
 ####################################################################
 spRef <- getRef1KGPop(gds, "superPop")
     
@@ -1042,14 +1041,14 @@ Pre-processed files, such as the 1KG GDS file, are available at this address:
 
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
 
-Beware that some of those files are voluminous.
+Beware that some of these files are large.
 
 <br>
 <br>
 
 # Session info
 
-Here is the output of `sessionInfo()` on the system on which this document was 
+Here is the output of `sessionInfo()` in the enviroment in which this document was 
 compiled:
 
 ```{r sessionInfo, echo=FALSE}

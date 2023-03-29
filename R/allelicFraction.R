@@ -547,6 +547,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
+#' @keywords internal
 computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
                                         cutOffEmptyBox=-3) {
 

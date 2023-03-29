@@ -419,7 +419,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 testEmptyBox <- function(matCov, pCutOff=-3) {
 
     p <- 0
@@ -547,6 +547,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
+#' @keywords internal
 computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10,
                                         cutOffEmptyBox=-3) {
 

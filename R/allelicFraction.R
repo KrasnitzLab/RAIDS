@@ -481,7 +481,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     p <- 0
     pO <- 0

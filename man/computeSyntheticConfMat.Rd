@@ -37,3 +37,4 @@ gds <- "TODO"
 \author{
 Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 }
+\keyword{internal}

@@ -114,7 +114,7 @@ result
 
 ## The Sample GDS file 'ex1.gds' has been created in the
 ## specified directory
-list.files(data.fir)
+list.files(data.dir)
 
 ## Unlink Sample GDS file (created for demo purpose)
 unlink(file.path(data.dir, "ex1.gds"))

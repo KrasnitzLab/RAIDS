@@ -281,7 +281,7 @@ this sample should be called "Name.ID.txt.gz".
 - **Sample.Type**: The information about the sample type (primary tumor, 
 metastasis, normal, etc..). 
 - **Diagnosis**: The diagnosis associated to the patient.
-- **Source**: The source of the sample (example: TCGA-BRCA).
+- **Source**: The source of the sample (example: dbGAP_XYZ).
 
 Important: The row names of the *data.frame* must be the **Name.ID**.
 
@@ -353,7 +353,7 @@ library(RAIDS)
 #################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file 
 ## need to be located in the same directory
-## Bewared that the 1KG GDS file used for this example is a  
+## Beware that the 1KG GDS file used for this example is a  
 ## simplified version and CANNOT be used for any real analyses
 #################################################################
 data.dir <- system.file("extdata", package="RAIDS")
@@ -440,17 +440,17 @@ Beware that this step can requisite large disk space.
 library(RAIDS)
     
 ##############################################################
-## The 1KG GDS file is required 
+## The 1KG GDS file is required (demo version)
+## Beware that the 1KG GDS file used for this example is a  
+## simplified version and CANNOT be used for any real analyses
 ##############################################################
 PATH_1KG <- file.path(data.dir, "example", "gdsRef")
     
 fileName.GDS.1KG <- "ex1kg.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
-## Open the 1KG GDS file
+## Open the 1KG GDS file (demo version)
 gds_1KG <- snpgdsOpen(file.GDS)
-
-
 
 ##############################################################
 ## All Sample GDS files need to be located in the same 
@@ -459,17 +459,18 @@ gds_1KG <- snpgdsOpen(file.GDS)
 PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
 
 ##############################################################
-## The list of samples to analyse as obtained by the 
-## PED RDS file. The samples must have an 
-## associated Sample GDS file.
+## The list of samples to analyse.
+## The samples must be present in the Sample PED RDS file. 
+## The samples must also have an associated Sample GDS file 
+## (see previous step).
 ##############################################################
 filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 listSamples <- ped[, "Name.ID"]
 
 #################################################################
-## The study information passed to the function must correspond
-## the information present in the previously defined study
+## The study information passed to the function must correspond 
+## to the information present in the previously defined study
 ## data.frame (see previous step).
 #################################################################
 studyDF <- data.frame(study.id = "MYDATA",

@@ -1369,3 +1369,114 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
                         eigenvector=listPCA[["samp.load"]]$eigenvect)
     return(listRes)
 }
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matKNN.All TODO see it is rbind matKNN of the
+#' computeKNNSuperPoprSynthetic return from group synthetic data
+#'
+#' @param pedCall TODO see return of prepPedSynthetic1KG
+#'
+#' @param refCall TODO column name in pedCall with the call
+#'
+#' @param predCall a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
+#'
+#' @param listCall TODO array of the possible call
+#'
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbor analysis.
+#' Default: \code{seq(3,15,1)}.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.
+#' Default: \code{seq(2,15,1)}.
+#'
+#' @return a \code{list} containing 5 entries:
+#' \itemize{
+#' \item{dfPCA} {TODO}
+#' \item{dfPop} {TODO}
+#' \item{D} {TODO}
+#' \item{K} {TODO}
+#' \item{listD} {TODO}
+#' }
+#'
+#' @examples
+#'
+#' # TODO
+#' listEigenvector <- "TOTO"
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom stats mad median quantile
+#' @encoding UTF-8
+#' @keywords internal
+selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
+                                 predCall, listCall, kList=seq(3,15,1),
+                                 pcaList=seq(2,15,1)) {
+
+    if (min(kList) < 3) {
+        warning("A K smaller than 3 could not give robust results.\n")
+    }
+
+    tableSyn <- list()
+    tableCall <- list()
+    tableAUROC <- list()
+    i <- 1
+
+    ## Loop on all PCA dimension values
+    for (D in pcaList) {
+        matKNNCurD <- matKNN.All[which(matKNN.All$D == D ), ]
+        listTMP <- list()
+        listTMP.AUROC <- list()
+        j <- 1
+        ## Loop on all k neighbor values
+        for (K in kList) {
+            matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
+            res <- computeSyntheticConfMat(matKNN=matKNNCur, pedCall=pedCall,
+                        refCall=refCall, predCall=predCall, listCall=listCall)
+            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
+                                          predCall, listCall)
+
+            df <- data.frame(D=D, K=K, AUROC.min=min(resROC$matAUROC.Call$AUC),
+                             AUROC=resROC$matAUROC.All$ROC.AUC,
+                             Accu.CM=res$matAccuracy$Accu.CM)
+
+            listTMP[[j]] <- df
+            listTMP.AUROC[[j]] <- resROC$matAUROC.Call
+            j <- j + 1
+        }
+        df <- do.call(rbind, listTMP)
+
+        tableCall[[i]] <- df
+        tableAUROC[[i]] <- do.call(rbind, listTMP.AUROC)
+        maxAUROC <- max(df[df$K %in% kList, "AUROC.min"])
+        kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3, "K"]
+        kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
+        dfPCA <- data.frame(D=D,
+                            median=median(df[df$K %in% kList, "AUROC.min"]),
+                            mad=mad(df[df$K %in% kList, "AUROC.min"]),
+                            upQuartile=quantile(df[df$K %in% kList,
+                                                   "AUROC.min"], 0.75),
+                            K=kV)
+        tableSyn[[i]] <- dfPCA
+        i <- i + 1
+    }
+
+    dfPCA <- do.call(rbind, tableSyn)
+    dfCall <- do.call(rbind, tableCall)
+    dfAUROC <- do.call(rbind, tableAUROC)
+    selD <- dfPCA$D[which.max(dfPCA$upQuartile)]
+    selK <- dfPCA$K[which.max(dfPCA$upQuartile)]
+    tmp <- max(dfPCA$upQuartile)
+    listD <- dfPCA$D[which(abs(dfPCA$upQuartile - tmp) < 1e-3)]
+
+    res <- list(dfPCA=dfPCA, dfPop=dfCall, dfAUROC=dfAUROC,
+                D=selD, K=selK, listD=listD)
+    return(res)
+}

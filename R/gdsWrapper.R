@@ -1359,7 +1359,7 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
 
 #' @title Add the pruned.study entry related to the SNV dataset in the
-#' GDS Sample file
+#' Profile GDS file
 #'
 #' @description This function adds the names of the SNVs into the node called
 #' "pruned.study" in GDS
@@ -1367,7 +1367,7 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' deleted and a new entry is created.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' GDS Sample file.
+#' Profile GDS file.
 #'
 #' @param pruned a \code{vector} of \code{character} string representing the
 #' name of the SNVs.

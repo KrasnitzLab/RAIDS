@@ -687,7 +687,7 @@ library(RAIDS)
 gds <- snpgdsOpen(file.GDS)
 
 ####################################################################
-## Fix seed to ensure reproducible results
+## Fix RNG seed to ensure reproducible results
 ####################################################################
 set.seed(3043)   
 

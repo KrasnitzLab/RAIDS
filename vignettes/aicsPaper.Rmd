@@ -487,7 +487,7 @@ for(i in seq_len(length(listSamples))) {
     ##           Sample GDS file.
     ## PATHSAMPLEGDS: All Profile GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)
     pruningSample(gds=gds_1KG,
-                    sampleCurrent = listSamples[i],
+                    currentProfile = listSamples[i],
                     study.id = studyDF$study.id, 
                     PATHSAMPLEGDS = PATHSAMPLEGDS)
     

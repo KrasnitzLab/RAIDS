@@ -4,13 +4,13 @@
 \name{addGDSStudyPruning}
 \alias{addGDSStudyPruning}
 \title{Add the pruned.study entry related to the SNV dataset in the
-GDS Sample file}
+Profile GDS file}
 \usage{
 addGDSStudyPruning(gds, pruned)
 }
 \arguments{
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-GDS Sample file.}
+Profile GDS file.}
 
 \item{pruned}{a \code{vector} of \code{character} string representing the
 name of the SNVs.}

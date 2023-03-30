@@ -183,7 +183,7 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
                         stringsAsFactors=FALSE)
 
     result1 <- RAIDS:::validateAdd1KG2SampleGDS(gds=gdsF,
-                gdsSampleFile=gdsFile, sampleCurrent="Sample01",
+                gdsProfileFile=gdsFile, currentProfile="Sample01",
                 study.id="Synthetic")
 
     expect_identical(result1, 0L)

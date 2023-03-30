@@ -12,7 +12,7 @@ First you a vcf file with the SNV you want to keep
 
 ## Create a VCF file with the SNV you want tokeep
 In R
-    library(aicsPaper)
+    library(RAIDS)
     
     gds <- snpgdsOpen(fileGDS1kg)
     snvListVCF(gds, fileOUT, offset = 1)
@@ -61,7 +61,7 @@ with the covereage information
 
 in R:
 
-    library(aicsPaper)
+    library(RAIDS)
     
     PATHGENO <- file.path("data", "snpCancer")
     PATHMETA <- file.path("data", "metadata")
@@ -110,7 +110,7 @@ on mutliple instance.
 
 or in R
 
-    library(aicsPaper)
+    library(RAIDS)
     
     # fileNameGDS with the sample and 1KG genotype
     # listSamples list of sample.id from the study
@@ -152,7 +152,7 @@ in the pruning process to the gds Sample
 TODO
 Add genotype only for the snp selected in pruning to gdsSample
 
-    library(aicsPaper)
+    library(RAIDS)
     
     # fileNameGDS1KG the file to the gds1KG
     # PATHSAMPLEGDS the path where the files gdsSample 

@@ -1,6 +1,6 @@
 # Generate the 1000 genomes GDS file #
 
-Preparation of the 1000 genomes (1KG) GDS file for AICS
+Preparation of the 1000 genomes (1KG) GDS file for RAIDS
 
 ## Authors ##
 
@@ -24,7 +24,7 @@ You need a pedigree file for the description of the samples
 
 In R:
 
-    library(aicsPaper)
+    library(RAIDS)
     ## pedigree file from 1KG with the path
     ## If the file is in the current directory
     filePED1KGOri <- "20130606_g1k.ped"
@@ -65,7 +65,7 @@ The file is mapSNVSel.rds
 
 In R:
 
-    library(aicsPaper)
+    library(RAIDS)
 
     fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
     fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
@@ -83,7 +83,7 @@ TODO
 
 ## Generate the base GDS file with 1KG
 
-    library(aicsPaper)
+    library(RAIDS)
     
     filePED1KG <- file.path(PATHMETA,"ped1KG.rds")
     fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")

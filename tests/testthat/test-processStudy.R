@@ -499,51 +499,61 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
 })
 
 
-test_that("pruningSample() must return expect result", {
+test_that("pruningSample() must return error when no SNV left after filtering", {
 
     data.dir <- test_path("fixtures")
 
     gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
                     study.platform = "PLATFORM",
                     stringsAsFactors = FALSE)
 
-    gdsSampleFile <- file.path(data.dir, "A_File_That_DOES_NOT_EXIST.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
-                                Case.ID = c("Patient_h11", "Patient_h12"),
-                                Diagnosis = rep("Cancer", 2),
-                                Sample.Type = rep("Primary Tumor", 2),
-                                Source = rep("Databank B", 2),
-                            stringsAsFactors = FALSE)
-    rownames(samplePED) <- samplePED$Name.ID
+    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
-    createStudy2GDS1KG(PATHGENO=data.dir,
-                        pedStudy=samplePED, fileNameGDS=gdsFile,
-                        studyDF=studyDF, listProfiles=c("ex1"),
-                        PATHSAMPLEGDS=data.dir, verbose=FALSE)
+    error_message <- paste0("In pruningSample, the sample ex1 ",
+                                    "doesn't have SNPs after filters")
+
+    expect_error(pruningSample(gds=gdsF, method="corr",
+        currentProfile="ex1", study.id=studyDF$study.id,
+        listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+        keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return expect result", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+
+    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-
-    withr::defer(unlink(file.path(data.dir, "prunedTest.Obj.rds")),
-                        envir = parent.frame())
-    withr::defer(unlink(file.path(data.dir, "prunedTest.rds")), envir = parent.frame())
+    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
     result <- pruningSample(gds=gdsF, method="corr",
-        currentProfile="ex1", study.id=studyDF$study.id,
-        listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
-        keepFile=TRUE, PATHPRUNED=data.dir, outPref="prunedTest")
+                            currentProfile="ex1", study.id=studyDF$study.id,
+                            listSNP=NULL, slide.max.bp.v=50000L,
+                            ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
+                            minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+                            keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest")
 
     expect_equal(result, 0L)
-    expect_true(file.exists(file.path(data.dir, "prunedTest.Obj.rds")))
-    expect_true(file.exists(file.path(data.dir, "prunedTest.rds")))
+    expect_true(file.exists(file.path(data.dir.sample, "prunedTest.Obj.rds")))
+    expect_true(file.exists(file.path(data.dir.sample, "prunedTest.rds")))
 })
+
 
 #############################################################################
 ### Tests add1KG2SampleGDS() results

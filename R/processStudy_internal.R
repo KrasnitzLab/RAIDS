@@ -10,10 +10,10 @@
 #' be used to calculate the linkage disequilibrium in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function.
 #'
-#' @param sampleCurrent  a \code{character} string
-#' corresponding to the sample identifier used in LD pruning done by the
-#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
-#' corresponding to the sample identifier must exist and be located in the
+#' @param currentProfile  a \code{character} string
+#' corresponding to the profile identifier used in LD pruning done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
+#' corresponding to the profile identifier must exist and be located in the
 #' \code{PATHSAMPLEGDS} directory.
 #'
 #' @param study.id a \code{character} string corresponding to the study
@@ -76,7 +76,7 @@
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
-#'      sampleCurrent="TGCA_01", study.id="TCGA",
+#'      currentProfile="TGCA_01", study.id="TCGA",
 #'      listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
 #'      ld.threshold.v=0.008, np=1L, verbose.v=TRUE, chr=1,
 #'      minAF.SuperPop=0.002, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
@@ -89,7 +89,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePruningSample <- function(gds, method, sampleCurrent, study.id,
+validatePruningSample <- function(gds, method, currentProfile, study.id,
                         listSNP, slide.max.bp.v, ld.threshold.v, np, verbose.v,
                         chr, minAF.SuperPop, keepGDSpruned, PATHSAMPLEGDS,
                         keepFile, PATHPRUNED, outPref) {
@@ -97,9 +97,9 @@ validatePruningSample <- function(gds, method, sampleCurrent, study.id,
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")
 
-    ## The parameter sampleCurrent must be a character string
-    if (!(is.character(sampleCurrent))) {
-        stop("The \'sampleCurrent\' parameter must be a character string.")
+    ## The parameter currentProfile must be a character string
+    if (!(is.character(currentProfile))) {
+        stop("The \'currentProfile\' parameter must be a character string.")
     }
 
     ## The parameter method must be a character string
@@ -452,11 +452,11 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #' those 3 columns: "study.id", "study.desc", "study.platform". All columns
 #' must be in \code{character} strings (no factor).
 #'
-#' @param listSamples a \code{vector} of \code{character} string corresponding
-#' to the sample identifiers that will have a GDS Sample file created. The
-#' sample identifiers must be present in the "Name.ID" column of the RDS file
+#' @param listProfiles a \code{vector} of \code{character} string corresponding
+#' to the profile identifiers that will have a GDS Sample file created. The
+#' profile identifiers must be present in the "Name.ID" column of the RDS file
 #' passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#' If \code{NULL}, all profiles in the \code{fileNamePED} are selected.
 #'
 #' @param PATHSAMPLEGDS a \code{character} string representing the path to
 #' the directory where the GDS Sample files will be created.
@@ -490,7 +490,7 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #' ## The validatiion should be successful
 #' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
 #'             batch=1, studyDF=studyInfo,
-#'             listSamples=c("Sample_01", "Sample_02"),
+#'             listProfiles=c("Sample_01", "Sample_02"),
 #'             PATHSAMPLEGDS=data.dir, verbose=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -498,7 +498,7 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #' @encoding UTF-8
 #' @keywords internal
 validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
-                                        listSamples, PATHSAMPLEGDS, verbose) {
+                                       listProfiles, PATHSAMPLEGDS, verbose) {
 
     ## The PED study must have the mandatory columns
     if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
@@ -518,9 +518,9 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
         stop("The \'batch\' must be a single integer.")
     }
 
-    ## The listSamples must be a vector of character string
-    if (!(is.character(listSamples) || is.null(listSamples))) {
-        stop("The \'listSamples\' must be a vector ",
+    ## The listProfiles must be a vector of character string
+    if (!(is.character(listProfiles) || is.null(listProfiles))) {
+        stop("The \'listProfiles\' must be a vector ",
                 "of character strings (1 entry or more) or NULL.")
     }
 

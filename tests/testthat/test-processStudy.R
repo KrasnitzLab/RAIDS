@@ -235,7 +235,7 @@ test_that("pruningSample() must return error when gds is a character string", {
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
-    expect_error(pruningSample(gds=gdsFile, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsFile, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -253,7 +253,7 @@ test_that("pruningSample() must return error when keepGDSpruned is a character s
 
     error_message <- 'The \'keepGDSpruned\' parameter must be a logical (TRUE or FALSE).'
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned="YES",
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -272,7 +272,7 @@ test_that("pruningSample() must return error when keepFile is a character string
 
     error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="1KG_Test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="1KG_Test",
         study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=TRUE,
         PATHSAMPLEGDS=data.dir, keepFile="NO", PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -291,7 +291,7 @@ test_that("pruningSample() must return error when np is a character string", {
 
     error_message <- "The \'np\' parameter must be a single positive numeric value."
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
         np="1", verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -310,7 +310,7 @@ test_that("pruningSample() must return error when slide.max.bp.v is a character 
 
     error_message <- "The \'slide.max.bp.v\' parameter must be a single positive numeric value."
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v="4", ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -329,7 +329,7 @@ test_that("pruningSample() must return error when ld.threshold.v is a character 
 
     error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v="3",
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -348,7 +348,7 @@ test_that("pruningSample() must return error when ld.threshold.v is a vector of 
 
     error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v=c(3,3),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -367,7 +367,7 @@ test_that("pruningSample() must return error when method is a numeric", {
 
     error_message <- "The \'method\' parameter must be a character string."
 
-    expect_error(pruningSample(gds=gdsF, method=3, sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method=3, currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
@@ -384,14 +384,14 @@ test_that("pruningSample() must return error when method is not in the list of c
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    expect_error(pruningSample(gds=gdsF, method="test", sampleCurrent="test",
+    expect_error(pruningSample(gds=gdsF, method="test", currentProfile="test",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
         np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
 })
 
 
-test_that("pruningSample() must return error when sampleCurrent is a numeric", {
+test_that("pruningSample() must return error when currentProfile is a numeric", {
 
     data.dir <- test_path("fixtures")
 
@@ -401,12 +401,14 @@ test_that("pruningSample() must return error when sampleCurrent is a numeric", {
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'sampleCurrent\' parameter must be a character string."
+    error_message <- "The \'currentProfile\' parameter must be a character string."
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent=2,
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile=2,
+        study.id="test", listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1, verbose.v=FALSE, chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=FALSE, PATHSAMPLEGDS=data.dir,
+        keepFile=FALSE, PATHPRUNED=".", outPref="pruned"),
+        error_message, fixed=TRUE)
 })
 
 
@@ -424,7 +426,7 @@ test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
     error_message <- paste0("The \'PATHPRUNED\' parameter must be ",
         "a character string representing an existing directory.")
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="Sample2",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
         np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=2, outPref="pruned"), error_message, fixed=TRUE)
@@ -441,10 +443,10 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a numeric", {
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'PATHSAMPLEGDS\' parameter must be a character string ",
-                                "representing an existing directory.")
+    error_message <- paste0("The \'PATHSAMPLEGDS\' parameter must be a ",
+                    "character string representing an existing directory.")
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="Sample2",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
             study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
             np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
             PATHSAMPLEGDS=33, keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
@@ -464,7 +466,7 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a non existin
     error_message <- paste0("The \'PATHSAMPLEGDS\' parameter must be a character string ",
                                 "representing an existing directory.")
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="Sample2",
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
         np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
         PATHSAMPLEGDS=paste0(data.dir, "_NOT_EXISTING_DIRECTORY"),
@@ -484,9 +486,11 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
 
     gdsSampleFile <- file.path(data.dir, "A_File_That_DOES_NOT_EXIST.gds")
 
-    error_message <- paste0("The GDS Sample file \'", gdsSampleFile, " does not exist.")
+    error_message <- paste0("The Profile GDS file \'", gdsSampleFile,
+                                    " does not exist.")
 
-    expect_error(pruningSample(gds=gdsF, method="corr", sampleCurrent="A_File_That_DOES_NOT_EXIST",
+    expect_error(pruningSample(gds=gdsF, method="corr",
+        currentProfile="A_File_That_DOES_NOT_EXIST",
         study.id="test", listSNP=NULL, slide.max.bp.v=50000L,
         ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
         minAF.SuperPop=NULL, keepGDSpruned=FALSE, PATHSAMPLEGDS=data.dir,
@@ -495,6 +499,51 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
 })
 
 
+test_that("pruningSample() must return expect result", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
+
+    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
+                    study.platform = "PLATFORM",
+                    stringsAsFactors = FALSE)
+
+    gdsSampleFile <- file.path(data.dir, "A_File_That_DOES_NOT_EXIST.gds")
+
+    samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
+                                Case.ID = c("Patient_h11", "Patient_h12"),
+                                Diagnosis = rep("Cancer", 2),
+                                Sample.Type = rep("Primary Tumor", 2),
+                                Source = rep("Databank B", 2),
+                            stringsAsFactors = FALSE)
+    rownames(samplePED) <- samplePED$Name.ID
+
+    createStudy2GDS1KG(PATHGENO=data.dir,
+                        pedStudy=samplePED, fileNameGDS=gdsFile,
+                        studyDF=studyDF, listProfiles=c("ex1"),
+                        PATHSAMPLEGDS=data.dir, verbose=FALSE)
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+
+    withr::defer(unlink(file.path(data.dir, "prunedTest.Obj.rds")),
+                        envir = parent.frame())
+    withr::defer(unlink(file.path(data.dir, "prunedTest.rds")), envir = parent.frame())
+
+    result <- pruningSample(gds=gdsF, method="corr",
+        currentProfile="ex1", study.id=studyDF$study.id,
+        listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
+        keepFile=TRUE, PATHPRUNED=data.dir, outPref="prunedTest")
+
+    expect_equal(result, 0L)
+    expect_true(file.exists(file.path(data.dir, "prunedTest.Obj.rds")))
+    expect_true(file.exists(file.path(data.dir, "prunedTest.rds")))
+})
 
 #############################################################################
 ### Tests add1KG2SampleGDS() results
@@ -520,8 +569,8 @@ test_that("add1KG2SampleGDS() must return error when gdsSampleFile is a numeric 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'gdsSampleFile\' must be a character string representing ",
-                                "the GDS Sample file. The file must exist.")
+    error_message <- paste0("The \'gdsSampleFile\' must be a character ",
+            "string representing the GDS Sample file. The file must exist.")
 
     expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=33,
         sampleCurrent="sample", study.id="TCGA"), error_message, fixed=TRUE)
@@ -1238,7 +1287,7 @@ test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
             fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
-            batch=1, studyDF=NULL, listSamples=NULL,
+            batch=1, studyDF=NULL, listProfiles=NULL,
             PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1250,7 +1299,7 @@ test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and p
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                     fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
-                    batch=1, studyDF=NULL, listSamples=NULL,
+                    batch=1, studyDF=NULL, listProfiles=NULL,
                     PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1267,7 +1316,7 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                     fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
-                    batch=1, studyDF=NULL, listSamples=NULL,
+                    batch=1, studyDF=NULL, listProfiles=NULL,
                     PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1285,7 +1334,7 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
-                        batch=1, studyDF=NULL, listSamples=NULL,
+                        batch=1, studyDF=NULL, listProfiles=NULL,
                         PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1305,7 +1354,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-            batch="1", studyDF=NULL, listSamples=NULL,
+            batch="1", studyDF=NULL, listProfiles=NULL,
             PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1324,7 +1373,7 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                 fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-                batch=c(1,2), studyDF=NULL, listSamples=NULL,
+                batch=c(1,2), studyDF=NULL, listProfiles=NULL,
                 PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
 })
 
@@ -1339,17 +1388,17 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
                     Sample.Type = rep("Primary Tumor", 3),
                     Source = rep("Databank B", 3), stringsAsFactors = FALSE)
 
-    error_message <- paste0("The \'listSamples\' must be a vector ",
+    error_message <- paste0("The \'listProfiles\' must be a vector ",
                         "of character strings (1 entry or more) or NULL.")
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-            batch=1, studyDF=NULL, listSamples=c(1,2),
+            batch=1, studyDF=NULL, listProfiles=c(1,2),
             PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
-test_that("createStudy2GDS1KG() must return error when listSamples is numeric", {
+test_that("createStudy2GDS1KG() must return error when listProfiles is numeric", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
@@ -1359,12 +1408,12 @@ test_that("createStudy2GDS1KG() must return error when listSamples is numeric", 
                 Sample.Type = rep("Primary Tumor", 3),
                 Source = rep("Databank B", 3), stringsAsFactors = FALSE)
 
-    error_message <- paste0("The \'listSamples\' must be a vector ",
+    error_message <- paste0("The \'listProfiles\' must be a vector ",
                             "of character strings (1 entry or more) or NULL.")
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-        batch=1, studyDF=NULL, listSamples=1,
+        batch=1, studyDF=NULL, listProfiles=1,
         PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
@@ -1384,7 +1433,7 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-            batch=1, studyDF=NULL, listSamples=NULL,
+            batch=1, studyDF=NULL, listProfiles=NULL,
             PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })
 
@@ -1405,7 +1454,7 @@ test_that("createStudy2GDS1KG() must return error when both  fileNamePED and ped
 
     expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
                 fileNamePED=gdsFile, pedStudy=pedDF, fileNameGDS=gdsFile,
-                batch=1, studyDF=NULL, listSamples=NULL,
+                batch=1, studyDF=NULL, listProfiles=NULL,
                 PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })
 
@@ -1431,7 +1480,7 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
 
     result <- createStudy2GDS1KG(PATHGENO=data.dir,
                 pedStudy=pedDF, fileNameGDS=gdsFile,
-                batch=1, studyDF=studyDF, listSamples=c("ex1"),
+                batch=1, studyDF=studyDF, listProfiles=c("ex1"),
                 PATHSAMPLEGDS=data.dir, verbose=FALSE)
 
     expect_true(file.exists(file.path(data.dir, "ex1.gds")))

@@ -413,3 +413,73 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 
     return(snp.pos$imbAR)
 }
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matCov TODO
+#'
+#' @param pCutOff TODO Default: \code{-3}.
+#'
+#' @param vMean TODO
+#'
+#' @return a \code{list} containing 3 entries:
+#' \itemize{
+#' \item{pWin} {TODO.}
+#' \item{pCut} {TODO.}
+#' \item{pCut1} {TODO.}
+#' }
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats pbinom
+#' @encoding UTF-8
+#' @keywords internal
+testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
+    p <- 0
+    pO <- 0
+
+    matCov$pWin <- rep(1, nrow(matCov))
+
+    for(i in seq_len(nrow(matCov))) {
+
+        vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
+                       matCov$cnt.alt[i], matCov$cnt.ref[i])
+
+        diff2Mean <- abs(vMean * (matCov$cnt.alt[i] +
+                                      matCov$cnt.ref[i]) - vCur)
+        pCur1 <- pbinom(round(vMean * (matCov$cnt.alt[i] +
+                                           matCov$cnt.ref[i]) - diff2Mean),
+                        size = matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
+        pCur2 <- 1 - pbinom(round(vMean * (matCov$cnt.alt[i] +
+                                               matCov$cnt.ref[i]) + diff2Mean),
+                            size = matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
+
+        pCur <- pCur1 + pCur2
+
+        matCov$pWin[i] <- pCur
+
+        pCurO <- max(1 - max(pCur, 0.01), 0.01)
+
+        p <- p + log10(max(pCur, 0.01))
+        pO <- pO + log10(pCurO)
+    }
+    pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
+                            matCov$pWin[1] < 0.5 &
+                            (matCov$pWin[nrow(matCov)] < 0.5)  &
+                            ((p-pO) <= pCutOff))
+    res <- list(pWin = matCov$pWin, p=p,
+                pCut = as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
+                pCut1 = pCut1)
+    return(res)
+}
+

@@ -128,13 +128,14 @@ samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
-## Create the Sample GDS file for sample in 'listProfiles' vector
-## (in this case, sample "ex1")
-## The Sample GDS file is created in the PATHSAMPLEGDS directory
-result <- createStudy2GDS1KG(PATHGENO=data.dir,
-            pedStudy=samplePED, fileNameGDS=gdsFile,
-            studyDF=studyDF, listProfiles=c("ex1"),
-            PATHSAMPLEGDS=data.dir, verbose=FALSE)
+## Copy the Profile GDS file demo that has not been pruned yet
+## into a test directory (deleted after the example has been run)
+data.dir.pruning <- file.path(system.file("extdata", package="RAIDS"),
+                 "demoPruning")
+dir.create(data.dir.pruning, showWarnings=FALSE,
+                 recursive=FALSE, mode="0777")
+file.copy(file.path(data.dir, "ex1_demo.gds"),
+                 file.path(data.dir.pruning, "ex1.gds"))
 
 ## Open 1KG file
 gds_1KG <- snpgdsOpen(gdsFile)
@@ -142,17 +143,22 @@ gds_1KG <- snpgdsOpen(gdsFile)
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
-              study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir)
-
-## The Profile GDS file 'ex1.gds' has been created in the
-## specified directory
-list.files(data.dir)
+              study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir.pruning)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)
 
+## Check content of Profile GDS file
+## The 'pruned.study' entry should be present
+content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+content
+
+## Close the Profile GDS file (it is important to always close the GDS files)
+closefn.gds(content)
+
 ## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(data.dir, "ex1.gds"))
+unlink(file.path(data.dir.pruning, "ex1.gds"))
+unlink(data.dir.pruning)
 
 }
 \author{

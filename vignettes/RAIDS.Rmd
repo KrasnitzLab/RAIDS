@@ -469,12 +469,12 @@ for(i in seq_len(length(listSamples))) {
                     study.id = studyDF$study.id, 
                     PATHSAMPLEGDS = PATHSAMPLEGDS)
     
-    ## Sample GDS file for the current sample
-    ## The file name corresponds to the path + sample identifier + ".gds"
+    ## Profile GDS file for the current sample
+    ## The file name corresponds to the path + profile identifier + ".gds"
     file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
     
     ## Add the genotype information for the list of pruned SNVs 
-    ## into the Sample GDS file
+    ## into the Profile GDS file
     ## The genotype information is extracted from the 1KG GDS file
     add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
                         sampleCurrent = listSamples[i], 

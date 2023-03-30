@@ -386,13 +386,14 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## Create the Sample GDS file for sample in 'listProfiles' vector
-#' ## (in this case, sample "ex1")
-#' ## The Sample GDS file is created in the PATHSAMPLEGDS directory
-#' result <- createStudy2GDS1KG(PATHGENO=data.dir,
-#'             pedStudy=samplePED, fileNameGDS=gdsFile,
-#'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             PATHSAMPLEGDS=data.dir, verbose=FALSE)
+#' ## Copy the Profile GDS file demo that has not been pruned yet
+#' ## into a test directory (deleted after the example has been run)
+#' data.dir.pruning <- file.path(system.file("extdata", package="RAIDS"),
+#'                  "demoPruning")
+#' dir.create(data.dir.pruning, showWarnings=FALSE,
+#'                  recursive=FALSE, mode="0777")
+#' file.copy(file.path(data.dir, "ex1_demo.gds"),
+#'                  file.path(data.dir.pruning, "ex1.gds"))
 #'
 #' ## Open 1KG file
 #' gds_1KG <- snpgdsOpen(gdsFile)
@@ -400,17 +401,22 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
-#'               study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir)
-#'
-#' ## The Profile GDS file 'ex1.gds' has been created in the
-#' ## specified directory
-#' list.files(data.dir)
+#'               study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir.pruning)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
 #' closefn.gds(gds_1KG)
 #'
+#' ## Check content of Profile GDS file
+#' ## The 'pruned.study' entry should be present
+#' content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+#' content
+#'
+#' ## Close the Profile GDS file (it is important to always close the GDS files)
+#' closefn.gds(content)
+#'
 #' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(data.dir, "ex1.gds"))
+#' unlink(file.path(data.dir.pruning, "ex1.gds"))
+#' unlink(data.dir.pruning)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -535,17 +541,18 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 }
 
 
-#' @title Add the information about the pruned SNVs into the GDS Sample file
+#' @title Add the genotype information for the list of pruned SNVs
+#' into the Profile GDS file
 #'
 #' @description The function extracts the information about the pruned SNVs
 #' from the 1KG GDS file and adds entries related to the pruned SNVs in
-#' the GDS Sample file.
+#' the Profile GDS file.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsSampleFile a \code{character} string representing the path and
-#' file name of the GDS Sample file. The GDS Sample file must exist.
+#' file name of the Profile GDS file. The Profile GDS file must exist.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to the sample
 #' identifier associated to the current list of pruned SNVs.
@@ -557,11 +564,50 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' \dontrun{
+#' ## Path to the demo 1KG GDS file is located in this package
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 #'
-#' ## TODO
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyDF <- data.frame(study.id = "MYDATA",
+#'                         study.desc = "Description",
+#'                         study.platform = "PLATFORM",
+#'                         stringsAsFactors = FALSE)
 #'
+#' ## Copy the Profile GDS file demo that hasibeen pruned
+#' data.dir.pruning <- system.file("extdata/demoAddGenotype", package="RAIDS")
+#' file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
+#'                 data.dir.pruning)
+#' file.rename(file.path(data.dir.pruning, "ex1_demo_with_pruning.gds"),
+#'                 file.path(data.dir.pruning, "ex1.gds"))
+#'
+#' ## Open 1KG file
+#' gds_1KG <- snpgdsOpen(gdsFile)
+#'
+#' ## Compute the list of pruned SNVs for a specific profile 'ex1'
+#' ## and save it in the Profile GDS file 'ex1.gds'
+#' add1KG2SampleGDS(gds=gds_1KG,
+#'          gdsSampleFile=file.path(data.dir.pruning, "ex1.gds"),
+#'          sampleCurrent=c("ex1"),
+#'          study.id = studyDF$study.id)
+#'
+#' ## Close the 1KG GDS file (it is important to always close the GDS files)
+#' closefn.gds(gds_1KG)
+#'
+#' ## Check content of Profile GDS file
+#' ## The 'pruned.study' entry should be present
+#' content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+#' content
+#'
+#' ## Close the Profile GDS file (it is important to always close the GDS files)
+#' closefn.gds(content)
+#'
+#' ## Unlink Profile GDS file (created for demo purpose)
+#' unlink(file.path(data.dir.pruning, "ex1.gds"))
+#' }
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
 #' @encoding UTF-8
@@ -570,10 +616,10 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
                                 study.id) {
 
     ## Validate inputs
-    validateAdd1KG2SampleGDS(gds=gds, gdsSampleFile=gdsSampleFile,
-                sampleCurrent=sampleCurrent, study.id=study.id)
+    validateAdd1KG2SampleGDS(gds=gds, gdsProfileFile=gdsSampleFile,
+            currentProfile=sampleCurrent, study.id=study.id)
 
-    ## Open GDS Sample file
+    ## Open Profile GDS file
     gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
 
     ## Extract needed information from 1KG GDS file
@@ -601,7 +647,7 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
     var.geno <- NULL
 
     j <- 1
-    for(i in listRef){
+    for(i in listRef) {
         g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
                             count = c(-1,1))[listSNP]
 

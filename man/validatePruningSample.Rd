@@ -8,7 +8,7 @@
 validatePruningSample(
   gds,
   method,
-  sampleCurrent,
+  currentProfile,
   study.id,
   listSNP,
   slide.max.bp.v,
@@ -32,10 +32,10 @@ validatePruningSample(
 be used to calculate the linkage disequilibrium in the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function.}
 
-\item{sampleCurrent}{a \code{character} string
-corresponding to the sample identifier used in LD pruning done by the
-\code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
-corresponding to the sample identifier must exist and be located in the
+\item{currentProfile}{a \code{character} string
+corresponding to the profile identifier used in LD pruning done by the
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
+corresponding to the profile identifier must exist and be located in the
 \code{PATHSAMPLEGDS} directory.}
 
 \item{study.id}{a \code{character} string corresponding to the study
@@ -103,7 +103,7 @@ gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validation should be successful
 RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
-     sampleCurrent="TGCA_01", study.id="TCGA",
+     currentProfile="TGCA_01", study.id="TCGA",
      listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
      ld.threshold.v=0.008, np=1L, verbose.v=TRUE, chr=1,
      minAF.SuperPop=0.002, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,

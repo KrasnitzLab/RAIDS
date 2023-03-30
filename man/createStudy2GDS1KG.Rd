@@ -14,7 +14,7 @@ createStudy2GDS1KG(
   fileNameGDS,
   batch = 1,
   studyDF,
-  listSamples = NULL,
+  listProfiles = NULL,
   PATHSAMPLEGDS = NULL,
   verbose = TRUE
 )
@@ -55,11 +55,11 @@ study associated to the analysed sample(s). The \code{data.frame} must have
 those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in \code{character} strings (no factor).}
 
-\item{listSamples}{a \code{vector} of \code{character} string corresponding
-to the sample identifiers that will have a GDS Sample file created. The
-sample identifiers must be present in the "Name.ID" column of the RDS file
-passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+\item{listProfiles}{a \code{vector} of \code{character} string corresponding
+to the profile identifiers that will have a Profile GDS file created. The
+profile identifiers must be present in the "Name.ID" column of the Profile
+RDS file passed to the \code{fileNamePED} parameter.
+If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
 Default: \code{NULL}.}
 
 \item{PATHSAMPLEGDS}{a \code{character} string representing the path to
@@ -106,17 +106,17 @@ rownames(samplePED) <- samplePED$Name.ID
 ## The Sample GDS file is created in the PATHSAMPLEGDS directory
 result <- createStudy2GDS1KG(PATHGENO=data.dir,
             pedStudy=samplePED, fileNameGDS=gdsFile,
-            studyDF=studyDF, listSamples=c("ex1"),
+            studyDF=studyDF, listProfiles=c("ex1"),
             PATHSAMPLEGDS=data.dir, verbose=FALSE)
 
 ## The function returns OL when successful
 result
 
-## The Sample GDS file 'ex1.gds' has been created in the
+## The Profile GDS file 'ex1.gds' has been created in the
 ## specified directory
 list.files(data.dir)
 
-## Unlink Sample GDS file (created for demo purpose)
+## Unlink Profile GDS file (created for demo purpose)
 unlink(file.path(data.dir, "ex1.gds"))
 
 }

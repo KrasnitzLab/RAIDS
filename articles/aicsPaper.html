@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accurate Inference of Genetic Ancestry from Cancer Sequencing • RAIDS</title>
+<title>Accurate Inference of Genetic Ancestry from Cancer-derived Sequences • RAIDS</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Accurate Inference of Genetic Ancestry from Cancer Sequencing">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Accurate Inference of Genetic Ancestry from Cancer-derived Sequences">
 <meta property="og:description" content="RAIDS">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -53,7 +53,7 @@
       <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
     </li>
     <li>
-      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
+      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer-derived Sequences</a>
     </li>
   </ul>
 </li>
@@ -79,7 +79,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Accurate Inference of Genetic Ancestry from
-Cancer Sequencing</h1>
+Cancer-derived Sequences</h1>
                         <h4 data-toc-skip class="author">Pascal Belleau,
 Astrid Deschênes and Alexander Krasnitz</h4>
             
@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.50.1<br><strong>Compiled date</strong>: 2023-03-29<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.50.1<br><strong>Compiled date</strong>: 2023-03-30<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -443,30 +443,30 @@ file</strong> is created for each sample passed to the
 <span>                        stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="co">## The list of samples to analyzed is passed to the function.</span></span>
-<span><span class="co">## The samples must be present in the Sample PED RDS file</span></span>
-<span><span class="co">## and must have an associated Sample SNP pileup file.</span></span>
-<span><span class="co">## Not all samples present in the Sample PED file need to </span></span>
+<span><span class="co">## The list of profiles to analyzed is passed to the function.</span></span>
+<span><span class="co">## The profiles must be present in the Profile PED RDS file</span></span>
+<span><span class="co">## and must have an associated Profile SNP pileup file.</span></span>
+<span><span class="co">## Not all profiles present in the Profile PED file need to </span></span>
 <span><span class="co">## be selected.</span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="va">listSamples</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">[</span>, <span class="st">"Name.ID"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## This function creates one Sample GDS file for each</span></span>
-<span><span class="co">## sample present in the 'listSamples' parameter.</span></span>
+<span><span class="co">## sample present in the 'listProfiles' parameter.</span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="fu"><a href="../reference/createStudy2GDS1KG.html">createStudy2GDS1KG</a></span><span class="op">(</span>PATHGENO <span class="op">=</span> <span class="va">PATHGENO</span>,</span>
 <span>                        pedStudy <span class="op">=</span> <span class="va">ped</span>,</span>
 <span>                        fileNameGDS <span class="op">=</span> <span class="va">file.GDS</span>,</span>
-<span>                        listSamples <span class="op">=</span> <span class="va">listSamples</span>,</span>
+<span>                        listProfiles <span class="op">=</span> <span class="va">listSamples</span>,</span>
 <span>                        studyDF <span class="op">=</span> <span class="va">studyDF</span>,</span>
 <span>                        PATHSAMPLEGDS <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
-<span><span class="co">## Start 2023-03-29 23:41:57</span></span>
-<span><span class="co">## Sample info DONE 2023-03-29 23:41:57</span></span>
-<span><span class="co">## ex1 2023-03-29 23:41:57 1</span></span>
-<span><span class="co">## study.annot DONE 2023-03-29 23:41:57</span></span>
-<span><span class="co">## ex1.txt.gz 1 2023-03-29 23:41:57</span></span>
-<span><span class="co">## Genotype DONE 2023-03-29 23:41:57</span></span>
+<span><span class="co">## Start 2023-03-30 02:11:28</span></span>
+<span><span class="co">## Sample info DONE 2023-03-30 02:11:28</span></span>
+<span><span class="co">## ex1 2023-03-30 02:11:28 1</span></span>
+<span><span class="co">## study.annot DONE 2023-03-30 02:11:28</span></span>
+<span><span class="co">## ex1.txt.gz 1 2023-03-30 02:11:28</span></span>
+<span><span class="co">## Genotype DONE 2023-03-30 02:11:28</span></span>
 <span><span class="co">## [1] 0</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
@@ -509,7 +509,7 @@ file</strong>.</p>
 <span><span class="va">gds_1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
-<span><span class="co">## All Sample GDS files need to be located in the same </span></span>
+<span><span class="co">## All Profile GDS files need to be located in the same </span></span>
 <span><span class="co">## directory.</span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"out"</span><span class="op">)</span></span>
@@ -542,9 +542,9 @@ file</strong>.</p>
 <span>    <span class="co">## study.id: Study identifier as defined in the preceding step. (AK EXPLICIT STEP NUMBER)</span></span>
 <span>    <span class="co">##           The study identifier must be the same that the one present in</span></span>
 <span>    <span class="co">##           Sample GDS file.</span></span>
-<span>    <span class="co">## PATHSAMPLEGDS: All Sample GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)</span></span>
+<span>    <span class="co">## PATHSAMPLEGDS: All Profile GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)</span></span>
 <span>    <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds_1KG</span>,</span>
-<span>                    sampleCurrent <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>                    currentProfile <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>                    study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, </span>
 <span>                    PATHSAMPLEGDS <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
 <span>    </span>
@@ -563,7 +563,7 @@ file</strong>.</p>
 <span>    <span class="co">## This is required.</span></span>
 <span>    <span class="fu"><a href="../reference/addStudy1Kg.html">addStudy1Kg</a></span><span class="op">(</span><span class="va">gds_1KG</span>, <span class="va">file.GDSSample</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 23:41:57</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-30 02:11:28</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds_1KG</span><span class="op">)</span></span>
@@ -806,7 +806,7 @@ and <em>syntheticGeno()</em> are used for data synthesis.</p>
 <span>                data.id.profile <span class="op">=</span> <span class="va">sampleName</span>,</span>
 <span>                studyDF <span class="op">=</span> <span class="va">studyDF.syn</span>,</span>
 <span>                prefId <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## study.annot DONE 2023-03-29 23:42:16</span></span></code></pre>
+<pre><code><span><span class="co">## study.annot DONE 2023-03-30 02:11:48</span></span></code></pre>
 <pre><code><span><span class="co">## [1] 0</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
@@ -967,34 +967,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1326
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 23:42:16 2023    (internal increment: 47104)
+## Thu Mar 30 02:11:48 2023    (internal increment: 35004)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:16 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 23:42:16 2023    Done.
+## Thu Mar 30 02:11:48 2023    Begin (eigenvalues and eigenvectors)
+## Thu Mar 30 02:11:48 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1326
-## Wed Mar 29 23:42:16 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:48 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:16 2023    Done.
+## Thu Mar 30 02:11:48 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 58
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 309
-## Wed Mar 29 23:42:16 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:48 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:16 2023    Done.
+## Thu Mar 30 02:11:48 2023    Done.
 ## Principal Component Analysis (PCA) on genotypes:
 ## Excluding 0 SNP (non-autosomes or non-selection)
 ## Excluding 2 SNPs (monomorphic: TRUE, MAF: NaN, missing rate: 0.025)
@@ -1004,34 +1004,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 ##     # of principal components: 15
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1352
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 23:42:18 2023    (internal increment: 47104)
+## Thu Mar 30 02:11:50 2023    (internal increment: 35004)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:18 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 23:42:18 2023    Done.
+## Thu Mar 30 02:11:50 2023    Begin (eigenvalues and eigenvectors)
+## Thu Mar 30 02:11:50 2023    Done.
 ## SNP Loading:
 ##     # of samples: 130
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1352
-## Wed Mar 29 23:42:18 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:50 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:18 2023    Done.
+## Thu Mar 30 02:11:50 2023    Done.
 ## Sample Loading:
 ##     # of samples: 26
 ##     # of SNPs: 59
 ##     using 1 thread
 ##     using the top 15 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 273
-## Wed Mar 29 23:42:18 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:50 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:18 2023    Done.</code></pre>
+## Thu Mar 30 02:11:50 2023    Done.</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>
@@ -2978,34 +2978,34 @@ done at this step but all the synthetic data are prepared in the step
 ##     # of principal components: 32
 ## PCA:    the sum of all selected genotypes (0,1,2) = 1592
 ## CPU capabilities: Double-Precision SSE2
-## Wed Mar 29 23:42:23 2023    (internal increment: 39252)
+## Thu Mar 30 02:11:57 2023    (internal increment: 29168)
 ## 
 [..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 1s
-## Wed Mar 29 23:42:24 2023    Begin (eigenvalues and eigenvectors)
-## Wed Mar 29 23:42:24 2023    Done.
+[==================================================] 100%, completed, 0s
+## Thu Mar 30 02:11:57 2023    Begin (eigenvalues and eigenvectors)
+## Thu Mar 30 02:11:57 2023    Done.
 ## SNP Loading:
 ##     # of samples: 156
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1592
-## Wed Mar 29 23:42:24 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:57 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:24 2023    Done.
+## Thu Mar 30 02:11:57 2023    Done.
 ## Sample Loading:
 ##     # of samples: 1
 ##     # of SNPs: 61
 ##     using 1 thread
 ##     using the top 32 eigenvectors
 ## Sample Loading:    the sum of all selected genotypes (0,1,2) = 7
-## Wed Mar 29 23:42:24 2023    (internal increment: 65536)
+## Thu Mar 30 02:11:57 2023    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Wed Mar 29 23:42:24 2023    Done.</code></pre>
+## Thu Mar 30 02:11:57 2023    Done.</code></pre>
 <div class="sourceCode" id="cb1845"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Close the 1KG GDS file (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span>

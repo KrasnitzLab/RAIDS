@@ -42,7 +42,7 @@ entry present in the listSamples parameter."><!-- mathjax --><script src="https:
       <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
     </li>
     <li>
-      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
+      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer-derived Sequences</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -82,7 +82,7 @@ entry present in the <code>listSamples</code> parameter.</p>
 <span>  <span class="va">fileNameGDS</span>,</span>
 <span>  batch <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
-<span>  listSamples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  listProfiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  PATHSAMPLEGDS <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -137,12 +137,12 @@ those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in <code>character</code> strings (no factor).</p></dd>
 
 
-<dt>listSamples</dt>
+<dt>listProfiles</dt>
 <dd><p>a <code>vector</code> of <code>character</code> string corresponding
-to the sample identifiers that will have a GDS Sample file created. The
-sample identifiers must be present in the "Name.ID" column of the RDS file
-passed to the <code>fileNamePED</code> parameter.
-If <code>NULL</code>, all samples in the <code>fileNamePED</code> are selected.
+to the profile identifiers that will have a Profile GDS file created. The
+profile identifiers must be present in the "Name.ID" column of the Profile
+RDS file passed to the <code>fileNamePED</code> parameter.
+If <code>NULL</code>, all profiles present in the <code>fileNamePED</code> are selected.
 Default: <code>NULL</code>.</p></dd>
 
 
@@ -197,15 +197,15 @@ printed. Default: <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="co">## The Sample GDS file is created in the PATHSAMPLEGDS directory</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStudy2GDS1KG</span><span class="op">(</span>PATHGENO<span class="op">=</span><span class="va">data.dir</span>,</span></span>
 <span class="r-in"><span>            pedStudy<span class="op">=</span><span class="va">samplePED</span>, fileNameGDS<span class="op">=</span><span class="va">gdsFile</span>,</span></span>
-<span class="r-in"><span>            studyDF<span class="op">=</span><span class="va">studyDF</span>, listSamples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            studyDF<span class="op">=</span><span class="va">studyDF</span>, listProfiles<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            PATHSAMPLEGDS<span class="op">=</span><span class="va">data.dir</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> study.annot DONE 2023-03-29 23:41:13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> study.annot DONE 2023-03-30 02:10:40</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The function returns OL when successful</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The Sample GDS file 'ex1.gds' has been created in the</span></span></span>
+<span class="r-in"><span><span class="co">## The Profile GDS file 'ex1.gds' has been created in the</span></span></span>
 <span class="r-in"><span><span class="co">## specified directory</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">data.dir</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1KG_Test.gds"                     "1KG_Test_02.gds"                 </span>
@@ -213,7 +213,7 @@ printed. Default: <code>TRUE</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "ex1.txt.gz"                       "ex1_good_small_1KG_Annot_GDS.gds"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [7] "ex1_good_small_1KG_GDS.gds"      </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Unlink Sample GDS file (created for demo purpose)</span></span></span>
+<span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

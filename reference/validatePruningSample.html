@@ -36,7 +36,7 @@ pruningSample function."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
       <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
     </li>
     <li>
-      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
+      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer-derived Sequences</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -68,7 +68,7 @@ pruningSample function."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validatePruningSample</span><span class="op">(</span></span>
 <span>  <span class="va">gds</span>,</span>
 <span>  <span class="va">method</span>,</span>
-<span>  <span class="va">sampleCurrent</span>,</span>
+<span>  <span class="va">currentProfile</span>,</span>
 <span>  <span class="va">study.id</span>,</span>
 <span>  <span class="va">listSNP</span>,</span>
 <span>  <span class="va">slide.max.bp.v</span>,</span>
@@ -98,11 +98,11 @@ be used to calculate the linkage disequilibrium in the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function.</p></dd>
 
 
-<dt>sampleCurrent</dt>
+<dt>currentProfile</dt>
 <dd><p>a <code>character</code> string
-corresponding to the sample identifier used in LD pruning done by the
-<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. A GDS Sample file
-corresponding to the sample identifier must exist and be located in the
+corresponding to the profile identifier used in LD pruning done by the
+<code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. A Profile GDS file
+corresponding to the profile identifier must exist and be located in the
 <code>PATHSAMPLEGDS</code> directory.</p></dd>
 
 
@@ -202,7 +202,7 @@ the parameter <code>keepFile</code>=<code>TRUE</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validatePruningSample</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, method<span class="op">=</span><span class="st">"corr"</span>,</span></span>
-<span class="r-in"><span>     sampleCurrent<span class="op">=</span><span class="st">"TGCA_01"</span>, study.id<span class="op">=</span><span class="st">"TCGA"</span>,</span></span>
+<span class="r-in"><span>     currentProfile<span class="op">=</span><span class="st">"TGCA_01"</span>, study.id<span class="op">=</span><span class="st">"TCGA"</span>,</span></span>
 <span class="r-in"><span>     listSNP<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sr10103"</span>, <span class="st">"sr10202"</span><span class="op">)</span>, slide.max.bp.v<span class="op">=</span><span class="fl">1000L</span>,</span></span>
 <span class="r-in"><span>     ld.threshold.v<span class="op">=</span><span class="fl">0.008</span>, np<span class="op">=</span><span class="fl">1L</span>, verbose.v<span class="op">=</span><span class="cn">TRUE</span>, chr<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>     minAF.SuperPop<span class="op">=</span><span class="fl">0.002</span>, keepGDSpruned<span class="op">=</span><span class="cn">TRUE</span>, PATHSAMPLEGDS<span class="op">=</span><span class="va">data.dir</span>,</span></span>

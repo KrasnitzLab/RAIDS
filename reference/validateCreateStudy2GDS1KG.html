@@ -36,7 +36,7 @@ createStudy2GDS1KG function."><!-- mathjax --><script src="https://cdnjs.cloudfl
       <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from 1000 Genomes (optional)</a>
     </li>
     <li>
-      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer Sequencing</a>
+      <a href="../articles/aicsPaper.html">Accurate Inference of Genetic Ancestry from Cancer-derived Sequences</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -70,7 +70,7 @@ createStudy2GDS1KG function."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <span>  <span class="va">fileNameGDS</span>,</span>
 <span>  <span class="va">batch</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
-<span>  <span class="va">listSamples</span>,</span>
+<span>  <span class="va">listProfiles</span>,</span>
 <span>  <span class="va">PATHSAMPLEGDS</span>,</span>
 <span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -104,12 +104,12 @@ those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in <code>character</code> strings (no factor).</p></dd>
 
 
-<dt>listSamples</dt>
+<dt>listProfiles</dt>
 <dd><p>a <code>vector</code> of <code>character</code> string corresponding
-to the sample identifiers that will have a GDS Sample file created. The
-sample identifiers must be present in the "Name.ID" column of the RDS file
+to the profile identifiers that will have a GDS Sample file created. The
+profile identifiers must be present in the "Name.ID" column of the RDS file
 passed to the <code>fileNamePED</code> parameter.
-If <code>NULL</code>, all samples in the <code>fileNamePED</code> are selected.</p></dd>
+If <code>NULL</code>, all profiles in the <code>fileNamePED</code> are selected.</p></dd>
 
 
 <dt>PATHSAMPLEGDS</dt>
@@ -158,7 +158,7 @@ printed.</p></dd>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateCreateStudy2GDS1KG</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, fileNameGDS<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>            batch<span class="op">=</span><span class="fl">1</span>, studyDF<span class="op">=</span><span class="va">studyInfo</span>,</span></span>
-<span class="r-in"><span>            listSamples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            listProfiles<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            PATHSAMPLEGDS<span class="op">=</span><span class="va">data.dir</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>

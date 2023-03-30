@@ -520,8 +520,8 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
     expect_error(pruningSample(gds=gdsF, method="corr",
         currentProfile="ex1", study.id=studyDF$study.id,
         listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
+        minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
         keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
         error_message, fixed=TRUE)
 })
@@ -543,11 +543,12 @@ test_that("pruningSample() must return expect result", {
     data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
     result <- pruningSample(gds=gdsF, method="corr",
-                            currentProfile="ex1", study.id=studyDF$study.id,
-                            listSNP=NULL, slide.max.bp.v=50000L,
-                            ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
-                            minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
-                            keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest")
+                currentProfile="ex1", study.id=studyDF$study.id,
+                listSNP=NULL, slide.max.bp.v=50000L,
+                ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
+                minAF.SuperPop=NULL, keepGDSpruned=TRUE,
+                PATHSAMPLEGDS=data.dir.sample,
+                keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest")
 
     expect_equal(result, 0L)
     expect_true(file.exists(file.path(data.dir.sample, "prunedTest.Obj.rds")))

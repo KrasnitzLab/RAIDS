@@ -10,7 +10,7 @@ validateCreateStudy2GDS1KG(
   fileNameGDS,
   batch,
   studyDF,
-  listSamples,
+  listProfiles,
   PATHSAMPLEGDS,
   verbose
 )
@@ -34,11 +34,11 @@ study associated to the analysed sample(s). The \code{data.frame} must have
 those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in \code{character} strings (no factor).}
 
-\item{listSamples}{a \code{vector} of \code{character} string corresponding
-to the sample identifiers that will have a GDS Sample file created. The
-sample identifiers must be present in the "Name.ID" column of the RDS file
+\item{listProfiles}{a \code{vector} of \code{character} string corresponding
+to the profile identifiers that will have a GDS Sample file created. The
+profile identifiers must be present in the "Name.ID" column of the RDS file
 passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all samples in the \code{fileNamePED} are selected.}
+If \code{NULL}, all profiles in the \code{fileNamePED} are selected.}
 
 \item{PATHSAMPLEGDS}{a \code{character} string representing the path to
 the directory where the GDS Sample files will be created.}
@@ -77,7 +77,7 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
 ## The validatiion should be successful
 RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
             batch=1, studyDF=studyInfo,
-            listSamples=c("Sample_01", "Sample_02"),
+            listProfiles=c("Sample_01", "Sample_02"),
             PATHSAMPLEGDS=data.dir, verbose=TRUE)
 
 }

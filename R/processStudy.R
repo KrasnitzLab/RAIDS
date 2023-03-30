@@ -42,11 +42,11 @@
 #' those 3 columns: "study.id", "study.desc", "study.platform". All columns
 #' must be in \code{character} strings (no factor).
 #'
-#' @param listSamples a \code{vector} of \code{character} string corresponding
-#' to the sample identifiers that will have a GDS Sample file created. The
-#' sample identifiers must be present in the "Name.ID" column of the RDS file
-#' passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#' @param listProfiles a \code{vector} of \code{character} string corresponding
+#' to the profile identifiers that will have a Profile GDS file created. The
+#' profile identifiers must be present in the "Name.ID" column of the Profile
+#' RDS file passed to the \code{fileNamePED} parameter.
+#' If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
 #' Default: \code{NULL}.
 #'
 #' @param PATHSAMPLEGDS a \code{character} string representing the path to
@@ -86,17 +86,17 @@
 #' ## The Sample GDS file is created in the PATHSAMPLEGDS directory
 #' result <- createStudy2GDS1KG(PATHGENO=data.dir,
 #'             pedStudy=samplePED, fileNameGDS=gdsFile,
-#'             studyDF=studyDF, listSamples=c("ex1"),
+#'             studyDF=studyDF, listProfiles=c("ex1"),
 #'             PATHSAMPLEGDS=data.dir, verbose=FALSE)
 #'
 #' ## The function returns OL when successful
 #' result
 #'
-#' ## The Sample GDS file 'ex1.gds' has been created in the
+#' ## The Profile GDS file 'ex1.gds' has been created in the
 #' ## specified directory
 #' list.files(data.dir)
 #'
-#' ## Unlink Sample GDS file (created for demo purpose)
+#' ## Unlink Profile GDS file (created for demo purpose)
 #' unlink(file.path(data.dir, "ex1.gds"))
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -106,7 +106,7 @@
 #' @export
 createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
                                 fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
-                                batch=1, studyDF, listSamples=NULL,
+                                batch=1, studyDF, listProfiles=NULL,
                                 PATHSAMPLEGDS=NULL, verbose=TRUE) {
 
     ## When fileNamePED is defined and pedStudy is null
@@ -128,7 +128,7 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
     ## Validate input parameters
     validateCreateStudy2GDS1KG(pedStudy=pedStudy, fileNameGDS=fileNameGDS,
-                batch=batch, studyDF=studyDF, listSamples=listSamples,
+                batch=batch, studyDF=studyDF, listProfiles=listProfiles,
                 PATHSAMPLEGDS=PATHSAMPLEGDS, verbose=verbose)
 
     ## Read the 1KG GDS file
@@ -148,7 +148,7 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     }
 
     generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
-        listSamples=listSamples, listPos=listPos, offset=-1, minCov=10,
+        listSamples=listProfiles, listPos=listPos, offset=-1, minCov=10,
         minProb=0.999, seqError=0.001, pedStudy=pedStudy, batch=batch,
         studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS, verbose=verbose)
 
@@ -283,11 +283,11 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 }
 
 
-#' @title Compute the list of pruned SNVs for a specific sample using the
+#' @title Compute the list of pruned SNVs for a specific profile using the
 #' information from the 1KG GDS file and a linkage disequilibrium analysis
 #'
 #' @description This function computes the list of pruned SNVs for a
-#' specific sample. When
+#' specific profile. When
 #' a group of SNVs are in linkage disequilibrium, only one SNV from that group
 #' is retained. The linkage disequilibrium is calculated with the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The initial list of
@@ -295,17 +295,17 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' function can be specified by the user.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1 KG GDS file.
+#' 1 KG GDS file (reference data set).
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 #' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param sampleCurrent  a \code{character} string
-#' corresponding to the sample identifier used in LD pruning done by the
-#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
-#' corresponding to the sample identifier must exist and be located in the
+#' @param currentProfile  a \code{character} string
+#' corresponding to the profile identifier used in LD pruning done by the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
+#' corresponding to the profile identifier must exist and be located in the
 #' \code{PATHSAMPLEGDS} directory.
 #'
 #' @param study.id a \code{character} string corresponding to the study
@@ -367,11 +367,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' data.dir <- system.file("extdata/tests", package="RAIDS")
-#'
-#' ## Open the 1KG GDS file (demo version)
 #' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
-#' gds_1KG <- snpgdsOpen(gdsFile)
-
+#'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
@@ -380,20 +377,47 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'                         study.platform = "PLATFORM",
 #'                         stringsAsFactors = FALSE)
 #'
+#' ## The data.frame containing the information about the samples
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
+#'                     Case.ID = c("Patient_h11", "Patient_h12"),
+#'                     Diagnosis = rep("Cancer", 2),
+#'                     Sample.Type = rep("Primary Tumor", 2),
+#'                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
+#' rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## TODO
-#' fileNamePED <- "TODO"
+#' ## Create the Sample GDS file for sample in 'listProfiles' vector
+#' ## (in this case, sample "ex1")
+#' ## The Sample GDS file is created in the PATHSAMPLEGDS directory
+#' result <- createStudy2GDS1KG(PATHGENO=data.dir,
+#'             pedStudy=samplePED, fileNameGDS=gdsFile,
+#'             studyDF=studyDF, listProfiles=c("ex1"),
+#'             PATHSAMPLEGDS=data.dir, verbose=FALSE)
 #'
+#' ## Open 1KG file
+#' gds_1KG <- snpgdsOpen(gdsFile)
+#'
+#' ## Compute the list of pruned SNVs for a specific profile 'ex1'
+#' ## and save it in the Profile GDS file 'ex1.gds'
+#' pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
+#'               study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir)
+#'
+#' ## The Profile GDS file 'ex1.gds' has been created in the
+#' ## specified directory
+#' list.files(data.dir)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
 #' closefn.gds(gds_1KG)
+#'
+#' ## Unlink Profile GDS file (created for demo purpose)
+#' unlink(file.path(data.dir, "ex1.gds"))
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
 pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
-                            sampleCurrent,
+                            currentProfile,
                             study.id,
                             listSNP=NULL,
                             slide.max.bp.v=500000L,
@@ -409,7 +433,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             outPref="pruned") {
 
     ## Validate input parameters
-    validatePruningSample(gds=gds, method=method, sampleCurrent=sampleCurrent,
+    validatePruningSample(gds=gds, method=method, currentProfile=currentProfile,
             study.id=study.id, listSNP=listSNP, slide.max.bp.v=slide.max.bp.v,
             ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose.v, chr=chr,
             minAF.SuperPop=minAF.SuperPop, keepGDSpruned=keepGDSpruned,
@@ -419,12 +443,12 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
 
-    ## GDS sample file name
-    fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleCurrent, ".gds"))
+    ## Profile GDS file name
+    fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(currentProfile, ".gds"))
 
-    ## The GDS Sample file must exists
+    ## The Profile GDS file must exists
     if (!(file.exists(fileGDSSample))) {
-        stop("The GDS Sample file \'", fileGDSSample, " does not exist.")
+        stop("The Profile GDS file \'", fileGDSSample, " does not exist.")
     }
 
     filePruned <- file.path(PATHPRUNED, paste0(outPref, ".rds"))
@@ -440,20 +464,20 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     ## Extract all study information from the GDS Sample file
     study.annot <- read.gdsn(node=index.gdsn(gdsSample, "study.annot"))
 
-    ## Select study information associated to the current sample
-    posSample <- which(study.annot$data.id == sampleCurrent &
+    ## Select study information associated to the current profile
+    posSample <- which(study.annot$data.id == currentProfile &
                             study.annot$study.id == study.id)
 
     if(length(posSample) != 1) {
         stop("In pruningSample the sample ",
-                sampleCurrent, " doesn't exists\n")
+                currentProfile, " doesn't exists\n")
     }
 
-    ## Get the SNV genotype information for the current sample
+    ## Get the SNV genotype information for the current profile
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"),
                     start=c(1, posSample), count=c(-1,1))
 
-    ## Close the GDS Sample file
+    ## Close the Profile GDS file
     closefn.gds(gdsSample)
 
     listGeno <- which(g != 3)
@@ -479,7 +503,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     }
 
     if(length(listKeepPos) == 0) {
-        stop("In pruningSample, the sample ", sampleCurrent,
+        stop("In pruningSample, the sample ", currentProfile,
                 " doesn't have SNPs after filters\n")
     }
     listKeep <- snp.id[listKeepPos]
@@ -500,7 +524,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
         saveRDS(snpset, fileObj)
     }
 
-    ## When TRUE, add the pruned SNvs information to the GDS Sample file
+    ## When TRUE, add the pruned SNvs information to the Profile GDS file
     if(keepGDSpruned) {
         gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
         addGDSStudyPruning(gds=gdsSample, pruned=pruned)

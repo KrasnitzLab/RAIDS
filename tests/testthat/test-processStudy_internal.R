@@ -21,7 +21,7 @@ test_that("validatePruningSample() must return expected results when all input a
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     result1 <- RAIDS:::validatePruningSample(gds=gdsF, method="corr",
-        sampleCurrent="test.gds", study.id="TCGA",
+        currentProfile="test.gds", study.id="TCGA",
         listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
         ld.threshold.v=0.008, np=1L, verbose.v=TRUE, chr=1,
         minAF.SuperPop=0.002, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
@@ -79,7 +79,7 @@ test_that("validateCreateStudy2GDS1KG() must return expected results when all in
 
     result1 <- RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped,
             fileNameGDS=gdsFile, batch=12, studyDF=studyInfo,
-            listSamples=c("TCGA-H01", "TCGA-H02"), PATHSAMPLEGDS=data.dir,
+            listProfiles=c("TCGA-H01", "TCGA-H02"), PATHSAMPLEGDS=data.dir,
             verbose=TRUE)
 
     expect_identical(result1, 0L)

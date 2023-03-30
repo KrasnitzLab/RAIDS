@@ -3,13 +3,13 @@
 \encoding{UTF-8}
 \name{pruningSample}
 \alias{pruningSample}
-\title{Compute the list of pruned SNVs for a specific sample using the
+\title{Compute the list of pruned SNVs for a specific profile using the
 information from the 1KG GDS file and a linkage disequilibrium analysis}
 \usage{
 pruningSample(
   gds,
   method = c("corr", "r", "dprime", "composite"),
-  sampleCurrent,
+  currentProfile,
   study.id,
   listSNP = NULL,
   slide.max.bp.v = 500000L,
@@ -27,17 +27,17 @@ pruningSample(
 }
 \arguments{
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1 KG GDS file.}
+1 KG GDS file (reference data set).}
 
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 
-\item{sampleCurrent}{a \code{character} string
-corresponding to the sample identifier used in LD pruning done by the
-\code{\link[SNPRelate]{snpgdsLDpruning}}() function. A GDS Sample file
-corresponding to the sample identifier must exist and be located in the
+\item{currentProfile}{a \code{character} string
+corresponding to the profile identifier used in LD pruning done by the
+\code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
+corresponding to the profile identifier must exist and be located in the
 \code{PATHSAMPLEGDS} directory.}
 
 \item{study.id}{a \code{character} string corresponding to the study
@@ -98,7 +98,7 @@ The function returns \code{0L} when successful.
 }
 \description{
 This function computes the list of pruned SNVs for a
-specific sample. When
+specific profile. When
 a group of SNVs are in linkage disequilibrium, only one SNV from that group
 is retained. The linkage disequilibrium is calculated with the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The initial list of
@@ -109,10 +109,8 @@ function can be specified by the user.
 
 ## Path to the demo 1KG GDS file is located in this package
 data.dir <- system.file("extdata/tests", package="RAIDS")
-
-## Open the 1KG GDS file (demo version)
 gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
-gds_1KG <- snpgdsOpen(gdsFile)
+
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
 ## The entries should be strings, not factors (stringsAsFactors=FALSE)
@@ -121,13 +119,40 @@ studyDF <- data.frame(study.id = "MYDATA",
                         study.platform = "PLATFORM",
                         stringsAsFactors = FALSE)
 
+## The data.frame containing the information about the samples
+## The entries should be strings, not factors (stringsAsFactors=FALSE)
+samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
+                    Case.ID = c("Patient_h11", "Patient_h12"),
+                    Diagnosis = rep("Cancer", 2),
+                    Sample.Type = rep("Primary Tumor", 2),
+                    Source = rep("Databank B", 2), stringsAsFactors = FALSE)
+rownames(samplePED) <- samplePED$Name.ID
 
-## TODO
-fileNamePED <- "TODO"
+## Create the Sample GDS file for sample in 'listProfiles' vector
+## (in this case, sample "ex1")
+## The Sample GDS file is created in the PATHSAMPLEGDS directory
+result <- createStudy2GDS1KG(PATHGENO=data.dir,
+            pedStudy=samplePED, fileNameGDS=gdsFile,
+            studyDF=studyDF, listProfiles=c("ex1"),
+            PATHSAMPLEGDS=data.dir, verbose=FALSE)
 
+## Open 1KG file
+gds_1KG <- snpgdsOpen(gdsFile)
+
+## Compute the list of pruned SNVs for a specific profile 'ex1'
+## and save it in the Profile GDS file 'ex1.gds'
+pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
+              study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir)
+
+## The Profile GDS file 'ex1.gds' has been created in the
+## specified directory
+list.files(data.dir)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)
+
+## Unlink Profile GDS file (created for demo purpose)
+unlink(file.path(data.dir, "ex1.gds"))
 
 }
 \author{

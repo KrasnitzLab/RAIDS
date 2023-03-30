@@ -1,5 +1,5 @@
 ---
-title: "Accurate Inference of Genetic Ancestry from Cancer Sequencing"
+title: "Accurate Inference of Genetic Ancestry from Cancer-derived Sequences"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
     BiocStyle::html_document:
@@ -393,22 +393,22 @@ studyDF <- data.frame(study.id = "MYDATA",
                         stringsAsFactors = FALSE)
 
 #################################################################
-## The list of samples to analyzed is passed to the function.
-## The samples must be present in the Sample PED RDS file
-## and must have an associated Sample SNP pileup file.
-## Not all samples present in the Sample PED file need to 
+## The list of profiles to analyzed is passed to the function.
+## The profiles must be present in the Profile PED RDS file
+## and must have an associated Profile SNP pileup file.
+## Not all profiles present in the Profile PED file need to 
 ## be selected.
 #################################################################
 listSamples <- ped[, "Name.ID"]
 
 #################################################################
 ## This function creates one Sample GDS file for each
-## sample present in the 'listSamples' parameter.
+## sample present in the 'listProfiles' parameter.
 #################################################################
 createStudy2GDS1KG(PATHGENO = PATHGENO,
                         pedStudy = ped,
                         fileNameGDS = file.GDS,
-                        listSamples = listSamples,
+                        listProfiles = listSamples,
                         studyDF = studyDF,
                         PATHSAMPLEGDS = PATHSAMPLEGDS)
 
@@ -452,7 +452,7 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 gds_1KG <- snpgdsOpen(file.GDS)
 
 ##############################################################
-## All Sample GDS files need to be located in the same 
+## All Profile GDS files need to be located in the same 
 ## directory.
 ##############################################################
 PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
@@ -485,9 +485,9 @@ for(i in seq_len(length(listSamples))) {
     ## study.id: Study identifier as defined in the preceding step. (AK EXPLICIT STEP NUMBER)
     ##           The study identifier must be the same that the one present in
     ##           Sample GDS file.
-    ## PATHSAMPLEGDS: All Sample GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)
+    ## PATHSAMPLEGDS: All Profile GDS files must be in the same directory. (AK IS THIS EXPLAINED IN AN APPROPRIATE PLACE EARLIER?)
     pruningSample(gds=gds_1KG,
-                    sampleCurrent = listSamples[i],
+                    currentProfile = listSamples[i],
                     study.id = studyDF$study.id, 
                     PATHSAMPLEGDS = PATHSAMPLEGDS)
     

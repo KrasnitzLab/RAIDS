@@ -699,6 +699,15 @@ gds <- snpgdsOpen(file.GDS)
 ####################################################################
 set.seed(3043)   
 
+####################################################################
+## Select the profiles from 1KG for the synthetic data.
+## Here we select 2 profiles from 1KG for each subcontinental-level
+## Normally, we use 30 profiles from 1KG for each 
+## subcontinental-level but it is too big for the example.
+## The 1KG files in this example only have 6 profiles for each 
+## subcontinental-level (for demo purpose only)
+####################################################################
+
 dataRef <- select1KGPop(gds, nbSamples = 2L)
 
 ## Extract the list of selected 1KG sample identifiers
@@ -1063,6 +1072,14 @@ gds_1KG <- snpgdsOpen(file.GDS)
 
 set.seed(3043)
 
+####################################################################
+## Select the profiles from 1KG for the synthetic data.
+## Here we select 2 profiles from 1KG for each subcontinental-level
+## Normally, we use 30 profiles from 1KG for each 
+## subcontinental-level but it is too big for the example.
+## The 1KG files in this example only have 6 profiles for each 
+## subcontinental-level (for demo purpose only)
+####################################################################
 
 dataRef <- select1KGPop(gds_1KG, nbSamples = 2L)
 

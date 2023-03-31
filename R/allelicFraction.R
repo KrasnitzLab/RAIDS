@@ -64,7 +64,7 @@
 #' @importFrom stats dbinom
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
 
     ## The chr parameter must be a single integer value

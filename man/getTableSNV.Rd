@@ -79,3 +79,4 @@ data.dir <- system.file("extdata", package="RAIDS")
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
+\keyword{internal}

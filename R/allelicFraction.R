@@ -60,7 +60,7 @@
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
-#' @export
+#' @keywords internal
 getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
                             minProb=0.999, eProb=0.001, verbose=FALSE) {
 

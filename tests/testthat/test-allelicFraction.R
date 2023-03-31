@@ -74,7 +74,7 @@ test_that("getTableSNV() must return error when minProb is superior to 1", {
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
                         sampleCurrent="TEST", study.id="TEST",
                         minCov=12, minProb=1.32, eProb=0.001), error_message)
 })
@@ -91,7 +91,7 @@ test_that("getTableSNV() must return error when minProb is vector of numerics", 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
                                 sampleCurrent="TEST", study.id="TEST",
                                 minCov=12, minProb=c(0.32, 0.44), eProb=0.001),
                     error_message)
@@ -110,7 +110,7 @@ test_that("getTableSNV() must return error when eprob is negative", {
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                         "value between 0 and 1.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
                     sampleCurrent="TEST", study.id="TEST",
                     minCov=12, minProb=0.02, eProb="0.001"), error_message)
 })
@@ -127,7 +127,7 @@ test_that("getTableSNV() must return error when eProb is superior to 1", {
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                         "value between 0 and 1.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
                         sampleCurrent="TEST", study.id="TEST",
                         minCov=12, minProb=0.32, eProb=1.011), error_message)
 })
@@ -144,7 +144,7 @@ test_that("getTableSNV() must return error when eProb is vector of numerics", {
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                             "value between 0 and 1.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
                 sampleCurrent="TEST", study.id="TEST",
                 minCov=12, minProb=0.32, eProb=c(0.001, 0.2)), error_message)
 })
@@ -161,7 +161,7 @@ test_that("getTableSNV() must return error when gds is character string", {
     error_message <- paste0("The \'gds\' must be an object of class ",
                                 "\'gds.class\'.")
 
-    expect_error(getTableSNV(gds="HELLO", gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds="HELLO", gdsSample=gdsF,
                         sampleCurrent="TEST", study.id="TEST",
                         minCov=12, minProb=0.32, eProb=0.001), error_message)
 })
@@ -178,7 +178,7 @@ test_that("getTableSNV() must return error when gdsSample is character string", 
     error_message <- paste0("The \'gdsSample\' must be an object of class ",
                             "\'gds.class\'.")
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample="BABY",
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample="BABY",
                         sampleCurrent="TEST", study.id="TEST",
                         minCov=12, minProb=0.32, eProb=0.001), error_message)
 })
@@ -194,7 +194,7 @@ test_that("getTableSNV() must return error when verbose is character string", {
 
     error_message <- "The \'verbose\' parameter must be a logical."
 
-    expect_error(getTableSNV(gds=gdsF, gdsSample=gdsF,
+    expect_error(RAIDS:::getTableSNV(gds=gdsF, gdsSample=gdsF,
         sampleCurrent="TEST", study.id="TEST",
         minCov=12, minProb=0.32, eProb=0.001, verbose="blue"), error_message)
 })

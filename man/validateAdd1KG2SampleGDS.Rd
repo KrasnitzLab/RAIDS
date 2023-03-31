@@ -5,16 +5,16 @@
 \alias{validateAdd1KG2SampleGDS}
 \title{Validate input parameters for add1KG2SampleGDS() function}
 \usage{
-validateAdd1KG2SampleGDS(gds, gdsSampleFile, sampleCurrent, study.id)
+validateAdd1KG2SampleGDS(gds, gdsProfileFile, currentProfile, study.id)
 }
 \arguments{
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{gdsSampleFile}{a \code{character} string representing the path and
-file name of the GDS Sample file. The GDS Sample file must exist.}
+\item{gdsProfileFile}{a \code{character} string representing the path and
+file name of the Profile GDS file. The Profile GDS file must exist.}
 
-\item{sampleCurrent}{a \code{character} string corresponding to the sample
+\item{currentProfile}{a \code{character} string corresponding to the profile
 identifier associated to the current list of pruned SNVs.}
 
 \item{study.id}{a \code{character} string corresponding to the study
@@ -37,8 +37,8 @@ gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validatiion should be successful
 RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
-    gdsSampleFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
-    sampleCurrent="Sample01", study.id="Synthetic")
+    gdsProfileFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
+    currentProfile="Sample01", study.id="Synthetic")
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

@@ -880,10 +880,10 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param gdsSampleFile a \code{character} string representing the path and
-#' file name of the GDS Sample file. The GDS Sample file must exist.
+#' @param gdsProfileFile a \code{character} string representing the path and
+#' file name of the Profile GDS file. The Profile GDS file must exist.
 #'
-#' @param sampleCurrent a \code{character} string corresponding to the sample
+#' @param currentProfile a \code{character} string corresponding to the profile
 #' identifier associated to the current list of pruned SNVs.
 #'
 #' @param study.id a \code{character} string corresponding to the study
@@ -901,8 +901,8 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
-#'     gdsSampleFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
-#'     sampleCurrent="Sample01", study.id="Synthetic")
+#'     gdsProfileFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
+#'     currentProfile="Sample01", study.id="Synthetic")
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -910,20 +910,20 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-validateAdd1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
+validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
                                         study.id) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")
 
-    ## The gdsSampleFile must be a character string and the file must exists
-    if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
+    ## The gdsProfileFile must be a character string and the file must exists
+    if(!(is.character(gdsProfileFile) && (file.exists(gdsProfileFile)))) {
         stop("The \'gdsSampleFile\' must be a character string representing ",
                 "the GDS Sample file. The file must exist.")
     }
 
-    ## The sampleCurrent must be a character string
-    if(!(is.character(sampleCurrent))) {
+    ## The currentProfile must be a character string
+    if(!(is.character(currentProfile))) {
         stop("The \'sampleCurrent\' must be a character string.")
     }
 

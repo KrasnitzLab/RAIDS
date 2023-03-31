@@ -630,6 +630,45 @@ test_that("add1KG2SampleGDS() must return error when study.id is a numeric value
 })
 
 
+test_that("add1KG2SampleGDS() must return expect result", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+
+    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    data.dir.sample <- test_path("fixtures/sampleGDSforAddingGenotype")
+
+
+    file.copy(file.path(data.dir.sample, "ex1_demoForAddGenotype.gds"),
+              file.path(data.dir.sample, "ex1.gds"))
+    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    result <- add1KG2SampleGDS(gds=gdsF,
+                gdsSampleFile=file.path(data.dir.sample, "ex1.gds"),
+                sampleCurrent=c("ex1"), study.id = studyDF$study.id)
+
+    expect_equal(result, 0L)
+
+    content <- openfn.gds(file.path(data.dir.sample, "ex1.gds"))
+    withr::defer((gdsfmt::closefn.gds(content)), envir = parent.frame())
+
+    expect_true(gdsfmt::exist.gdsn(content, "pruned.study"))
+    expect_true(gdsfmt::exist.gdsn(content, "geno.ref"))
+    expect_true(gdsfmt::exist.gdsn(content, "sample.id"))
+    expect_true(gdsfmt::exist.gdsn(content, "snp.id"))
+    expect_true(gdsfmt::exist.gdsn(content, "snp.position"))
+    expect_true(gdsfmt::exist.gdsn(content, "snp.index"))
+    expect_true(gdsfmt::exist.gdsn(content, "genotype"))
+    expect_true(gdsfmt::exist.gdsn(content, "lap"))
+})
 
 
 #############################################################################

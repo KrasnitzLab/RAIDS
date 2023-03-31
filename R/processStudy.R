@@ -2104,5 +2104,283 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 }
 
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings (no factor). The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
+#'
+#' @param PATHPROFILEGDS a \code{character} string representing the path to
+#' the directory where the GDS Profile files will be created.
+#' Default: \code{NULL}.
+#'
+#' @param PATHGENO a \code{character} string representing the path to the
+#' directory containing the VCF output of SNP-pileup for each sample. The
+#' SNP-pileup files must be compressed (gz files) and have the name identifiers
+#' of the samples. A sample with "Name.ID" identifier would have an
+#' associated SNP-pileup file called "Name.ID.txt.gz".
+#'
+#' @param PATH_OUT a \code{character} string representing the path to
+#' the directory where the out files are created.
+#' Default: \code{NULL}.
+#'
+#' @param File.gds_1KG a \code{character} string representing the file name of
+#' the 1KG GDS file. The file must exist.
+#'
+#' @param File.gds_1KG.Annot a \code{character} string representing the file name of
+#' the 1KG GDS annotation file. The file must exist.
+#'
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes. See 'details' section.
+#'
+#' @param dataRefSyn a \code{data.frame} containing those columns:
+#' \itemize{
+#' \item{sample.id} { a \code{character} string representing the sample
+#' identifier. }
+#' \item{pop.group} { a \code{character} string representing the
+#' subcontinental population assigned to the sample. }
+#' \item{superPop} { a \code{character} string representing the
+#' super-population assigned to the sample. }
+#' } can be the return of select1KGPop
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @references
+#'
+#' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
+#' Price AL. Fast Principal-Component Analysis Reveals Convergent Evolution
+#' of ADH1B in Europe and East Asia. Am J Hum Genet. 2016 Mar 3;98(3):456-72.
+#' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
+#'
+#' @examples
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' #################################################################
+#' ## The path and file name for the PED RDS file
+#' ## will the information about the analyzed samples
+#' #################################################################
+#'
+#' filePED <- file.path(data.dir, "example", "pedEx.rds")
+#' ped <- readRDS(filePED)
+#' head(ped)
+#'
+#' #################################################################
+#' ## The 1KG GDS file and the 1KG SNV Annotation GDS file
+#' ## need to be located in the same directory
+#' ## Note that the 1KG GDS file used for this example is a
+#' ## simplified version and CANNOT be used for any real analysis
+#' #################################################################
+#'
+#' PATH_1KG <- file.path(data.dir, "example", "gdsRef")
+#'
+#' fileName.GDS.1KG <- "ex1kg.gds"
+#' file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
+#'
+#' fileName.GDS.Annot <- "exAnnot1kg.gds"
+#' file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
+#'
+#'
+#' #################################################################
+#' ## The Sample SNP pileup files (one per sample) need
+#' ## to be located in the same directory.
+#' #################################################################
+#' PATHGENO <- file.path(data.dir, "example", "snpPileup")
+#'
+#' #################################################################
+#' ## The path where the Sample GDS files (one per sample)
+#' ## will be created need to be specified.
+#' #################################################################
+#' PATHPROFILEGDS <- file.path(data.dir, "example", "out.tmp")
+#'
+#' PATHOUT <- file.path(data.dir, "example", "res.out")
+#'
+#' #################################################################
+#' ## A data frame containing general information about the study
+#' ## is also required. The data frame must have
+#' ## those 3 columns: "study.id", "study.desc", "study.platform"
+#' #################################################################
+#' studyDF <- data.frame(study.id = "MYDATA",
+#'                       study.desc = "Description",
+#'                       study.platform = "PLATFORM",
+#'                       stringsAsFactors = FALSE)
+#'
+#' gds_1KG <- snpgdsOpen(file.GDS)
+#'
+#' ####################################################################
+#' ## Fix RNG seed to ensure reproducible results
+#' ####################################################################
+#'
+#' set.seed(3043)
+#'
+#'
+#' dataRef <- select1KGPop(gds_1KG, nbSamples = 2L)
+#'
+#' closefn.gds(gds_1KG)
+#'
+#' ## Chromosome length information
+#' ## chr23 is chrX, chr24 is chrY and chrM is 25
+#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+#'     156040895L, 57227415L,  16569L)
+#'
+#' ## A formal way to get the chormosome length information
+#' ## library(BSgenome.Hsapiens.UCSC.hg38)
+#' ## chrInfo <- integer(25L)
+#' ## for(i in seq_len(22L)){ chrInfo[i] <-
+#' ##                          length(Hsapiens[[paste0("chr", i)]])}
+#' ## chrInfo[23] <- length(Hsapiens[["chrX"]])
+#' ## chrInfo[24] <- length(Hsapiens[["chrY"]])
+#' ## chrInfo[25] <- length(Hsapiens[["chrM"]])
+#' \dontrun{
+#' runExomeAncestry(pedStudy = ped, studyDF = studyDF,
+#'                     PATHPROFILEGDS = PATHPROFILEGDS,
+#'                     PATHGENO = PATHGENO,
+#'                     PATH_OUT = PATHOUT,
+#'                     File.gds_1KG = file.GDS,
+#'                     File.gds_1KG.Annot = file.Annot,
+#'                     chrInfo = chrInfo,
+#'                     dataRefSyn = dataRef)
+#'
+#' unlink(PATHPROFILEGDS, recursive = TRUE, force=TRUE)
+#' unlink(PATHOUT, recursive = TRUE, force=TRUE)
+#' }
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @export
+runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
+                             PATHGENO, PATH_OUT, File.gds_1KG, File.gds_1KG.Annot,
+                             chrInfo, dataRefSyn){
+
+    listProfiles <- pedStudy[, "Name.ID"]
+
+    createStudy2GDS1KG(PATHGENO = PATHGENO,
+                       pedStudy = pedStudy,
+                       fileNameGDS = File.gds_1KG,
+                       listProfiles = listProfiles,
+                       studyDF = studyDF,
+                       PATHSAMPLEGDS = PATHPROFILEGDS)
+    ## Open the 1KG GDS file (demo version)
+    gds_1KG <- snpgdsOpen(File.gds_1KG)
+    ## Open the 1KG GDS file and 1KG SNV Annotation file
+    gds_1KG.Annot <- openfn.gds(File.gds_1KG.Annot)
+
+    listProfileRef <- dataRef$sample.id
+    studyDF.syn <- data.frame(study.id = paste0(studyDF$study.id, ".Synthetic"),
+                              study.desc = paste0(studyDF$study.id," synthetic data"),
+                              study.platform = studyDF$study.platform,
+                              stringsAsFactors = FALSE)
+
+    for(i in seq_len(length(listProfiles))) {
+        pruningSample(gds=gds_1KG,
+                      currentProfile = listProfiles[i],
+                      study.id = studyDF$study.id,
+                      PATHSAMPLEGDS = PATHPROFILEGDS)
+        file.GDSProfile <- file.path(PATHPROFILEGDS, paste0(listProfiles[i], ".gds"))
+        add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSProfile,
+                         sampleCurrent = listProfiles[i],
+                         study.id = studyDF$study.id)
+        addStudy1Kg(gds_1KG, file.GDSProfile)
+
+        gdsProfile <- openfn.gds(file.GDSProfile, readonly = FALSE)
+
+        estimateAllelicFraction(gds = gds_1KG, gdsSample = gdsProfile,
+                                sampleCurrent = listProfiles[i],
+                                study.id = studyDF$study.id,
+                                chrInfo = chrInfo)
+        closefn.gds(gdsProfile)
+
+        prepSynthetic(gdsSampleFile = file.GDSProfile,
+                      listSampleRef = listProfileRef,
+                      data.id.profile = listProfiles[i],
+                      studyDF = studyDF.syn,
+                      prefId = "1")
+
+        resG <- syntheticGeno(gds = gds_1KG,
+                              gdsRefAnnot = gds_1KG.Annot,
+                              gdsSampleFile = file.GDSProfile,
+                              data.id.profile = listProfiles[i],
+                              listSampleRef = listProfileRef,
+                              prefId = "1")
+        if(! file.exists(PATH_OUT)) {
+            dir.create(PATH_OUT)
+        }
+        spRef <- getRef1KGPop(gds_1KG, "superPop")
+        sampleRM <- splitSelectByPop(dataRef)
+
+        PATH_OUT_SAMPLE <- file.path(PATH_OUT, listProfiles[i])
+        if(! file.exists(PATH_OUT_SAMPLE)) {
+            dir.create(PATH_OUT_SAMPLE)
+        }
+
+        ## Open the Profile GDS file
+        gdsProfile <- snpgdsOpen(file.GDSProfile)
+
+        ## This variable will contain the results from the PCA analyses
+        KNN.list <- list()
+        ## For each row of the sampleRM matrix
+        for(j in seq_len(nrow(sampleRM))) {
+            ## Run a PCA analysis using 1 synthetic profile from each
+            ##  sub-continental ancestry
+            ## The synthetic profiles are projected on the 1KG PCA space
+            ##  (the reference samples used to generate the synthetic profiles are
+            ##  removed from this PCA)
+            ## The K-nearest neighbor analysis is done using
+            ##  a range of K and D values
+            KNN.synt <- computePoolSyntheticAncestryGr(gdsSample = gdsProfile,
+                                                       sampleRM =  sampleRM[j,],
+                                                       study.id.syn = studyDF.syn$study.id,
+                                                       np = 1L,
+                                                       spRef = spRef,
+                                                       eigen.cnt = 15L)
+
+            ## Results are saved
+            saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE,
+                                               paste0("KNN.synt.", listProfiles[i], ".", j, ".rds")))
+
+
+        }
+        ## Directory where the KNN results have been saved
+        PATHKNN <- file.path(PATH_OUT, listProfiles[i])
+        listFilesName <- dir(file.path(PATHKNN), ".rds")
+        ## List of the KNN result files from PCA on synthetic data
+        listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+
+        resCall <- computeAncestryFromSyntheticFile(gds = gds_1KG,
+                                                    gdsSample = gdsProfile,
+                                                    listFiles = listFiles,
+                                                    sample.ana.id = listProfiles[i],
+                                                    spRef = spRef,
+                                                    study.id.syn = studyDF.syn$study.id,
+                                                    np = 1L)
+
+        saveRDS(resCall, file.path(PATH_OUT,
+                                   paste0(listProfiles[i], ".infoCall", ".rds")))
+
+        write.csv(resCall$Ancestry,
+                  file.path(PATH_OUT, paste0(listProfiles[i], ".Ancestry",".csv")),
+                  quote = FALSE, row.names = FALSE)
+
+        ## Close Profile GDS file (important)
+        closefn.gds(gdsProfile)
+    }
+    closefn.gds(gds_1KG)
+    closefn.gds(gds_1KG.Annot)
+    # Successful
+    return(0L)
+}
 
 

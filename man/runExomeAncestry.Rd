@@ -65,6 +65,16 @@ super-population assigned to the sample. }
 }
 \value{
 The integer \code{0L} when successful.
+
+The *computeAncestryFromSyntheticFile()* function generates 3 types of files
+in the *OUTPUT* directory.
+
+* The ancestry inference CSV file (".Ancestry.csv" file)
+* The inference information RDS file (".infoCall.rds" file)
+* The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)
+
+In addition, a sub-directory (named using the *profile ID*) is
+also created.
 }
 \description{
 TODO

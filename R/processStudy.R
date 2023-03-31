@@ -2016,6 +2016,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
 #' @return a \code{list} TODO with the sample.id and eigenvectors
 #' and a table with KNN callfor different K and pca dimension.
 #'
+#'
 #' @references
 #'
 #' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
@@ -2154,6 +2155,16 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' } can be the return of select1KGPop
 #'
 #' @return The integer \code{0L} when successful.
+#'
+#' The *computeAncestryFromSyntheticFile()* function generates 3 types of files
+#' in the *OUTPUT* directory.
+#'
+#' * The ancestry inference CSV file (".Ancestry.csv" file)
+#' * The inference information RDS file (".infoCall.rds" file)
+#' * The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)
+#'
+#' In addition, a sub-directory (named using the *profile ID*) is
+#' also created.
 #'
 #' @references
 #'

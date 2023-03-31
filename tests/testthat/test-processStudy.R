@@ -514,6 +514,11 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
 
     data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
+    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
+              file.path(data.dir.sample, "ex1.gds"))
+    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+                 envir=parent.frame())
+
     error_message <- paste0("In pruningSample, the sample ex1 ",
                                     "doesn't have SNPs after filters")
 
@@ -541,6 +546,16 @@ test_that("pruningSample() must return expect result", {
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
+
+
+    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
+                      file.path(data.dir.sample, "ex1.gds"))
+    withr::defer((unlink(file.path(data.dir.sample, "prunedTest.Obj.rds"))),
+                        envir=parent.frame())
+    withr::defer((unlink(file.path(data.dir.sample, "prunedTest.rds"))),
+                        envir=parent.frame())
+    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+                 envir=parent.frame())
 
     result <- pruningSample(gds=gdsF, method="corr",
                 currentProfile="ex1", study.id=studyDF$study.id,

@@ -51,7 +51,7 @@ package is required.
 
 [RAIDS Website](https://krasnitzlab.github.io/RAIDS/)
 
-[RAIDS Get Started](https://krasnitzlab.github.io/RAIDS/articles/aicsPaper.html)
+[RAIDS Get Started](https://krasnitzlab.github.io/RAIDS/articles/RAIDS.html)
 
 
 ## License ##

@@ -1,13 +1,16 @@
-#' @title Validate input parameters for getTableSNV() function
+#' @title Extract the genotype information for a SNV dataset using
+#' the Profile GDS file (reference) and the 1KG GDS file
 #'
-#' @description This function validates the input parameters for the
-#' \code{\link{getTableSNV}} function.
+#' @description The function generates a \code{data.frame} containing the
+#' genotype information from a initial list of SNVs associated to a specific
+#' profile. The function uses the information present in the 1KG GDS file
+#' (reference) and the Profile GDS file.
 #'
-#' @param gdsRef an object of class \code{\link[gdsfmt]{gds.class}} (a GDS
-#' file), the opened 1KG GDS file (reference).
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
+#' the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened Sample GDS file.
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
@@ -16,75 +19,183 @@
 #' identifier used in \code{\link{pruningSample}} function.
 #'
 #' @param minCov a single positive \code{integer} representing the minimum
-#' required coverage.
+#' required coverage. Default: \code{10L}.
 #'
 #' @param minProb a single \code{numeric} between \code{0} and \code{1}
 #' representing the probability that the calculated genotype call is correct.
+#' Default: \code{0.999}.
 #'
 #' @param eProb a single \code{numeric} between \code{0} and \code{1}
-#' representing the probability of sequencing error.
+#' representing the probability of sequencing error. Default: \code{0.001}.
 #'
 #' @param verbose a \code{logicial} indicating if messages should be printed
-#' when the function is running.
+#' when the function is running. Default: \code{FALSE}.
 #'
-#' @return The integer \code{0L} when the function is successful.
+#' @return a \code{data.frame} containing:
+#' \itemize{
+#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' the SNV.}
+#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' the reference allele.}
+#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' the alternative allele.}
+#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
+#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
+#' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
+#' the normal genotype is unknown.}
+#' \item{snp.index} {a \code{vector} of \code{integer} representing the
+#' position of the SNVs in the 1KG GDS file.}
+#' }
 #'
 #' @examples
 #'
-#' ## Directory where demo GDS files are located (refence and sample files)
+#' ## Path to the demo pedigree file is located in this package
 #' data.dir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened) (reference file)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
-#'
-#' ## The Sample GDS file (opened)
-#' gdsSample <- openfn.gds(file.path(data.dir,
-#'                          "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
-#'
-#' ## The validation should be successful
-#' RAIDS:::validateGetTableSNV(gdsRef=gds1KG, gdsSample=gdsSample,
-#'      sampleCurrent="A101TCGA", study.id="TCGA", minCov=10L,
-#'      minProb=0.998, eProb=0.002, verbose=TRUE)
-#'
-#' ## All GDS files must be closed
-#' closefn.gds(gdsfile=gds1KG)
-#' closefn.gds(gdsfile=gdsSample)
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateGetTableSNV <- function(gdsRef, gdsSample, sampleCurrent, study.id,
-                                    minCov, minProb, eProb, verbose) {
+getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
+                        minProb=0.999, eProb=0.001, verbose=FALSE) {
 
-    ## The gdsRef must be an object of class "gds.class"
-    validateGDSClass(gds=gdsRef, name="gds")
+    ## Extract study information (data.frame) from GDS Sample file
+    study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
 
-    ## The gdsSample must be an object of class "gds.class"
-    validateGDSClass(gds=gdsSample, name="gdsSample")
+    ## Retain the specified sample in the specified study
+    posCur <- which(study.annot$data.id == sampleCurrent &
+                        study.annot$study.id == study.id)
 
-    ## The minCov must be a single positive number
-    if (!(isSingleNumber(minCov) && (minCov >= 0)))  {
-        stop("The \'minCov\' must be a single numeric positive value.")
+    ## Extract SNV coverage from Sample GDS file
+    cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
+                           start=c(1, posCur), count=c(-1, 1))
+
+    ## Only retained the SNV with the minimum required coverage
+    listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
+
+    ## Create the data.frame with the required information
+    snp.pos <- data.frame(cnt.tot=cnt.total[listKeep],
+                          cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
+                                    start=c(1, posCur),
+                                    count=c(-1, 1))[listKeep],
+                          cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
+                                    start=c(1, posCur),
+                                    count=c(-1, 1))[listKeep],
+                          snp.pos=read.gdsn(index.gdsn(node=gds,
+                                    "snp.position"))[listKeep],
+                          snp.chr=read.gdsn(index.gdsn(node=gds,
+                                    "snp.chromosome"))[listKeep],
+                          normal.geno=rep(3, length(listKeep)),#ormal genotype unknown
+                          pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep)),
+                          snp.index=listKeep,
+                          stringsAsFactors=FALSE)
+
+    snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
+
+    listKeepPruned <- which(listKeep %in% snp.pruned)
+    snp.pos$pruned[listKeepPruned] <- TRUE
+
+    rm(cnt.total, snp.pruned, listKeepPruned)
+
+    # Add snv info for snv not in Reference
+    if ("normal.geno" %in% ls.gdsn(node=gdsSample)) {
+        # if normal.geno exist mean there is count not in the ref
+        # I have other genotype than 1KG
+        if (verbose) {
+            message("Genotype")
+        }
+
+        cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
+        listKeep.o <- which(cnt.total >= minCov)
+
+        snp.pos.o <- data.frame(cnt.tot=cnt.total[listKeep.o],
+                                cnt.ref=read.gdsn(index.gdsn(gdsSample,
+                                        "Ref.count.o"))[listKeep.o],
+                                cnt.alt=read.gdsn(index.gdsn(gdsSample,
+                                        "Alt.count.o"))[listKeep.o],
+                                snp.pos=read.gdsn(index.gdsn(gds,
+                                        "snp.position.o"))[listKeep.o],
+                                snp.chr=read.gdsn(index.gdsn(gds,
+                                        "snp.chromosome.o"))[listKeep.o],
+                                normal.geno=read.gdsn(index.gdsn(gds,
+                                        "normal.geno"))[listKeep.o],
+                                pruned=rep(0, length(listKeep)),
+                                snp.index=rep(0, length(listKeep.o)),
+                                stringsAsFactors=FALSE)
+        listChr <- unique(snp.pos.o$snp.chr)
+        listUnion <- list()
+
+        # if snp.pos.o intersect snp.pos and normal.geno != 3 (we know
+        # the genotype of normal) change in snp.pos normal.geno
+        z <- cbind(c(snp.pos.o$snp.chr, snp.pos$snp.chr, snp.pos.o$snp.chr),
+                   c(snp.pos.o$snp.pos, snp.pos$snp.pos, snp.pos.o$snp.pos),
+                   c(seq_len(nrow(snp.pos.o)), 0, -1*seq_len(nrow(snp.pos.o))),
+                   c(rep(0, nrow(snp.pos.o)), seq_len(nrow(snp.pos)),
+                     rep(0, nrow(snp.pos.o))))
+        z <- z[order(z[,1], z[,2], z[,3]), ]
+        vCum <- cumsum(z[,3])
+
+        snp.pos[z[ vCum < 0 & z[,3] == 0, 4],
+                "normal.geno"] <- snp.pos.o[vCum[vCum < 0 & z[, 3] == 0],
+                                        "normal.geno"]
+        rm(z)
+
+        # Keep the snp.pos.o not in snp.pos
+        z <- cbind(c(snp.pos$snp.chr, snp.pos.o$snp.chr, snp.pos$snp.chr),
+                   c(snp.pos$snp.pos, snp.pos.o$snp.pos, snp.pos$snp.pos),
+                   c(seq_len(nrow(snp.pos)), 0, -1*seq_len(nrow(snp.pos))),
+                   c(rep(0, nrow(snp.pos)), seq_len(nrow(snp.pos.o)),
+                     rep(0, nrow(snp.pos))))
+        z <- z[order(z[,1], z[,2], z[,3]), ]
+        # merge snp.pos with snp.pos.o
+        snp.pos <- rbind(snp.pos,
+                         snp.pos.o[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
+
+    }
+    listCnt <- unique(snp.pos$cnt.tot)
+    listCnt <- listCnt[order(listCnt)]
+
+    cutOffA <- data.frame(count = unlist(vapply(listCnt,
+                        FUN=function(x, minProb, eProb){
+                            return(max(2, qbinom(minProb, x,eProb)))},
+                        FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)),
+                          allele = unlist(vapply(listCnt,
+                            FUN=function(x, minProb, eProb){
+                                return(max(2,qbinom(minProb, x,eProb)))},
+                        FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)))
+    row.names(cutOffA) <- as.character(listCnt)
+
+    snp.pos$keep <- rowSums(snp.pos[, c("cnt.ref", "cnt.alt")]) >=
+        snp.pos$cnt.tot - cutOffA[as.character(snp.pos$cnt.tot), "count"]
+
+    snp.pos$hetero <- snp.pos$keep == TRUE &
+        rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] >=
+            cutOffA[as.character(snp.pos$cnt.tot), "allele"]) == 2
+
+    # We set to homo if 2th allele can be explain by error
+    # can switch low allelic fraction to LOH which is less a problem
+    # then reduce the allelic ratio by seq error
+    snp.pos$homo <- snp.pos$keep == TRUE &
+        rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] >=
+            cutOffA[as.character(snp.pos$cnt.tot), "allele"]) == 1
+
+    ## If we know the normal is hetero then we call hetero
+    ## if the cnt.alt and cnt.ref > 0
+    listHeteroN <- which(snp.pos$homo == TRUE &
+                rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] > 0) == 2 &
+                snp.pos$normal.geno == 1)
+
+    if (length(listHeteroN) > 0) {
+        snp.pos$hetero[listHeteroN] <- TRUE
+        snp.pos$homo <- FALSE
     }
 
-    ## The minProb must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(minProb) && (minProb >= 0.0) && (minProb <= 1.0)))  {
-        stop("The \'minProb\' must be a single numeric positive ",
-                "value between 0 and 1.")
-    }
-
-    ## The eProb must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(eProb) && (eProb >= 0.0) && (eProb <= 1.0)))  {
-        stop("The \'eProb\' must be a single numeric positive ",
-                "value between 0 and 1.")
-    }
-
-    ## The verbose parameter must be a logical
-    validateLogical(logical=verbose, "verbose")
-
-    ## Successful
-    return(0L)
+    return(snp.pos)
 }
 
 

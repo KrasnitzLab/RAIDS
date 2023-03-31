@@ -68,7 +68,8 @@ from tumor-derived data would be beneficial.
 
 The **RAIDS** package implements an inference procedure that has been
 specifically developed to accurately infer genetic ancestry from 
-cancer-derived sequences. The current version can handle cancer-derived sequences of:
+cancer-derived sequences. The current version can handle cancer-derived 
+sequences of:
 
 * tumor exomes
 * targeted gene panels 
@@ -913,17 +914,13 @@ library(RAIDS)
 ## Open the 1KG GDS file 
 gds <- openfn.gds(file.GDS)
     
-    
-    
-# A directory for the results, where a sub-directory 
-# will be set up for each input profile 
+## A directory for the results, where a sub-directory 
+## will be set up for each input profile 
 PATH_OUT <- file.path(PATHSAMPLEGDS)
 
 if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
 }
-    
-    
 
 ####################################################################
 ## The getRef1KGPop() function extract the known super-population 
@@ -975,18 +972,29 @@ closefn.gds(gds)
 
 ####################################################################
 ## Show the ancestry inference (SuperPop) and 
-## optimal number of PCA component D
-## optimal number neighbour K
+## optimal number of PCA components D
+## optimal number of neighbours K
 ####################################################################
-
-resAncestry <- read.csv(file.path(PATH_OUT, paste0(ped$Name.ID[1], ".Ancestry.csv")))
+resAncestry <- read.csv(file.path(PATH_OUT, 
+                    paste0(ped$Name.ID[1], ".Ancestry.csv")))
 resAncestry
 
-
+## Clean-up demo files
 unlink(file.GDSSample, force=TRUE)
 unlink(PATH_OUT, recursive = TRUE, force=TRUE)
-
 ```
+
+
+The *computeAncestryFromSyntheticFile()* function generates 3 types of files 
+in the *OUTPUT* directory.
+
+* The ancestry inference CSV file (".Ancestry.csv" file) 
+* The inference information RDS file (".infoCall.rds" file)
+* The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)
+
+In addition, a sub-directory (named using the *profile ID*) is 
+also created. 
+
 
 <a name="wrapper"></a>
 

@@ -73,3 +73,4 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
+\keyword{internal}

@@ -2259,6 +2259,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' unlink(PATHOUT, recursive = TRUE, force=TRUE)
 #' }
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom utils write.csv
 #' @encoding UTF-8
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
@@ -2278,7 +2279,7 @@ runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
     ## Open the 1KG GDS file and 1KG SNV Annotation file
     gds_1KG.Annot <- openfn.gds(File.gds_1KG.Annot)
 
-    listProfileRef <- dataRef$sample.id
+    listProfileRef <- dataRefSyn$sample.id
     studyDF.syn <- data.frame(study.id = paste0(studyDF$study.id, ".Synthetic"),
                               study.desc = paste0(studyDF$study.id," synthetic data"),
                               study.platform = studyDF$study.platform,
@@ -2319,7 +2320,7 @@ runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
             dir.create(PATH_OUT)
         }
         spRef <- getRef1KGPop(gds_1KG, "superPop")
-        sampleRM <- splitSelectByPop(dataRef)
+        sampleRM <- splitSelectByPop(dataRefSyn)
 
         PATH_OUT_SAMPLE <- file.path(PATH_OUT, listProfiles[i])
         if(! file.exists(PATH_OUT_SAMPLE)) {

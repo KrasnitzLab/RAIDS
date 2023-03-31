@@ -31,7 +31,6 @@ the Profile GDS file.
 }
 \examples{
 
-\dontrun{
 ## Path to the demo 1KG GDS file is located in this package
 data.dir <- system.file("extdata/tests", package="RAIDS")
 gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
@@ -44,12 +43,14 @@ studyDF <- data.frame(study.id = "MYDATA",
                         study.platform = "PLATFORM",
                         stringsAsFactors = FALSE)
 
-## Copy the Profile GDS file demo that hasibeen pruned
-data.dir.pruning <- system.file("extdata/demoAddGenotype", package="RAIDS")
+## Copy the Profile GDS file demo that has been pruned
+## into a test directory (deleted after the example has been run)
+data.dir.genotype <- file.path(system.file("extdata", package="RAIDS"),
+                 "demoAddGenotype")
+dir.create(data.dir.genotype, showWarnings=FALSE,
+                 recursive=FALSE, mode="0777")
 file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
-                data.dir.pruning)
-file.rename(file.path(data.dir.pruning, "ex1_demo_with_pruning.gds"),
-                file.path(data.dir.pruning, "ex1.gds"))
+                 file.path(data.dir.genotype, "ex1.gds"))
 
 ## Open 1KG file
 gds_1KG <- snpgdsOpen(gdsFile)
@@ -57,7 +58,7 @@ gds_1KG <- snpgdsOpen(gdsFile)
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 add1KG2SampleGDS(gds=gds_1KG,
-         gdsSampleFile=file.path(data.dir.pruning, "ex1.gds"),
+         gdsSampleFile=file.path(data.dir.genotype, "ex1.gds"),
          sampleCurrent=c("ex1"),
          study.id = studyDF$study.id)
 
@@ -66,15 +67,16 @@ closefn.gds(gds_1KG)
 
 ## Check content of Profile GDS file
 ## The 'pruned.study' entry should be present
-content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+content <- openfn.gds(file.path(data.dir.genotype, "ex1.gds"))
 content
 
 ## Close the Profile GDS file (it is important to always close the GDS files)
 closefn.gds(content)
 
 ## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(data.dir.pruning, "ex1.gds"))
-}
+unlink(file.path(data.dir.genotype, "ex1.gds"))
+unlink(data.dir.genotype)
+
 }
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

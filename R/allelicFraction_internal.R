@@ -1,16 +1,16 @@
 #' @title Extract the genotype information for a SNV dataset using
-#' the Sample GDS file (reference) and the 1KG GDS file
+#' the Profile GDS file (reference) and the 1KG GDS file
 #'
 #' @description The function generates a \code{data.frame} containing the
 #' genotype information from a initial list of SNVs associated to a specific
-#' sample. The function uses the
-#' information present in the 1KG GDS file (reference) and the Sample GDS file.
+#' profile. The function uses the information present in the 1KG GDS file
+#' (reference) and the Profile GDS file.
 #'
 #' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
 #' the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened Sample GDS file.
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param sampleCurrent a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.

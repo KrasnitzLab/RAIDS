@@ -37,40 +37,24 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
 
-    ## Validate that the batch is an integer
-    if (! isSingleNumber(batch.v)) {
-        stop("The batch.v must be an integer.")
-    }
-
-    ## Validate that the pedigree file exists
-    if (! file.exists(pedFile)) {
-        stop("The file \'", pedFile, "\' does not exist." )
-    }
-
-    ## Validate that the path for the genotyping files exists
-    if (! file.exists(PATHGENO)) {
-        stop("The path \'", PATHGENO, "\' does not exist." )
-    }
+    ## Validate parameters
+    validatePrepPed1KG(pedFile=pedFile, PATHGENO=PATHGENO, batch.v=batch.v)
 
     ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)
 
     ## Create a data.frame containing the needed information
-    pedAll <- data.frame(
-                sample.id=c(ped1KG$Individual.ID),
-                Name.ID=c(ped1KG$Individual.ID),
-                sex=c(ped1KG$Gender),
+    pedAll <- data.frame(sample.id=c(ped1KG$Individual.ID),
+                Name.ID=c(ped1KG$Individual.ID), sex=c(ped1KG$Gender),
                 pop.group=c(ped1KG$Population),
                 superPop=rep(NA, length(c(ped1KG$Population))),
                 batch=c(rep(batch.v, nrow(ped1KG))),
-                stringsAsFactors=FALSE
-    )
+                stringsAsFactors=FALSE)
 
     ## Create a list with all populations associated to each super-population
     ## TODO The population versus super.population is hard-coded
@@ -84,8 +68,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     listSuperPop1000G[['SAS']] <- c("GIH", "PJL", "BEB", "STU", "ITU")
 
 
-    ## Identify the super-population associated to each sample in
-    ## the data.frame
+    ## Identify the super-population associated to each sample in data.frame
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
     for(sp in listSuperPop){
         pedAll[which(pedAll$pop.group %in% listSuperPop1000G[[sp]]),
@@ -98,7 +81,6 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     ## Change column format for Sex information
     ## TODO: could be done when the data.frame is created
     pedAll$sex <- as.character(pedAll$sex)
-
 
     ## Only retained samples with existing genotyping file
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")

@@ -145,6 +145,63 @@ validatePruningSample <- function(gds, method, currentProfile, study.id,
     return(0L)
 }
 
+#' @title Validate input parameters for prepPed1KG() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{prepPed1KG}} function.
+#'
+#' @param pedFile a \code{character} string representing the path and
+#' file name of the pedigree file from 1KG. The file must exist.
+#'
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. Only the samples with
+#' associated genotyping files are retained in the creation of the final
+#' \code{data.frame}. The name of the genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
+#'
+#' @param batch.v a\code{integer} that uniquely identifies the source of the
+#' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Demo pedigree file
+#' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+#'
+#' ## The validation should be successful
+#' RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
+#'      PATHGENO="data.dir", batch.v=1)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validatePrepPed1KG <- function(pedFile, PATHGENO, batch.v) {
+
+    ## Validate that the batch is an integer
+    if (! isSingleNumber(batch.v)) {
+        stop("The batch.v must be an integer.")
+    }
+
+    ## Validate that the pedigree file exists
+    if (! file.exists(pedFile)) {
+        stop("The file \'", pedFile, "\' does not exist." )
+    }
+
+    ## Validate that the path for the genotyping files exists
+    if (! file.exists(PATHGENO)) {
+        stop("The path \'", PATHGENO, "\' does not exist." )
+    }
+
+    return(0L)
+}
+
 
 #' @title Validate input parameters for pruningSample() function
 #'

@@ -849,6 +849,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
     return(dataRef)
 }
 
+
 #' @title Generate two indexes based on gene annotation for gdsAnnot1KG
 #' block and add the indexes into the
 #' gdsAnnot1KG
@@ -858,10 +859,9 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param file.gdsRefAnnot the filename corresponding to an object of
-#' class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file. The function will
-#' open it in write mode and close it after.
+#' @param file.gdsRefAnnot the filename corresponding the 1KG SNV
+#' Annotation GDS file. The function will
+#' open it in write mode and close it after. The file must exist.
 #'
 #' @param winSize a single positive \code{integer} representing the
 #' size of the window to use to group the SNVs when the SNVs are in a
@@ -876,20 +876,39 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt openfn.gds closefn.gds
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000,
                                             EnsDb, suffixe.blockName) {
 
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
+
+    ## Validate that the file.gdsRefAnnot GDS file exists
+    if (! file.exists(file.gdsRefAnnot)) {
+        stop("The file \'", file.gdsRefAnnot, "\' does not exist.")
+    }
+
+    ## The winSize must be a positive single number
+    if (!(isSingleNumber(winSize) && (winSize > 0))) {
+        stop("The \'winSize\' parameter must be a single numeric value." )
+    }
+
+    ## Generate two indexes based on gene annotation for gdsAnnot1KG block
     dfGeneBlock <- generateGeneBlock(gds, winSize, EnsDb)
 
     ## Opne GDS 1KG Annotation file in writting mode
     gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
-
 
     blockName <- paste0("Gene.", suffixe.blockName)
     blockDesc <- paste0("List of blocks including overlapping genes ",

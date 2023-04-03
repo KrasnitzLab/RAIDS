@@ -1,3 +1,14 @@
+CHANGES IN VERSION 0.99.1
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The new runExomeAncestry() function encapsulates multiple ancestry inference steps in one command.
+    
+BUG FIXES
+
+    o Ensure GDS file is closed before using stop() in the addPhase1KG2SampleGDSFromFile() function. 
+
 CHANGES IN VERSION 0.99.0
 ------------------------
 

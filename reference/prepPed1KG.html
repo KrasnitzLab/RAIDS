@@ -78,15 +78,18 @@ sample be available in a specified directory.</p>
     <h2>Arguments</h2>
     <dl><dt>pedFile</dt>
 <dd><p>a <code>character</code> string representing the path and
-file name of the pedigree file from 1KG. The file must exist.</p></dd>
+file name of the pedigree file (PED file) that contains the information
+related to the profiles present in the 1KG GDS file. The PED file must
+exist.</p></dd>
 
 
 <dt>PATHGENO</dt>
 <dd><p>a <code>character</code> string representing the path where
-the 1K genotyping files for each sample are located. Only the samples with
-associated genotyping files are retained in the creation of the final
+the 1KG genotyping files for each profile are located. Only the profiles
+with associated genotyping files are retained in the creation of the final
 <code>data.frame</code>. The name of the genotyping files must correspond to
-the individual identification (Individual.ID) in the pedigree file.
+the individual identification (Individual.ID) in the pedigree file
+(PED file).
 Default: <code>"./data/sampleGeno"</code>.</p></dd>
 
 
@@ -100,8 +103,16 @@ pedigree information. The 1KG is usually <code>0L</code>. Default: <code>0L</cod
     
 
 <p>A <code>data.frame</code> containing the needed pedigree information
-from 1K.</p>
-    </div>
+from 1KG. The <code>data.frame</code> contains those columns:</p><ul><li><p>sample.ida <code>character</code> string representing the profile unique
+ID.</p></li>
+<li><p>Name.IDa <code>character</code> string representing the profile name.</p></li>
+<li><p>sexa <code>character</code> string representing the sex of the profile.</p></li>
+<li><p>pop.groupa <code>character</code> string representing the
+sub-continental ancestry of the profile.</p></li>
+<li><p>superPop a <code>character</code> string representing the continental
+ancestry of the profile.</p></li>
+<li><p>superPop a <code>integer</code> representing the batch of the profile.</p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Pascal Belleau, Astrid Deschênes and Alexander Krasnitz</p>

@@ -7,20 +7,34 @@
 #' sample be available in a specified directory.
 #'
 #' @param pedFile a \code{character} string representing the path and
-#' file name of the pedigree file from 1KG. The file must exist.
+#' file name of the pedigree file (PED file) that contains the information
+#' related to the profiles present in the 1KG GDS file. The PED file must
+#' exist.
 #'
 #' @param PATHGENO a \code{character} string representing the path where
-#' the 1K genotyping files for each sample are located. Only the samples with
-#' associated genotyping files are retained in the creation of the final
+#' the 1KG genotyping files for each profile are located. Only the profiles
+#' with associated genotyping files are retained in the creation of the final
 #' \code{data.frame}. The name of the genotyping files must correspond to
-#' the individual identification (Individual.ID) in the pedigree file.
+#' the individual identification (Individual.ID) in the pedigree file
+#' (PED file).
 #' Default: \code{"./data/sampleGeno"}.
 #'
 #' @param batch.v a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
 #' @return A \code{data.frame} containing the needed pedigree information
-#' from 1K.
+#' from 1KG. The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{sample.id}{a \code{character} string representing the profile unique
+#' ID.}
+#' \item{Name.ID}{a \code{character} string representing the profile name.}
+#' \item{sex}{a \code{character} string representing the sex of the profile.}
+#' \item{pop.group}{a \code{character} string representing the
+#' sub-continental ancestry of the profile.}
+#' \item{superPop }{a \code{character} string representing the continental
+#' ancestry of the profile.}
+#' \item{superPop }{a \code{integer} representing the batch of the profile.}
+#' }
 #'
 #' @examples
 #'
@@ -37,40 +51,24 @@
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
-#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
 
-    ## Validate that the batch is an integer
-    if (! isSingleNumber(batch.v)) {
-        stop("The batch.v must be an integer.")
-    }
-
-    ## Validate that the pedigree file exists
-    if (! file.exists(pedFile)) {
-        stop("The file \'", pedFile, "\' does not exist." )
-    }
-
-    ## Validate that the path for the genotyping files exists
-    if (! file.exists(PATHGENO)) {
-        stop("The path \'", PATHGENO, "\' does not exist." )
-    }
+    ## Validate parameters
+    validatePrepPed1KG(pedFile=pedFile, PATHGENO=PATHGENO, batch.v=batch.v)
 
     ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)
 
     ## Create a data.frame containing the needed information
-    pedAll <- data.frame(
-                sample.id=c(ped1KG$Individual.ID),
-                Name.ID=c(ped1KG$Individual.ID),
-                sex=c(ped1KG$Gender),
+    pedAll <- data.frame(sample.id=c(ped1KG$Individual.ID),
+                Name.ID=c(ped1KG$Individual.ID), sex=c(ped1KG$Gender),
                 pop.group=c(ped1KG$Population),
                 superPop=rep(NA, length(c(ped1KG$Population))),
                 batch=c(rep(batch.v, nrow(ped1KG))),
-                stringsAsFactors=FALSE
-    )
+                stringsAsFactors=FALSE)
 
     ## Create a list with all populations associated to each super-population
     ## TODO The population versus super.population is hard-coded
@@ -83,9 +81,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     listSuperPop1000G[['AMR']] <- c("MXL", "PUR", "CLM", "PEL")
     listSuperPop1000G[['SAS']] <- c("GIH", "PJL", "BEB", "STU", "ITU")
 
-
-    ## Identify the super-population associated to each sample in
-    ## the data.frame
+    ## Identify the super-population associated to each sample in data.frame
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")
     for(sp in listSuperPop){
         pedAll[which(pedAll$pop.group %in% listSuperPop1000G[[sp]]),
@@ -98,7 +94,6 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     ## Change column format for Sex information
     ## TODO: could be done when the data.frame is created
     pedAll$sex <- as.character(pedAll$sex)
-
 
     ## Only retained samples with existing genotyping file
     listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
@@ -867,6 +862,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
     return(dataRef)
 }
 
+
 #' @title Generate two indexes based on gene annotation for gdsAnnot1KG
 #' block and add the indexes into the
 #' gdsAnnot1KG
@@ -876,10 +872,9 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param file.gdsRefAnnot the filename corresponding to an object of
-#' class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file. The function will
-#' open it in write mode and close it after.
+#' @param file.gdsRefAnnot the filename corresponding the 1KG SNV
+#' Annotation GDS file. The function will
+#' open it in write mode and close it after. The file must exist.
 #'
 #' @param winSize a single positive \code{integer} representing the
 #' size of the window to use to group the SNVs when the SNVs are in a
@@ -894,20 +889,39 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt openfn.gds closefn.gds
+#' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
 addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000,
                                             EnsDb, suffixe.blockName) {
 
+    ## The gds must be an object of class "gds.class"
+    if (!inherits(gds, "gds.class")) {
+        stop("The \'gds\' must be an object of class \'gds.class\'")
+    }
+
+    ## Validate that the file.gdsRefAnnot GDS file exists
+    if (! file.exists(file.gdsRefAnnot)) {
+        stop("The file \'", file.gdsRefAnnot, "\' does not exist.")
+    }
+
+    ## The winSize must be a positive single number
+    if (!(isSingleNumber(winSize) && (winSize > 0))) {
+        stop("The \'winSize\' parameter must be a single numeric value." )
+    }
+
+    ## Generate two indexes based on gene annotation for gdsAnnot1KG block
     dfGeneBlock <- generateGeneBlock(gds, winSize, EnsDb)
 
     ## Opne GDS 1KG Annotation file in writting mode
     gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
-
 
     blockName <- paste0("Gene.", suffixe.blockName)
     blockDesc <- paste0("List of blocks including overlapping genes ",

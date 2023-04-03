@@ -47,7 +47,8 @@ test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
     notExisting <- paste0(data.dir, "/totoTest")
 
-    error_message <- paste0("The path \'", notExisting, "\' does not exist.")
+    error_message <- paste0("The 'PATHGENO' parameter must be a character",
+        " string representing an existing directory.")
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=notExisting,
                                 batch.v=0L), error_message)
@@ -535,4 +536,49 @@ test_that("select1KGPop() must return error when popName does not exist", {
                     fixed=TRUE)
 })
 
+
+#############################################################################
+### Tests addGeneBlockGDSRefAnnot() results
+#############################################################################
+
+context("addGeneBlockGDSRefAnnot() results")
+
+
+test_that("addGeneBlockGDSRefAnnot() must return error when gds is a character string", {
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(addGeneBlockGDSRefAnnot(gds="test.gds",
+        file.gdsRefAnnot="toto.gds", winSize=10000, EnsDb="human",
+        suffixe.blockName="test"), error_message)
+})
+
+test_that("addGeneBlockGDSRefAnnot() must return error when file.gdsRefAnnot does not exist", {
+
+    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
+
+    error_message <- "The file \'fixtures/titi.gds\' does not exist."
+
+    expect_error(addGeneBlockGDSRefAnnot(gds=gds_1KG,
+        file.gdsRefAnnot=test_path("fixtures", "titi.gds"),
+        winSize=1000, EnsDb="human", suffixe.blockName="test"), error_message)
+})
+
+test_that("addGeneBlockGDSRefAnnot() must return error when winSize is a character string", {
+
+    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
+
+    error_message <- "The \'winSize\' parameter must be a single numeric value."
+
+    expect_error(addGeneBlockGDSRefAnnot(gds=gds_1KG,
+        file.gdsRefAnnot=test_path("fixtures",
+            "ex1_good_small_1KG_Annot_GDS.gds"), winSize="10", EnsDb="human",
+        suffixe.blockName="test"), error_message)
+})
 

@@ -189,11 +189,3 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
     expect_identical(result1, 0L)
 })
 
-
-#############################################################################
-### Tests computePCARefRMMulti() results
-#############################################################################
-
-context("computePCARefRMMulti() results")
-
-

@@ -19,10 +19,9 @@ addGeneBlockGDSRefAnnot(
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{file.gdsRefAnnot}{the filename corresponding to an object of
-class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG SNV Annotation GDS file. The function will
-open it in write mode and close it after.}
+\item{file.gdsRefAnnot}{the filename corresponding the 1KG SNV
+Annotation GDS file. The function will
+open it in write mode and close it after. The file must exist.}
 
 \item{winSize}{a single positive \code{integer} representing the
 size of the window to use to group the SNVs when the SNVs are in a
@@ -41,7 +40,10 @@ TODO
 }
 \examples{
 
-# TODO
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="RAIDS")
+
+## TODO
 
 }
 \author{

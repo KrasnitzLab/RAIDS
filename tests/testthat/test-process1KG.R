@@ -47,7 +47,8 @@ test_that("prepPed1KG() must return error when PATHGENO is not existing", {
 
     notExisting <- paste0(data.dir, "/totoTest")
 
-    error_message <- paste0("The path \'", notExisting, "\' does not exist.")
+    error_message <- paste0("The 'PATHGENO' parameter must be a character",
+        " string representing an existing directory.")
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=notExisting,
                                 batch.v=0L), error_message)

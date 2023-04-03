@@ -474,9 +474,11 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     posSample <- which(study.annot$data.id == currentProfile &
                             study.annot$study.id == study.id)
 
+    ## Check that the information is found for the specified profile and study
     if(length(posSample) != 1) {
-        stop("In pruningSample the sample ",
-                currentProfile, " doesn't exists\n")
+        closefn.gds(gdsSample)
+        stop("In pruningSample the profile \'", currentProfile,
+                "\' doesn't exists for the study \'", study.id, "\'\n")
     }
 
     ## Get the SNV genotype information for the current profile
@@ -700,17 +702,18 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param PATHSAMPLEGDS a \code{character} string representing the path to
-#' the directory that contains the GDS Sample files. The directory must
+#' the directory that contains the Profile GDS files. The directory must
 #' exist.
 #'
-#' @param PATHGENO TODO
+#' @param PATHGENO a \code{character} string representing the path to
+#' the directory that contains TODO
 #'
 #' @param fileLSNP TODO
 #'
 #' @param verbose a \code{logical} indicating if message information should be
-#' printed. Default: \code{TRUE}.
+#' printed. Default: \code{FALSE}.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -726,8 +729,15 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, sampleCurrent,
 addPhase1KG2SampleGDSFromFile <- function(gds, PATHSAMPLEGDS, PATHGENO,
                                             fileLSNP, verbose=FALSE) {
 
-    listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
+    ## The gds must be an object of class "gds.class"
+    validateGDSClass(gds=gds, name="gds")
 
+    ## Verbose must be a logical
+    if (!is.logical(verbose)) {
+        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
+    }
+
+    listGDSSample <- dir(PATHSAMPLEGDS, pattern = ".+.gds")
 
     indexAll <- NULL
     for(gdsSampleFile in listGDSSample) {

@@ -7,20 +7,34 @@
 #' sample be available in a specified directory.
 #'
 #' @param pedFile a \code{character} string representing the path and
-#' file name of the pedigree file from 1KG. The file must exist.
+#' file name of the pedigree file (PED file) that contains the information
+#' related to the profiles present in the 1KG GDS file. The PED file must
+#' exist.
 #'
 #' @param PATHGENO a \code{character} string representing the path where
-#' the 1K genotyping files for each sample are located. Only the samples with
-#' associated genotyping files are retained in the creation of the final
+#' the 1KG genotyping files for each profile are located. Only the profiles
+#' with associated genotyping files are retained in the creation of the final
 #' \code{data.frame}. The name of the genotyping files must correspond to
-#' the individual identification (Individual.ID) in the pedigree file.
+#' the individual identification (Individual.ID) in the pedigree file
+#' (PED file).
 #' Default: \code{"./data/sampleGeno"}.
 #'
 #' @param batch.v a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
 #' @return A \code{data.frame} containing the needed pedigree information
-#' from 1K.
+#' from 1KG. The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{sample.id}{a \code{character} string representing the profile unique
+#' ID.}
+#' \item{Name.ID}{a \code{character} string representing the profile name.}
+#' \item{sex}{a \code{character} string representing the sex of the profile.}
+#' \item{pop.group}{a \code{character} string representing the
+#' sub-continental ancestry of the profile.}
+#' \item{superPop }{a \code{character} string representing the continental
+#' ancestry of the profile.}
+#' \item{superPop }{a \code{integer} representing the batch of the profile.}
+#' }
 #'
 #' @examples
 #'
@@ -66,7 +80,6 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                                         "ASW", "ACB")
     listSuperPop1000G[['AMR']] <- c("MXL", "PUR", "CLM", "PEL")
     listSuperPop1000G[['SAS']] <- c("GIH", "PJL", "BEB", "STU", "ITU")
-
 
     ## Identify the super-population associated to each sample in data.frame
     listSuperPop <- c("EAS", "EUR", "AFR", "AMR", "SAS")

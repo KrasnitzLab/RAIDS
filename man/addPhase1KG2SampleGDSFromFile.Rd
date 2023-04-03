@@ -18,18 +18,19 @@ addPhase1KG2SampleGDSFromFile(
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{PATHSAMPLEGDS}{a \code{character} string representing the path to
-the directory that contains the GDS Sample files. The directory must
+the directory that contains the Profile GDS files. The directory must
 exist.}
 
-\item{PATHGENO}{TODO}
+\item{PATHGENO}{a \code{character} string representing the path to
+the directory that contains TODO}
 
 \item{fileLSNP}{TODO}
 
 \item{verbose}{a \code{logical} indicating if message information should be
-printed. Default: \code{TRUE}.}
+printed. Default: \code{FALSE}.}
 }
 \value{
-The integer \code{0} when successful.
+The integer \code{0L} when successful.
 }
 \description{
 TODO

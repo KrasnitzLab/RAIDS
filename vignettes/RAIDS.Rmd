@@ -528,7 +528,7 @@ The information about the length of the chromosomes must be assigned into a
 *vector* object. This is an example on how to retrieve the information. 
 There are alternative ways to retrieve this information, e.g., 
 
-```{r extractChrLength, echo=TRUE, message=FALSE, warning=FALSE}
+```{r extractChrLength, echo=TRUE, message=FALSE, warning=FALSE, collapse=TRUE}
 ###################################################################
 ## Load required library
 ###################################################################
@@ -765,8 +765,6 @@ resG <- syntheticGeno(gds = gds,
 ## Close both GDS files
 closefn.gds(gds)
 closefn.gds(gds.Annot)
-
-
 ```
 
 <br>

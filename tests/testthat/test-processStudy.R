@@ -532,7 +532,9 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
 })
 
 
-test_that("pruningSample() must return expect result", {
+
+
+test_that("pruningSample() must return error when the study is not found", {
 
     data.dir <- test_path("fixtures")
 
@@ -547,6 +549,39 @@ test_that("pruningSample() must return expect result", {
 
     data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
+    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
+              file.path(data.dir.sample, "ex1.gds"))
+
+    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    error_message <- paste0("In pruningSample the profile \'ex1\'",
+                        " doesn't exists for the study \'demo\'\n")
+
+    expect_error(pruningSample(gds=gdsF, method="corr",
+        currentProfile="ex1", study.id="demo",
+        listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
+        minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+        keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
+        error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return expect result", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+
+    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
+                          study.platform = "PLATFORM",
+                          stringsAsFactors = FALSE)
+
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
 
     file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
                       file.path(data.dir.sample, "ex1.gds"))
@@ -2077,3 +2112,43 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPop
             pcaList = seq(2, 15, 1), algorithm="exact",
             eigen.cnt=32L, missing.rate=0.025), error_message)
 })
+
+
+#############################################################################
+### Tests addPhase1KG2SampleGDSFromFile() results
+#############################################################################
+
+context("addPhase1KG2SampleGDSFromFile() results")
+
+
+test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
+                    "gds is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(addPhase1KG2SampleGDSFromFile(gds=gdsFile,
+            PATHSAMPLEGDS=test_path("fixtures"), PATHGENOtest_path("fixtures"),
+            fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
+})
+
+
+test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
+                    "verbose is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- paste0("The \'verbose\' parameter must be a ",
+                                "logical (TRUE or FALSE).")
+
+    expect_error(addPhase1KG2SampleGDSFromFile(gds=gdsF,
+            PATHSAMPLEGDS=test_path("fixtures"), PATHGENOtest_path("fixtures"),
+            fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
+})
+
+
+
+

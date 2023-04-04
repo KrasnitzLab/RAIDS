@@ -1320,7 +1320,7 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #'
 #' The SNP pruning is based on linkage disequilibrium (LD) and is done by the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function in the
-#' \href{=https://bioconductor.org/packages/SNPRelate/}{SNPRelate} package.
+#' SNPRelate package (https://bioconductor.org/packages/SNPRelate/).
 #'
 #' @examples
 #'

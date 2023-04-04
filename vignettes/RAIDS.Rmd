@@ -416,12 +416,12 @@ listSamples <- ped[, "Name.ID"]
 ## This function creates one Sample GDS file for each
 ## sample present in the 'listProfiles' parameter.
 #################################################################
-createStudy2GDS1KG(PATHGENO = PATHGENO,
+createStudy2GDS1KG(pathGeno = PATHGENO,
                         pedStudy = ped,
                         fileNameGDS = file.GDS,
                         listProfiles = listSamples,
                         studyDF = studyDF,
-                        PATHSAMPLEGDS = PATHSAMPLEGDS)
+                        pathProfileGDS = PATHSAMPLEGDS)
 
 #################################################################
 ## The Sample GDS file has been created in the 
@@ -435,8 +435,8 @@ list.files(path = PATHSAMPLEGDS)
 ### Sub-Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
 The initial list of 1KG SNVs is pruned, using linkage disequilibrium analysis, 
-and a sample-specific subset of SNVs is retained for each sample. This information 
-is added to the **Sample GDS file**.
+and a sample-specific subset of SNVs is retained for each sample. This 
+information is added to the **Sample GDS file**.
 
 The __pruningSample()__ function requires the **1KG GDS file** as input. It 
 also requires the path to the **Sample GDS file(s)**.
@@ -461,7 +461,6 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
 ## Open the 1KG GDS file (demo version)
 gds_1KG <- snpgdsOpen(file.GDS)
-
 
 ##############################################################
 ## The pruning function is called with one sample as input at the time
@@ -496,7 +495,6 @@ for(i in seq_len(length(listSamples))) {
     
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)
-
 ```
 
 <br>
@@ -564,7 +562,6 @@ as shown in this example.
 ###################################################################
 library(RAIDS)
 
-
 ###################################################################
 ## The 1KG GDS file is required
 ## The 1KG SNV Annotation GDS file is only required for RNA samples
@@ -622,7 +619,6 @@ estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
 ## Close both GDS files
 closefn.gds(gdsSample)
 closefn.gds(gds)
-
 ```
 
 This step must be executed for each sample present in the study.

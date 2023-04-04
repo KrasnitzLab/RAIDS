@@ -458,8 +458,8 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #' passed to the \code{fileNamePED} parameter.
 #' If \code{NULL}, all profiles in the \code{fileNamePED} are selected.
 #'
-#' @param PATHSAMPLEGDS a \code{character} string representing the path to
-#' the directory where the GDS Sample files will be created.
+#' @param pathProfileGDS a \code{character} string representing the path to
+#' the directory where the Profile GDS files will be created.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed.
@@ -491,14 +491,14 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
 #' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
 #'             batch=1, studyDF=studyInfo,
 #'             listProfiles=c("Sample_01", "Sample_02"),
-#'             PATHSAMPLEGDS=data.dir, verbose=TRUE)
+#'             pathProfileGDS=data.dir, verbose=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
 validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
-                                       listProfiles, PATHSAMPLEGDS, verbose) {
+                                       listProfiles, pathProfileGDS, verbose) {
 
     ## The PED study must have the mandatory columns
     if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")

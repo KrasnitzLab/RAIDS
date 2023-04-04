@@ -73,27 +73,27 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
     ## Extract SNV coverage from Sample GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
-                           start=c(1, posCur), count=c(-1, 1))
+                            start=c(1, posCur), count=c(-1, 1))
 
     ## Only retained the SNV with the minimum required coverage
     listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
 
     ## Create the data.frame with the required information
     snp.pos <- data.frame(cnt.tot=cnt.total[listKeep],
-                          cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
+                    cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
                                     start=c(1, posCur),
                                     count=c(-1, 1))[listKeep],
-                          cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
+                    cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                                     start=c(1, posCur),
                                     count=c(-1, 1))[listKeep],
-                          snp.pos=read.gdsn(index.gdsn(node=gds,
+                    snp.pos=read.gdsn(index.gdsn(node=gds,
                                     "snp.position"))[listKeep],
-                          snp.chr=read.gdsn(index.gdsn(node=gds,
+                    snp.chr=read.gdsn(index.gdsn(node=gds,
                                     "snp.chromosome"))[listKeep],
-                          normal.geno=rep(3, length(listKeep)),#ormal genotype unknown
-                          pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep)),
-                          snp.index=listKeep,
-                          stringsAsFactors=FALSE)
+                    normal.geno=rep(3, length(listKeep)),#ormal genotype unknown
+                    pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep)),
+                    snp.index=listKeep,
+                    stringsAsFactors=FALSE)
 
     snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
 
@@ -133,10 +133,10 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
         # if snp.pos.o intersect snp.pos and normal.geno != 3 (we know
         # the genotype of normal) change in snp.pos normal.geno
         z <- cbind(c(snp.pos.o$snp.chr, snp.pos$snp.chr, snp.pos.o$snp.chr),
-                   c(snp.pos.o$snp.pos, snp.pos$snp.pos, snp.pos.o$snp.pos),
-                   c(seq_len(nrow(snp.pos.o)), 0, -1*seq_len(nrow(snp.pos.o))),
-                   c(rep(0, nrow(snp.pos.o)), seq_len(nrow(snp.pos)),
-                     rep(0, nrow(snp.pos.o))))
+                c(snp.pos.o$snp.pos, snp.pos$snp.pos, snp.pos.o$snp.pos),
+                c(seq_len(nrow(snp.pos.o)), 0, -1*seq_len(nrow(snp.pos.o))),
+                c(rep(0, nrow(snp.pos.o)), seq_len(nrow(snp.pos)),
+                        rep(0, nrow(snp.pos.o))))
         z <- z[order(z[,1], z[,2], z[,3]), ]
         vCum <- cumsum(z[,3])
 
@@ -147,24 +147,24 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 
         # Keep the snp.pos.o not in snp.pos
         z <- cbind(c(snp.pos$snp.chr, snp.pos.o$snp.chr, snp.pos$snp.chr),
-                   c(snp.pos$snp.pos, snp.pos.o$snp.pos, snp.pos$snp.pos),
-                   c(seq_len(nrow(snp.pos)), 0, -1*seq_len(nrow(snp.pos))),
-                   c(rep(0, nrow(snp.pos)), seq_len(nrow(snp.pos.o)),
-                     rep(0, nrow(snp.pos))))
+                c(snp.pos$snp.pos, snp.pos.o$snp.pos, snp.pos$snp.pos),
+                c(seq_len(nrow(snp.pos)), 0, -1*seq_len(nrow(snp.pos))),
+                c(rep(0, nrow(snp.pos)), seq_len(nrow(snp.pos.o)),
+                                rep(0, nrow(snp.pos))))
         z <- z[order(z[,1], z[,2], z[,3]), ]
         # merge snp.pos with snp.pos.o
         snp.pos <- rbind(snp.pos,
-                         snp.pos.o[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
+                            snp.pos.o[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
 
     }
     listCnt <- unique(snp.pos$cnt.tot)
     listCnt <- listCnt[order(listCnt)]
 
-    cutOffA <- data.frame(count = unlist(vapply(listCnt,
+    cutOffA <- data.frame(count=unlist(vapply(listCnt,
                         FUN=function(x, minProb, eProb){
                             return(max(2, qbinom(minProb, x,eProb)))},
                         FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)),
-                          allele = unlist(vapply(listCnt,
+                            allele = unlist(vapply(listCnt,
                             FUN=function(x, minProb, eProb){
                                 return(max(2,qbinom(minProb, x,eProb)))},
                         FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)))
@@ -564,16 +564,16 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     for(i in seq_len(nrow(matCov))) {
 
         vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-                       matCov$cnt.alt[i], matCov$cnt.ref[i])
+                            matCov$cnt.alt[i], matCov$cnt.ref[i])
 
         diff2Mean <- abs(vMean * (matCov$cnt.alt[i] +
-                                      matCov$cnt.ref[i]) - vCur)
+                                            matCov$cnt.ref[i]) - vCur)
         pCur1 <- pbinom(round(vMean * (matCov$cnt.alt[i] +
-                                           matCov$cnt.ref[i]) - diff2Mean),
-                        size = matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
+                    matCov$cnt.ref[i]) - diff2Mean),
+                    size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
         pCur2 <- 1 - pbinom(round(vMean * (matCov$cnt.alt[i] +
-                                               matCov$cnt.ref[i]) + diff2Mean),
-                            size = matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
+                    matCov$cnt.ref[i]) + diff2Mean),
+                    size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
 
         pCur <- pCur1 + pCur2
 
@@ -588,9 +588,9 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
                             matCov$pWin[1] < 0.5 &
                             (matCov$pWin[nrow(matCov)] < 0.5)  &
                             ((p-pO) <= pCutOff))
-    res <- list(pWin = matCov$pWin, p=p,
-                pCut = as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
-                pCut1 = pCut1)
+    res <- list(pWin=matCov$pWin, p=p,
+                pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
+                pCut1=pCut1)
     return(res)
 }
 

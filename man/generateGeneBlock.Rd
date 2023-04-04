@@ -15,11 +15,20 @@ generateGeneBlock(gds, winSize = 10000, EnsDb)
 size of the window to use to group the SNVs when the SNVs are in a
 non-coding region. Default: \code{10000}.}
 
-\item{EnsDb}{An object with the ensembl genome annotation
-Default: \code{EnsDb.Hsapiens.v86}.}
+\item{EnsDb}{An object of class \code{EnsDb} with the Ensembl genome
+annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.}
 }
 \value{
 a \code{data.frame} with those columns:
+\itemize{
+\item{chr} {}
+\item{pos} {}
+\item{snp.allele} {}
+\item{Exon} {}
+\item{GName} {}
+\item{Gene} {}
+\item{GeneS} {}
+}
 "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 Example for GName and the two indexes "Gene", "GeneS"
 GName Gene GeneS
@@ -37,6 +46,9 @@ GName Gene GeneS
 TODO
 }
 \examples{
+
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="RAIDS")
 
 # TODO
 

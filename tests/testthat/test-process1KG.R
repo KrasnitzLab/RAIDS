@@ -18,7 +18,7 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    error_message <- "The batch.v must be an integer."
+    error_message <- "The batch must be an integer."
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
                                 batch.v="SAVE"), error_message)
@@ -31,7 +31,7 @@ test_that("prepPed1KG() must return error when batch.v is a vector of float", {
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    error_message <- "The batch.v must be an integer."
+    error_message <- "The batch must be an integer."
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir,
                                 batch.v=c(0.111, 2)), error_message)

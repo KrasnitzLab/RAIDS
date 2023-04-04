@@ -5,7 +5,7 @@
 \alias{validatePrepPed1KG}
 \title{Validate input parameters for prepPed1KG() function}
 \usage{
-validatePrepPed1KG(pedFile, PATHGENO, batch.v)
+validatePrepPed1KG(pedFile, PATHGENO, batch)
 }
 \arguments{
 \item{pedFile}{a \code{character} string representing the path and
@@ -20,7 +20,7 @@ with associated genotyping files are retained in the creation of the final
 the individual identification (Individual.ID) in the pedigree file
 (PED file).}
 
-\item{batch.v}{a\code{integer} that uniquely identifies the source of the
+\item{batch}{a\code{integer} that uniquely identifies the source of the
 pedigree information. The 1KG is usually \code{0L}.}
 }
 \value{
@@ -40,7 +40,7 @@ pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
 ## The validation should be successful
 RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-     PATHGENO=data.dir, batch.v=1)
+     PATHGENO=data.dir, batch=1)
 
 
 }

@@ -18,7 +18,7 @@ test_that("validatePrepPed1KG() must return expected results when all input are 
     pedFile <- file.path(data.dir, "PedigreeDemo.ped")
 
     result1 <- RAIDS:::validatePrepPed1KG(pedFile=pedFile, PATHGENO=data.dir,
-                                                batch.v=1L)
+                                                batch=1L)
 
     expect_identical(result1, 0L)
 })

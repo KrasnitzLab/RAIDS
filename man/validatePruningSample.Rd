@@ -9,16 +9,16 @@ validatePruningSample(
   gds,
   method,
   currentProfile,
-  study.id,
+  studyID,
   listSNP,
   slide.max.bp.v,
   ld.threshold.v,
   np,
-  verbose.v,
+  verbose,
   chr,
   minAF.SuperPop,
   keepGDSpruned,
-  PATHSAMPLEGDS,
+  pathProfileGDS,
   keepFile,
   PATHPRUNED,
   outPref
@@ -38,9 +38,9 @@ corresponding to the profile identifier used in LD pruning done by the
 corresponding to the profile identifier must exist and be located in the
 \code{PATHSAMPLEGDS} directory.}
 
-\item{study.id}{a \code{character} string corresponding to the study
+\item{studyID}{a \code{character} string corresponding to the study
 identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
-The study identifier must be present in the GDS Sample file.}
+The study identifier must be present in the Profile GDS file.}
 
 \item{listSNP}{a \code{vector} of SNVs identifiers specifying selected to
 be passed the the pruning function;
@@ -58,7 +58,7 @@ threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.}
 \item{np}{a single positive \code{integer} specifying the number of
 threads to be used.}
 
-\item{verbose.v}{a \code{logicial} indicating if information is shown
+\item{verbose}{a \code{logicial} indicating if information is shown
 during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.}
 
@@ -73,8 +73,8 @@ allelic frequency is not used as a filtering criterion.}
 \item{keepGDSpruned}{a \code{logicial} indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the directory
-where the GDS Sample file will be created. The directory must exist.}
+\item{pathProfileGDS}{a \code{character} string representing the directory
+where the Profile GDS files will be created. The directory must exist.}
 
 \item{keepFile}{a \code{logical} indicating if RDS files containing the
 information about the pruned SNVs must be created.}
@@ -103,10 +103,10 @@ gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validation should be successful
 RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
-     currentProfile="TGCA_01", study.id="TCGA",
+     currentProfile="TGCA_01", studyID="TCGA",
      listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
-     ld.threshold.v=0.008, np=1L, verbose.v=TRUE, chr=1,
-     minAF.SuperPop=0.002, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
+     ld.threshold.v=0.008, np=1L, verbose=TRUE, chr=1,
+     minAF.SuperPop=0.002, keepGDSpruned=TRUE, pathProfileGDS=data.dir,
      keepFile=FALSE, PATHPRUNED=data.dir, outPref="test")
 
 ## All GDS file must be closed

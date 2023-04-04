@@ -16,9 +16,9 @@
 #' corresponding to the profile identifier must exist and be located in the
 #' \code{PATHSAMPLEGDS} directory.
 #'
-#' @param study.id a \code{character} string corresponding to the study
+#' @param studyID a \code{character} string corresponding to the study
 #' identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
-#' The study identifier must be present in the GDS Sample file.
+#' The study identifier must be present in the Profile GDS file.
 #'
 #' @param listSNP a \code{vector} of SNVs identifiers specifying selected to
 #' be passed the the pruning function;
@@ -36,7 +36,7 @@
 #' @param np a single positive \code{integer} specifying the number of
 #' threads to be used.
 #'
-#' @param verbose.v a \code{logicial} indicating if information is shown
+#' @param verbose a \code{logicial} indicating if information is shown
 #' during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 #' function.
 #'
@@ -51,8 +51,8 @@
 #' @param keepGDSpruned a \code{logicial} indicating if the information about
 #' the pruned SNVs should be added to the GDS Sample file.
 #'
-#' @param PATHSAMPLEGDS a \code{character} string representing the directory
-#' where the GDS Sample file will be created. The directory must exist.
+#' @param pathProfileGDS a \code{character} string representing the directory
+#' where the Profile GDS files will be created. The directory must exist.
 #'
 #' @param keepFile a \code{logical} indicating if RDS files containing the
 #' information about the pruned SNVs must be created.
@@ -76,10 +76,10 @@
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
-#'      currentProfile="TGCA_01", study.id="TCGA",
+#'      currentProfile="TGCA_01", studyID="TCGA",
 #'      listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
-#'      ld.threshold.v=0.008, np=1L, verbose.v=TRUE, chr=1,
-#'      minAF.SuperPop=0.002, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir,
+#'      ld.threshold.v=0.008, np=1L, verbose=TRUE, chr=1,
+#'      minAF.SuperPop=0.002, keepGDSpruned=TRUE, pathProfileGDS=data.dir,
 #'      keepFile=FALSE, PATHPRUNED=data.dir, outPref="test")
 #'
 #' ## All GDS file must be closed
@@ -89,9 +89,9 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePruningSample <- function(gds, method, currentProfile, study.id,
-                        listSNP, slide.max.bp.v, ld.threshold.v, np, verbose.v,
-                        chr, minAF.SuperPop, keepGDSpruned, PATHSAMPLEGDS,
+validatePruningSample <- function(gds, method, currentProfile, studyID,
+                        listSNP, slide.max.bp.v, ld.threshold.v, np, verbose,
+                        chr, minAF.SuperPop, keepGDSpruned, pathProfileGDS,
                         keepFile, PATHPRUNED, outPref) {
 
     ## The gds must be an object of class "gds.class"
@@ -127,9 +127,12 @@ validatePruningSample <- function(gds, method, currentProfile, study.id,
     ## The parameter keepGDSpruned must be a logical
     validateLogical(logical=keepGDSpruned, "keepGDSpruned")
 
-    ## The parameter PATHSAMPLEGDS must be a character string for existing path
-    if (!(is.character(PATHSAMPLEGDS) && dir.exists(PATHSAMPLEGDS))) {
-        stop("The \'PATHSAMPLEGDS\' parameter must be a character string ",
+    ## The parameter verbose must be a logical
+    validateLogical(logical=verbose, "verbose")
+
+    ## The parameter pathProfileGDS must be a character string for existing path
+    if (!(is.character(pathProfileGDS) && dir.exists(pathProfileGDS))) {
+        stop("The \'pathProfileGDS\' parameter must be a character string ",
                 "representing an existing directory.")
     }
 

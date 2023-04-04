@@ -236,9 +236,10 @@ test_that("pruningSample() must return error when gds is a character string", {
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(pruningSample(gds=gdsFile, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".",
+        outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -254,9 +255,10 @@ test_that("pruningSample() must return error when keepGDSpruned is a character s
     error_message <- 'The \'keepGDSpruned\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned="YES",
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned="YES",
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".",
+        outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -273,9 +275,10 @@ test_that("pruningSample() must return error when keepFile is a character string
     error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="1KG_Test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=TRUE,
-        PATHSAMPLEGDS=data.dir, keepFile="NO", PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=TRUE,
+        pathProfileGDS=data.dir, keepFile="NO", PATHPRUNED=".",
+        outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -292,9 +295,9 @@ test_that("pruningSample() must return error when np is a character string", {
     error_message <- "The \'np\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np="1", verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+        np="1", verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -311,9 +314,9 @@ test_that("pruningSample() must return error when slide.max.bp.v is a character 
     error_message <- "The \'slide.max.bp.v\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v="4", ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v="4", ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -330,9 +333,9 @@ test_that("pruningSample() must return error when ld.threshold.v is a character 
     error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v="3",
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v="3",
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -349,9 +352,9 @@ test_that("pruningSample() must return error when ld.threshold.v is a vector of 
     error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v=c(3,3),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v=c(3,3),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -368,9 +371,9 @@ test_that("pruningSample() must return error when method is a numeric", {
     error_message <- "The \'method\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method=3, currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -385,9 +388,9 @@ test_that("pruningSample() must return error when method is not in the list of c
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expect_error(pruningSample(gds=gdsF, method="test", currentProfile="test",
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
 })
 
 
@@ -404,9 +407,9 @@ test_that("pruningSample() must return error when currentProfile is a numeric", 
     error_message <- "The \'currentProfile\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile=2,
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1, verbose.v=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=FALSE, PATHSAMPLEGDS=data.dir,
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1, verbose=FALSE, chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=FALSE, pathProfileGDS=data.dir,
         keepFile=FALSE, PATHPRUNED=".", outPref="pruned"),
         error_message, fixed=TRUE)
 })
@@ -427,13 +430,13 @@ test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
         "a character string representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=data.dir, keepFile=FALSE, PATHPRUNED=2, outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=2, outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when PATHSAMPLEGDS is a numeric", {
+test_that("pruningSample() must return error when pathProfileGDS is a numeric", {
 
     data.dir <- test_path("fixtures")
 
@@ -443,17 +446,17 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a numeric", {
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'PATHSAMPLEGDS\' parameter must be a ",
+    error_message <- paste0("The \'pathProfileGDS\' parameter must be a ",
                     "character string representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-            study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-            np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-            PATHSAMPLEGDS=33, keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
+            studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+            np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+            pathProfileGDS=33, keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when PATHSAMPLEGDS is a non existing directory", {
+test_that("pruningSample() must return error when pathProfileGDS is a non existing directory", {
 
     data.dir <- test_path("fixtures")
 
@@ -463,14 +466,35 @@ test_that("pruningSample() must return error when PATHSAMPLEGDS is a non existin
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'PATHSAMPLEGDS\' parameter must be a character string ",
+    error_message <- paste0("The \'pathProfileGDS\' parameter must be a character string ",
                                 "representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1L, verbose.v=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        PATHSAMPLEGDS=paste0(data.dir, "_NOT_EXISTING_DIRECTORY"),
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
+        np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=paste0(data.dir, "_NOT_EXISTING_DIRECTORY"),
         keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
+})
+
+
+test_that("pruningSample() must return error when verbose is a character string", {
+
+    data.dir <- test_path("fixtures")
+
+    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
+
+    gdsF <- openfn.gds(gdsFIle)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+
+    error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
+
+    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose="HI", chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        pathProfileGDS=pdata.dir, keepFile=FALSE, PATHPRUNED=data.dir,
+        outPref="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -491,9 +515,9 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
 
     expect_error(pruningSample(gds=gdsF, method="corr",
         currentProfile="A_File_That_DOES_NOT_EXIST",
-        study.id="test", listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=FALSE, PATHSAMPLEGDS=data.dir,
+        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
+        minAF.SuperPop=NULL, keepGDSpruned=FALSE, pathProfileGDS=data.dir,
         keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message,
         fixed=TRUE)
 })
@@ -523,10 +547,10 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
                                     "doesn't have SNPs after filters")
 
     expect_error(pruningSample(gds=gdsF, method="corr",
-        currentProfile="ex1", study.id=studyDF$study.id,
+        currentProfile="ex1", studyID=studyDF$study.id,
         listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
-        minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
+        minAF.SuperPop=0.41, keepGDSpruned=TRUE, pathProfileGDS=data.dir.sample,
         keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
         error_message, fixed=TRUE)
 })
@@ -559,10 +583,10 @@ test_that("pruningSample() must return error when the study is not found", {
                         " doesn't exists for the study \'demo\'\n")
 
     expect_error(pruningSample(gds=gdsF, method="corr",
-        currentProfile="ex1", study.id="demo",
+        currentProfile="ex1", studyID="demo",
         listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=22,
-        minAF.SuperPop=0.41, keepGDSpruned=TRUE, PATHSAMPLEGDS=data.dir.sample,
+        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
+        minAF.SuperPop=0.41, keepGDSpruned=TRUE, pathProfileGDS=data.dir.sample,
         keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
         error_message, fixed=TRUE)
 })
@@ -593,11 +617,11 @@ test_that("pruningSample() must return expect result", {
                  envir=parent.frame())
 
     result <- pruningSample(gds=gdsF, method="corr",
-                currentProfile="ex1", study.id=studyDF$study.id,
+                currentProfile="ex1", studyID=studyDF$study.id,
                 listSNP=NULL, slide.max.bp.v=50000L,
-                ld.threshold.v=sqrt(0.1), np=1L, verbose.v=FALSE, chr=NULL,
+                ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
                 minAF.SuperPop=NULL, keepGDSpruned=TRUE,
-                PATHSAMPLEGDS=data.dir.sample,
+                pathProfileGDS=data.dir.sample,
                 keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest")
 
     expect_equal(result, 0L)

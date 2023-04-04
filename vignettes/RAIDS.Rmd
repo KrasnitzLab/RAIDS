@@ -467,15 +467,15 @@ gds_1KG <- snpgdsOpen(file.GDS)
 ##############################################################
 for(i in seq_len(length(listSamples))) {
     ## Compute the SNV pruned subset
-    ## study.id: Study identifier as defined in the preceding sub-step 4. 
+    ## studyID: Study identifier as defined in the preceding sub-step 4. 
     ##           The study identifier must be the same that the one present in
     ##           Profile GDS file.
-    ## PATHSAMPLEGDS: All Profile GDS files must be in the same directory 
+    ## pathProfileGDS: All Profile GDS files must be in the same directory 
     ##           sub-step 4. 
     pruningSample(gds=gds_1KG,
-                    currentProfile = listSamples[i],
-                    study.id = studyDF$study.id, 
-                    PATHSAMPLEGDS = PATHSAMPLEGDS)
+                    currentProfile=listSamples[i],
+                    studyID=studyDF$study.id, 
+                    pathProfileGDS=PATHSAMPLEGDS)
     
     ## Profile GDS file for the current sample
     ## The file name corresponds to the path + profile identifier + ".gds"

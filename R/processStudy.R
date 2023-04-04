@@ -308,9 +308,9 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' corresponding to the profile identifier must exist and be located in the
 #' \code{PATHSAMPLEGDS} directory.
 #'
-#' @param study.id a \code{character} string corresponding to the study
+#' @param studyID a \code{character} string corresponding to the study
 #' identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
-#' The study identifier must be present in the GDS Sample file.
+#' The study identifier must be present in the Profile GDS file.
 #'
 #' @param listSNP a \code{vector} of SNVs identifiers specifying selected to
 #' be passed the the pruning function;
@@ -330,7 +330,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @param np a single positive \code{integer} specifying the number of
 #' threads to be used. Default: \code{1L}.
 #'
-#' @param verbose.v a \code{logicial} indicating if information is shown
+#' @param verbose a \code{logicial} indicating if information is shown
 #' during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 #' function.  Default: \code{FALSE}.
 #'
@@ -347,8 +347,8 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' the pruned SNVs should be added to the GDS Sample file.
 #' Default: \code{TRUE}.
 #'
-#' @param PATHSAMPLEGDS a \code{character} string representing the directory
-#' where the GDS Sample file will be created. The directory must exist.
+#' @param pathProfileGDS a \code{character} string representing the directory
+#' where the Profile GDS files will be created. The directory must exist.
 #'
 #' @param keepFile a \code{logical} indicating if RDS files containing the
 #' information about the pruned SNVs must be
@@ -401,7 +401,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
-#'               study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir.pruning)
+#'               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
 #' closefn.gds(gds_1KG)
@@ -424,33 +424,33 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @export
 pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             currentProfile,
-                            study.id,
+                            studyID,
                             listSNP=NULL,
                             slide.max.bp.v=500000L,
                             ld.threshold.v=sqrt(0.1),
                             np=1L,
-                            verbose.v=FALSE,
+                            verbose=FALSE,
                             chr=NULL,
                             minAF.SuperPop=NULL,
                             keepGDSpruned=TRUE,
-                            PATHSAMPLEGDS=NULL,
+                            pathProfileGDS=NULL,
                             keepFile=FALSE,
                             PATHPRUNED=".",
                             outPref="pruned") {
 
     ## Validate input parameters
     validatePruningSample(gds=gds, method=method, currentProfile=currentProfile,
-            study.id=study.id, listSNP=listSNP, slide.max.bp.v=slide.max.bp.v,
-            ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose.v, chr=chr,
+            studyID=studyID, listSNP=listSNP, slide.max.bp.v=slide.max.bp.v,
+            ld.threshold.v=ld.threshold.v, np=np, verbose=verbose, chr=chr,
             minAF.SuperPop=minAF.SuperPop, keepGDSpruned=keepGDSpruned,
-            PATHSAMPLEGDS=PATHSAMPLEGDS, keepFile=keepFile,
+            pathProfileGDS=pathProfileGDS, keepFile=keepFile,
             PATHPRUNED=PATHPRUNED, outPref=outPref)
 
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
 
     ## Profile GDS file name
-    fileGDSSample <- file.path(PATHSAMPLEGDS, paste0(currentProfile, ".gds"))
+    fileGDSSample <- file.path(pathProfileGDS, paste0(currentProfile, ".gds"))
 
     ## The Profile GDS file must exists
     if (!(file.exists(fileGDSSample))) {
@@ -472,13 +472,13 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     ## Select study information associated to the current profile
     posSample <- which(study.annot$data.id == currentProfile &
-                            study.annot$study.id == study.id)
+                            study.annot$study.id == studyID)
 
     ## Check that the information is found for the specified profile and study
     if(length(posSample) != 1) {
         closefn.gds(gdsSample)
         stop("In pruningSample the profile \'", currentProfile,
-                "\' doesn't exists for the study \'", study.id, "\'\n")
+                "\' doesn't exists for the study \'", studyID, "\'\n")
     }
 
     ## Get the SNV genotype information for the current profile
@@ -522,7 +522,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
                 listKeep=listKeep, slide.max.bp.v=slide.max.bp.v,
-                ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose.v)
+                ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
 
@@ -2324,10 +2324,9 @@ runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
                         stringsAsFactors=FALSE)
 
     for(i in seq_len(length(listProfiles))) {
-        pruningSample(gds=gds_1KG,
-                      currentProfile=listProfiles[i],
-                      study.id=studyDF$study.id,
-                      PATHSAMPLEGDS=PATHPROFILEGDS)
+        pruningSample(gds=gds_1KG, currentProfile=listProfiles[i],
+                      studyID=studyDF$study.id,
+                      pathProfileGDS=PATHPROFILEGDS)
         file.GDSProfile <- file.path(PATHPROFILEGDS,
                                         paste0(listProfiles[i], ".gds"))
         add1KG2SampleGDS(gds=gds_1KG, gdsSampleFile=file.GDSProfile,

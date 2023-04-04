@@ -787,7 +787,6 @@ library(RAIDS)
 ## Open the 1KG GDS file     
 gds <- openfn.gds(file.GDS)
 
-
 ####################################################################
 ## The path to the directory where the PCA results will be saved 
 ## in RDS files.
@@ -798,8 +797,6 @@ PATH_OUT <- file.path(PATHSAMPLEGDS)
 if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
 }
-
-
 
 ####################################################################
 ## Get the super-population information for the reference samples
@@ -870,7 +867,6 @@ for(i in seq_len(length(listSamples))) {
     
 ## Close 1KG GDS file (important)
 closefn.gds(gds)
-
 ```
 
 
@@ -1025,7 +1021,6 @@ data.dir <- system.file("extdata", package="RAIDS")
 ## The path and file name for the PED RDS file
 ## will the information about the analyzed samples
 #################################################################
-
 filePED <- file.path(data.dir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 head(ped)
@@ -1036,7 +1031,6 @@ head(ped)
 ## Note that the 1KG GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #################################################################
-
 PATH_1KG <- file.path(data.dir, "example", "gdsRef")
 
 fileName.GDS.1KG <- "ex1kg.gds"
@@ -1044,7 +1038,6 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 
 fileName.GDS.Annot <- "exAnnot1kg.gds"
 file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
-
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need
@@ -1075,7 +1068,6 @@ gds_1KG <- snpgdsOpen(file.GDS)
 ####################################################################
 ## Fix RNG seed to ensure reproducible results
 ####################################################################
-
 set.seed(3043)
 
 ####################################################################
@@ -1086,7 +1078,6 @@ set.seed(3043)
 ## The 1KG files in this example only have 6 profiles for each 
 ## subcontinental-level (for demo purpose only)
 ####################################################################
-
 dataRef <- select1KGPop(gds_1KG, nbSamples = 2L)
 
 closefn.gds(gds_1KG)
@@ -1125,11 +1116,13 @@ list.files(file.path(PATHOUT, ped$Name.ID[1]))
 ## optimal number neighbour K
 ####################################################################
 
-resAncestry <- read.csv(file.path(PATHOUT, paste0(ped$Name.ID[1], ".Ancestry.csv")))
+resAncestry <- read.csv(file.path(PATHOUT, 
+                                    paste0(ped$Name.ID[1], ".Ancestry.csv")))
 resAncestry
+
+## Remove temporary files created for this demo
 unlink(PATHPROFILEGDS, recursive = TRUE, force=TRUE)
 unlink(PATHOUT, recursive = TRUE, force=TRUE)
-
 ```
 
 <br>

@@ -3,24 +3,29 @@
 \encoding{UTF-8}
 \name{projectSample2PCA}
 \alias{projectSample2PCA}
-\title{Project patients onto existing principal component axes (PCA)}
+\title{Project profile onto existing principal component axes (PCA)}
 \usage{
-projectSample2PCA(gds, listPCA, sample.current, np = 1L)
+projectSample2PCA(gds, listPCA, sample.current, np = 1L, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class
-\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-GDS file.}
+\code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
+opened Profile GDS file.}
 
-\item{listPCA}{a \code{list} containing two objects
-pca.unrel -> \code{snpgdsPCAClass}
-and a snp.load -> \code{snpgdsPCASNPLoading}}
+\item{listPCA}{a \code{list} containing two entries:
+\itemize{
+\item{pca.unrel} {\code{snpgdsPCAClass} object}
+\item{snp.load} {\code{snpgdsPCASNPLoading} object}
+}}
 
 \item{sample.current}{a \code{character} string representing the
-identifiant of the sample to be projected in the PCA.}
+identifiant of the profile to be projected in the PCA.}
 
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
+
+\item{verbose}{a \code{logical} passed to the PCA function.
+Default: \code{FALSE}.}
 }
 \value{
 a \code{snpgdsPCAClass} object, a \code{list} that contains:
@@ -34,7 +39,7 @@ a \code{snpgdsPCAClass} object, a \code{list} that contains:
 }
 }
 \description{
-This function calculates the patient eigenvectors using
+This function calculates the profile eigenvectors using
 the specified SNP loadings.
 }
 \details{

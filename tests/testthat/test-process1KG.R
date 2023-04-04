@@ -67,6 +67,7 @@ test_that("prepPed1KG() must return error when pedigree file is not existing", {
                                 batch.v=0L), error_message)
 })
 
+
 test_that("prepPed1KG() must return the expected output", {
 
     data.dir <- test_path("fixtures")

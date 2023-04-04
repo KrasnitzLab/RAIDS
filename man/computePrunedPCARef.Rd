@@ -6,7 +6,7 @@
 \title{Compute principal component axes (PCA) on pruned SNV with the
 reference samples}
 \usage{
-computePrunedPCARef(gds, listRef, np = 1L)
+computePrunedPCARef(gds, listRef, np = 1L, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class
@@ -14,10 +14,13 @@ computePrunedPCARef(gds, listRef, np = 1L)
 GDS file.}
 
 \item{listRef}{a \code{vector} of string representing the
-identifier of the samples in the reference (unrelated).}
+identifier of the profiles in the reference (unrelated).}
 
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
+
+\item{verbose}{a \code{logical} indicating if the PCA functions should be
+verbose. Default: \code{FALSE}.}
 }
 \value{
 listPCA  a \code{list} containing two objects

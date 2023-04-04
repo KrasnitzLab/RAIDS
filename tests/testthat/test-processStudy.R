@@ -2150,5 +2150,54 @@ test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
 })
 
 
+#############################################################################
+### Tests computePrunedPCARef() results
+#############################################################################
+
+context("computePrunedPCARef() results")
+
+
+test_that(paste0("computePrunedPCARef() must return error when ",
+                        "gds is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+
+    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+
+    expect_error(computePrunedPCARef(gds=gdsFile,
+        listRef=c("sample1", "sample2"), np=1L, verbose=FALSE),
+        error_message, fixed=TRUE)
+})
+
+
+test_that(paste0("computePrunedPCARef() must return error when ",
+                        "np is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'np\' parameter must be a single positive integer."
+
+    expect_error(computePrunedPCARef(gds=gdsF,
+        listRef=c("sample1", "sample2"), np="1", verbose=FALSE),
+        error_message, fixed=TRUE)
+})
+
+
+test_that(paste0("computePrunedPCARef() must return error when ",
+                 "verbose is character string"), {
+
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(gdsFile)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'verbose\' parameter must be logical (TRUE or FALSE)."
+
+    expect_error(computePrunedPCARef(gds=gdsF,
+    listRef=c("sample1", "sample2"), np=1L, verbose="GLUTEN"),
+    error_message, fixed=TRUE)
+})
+
 
 

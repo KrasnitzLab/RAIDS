@@ -886,10 +886,13 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
 #' GDS file.
 #'
 #' @param listRef a \code{vector} of string representing the
-#' identifier of the samples in the reference (unrelated).
+#' identifier of the profiles in the reference (unrelated).
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
+#'
+#' @param verbose a \code{logical} indicating if the PCA functions should be
+#' verbose. Default: \code{FALSE}.
 #'
 #' @return listPCA  a \code{list} containing two objects
 #' pca.unrel -> \code{snpgdsPCAClass}
@@ -914,53 +917,64 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, PATHSAMPLEGDS,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computePrunedPCARef <- function(gds, listRef, np=1L) {
+computePrunedPCARef <- function(gds, listRef, np=1L, verbose=FALSE) {
+
+    ## The gds must be an object of class "gds.class"
+    validateGDSClass(gds=gds, name="gds")
 
     ## Validate that np is a single positive integer
     if(! (isSingleNumber(np) && np > 0)) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 
+    if(! is.logical(verbose)) {
+        stop("The \'verbose\' parameter must be logical (TRUE or FALSE).")
+    }
+
     listPCA <- list()
 
     listPruned <- read.gdsn(index.gdsn(gds, "pruned.study"))
 
-
     ## Calculate the eigenvectors using the specified SNP loadings for
-    ## the reference samples
+    ## the reference profiles
     listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gds,
                                             sample.id=listRef,
                                             snp.id=listPruned,
                                             num.thread=np,
-                                            verbose=TRUE)
+                                            verbose=verbose)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(pcaobj=listPCA[["pca.unrel"]],
                                                     gdsobj=gds,
                                                     num.thread=np,
-                                                    verbose=TRUE)
+                                                    verbose=verbose)
     return(listPCA)
 }
 
 
 
-#' @title Project patients onto existing principal component axes (PCA)
+#' @title Project profile onto existing principal component axes (PCA)
 #'
-#' @description This function calculates the patient eigenvectors using
+#' @description This function calculates the profile eigenvectors using
 #' the specified SNP loadings.
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
+#' opened Profile GDS file.
 #'
-#' @param listPCA  a \code{list} containing two objects
-#' pca.unrel -> \code{snpgdsPCAClass}
-#' and a snp.load -> \code{snpgdsPCASNPLoading}
+#' @param listPCA  a \code{list} containing two entries:
+#' \itemize{
+#' \item{pca.unrel} {\code{snpgdsPCAClass} object}
+#' \item{snp.load} {\code{snpgdsPCASNPLoading} object}
+#' }
 #'
 #' @param sample.current a \code{character} string representing the
-#' identifiant of the sample to be projected in the PCA.
+#' identifiant of the profile to be projected in the PCA.
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
+#'
+#' @param verbose a \code{logical} passed to the PCA function.
+#' Default: \code{FALSE}.
 #'
 #' @return a \code{snpgdsPCAClass} object, a \code{list} that contains:
 #' \itemize{
@@ -990,7 +1004,8 @@ computePrunedPCARef <- function(gds, listRef, np=1L) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
+projectSample2PCA <- function(gds, listPCA, sample.current, np=1L,
+                                verbose=FALSE) {
 
 
     ## Validate that sample.current is a character string
@@ -1003,10 +1018,14 @@ projectSample2PCA <- function(gds, listPCA, sample.current, np=1L) {
         stop("The \'np\' parameter must be a single positive integer.")
     }
 
+    if(! is.logical(verbose)) {
+        stop("The \'verbose\' parameter must be logical (TRUE or FALSE).")
+    }
+
     ## Calculate the sample eigenvectors using the specified SNP loadings
     samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
                                 gdsobj=gds, sample.id=sample.current,
-                                num.thread=1, verbose=TRUE)
+                                num.thread=1, verbose=verbose)
 
     return(samplePCA)
 }

@@ -79,7 +79,7 @@ test_that("validateCreateStudy2GDS1KG() must return expected results when all in
 
     result1 <- RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped,
             fileNameGDS=gdsFile, batch=12, studyDF=studyInfo,
-            listProfiles=c("TCGA-H01", "TCGA-H02"), PATHSAMPLEGDS=data.dir,
+            listProfiles=c("TCGA-H01", "TCGA-H02"), pathProfileGDS=data.dir,
             verbose=TRUE)
 
     expect_identical(result1, 0L)

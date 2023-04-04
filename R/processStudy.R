@@ -7,7 +7,7 @@
 #' file is created per sample. One GDS Sample file will be created for each
 #' entry present in the \code{listSamples} parameter.
 #'
-#' @param PATHGENO a \code{character} string representing the path to the
+#' @param pathGeno a \code{character} string representing the path to the
 #' directory containing the VCF output of SNP-pileup for each sample. The
 #' SNP-pileup files must be compressed (gz files) and have the name identifiers
 #' of the samples. A sample with "Name.ID" identifier would have an
@@ -49,8 +49,8 @@
 #' If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
 #' Default: \code{NULL}.
 #'
-#' @param PATHSAMPLEGDS a \code{character} string representing the path to
-#' the directory where the GDS Sample files will be created.
+#' @param pathProfileGDS a \code{character} string representing the path to
+#' the directory where the Profile GDS files will be created.
 #' Default: \code{NULL}.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
@@ -83,11 +83,11 @@
 #'
 #' ## Create the Sample GDS file for sample in listSamples vector
 #' ## (in this case, samples "ex1")
-#' ## The Sample GDS file is created in the PATHSAMPLEGDS directory
-#' result <- createStudy2GDS1KG(PATHGENO=data.dir,
+#' ## The Profile GDS file is created in the pathProfileGDS directory
+#' result <- createStudy2GDS1KG(pathGeno=data.dir,
 #'             pedStudy=samplePED, fileNameGDS=gdsFile,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             PATHSAMPLEGDS=data.dir, verbose=FALSE)
+#'             pathProfileGDS=data.dir, verbose=FALSE)
 #'
 #' ## The function returns OL when successful
 #' result
@@ -104,10 +104,10 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
+createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
                                 fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
                                 batch=1, studyDF, listProfiles=NULL,
-                                PATHSAMPLEGDS=NULL, verbose=TRUE) {
+                                pathProfileGDS=NULL, verbose=TRUE) {
 
     ## When fileNamePED is defined and pedStudy is null
     if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
@@ -129,7 +129,7 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     ## Validate input parameters
     validateCreateStudy2GDS1KG(pedStudy=pedStudy, fileNameGDS=fileNameGDS,
                 batch=batch, studyDF=studyDF, listProfiles=listProfiles,
-                PATHSAMPLEGDS=PATHSAMPLEGDS, verbose=verbose)
+                pathProfileGDS=pathProfileGDS, verbose=verbose)
 
     ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
@@ -147,10 +147,10 @@ createStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
         message("Sample info DONE ", Sys.time())
     }
 
-    generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
+    generateGDS1KGgenotypeFromSNPPileup(pathGeno=pathGeno,
         listSamples=listProfiles, listPos=listPos, offset=-1, minCov=10,
         minProb=0.999, seqError=0.001, pedStudy=pedStudy, batch=batch,
-        studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS, verbose=verbose)
+        studyDF=studyDF, PATHGDSSAMPLE=pathProfileGDS, verbose=verbose)
 
     if(verbose) {
         message("Genotype DONE ", Sys.time())
@@ -266,7 +266,7 @@ appendStudy2GDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
         message("Sample info DONE ", Sys.time())
     }
 
-    generateGDS1KGgenotypeFromSNPPileup(PATHGENO=PATHGENO,
+    generateGDS1KGgenotypeFromSNPPileup(pathGeno=PATHGENO,
         listSamples=listSamples, listPos=listPos, offset=-1,
         minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
         batch=batch, studyDF=studyDF, PATHGDSSAMPLE=PATHSAMPLEGDS)
@@ -2303,37 +2303,36 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @encoding UTF-8
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
-                             PATHGENO, PATH_OUT, File.gds_1KG, File.gds_1KG.Annot,
-                             chrInfo, dataRefSyn){
+                        PATHGENO, PATH_OUT, File.gds_1KG, File.gds_1KG.Annot,
+                        chrInfo, dataRefSyn){
 
     listProfiles <- pedStudy[, "Name.ID"]
 
-    createStudy2GDS1KG(PATHGENO = PATHGENO,
-                       pedStudy = pedStudy,
-                       fileNameGDS = File.gds_1KG,
-                       listProfiles = listProfiles,
-                       studyDF = studyDF,
-                       PATHSAMPLEGDS = PATHPROFILEGDS)
+    createStudy2GDS1KG(pathGeno=PATHGENO, pedStudy=pedStudy,
+                       fileNameGDS=File.gds_1KG, listProfiles=listProfiles,
+                       studyDF=studyDF, pathProfileGDS=PATHPROFILEGDS)
+
     ## Open the 1KG GDS file (demo version)
     gds_1KG <- snpgdsOpen(File.gds_1KG)
     ## Open the 1KG GDS file and 1KG SNV Annotation file
     gds_1KG.Annot <- openfn.gds(File.gds_1KG.Annot)
 
     listProfileRef <- dataRefSyn$sample.id
-    studyDF.syn <- data.frame(study.id = paste0(studyDF$study.id, ".Synthetic"),
-                              study.desc = paste0(studyDF$study.id," synthetic data"),
-                              study.platform = studyDF$study.platform,
-                              stringsAsFactors = FALSE)
+    studyDF.syn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
+                        study.desc=paste0(studyDF$study.id, " synthetic data"),
+                        study.platform=studyDF$study.platform,
+                        stringsAsFactors=FALSE)
 
     for(i in seq_len(length(listProfiles))) {
         pruningSample(gds=gds_1KG,
-                      currentProfile = listProfiles[i],
-                      study.id = studyDF$study.id,
-                      PATHSAMPLEGDS = PATHPROFILEGDS)
-        file.GDSProfile <- file.path(PATHPROFILEGDS, paste0(listProfiles[i], ".gds"))
-        add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSProfile,
-                         sampleCurrent = listProfiles[i],
-                         study.id = studyDF$study.id)
+                      currentProfile=listProfiles[i],
+                      study.id=studyDF$study.id,
+                      PATHSAMPLEGDS=PATHPROFILEGDS)
+        file.GDSProfile <- file.path(PATHPROFILEGDS,
+                                        paste0(listProfiles[i], ".gds"))
+        add1KG2SampleGDS(gds=gds_1KG, gdsSampleFile=file.GDSProfile,
+                         sampleCurrent=listProfiles[i],
+                         study.id=studyDF$study.id)
         addStudy1Kg(gds_1KG, file.GDSProfile)
 
         gdsProfile <- openfn.gds(file.GDSProfile, readonly = FALSE)
@@ -2344,18 +2343,17 @@ runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
                                 chrInfo = chrInfo)
         closefn.gds(gdsProfile)
 
-        prepSynthetic(gdsSampleFile = file.GDSProfile,
-                      listSampleRef = listProfileRef,
-                      data.id.profile = listProfiles[i],
-                      studyDF = studyDF.syn,
-                      prefId = "1")
+        prepSynthetic(gdsSampleFile=file.GDSProfile,
+                      listSampleRef=listProfileRef,
+                      data.id.profile=listProfiles[i],
+                      studyDF=studyDF.syn, prefId="1")
 
-        resG <- syntheticGeno(gds = gds_1KG,
-                              gdsRefAnnot = gds_1KG.Annot,
-                              gdsSampleFile = file.GDSProfile,
-                              data.id.profile = listProfiles[i],
-                              listSampleRef = listProfileRef,
-                              prefId = "1")
+        resG <- syntheticGeno(gds=gds_1KG,
+                              gdsRefAnnot=gds_1KG.Annot,
+                              gdsSampleFile=file.GDSProfile,
+                              data.id.profile=listProfiles[i],
+                              listSampleRef=listProfileRef, prefId="1")
+
         if(! file.exists(PATH_OUT)) {
             dir.create(PATH_OUT)
         }
@@ -2377,43 +2375,36 @@ runExomeAncestry <- function(pedStudy, studyDF, PATHPROFILEGDS,
             ## Run a PCA analysis using 1 synthetic profile from each
             ##  sub-continental ancestry
             ## The synthetic profiles are projected on the 1KG PCA space
-            ##  (the reference samples used to generate the synthetic profiles are
-            ##  removed from this PCA)
+            ##  (the reference samples used to generate the synthetic profiles
+            ##  are removed from this PCA)
             ## The K-nearest neighbor analysis is done using
             ##  a range of K and D values
-            KNN.synt <- computePoolSyntheticAncestryGr(gdsSample = gdsProfile,
-                                                       sampleRM =  sampleRM[j,],
-                                                       study.id.syn = studyDF.syn$study.id,
-                                                       np = 1L,
-                                                       spRef = spRef,
-                                                       eigen.cnt = 15L)
+            KNN.synt <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
+                sampleRM=sampleRM[j,], study.id.syn=studyDF.syn$study.id,
+                np=1L, spRef=spRef, eigen.cnt=15L)
 
             ## Results are saved
             saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE,
-                                               paste0("KNN.synt.", listProfiles[i], ".", j, ".rds")))
-
-
+                    paste0("KNN.synt.", listProfiles[i], ".", j, ".rds")))
         }
+
         ## Directory where the KNN results have been saved
         PATHKNN <- file.path(PATH_OUT, listProfiles[i])
         listFilesName <- dir(file.path(PATHKNN), ".rds")
         ## List of the KNN result files from PCA on synthetic data
         listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-        resCall <- computeAncestryFromSyntheticFile(gds = gds_1KG,
-                                                    gdsSample = gdsProfile,
-                                                    listFiles = listFiles,
-                                                    sample.ana.id = listProfiles[i],
-                                                    spRef = spRef,
-                                                    study.id.syn = studyDF.syn$study.id,
-                                                    np = 1L)
+        resCall <- computeAncestryFromSyntheticFile(gds=gds_1KG,
+                        gdsSample=gdsProfile, listFiles=listFiles,
+                        sample.ana.id=listProfiles[i], spRef=spRef,
+                        study.id.syn=studyDF.syn$study.id, np=1L)
 
         saveRDS(resCall, file.path(PATH_OUT,
-                                   paste0(listProfiles[i], ".infoCall", ".rds")))
+                            paste0(listProfiles[i], ".infoCall", ".rds")))
 
         write.csv(resCall$Ancestry,
-                  file.path(PATH_OUT, paste0(listProfiles[i], ".Ancestry",".csv")),
-                  quote = FALSE, row.names = FALSE)
+            file.path(PATH_OUT, paste0(listProfiles[i], ".Ancestry",".csv")),
+            quote=FALSE, row.names=FALSE)
 
         ## Close Profile GDS file (important)
         closefn.gds(gdsProfile)

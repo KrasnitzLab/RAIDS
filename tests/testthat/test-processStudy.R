@@ -1385,10 +1385,10 @@ test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
             "representing the RDS Sample information file. ",
             "The file must exist.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
             fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
             batch=1, studyDF=NULL, listProfiles=NULL,
-            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+            pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1397,10 +1397,10 @@ test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and p
     error_message <- paste0("One of the parameter \'fineNamePED\' of ",
                         "\'pedStudy\' must be defined.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
-                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+                    pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1414,10 +1414,10 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
     error_message <- paste0("The PED study data frame is incomplete. ",
                             "One or more mandatory columns are missing.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
-                    PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+                    pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1432,10 +1432,10 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
     error_message <- paste0("The \'fileNameGDS\' must be a character ",
                 "string representing the GDS 1KG file. The file must exist.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
                         batch=1, studyDF=NULL, listProfiles=NULL,
-                        PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+                        pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1452,10 +1452,10 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
             batch="1", studyDF=NULL, listProfiles=NULL,
-            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+            pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1471,10 +1471,10 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=c(1,2), studyDF=NULL, listProfiles=NULL,
-                PATHSAMPLEGDS=NULL, verbose=TRUE), error_message)
+                pathProfileGDS=NULL, verbose=TRUE), error_message)
 })
 
 
@@ -1491,10 +1491,10 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                         "of character strings (1 entry or more) or NULL.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
             batch=1, studyDF=NULL, listProfiles=c(1,2),
-            PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+            pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
@@ -1511,10 +1511,10 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                             "of character strings (1 entry or more) or NULL.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
         batch=1, studyDF=NULL, listProfiles=1,
-        PATHSAMPLEGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+        pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
@@ -1531,14 +1531,14 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 
     error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
             batch=1, studyDF=NULL, listProfiles=NULL,
-            PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
+            pathProfileGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })
 
 
-test_that("createStudy2GDS1KG() must return error when both  fileNamePED and pedStudy are defined", {
+test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedStudy are defined", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
     gdsFile <- file.path(data.dir, "1KG_Test.gds")
@@ -1552,10 +1552,10 @@ test_that("createStudy2GDS1KG() must return error when both  fileNamePED and ped
     error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
                         "defined at the same time.")
 
-    expect_error(createStudy2GDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=gdsFile, pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=1, studyDF=NULL, listProfiles=NULL,
-                PATHSAMPLEGDS=NULL, verbose=22), error_message, fixed=TRUE)
+                pathProfileGDS=NULL, verbose=22), error_message, fixed=TRUE)
 })
 
 
@@ -1578,10 +1578,10 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
                             study.platform = "PLATFORM",
                             stringsAsFactors = FALSE)
 
-    result <- createStudy2GDS1KG(PATHGENO=data.dir,
+    result <- createStudy2GDS1KG(pathGeno=data.dir,
                 pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=1, studyDF=studyDF, listProfiles=c("ex1"),
-                PATHSAMPLEGDS=data.dir, verbose=FALSE)
+                pathProfileGDS=data.dir, verbose=FALSE)
 
     expect_true(file.exists(file.path(data.dir, "ex1.gds")))
     expect_equal(result, 0L)

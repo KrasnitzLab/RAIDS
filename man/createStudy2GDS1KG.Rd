@@ -8,19 +8,19 @@ using the information from a RDS Sample description file and the 1KG
 GDS file}
 \usage{
 createStudy2GDS1KG(
-  PATHGENO = file.path("data", "sampleGeno"),
+  pathGeno = file.path("data", "sampleGeno"),
   fileNamePED = NULL,
   pedStudy = NULL,
   fileNameGDS,
   batch = 1,
   studyDF,
   listProfiles = NULL,
-  PATHSAMPLEGDS = NULL,
+  pathProfileGDS = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{PATHGENO}{a \code{character} string representing the path to the
+\item{pathGeno}{a \code{character} string representing the path to the
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
@@ -62,8 +62,8 @@ RDS file passed to the \code{fileNamePED} parameter.
 If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
 Default: \code{NULL}.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
-the directory where the GDS Sample files will be created.
+\item{pathProfileGDS}{a \code{character} string representing the path to
+the directory where the Profile GDS files will be created.
 Default: \code{NULL}.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
@@ -103,11 +103,11 @@ rownames(samplePED) <- samplePED$Name.ID
 
 ## Create the Sample GDS file for sample in listSamples vector
 ## (in this case, samples "ex1")
-## The Sample GDS file is created in the PATHSAMPLEGDS directory
-result <- createStudy2GDS1KG(PATHGENO=data.dir,
+## The Profile GDS file is created in the pathProfileGDS directory
+result <- createStudy2GDS1KG(pathGeno=data.dir,
             pedStudy=samplePED, fileNameGDS=gdsFile,
             studyDF=studyDF, listProfiles=c("ex1"),
-            PATHSAMPLEGDS=data.dir, verbose=FALSE)
+            pathProfileGDS=data.dir, verbose=FALSE)
 
 ## The function returns OL when successful
 result

@@ -11,7 +11,7 @@ validateCreateStudy2GDS1KG(
   batch,
   studyDF,
   listProfiles,
-  PATHSAMPLEGDS,
+  pathProfileGDS,
   verbose
 )
 }
@@ -40,8 +40,8 @@ profile identifiers must be present in the "Name.ID" column of the RDS file
 passed to the \code{fileNamePED} parameter.
 If \code{NULL}, all profiles in the \code{fileNamePED} are selected.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
-the directory where the GDS Sample files will be created.}
+\item{pathProfileGDS}{a \code{character} string representing the path to
+the directory where the Profile GDS files will be created.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
 printed.}
@@ -78,7 +78,7 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
 RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
             batch=1, studyDF=studyInfo,
             listProfiles=c("Sample_01", "Sample_02"),
-            PATHSAMPLEGDS=data.dir, verbose=TRUE)
+            pathProfileGDS=data.dir, verbose=TRUE)
 
 }
 \author{

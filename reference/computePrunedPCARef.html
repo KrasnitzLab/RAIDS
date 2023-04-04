@@ -68,7 +68,7 @@ reference samples</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computePrunedPCARef</span><span class="op">(</span><span class="va">gds</span>, <span class="va">listRef</span>, np <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computePrunedPCARef</span><span class="op">(</span><span class="va">gds</span>, <span class="va">listRef</span>, np <span class="op">=</span> <span class="fl">1L</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,12 +81,17 @@ GDS file.</p></dd>
 
 <dt>listRef</dt>
 <dd><p>a <code>vector</code> of string representing the
-identifier of the samples in the reference (unrelated).</p></dd>
+identifier of the profiles in the reference (unrelated).</p></dd>
 
 
 <dt>np</dt>
 <dd><p>a single positive <code>integer</code> representing the number of
 threads. Default: <code>1L</code>.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if the PCA functions should be
+verbose. Default: <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div id="value">

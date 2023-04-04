@@ -10,16 +10,16 @@ pruningSample(
   gds,
   method = c("corr", "r", "dprime", "composite"),
   currentProfile,
-  study.id,
+  studyID,
   listSNP = NULL,
   slide.max.bp.v = 500000L,
   ld.threshold.v = sqrt(0.1),
   np = 1L,
-  verbose.v = FALSE,
+  verbose = FALSE,
   chr = NULL,
   minAF.SuperPop = NULL,
   keepGDSpruned = TRUE,
-  PATHSAMPLEGDS = NULL,
+  pathProfileGDS = NULL,
   keepFile = FALSE,
   PATHPRUNED = ".",
   outPref = "pruned"
@@ -40,9 +40,9 @@ corresponding to the profile identifier used in LD pruning done by the
 corresponding to the profile identifier must exist and be located in the
 \code{PATHSAMPLEGDS} directory.}
 
-\item{study.id}{a \code{character} string corresponding to the study
+\item{studyID}{a \code{character} string corresponding to the study
 identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
-The study identifier must be present in the GDS Sample file.}
+The study identifier must be present in the Profile GDS file.}
 
 \item{listSNP}{a \code{vector} of SNVs identifiers specifying selected to
 be passed the the pruning function;
@@ -62,7 +62,7 @@ Default: \code{sqrt(0.1)}.}
 \item{np}{a single positive \code{integer} specifying the number of
 threads to be used. Default: \code{1L}.}
 
-\item{verbose.v}{a \code{logicial} indicating if information is shown
+\item{verbose}{a \code{logicial} indicating if information is shown
 during the process in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.  Default: \code{FALSE}.}
 
@@ -79,8 +79,8 @@ allelic frequency is not used as a filtering criterion. Default: \code{NULL}.}
 the pruned SNVs should be added to the GDS Sample file.
 Default: \code{TRUE}.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the directory
-where the GDS Sample file will be created. The directory must exist.}
+\item{pathProfileGDS}{a \code{character} string representing the directory
+where the Profile GDS files will be created. The directory must exist.}
 
 \item{keepFile}{a \code{logical} indicating if RDS files containing the
 information about the pruned SNVs must be
@@ -143,7 +143,7 @@ gds_1KG <- snpgdsOpen(gdsFile)
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
-              study.id = studyDF$study.id, PATHSAMPLEGDS=data.dir.pruning)
+              studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds_1KG)

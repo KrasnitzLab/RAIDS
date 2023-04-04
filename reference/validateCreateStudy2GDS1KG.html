@@ -71,7 +71,7 @@ createStudy2GDS1KG function."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <span>  <span class="va">batch</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
 <span>  <span class="va">listProfiles</span>,</span>
-<span>  <span class="va">PATHSAMPLEGDS</span>,</span>
+<span>  <span class="va">pathProfileGDS</span>,</span>
 <span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -112,9 +112,9 @@ passed to the <code>fileNamePED</code> parameter.
 If <code>NULL</code>, all profiles in the <code>fileNamePED</code> are selected.</p></dd>
 
 
-<dt>PATHSAMPLEGDS</dt>
+<dt>pathProfileGDS</dt>
 <dd><p>a <code>character</code> string representing the path to
-the directory where the GDS Sample files will be created.</p></dd>
+the directory where the Profile GDS files will be created.</p></dd>
 
 
 <dt>verbose</dt>
@@ -159,7 +159,7 @@ printed.</p></dd>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateCreateStudy2GDS1KG</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, fileNameGDS<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>            batch<span class="op">=</span><span class="fl">1</span>, studyDF<span class="op">=</span><span class="va">studyInfo</span>,</span></span>
 <span class="r-in"><span>            listProfiles<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>            PATHSAMPLEGDS<span class="op">=</span><span class="va">data.dir</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">data.dir</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

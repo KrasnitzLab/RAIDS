@@ -65,7 +65,7 @@ prepPed1KG function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validatePrepPed1KG</span><span class="op">(</span><span class="va">pedFile</span>, <span class="va">PATHGENO</span>, <span class="va">batch.v</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validatePrepPed1KG</span><span class="op">(</span><span class="va">pedFile</span>, <span class="va">PATHGENO</span>, <span class="va">batch</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -86,7 +86,7 @@ the individual identification (Individual.ID) in the pedigree file
 (PED file).</p></dd>
 
 
-<dt>batch.v</dt>
+<dt>batch</dt>
 <dd><p>a<code>integer</code> that uniquely identifies the source of the
 pedigree information. The 1KG is usually <code>0L</code>.</p></dd>
 
@@ -113,7 +113,7 @@ pedigree information. The 1KG is usually <code>0L</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validatePrepPed1KG</span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">pedDemoFile</span>,</span></span>
-<span class="r-in"><span>     PATHGENO<span class="op">=</span><span class="va">data.dir</span>, batch.v<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     PATHGENO<span class="op">=</span><span class="va">data.dir</span>, batch<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

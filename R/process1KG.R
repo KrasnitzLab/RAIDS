@@ -57,7 +57,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
                         batch.v=0L) {
 
     ## Validate parameters
-    validatePrepPed1KG(pedFile=pedFile, PATHGENO=PATHGENO, batch.v=batch.v)
+    validatePrepPed1KG(pedFile=pedFile, PATHGENO=PATHGENO, batch=batch.v)
 
     ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)

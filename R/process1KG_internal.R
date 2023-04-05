@@ -1,34 +1,56 @@
-#' @title Find the pruned snv in 1KG by chr
+#' @title Extract the pruned SNVs in a reference data set (1KG) by chromosome
+#' and/or allelic frequency
 #'
-#' @description TODO
+#' @description The function extracts the pruned SNVs in a reference data
+#' set (1KG) by chromosome and/or allelic frequency. The pruning is done
+#' through the linkage disequilibrium analysis.
 #'
 #' @param gds an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
+#' opened SNP GDS file.
 #'
-#' @param method a \code{character string} TODO . Default: \code{"corr"}.
+#' @param method a \code{character} string that represents the method that
+#' will be used to calculate the linkage disequilibrium in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param listSamples TODO
+#' @param listSamples a \code{character} string that represents the method that
+#' will be used to calculate the linkage disequilibrium in the
+#' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
+#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param slide.max.bp.v TODO
+#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' the maximum basepairs (bp) in the sliding window. This parameter is used
+#' for the LD pruning done in the \code{runLDPruning}
+#' function. Default: \code{5e5}.
 #'
-#' @param ld.threshold.v TODO
+#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' threshold used in the \code{runLDPruning} function.
+#' Default: \code{sqrt(0.1)}.
 #'
-#' @param np TODO . Default: \code{NULL}.
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
 #'
-#' @param verbose.v a \code{logical} specifying if the function must provide
+#' @param verbose a \code{logical} specifying if the function must provide
 #' more information about the process. Default: \code{FALSE}.
 #'
-#' @param chr TODO
+#' @param chr a \code{character} string representing the chromosome where the
+#' selected SNVs should belong. Only one chromosome can be handled. If
+#' \code{NULL}, the chromosome is not used as a filtering criterion.
+#' Default: \code{NULL}.
 #'
-#' @param minAF TODO
+#' @param minAF a single positive \code{numeric} representing the
+#' minimum allelic frequency used to select the SNVs. If \code{NULL}, the
+#' allelic frequency is not used as a filtering criterion.
+#' Default: \code{NULL}.
 #'
-#' @param outPref TODO
+#' @param outPrefix a \code{character} string that represents the prefix of the
+#' RDS files that will be generated. Default: \code{"pruned_1KG"}.
 #'
 #' @param keepObj a \code{logical} specifying if the function must save the
 #' the processed information into a RDS object. Default: \code{FALSE}.
 #'
-#' @return \code{NULL} invisibly.
+#' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -41,18 +63,13 @@
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-pruning1KG.Chr <- function(gds, method="corr",
-                           listSamples=NULL,
-                           slide.max.bp.v=5e5,
-                           ld.threshold.v=sqrt(0.1),
-                           np=1, verbose.v=FALSE,
-                           chr=NULL,
-                           minAF=NULL,
-                           outPref="pruned_1KG",
-                           keepObj=FALSE) {
+pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
+                    slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+                    np=1L, verbose=FALSE, chr=NULL,
+                    minAF=NULL, outPrefix="pruned_1KG", keepObj=FALSE) {
 
-    filePruned <- file.path(paste0(outPref, ".rds"))
-    fileObj <- file.path(paste0(outPref, "Obj.rds"))
+    filePruned <- file.path(paste0(outPrefix, ".rds"))
+    fileObj <- file.path(paste0(outPrefix, "Obj.rds"))
     snpGDS <- index.gdsn(gds, "snp.id")
     listKeep <- NULL
     if(is.null(minAF)){
@@ -82,18 +99,17 @@ pruning1KG.Chr <- function(gds, method="corr",
         }
     }
 
-    snpset <- runLDPruning(gds,
-                           method,
-                           listSamples=listSamples,
-                           listKeep=listKeep,
-                           slide.max.bp.v = slide.max.bp.v,
-                           ld.threshold.v=ld.threshold.v)
+    snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
+                    listKeep=listKeep, slide.max.bp.v=slide.max.bp.v,
+                    ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
     saveRDS(pruned, filePruned)
     if(keepObj){
         saveRDS(snpset, fileObj)
     }
+
+    return(0L)
 }
 
 
@@ -108,10 +124,19 @@ pruning1KG.Chr <- function(gds, method="corr",
 #' size of the window to use to group the SNVs when the SNVs are in a
 #' non-coding region. Default: \code{10000}.
 #'
-#' @param EnsDb An object with the ensembl genome annotation
-#' Default: \code{EnsDb.Hsapiens.v86}.
+#' @param EnsDb An object of class \code{EnsDb} with the Ensembl genome
+#' annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.
 #'
 #' @return  a \code{data.frame} with those columns:
+#' \itemize{
+#' \item{chr} {}
+#' \item{pos} {}
+#' \item{snp.allele} {}
+#' \item{Exon} {}
+#' \item{GName} {}
+#' \item{Gene} {}
+#' \item{GeneS} {}
+#' }
 #' "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 #' Example for GName and the two indexes "Gene", "GeneS"
 #' GName Gene GeneS
@@ -125,6 +150,9 @@ pruning1KG.Chr <- function(gds, method="corr",
 #' 492                 ENSG00000230021:ENSG00000228794   17  3825
 #' 493                 ENSG00000230021:ENSG00000228794   17  3825
 #' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
 #'
 #' # TODO
 #'
@@ -144,17 +172,16 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
     listEnsId <- unique(names(genes(edb)))
 
     cols <- c("GENEID", "SYMBOL", "GENENAME", "GENESEQSTART",
-              "GENESEQEND", "SEQNAME")
+                    "GENESEQEND", "SEQNAME")
 
     annot <- select(edb, keys=listEnsId, columns=cols, keytype="GENEID")
     annot <- annot[which(annot$SEQNAME %in% c(seq_len(22), "X")),]
 
     # All the genes
-    grGene <- GRanges(
-        seqnames = annot$SEQNAME,
-        ranges = IRanges(annot$GENESEQSTART, end = annot$GENESEQEND),
-        strand = Rle(strand(rep("+", nrow(annot)))),
-        mcols = annot[,c("GENEID", "GENENAME")])
+    grGene <- GRanges(seqnames=annot$SEQNAME,
+        ranges=IRanges(annot$GENESEQSTART, end=annot$GENESEQEND),
+        strand=Rle(strand(rep("+", nrow(annot)))),
+        mcols=annot[,c("GENEID", "GENENAME")])
 
     # Data frame of the all genes
     dfGenneAll <- as.data.frame(grGene)
@@ -164,22 +191,22 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
     # data.frame version of grGeneReduce
     dfGene <- as.data.frame(grGeneReduce)
 
-    # All exon
-    allExon <- exonsBy(edb, by = "gene", filter = GeneIdFilter(listEnsId))
+    # All exons
+    allExon <- exonsBy(edb, by="gene", filter=GeneIdFilter(listEnsId))
     # Transforming the GRangesList into a data.frame in SAF format
     dfExon <- toSAF(allExon)
-    # remove the duplicate
+    # remove the duplicates
     dfExon <- unique(dfExon)
-    # Group the overlap
+    # Group the overlaps
     exonReduce <- reduce(allExon)
     # Transforming the GRangesList into a data.frame in SAF format
     dfExonReduce <- toSAF(exonReduce)
     listMat <- list()
 
     matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gds, "snp.chromosome")),
-                             pos=read.gdsn(index.gdsn(gds, "snp.position")),
-                             snp.allele=read.gdsn(index.gdsn(gds, "snp.allele")),
-                             stringsAsFactors=FALSE)
+                        pos=read.gdsn(index.gdsn(gds, "snp.position")),
+                        snp.allele=read.gdsn(index.gdsn(gds, "snp.allele")),
+                        stringsAsFactors=FALSE)
     offsetGene <- 0
     offsetGeneS <- 0
     offsetGene.O <- 0
@@ -189,10 +216,6 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
         dfExonChr <- dfExonReduce[which(dfExonReduce$Chr == chr),]
         dfGenneAllChr <- dfGenneAll[which(dfGenneAll$seqnames == chr),]
         dfGeneChr <- dfGene[which(dfGene$seqnames == chr),]
-        # matFreq <- NULL
-        #    matFreq <- read.csv2(fileSNV,
-        #                         header=FALSE)
-
 
         # colnames(matFreq) <- c("chr", "pos", "ref", "alt", "af", "EAS_AF",
         #                        "EUR_AF","AFR_AF", "AMR_AF", "SAS_AF")
@@ -223,11 +246,10 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
             for (genePos in seq_len(nrow(dfGenneAllChr))) {
                 # the gene is where SNV exists
                 if (dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
-                    dfGenneAllChr$start[genePos] <=
-                    matFreq$pos[nrow(matFreq)]) {
+                dfGenneAllChr$start[genePos] <= matFreq$pos[nrow(matFreq)]) {
                     # In which partitions from the index the gene is located
                     vStart <- max(c(which(matFreq$pos[startIndex] <=
-                                              dfGenneAllChr$start[genePos]), 1))
+                                            dfGenneAllChr$start[genePos]), 1))
                     vEnd <- min(c(which(matFreq$pos[startIndex] >=
                                             dfGenneAllChr$end[genePos]),
                                   length(startIndex)))
@@ -243,22 +265,22 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
                         # Add the name of the gene of SNVs
                         listSNVGenes[listP] <- paste0(listSNVGenes[listP], ":",
-                                                      dfGenneAllChr$mcols.GENEID[genePos])
+                                        dfGenneAllChr$mcols.GENEID[genePos])
 
                         # Allow run on all without check if the SNV have
                         # already gene name
                         listSNVGenes[listP] <- gsub("^:", "",
-                                                    listSNVGenes[listP])
+                                                        listSNVGenes[listP])
 
                         # Exon of the gene
                         dfExon <- dfExonChr[which(dfExonChr$GeneID ==
-                                                      dfGenneAllChr$mcols.GENEID[genePos]),]
+                                    dfGenneAllChr$mcols.GENEID[genePos]),]
                         k <- 1
 
                         listE <- list()
                         for (pos in listP) {
                             if(length(which(dfExon$Start <= matFreq$pos[pos] &
-                                            dfExon$End >= matFreq$pos[pos])) > 0) {
+                                    dfExon$End >= matFreq$pos[pos])) > 0) {
                                 listE[[k]] <- pos
                                 k <- k + 1
                             }
@@ -267,9 +289,9 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                         if (length(listE) > 0) {
                             listE <- do.call(c, listE)
                             listSNVExons[listE] <- paste0(listSNVExons[listE],
-                                                          ":", dfGenneAllChr$mcols.GENEID[genePos])
+                                    ":", dfGenneAllChr$mcols.GENEID[genePos])
                             listSNVExons[listE] <- gsub("^:", "",
-                                                        listSNVExons[listE])
+                                                    listSNVExons[listE])
                         }
                     }
                 }
@@ -284,8 +306,8 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
         # dfGeneChr are reduced (merge all the overlap interval)
         z <- cbind(c(dfGeneChr$start, dfGeneChr$end, as.integer(matFreq$pos)),
-                   c(seq_len(nrow(dfGeneChr)), -1 * seq_len(nrow(dfGeneChr)),
-                     rep(0, nrow(matFreq))))
+                c(seq_len(nrow(dfGeneChr)), -1 * seq_len(nrow(dfGeneChr)),
+                    rep(0, nrow(matFreq))))
         z <- z[order(z[,1], -1 * z[,2]),]
 
         # group by interval which in overlap a gene
@@ -342,12 +364,11 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
             # 517.595   7.035 524.658
             #    user  system elapsed
             # 558.526   2.274 561.043
-            #
             while(flag){
                 #use the index
                 vStart <- min(c(which(matFreq$pos[startIndex] >
-                                          (matFreq[listOrph[i], "pos"] + winSize)),
-                                length(startIndex)))
+                                    (matFreq[listOrph[i], "pos"] + winSize)),
+                                        length(startIndex)))
 
                 preList <- listOrph[i]:startIndex[vStart]
                 listWin <- which(matFreq[preList, "pos"] >
@@ -357,7 +378,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                                           matFreq[preList,"GeneS"] > 0))
 
                 j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1,
-                            listOrph[i])
+                                listOrph[i])
 
                 matFreq[listOrph[i]:j, curZone] <- v
                 matFreq[listOrph[i]:j, curZone1] <- v
@@ -399,7 +420,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #' the individual identification (Individual.ID) in the pedigree file
 #' (PED file).
 #'
-#' @param batch.v a\code{integer} that uniquely identifies the source of the
+#' @param batch a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}.
 #'
 #' @return The function returns \code{0L} when successful.
@@ -414,18 +435,18 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-#'      PATHGENO=data.dir, batch.v=1)
+#'      PATHGENO=data.dir, batch=1)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePrepPed1KG <- function(pedFile, PATHGENO, batch.v) {
+validatePrepPed1KG <- function(pedFile, PATHGENO, batch) {
 
     ## Validate that the batch is an integer
-    if (! isSingleNumber(batch.v)) {
-        stop("The batch.v must be an integer.")
+    if (! isSingleNumber(batch)) {
+        stop("The batch must be an integer.")
     }
 
     ## Validate that the pedigree file exists

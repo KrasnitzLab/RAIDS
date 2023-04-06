@@ -25,7 +25,7 @@ test_that("projectSample2PCA() must return error when np is character string", {
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(projectSample2PCA(gds=gdsFIle, listPCA=list(),
-                    sample.current="sample1",
+                    currentProfile="sample1",
                     np="test"), error_message)
 })
 
@@ -36,7 +36,7 @@ test_that("projectSample2PCA() must return error when np is negative integer", {
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(projectSample2PCA(gds=gdsFIle, listPCA=list(),
-                                    sample.current="sample1",
+                                    currentProfile="sample1",
                                     np=-1L), error_message)
 })
 
@@ -47,19 +47,19 @@ test_that("projectSample2PCA() must return error when np is zero", {
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(projectSample2PCA(gds=gdsFIle, listPCA=list(),
-                                    sample.current="sample1",
+                                    currentProfile="sample1",
                                     np=0L), error_message)
 })
 
-test_that("projectSample2PCA() must return error when sample.current is number", {
+test_that("projectSample2PCA() must return error when currentProfile is number", {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
 
-    error_message <- paste0("The \'sample.current\' ",
+    error_message <- paste0("The \'currentProfile\' ",
                                 "parameter must be a character string.")
 
     expect_error(projectSample2PCA(gds=gdsFIle, listPCA=list(),
-                                        sample.current=101,
+                                        currentProfile=101,
                                         np=1L), error_message)
 })
 
@@ -71,7 +71,7 @@ test_that("projectSample2PCA() must return error when sample.current is number",
 
 context("appendStudy2GDS1KG() results")
 
-test_that("appendStudy2GDS1KG() must return error when PATHGENO is a numeric", {
+test_that("appendStudy2GDS1KG() must return error when pathGeno is a numeric", {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
@@ -80,12 +80,12 @@ test_that("appendStudy2GDS1KG() must return error when PATHGENO is a numeric", {
                             study.desc="Pancreatic study", study.platform="WES",
                             stringsAsFactors=FALSE)
 
-    error_message <- paste0("The \'PATHGENO\' must be a character string ",
+    error_message <- paste0("The \'pathGeno\' must be a character string ",
                             "representing a path. The path must exist.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=22, fileNamePED=sampleRDS,
+    expect_error(appendStudy2GDS1KG(pathGeno=22, fileNamePED=sampleRDS,
                 fileNameGDS=gdsFIle, batch=2,
-                studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+                studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
                 verbose="TRUE"), error_message, fixed=TRUE)
 })
 
@@ -102,9 +102,9 @@ test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", 
     error_message <- paste0("The \'fileNamePED\' must be a character string ",
         "representing the RDS Sample information file. The file must exist.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=21, fileNameGDS=gdsFIle, batch=1,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         verbose=TRUE), error_message)
 })
 
@@ -121,9 +121,9 @@ test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", 
     error_message <- paste0("The \'fileNameGDS\' must be a character string ",
                         "representing the GDS 1KG file. The file must exist.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=33, batch=1,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         verbose=TRUE), error_message)
 })
 
@@ -138,9 +138,9 @@ test_that("appendStudy2GDS1KG() must return error when batch is a vector of nume
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=c(1,2),
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         verbose=TRUE), error_message)
 })
 
@@ -155,9 +155,9 @@ test_that("appendStudy2GDS1KG() must return error when batch is a character stri
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch="2",
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         verbose=TRUE), error_message)
 })
 
@@ -174,9 +174,9 @@ test_that("appendStudy2GDS1KG() must return error when studyDF is missing mandat
     error_message <- paste0("The \'studyDF\' must be a data.frame and contain ",
         "those 3 columns: \'study.id\', \'study.desc\' and \'study.platform\'.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
             fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=1,
-            studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+            studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
             verbose=TRUE), error_message)
 })
 
@@ -193,9 +193,9 @@ test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric"
     error_message <- paste0("The \'listSamples\' must be a vector ",
         "of character strings (1 entry or more) or NULL.")
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
-        studyDF=studyInfo, listSamples=33, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=33, pathProfileGDS=NULL,
         verbose=FALSE), error_message, fixed=TRUE)
 })
 
@@ -211,9 +211,9 @@ test_that("appendStudy2GDS1KG() must return error when verbose is a character st
 
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
-    expect_error(appendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         fileNamePED=sampleRDS, fileNameGDS=gdsFIle, batch=2,
-        studyDF=studyInfo, listSamples=NULL, PATHSAMPLEGDS=NULL,
+        studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         verbose="TRUE"), error_message, fixed=TRUE)
 })
 
@@ -236,14 +236,14 @@ test_that("pruningSample() must return error when gds is a character string", {
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(pruningSample(gds=gdsFile, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".",
-        outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".",
+        outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when keepGDSpruned is a character string", {
+test_that("pruningSample() must return error when keepPrunedGDS is a character string", {
 
     data.dir <- test_path("fixtures")
 
@@ -252,13 +252,13 @@ test_that("pruningSample() must return error when keepGDSpruned is a character s
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- 'The \'keepGDSpruned\' parameter must be a logical (TRUE or FALSE).'
+    error_message <- 'The \'keepPrunedGDS\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned="YES",
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".",
-        outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS="YES",
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".",
+        outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -275,10 +275,10 @@ test_that("pruningSample() must return error when keepFile is a character string
     error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="1KG_Test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=TRUE,
-        pathProfileGDS=data.dir, keepFile="NO", PATHPRUNED=".",
-        outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=TRUE,
+        pathProfileGDS=data.dir, keepFile="NO", pathPrunedGDS=".",
+        outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -295,13 +295,13 @@ test_that("pruningSample() must return error when np is a character string", {
     error_message <- "The \'np\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
-        np="1", verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
+        np="1", verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when slide.max.bp.v is a character string", {
+test_that("pruningSample() must return error when slideWindowMaxBP is a character string", {
 
     data.dir <- test_path("fixtures")
 
@@ -311,16 +311,16 @@ test_that("pruningSample() must return error when slide.max.bp.v is a character 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'slide.max.bp.v\' parameter must be a single positive numeric value."
+    error_message <- "The \'slideWindowMaxBP\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v="4", ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP="4", thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when ld.threshold.v is a character string", {
+test_that("pruningSample() must return error when thresholdLD is a character string", {
 
     data.dir <- test_path("fixtures")
 
@@ -330,16 +330,16 @@ test_that("pruningSample() must return error when ld.threshold.v is a character 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
+    error_message <- "The \'thresholdLD\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v="3",
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=4, thresholdLD="3",
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
-test_that("pruningSample() must return error when ld.threshold.v is a vector of numerics", {
+test_that("pruningSample() must return error when thresholdLD is a vector of numerics", {
 
     data.dir <- test_path("fixtures")
 
@@ -349,12 +349,12 @@ test_that("pruningSample() must return error when ld.threshold.v is a vector of 
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'ld.threshold.v\' parameter must be a single positive numeric value."
+    error_message <- "The \'thresholdLD\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=4, ld.threshold.v=c(3,3),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=4, thresholdLD=c(3,3),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -371,9 +371,9 @@ test_that("pruningSample() must return error when method is a numeric", {
     error_message <- "The \'method\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method=3, currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -388,9 +388,9 @@ test_that("pruningSample() must return error when method is not in the list of c
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expect_error(pruningSample(gds=gdsF, method="test", currentProfile="test",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=".", outPref="pruned"))
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
+        np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"))
 })
 
 
@@ -407,16 +407,16 @@ test_that("pruningSample() must return error when currentProfile is a numeric", 
     error_message <- "The \'currentProfile\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile=2,
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1, verbose=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=FALSE, pathProfileGDS=data.dir,
-        keepFile=FALSE, PATHPRUNED=".", outPref="pruned"),
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
+        thresholdLD=sqrt(0.1), np=1, verbose=FALSE, chr=NULL,
+        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=data.dir,
+        keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"),
         error_message, fixed=TRUE)
 })
 
 
 
-test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
+test_that("pruningSample() must return error when pathPrunedGDS is a numeric", {
 
     data.dir <- test_path("fixtures")
 
@@ -426,13 +426,13 @@ test_that("pruningSample() must return error when PATHPRUNED is a numeric", {
     gdsF <- openfn.gds(gdsFIle)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'PATHPRUNED\' parameter must be ",
+    error_message <- paste0("The \'pathPrunedGDS\' parameter must be ",
         "a character string representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, PATHPRUNED=2, outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
+        np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=2, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -450,9 +450,9 @@ test_that("pruningSample() must return error when pathProfileGDS is a numeric", 
                     "character string representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-            studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-            np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-            pathProfileGDS=33, keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
+            studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
+            np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+            pathProfileGDS=33, keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -470,10 +470,10 @@ test_that("pruningSample() must return error when pathProfileGDS is a non existi
                                 "representing an existing directory.")
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L, ld.threshold.v=sqrt(0.1),
-        np=1L, verbose=FALSE, chr=NULL, minAF.SuperPop=NULL, keepGDSpruned=FALSE,
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
+        np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
         pathProfileGDS=paste0(data.dir, "_NOT_EXISTING_DIRECTORY"),
-        keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message, fixed=TRUE)
+        keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -490,11 +490,11 @@ test_that("pruningSample() must return error when verbose is a character string"
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose="HI", chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=FALSE,
-        pathProfileGDS=pdata.dir, keepFile=FALSE, PATHPRUNED=data.dir,
-        outPref="pruned"), error_message, fixed=TRUE)
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
+        thresholdLD=sqrt(0.1), np=1L, verbose="HI", chr=NULL,
+        superPopMinAF=NULL, keepPrunedGDS=FALSE,
+        pathProfileGDS=pdata.dir, keepFile=FALSE, pathPrunedGDS=data.dir,
+        outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
@@ -515,10 +515,10 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
 
     expect_error(pruningSample(gds=gdsF, method="corr",
         currentProfile="A_File_That_DOES_NOT_EXIST",
-        studyID="test", listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
-        minAF.SuperPop=NULL, keepGDSpruned=FALSE, pathProfileGDS=data.dir,
-        keepFile=FALSE, PATHPRUNED=data.dir, outPref="pruned"), error_message,
+        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
+        thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
+        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=data.dir,
+        keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message,
         fixed=TRUE)
 })
 
@@ -548,10 +548,10 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
 
     expect_error(pruningSample(gds=gdsF, method="corr",
         currentProfile="ex1", studyID=studyDF$study.id,
-        listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
-        minAF.SuperPop=0.41, keepGDSpruned=TRUE, pathProfileGDS=data.dir.sample,
-        keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
+        listSNP=NULL, slideWindowMaxBP=50000L,
+        thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
+        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=data.dir.sample,
+        keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest"),
         error_message, fixed=TRUE)
 })
 
@@ -584,10 +584,10 @@ test_that("pruningSample() must return error when the study is not found", {
 
     expect_error(pruningSample(gds=gdsF, method="corr",
         currentProfile="ex1", studyID="demo",
-        listSNP=NULL, slide.max.bp.v=50000L,
-        ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
-        minAF.SuperPop=0.41, keepGDSpruned=TRUE, pathProfileGDS=data.dir.sample,
-        keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest"),
+        listSNP=NULL, slideWindowMaxBP=50000L,
+        thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
+        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=data.dir.sample,
+        keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest"),
         error_message, fixed=TRUE)
 })
 
@@ -618,11 +618,11 @@ test_that("pruningSample() must return expect result", {
 
     result <- pruningSample(gds=gdsF, method="corr",
                 currentProfile="ex1", studyID=studyDF$study.id,
-                listSNP=NULL, slide.max.bp.v=50000L,
-                ld.threshold.v=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
-                minAF.SuperPop=NULL, keepGDSpruned=TRUE,
+                listSNP=NULL, slideWindowMaxBP=50000L,
+                thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
+                superPopMinAF=NULL, keepPrunedGDS=TRUE,
                 pathProfileGDS=data.dir.sample,
-                keepFile=TRUE, PATHPRUNED=data.dir.sample, outPref="prunedTest")
+                keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest")
 
     expect_equal(result, 0L)
     expect_true(file.exists(file.path(data.dir.sample, "prunedTest.Obj.rds")))
@@ -643,7 +643,7 @@ test_that("add1KG2SampleGDS() must return error when gds is a character string",
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(add1KG2SampleGDS(gds="toto.gds", gdsSampleFile="sample.gds",
-        sampleCurrent="sample", study.id="TCGA"), error_message, fixed=TRUE)
+        currentProfile="sample", studyID="TCGA"), error_message, fixed=TRUE)
 })
 
 
@@ -658,34 +658,34 @@ test_that("add1KG2SampleGDS() must return error when gdsSampleFile is a numeric 
             "string representing the GDS Sample file. The file must exist.")
 
     expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=33,
-        sampleCurrent="sample", study.id="TCGA"), error_message, fixed=TRUE)
+        currentProfile="sample", studyID="TCGA"), error_message, fixed=TRUE)
 })
 
-test_that("add1KG2SampleGDS() must return error when sampleCurrent is a numeric value", {
+test_that("add1KG2SampleGDS() must return error when currentProfile is a numeric value", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'sampleCurrent\' must be a character string."
+    error_message <- "The \'currentProfile\' must be a character string."
 
     expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=gdsFile,
-            sampleCurrent=33, study.id="TCGA"), error_message, fixed=TRUE)
+            currentProfile=33, studyID="TCGA"), error_message, fixed=TRUE)
 })
 
 
-test_that("add1KG2SampleGDS() must return error when study.id is a numeric value", {
+test_that("add1KG2SampleGDS() must return error when studyID is a numeric value", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'study.id\' must be a character string."
+    error_message <- "The \'studyID\' must be a character string."
 
     expect_error(add1KG2SampleGDS(gds=gdsF, gdsSampleFile=gdsFile,
-        sampleCurrent="Test", study.id=22), error_message, fixed=TRUE)
+        currentProfile="Test", studyID=22), error_message, fixed=TRUE)
 })
 
 
@@ -712,7 +712,7 @@ test_that("add1KG2SampleGDS() must return expect result", {
 
     result <- add1KG2SampleGDS(gds=gdsF,
                 gdsSampleFile=file.path(data.dir.sample, "ex1.gds"),
-                sampleCurrent=c("ex1"), study.id = studyDF$study.id)
+                currentProfile=c("ex1"), studyID = studyDF$study.id)
 
     expect_equal(result, 0L)
 
@@ -743,7 +743,7 @@ test_that("computePCARefSample() must return error when gdsSample isnumeric valu
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
     expect_error(computePCARefSample(gdsSample="test.gds", name.id="test",
-                            study.id.ref="Ref.1KG", np=1L, algorithm="exact",
+                            studyIDRef="Ref.1KG", np=1L, algorithm="exact",
                             eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
@@ -758,22 +758,22 @@ test_that("computePCARefSample() must return error when name.id is numeric value
     error_message <- "The \'name.id\' parameter must be a single character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id=22,
-                            study.id.ref="Ref.1KG", np=1L, algorithm="exact",
+                            studyIDRef="Ref.1KG", np=1L, algorithm="exact",
                             eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
 
-test_that("computePCARefSample() must return error when study.id.ref is numeric value", {
+test_that("computePCARefSample() must return error when studyIDRef is numeric value", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'study.id.ref\' parameter must be a character string."
+    error_message <- "The \'studyIDRef\' parameter must be a character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="Synthetic",
-                            study.id.ref=33, np=1L, algorithm="exact",
+                            studyIDRef=33, np=1L, algorithm="exact",
                             eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
@@ -788,7 +788,7 @@ test_that("computePCARefSample() must return error when np is a character string
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                        study.id.ref="Ref.1KG",
+                        studyIDRef="Ref.1KG",
                         np="1", algorithm="exact",
                         eigen.cnt=32L), error_message, fixed=TRUE)
 })
@@ -804,7 +804,7 @@ test_that("computePCARefSample() must return error when np is a numeric value", 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                                study.id.ref="Ref.1KG", np=1L, algorithm=33,
+                                studyIDRef="Ref.1KG", np=1L, algorithm=33,
                                 eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
@@ -819,7 +819,7 @@ test_that("computePCARefSample() must return error when algorithm is a numeric v
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-            study.id.ref="Ref.1KG", np=1L, algorithm=33,
+            studyIDRef="Ref.1KG", np=1L, algorithm=33,
             eigen.cnt=32L), error_message, fixed=TRUE)
 })
 
@@ -832,7 +832,7 @@ test_that("computePCARefSample() must return error when algorithm is not a valid
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-            study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L))
+            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L))
 })
 
 
@@ -846,7 +846,7 @@ test_that("computePCARefSample() must return error when eigen.cnt is a string", 
     error_message <- "The \'eigen.cnt\' parameter must be a single integer."
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-        study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt="32L"),
+        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt="32L"),
         error_message, fixed=TRUE)
 })
 
@@ -862,7 +862,7 @@ test_that("computePCARefSample() must return error when missing.rate is negative
                                 "positive value between 0 and 1 or NaN.")
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-        study.id.ref="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
+        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
         missing.rate=-0.02), error_message, fixed=TRUE)
 })
 
@@ -1042,7 +1042,7 @@ test_that("estimateAllelicFraction() must return error when gds is a character s
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
     expect_error(estimateAllelicFraction(gds="test.gds",
-                    gdsSample=gdsF, sampleCurrent="gds", study.id= "TCGA",
+                    gdsSample=gdsF, currentProfile="gds", studyID= "TCGA",
                     chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                     wAR=9), error_message, fixed=TRUE)
@@ -1059,41 +1059,41 @@ test_that("estimateAllelicFraction() must return error when gdsSample is a chara
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample="test.gds", sampleCurrent="gds", study.id= "TCGA",
+                gdsSample="test.gds", currentProfile="gds", studyID= "TCGA",
                 chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
 })
 
 
-test_that("estimateAllelicFraction() must return error when sampleCurrent is a numeric value", {
+test_that("estimateAllelicFraction() must return error when currentProfile is a numeric value", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'sampleCurrent\' must be a character string."
+    error_message <- "The \'currentProfile\' must be a character string."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                    gdsSample=gdsF, sampleCurrent=33, study.id= "TCGA",
+                    gdsSample=gdsF, currentProfile=33, studyID= "TCGA",
                     chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                     wAR=9), error_message, fixed=TRUE)
 })
 
 
-test_that("estimateAllelicFraction() must return error when study.id is a numeric value", {
+test_that("estimateAllelicFraction() must return error when studyID is a numeric value", {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(gdsFile)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- "The \'study.id\' must be a character string."
+    error_message <- "The \'studyID\' must be a character string."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                    gdsSample=gdsF, sampleCurrent="test", study.id= 33,
+                    gdsSample=gdsF, currentProfile="test", studyID= 33,
                     chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                     wAR=9), error_message, fixed=TRUE)
@@ -1110,7 +1110,7 @@ test_that("estimateAllelicFraction() must return error when studyType is a numer
     error_message <- "The \'studyType\' must be a character string."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType=33, minCov=10, minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1127,7 +1127,7 @@ test_that("estimateAllelicFraction() must return error when minCov is vector of 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=c(10, 11), minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1144,7 +1144,7 @@ test_that("estimateAllelicFraction() must return error when minCov is character 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov="3", minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1162,7 +1162,7 @@ test_that("estimateAllelicFraction() must return error when minProb is character
                       "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb="0.1",
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1180,7 +1180,7 @@ test_that("estimateAllelicFraction() must return error when minProb is negative 
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=-0.1,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1198,7 +1198,7 @@ test_that("estimateAllelicFraction() must return error when minProb is above 1",
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=1.01,
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1216,7 +1216,7 @@ test_that("estimateAllelicFraction() must return error when minProb is vector of
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=c(0.01, 0.02),
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1234,7 +1234,7 @@ test_that("estimateAllelicFraction() must return error when eProb is character s
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb="0.001", cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1252,7 +1252,7 @@ test_that("estimateAllelicFraction() must return error when eProb is negative va
                                     "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=-0.01, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1270,7 +1270,7 @@ test_that("estimateAllelicFraction() must return error when eProb is above 1", {
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=1.01, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1288,7 +1288,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=c(0.01, 0.001), cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1305,7 +1305,7 @@ test_that("estimateAllelicFraction() must return error when wAR is vector of num
     error_message <- "The \'wAR\' parameter must be a single numeric positive value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR="9"), error_message, fixed=TRUE)
@@ -1322,7 +1322,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-            gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=0.01, cutOffLOH=c(-5, -3), cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1339,7 +1339,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is a chara
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH="-3", cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1358,7 +1358,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH=-5, cutOffHomoScore=c(-3, -4),
                 wAR=9), error_message, fixed=TRUE)
@@ -1375,7 +1375,7 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-                    gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+                    gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
                     chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                     eProb=0.01, cutOffLOH=-5, cutOffHomoScore="-3",
                     wAR=9), error_message, fixed=TRUE)
@@ -1390,7 +1390,7 @@ test_that("estimateAllelicFraction() must return error when studyType is not a v
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expect_error(estimateAllelicFraction(gds=gdsF,
-        gdsSample=gdsF, sampleCurrent="test", study.id="DNA_1",
+        gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
         chrInfo=chrInfo, studyType="TOTO", minCov=10L, minProb=0.1,
         eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9))
 })
@@ -1624,7 +1624,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSam
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample="test.gds",
-                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
                 spRef = "test", eigen.cnt = 15L), error_message)
 })
 
@@ -1638,21 +1638,21 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when sample
     error_message <- "The \'sampleRM\' parameter must be a vector of character strings."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-            sampleRM=c(1, 2), study.id.syn="Synthetic", np=1L,
+            sampleRM=c(1, 2), studyIDSyn="Synthetic", np=1L,
             spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when study.id.syn is numeric value"), {
+test_that(paste0("computePoolSyntheticAncestryGr() must return error when studyIDSyn is numeric value"), {
 
     gdsFIle <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(gdsFIle)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    error_message <- "The \'study.id.syn\' parameter must be a character string."
+    error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-        sampleRM=c("Sample01", "Sample02"), study.id.syn=11, np=1L,
+        sampleRM=c("Sample01", "Sample02"), studyIDSyn=11, np=1L,
         spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
 })
 
@@ -1667,7 +1667,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when listCa
                                 "character strings.")
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-        sampleRM=c("Sample01", "Sample02"), study.id.syn="Test", np=1L,
+        sampleRM=c("Sample01", "Sample02"), studyIDSyn="Test", np=1L,
         listCatPop=11,
         spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
 })
@@ -1682,7 +1682,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-                sampleRM=c("1", "2"), study.id.syn="Synthetic", np="12",
+                sampleRM=c("1", "2"), studyIDSyn="Synthetic", np="12",
                 spRef = "test", eigen.cnt = 15L), error_message)
 })
 
@@ -1696,7 +1696,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=0L,
+                    sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=0L,
                     spRef = "test", eigen.cnt = 15L), error_message)
 })
 
@@ -1711,7 +1711,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when kList 
                                 "integers.")
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-        sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L, kList=c(0, 1),
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, kList=c(0, 1),
         pcaList=c(1, 2), spRef = "test", eigen.cnt = 15L), error_message)
 })
 
@@ -1726,7 +1726,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaLis
                                 "vector of positive integers.")
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-        sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
         pcaList=c(0, 1, 2), spRef = "test", eigen.cnt = 15L), error_message)
 })
 
@@ -1740,7 +1740,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-                    sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                    sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
                     spRef="test", algorithm=22, eigen.cnt=15L), error_message)
 })
 
@@ -1752,7 +1752,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
                 spRef="test", algorithm="Hello", eigen.cnt=15L))
 })
 
@@ -1766,7 +1766,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
     error_message <- "The \'eigen.cnt\' parameter must be a single integer."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
-                sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L,
+                sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
                 spRef="test", algorithm="exact", eigen.cnt="15"), error_message)
 })
 
@@ -1781,7 +1781,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when missin
                                     "numeric between zero and one or NaN.")
 
     expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
-        sampleRM=c("1", "2"), study.id.syn="Synthetic", np=1L, spRef="test",
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
         algorithm="exact", eigen.cnt=15L, missing.rate="0.02"), error_message)
 })
 
@@ -1803,7 +1803,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when gds 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gds="test.gds",
-        gdsSample=gdsFile, listFiles, sample.ana.id, spRef, study.id.syn, np=1L,
+        gdsSample=gdsFile, listFiles, sample.ana.id, spRef, studyIDSyn, np=1L,
         listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1820,7 +1820,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsS
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF,
-        gdsSample="sample.gds", listFiles, sample.ana.id, spRef, study.id.syn,
+        gdsSample="sample.gds", listFiles, sample.ana.id, spRef, studyIDSyn,
         np=1L,  listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1828,17 +1828,17 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsS
 })
 
 
-test_that(paste0("computeAncestryFromSyntheticFile() must return error when study.id.syn is integer"), {
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when studyIDSyn is integer"), {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(gdsFile)
     withr::defer(closefn.gds(gdsF), envir=parent.frame())
 
-    error_message <- "The \'study.id.syn\' parameter must be a character string."
+    error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=NaN), error_message)
@@ -1855,7 +1855,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when algo
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm=23,
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1872,7 +1872,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when np i
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1890,7 +1890,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when list
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1908,7 +1908,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when miss
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=-0.2), error_message)
@@ -1926,7 +1926,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG=22, fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1944,7 +1944,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc=c("SuperPop", "test"),
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1962,7 +1962,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when kLis
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, -3, 4), pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -1980,7 +1980,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
 
     expect_error(computeAncestryFromSyntheticFile(gds=gdsF, gdsSample=gdsF,
         listFiles=gdsFile, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
-        study.id.syn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, 3, 4), pcaList=c(2, -15, 1), algorithm="exact",
         eigen.cnt=32L,  missing.rate=0.2), error_message)
@@ -2013,7 +2013,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
 
     expect_error(computePoolSyntheticAncestry(gds="toto.gds", gdsSample=gdsF,
         sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
-        study.id.syn="synthetic",
+        studyIDSyn="synthetic",
         np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
         fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
         pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2040,7 +2040,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
 
     expect_error(computePoolSyntheticAncestry(gds=31, gdsSample=gdsF,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
-            study.id.syn="synthetic",
+            studyIDSyn="synthetic",
             np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
             fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
             pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2067,7 +2067,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
 
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=33,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
-            study.id.syn="synthetic",
+            studyIDSyn="synthetic",
             np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
             fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
             pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2086,7 +2086,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when ",
 
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
         sample.ana.id="test", dataRef="test", spRef="TODO",
-        study.id.syn="synthetic",
+        studyIDSyn="synthetic",
         np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
         fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
         pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2094,7 +2094,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when ",
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error when study.id.syn is numeric value"), {
+test_that(paste0("computePoolSyntheticAncestry() must return error when studyIDSyn is numeric value"), {
 
     gdsFile <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(gdsFile)
@@ -2104,11 +2104,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when study.id
                               pop.group=c("TSI", "TSI", "YRI", "YRI"),
                               superPop=c("EUR", "EUR", "AFR", "AFR"))
 
-    error_message <- "The \'study.id.syn\' parameter must be a character string."
+    error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
         sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
-        study.id.syn=33,
+        studyIDSyn=33,
         np = 1L, listCatPop = "EUR", fieldPopIn1KG = "SuperPop",
         fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
         pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2130,7 +2130,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPop
 
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
-            study.id.syn="synthetic",
+            studyIDSyn="synthetic",
             np = 1L, listCatPop = "EUR", fieldPopIn1KG = 33,
             fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
             pcaList = seq(2, 15, 1), algorithm="exact",
@@ -2153,7 +2153,7 @@ test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
     error_message <- "The \'gds\' must be an object of class \'gds.class\'"
 
     expect_error(addPhase1KG2SampleGDSFromFile(gds=gdsFile,
-            PATHSAMPLEGDS=test_path("fixtures"), PATHGENOtest_path("fixtures"),
+            pathProfileGDS=test_path("fixtures"), pathGenotest_path("fixtures"),
             fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
 })
 
@@ -2169,7 +2169,7 @@ test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
                                 "logical (TRUE or FALSE).")
 
     expect_error(addPhase1KG2SampleGDSFromFile(gds=gdsF,
-            PATHSAMPLEGDS=test_path("fixtures"), PATHGENOtest_path("fixtures"),
+            pathProfileGDS=test_path("fixtures"), pathGenotest_path("fixtures"),
             fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
 })
 

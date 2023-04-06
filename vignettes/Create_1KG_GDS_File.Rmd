@@ -190,14 +190,14 @@ from multiple files.
 library(RAIDS)
 
 ## The path where the genotyping files are located
-PATHGENOCHR <- file.path("data", "pathgenochr")
+pathGenoChr <- file.path("data", "pathgenochr")
 
 ## The path where the merged genotyping files will be created
 PATHOUT <- file.path("data", "pathgenoOUT")
 
 ## Combining the genotyping information for all chromosome in one file per
 ## sample
-groupChr1KGSNV(PATHGENOCHR, PATHOUT)
+groupChr1KGSNV(pathGenoChr, PATHOUT)
 
 ```
 
@@ -219,9 +219,9 @@ filePED1KGOri <- "20130606_g1k.ped"
 
 ## Extract needed information from the pedigree file from 1KG into a data.frame
 ## Only the samples with genotyping information (sample file present
-## in PATHGENO parameter) are retained to create the final data.frame
+## in pathGeno parameter) are retained to create the final data.frame
 ped <- prepPed1KG(pedFile=filePED1KGOri,
-                    PATHGENO=file.path("data", "sampleGeno"))
+                    pathGeno=file.path("data", "sampleGeno"))
 
 ## Save the pedigree information data.frame as a RDS file
 ## In this example, the file is saved here ./data/metadata/ped1KG.rds
@@ -284,7 +284,7 @@ generated the needed RDS files:
 library(RAIDS)
 
 ## The path to the bulk SNP info file
-fileSNV.v <- file.path(PATHGENO, "matFreqSNV.txt.bz2")
+fileSNV.v <- file.path(pathGeno, "matFreqSNV.txt.bz2")
 
 ## The paths and names of the two output files
 ## One file contains the index of retained SNPs ("listSNP.rds")
@@ -330,7 +330,7 @@ fileNameGDS <- "matGeno1000g.gds"
 fileGDS <- file.path(PATHGDS, fileNameGDS)
 
 ## Generate GDS file containing the 1KG information
-generateGDS1KG(PATHGENO=file.path("data", "sampleGeno"),
+generateGDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     fileNamePED=filePED1KG,
                     fileSNPSel=fileFREQ.v,
                     fileListSNP=fileLSNP.v,
@@ -424,7 +424,7 @@ gds <- openfn.gds(fileGDS1KG)
 gdsPhase <- createfn.gds(fileGDSPhase)
 
 ## Add the phase information to the 1KG GDS phase file
-generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP.v)
+generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileLSNP.v)
 
 ## Close both files
 closefn.gds(gdsPhase)

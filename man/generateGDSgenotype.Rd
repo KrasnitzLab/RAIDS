@@ -5,13 +5,13 @@
 \alias{generateGDSgenotype}
 \title{Add information related to profile genotype into a Reference GDS file}
 \usage{
-generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose)
+generateGDSgenotype(gds, pathGeno, fileLSNP, listSamples, verbose)
 }
 \arguments{
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
-\item{PATHGENO}{a \code{character} string representing the path where
+\item{pathGeno}{a \code{character} string representing the path where
 the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.}

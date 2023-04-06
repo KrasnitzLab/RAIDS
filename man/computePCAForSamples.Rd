@@ -6,14 +6,14 @@
 \title{Deprecated - Project patients onto existing principal component
 axes (PCA)}
 \usage{
-computePCAForSamples(gds, PATHSAMPLEGDS, listSamples, np = 1L)
+computePCAForSamples(gds, pathProfileGDS, listSamples, np = 1L)
 }
 \arguments{
 \item{gds}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 
-\item{PATHSAMPLEGDS}{the path of an object of class \code{gds} related to
+\item{pathProfileGDS}{the path of an object of class \code{gds} related to
 the sample}
 
 \item{listSamples}{a \code{vector} of string representing the samples for

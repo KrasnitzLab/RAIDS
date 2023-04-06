@@ -11,7 +11,7 @@
 #' related to the profiles present in the 1KG GDS file. The PED file must
 #' exist.
 #'
-#' @param PATHGENO a \code{character} string representing the path where
+#' @param pathGeno a \code{character} string representing the path where
 #' the 1KG genotyping files for each profile are located. Only the profiles
 #' with associated genotyping files are retained in the creation of the final
 #' \code{data.frame}. The name of the genotyping files must correspond to
@@ -46,18 +46,18 @@
 #'
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
-#' prepPed1KG(pedFile=pedDemoFile, PATHGENO=data.dir, batch.v=0L)
+#' prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir, batch.v=0L)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils read.delim
 #' @encoding UTF-8
 #' @export
-prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
+prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
                         batch.v=0L) {
 
     ## Validate parameters
-    validatePrepPed1KG(pedFile=pedFile, PATHGENO=PATHGENO, batch=batch.v)
+    validatePrepPed1KG(pedFile=pedFile, pathGeno=pathGeno, batch=batch.v)
 
     ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)
@@ -96,7 +96,7 @@ prepPed1KG <- function(pedFile, PATHGENO=file.path("data", "sampleGeno"),
     pedAll$sex <- as.character(pedAll$sex)
 
     ## Only retained samples with existing genotyping file
-    listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
+    listMat1k <- dir(pathGeno, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
     pedAll <- pedAll[listSample1k, ]
@@ -229,7 +229,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' information from 1KG. The function also add the samples information, the
 #' SNP information and the genotyping information into the GDS file.
 #'
-#' @param PATHGENO a \code{character} string representing the path where
+#' @param pathGeno a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
 #' genotyping files must correspond to
 #' the individual identification (Individual.ID) in the pedigree file.
@@ -290,7 +290,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
 #'
 #' ## Create a temporary GDS file containing information from 1KG
-#' generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
+#' generateGDS1KG(pathGeno=data.dir, fileNamePED=pedigreeFile,
 #'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
 #'     fileNameGDS=GDS_file, listSamples=NULL)
 #'
@@ -302,7 +302,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #' @encoding UTF-8
 #' @export
-generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
+generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
                             fileNamePED, fileListSNP,
                             fileSNPSel, fileNameGDS,
                             listSamples=NULL, verbose=FALSE) {
@@ -313,8 +313,8 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
     }
 
     ## Validate that the path for the genotyping files exists
-    if (! file.exists(PATHGENO)) {
-        stop("The path \'", PATHGENO, "\' does not exist." )
+    if (! file.exists(pathGeno)) {
+        stop("The path \'", pathGeno, "\' does not exist." )
     }
 
     ## Validate that the SNP indexes file exists
@@ -347,7 +347,7 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
-    generateGDSgenotype(gds=newGDS, PATHGENO=PATHGENO, fileLSNP=fileListSNP,
+    generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileLSNP=fileListSNP,
         listSamples=listSampleGDS, verbose=verbose)
 
     if(verbose) { message("Genotype DONE ", Sys.time()) }
@@ -364,7 +364,7 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #'
 #' @param gdsPhase TODO
 #'
-#' @param PATHGENO a \code{character} string representing the path where
+#' @param pathGeno a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
 #' genotyping files must correspond to
 #' the individual identification (Individual.ID) in the pedigree file.
@@ -389,7 +389,7 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 #' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gds, gdsPhase,
-                            PATHGENO, fileLSNP, verbose=FALSE) {
+                            pathGeno, fileLSNP, verbose=FALSE) {
 
     ## The verbose parameter must be a logical
     if (!(is.logical(verbose) && length(verbose) == 1)) {
@@ -405,7 +405,7 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 
         if (verbose) { message("S ", i, " ", Sys.time()) }
 
-        file1KG <- file.path(PATHGENO, paste0(sample.id[i],".csv.bz2"))
+        file1KG <- file.path(pathGeno, paste0(sample.id[i],".csv.bz2"))
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
         matSample <- matrix(as.numeric(unlist(strsplit(matSample[, 1],

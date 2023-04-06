@@ -8,8 +8,8 @@
 validateEstimateAllelicFraction(
   gds,
   gdsSample,
-  sampleCurrent,
-  study.id,
+  currentProfile,
+  studyID,
   chrInfo,
   studyType,
   minCov,
@@ -30,10 +30,10 @@ validateEstimateAllelicFraction(
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the GDS Sample file.}
 
-\item{sampleCurrent}{a \code{character} string corresponding to
+\item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{a \code{character} string corresponding to the name of
+\item{studyID}{a \code{character} string corresponding to the name of
 the study as
 used in \code{\link{pruningSample}} function.}
 
@@ -102,7 +102,7 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 
 ## The validatiion should be successful
 RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
-    sampleCurrent="Sample01", study.id="Synthetic", chrInfo=chrInfo,
+    currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
     block.id="1")

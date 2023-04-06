@@ -12,7 +12,7 @@ computeAncestryFromSyntheticFile(
   listFiles,
   sample.ana.id,
   spRef,
-  study.id.syn,
+  studyIDSyn,
   np = 1L,
   listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
   fieldPopIn1KG = "superPop",
@@ -37,7 +37,7 @@ computeAncestryFromSyntheticFile(
 
 \item{spRef}{TODO}
 
-\item{study.id.syn}{a \code{character} string corresponding to the study
+\item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier. The study identifier must be present in the GDS Sample file.}
 
 \item{np}{a single positive \code{integer} representing the number of

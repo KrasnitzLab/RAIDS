@@ -7,8 +7,8 @@
 \usage{
 addPhase1KG2SampleGDSFromFile(
   gds,
-  PATHSAMPLEGDS,
-  PATHGENO,
+  pathProfileGDS,
+  pathGeno,
   fileLSNP,
   verbose = FALSE
 )
@@ -17,11 +17,11 @@ addPhase1KG2SampleGDSFromFile(
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
+\item{pathProfileGDS}{a \code{character} string representing the path to
 the directory that contains the Profile GDS files. The directory must
 exist.}
 
-\item{PATHGENO}{a \code{character} string representing the path to
+\item{pathGeno}{a \code{character} string representing the path to
 the directory that contains TODO}
 
 \item{fileLSNP}{TODO}

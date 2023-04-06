@@ -68,7 +68,7 @@ test_that(paste0("prepPedSynthetic1KG() must return expected results"), {
     sync.gds(gdsSample)
 
     result1 <- RAIDS:::prepPedSynthetic1KG(gds=gds1KG,  gdsSample=gdsSample,
-                                   study.id="TCGA.Synthetic", popName="superPop")
+                                   studyID="TCGA.Synthetic", popName="superPop")
 
     expected1 <- data.frame(data.id=c("HG00101.Synthetic.01", "HG00101.Synthetic.02",
                                       "HG00102.Synthetic.02", "HG00109.Synthetic.02"),

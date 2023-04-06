@@ -14,7 +14,7 @@
 #' corresponding to the profile identifier used in LD pruning done by the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
 #' corresponding to the profile identifier must exist and be located in the
-#' \code{PATHSAMPLEGDS} directory.
+#' \code{pathProfileGDS} directory.
 #'
 #' @param studyID a \code{character} string corresponding to the study
 #' identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
@@ -25,12 +25,12 @@
 #' if \code{NULL}, all SNVs are used in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #'
-#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' @param slideWindowMaxBP a single positive \code{integer} that represents
 #' the maximum basepairs (bp) in the sliding window. This parameter is used
 #' for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 #' function.
 #'
-#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' @param thresholdLD a single \code{numeric} value that represents the LD
 #' threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #'
 #' @param np a single positive \code{integer} specifying the number of
@@ -44,11 +44,11 @@
 #' selected SNVs should belong. Only one chromosome can be handled. If
 #' \code{NULL}, the chromosome is not used as a filtering criterion.
 #'
-#' @param minAF.SuperPop a single positive \code{numeric} representing the
+#' @param superPopMinAF a single positive \code{numeric} representing the
 #' minimum allelic frequency used to select the SNVs. If \code{NULL}, the
 #' allelic frequency is not used as a filtering criterion.
 #'
-#' @param keepGDSpruned a \code{logicial} indicating if the information about
+#' @param keepPrunedGDS a \code{logicial} indicating if the information about
 #' the pruned SNVs should be added to the GDS Sample file.
 #'
 #' @param pathProfileGDS a \code{character} string representing the directory
@@ -57,10 +57,10 @@
 #' @param keepFile a \code{logical} indicating if RDS files containing the
 #' information about the pruned SNVs must be created.
 #'
-#' @param PATHPRUNED a \code{character} string representing an existing
+#' @param pathPrunedGDS a \code{character} string representing an existing
 #' directory. The directory must exist.
 #'
-#' @param outPref a \code{character} string that represents the prefix of the
+#' @param outPrefix a \code{character} string that represents the prefix of the
 #' RDS files that will be generated. The RDS files are only generated when
 #' the parameter \code{keepFile}=\code{TRUE}.
 #'
@@ -77,10 +77,10 @@
 #' ## The validation should be successful
 #' RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
 #'      currentProfile="TGCA_01", studyID="TCGA",
-#'      listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
-#'      ld.threshold.v=0.008, np=1L, verbose=TRUE, chr=1,
-#'      minAF.SuperPop=0.002, keepGDSpruned=TRUE, pathProfileGDS=data.dir,
-#'      keepFile=FALSE, PATHPRUNED=data.dir, outPref="test")
+#'      listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
+#'      thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
+#'      superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=data.dir,
+#'      keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="test")
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -90,9 +90,9 @@
 #' @encoding UTF-8
 #' @keywords internal
 validatePruningSample <- function(gds, method, currentProfile, studyID,
-                        listSNP, slide.max.bp.v, ld.threshold.v, np, verbose,
-                        chr, minAF.SuperPop, keepGDSpruned, pathProfileGDS,
-                        keepFile, PATHPRUNED, outPref) {
+                        listSNP, slideWindowMaxBP, thresholdLD, np, verbose,
+                        chr, superPopMinAF, keepPrunedGDS, pathProfileGDS,
+                        keepFile, pathPrunedGDS, outPrefix) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")
@@ -107,15 +107,15 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
         stop("The \'method\' parameter must be a character string.")
     }
 
-    ## The parameter ld.threshold.v must be a single positive integer
-    if (!(isSingleNumber(ld.threshold.v) && (ld.threshold.v >= 0.0))) {
-        stop("The \'ld.threshold.v\' parameter must be a single positive ",
+    ## The parameter thresholdLD must be a single positive integer
+    if (!(isSingleNumber(thresholdLD) && (thresholdLD >= 0.0))) {
+        stop("The \'thresholdLD\' parameter must be a single positive ",
                 "numeric value.")
     }
 
-    ## The parameter slide.max.bp.v must be a single positive integer
-    if (!(isSingleNumber(slide.max.bp.v) && (slide.max.bp.v >= 0.0))) {
-        stop("The \'slide.max.bp.v\' parameter must be a single positive ",
+    ## The parameter slideWindowMaxBP must be a single positive integer
+    if (!(isSingleNumber(slideWindowMaxBP) && (slideWindowMaxBP >= 0.0))) {
+        stop("The \'slideWindowMaxBP\' parameter must be a single positive ",
                 "numeric value.")
     }
 
@@ -124,8 +124,8 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
         stop("The \'np\' parameter must be a single positive numeric value.")
     }
 
-    ## The parameter keepGDSpruned must be a logical
-    validateLogical(logical=keepGDSpruned, "keepGDSpruned")
+    ## The parameter keepPrunedGDS must be a logical
+    validateLogical(logical=keepPrunedGDS, "keepPrunedGDS")
 
     ## The parameter verbose must be a logical
     validateLogical(logical=verbose, "verbose")
@@ -139,9 +139,9 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
     ## The parameter keepFile must be a logical
     validateLogical(logical=keepFile, "keepFile")
 
-    ## The parameter PATHPRUNED must be a character string for existing path
-    if (!(is.character(PATHPRUNED) && dir.exists(PATHPRUNED))) {
-        stop("The \'PATHPRUNED\' parameter must be a character string ",
+    ## The parameter pathPrunedGDS must be a character string for existing path
+    if (!(is.character(pathPrunedGDS) && dir.exists(pathPrunedGDS))) {
+        stop("The \'pathPrunedGDS\' parameter must be a character string ",
                 "representing an existing directory.")
     }
 
@@ -164,7 +164,7 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
 #'
 #' @param spRef TODO
 #'
-#' @param study.id.syn a \code{character} string corresponding to the study
+#' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
 #' The study identifier must be present in the GDS Sample file.
 #'
@@ -223,7 +223,7 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
 #' ## The validation should be successful
 #' RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
 #'      sampleRM="TGCA_01", spRef="TCGA",
-#'      study.id.syn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
+#'      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
 #'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
 #'      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
 #'      missing.rate=0.02)
@@ -236,7 +236,7 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
 #' @encoding UTF-8
 #' @keywords internal
 validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
-        spRef, study.id.syn, np, listCatPop, fieldPopIn1KG,
+        spRef, studyIDSyn, np, listCatPop, fieldPopIn1KG,
         fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missing.rate) {
 
     ## The gdsSample must be objects of class "gds.class"
@@ -248,9 +248,9 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
                 "strings.")
     }
 
-    ## The parameter study.id.syn must be a character string
-    if(!(is.character(study.id.syn))) {
-        stop("The \'study.id.syn\' parameter must be a character string.")
+    ## The parameter studyIDSyn must be a character string
+    if(!(is.character(studyIDSyn))) {
+        stop("The \'studyIDSyn\' parameter must be a character string.")
     }
 
     ## The parameter np must be a single positive integer
@@ -300,10 +300,10 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the GDS Sample file.
 #'
-#' @param sampleCurrent a \code{character} string corresponding to
+#' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id a \code{character} string corresponding to the name of
+#' @param studyID a \code{character} string corresponding to the name of
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
@@ -367,7 +367,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
-#'     sampleCurrent="Sample01", study.id="Synthetic", chrInfo=chrInfo,
+#'     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
 #'     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
 #'     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
 #'     block.id="1")
@@ -380,22 +380,22 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateEstimateAllelicFraction <- function(gds, gdsSample, sampleCurrent,
-        study.id, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
+validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
+        studyID, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
         cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, block.id) {
 
     ## The gds and gdsSample must be objects of class "gds.class"
     validateGDSClass(gds, "gds")
     validateGDSClass(gdsSample, "gdsSample")
 
-    ## The sampleCurrent must be a character string
-    if (!is.character(sampleCurrent)) {
-        stop("The \'sampleCurrent\' must be a character string.")
+    ## The currentProfile must be a character string
+    if (!is.character(currentProfile)) {
+        stop("The \'currentProfile\' must be a character string.")
     }
 
-    ## The study.id must be a character string
-    if (!is.character(study.id)) {
-        stop("The \'study.id\' must be a character string.")
+    ## The studyID must be a character string
+    if (!is.character(studyID)) {
+        stop("The \'studyID\' must be a character string.")
     }
 
     ## The studyType must be a character string
@@ -551,7 +551,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #'
 #' @param spRef TODO
 #'
-#' @param study.id.syn a \code{character} string corresponding to the study
+#' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier. The study identifier must be present in the GDS Sample file.
 #'
 #' @param np a single positive \code{integer} representing the number of
@@ -612,7 +612,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
 #'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
-#'     spRef=NULL, study.id.syn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
+#'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
 #'     pcaList=c(3, 4, 5), algorithm="exact", eigen.cnt=32L, missing.rate=0.2)
 #'
@@ -625,7 +625,7 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #' @encoding UTF-8
 #' @keywords internal
 validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
-                listFiles, sample.ana.id, spRef, study.id.syn, np, listCatPop,
+                listFiles, sample.ana.id, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
                 algorithm, eigen.cnt, missing.rate) {
 
@@ -641,7 +641,7 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
     ## The parameters are character strings (vector of 1 entry)
     validateCharacterString(value=fieldPopIn1KG, "fieldPopIn1KG")
     validateCharacterString(value=fieldPopInfAnc, "fieldPopInfAnc")
-    validateCharacterString(value=study.id.syn, "study.id.syn")
+    validateCharacterString(value=studyIDSyn, "studyIDSyn")
 
     ## The parameter listCatPop must be a vector of of character strings
     if(!(is.character(listCatPop))) {
@@ -682,7 +682,7 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @param name.id a single \code{character} string representing the sample
 #' identifier.
 #'
-#' @param study.id.ref a single \code{character} string representing the
+#' @param studyIDRef a single \code{character} string representing the
 #' study identifier.
 #'
 #' @param np a single positive \code{integer} representing the number of CPU
@@ -712,7 +712,7 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
-#'     study.id.ref="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
+#'     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
 #'     missing.rate=0.02)
 #'
 #' ## All GDS file must be closed
@@ -722,7 +722,7 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
+validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
                                             np, algorithm,
                                             eigen.cnt, missing.rate) {
 
@@ -734,9 +734,9 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
         stop("The \'name.id\' parameter must be a single character string.")
     }
 
-    ## Validate that study.id.ref is a string
-    if(!(is.character(study.id.ref) && length(name.id) == 1)) {
-        stop("The \'study.id.ref\' parameter must be a character string.")
+    ## Validate that studyIDRef is a string
+    if(!(is.character(studyIDRef) && length(name.id) == 1)) {
+        stop("The \'studyIDRef\' parameter must be a character string.")
     }
 
     ## The parameter np must be a single positive integer
@@ -771,7 +771,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
 #' @description This function validates the input parameters for the
 #' \code{\link{appendStudy2GDS1KG}} function.
 #'
-#' @param PATHGENO a \code{character} string representing the path to the
+#' @param pathGeno a \code{character} string representing the path to the
 #' directory containing the output of SNP-pileup, a VCF Sample file, for
 #' each sample.
 #'
@@ -786,7 +786,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
-#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' those 3 columns: "studyID", "study.desc", "study.platform". All columns
 #' must be in \code{character} strings.
 #'
 #' @param listSamples a \code{vector} of \code{character} string corresponding
@@ -795,7 +795,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
 #' passed to the \code{fileNamePED} parameter.
 #' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
 #'
-#' @param PATHSAMPLEGDS a \code{character} string representing the path to
+#' @param pathProfileGDS a \code{character} string representing the path to
 #' the directory where the GDS Sample files will be created.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
@@ -812,7 +812,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
 #' ped <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
 #'
 #' ## The data.frame containing the information about the study
-#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
 #' studyInfo <- data.frame(study.id="Pancreatic.WES",
 #'                 study.desc="Pancreatic study",
@@ -820,23 +820,23 @@ validateComputePCARefSample <- function(gdsSample, name.id, study.id.ref,
 #'                 stringsAsFactors=FALSE)
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=data.dir,
+#' RAIDS:::validateAppendStudy2GDS1KG(pathGeno=data.dir,
 #'     fileNamePED=ped, fileNameGDS=gds1KG,
 #'     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-#'     PATHSAMPLEGDS=data.dir, verbose=TRUE)
+#'     pathProfileGDS=data.dir, verbose=TRUE)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
-                                batch, studyDF, listSamples, PATHSAMPLEGDS,
+validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
+                                batch, studyDF, listSamples, pathProfileGDS,
                                 verbose) {
 
-    ## The PATHGENO must be a character string and the path must exists
-    if (!(is.character(PATHGENO) && (dir.exists(PATHGENO)))) {
-        stop("The \'PATHGENO\' must be a character string representing ",
+    ## The pathGeno must be a character string and the path must exists
+    if (!(is.character(pathGeno) && (dir.exists(pathGeno)))) {
+        stop("The \'pathGeno\' must be a character string representing ",
                 "a path. The path must exist.")
     }
 
@@ -889,7 +889,7 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' @param currentProfile a \code{character} string corresponding to the profile
 #' identifier associated to the current list of pruned SNVs.
 #'
-#' @param study.id a \code{character} string corresponding to the study
+#' @param studyID a \code{character} string corresponding to the study
 #' identifier associated to the current list of pruned SNVs.
 #'
 #' @return The function returns \code{0L} when successful.
@@ -905,7 +905,7 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' ## The validatiion should be successful
 #' RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
 #'     gdsProfileFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
-#'     currentProfile="Sample01", study.id="Synthetic")
+#'     currentProfile="Sample01", studyID="Synthetic")
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -914,7 +914,7 @@ validateAppendStudy2GDS1KG <- function(PATHGENO, fileNamePED, fileNameGDS,
 #' @encoding UTF-8
 #' @keywords internal
 validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
-                                        study.id) {
+                                        studyID) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")
@@ -927,12 +927,12 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 
     ## The currentProfile must be a character string
     if(!(is.character(currentProfile))) {
-        stop("The \'sampleCurrent\' must be a character string.")
+        stop("The \'currentProfile\' must be a character string.")
     }
 
-    ## The study.id must be a character string
-    if(!(is.character(study.id))) {
-        stop("The \'study.id\' must be a character string.")
+    ## The studyID must be a character string
+    if(!(is.character(studyID))) {
+        stop("The \'studyID\' must be a character string.")
     }
 
     return(0L)
@@ -1155,7 +1155,7 @@ computeKNNSuperPoprSynthetic <- function(listEigenvector, sample.ref,
 #' @encoding UTF-8
 #' @keywords internal
 computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
-                                        spRef, study.id.ref="Ref.1KG",
+                                        spRef, studyIDRef="Ref.1KG",
                                         kList=seq_len(15), pcaList=2:15) {
 
     if(is.null(kList)) {
@@ -1171,7 +1171,7 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
     study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     sample.ref <- study.annot.all[which(study.annot.all$study.id ==
-                                            study.id.ref), "data.id"]
+                                            studyIDRef), "data.id"]
 
     resMat <- data.frame(sample.id=rep(listEigenvector$sample.id,
                                         length(pcaList) * length(kList)),
@@ -1222,7 +1222,7 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
-#' @param PATHSAMPLEGDS the path of an object of class \code{gds} related to
+#' @param pathProfileGDS the path of an object of class \code{gds} related to
 #' the sample
 #'
 #' @param listSamples a \code{vector} of string representing the samples for
@@ -1249,7 +1249,7 @@ computeKNNSuperPopSample <- function(gdsSample, listEigenvector, name.id,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
+computePCAForSamples <- function(gds, pathProfileGDS, listSamples, np=1L) {
 
     ## Validate that np is a single positive integer
     if(! (isSingleNumber(np) && np > 0)) {
@@ -1258,7 +1258,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
 
     for(i in seq_len(length(listSamples)) ){
 
-        gdsSample <- openfn.gds(file.path(PATHSAMPLEGDS,
+        gdsSample <- openfn.gds(file.path(pathProfileGDS,
                                             paste0(listSamples[i], ".gds")))
         study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
@@ -1276,7 +1276,7 @@ computePCAForSamples <- function(gds, PATHSAMPLEGDS, listSamples, np=1L) {
                                                         listSamples[i], np)
         closefn.gds(gdsSample)
 
-        saveRDS(listPCA, file.path(PATHSAMPLEGDS, paste0(listSamples[i],
+        saveRDS(listPCA, file.path(pathProfileGDS, paste0(listSamples[i],
                                             ".pca.pruned.rds")))
 
     }

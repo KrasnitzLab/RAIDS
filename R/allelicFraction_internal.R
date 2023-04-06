@@ -12,10 +12,10 @@
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
-#' @param sampleCurrent a \code{character} string corresponding to
+#' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id a \code{character} string corresponding to the study
+#' @param studyID a \code{character} string corresponding to the study
 #' identifier used in \code{\link{pruningSample}} function.
 #'
 #' @param minCov a single positive \code{integer} representing the minimum
@@ -61,15 +61,15 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
+getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
                         minProb=0.999, eProb=0.001, verbose=FALSE) {
 
     ## Extract study information (data.frame) from GDS Sample file
     study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
 
     ## Retain the specified sample in the specified study
-    posCur <- which(study.annot$data.id == sampleCurrent &
-                        study.annot$study.id == study.id)
+    posCur <- which(study.annot$data.id == currentProfile &
+                        study.annot$study.id == studyID)
 
     ## Extract SNV coverage from Sample GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
@@ -211,10 +211,10 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the GDS Sample file.
 #'
-#' @param sampleCurrent a \code{character} string corresponding to
+#' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id a \code{character} string corresponding to the name of
+#' @param studyID a \code{character} string corresponding to the name of
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
@@ -260,14 +260,14 @@ getTableSNV <- function(gds, gdsSample, sampleCurrent, study.id, minCov=10,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
+computeAllelicFractionDNA <- function(gds, gdsSample, currentProfile, studyID,
                                 chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9L, verbose=FALSE) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
-    snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
+    snp.pos <- getTableSNV(gds, gdsSample, currentProfile, studyID,
                             minCov, minProb, eProb)
 
     snp.pos$lap <- rep(-1, nrow(snp.pos))
@@ -351,10 +351,10 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the1 1KG SNV Annotation GDS file.
 #'
-#' @param sampleCurrent a \code{character} string corresponding to
+#' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
 #'
-#' @param study.id a \code{character} string corresponding to the name of
+#' @param studyID a \code{character} string corresponding to the name of
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
@@ -401,13 +401,13 @@ computeAllelicFractionDNA <- function(gds, gdsSample, sampleCurrent, study.id,
 #' @encoding UTF-8
 #' @keywords internal
 computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
-                    sampleCurrent, study.id, block.id, chrInfo, minCov=10L,
+                    currentProfile, studyID, block.id, chrInfo, minCov=10L,
                     minProb=0.999, eProb=0.001, cutOffLOH=-5,
                     cutOffAR=3, verbose=FALSE) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
-    snp.pos <- getTableSNV(gds, gdsSample, sampleCurrent, study.id,
+    snp.pos <- getTableSNV(gds, gdsSample, currentProfile, studyID,
                                 minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]

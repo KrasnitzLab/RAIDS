@@ -11,7 +11,7 @@ validateComputeAncestryFromSyntheticFile(
   listFiles,
   sample.ana.id,
   spRef,
-  study.id.syn,
+  studyIDSyn,
   np,
   listCatPop,
   fieldPopIn1KG,
@@ -36,7 +36,7 @@ validateComputeAncestryFromSyntheticFile(
 
 \item{spRef}{TODO}
 
-\item{study.id.syn}{a \code{character} string corresponding to the study
+\item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier. The study identifier must be present in the GDS Sample file.}
 
 \item{np}{a single positive \code{integer} representing the number of
@@ -95,7 +95,7 @@ listFiles <- file.path(data.dir,  "listSNPIndexes_Demo.rds")
 ## The validatiion should be successful
 RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
-    spRef=NULL, study.id.syn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
+    spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
     pcaList=c(3, 4, 5), algorithm="exact", eigen.cnt=32L, missing.rate=0.2)
 

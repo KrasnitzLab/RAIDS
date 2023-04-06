@@ -9,7 +9,7 @@ validateComputePoolSyntheticAncestryGr(
   gdsSample,
   sampleRM,
   spRef,
-  study.id.syn,
+  studyIDSyn,
   np,
   listCatPop,
   fieldPopIn1KG,
@@ -32,7 +32,7 @@ create the reference PCA.}
 
 \item{spRef}{TODO}
 
-\item{study.id.syn}{a \code{character} string corresponding to the study
+\item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
 The study identifier must be present in the GDS Sample file.}
 
@@ -89,7 +89,7 @@ gdsSample <- openfn.gds(file.path(data.dir,
 ## The validation should be successful
 RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
      sampleRM="TGCA_01", spRef="TCGA",
-     study.id.syn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
+     studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
      missing.rate=0.02)

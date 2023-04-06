@@ -10,7 +10,7 @@ computeKNNSuperPopSample(
   listEigenvector,
   name.id,
   spRef,
-  study.id.ref = "Ref.1KG",
+  studyIDRef = "Ref.1KG",
   kList = seq_len(15),
   pcaList = 2:15
 )

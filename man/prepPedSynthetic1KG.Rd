@@ -6,7 +6,7 @@
 \title{Extract the sample information from the 1KG GDS file for a list
 of profiles associated to a specific study in the GDS Sample file}
 \usage{
-prepPedSynthetic1KG(gds, gdsSample, study.id, popName)
+prepPedSynthetic1KG(gds, gdsSample, studyID, popName)
 }
 \arguments{
 \item{gds}{an object of class
@@ -16,7 +16,7 @@ prepPedSynthetic1KG(gds, gdsSample, study.id, popName)
 \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
 file.}
 
-\item{study.id}{a \code{character} string representing the name of the
+\item{studyID}{a \code{character} string representing the name of the
 study that will be extracted from the GDS Sample 'study.annot' node.}
 
 \item{popName}{a \code{character} string representing the name of the
@@ -27,7 +27,7 @@ column from the \code{data.frame} stored in the 'sample.annot' node of the
 \code{data.frame} containing the columns extracted from the
 GDS Sample 'study.annot' node with a extra column named as the 'popName'
 parameter that has been extracted from the 1KG GDS 'sample.annot' node.
-Only the rows corresponding to the specified study ('study.id' parameter)
+Only the rows corresponding to the specified study ('studyID' parameter)
 are returned.
 }
 \description{
@@ -49,7 +49,7 @@ for a GDS Sample and the super-population of the 1KG samples used to
 generate each synthetic profile would be added
 as an extra column to the final 'data.frame'. In that situation, the
 'popName' parameter would correspond to the super-population column and the
-'study.id' parameter would be the name given to the synthetic dataset.
+'studyID' parameter would be the name given to the synthetic dataset.
 }
 \examples{
 
@@ -67,7 +67,7 @@ gdsSample <- openfn.gds(gds_sample_file)
 ## This function enables to extract the super-population associated to the
 ## 1KG samples that has been used to create the synthetic profiles
 RAIDS:::prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
-    study.id="TCGA.Synthetic", popName="superPop")
+    studyID="TCGA.Synthetic", popName="superPop")
 
 ## The GDS files must be closed
 gdsfmt::closefn.gds(gds1KG)

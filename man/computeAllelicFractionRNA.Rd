@@ -10,8 +10,8 @@ computeAllelicFractionRNA(
   gds,
   gdsSample,
   gdsRefAnnot,
-  sampleCurrent,
-  study.id,
+  currentProfile,
+  studyID,
   block.id,
   chrInfo,
   minCov = 10L,
@@ -32,10 +32,10 @@ computeAllelicFractionRNA(
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the1 1KG SNV Annotation GDS file.}
 
-\item{sampleCurrent}{a \code{character} string corresponding to
+\item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{a \code{character} string corresponding to the name of
+\item{studyID}{a \code{character} string corresponding to the name of
 the study as
 used in \code{\link{pruningSample}} function.}
 

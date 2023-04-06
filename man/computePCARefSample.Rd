@@ -9,7 +9,7 @@ data from a sample}
 computePCARefSample(
   gdsSample,
   name.id,
-  study.id.ref = "Ref.1KG",
+  studyIDRef = "Ref.1KG",
   np = 1L,
   algorithm = c("exact", "randomized"),
   eigen.cnt = 32L,
@@ -23,7 +23,7 @@ a GDS Sample file.}
 \item{name.id}{a single \code{character} string representing the sample
 identifier.}
 
-\item{study.id.ref}{a single \code{character} string representing the
+\item{studyIDRef}{a single \code{character} string representing the
 study identifier.}
 
 \item{np}{a single positive \code{integer} representing the number of CPU

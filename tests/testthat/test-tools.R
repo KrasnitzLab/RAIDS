@@ -175,7 +175,7 @@ test_that("snvListVCF() must return expected results when freqCutoff is 0.3", {
 
 context("groupChr1KGSNV() results")
 
-test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", {
+test_that("groupChr1KGSNV() must return error when pathGenoChr does not exist", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
@@ -184,7 +184,7 @@ test_that("groupChr1KGSNV() must return error when PATHGENOCHR does not exist", 
     error_message <- paste0("The path \'", dirNotExisting,
                                 "\' does not exist.")
 
-    expect_error(groupChr1KGSNV(PATHGENOCHR=dirNotExisting,
+    expect_error(groupChr1KGSNV(pathGenoChr=dirNotExisting,
                                     PATHOUT=data.dir), error_message)
 })
 
@@ -198,7 +198,7 @@ test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
     error_message <- paste0("The path \'", dirNotExisting,
                             "\' does not exist.")
 
-    expect_error(groupChr1KGSNV(PATHGENOCHR=data.dir,
+    expect_error(groupChr1KGSNV(pathGenoChr=data.dir,
                                 PATHOUT=dirNotExisting), error_message)
 })
 

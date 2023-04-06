@@ -131,7 +131,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 #'
 #' @description TODO
 #'
-#' @param PATHPRUNED TODO
+#' @param pathPrunedGDS TODO
 #'
 #' @param filePref TODO
 #'
@@ -149,13 +149,13 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
+groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
 
     prunedList <- list()
 
     # Read the content of each file (one file per chromosome)
     for(i in seq_len(22)) {
-        fileChr <- file.path(PATHPRUNED, paste0(filePref, i, ".rds"))
+        fileChr <- file.path(pathPrunedGDS, paste0(filePref, i, ".rds"))
 
         if(file.exists(fileChr)) {
             prunedList[[i]] <- readRDS(fileChr)
@@ -168,7 +168,7 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
     pruned <- do.call(c, prunedList)
 
     ## Save all the information into one file
-    saveRDS(pruned, fileChr <- file.path(PATHPRUNED, fileOUT))
+    saveRDS(pruned, fileChr <- file.path(pathPrunedGDS, fileOUT))
 }
 
 
@@ -180,7 +180,7 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #' compressed (bzip). The function will merge the
 #' files for all samples present in the input directory.
 #'
-#' @param PATHGENOCHR a \code{character} string representing the path where
+#' @param pathGenoChr a \code{character} string representing the path where
 #' the genotyping files for each sample and chromosome are located. The path
 #' must contains sub-directories (one per chromosome) and the genotyping files
 #' must be present in those sub-directories.
@@ -203,11 +203,11 @@ groupChrPruning <- function(PATHPRUNED, filePref, fileOUT) {
 #' @importFrom utils write.csv2 read.csv2
 #' @encoding UTF-8
 #' @export
-groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
+groupChr1KGSNV <- function(pathGenoChr, PATHOUT) {
 
     ## Validate that the input path for the genotyping files exists
-    if (! file.exists(PATHGENOCHR)) {
-        stop("The path \'", PATHGENOCHR, "\' does not exist.")
+    if (! file.exists(pathGenoChr)) {
+        stop("The path \'", pathGenoChr, "\' does not exist.")
     }
 
     ## Validate that the output path for the genotyping files exists
@@ -216,7 +216,7 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
     }
 
     ## Obtain the comprehensive list of samples
-    listFiles <- dir(file.path(PATHGENOCHR, "chr1"), ".+\\.chr1\\.vcf\\.bz2")
+    listFiles <- dir(file.path(pathGenoChr, "chr1"), ".+\\.chr1\\.vcf\\.bz2")
     listSamples <- gsub("\\.chr1\\.vcf\\.bz2", "", listFiles)
 
     ## Merge files associated to each samples into one csv file
@@ -225,7 +225,7 @@ groupChr1KGSNV <- function(PATHGENOCHR, PATHOUT) {
 
         ## Read each genotyping file and append the information
         for(chr in seq_len(22)) {
-            geno <- read.csv2(file.path(PATHGENOCHR, paste0("chr", chr),
+            geno <- read.csv2(file.path(pathGenoChr, paste0("chr", chr),
                                 paste0(sampleId, ".chr", chr,".vcf.bz2")),
                                 sep="\t", row.names=NULL)
 

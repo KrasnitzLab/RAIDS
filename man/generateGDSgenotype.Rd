@@ -5,12 +5,12 @@
 \alias{generateGDSgenotype}
 \title{This function creates the field genotype in the gds file TODO}
 \usage{
-generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose = FALSE)
+generateGDSgenotype(gds, pathGeno, fileLSNP, listSamples, verbose = FALSE)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
 
-\item{PATHGENO}{TODO a PATH to a directory with the a file for each samples
+\item{pathGeno}{TODO a PATH to a directory with the a file for each samples
 with the genotype.}
 
 \item{fileLSNP}{TODO list of SNP to keep in the file genotype}

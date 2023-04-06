@@ -156,7 +156,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
 #' file.
 #'
-#' @param study.id a \code{character} string representing the name of the
+#' @param studyID a \code{character} string representing the name of the
 #' study that will be extracted from the GDS Sample 'study.annot' node.
 #'
 #' @param popName a \code{character} string representing the name of the
@@ -167,7 +167,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' @return \code{data.frame} containing the columns extracted from the
 #' GDS Sample 'study.annot' node with a extra column named as the 'popName'
 #' parameter that has been extracted from the 1KG GDS 'sample.annot' node.
-#' Only the rows corresponding to the specified study ('study.id' parameter)
+#' Only the rows corresponding to the specified study ('studyID' parameter)
 #' are returned.
 #'
 #'
@@ -178,7 +178,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' generate each synthetic profile would be added
 #' as an extra column to the final 'data.frame'. In that situation, the
 #' 'popName' parameter would correspond to the super-population column and the
-#' 'study.id' parameter would be the name given to the synthetic dataset.
+#' 'studyID' parameter would be the name given to the synthetic dataset.
 #'
 #'
 #' @examples
@@ -197,7 +197,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' ## This function enables to extract the super-population associated to the
 #' ## 1KG samples that has been used to create the synthetic profiles
 #' RAIDS:::prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
-#'     study.id="TCGA.Synthetic", popName="superPop")
+#'     studyID="TCGA.Synthetic", popName="superPop")
 #'
 #' ## The GDS files must be closed
 #' gdsfmt::closefn.gds(gds1KG)
@@ -208,13 +208,13 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-prepPedSynthetic1KG <- function(gds, gdsSample, study.id, popName) {
+prepPedSynthetic1KG <- function(gds, gdsSample, studyID, popName) {
 
     ## Extract study information from the GDS Sample file
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     ## Retain the information associated to the current study
-    studyCur <- study.annot[which(study.annot$study.id == study.id),]
+    studyCur <- study.annot[which(study.annot$study.id == studyID),]
     rm(study.annot)
 
     ## Get the information from 1KG GDS file

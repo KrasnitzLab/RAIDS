@@ -6,18 +6,18 @@
 \title{Validate input parameters for appendStudy2GDS1KG() function}
 \usage{
 validateAppendStudy2GDS1KG(
-  PATHGENO,
+  pathGeno,
   fileNamePED,
   fileNameGDS,
   batch,
   studyDF,
   listSamples,
-  PATHSAMPLEGDS,
+  pathProfileGDS,
   verbose
 )
 }
 \arguments{
-\item{PATHGENO}{a \code{character} string representing the path to the
+\item{pathGeno}{a \code{character} string representing the path to the
 directory containing the output of SNP-pileup, a VCF Sample file, for
 each sample.}
 
@@ -32,7 +32,7 @@ identifier for the batch. Beware, this field is not stored anymore.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
-those 3 columns: "study.id", "study.desc", "study.platform". All columns
+those 3 columns: "studyID", "study.desc", "study.platform". All columns
 must be in \code{character} strings.}
 
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
@@ -41,7 +41,7 @@ sample identifiers must be present in the "Name.ID" column of the RDS file
 passed to the \code{fileNamePED} parameter.
 If \code{NULL}, all samples in the \code{fileNamePED} are selected.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
+\item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Sample files will be created.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
@@ -63,7 +63,7 @@ gds1KG <- file.path(data.dir, "1KG_Demo.gds")
 ped <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
 
 ## The data.frame containing the information about the study
-## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
 ## The entries should be strings, not factors (stringsAsFactors=FALSE)
 studyInfo <- data.frame(study.id="Pancreatic.WES",
                 study.desc="Pancreatic study",
@@ -71,10 +71,10 @@ studyInfo <- data.frame(study.id="Pancreatic.WES",
                 stringsAsFactors=FALSE)
 
 ## The validatiion should be successful
-RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=data.dir,
+RAIDS:::validateAppendStudy2GDS1KG(pathGeno=data.dir,
     fileNamePED=ped, fileNameGDS=gds1KG,
     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-    PATHSAMPLEGDS=data.dir, verbose=TRUE)
+    pathProfileGDS=data.dir, verbose=TRUE)
 
 
 }

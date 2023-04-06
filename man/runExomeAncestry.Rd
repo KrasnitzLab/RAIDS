@@ -8,8 +8,8 @@
 runExomeAncestry(
   pedStudy,
   studyDF,
-  PATHPROFILEGDS,
-  PATHGENO,
+  pathProfileGDS,
+  pathGeno,
   PATH_OUT,
   File.gds_1KG,
   File.gds_1KG.Annot,
@@ -27,14 +27,14 @@ can be defined.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
-those 3 columns: "study.id", "study.desc", "study.platform". All columns
+those 3 columns: "studyID", "study.desc", "study.platform". All columns
 must be in \code{character} strings (no factor).}
 
-\item{PATHPROFILEGDS}{a \code{character} string representing the path to
+\item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Profile files will be created.
 Default: \code{NULL}.}
 
-\item{PATHGENO}{a \code{character} string representing the path to the
+\item{pathGeno}{a \code{character} string representing the path to the
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
@@ -113,20 +113,20 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 ## The Sample SNP pileup files (one per sample) need
 ## to be located in the same directory.
 #################################################################
-PATHGENO <- file.path(data.dir, "example", "snpPileup")
+pathGeno <- file.path(data.dir, "example", "snpPileup")
 
 #################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
 #################################################################
-PATHPROFILEGDS <- file.path(data.dir, "example", "out.tmp")
+pathProfileGDS <- file.path(data.dir, "example", "out.tmp")
 
 PATHOUT <- file.path(data.dir, "example", "res.out")
 
 #################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
-## those 3 columns: "study.id", "study.desc", "study.platform"
+## those 3 columns: "studyID", "study.desc", "study.platform"
 #################################################################
 studyDF <- data.frame(study.id = "MYDATA",
                       study.desc = "Description",
@@ -164,15 +164,15 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 \dontrun{
 runExomeAncestry(pedStudy = ped, studyDF = studyDF,
-                    PATHPROFILEGDS = PATHPROFILEGDS,
-                    PATHGENO = PATHGENO,
+                    pathProfileGDS = pathProfileGDS,
+                    pathGeno = pathGeno,
                     PATH_OUT = PATHOUT,
                     File.gds_1KG = file.GDS,
                     File.gds_1KG.Annot = file.Annot,
                     chrInfo = chrInfo,
                     dataRefSyn = dataRef)
 
-unlink(PATHPROFILEGDS, recursive = TRUE, force=TRUE)
+unlink(pathProfileGDS, recursive = TRUE, force=TRUE)
 unlink(PATHOUT, recursive = TRUE, force=TRUE)
 }
 }

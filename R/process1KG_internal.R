@@ -19,12 +19,12 @@
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 #' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
 #'
-#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' @param slideWindowMaxBP a single positive \code{integer} that represents
 #' the maximum basepairs (bp) in the sliding window. This parameter is used
 #' for the LD pruning done in the \code{runLDPruning}
 #' function. Default: \code{5e5}.
 #'
-#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' @param thresholdLD a single \code{numeric} value that represents the LD
 #' threshold used in the \code{runLDPruning} function.
 #' Default: \code{sqrt(0.1)}.
 #'
@@ -64,7 +64,7 @@
 #' @encoding UTF-8
 #' @keywords internal
 pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
-                    slide.max.bp.v=5e5, ld.threshold.v=sqrt(0.1),
+                    slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
                     np=1L, verbose=FALSE, chr=NULL,
                     minAF=NULL, outPrefix="pruned_1KG", keepObj=FALSE) {
 
@@ -100,8 +100,8 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
     }
 
     snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
-                    listKeep=listKeep, slide.max.bp.v=slide.max.bp.v,
-                    ld.threshold.v=ld.threshold.v, np=np, verbose.v=verbose)
+                    listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
+                    thresholdLD=thresholdLD, np=np, verbose.v=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
     saveRDS(pruned, filePruned)
@@ -413,7 +413,7 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #' related to the profiles present in the 1KG GDS file. The PED file must
 #' exist.
 #'
-#' @param PATHGENO a \code{character} string representing the path where
+#' @param pathGeno a \code{character} string representing the path where
 #' the 1KG genotyping files for each profile are located. Only the profiles
 #' with associated genotyping files are retained in the creation of the final
 #' \code{data.frame}. The name of the genotyping files must correspond to
@@ -435,14 +435,14 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-#'      PATHGENO=data.dir, batch=1)
+#'      pathGeno=data.dir, batch=1)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePrepPed1KG <- function(pedFile, PATHGENO, batch) {
+validatePrepPed1KG <- function(pedFile, pathGeno, batch) {
 
     ## Validate that the batch is an integer
     if (! isSingleNumber(batch)) {
@@ -455,8 +455,8 @@ validatePrepPed1KG <- function(pedFile, PATHGENO, batch) {
     }
 
     ## Validate that the path for the genotyping files exists
-    if (!(is.character(PATHGENO) && dir.exists(PATHGENO))) {
-        stop("The \'PATHGENO\' parameter must be a character string ",
+    if (!(is.character(pathGeno) && dir.exists(pathGeno))) {
+        stop("The \'pathGeno\' parameter must be a character string ",
                 "representing an existing directory.")
     }
 

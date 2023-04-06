@@ -5,7 +5,7 @@
 \alias{projectSample2PCA}
 \title{Project profile onto existing principal component axes (PCA)}
 \usage{
-projectSample2PCA(gds, listPCA, sample.current, np = 1L, verbose = FALSE)
+projectSample2PCA(gds, listPCA, currentProfile, np = 1L, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class
@@ -18,7 +18,7 @@ opened Profile GDS file.}
 \item{snp.load} {\code{snpgdsPCASNPLoading} object}
 }}
 
-\item{sample.current}{a \code{character} string representing the
+\item{currentProfile}{a \code{character} string representing the
 identifiant of the profile to be projected in the PCA.}
 
 \item{np}{a single positive \code{integer} representing the number of

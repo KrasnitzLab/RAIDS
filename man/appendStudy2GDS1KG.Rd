@@ -8,18 +8,18 @@ using the information from a RDS Sample description file and the 1KG
 GDS file}
 \usage{
 appendStudy2GDS1KG(
-  PATHGENO = file.path("data", "sampleGeno"),
+  pathGeno = file.path("data", "sampleGeno"),
   fileNamePED,
   fileNameGDS,
   batch = 1,
   studyDF,
   listSamples = NULL,
-  PATHSAMPLEGDS = NULL,
+  pathProfileGDS = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{PATHGENO}{a \code{character} string representing the path to the
+\item{pathGeno}{a \code{character} string representing the path to the
 directory containing the output of SNP-pileup, a VCF Sample file, for
 each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
@@ -54,7 +54,7 @@ passed to the \code{fileNamePED} parameter.
 If \code{NULL}, all samples in the \code{fileNamePED} are selected.
 Default: \code{NULL}.}
 
-\item{PATHSAMPLEGDS}{a \code{character} string representing the path to
+\item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Sample files will be created.
 Default: \code{NULL}.}
 

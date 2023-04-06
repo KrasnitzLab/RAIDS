@@ -10,8 +10,8 @@ pruning1KGbyChr(
   gds,
   method = "corr",
   listSamples = NULL,
-  slide.max.bp.v = 5e+05,
-  ld.threshold.v = sqrt(0.1),
+  slideWindowMaxBP = 5e+05,
+  thresholdLD = sqrt(0.1),
   np = 1L,
   verbose = FALSE,
   chr = NULL,
@@ -35,12 +35,12 @@ will be used to calculate the linkage disequilibrium in the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
 are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 
-\item{slide.max.bp.v}{a single positive \code{integer} that represents
+\item{slideWindowMaxBP}{a single positive \code{integer} that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the \code{runLDPruning}
 function. Default: \code{5e5}.}
 
-\item{ld.threshold.v}{a single \code{numeric} value that represents the LD
+\item{thresholdLD}{a single \code{numeric} value that represents the LD
 threshold used in the \code{runLDPruning} function.
 Default: \code{sqrt(0.1)}.}
 

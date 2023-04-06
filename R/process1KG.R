@@ -343,16 +343,16 @@ generateGDS1KG <- function(PATHGENO=file.path("data", "sampleGeno"),
 
     if(verbose) { message("Sample info DONE ", Sys.time()) }
 
-    generateGDSSNPinfo(newGDS, fileSNPSel)
+    generateGDSSNPinfo(gds=newGDS, fileFREQ=fileSNPSel, verbose=verbose)
 
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
-    generateGDSgenotype(newGDS, PATHGENO, fileListSNP, listSampleGDS)
+    generateGDSgenotype(gds=newGDS, PATHGENO=PATHGENO, fileLSNP=fileListSNP,
+        listSamples=listSampleGDS, verbose=verbose)
 
     if(verbose) { message("Genotype DONE ", Sys.time()) }
 
     closefn.gds(newGDS)
-
     return(0L)
 }
 

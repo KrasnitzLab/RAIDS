@@ -3,30 +3,51 @@
 \encoding{UTF-8}
 \name{generateGDSSNPinfo}
 \alias{generateGDSSNPinfo}
-\title{This function creates the fields related to the snp TODO}
+\title{Add information related to SNVs into a Reference GDS file}
 \usage{
-generateGDSSNPinfo(gds, fileFREQ, verbose = TRUE)
+generateGDSSNPinfo(gds, fileFREQ, verbose)
 }
 \arguments{
-\item{gds}{a \code{gds} object.}
-
-\item{fileFREQ}{a \code{character} string with the path and the file
-name to a RDS file containing the frequency information
-TODO describe the file}
+\item{fileFREQ}{a \code{character} string representing the path and file
+name of the RDS file with the filtered SNP information.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
-to show how the different steps in the function. Default: \code{TRUE}.}
+to show how the different steps in the function.}
+
+\item{an}{object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+the function adds the SNV information into a Reference
+GDS file.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+## Required package
+library(withr)
+
+## Path to the demo pedigree file is located in this package
+data.dir <- system.file("extdata", package="RAIDS")
+
+## Temporary Reference GDS file
+file1KG <- local_file(file.path(data.dir, "1KG_TEMP_002.gds"))
+filenewGDS <- createfn.gds(file1KG)
+
+## The RDS file containing the filtered SNP information
+fileFilerterSNVs <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+
+## Add SNV information to Reference GDS
+RAIDS:::generateGDSSNPinfo(gds=filenewGDS, fileFREQ=fileFilerterSNVs,
+    verbose=TRUE)
+
+## Close GDS file (important)
+closefn.gds(filenewGDS)
+
+## Remove temporary files
+deferred_run()
 
 }
 \author{

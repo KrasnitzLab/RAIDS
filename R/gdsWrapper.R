@@ -516,31 +516,52 @@ addStudyGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL, studyDF,
 }
 
 
-#' @title This function creates the fields related to the snp TODO
+#' @title Add information related to SNVs into a Reference GDS file
 #'
-#' @description TODO
+#' @description the function adds the SNV information into a Reference
+#' GDS file.
 #'
-#' @param gds a \code{gds} object.
+#' @param an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
-#' @param fileFREQ a \code{character} string with the path and the file
-#' name to a RDS file containing the frequency information
-#' TODO describe the file
+#' @param fileFREQ a \code{character} string representing the path and file
+#' name of the RDS file with the filtered SNP information.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
-#' to show how the different steps in the function. Default: \code{TRUE}.
+#' to show how the different steps in the function.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Required package
+#' library(withr)
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' data.dir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Temporary Reference GDS file
+#' file1KG <- local_file(file.path(data.dir, "1KG_TEMP_002.gds"))
+#' filenewGDS <- createfn.gds(file1KG)
+#'
+#' ## The RDS file containing the filtered SNP information
+#' fileFilerterSNVs <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Add SNV information to Reference GDS
+#' RAIDS:::generateGDSSNPinfo(gds=filenewGDS, fileFREQ=fileFilerterSNVs,
+#'     verbose=TRUE)
+#'
+#' ## Close GDS file (important)
+#' closefn.gds(filenewGDS)
+#'
+#' ## Remove temporary files
+#' deferred_run()
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
+generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
 
     mapSNVSel <- readRDS(file=fileFREQ)
 
@@ -587,21 +608,29 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 
 
 
-#' @title This function creates the field genotype in the gds file TODO
+#' @title Add information related to profile genotype into a Reference GDS file
 #'
-#' @description TODO
+#' @description This function adds the genotype fields with the associated
+#' information into the Reference GDS file for the selected profiles.
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each samples
-#' with the genotype.
+#' @param PATHGENO a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
 #'
-#' @param fileLSNP TODO list of SNP to keep in the file genotype
+#' @param fileLSNP a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
 #'
-#' @param listSamples a \code{array} with the sample to keep
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to profiles (must be the profile identifiers) that will be
+#' retained and added to the Reference GDS file.
 #'
 #' @param verbose a \code{logical} indicating if the function must print
-#' messages when running. Default: \code{FALSE}.
+#' messages when running.
 #'
 #' @return The integer \code{0L} when successful.
 #'
@@ -615,7 +644,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #' @encoding UTF-8
 #' @keywords internal
 generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
-                                    verbose=FALSE) {
+                                    verbose) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(PATHGENO, pattern=".+.csv.bz2")
@@ -639,17 +668,14 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
                                             storage="bit2")
             }
 
-            # Not faster but harder to read
-            # matSample[,1] <- rowSums(t(matrix(as.numeric(unlist(strsplit(
-            #                        matSample[,1], "\\|"))),nr=2)))
             # Easier to read
-            matSample[matSample[,1] == "0|0",1] <- 0
-            matSample[matSample[,1] == "0|1" | matSample[,1] == "1|0",1] <- 1
-            matSample[matSample[,1] == "1|1",1] <- 2
+            matSample[matSample[,1] == "0|0", 1] <- 0
+            matSample[matSample[,1] == "0|1" | matSample[,1] == "1|0", 1] <- 1
+            matSample[matSample[,1] == "1|1", 1] <- 2
 
             g <- as.matrix(matSample)[,1]
 
-            write.gdsn(var.geno, g, start=c(1, i), count=c(-1,1))
+            write.gdsn(var.geno, g, start=c(1, i), count=c(-1, 1))
 
             rm(matSample)
 
@@ -1364,7 +1390,7 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' deleted and a new entry is created.
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' Profile GDS file.
+#' opened Profile GDS file.
 #'
 #' @param pruned a \code{vector} of \code{character} string representing the
 #' name of the SNVs.

@@ -3,28 +3,36 @@
 \encoding{UTF-8}
 \name{generateGDSgenotype}
 \alias{generateGDSgenotype}
-\title{This function creates the field genotype in the gds file TODO}
+\title{Add information related to profile genotype into a Reference GDS file}
 \usage{
-generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose = FALSE)
+generateGDSgenotype(gds, PATHGENO, fileLSNP, listSamples, verbose)
 }
 \arguments{
-\item{gds}{a \code{gds} object.}
+\item{gds}{an object of class
+\link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
-\item{PATHGENO}{TODO a PATH to a directory with the a file for each samples
-with the genotype.}
+\item{PATHGENO}{a \code{character} string representing the path where
+the 1K genotyping files for each sample are located. The name of the
+genotyping files must correspond to
+the individual identification (Individual.ID) in the pedigree file.}
 
-\item{fileLSNP}{TODO list of SNP to keep in the file genotype}
+\item{fileLSNP}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist. The file must be a RDS file.}
 
-\item{listSamples}{a \code{array} with the sample to keep}
+\item{listSamples}{a \code{vector} of \code{character} string corresponding
+to profiles (must be the profile identifiers) that will be
+retained and added to the Reference GDS file.}
 
 \item{verbose}{a \code{logical} indicating if the function must print
-messages when running. Default: \code{FALSE}.}
+messages when running.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+This function adds the genotype fields with the associated
+information into the Reference GDS file for the selected profiles.
 }
 \examples{
 

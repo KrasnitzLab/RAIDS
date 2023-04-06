@@ -1544,8 +1544,8 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
 
 test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(dataDir, "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1558,14 +1558,14 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
             batch=1, studyDF=NULL, listProfiles=NULL,
-            pathProfileGDS=NULL, verbose=22), error_message, fixed=TRUE)
+            pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
 })
 
 
 test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedStudy are defined", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(dataDir, "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
                         Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1579,16 +1579,16 @@ test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedS
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=gdsFile, pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=1, studyDF=NULL, listProfiles=NULL,
-                pathProfileGDS=NULL, verbose=22), error_message, fixed=TRUE)
+                pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
 })
 
 
 test_that("createStudy2GDS1KG() must return expected results when all parameters ok", {
 
-    data.dir <- test_path("fixtures")
-    gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+    dataDir <- test_path("fixtures")
+    gdsFile <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
-    withr::defer((unlink(file.path(data.dir, "ex1.gds"))), envir=parent.frame())
+    withr::defer((unlink(file.path(dataDir, "ex1.gds"))), envir=parent.frame())
 
     pedDF <- data.frame(Name.ID = c("ex1", "ex2", "ex3"),
                 Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1602,12 +1602,12 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
                             study.platform = "PLATFORM",
                             stringsAsFactors = FALSE)
 
-    result <- createStudy2GDS1KG(pathGeno=data.dir,
+    result <- createStudy2GDS1KG(pathGeno=dataDir,
                 pedStudy=pedDF, fileNameGDS=gdsFile,
                 batch=1, studyDF=studyDF, listProfiles=c("ex1"),
-                pathProfileGDS=data.dir, verbose=FALSE)
+                pathProfileGDS=dataDir, verbose=FALSE)
 
-    expect_true(file.exists(file.path(data.dir, "ex1.gds")))
+    expect_true(file.exists(file.path(dataDir, "ex1.gds")))
     expect_equal(result, 0L)
 })
 

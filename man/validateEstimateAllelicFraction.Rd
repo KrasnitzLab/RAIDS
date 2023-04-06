@@ -66,10 +66,10 @@ log score, that the SNVs in a gene are allelic fraction different from 0.5.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the1 1KG SNV Annotation GDS file.
- **This parameter is RNA specific.**}
+This parameter is RNA specific.}
 
 \item{block.id}{a \code{character} string corresponding to the block
-identifier in \code{gdsRefAnnot}. **This parameter is RNA specific.**}
+identifier in \code{gdsRefAnnot}. This parameter is RNA specific.}
 }
 \value{
 The integer \code{0L} when successful.

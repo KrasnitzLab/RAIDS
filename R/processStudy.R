@@ -2166,7 +2166,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @param fileReferenceGDS  a \code{character} string representing the file
 #' name of the 1KG GDS file. The file must exist.
 #'
-#' @param File.gds_1KG.Annot a \code{character} string representing the
+#' @param fileReferenceAnnotGDS a \code{character} string representing the
 #' file name of the 1KG GDS annotation file. The file must exist.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} values representing
@@ -2226,12 +2226,8 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' #################################################################
 #' PATH_1KG <- file.path(dataDir, "example", "gdsRef")
 #'
-#' fileName.GDS.1KG <- "ex1kg.gds"
-#' file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
-#'
-#' fileName.GDS.Annot <- "exAnnot1kg.gds"
-#' file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
-#'
+#' fileReferenceGDS  <- file.path(PATH_1KG, "ex1kg.gds")
+#' fileAnnotGDS <- file.path(PATH_1KG, "exAnnot1kg.gds")
 #'
 #' #################################################################
 #' ## The Sample SNP pileup files (one per sample) need
@@ -2245,7 +2241,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' #################################################################
 #' pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
 #'
-#' PATHOUT <- file.path(dataDir, "example", "res.out")
+#' pathOut <- file.path(dataDir, "example", "res.out")
 #'
 #' #################################################################
 #' ## A data frame containing general information about the study
@@ -2257,16 +2253,14 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #'                         study.platform="PLATFORM",
 #'                         stringsAsFactors=FALSE)
 #'
-#' gds_1KG <- snpgdsOpen(file.GDS)
-#'
 #' ####################################################################
-#' ## Fix RNG seed to ensure reproducible results
+#' ## Fix seed to ensure reproducible results
 #' ####################################################################
 #' set.seed(3043)
 #'
-#' dataRef <- select1KGPop(gds_1KG, nbSamples=2L)
-#'
-#' closefn.gds(gds_1KG)
+#' gds1KG <- snpgdsOpen(fileReferenceGDS)
+#' dataRef <- select1KGPop(gds1KG, nbSamples=2L)
+#' closefn.gds(gds1KG)
 #'
 #' ## Chromosome length information
 #' ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -2289,14 +2283,14 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' runExomeAncestry(pedStudy=ped, studyDF=studyDF,
 #'                     pathProfileGDS=pathProfileGDS,
 #'                     pathGeno=pathGeno,
-#'                     pathOut=PATHOUT,
-#'                     fileReferenceGDS=file.GDS,
-#'                     File.gds_1KG.Annot=file.Annot,
+#'                     pathOut=pathOut,
+#'                     fileReferenceGDS=fileReferenceGDS,
+#'                     fileReferenceAnnotGDS=fileAnnotGDS,
 #'                     chrInfo=chrInfo,
 #'                     dataRefSyn=dataRef)
 #'
 #' unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#' unlink(PATHOUT, recursive=TRUE, force=TRUE)
+#' unlink(pathOut, recursive=TRUE, force=TRUE)
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -2304,13 +2298,13 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @encoding UTF-8
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
-                    pathGeno, pathOut, fileReferenceGDS, File.gds_1KG.Annot,
+                    pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                         chrInfo, dataRefSyn) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy, studyDF, pathProfileGDS,
         pathGeno=pathGeno, pathOut=pathOut, fileReferenceGDS=fileReferenceGDS,
-        fileReferenceAnnotGDS=File.gds_1KG.Annot, chrInfo=chrInfo,
+        fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
         dataRefSyn=dataRefSyn)
 
     listProfiles <- pedStudy[, "Name.ID"]
@@ -2322,7 +2316,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     ## Open the 1KG GDS file (demo version)
     gds_1KG <- snpgdsOpen(fileReferenceGDS)
     ## Open the 1KG GDS file and 1KG SNV Annotation file
-    gds_1KG.Annot <- openfn.gds(File.gds_1KG.Annot)
+    gds_1KG.Annot <- openfn.gds(fileReferenceAnnotGDS)
 
     listProfileRef <- dataRefSyn$sample.id
     studyDF.syn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),

@@ -12,7 +12,7 @@ runExomeAncestry(
   pathGeno,
   pathOut,
   fileReferenceGDS,
-  File.gds_1KG.Annot,
+  fileReferenceAnnotGDS,
   chrInfo,
   dataRefSyn
 )
@@ -46,7 +46,7 @@ the directory where the output files are created.}
 \item{fileReferenceGDS}{a \code{character} string representing the file
 name of the 1KG GDS file. The file must exist.}
 
-\item{File.gds_1KG.Annot}{a \code{character} string representing the
+\item{fileReferenceAnnotGDS}{a \code{character} string representing the
 file name of the 1KG GDS annotation file. The file must exist.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} values representing
@@ -102,12 +102,8 @@ head(ped)
 #################################################################
 PATH_1KG <- file.path(dataDir, "example", "gdsRef")
 
-fileName.GDS.1KG <- "ex1kg.gds"
-file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
-
-fileName.GDS.Annot <- "exAnnot1kg.gds"
-file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
-
+fileReferenceGDS  <- file.path(PATH_1KG, "ex1kg.gds")
+fileAnnotGDS <- file.path(PATH_1KG, "exAnnot1kg.gds")
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need
@@ -121,7 +117,7 @@ pathGeno <- file.path(dataDir, "example", "snpPileup")
 #################################################################
 pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
 
-PATHOUT <- file.path(dataDir, "example", "res.out")
+pathOut <- file.path(dataDir, "example", "res.out")
 
 #################################################################
 ## A data frame containing general information about the study
@@ -133,16 +129,14 @@ studyDF <- data.frame(study.id="MYDATA",
                         study.platform="PLATFORM",
                         stringsAsFactors=FALSE)
 
-gds_1KG <- snpgdsOpen(file.GDS)
-
 ####################################################################
-## Fix RNG seed to ensure reproducible results
+## Fix seed to ensure reproducible results
 ####################################################################
 set.seed(3043)
 
-dataRef <- select1KGPop(gds_1KG, nbSamples=2L)
-
-closefn.gds(gds_1KG)
+gds1KG <- snpgdsOpen(fileReferenceGDS)
+dataRef <- select1KGPop(gds1KG, nbSamples=2L)
+closefn.gds(gds1KG)
 
 ## Chromosome length information
 ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -165,14 +159,14 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                     pathProfileGDS=pathProfileGDS,
                     pathGeno=pathGeno,
-                    pathOut=PATHOUT,
-                    fileReferenceGDS=file.GDS,
-                    File.gds_1KG.Annot=file.Annot,
+                    pathOut=pathOut,
+                    fileReferenceGDS=fileReferenceGDS,
+                    fileReferenceAnnotGDS=fileAnnotGDS,
                     chrInfo=chrInfo,
                     dataRefSyn=dataRef)
 
 unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-unlink(PATHOUT, recursive=TRUE, force=TRUE)
+unlink(pathOut, recursive=TRUE, force=TRUE)
 }
 
 }

@@ -384,7 +384,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @param verbose a \code{logicial} indicating if the function should
 #' print messages when running. Default: \code{FALSE}.
 #'
-#' @return TODO a \code{vector} of \code{character} strings
+#' @return The function returns \code{0L} when succesful.
 #'
 #' @examples
 #'
@@ -931,7 +931,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #'
 #' @param suffixe.blockName TODO ex Ensembl.Hsapiens.v86
 #'
-#' @return \code{OL} when the function is successful.
+#' @return The integer \code{OL} when the function is successful.
 #'
 #' @examples
 #'

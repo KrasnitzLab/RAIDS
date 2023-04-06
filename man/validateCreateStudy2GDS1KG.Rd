@@ -56,9 +56,9 @@ This function validates the input parameters for the
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
-gds1KG <- file.path(data.dir, "gds1KG.gds")
+gds1KG <- file.path(dataDir, "gds1KG.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -78,7 +78,7 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
 RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
             batch=1, studyDF=studyInfo,
             listProfiles=c("Sample_01", "Sample_02"),
-            pathProfileGDS=data.dir, verbose=TRUE)
+            pathProfileGDS=dataDir, verbose=TRUE)
 
 }
 \author{

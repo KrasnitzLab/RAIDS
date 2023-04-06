@@ -34,7 +34,7 @@ file must exist. The file must be a RDS file.}
 print messages when running. Default: \code{FALSE}.}
 }
 \value{
-TODO a \code{vector} of \code{character} strings
+The function returns \code{0L} when succesful.
 }
 \description{
 The function is adding the phase information into the

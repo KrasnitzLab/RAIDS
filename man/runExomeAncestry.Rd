@@ -10,8 +10,8 @@ runExomeAncestry(
   studyDF,
   pathProfileGDS,
   pathGeno,
-  PATH_OUT,
-  File.gds_1KG,
+  pathOut,
+  fileReferenceGDS,
   File.gds_1KG.Annot,
   chrInfo,
   dataRefSyn
@@ -40,12 +40,11 @@ SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
 associated SNP-pileup file called "Name.ID.txt.gz".}
 
-\item{PATH_OUT}{a \code{character} string representing the path to
-the directory where the out files are created.
-Default: \code{NULL}.}
+\item{pathOut}{a \code{character} string representing the path to
+the directory where the output files are created.}
 
-\item{File.gds_1KG}{a \code{character} string representing the file name of
-the 1KG GDS file. The file must exist.}
+\item{fileReferenceGDS}{a \code{character} string representing the file
+name of the 1KG GDS file. The file must exist.}
 
 \item{File.gds_1KG.Annot}{a \code{character} string representing the
 file name of the 1KG GDS annotation file. The file must exist.}
@@ -85,14 +84,13 @@ also created.
 \examples{
 
 ## Path to the demo 1KG GDS file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 #################################################################
 ## The path and file name for the PED RDS file
 ## will the information about the analyzed samples
 #################################################################
-
-filePED <- file.path(data.dir, "example", "pedEx.rds")
+filePED <- file.path(dataDir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 head(ped)
 
@@ -102,8 +100,7 @@ head(ped)
 ## Note that the 1KG GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #################################################################
-
-PATH_1KG <- file.path(data.dir, "example", "gdsRef")
+PATH_1KG <- file.path(dataDir, "example", "gdsRef")
 
 fileName.GDS.1KG <- "ex1kg.gds"
 file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
@@ -116,35 +113,34 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 ## The Sample SNP pileup files (one per sample) need
 ## to be located in the same directory.
 #################################################################
-pathGeno <- file.path(data.dir, "example", "snpPileup")
+pathGeno <- file.path(dataDir, "example", "snpPileup")
 
 #################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
 #################################################################
-pathProfileGDS <- file.path(data.dir, "example", "out.tmp")
+pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
 
-PATHOUT <- file.path(data.dir, "example", "res.out")
+PATHOUT <- file.path(dataDir, "example", "res.out")
 
 #################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
 ## those 3 columns: "studyID", "study.desc", "study.platform"
 #################################################################
-studyDF <- data.frame(study.id = "MYDATA",
-                      study.desc = "Description",
-                      study.platform = "PLATFORM",
-                      stringsAsFactors = FALSE)
+studyDF <- data.frame(study.id="MYDATA",
+                        study.desc="Description",
+                        study.platform="PLATFORM",
+                        stringsAsFactors=FALSE)
 
 gds_1KG <- snpgdsOpen(file.GDS)
 
 ####################################################################
 ## Fix RNG seed to ensure reproducible results
 ####################################################################
-
 set.seed(3043)
 
-dataRef <- select1KGPop(gds_1KG, nbSamples = 2L)
+dataRef <- select1KGPop(gds_1KG, nbSamples=2L)
 
 closefn.gds(gds_1KG)
 
@@ -164,18 +160,19 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[23] <- length(Hsapiens[["chrX"]])
 ## chrInfo[24] <- length(Hsapiens[["chrY"]])
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
-\dontrun{
-runExomeAncestry(pedStudy = ped, studyDF = studyDF,
-                    pathProfileGDS = pathProfileGDS,
-                    pathGeno = pathGeno,
-                    PATH_OUT = PATHOUT,
-                    File.gds_1KG = file.GDS,
-                    File.gds_1KG.Annot = file.Annot,
-                    chrInfo = chrInfo,
-                    dataRefSyn = dataRef)
 
-unlink(pathProfileGDS, recursive = TRUE, force=TRUE)
-unlink(PATHOUT, recursive = TRUE, force=TRUE)
+\dontrun{
+runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+                    pathProfileGDS=pathProfileGDS,
+                    pathGeno=pathGeno,
+                    pathOut=PATHOUT,
+                    fileReferenceGDS=file.GDS,
+                    File.gds_1KG.Annot=file.Annot,
+                    chrInfo=chrInfo,
+                    dataRefSyn=dataRef)
+
+unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+unlink(PATHOUT, recursive=TRUE, force=TRUE)
 }
 
 }

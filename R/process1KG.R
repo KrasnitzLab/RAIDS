@@ -22,7 +22,7 @@
 #' @param batch.v a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
-#' @return A \code{data.frame} containing the needed pedigree information
+#' @return a \code{data.frame} containing the needed pedigree information
 #' from 1KG. The \code{data.frame} contains those columns:
 #' \itemize{
 #' \item{sample.id}{a \code{character} string representing the profile unique
@@ -339,17 +339,15 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 
     if(verbose) { message("Start ", Sys.time()) }
 
-    listSampleGDS <- generateGDSSample(newGDS, ped1KG, listSamples)
-
+    listSampleGDS <- generateGDSSample(gds=newGDS, pedDF=ped1KG,
+                                            listSamples=listSamples)
     if(verbose) { message("Sample info DONE ", Sys.time()) }
 
     generateGDSSNPinfo(gds=newGDS, fileFREQ=fileSNPSel, verbose=verbose)
-
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
     generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileLSNP=fileListSNP,
         listSamples=listSampleGDS, verbose=verbose)
-
     if(verbose) { message("Genotype DONE ", Sys.time()) }
 
     closefn.gds(newGDS)
@@ -524,7 +522,7 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
                     "class \'SNPGDSFileClass\'.")
     }
 
-    ibd.robust <- runIBDKING(gds=gds, maf=maf)
+    ibd.robust <- runIBDKING(gds=gds, maf=maf, verbose=FALSE)
 
     matKING <- ibd.robust$kinship
     colnames(matKING) <- ibd.robust$sample.id

@@ -101,7 +101,7 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
 
     snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
                     listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
-                    thresholdLD=thresholdLD, np=np, verbose.v=verbose)
+                    thresholdLD=thresholdLD, np=np, verbose=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
     saveRDS(pruned, filePruned)

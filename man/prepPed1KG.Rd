@@ -25,7 +25,7 @@ Default: \code{"./data/sampleGeno"}.}
 pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.}
 }
 \value{
-A \code{data.frame} containing the needed pedigree information
+a \code{data.frame} containing the needed pedigree information
 from 1KG. The \code{data.frame} contains those columns:
 \itemize{
 \item{sample.id}{a \code{character} string representing the profile unique

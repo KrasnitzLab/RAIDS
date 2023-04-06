@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.1<br><strong>Compiled date</strong>: 2023-04-05<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.1<br><strong>Compiled date</strong>: 2023-04-06<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -418,13 +418,13 @@ file</strong> is created for each sample passed to the
 <span><span class="co">## The Sample SNP pileup files (one per sample) need  </span></span>
 <span><span class="co">## to be located in the same directory.</span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="va">PATHGENO</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
+<span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
 <span><span class="co">## will be created need to be specified.</span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="va">PATHSAMPLEGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"out"</span><span class="op">)</span></span>
+<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"example"</span>, <span class="st">"out"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## The path and file name for the PED RDS file</span></span>
@@ -459,19 +459,19 @@ file</strong> is created for each sample passed to the
 <span><span class="co">## This function creates one Sample GDS file for each</span></span>
 <span><span class="co">## sample present in the 'listProfiles' parameter.</span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="fu"><a href="../reference/createStudy2GDS1KG.html">createStudy2GDS1KG</a></span><span class="op">(</span>pathGeno <span class="op">=</span> <span class="va">PATHGENO</span>,</span>
+<span><span class="fu"><a href="../reference/createStudy2GDS1KG.html">createStudy2GDS1KG</a></span><span class="op">(</span>pathGeno <span class="op">=</span> <span class="va">pathGeno</span>,</span>
 <span>                        pedStudy <span class="op">=</span> <span class="va">ped</span>,</span>
 <span>                        fileNameGDS <span class="op">=</span> <span class="va">file.GDS</span>,</span>
 <span>                        listProfiles <span class="op">=</span> <span class="va">listSamples</span>,</span>
 <span>                        studyDF <span class="op">=</span> <span class="va">studyDF</span>,</span>
-<span>                        pathProfileGDS <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
+<span>                        pathProfileGDS <span class="op">=</span> <span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="co">## The Sample GDS file has been created in the </span></span>
-<span><span class="co">## directory PATHSAMPLEGDS using the name of the sample (ex1) </span></span>
+<span><span class="co">## directory pathProfileGDS using the name of the sample (ex1)</span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span><span class="co">## [1] "ex1.gds"</span></span></code></pre></div>
 <p><br></p>
 </div>
@@ -518,19 +518,19 @@ file</strong>.</p>
 <span>    <span class="co">##           sub-step 4. </span></span>
 <span>    <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds_1KG</span>,</span>
 <span>                    currentProfile<span class="op">=</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
-<span>                    studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, </span>
-<span>                    pathProfileGDS<span class="op">=</span><span class="va">PATHSAMPLEGDS</span><span class="op">)</span></span>
+<span>                    studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
+<span>                    pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="co">## Profile GDS file for the current sample</span></span>
 <span>    <span class="co">## The file name corresponds to the path + profile identifier + ".gds"</span></span>
-<span>    <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="co">## Add the genotype information for the list of pruned SNVs </span></span>
 <span>    <span class="co">## into the Profile GDS file</span></span>
 <span>    <span class="co">## The genotype information is extracted from the 1KG GDS file</span></span>
 <span>    <span class="fu"><a href="../reference/add1KG2SampleGDS.html">add1KG2SampleGDS</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds_1KG</span>, gdsSampleFile <span class="op">=</span> <span class="va">file.GDSSample</span>, </span>
-<span>                        sampleCurrent <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, </span>
-<span>                        study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span>
+<span>                        currentProfile <span class="op">=</span> <span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>                        studyID <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co">## Add annotation from the 1KG GDS file to the Sample GDS file</span></span>
 <span>    <span class="co">## This is required.</span></span>
@@ -644,7 +644,7 @@ sample at the time, as shown in this example.</p>
 <span></span>
 <span><span class="co">## Name of the Sample GDS file</span></span>
 <span><span class="co">## The name must correspond to the sample identifier</span></span>
-<span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Open the Sample GDS file in writing mode</span></span>
 <span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">file.GDSSample</span>, readonly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -660,8 +660,8 @@ sample at the time, as shown in this example.</p>
 <span><span class="co">## the block.id should be as listed in the 1KG SNV Annotation GDS file </span></span>
 <span><span class="co">## for the gene annotation of the SNVs</span></span>
 <span><span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gds <span class="op">=</span> <span class="va">gds</span>, gdsSample <span class="op">=</span> <span class="va">gdsSample</span>,</span>
-<span>                                        sampleCurrent <span class="op">=</span> <span class="va">sampleName</span>,</span>
-<span>                                        study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
+<span>                                        currentProfile <span class="op">=</span> <span class="va">sampleName</span>,</span>
+<span>                                        studyID <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
 <span>                                        chrInfo <span class="op">=</span> <span class="va">chrInfo</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -770,7 +770,7 @@ and <em>syntheticGeno()</em> are used for data synthesis.</p>
 <span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The Sample GDS file is needed</span></span>
-<span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSAMPLEGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">file.GDSSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sampleName</span>, <span class="st">".gds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## The prepSynthetic() function prepares the annotation for</span></span>
@@ -834,7 +834,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## in RDS files.</span></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## The directory must exist.</span></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">####################################################################</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(pathProfileGDS)</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span> <span class="fu">file.exists</span>(PATH_OUT)) {</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dir.create</span>(PATH_OUT)</span>
@@ -865,7 +865,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))) {</span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>    <span class="do">## The Sample GDS file associated to the cancer sample     </span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, </span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(pathProfileGDS,</span>
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>))</span>
 <span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="do">## A sub-directory is created for the cancer sample</span></span>
@@ -893,7 +893,7 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 <span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>        <span class="do">##  a range of K and D values</span></span>
 <span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>        KNN.synt <span class="ot">&lt;-</span> <span class="fu">computePoolSyntheticAncestryGr</span>(<span class="at">gdsSample =</span> gdsSample,</span>
 <span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">sampleRM =</span>  sampleRM[j,],</span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">study.id.syn =</span> studyDF.syn<span class="sc">$</span>study.id,</span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">studyIDSyn =</span> studyDF.syn<span class="sc">$</span>study.id,</span>
 <span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">np =</span> 4L,</span>
 <span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">spRef =</span> spRef,</span>
 <span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">eigen.cnt =</span> 15L)</span>
@@ -915,34 +915,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 <span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 15</span></span>
 <span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1326</span></span>
 <span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    (internal increment: 29960)</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:16 2023    (internal increment: 47104)</span></span>
 <span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
-<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    Done.</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 1s</span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    Done.</span></span>
 <span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 130</span></span>
 <span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 58</span></span>
 <span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1326</span></span>
-<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    (internal increment: 65536)</span></span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    (internal increment: 65536)</span></span>
 <span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    Done.</span></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    Done.</span></span>
 <span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 26</span></span>
 <span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 58</span></span>
 <span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 309</span></span>
-<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    (internal increment: 65536)</span></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    (internal increment: 65536)</span></span>
 <span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:57 2023    Done.</span></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:17 2023    Done.</span></span>
 <span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="do">## Principal Component Analysis (PCA) on genotypes:</span></span>
 <span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 0 SNP (non-autosomes or non-selection)</span></span>
 <span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 2 SNPs (monomorphic: TRUE, MAF: NaN, missing rate: 0.025)</span></span>
@@ -952,34 +952,34 @@ profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-
 <span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 15</span></span>
 <span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1352</span></span>
 <span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:43:59 2023    (internal increment: 29960)</span></span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    (internal increment: 47104)</span></span>
 <span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
-<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 1s</span>
-<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    Done.</span></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    Done.</span></span>
 <span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 130</span></span>
 <span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 59</span></span>
 <span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1352</span></span>
-<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    (internal increment: 65536)</span></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    (internal increment: 65536)</span></span>
 <span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    Done.</span></span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    Done.</span></span>
 <span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 26</span></span>
 <span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 59</span></span>
 <span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 273</span></span>
-<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    (internal increment: 65536)</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    (internal increment: 65536)</span></span>
 <span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:00 2023    Done.</span></span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:18 2023    Done.</span></span>
 <span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a><span class="do">## Close 1KG GDS file (important)</span></span>
 <span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a><span class="fu">closefn.gds</span>(gds)</span></code></pre></div>
@@ -1021,7 +1021,7 @@ done at this step but all the synthetic data are prepared in the step
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="do">## A directory for the results, where a sub-directory </span></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="do">## will be set up for each input profile </span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>PATH_OUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(pathProfileGDS)</span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span> <span class="fu">file.exists</span>(PATH_OUT)) {</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dir.create</span>(PATH_OUT)</span>
@@ -1041,7 +1041,7 @@ done at this step but all the synthetic data are prepared in the step
 <span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(listSamples))){</span>
 <span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Extract the GDS file name and path for the current sample      </span></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATHSAMPLEGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>))</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    file.GDSSample <span class="ot">&lt;-</span> <span class="fu">file.path</span>(pathProfileGDS, <span class="fu">paste0</span>(listSamples[i], <span class="st">".gds"</span>))</span>
 <span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Directory where the KNN results have been saved      </span></span>
 <span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    PATHKNN <span class="ot">&lt;-</span> <span class="fu">file.path</span>(PATH_OUT, listSamples[i])</span>
@@ -1058,7 +1058,7 @@ done at this step but all the synthetic data are prepared in the step
 <span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">listFiles =</span> listFiles,</span>
 <span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sample.ana.id =</span> listSamples[i],</span>
 <span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">spRef =</span> spRef,</span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">study.id.syn =</span> studyDF.syn<span class="sc">$</span>study.id,</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">studyIDSyn =</span> studyDF.syn<span class="sc">$</span>study.id,</span>
 <span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">np =</span> 1L)</span>
 <span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">saveRDS</span>(resCall, <span class="fu">file.path</span>(PATH_OUT,</span>
@@ -1080,34 +1080,34 @@ done at this step but all the synthetic data are prepared in the step
 <span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 32</span></span>
 <span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1592</span></span>
 <span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    (internal increment: 24968)</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    (internal increment: 39252)</span></span>
 <span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    Done.</span></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    Done.</span></span>
 <span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 156</span></span>
 <span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 61</span></span>
 <span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 32 eigenvectors</span></span>
 <span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1592</span></span>
-<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    (internal increment: 65536)</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    (internal increment: 65536)</span></span>
 <span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    Done.</span></span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    Done.</span></span>
 <span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 1</span></span>
 <span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 61</span></span>
 <span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 32 eigenvectors</span></span>
 <span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 7</span></span>
-<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    (internal increment: 65536)</span></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    (internal increment: 65536)</span></span>
 <span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:09 2023    Done.</span></span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:23 2023    Done.</span></span>
 <span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a><span class="do">## Close the 1KG GDS file (important)</span></span>
 <span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a><span class="fu">closefn.gds</span>(gds)</span>
@@ -1200,13 +1200,13 @@ RNA-seq).</li>
 <span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="do">## The Sample SNP pileup files (one per sample) need</span></span>
 <span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="do">## to be located in the same directory.</span></span>
 <span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>PATHGENO <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data.dir, <span class="st">"example"</span>, <span class="st">"snpPileup"</span>)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>pathGeno <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data.dir, <span class="st">"example"</span>, <span class="st">"snpPileup"</span>)</span>
 <span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
 <span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="do">## The path where the Sample GDS files (one per sample)</span></span>
 <span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="do">## will be created need to be specified.</span></span>
 <span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################</span></span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>PATHPROFILEGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data.dir, <span class="st">"example"</span>, <span class="st">"out.tmp"</span>)</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>pathProfileGDS <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data.dir, <span class="st">"example"</span>, <span class="st">"out.tmp"</span>)</span>
 <span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>PATHOUT <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data.dir, <span class="st">"example"</span>, <span class="st">"res.out"</span>)</span>
 <span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a></span>
@@ -1257,8 +1257,8 @@ RNA-seq).</li>
 <span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a><span class="do">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span>
 <span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a><span class="fu">runExomeAncestry</span>(<span class="at">pedStudy =</span> ped, <span class="at">studyDF =</span> studyDF,</span>
-<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PATHPROFILEGDS =</span> PATHPROFILEGDS,</span>
-<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PATHGENO =</span> PATHGENO,</span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pathProfileGDS =</span> pathProfileGDS,</span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pathGeno =</span> pathGeno,</span>
 <span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PATH_OUT =</span> PATHOUT,</span>
 <span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>                 <span class="at">File.gds_1KG =</span> file.GDS,</span>
 <span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>                 <span class="at">File.gds_1KG.Annot =</span> file.Annot,</span>
@@ -1273,34 +1273,34 @@ RNA-seq).</li>
 <span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 15</span></span>
 <span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1335</span></span>
 <span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    (internal increment: 29960)</span></span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    (internal increment: 47104)</span></span>
 <span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    Done.</span></span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    Done.</span></span>
 <span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 130</span></span>
 <span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 58</span></span>
 <span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1335</span></span>
-<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    (internal increment: 65536)</span></span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    (internal increment: 65536)</span></span>
 <span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    Done.</span></span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    Done.</span></span>
 <span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 26</span></span>
 <span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 58</span></span>
 <span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 313</span></span>
-<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    (internal increment: 65536)</span></span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    (internal increment: 65536)</span></span>
 <span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:10 2023    Done.</span></span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:24 2023    Done.</span></span>
 <span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a><span class="do">## Principal Component Analysis (PCA) on genotypes:</span></span>
 <span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 0 SNP (non-autosomes or non-selection)</span></span>
 <span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 2 SNPs (monomorphic: TRUE, MAF: NaN, missing rate: 0.025)</span></span>
@@ -1310,34 +1310,34 @@ RNA-seq).</li>
 <span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 15</span></span>
 <span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1362</span></span>
 <span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    (internal increment: 29960)</span></span>
+<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    (internal increment: 47104)</span></span>
 <span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    Done.</span></span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    Done.</span></span>
 <span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 130</span></span>
 <span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 59</span></span>
 <span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1362</span></span>
-<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    (internal increment: 65536)</span></span>
+<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    (internal increment: 65536)</span></span>
 <span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    Done.</span></span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    Done.</span></span>
 <span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 26</span></span>
 <span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 59</span></span>
 <span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 15 eigenvectors</span></span>
 <span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 282</span></span>
-<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    (internal increment: 65536)</span></span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    (internal increment: 65536)</span></span>
 <span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:12 2023    Done.</span></span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:25 2023    Done.</span></span>
 <span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a><span class="do">## Principal Component Analysis (PCA) on genotypes:</span></span>
 <span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 0 SNP (non-autosomes or non-selection)</span></span>
 <span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a><span class="do">## Excluding 0 SNP (monomorphic: TRUE, MAF: NaN, missing rate: NaN)</span></span>
@@ -1347,34 +1347,34 @@ RNA-seq).</li>
 <span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of principal components: 32</span></span>
 <span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a><span class="do">## PCA:    the sum of all selected genotypes (0,1,2) = 1603</span></span>
 <span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU capabilities: Double-Precision SSE2</span></span>
-<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    (internal increment: 24968)</span></span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    (internal increment: 39252)</span></span>
 <span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    Begin (eigenvalues and eigenvectors)</span></span>
-<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    Done.</span></span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    Begin (eigenvalues and eigenvectors)</span></span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    Done.</span></span>
 <span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:</span></span>
 <span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 156</span></span>
 <span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 61</span></span>
 <span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 32 eigenvectors</span></span>
 <span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a><span class="do">## SNP Loading:    the sum of all selected genotypes (0,1,2) = 1603</span></span>
-<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    (internal increment: 65536)</span></span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    (internal increment: 65536)</span></span>
 <span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    Done.</span></span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    Done.</span></span>
 <span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:</span></span>
 <span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of samples: 1</span></span>
 <span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a><span class="do">##     # of SNPs: 61</span></span>
 <span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a><span class="do">##     using 1 thread</span></span>
 <span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a><span class="do">##     using the top 32 eigenvectors</span></span>
 <span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample Loading:    the sum of all selected genotypes (0,1,2) = 7</span></span>
-<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    (internal increment: 65536)</span></span>
+<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    (internal increment: 65536)</span></span>
 <span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a>[..................................................]  <span class="dv">0</span>%, ETC<span class="sc">:</span> <span class="sc">---</span>        </span>
 <span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">================================================</span>] <span class="dv">100</span>%, completed, 0s</span>
-<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a><span class="do">## Wed Apr  5 04:44:21 2023    Done.</span></span>
+<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a><span class="do">## Thu Apr  6 00:47:30 2023    Done.</span></span>
 <span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
 <span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(PATHOUT)</span>
 <span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "ex1"              "ex1.Ancestry.csv" "ex1.infoCall.rds"</span></span>
@@ -1391,10 +1391,10 @@ RNA-seq).</li>
 <span id="cb18-221"><a href="#cb18-221" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">paste0</span>(ped<span class="sc">$</span>Name.ID[<span class="dv">1</span>], <span class="st">".Ancestry.csv"</span>)))</span>
 <span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a>resAncestry</span>
 <span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a><span class="do">##   sample.id D  K SuperPop</span></span>
-<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       ex1 6 14      AMR</span></span>
+<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       ex1 6 13      EAS</span></span>
 <span id="cb18-225"><a href="#cb18-225" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-226"><a href="#cb18-226" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove temporary files created for this demo</span></span>
-<span id="cb18-227"><a href="#cb18-227" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(PATHPROFILEGDS, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force=</span><span class="cn">TRUE</span>)</span>
+<span id="cb18-227"><a href="#cb18-227" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(pathProfileGDS, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force=</span><span class="cn">TRUE</span>)</span>
 <span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(PATHOUT, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
@@ -1463,7 +1463,7 @@ which this document was compiled:</p>
 <span><span class="co">##   [5] rmarkdown_2.21              fs_1.6.1                   </span></span>
 <span><span class="co">##   [7] BiocIO_1.9.2                zlibbioc_1.45.0            </span></span>
 <span><span class="co">##   [9] ragg_1.2.5                  vctrs_0.6.1                </span></span>
-<span><span class="co">##  [11] memoise_2.0.1               Rsamtools_2.15.2           </span></span>
+<span><span class="co">##  [11] memoise_2.0.1               Rsamtools_2.15.3           </span></span>
 <span><span class="co">##  [13] RCurl_1.98-1.12             quantsmooth_1.65.0         </span></span>
 <span><span class="co">##  [15] htmltools_0.5.5             progress_1.2.2             </span></span>
 <span><span class="co">##  [17] curl_5.0.0                  broom_1.0.4                </span></span>

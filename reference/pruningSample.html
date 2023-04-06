@@ -84,17 +84,17 @@ function can be specified by the user.</p>
 <span>  <span class="va">currentProfile</span>,</span>
 <span>  <span class="va">studyID</span>,</span>
 <span>  listSNP <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  slide.max.bp.v <span class="op">=</span> <span class="fl">500000L</span>,</span>
-<span>  ld.threshold.v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  slideWindowMaxBP <span class="op">=</span> <span class="fl">500000L</span>,</span>
+<span>  thresholdLD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  chr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  minAF.SuperPop <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  keepGDSpruned <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  superPopMinAF <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  keepPrunedGDS <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  pathProfileGDS <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  keepFile <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  PATHPRUNED <span class="op">=</span> <span class="st">"."</span>,</span>
-<span>  outPref <span class="op">=</span> <span class="st">"pruned"</span></span>
+<span>  pathPrunedGDS <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  outPrefix <span class="op">=</span> <span class="st">"pruned"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -117,7 +117,7 @@ are: "corr", "r", "dprime" and "composite". Default: <code>"corr"</code>.</p></d
 corresponding to the profile identifier used in LD pruning done by the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. A Profile GDS file
 corresponding to the profile identifier must exist and be located in the
-<code>PATHSAMPLEGDS</code> directory.</p></dd>
+<code>pathProfileGDS</code> directory.</p></dd>
 
 
 <dt>studyID</dt>
@@ -133,7 +133,7 @@ if <code>NULL</code>, all SNVs are used in the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function. Default: <code>NULL</code>.</p></dd>
 
 
-<dt>slide.max.bp.v</dt>
+<dt>slideWindowMaxBP</dt>
 <dd><p>a single positive <code>integer</code> that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>
@@ -141,7 +141,7 @@ function.
 Default: <code>500000L</code>.</p></dd>
 
 
-<dt>ld.threshold.v</dt>
+<dt>thresholdLD</dt>
 <dd><p>a single <code>numeric</code> value that represents the LD
 threshold used in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function.
 Default: <code>sqrt(0.1)</code>.</p></dd>
@@ -165,13 +165,13 @@ selected SNVs should belong. Only one chromosome can be handled. If
 Default: <code>NULL</code>.</p></dd>
 
 
-<dt>minAF.SuperPop</dt>
+<dt>superPopMinAF</dt>
 <dd><p>a single positive <code>numeric</code> representing the
 minimum allelic frequency used to select the SNVs. If <code>NULL</code>, the
 allelic frequency is not used as a filtering criterion. Default: <code>NULL</code>.</p></dd>
 
 
-<dt>keepGDSpruned</dt>
+<dt>keepPrunedGDS</dt>
 <dd><p>a <code>logicial</code> indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.
 Default: <code>TRUE</code>.</p></dd>
@@ -188,12 +188,12 @@ information about the pruned SNVs must be
 created. Default: <code>FALSE</code>.</p></dd>
 
 
-<dt>PATHPRUNED</dt>
+<dt>pathPrunedGDS</dt>
 <dd><p>a <code>character</code> string representing an existing
 directory. The directory must exist. Default: <code>"."</code>.</p></dd>
 
 
-<dt>outPref</dt>
+<dt>outPrefix</dt>
 <dd><p>a <code>character</code> string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
 the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</code>.</p></dd>

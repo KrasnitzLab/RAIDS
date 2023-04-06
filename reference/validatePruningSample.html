@@ -71,17 +71,17 @@ pruningSample function."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
 <span>  <span class="va">currentProfile</span>,</span>
 <span>  <span class="va">studyID</span>,</span>
 <span>  <span class="va">listSNP</span>,</span>
-<span>  <span class="va">slide.max.bp.v</span>,</span>
-<span>  <span class="va">ld.threshold.v</span>,</span>
+<span>  <span class="va">slideWindowMaxBP</span>,</span>
+<span>  <span class="va">thresholdLD</span>,</span>
 <span>  <span class="va">np</span>,</span>
 <span>  <span class="va">verbose</span>,</span>
 <span>  <span class="va">chr</span>,</span>
-<span>  <span class="va">minAF.SuperPop</span>,</span>
-<span>  <span class="va">keepGDSpruned</span>,</span>
+<span>  <span class="va">superPopMinAF</span>,</span>
+<span>  <span class="va">keepPrunedGDS</span>,</span>
 <span>  <span class="va">pathProfileGDS</span>,</span>
 <span>  <span class="va">keepFile</span>,</span>
-<span>  <span class="va">PATHPRUNED</span>,</span>
-<span>  <span class="va">outPref</span></span>
+<span>  <span class="va">pathPrunedGDS</span>,</span>
+<span>  <span class="va">outPrefix</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -103,7 +103,7 @@ be used to calculate the linkage disequilibrium in the
 corresponding to the profile identifier used in LD pruning done by the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>() function. A Profile GDS file
 corresponding to the profile identifier must exist and be located in the
-<code>PATHSAMPLEGDS</code> directory.</p></dd>
+<code>pathProfileGDS</code> directory.</p></dd>
 
 
 <dt>studyID</dt>
@@ -119,14 +119,14 @@ if <code>NULL</code>, all SNVs are used in the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function.</p></dd>
 
 
-<dt>slide.max.bp.v</dt>
+<dt>slideWindowMaxBP</dt>
 <dd><p>a single positive <code>integer</code> that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>
 function.</p></dd>
 
 
-<dt>ld.threshold.v</dt>
+<dt>thresholdLD</dt>
 <dd><p>a single <code>numeric</code> value that represents the LD
 threshold used in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function.</p></dd>
 
@@ -148,13 +148,13 @@ selected SNVs should belong. Only one chromosome can be handled. If
 <code>NULL</code>, the chromosome is not used as a filtering criterion.</p></dd>
 
 
-<dt>minAF.SuperPop</dt>
+<dt>superPopMinAF</dt>
 <dd><p>a single positive <code>numeric</code> representing the
 minimum allelic frequency used to select the SNVs. If <code>NULL</code>, the
 allelic frequency is not used as a filtering criterion.</p></dd>
 
 
-<dt>keepGDSpruned</dt>
+<dt>keepPrunedGDS</dt>
 <dd><p>a <code>logicial</code> indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.</p></dd>
 
@@ -169,12 +169,12 @@ where the Profile GDS files will be created. The directory must exist.</p></dd>
 information about the pruned SNVs must be created.</p></dd>
 
 
-<dt>PATHPRUNED</dt>
+<dt>pathPrunedGDS</dt>
 <dd><p>a <code>character</code> string representing an existing
 directory. The directory must exist.</p></dd>
 
 
-<dt>outPref</dt>
+<dt>outPrefix</dt>
 <dd><p>a <code>character</code> string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
 the parameter <code>keepFile</code>=<code>TRUE</code>.</p></dd>
@@ -203,10 +203,10 @@ the parameter <code>keepFile</code>=<code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validatePruningSample</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, method<span class="op">=</span><span class="st">"corr"</span>,</span></span>
 <span class="r-in"><span>     currentProfile<span class="op">=</span><span class="st">"TGCA_01"</span>, studyID<span class="op">=</span><span class="st">"TCGA"</span>,</span></span>
-<span class="r-in"><span>     listSNP<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sr10103"</span>, <span class="st">"sr10202"</span><span class="op">)</span>, slide.max.bp.v<span class="op">=</span><span class="fl">1000L</span>,</span></span>
-<span class="r-in"><span>     ld.threshold.v<span class="op">=</span><span class="fl">0.008</span>, np<span class="op">=</span><span class="fl">1L</span>, verbose<span class="op">=</span><span class="cn">TRUE</span>, chr<span class="op">=</span><span class="fl">1</span>,</span></span>
-<span class="r-in"><span>     minAF.SuperPop<span class="op">=</span><span class="fl">0.002</span>, keepGDSpruned<span class="op">=</span><span class="cn">TRUE</span>, pathProfileGDS<span class="op">=</span><span class="va">data.dir</span>,</span></span>
-<span class="r-in"><span>     keepFile<span class="op">=</span><span class="cn">FALSE</span>, PATHPRUNED<span class="op">=</span><span class="va">data.dir</span>, outPref<span class="op">=</span><span class="st">"test"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     listSNP<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sr10103"</span>, <span class="st">"sr10202"</span><span class="op">)</span>, slideWindowMaxBP<span class="op">=</span><span class="fl">1000L</span>,</span></span>
+<span class="r-in"><span>     thresholdLD<span class="op">=</span><span class="fl">0.008</span>, np<span class="op">=</span><span class="fl">1L</span>, verbose<span class="op">=</span><span class="cn">TRUE</span>, chr<span class="op">=</span><span class="fl">1</span>,</span></span>
+<span class="r-in"><span>     superPopMinAF<span class="op">=</span><span class="fl">0.002</span>, keepPrunedGDS<span class="op">=</span><span class="cn">TRUE</span>, pathProfileGDS<span class="op">=</span><span class="va">data.dir</span>,</span></span>
+<span class="r-in"><span>     keepFile<span class="op">=</span><span class="cn">FALSE</span>, pathPrunedGDS<span class="op">=</span><span class="va">data.dir</span>, outPrefix<span class="op">=</span><span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>

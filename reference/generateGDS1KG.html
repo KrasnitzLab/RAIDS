@@ -68,7 +68,7 @@ SNP information and the genotyping information into the GDS file.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDS1KG</span><span class="op">(</span></span>
-<span>  PATHGENO <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
+<span>  pathGeno <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fileNamePED</span>,</span>
 <span>  <span class="va">fileListSNP</span>,</span>
 <span>  <span class="va">fileSNPSel</span>,</span>
@@ -80,7 +80,7 @@ SNP information and the genotyping information into the GDS file.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>PATHGENO</dt>
+    <dl><dt>pathGeno</dt>
 <dd><p>a <code>character</code> string representing the path where
 the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
@@ -165,15 +165,15 @@ https://bioconductor.org/packages/gdsfmt/</p>
 <span class="r-in"><span><span class="va">GDS_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"1KG_TEMP.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a temporary GDS file containing information from 1KG</span></span></span>
-<span class="r-in"><span><span class="fu">generateGDS1KG</span><span class="op">(</span>PATHGENO<span class="op">=</span><span class="va">data.dir</span>, fileNamePED<span class="op">=</span><span class="va">pedigreeFile</span>,</span></span>
+<span class="r-in"><span><span class="fu">generateGDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">data.dir</span>, fileNamePED<span class="op">=</span><span class="va">pedigreeFile</span>,</span></span>
 <span class="r-in"><span>    fileListSNP<span class="op">=</span><span class="va">snpIndexFile</span>, fileSNPSel<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
 <span class="r-in"><span>    fileNameGDS<span class="op">=</span><span class="va">GDS_file</span>, listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-05 04:42:40.295849</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-05 04:42:40.296495</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-05 04:42:40.297035</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-05 04:42:40.297642</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-05 04:42:40.298073</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-05 04:42:40.298611</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-06 00:46:24.07174</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-06 00:46:24.072124</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-06 00:46:24.072437</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-06 00:46:24.072692</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-06 00:46:24.072949</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-06 00:46:24.073196</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>

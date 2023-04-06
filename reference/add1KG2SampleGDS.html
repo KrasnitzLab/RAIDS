@@ -70,7 +70,7 @@ the Profile GDS file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSampleFile</span>, <span class="va">sampleCurrent</span>, <span class="va">study.id</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSampleFile</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,12 +85,12 @@ the Profile GDS file.</p>
 file name of the Profile GDS file. The Profile GDS file must exist.</p></dd>
 
 
-<dt>sampleCurrent</dt>
+<dt>currentProfile</dt>
 <dd><p>a <code>character</code> string corresponding to the sample
 identifier associated to the current list of pruned SNVs.</p></dd>
 
 
-<dt>study.id</dt>
+<dt>studyID</dt>
 <dd><p>a <code>character</code> string corresponding to the study
 identifier associated to the current list of pruned SNVs.</p></dd>
 
@@ -114,7 +114,7 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span><span class="va">gdsFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The data.frame containing the information about the study</span></span></span>
-<span class="r-in"><span><span class="co">## The 3 mandatory columns: "study.id", "study.desc", "study.platform"</span></span></span>
+<span class="r-in"><span><span class="co">## The 3 mandatory columns: "studyID", "study.desc", "study.platform"</span></span></span>
 <span class="r-in"><span><span class="co">## The entries should be strings, not factors (stringsAsFactors=FALSE)</span></span></span>
 <span class="r-in"><span><span class="va">studyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA"</span>,</span></span>
 <span class="r-in"><span>                        study.desc <span class="op">=</span> <span class="st">"Description"</span>,</span></span>
@@ -138,8 +138,8 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span><span class="co">## and save it in the Profile GDS file 'ex1.gds'</span></span></span>
 <span class="r-in"><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds_1KG</span>,</span></span>
 <span class="r-in"><span>         gdsSampleFile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.genotype</span>, <span class="st">"ex1.gds"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>         sampleCurrent<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>         study.id <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span></span>
+<span class="r-in"><span>         currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         studyID <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span></span>

@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.1<br><strong>Compiled date</strong>: 2023-04-05<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.1<br><strong>Compiled date</strong>: 2023-04-06<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <div class="section level2">
 <h2 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes
@@ -235,14 +235,14 @@ genotyping information from multiple files.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The path where the genotyping files are located</span></span>
-<span><span class="va">PATHGENOCHR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"pathgenochr"</span><span class="op">)</span></span>
+<span><span class="va">pathGenoChr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"pathgenochr"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The path where the merged genotyping files will be created</span></span>
 <span><span class="va">PATHOUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"pathgenoOUT"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Combining the genotyping information for all chromosome in one file per</span></span>
 <span><span class="co">## sample</span></span>
-<span><span class="fu"><a href="../reference/groupChr1KGSNV.html">groupChr1KGSNV</a></span><span class="op">(</span><span class="va">PATHGENOCHR</span>, <span class="va">PATHOUT</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/groupChr1KGSNV.html">groupChr1KGSNV</a></span><span class="op">(</span><span class="va">pathGenoChr</span>, <span class="va">PATHOUT</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level3">
@@ -260,9 +260,9 @@ pedigree file in RDS format:</p>
 <span></span>
 <span><span class="co">## Extract needed information from the pedigree file from 1KG into a data.frame</span></span>
 <span><span class="co">## Only the samples with genotyping information (sample file present</span></span>
-<span><span class="co">## in PATHGENO parameter) are retained to create the final data.frame</span></span>
+<span><span class="co">## in pathGeno parameter) are retained to create the final data.frame</span></span>
 <span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">filePED1KGOri</span>,</span>
-<span>                    PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span><span class="op">)</span></span>
+<span>                    pathGeno<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Save the pedigree information data.frame as a RDS file</span></span>
 <span><span class="co">## In this example, the file is saved here ./data/metadata/ped1KG.rds</span></span>
@@ -312,7 +312,7 @@ the SNP file and generated the needed RDS files:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The path to the bulk SNP info file</span></span>
-<span><span class="va">fileSNV.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGENO</span>, <span class="st">"matFreqSNV.txt.bz2"</span><span class="op">)</span></span>
+<span><span class="va">fileSNV.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathGeno</span>, <span class="st">"matFreqSNV.txt.bz2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The paths and names of the two output files</span></span>
 <span><span class="co">## One file contains the index of retained SNPs ("listSNP.rds")</span></span>
@@ -352,7 +352,7 @@ the GDS file that will contain the information related to 1KG:</p>
 <span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="va">fileNameGDS</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Generate GDS file containing the 1KG information</span></span>
-<span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>PATHGENO<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>pathGeno<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
 <span>                    fileNamePED<span class="op">=</span><span class="va">filePED1KG</span>,</span>
 <span>                    fileSNPSel<span class="op">=</span><span class="va">fileFREQ.v</span>,</span>
 <span>                    fileListSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
@@ -435,7 +435,7 @@ phase information into the newly created 1KG GDS phase file.</p>
 <span><span class="va">gdsPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">fileGDSPhase</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Add the phase information to the 1KG GDS phase file</span></span>
-<span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">PATHGENO</span>, <span class="va">fileLSNP.v</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">pathGeno</span>, <span class="va">fileLSNP.v</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close both files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsPhase</span><span class="op">)</span></span>
@@ -525,7 +525,7 @@ which this document was compiled:</p>
 <span><span class="co">##   [5] rmarkdown_2.21              fs_1.6.1                   </span></span>
 <span><span class="co">##   [7] BiocIO_1.9.2                zlibbioc_1.45.0            </span></span>
 <span><span class="co">##   [9] ragg_1.2.5                  vctrs_0.6.1                </span></span>
-<span><span class="co">##  [11] memoise_2.0.1               Rsamtools_2.15.2           </span></span>
+<span><span class="co">##  [11] memoise_2.0.1               Rsamtools_2.15.3           </span></span>
 <span><span class="co">##  [13] RCurl_1.98-1.12             quantsmooth_1.65.0         </span></span>
 <span><span class="co">##  [15] htmltools_0.5.5             progress_1.2.2             </span></span>
 <span><span class="co">##  [17] curl_5.0.0                  broom_1.0.4                </span></span>

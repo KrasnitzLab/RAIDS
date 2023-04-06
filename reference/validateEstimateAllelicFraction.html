@@ -68,8 +68,8 @@ estimateAllelicFraction function."><!-- mathjax --><script src="https://cdnjs.cl
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateEstimateAllelicFraction</span><span class="op">(</span></span>
 <span>  <span class="va">gds</span>,</span>
 <span>  <span class="va">gdsSample</span>,</span>
-<span>  <span class="va">sampleCurrent</span>,</span>
-<span>  <span class="va">study.id</span>,</span>
+<span>  <span class="va">currentProfile</span>,</span>
+<span>  <span class="va">studyID</span>,</span>
 <span>  <span class="va">chrInfo</span>,</span>
 <span>  <span class="va">studyType</span>,</span>
 <span>  <span class="va">minCov</span>,</span>
@@ -96,12 +96,12 @@ estimateAllelicFraction function."><!-- mathjax --><script src="https://cdnjs.cl
 (a GDS file), the GDS Sample file.</p></dd>
 
 
-<dt>sampleCurrent</dt>
+<dt>currentProfile</dt>
 <dd><p>a <code>character</code> string corresponding to
 the sample identifier as used in <code><a href="pruningSample.html">pruningSample</a></code> function.</p></dd>
 
 
-<dt>study.id</dt>
+<dt>studyID</dt>
 <dd><p>a <code>character</code> string corresponding to the name of
 the study as
 used in <code><a href="pruningSample.html">pruningSample</a></code> function.</p></dd>
@@ -199,7 +199,7 @@ identifier in <code>gdsRefAnnot</code>. **This parameter is RNA specific.**</p><
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateEstimateAllelicFraction</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
-<span class="r-in"><span>    sampleCurrent<span class="op">=</span><span class="st">"Sample01"</span>, study.id<span class="op">=</span><span class="st">"Synthetic"</span>, chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span></span>
+<span class="r-in"><span>    currentProfile<span class="op">=</span><span class="st">"Sample01"</span>, studyID<span class="op">=</span><span class="st">"Synthetic"</span>, chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span></span>
 <span class="r-in"><span>    studyType<span class="op">=</span><span class="st">"DNA"</span>, minCov<span class="op">=</span><span class="fl">10L</span>, minProb<span class="op">=</span><span class="fl">0.03</span>, eProb<span class="op">=</span><span class="fl">0.002</span>, cutOffLOH<span class="op">=</span><span class="fl">10</span>,</span></span>
 <span class="r-in"><span>    cutOffHomoScore<span class="op">=</span><span class="fl">11</span>, wAR<span class="op">=</span><span class="fl">2</span>, cutOffAR<span class="op">=</span><span class="fl">10</span>, gdsRefAnnot<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    block.id<span class="op">=</span><span class="st">"1"</span><span class="op">)</span></span></span>

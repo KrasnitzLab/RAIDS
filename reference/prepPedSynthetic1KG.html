@@ -82,7 +82,7 @@ as an extra column to the final 'data.frame'.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSample</span>, <span class="va">study.id</span>, <span class="va">popName</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSample</span>, <span class="va">studyID</span>, <span class="va">popName</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -98,7 +98,7 @@ as an extra column to the final 'data.frame'.</p>
 file.</p></dd>
 
 
-<dt>study.id</dt>
+<dt>studyID</dt>
 <dd><p>a <code>character</code> string representing the name of the
 study that will be extracted from the GDS Sample 'study.annot' node.</p></dd>
 
@@ -116,7 +116,7 @@ column from the <code>data.frame</code> stored in the 'sample.annot' node of the
 <p><code>data.frame</code> containing the columns extracted from the
 GDS Sample 'study.annot' node with a extra column named as the 'popName'
 parameter that has been extracted from the 1KG GDS 'sample.annot' node.
-Only the rows corresponding to the specified study ('study.id' parameter)
+Only the rows corresponding to the specified study ('studyID' parameter)
 are returned.</p>
     </div>
     <div id="details">
@@ -126,7 +126,7 @@ for a GDS Sample and the super-population of the 1KG samples used to
 generate each synthetic profile would be added
 as an extra column to the final 'data.frame'. In that situation, the
 'popName' parameter would correspond to the super-population column and the
-'study.id' parameter would be the name given to the synthetic dataset.</p>
+'studyID' parameter would be the name given to the synthetic dataset.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -150,7 +150,7 @@ as an extra column to the final 'data.frame'. In that situation, the
 <span class="r-in"><span><span class="co">## This function enables to extract the super-population associated to the</span></span></span>
 <span class="r-in"><span><span class="co">## 1KG samples that has been used to create the synthetic profiles</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
-<span class="r-in"><span>    study.id<span class="op">=</span><span class="st">"TCGA.Synthetic"</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    studyID<span class="op">=</span><span class="st">"TCGA.Synthetic"</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   data.id case.id sample.type diagnosis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> HG00101.Synthetic.01 HG00101.Synthetic.01 HG00101   Synthetic         C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> HG00101.Synthetic.02 HG00101.Synthetic.02 HG00101   Synthetic         C</span>

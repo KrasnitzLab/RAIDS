@@ -72,8 +72,8 @@ subset of SNPs that are in approximate linkage equilibrium.</p>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"corr"</span>, <span class="st">"r"</span>, <span class="st">"dprime"</span>, <span class="st">"composite"</span><span class="op">)</span>,</span>
 <span>  listSamples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  listKeep <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  slide.max.bp.v <span class="op">=</span> <span class="fl">500000L</span>,</span>
-<span>  ld.threshold.v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  slideWindowMaxBP <span class="op">=</span> <span class="fl">500000L</span>,</span>
+<span>  thresholdLD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  verbose.v <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -106,7 +106,7 @@ if <code>NULL</code>, all SNVs are used in the
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function. Default: <code>NULL</code>.</p></dd>
 
 
-<dt>slide.max.bp.v</dt>
+<dt>slideWindowMaxBP</dt>
 <dd><p>a single positive <code>integer</code> that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code>()
@@ -114,7 +114,7 @@ function.
 Default: <code>500000L</code>.</p></dd>
 
 
-<dt>ld.threshold.v</dt>
+<dt>thresholdLD</dt>
 <dd><p>a single <code>numeric</code> value that represents the LD
 threshold used in the <code><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsLDpruning.html" class="external-link">snpgdsLDpruning</a></code> function.
 Default: <code>sqrt(0.1)</code>.</p></dd>

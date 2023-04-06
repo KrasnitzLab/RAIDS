@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.99.2
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Most parameter names have been changed to follow the camelCase style.
+    
+
 CHANGES IN VERSION 0.99.1
 ------------------------
 

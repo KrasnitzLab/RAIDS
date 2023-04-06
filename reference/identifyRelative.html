@@ -143,19 +143,6 @@ The extension of the file must be '.rds'.</p></dd>
 <span class="r-in"><span><span class="co">## Identify unrelated patients in 1KG GDS file</span></span></span>
 <span class="r-in"><span><span class="fu">identifyRelative</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gdsFile</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    fileIBD<span class="op">=</span><span class="va">ibdTmpFile</span>, filePart<span class="op">=</span><span class="va">patientTmpFile</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IBD analysis (KING method of moment) on genotypes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Excluding 0 SNP on non-autosomes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Excluding 1 SNP (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     # of samples: 10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     # of SNPs: 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     using 1 thread</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No family is specified, and all individuals are treated as singletons.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Relationship inference in the presence of population stratification.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KING IBD:    the sum of all selected genotypes (0,1,2) = 37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPU capabilities: Double-Precision SSE2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Apr  6 00:46:26 2023    (internal increment: 65536)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [..................................................]  0%, ETC: ---        [==================================================] 100%, completed, 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thu Apr  6 00:46:26 2023    Done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using kinobj and divobj to partition samples into unrelated and related sets</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Working with 10 samples</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Identifying relatives for each sample using kinship threshold 0.0220970869120796</span>

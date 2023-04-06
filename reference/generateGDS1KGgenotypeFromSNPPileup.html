@@ -57,7 +57,7 @@ pileup — generateGDS1KGgenotypeFromSNPPileup"><meta property="og:description" 
     <div class="page-header">
     <h1>TODO This function append the genotype and the file related to the
 pileup</h1>
-    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper.R" class="external-link"><code>R/gdsWrapper.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper_internal.R" class="external-link"><code>R/gdsWrapper_internal.R</code></a></small>
     <div class="hidden name"><code>generateGDS1KGgenotypeFromSNPPileup.Rd</code></div>
     </div>
 
@@ -78,7 +78,7 @@ pileup</h1>
 <span>  <span class="va">batch</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
 <span>  PATHGDSSAMPLE <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -138,7 +138,7 @@ to the samples with coverage info is keep</p></dd>
 
 <dt>verbose</dt>
 <dd><p>a <code>logical</code> indicating if the function must print
-messages when running. Default: <code>FALSE</code>.</p></dd>
+messages when running.</p></dd>
 
 
 <dt>pedDF</dt>

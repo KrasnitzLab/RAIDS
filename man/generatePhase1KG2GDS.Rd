@@ -24,7 +24,7 @@ Default: \code{"./data/sampleGeno"}.}
 print messages when running. Default: \code{FALSE}.}
 }
 \value{
-TODO a \code{vector} of \code{string}
+TODO a \code{vector} of \code{character} strings
 }
 \description{
 TODO

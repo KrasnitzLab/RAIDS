@@ -373,7 +373,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @param verbose a \code{logicial} indicating if the function should
 #' print messages when running. Default: \code{FALSE}.
 #'
-#' @return TODO a \code{vector} of \code{string}
+#' @return TODO a \code{vector} of \code{character} strings
 #'
 #' @examples
 #'

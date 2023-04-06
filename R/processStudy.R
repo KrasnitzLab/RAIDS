@@ -522,7 +522,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
                 listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
-                thresholdLD=thresholdLD, np=np, verbose.v=verbose)
+                thresholdLD=thresholdLD, np=np, verbose=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
 

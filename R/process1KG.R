@@ -224,6 +224,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 
 
 #' @title Generate the GDS file that will contain the information from 1KG
+#' data set (reference data set)
 #'
 #' @description This function generates the GDS file that will contain the
 #' information from 1KG. The function also add the samples information, the
@@ -271,7 +272,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
 #'
 #' @examples
 #'
-#' ## Needed package
+#' ## Required package
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
@@ -327,6 +328,9 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
         stop("The file \'", fileSNPSel, "\' does not exist." )
     }
 
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, "verbose")
+
     ## Read the pedigree file
     ped1KG <- readRDS(fileNamePED)
 
@@ -354,13 +358,18 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     return(0L)
 }
 
-#' @title TODO
+#' @title Adding the phase information into the Reference GDS file
 #'
-#' @description TODO
+#' @description The function is adding the phase information into the
+#' Reference Phase GDS file. The phase information is extracted from a Reference
+#' GDS file and is added into a Reference Phase GDS file. An entry called
+#' 'phase' is added to the Reference Phase GDS file.
 #'
-#' @param gds an object of class \code{gds} opened
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (GDS file),
+#' an opened Reference GDS file.
 #'
-#' @param gdsPhase TODO
+#' @param gdsReferencePhase an object of class \link[gdsfmt]{gds.class}
+#' (GDS file), an opened Reference Phase GDS file.
 #'
 #' @param pathGeno a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
@@ -368,7 +377,9 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' the individual identification (Individual.ID) in the pedigree file.
 #' Default: \code{"./data/sampleGeno"}.
 #'
-#' @param fileLSNP TODO
+#' @param fileLSNP a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
 #'
 #' @param verbose a \code{logicial} indicating if the function should
 #' print messages when running. Default: \code{FALSE}.
@@ -377,25 +388,64 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' ## Required package
+#' library(withr)
 #'
-#' ## TODO
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The RDS file containing the pedigree information
+#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#'
+#' ## The RDS file containing the indexes of the retained SNPs
+#' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Temporary Reference GDS file containing 1KG information
+#' fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
+#'
+#' ## Create a temporary Reference GDS file containing information from 1KG
+#' generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
+#'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+#'     fileNameGDS=fileReferenceGDS, listSamples=NULL)
+#'
+#' ## Temporary Phase GDS file that will contain the 1KG Phase information
+#' fileRefPhaseGDS <- local_file(file.path(dataDir, "1KG_TEMP_Phase_02.gds"))
+#'
+#' ## Create Reference Phase GDS file
+#' gdsPhase <- createfn.gds(fileRefPhaseGDS)
+#'
+#' ## Open Reference GDS file
+#' gdsRef <- openfn.gds(fileReferenceGDS)
+#'
+#' \dontrun{
+#' ## Fill temporary Reference Phase GDS file
+#' generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
+#'     pathGeno=dataDir, fileLSNP=filterSNVFile, verbose=FALSE)
+#' }
+#'
+#' ## Close 1KG Phase information file
+#' closefn.gds(gdsPhase)
+#'
+#' ## Close Reference information file
+#' closefn.gds(gdsRef)
+#'
+#' ## Remove temporary files
+#' deferred_run()
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
 #' @encoding  UTF-8
 #' @export
-generatePhase1KG2GDS <- function(gds, gdsPhase,
-                            pathGeno, fileLSNP, verbose=FALSE) {
+generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
+                                    pathGeno, fileLSNP, verbose=FALSE) {
 
     ## The verbose parameter must be a logical
-    if (!(is.logical(verbose) && length(verbose) == 1)) {
-        stop("The \'verbose\' parameters must be a single logical value ",
-                "(TRUE or FALSE).")
-    }
+    validateLogical(logical=verbose, "verbose")
 
-    sample.id <- read.gdsn(index.gdsn(gds,"sample.id"))
+    sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
     listSNP <- readRDS(fileLSNP)
 
     var.phase <- NULL
@@ -411,16 +461,14 @@ generatePhase1KG2GDS <- function(gds, gdsPhase,
 
         if (verbose) { message("GDS ", i, " ", Sys.time()) }
 
-        if(! ("phase" %in% ls.gdsn(gdsPhase))){
-            var.phase <- add.gdsn(gdsPhase, "phase",
+        if(! ("phase" %in% ls.gdsn(gdsReferencePhase))) {
+            var.phase <- add.gdsn(gdsReferencePhase, "phase",
                                     valdim=c(length(listSNP), 1),
-                                    matSample,
-                                    storage="bit2",
-                                    compress = "LZ4_RA")
-
-        }else{
-            if(is.null(var.phase)){
-                var.phase <- index.gdsn(gdsPhase, "phase")
+                                    matSample, storage="bit2",
+                                    compress="LZ4_RA")
+        }else {
+            if(is.null(var.phase)) {
+                var.phase <- index.gdsn(gdsReferencePhase, "phase")
             }
             append.gdsn(var.phase, matSample)
         }

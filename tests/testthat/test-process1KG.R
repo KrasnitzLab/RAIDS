@@ -570,9 +570,9 @@ test_that("addGeneBlockGDSRefAnnot() must return error when file.gdsRefAnnot doe
 
 test_that("addGeneBlockGDSRefAnnot() must return error when winSize is a character string", {
 
-    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+    gdsFile <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    gds_1KG <- local_GDS_1KG_file(gdsFile, env=parent.frame())
     withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
 
     error_message <- "The \'winSize\' parameter must be a single numeric value."
@@ -581,5 +581,30 @@ test_that("addGeneBlockGDSRefAnnot() must return error when winSize is a charact
         file.gdsRefAnnot=test_path("fixtures",
             "ex1_good_small_1KG_Annot_GDS.gds"), winSize="10", EnsDb="human",
         suffixe.blockName="test"), error_message)
+})
+
+
+#############################################################################
+### Tests generatePhase1KG2GDS() results
+#############################################################################
+
+context("generatePhase1KG2GDS() results")
+
+
+test_that("generatePhase1KG2GDS() must return error when verbose is a numeric", {
+
+    dataDir <- test_path("fixtures")
+
+    gdsFile <- test_path("fixtures", "1KG_TEMP_001.gds")
+
+    gds1KG <- local_GDS_1KG_file(gdsFile, env=parent.frame())
+    withr::defer(closefn.gds(gds1KG), envir = parent.frame())
+
+    error_message <- paste0("The \'verbose\' parameter must be a logical",
+                                " (TRUE or FALSE).")
+
+    expect_error(generatePhase1KG2GDS(gdsReference=gds1KG,
+            gdsReferencePhase=gds1KG, pathGeno=dataDir, fileLSNP="test",
+            verbose="SAVE"), error_message,  fixed=TRUE)
 })
 

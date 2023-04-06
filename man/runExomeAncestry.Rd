@@ -47,8 +47,8 @@ Default: \code{NULL}.}
 \item{File.gds_1KG}{a \code{character} string representing the file name of
 the 1KG GDS file. The file must exist.}
 
-\item{File.gds_1KG.Annot}{a \code{character} string representing the file name of
-the 1KG GDS annotation file. The file must exist.}
+\item{File.gds_1KG.Annot}{a \code{character} string representing the
+file name of the 1KG GDS annotation file. The file must exist.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} values representing
 the length of the chromosomes. See 'details' section.}
@@ -64,20 +64,23 @@ super-population assigned to the sample. }
 } can be the return of select1KGPop}
 }
 \value{
-The integer \code{0L} when successful.
-
-The *computeAncestryFromSyntheticFile()* function generates 3 types of files
-in the *OUTPUT* directory.
-
-* The ancestry inference CSV file (".Ancestry.csv" file)
-* The inference information RDS file (".infoCall.rds" file)
-* The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)
-
-In addition, a sub-directory (named using the *profile ID*) is
-also created.
+The integer \code{0L} when successful. See details section for
+more information about the generated output files.
 }
 \description{
 TODO
+}
+\details{
+The runExomeAncestry() function generates 3 types of files
+in the OUTPUT directory.
+\itemize{
+\item{Ancestry Inference}{The ancestry inference CSV file (".Ancestry.csv" file)}
+\item{Inference Informaton}{The inference information RDS file (".infoCall.rds" file)}
+\item{Synthetic Information}{The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
+}
+
+In addition, a sub-directory (named using the profile ID) is
+also created.
 }
 \examples{
 
@@ -141,7 +144,6 @@ gds_1KG <- snpgdsOpen(file.GDS)
 
 set.seed(3043)
 
-
 dataRef <- select1KGPop(gds_1KG, nbSamples = 2L)
 
 closefn.gds(gds_1KG)
@@ -175,6 +177,7 @@ runExomeAncestry(pedStudy = ped, studyDF = studyDF,
 unlink(pathProfileGDS, recursive = TRUE, force=TRUE)
 unlink(PATHOUT, recursive = TRUE, force=TRUE)
 }
+
 }
 \references{
 Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,

@@ -414,16 +414,16 @@ library(gdsfmt)
 ## The name of the 1KG GDS file that already exists
 fileGDS1KG <- file.path(PATHGDS, "matGeno1000g.gds")
 
-## The name of the 1KG GDS phase file that will be created
+## The name of the 1KG Phase GDS file that will be created
 fileGDSPhase <- file.path(PATHGDS, "matPhase1000g.gds")
 
 ## Open the 1KG GDS file
 gds <- openfn.gds(fileGDS1KG)
 
-## Create the 1KG GDS phase file
+## Create the 1KG Phase GDS file
 gdsPhase <- createfn.gds(fileGDSPhase)
 
-## Add the phase information to the 1KG GDS phase file
+## Add the phase information to the 1KG Phase GDSfile
 generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileLSNP.v)
 
 ## Close both files

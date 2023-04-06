@@ -3,14 +3,22 @@
 \encoding{UTF-8}
 \name{generatePhase1KG2GDS}
 \alias{generatePhase1KG2GDS}
-\title{TODO}
+\title{Adding the phase information into the Reference GDS file}
 \usage{
-generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileLSNP, verbose = FALSE)
+generatePhase1KG2GDS(
+  gdsReference,
+  gdsReferencePhase,
+  pathGeno,
+  fileLSNP,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened}
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (GDS file),
+an opened Reference GDS file.}
 
-\item{gdsPhase}{TODO}
+\item{gdsReferencePhase}{an object of class \link[gdsfmt]{gds.class}
+(GDS file), an opened Reference Phase GDS file.}
 
 \item{pathGeno}{a \code{character} string representing the path where
 the 1K genotyping files for each sample are located. The name of the
@@ -18,7 +26,9 @@ genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.
 Default: \code{"./data/sampleGeno"}.}
 
-\item{fileLSNP}{TODO}
+\item{fileLSNP}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist. The file must be a RDS file.}
 
 \item{verbose}{a \code{logicial} indicating if the function should
 print messages when running. Default: \code{FALSE}.}
@@ -27,14 +37,59 @@ print messages when running. Default: \code{FALSE}.}
 TODO a \code{vector} of \code{character} strings
 }
 \description{
-TODO
+The function is adding the phase information into the
+Reference Phase GDS file. The phase information is extracted from a Reference
+GDS file and is added into a Reference Phase GDS file. An entry called
+'phase' is added to the Reference Phase GDS file.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+## Required package
+library(withr)
 
-## TODO
+## Path to the demo pedigree file is located in this package
+dataDir <- system.file("extdata", package="RAIDS")
+
+## The RDS file containing the pedigree information
+pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+
+## The RDS file containing the indexes of the retained SNPs
+snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+
+## The RDS file containing the filtered SNP information
+filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+
+## Temporary Reference GDS file containing 1KG information
+fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
+
+## Create a temporary Reference GDS file containing information from 1KG
+generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
+    fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+    fileNameGDS=fileReferenceGDS, listSamples=NULL)
+
+## Temporary Phase GDS file that will contain the 1KG Phase information
+fileRefPhaseGDS <- local_file(file.path(dataDir, "1KG_TEMP_Phase_02.gds"))
+
+## Create Reference Phase GDS file
+gdsPhase <- createfn.gds(fileRefPhaseGDS)
+
+## Open Reference GDS file
+gdsRef <- openfn.gds(fileReferenceGDS)
+
+\dontrun{
+## Fill temporary Reference Phase GDS file
+generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
+    pathGeno=dataDir, fileLSNP=filterSNVFile, verbose=FALSE)
+}
+
+## Close 1KG Phase information file
+closefn.gds(gdsPhase)
+
+## Close Reference information file
+closefn.gds(gdsRef)
+
+## Remove temporary files
+deferred_run()
 
 }
 \author{

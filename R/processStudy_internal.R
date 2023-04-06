@@ -472,9 +472,9 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' gds1KG <- file.path(data.dir, "gds1KG.gds")
+#' gds1KG <- file.path(dataDir, "gds1KG.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -494,14 +494,14 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
 #'             batch=1, studyDF=studyInfo,
 #'             listProfiles=c("Sample_01", "Sample_02"),
-#'             pathProfileGDS=data.dir, verbose=TRUE)
+#'             pathProfileGDS=dataDir, verbose=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
 validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
-                                       listProfiles, pathProfileGDS, verbose) {
+                                    listProfiles, pathProfileGDS, verbose) {
 
     ## The PED study must have the mandatory columns
     if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
@@ -1420,8 +1420,8 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #' @encoding UTF-8
 #' @keywords internal
 selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
-                                 predCall, listCall, kList=seq(3,15,1),
-                                 pcaList=seq(2,15,1)) {
+                                    predCall, listCall, kList=seq(3,15,1),
+                                    pcaList=seq(2,15,1)) {
 
     if (min(kList) < 3) {
         warning("A K smaller than 3 could not give robust results.\n")
@@ -1444,11 +1444,11 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
             res <- computeSyntheticConfMat(matKNN=matKNNCur, pedCall=pedCall,
                         refCall=refCall, predCall=predCall, listCall=listCall)
             resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
-                                          predCall, listCall)
+                                            predCall, listCall)
 
             df <- data.frame(D=D, K=K, AUROC.min=min(resROC$matAUROC.Call$AUC),
-                             AUROC=resROC$matAUROC.All$ROC.AUC,
-                             Accu.CM=res$matAccuracy$Accu.CM)
+                                AUROC=resROC$matAUROC.All$ROC.AUC,
+                                Accu.CM=res$matAccuracy$Accu.CM)
 
             listTMP[[j]] <- df
             listTMP.AUROC[[j]] <- resROC$matAUROC.Call
@@ -1465,7 +1465,7 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
                             median=median(df[df$K %in% kList, "AUROC.min"]),
                             mad=mad(df[df$K %in% kList, "AUROC.min"]),
                             upQuartile=quantile(df[df$K %in% kList,
-                                                   "AUROC.min"], 0.75),
+                                                        "AUROC.min"], 0.75),
                             K=kV)
         tableSyn[[i]] <- dfPCA
         i <- i + 1
@@ -1482,4 +1482,107 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
     res <- list(dfPCA=dfPCA, dfPop=dfCall, dfAUROC=dfAUROC,
                 D=selD, K=selK, listD=listD)
     return(res)
+}
+
+
+#' @title Validate the parameters of the runExomeAncestry function
+#'
+#' @description The function validates the input parameters for the
+#' runExomeAncestry function. When a parameter is not as expected, an error
+#' message is generated.
+#'
+#' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings (no factor). The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "studyID", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
+#'
+#' @param pathProfileGDS a \code{character} string representing the path to
+#' the directory where the GDS Profile files will be created.
+#' Default: \code{NULL}.
+#'
+#' @param pathGeno a \code{character} string representing the path to the
+#' directory containing the VCF output of SNP-pileup for each sample. The
+#' SNP-pileup files must be compressed (gz files) and have the name identifiers
+#' of the samples. A sample with "Name.ID" identifier would have an
+#' associated SNP-pileup file called "Name.ID.txt.gz".
+#'
+#' @param pathOut a \code{character} string representing the path to
+#' the directory where the output files are created.
+#'
+#' @param fileReferenceGDS  a \code{character} string representing the file
+#' name of the 1KG GDS file. The file must exist.
+#'
+#' @param fileReferenceAnnotGDS a \code{character} string representing the
+#' file name of the 1KG GDS annotation file. The file must exist.
+#'
+#' @param chrInfo a \code{vector} of \code{integer} values representing
+#' the length of the chromosomes. See 'details' section.
+#'
+#' @param dataRefSyn a \code{data.frame} containing those columns:
+#' \itemize{
+#' \item{sample.id} { a \code{character} string representing the sample
+#' identifier. }
+#' \item{pop.group} { a \code{character} string representing the
+#' subcontinental population assigned to the sample. }
+#' \item{superPop} { a \code{character} string representing the
+#' super-population assigned to the sample. }
+#' }
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#'
+#' pathOut <- file.path(dataDir, "example", "res.out")
+#'
+#' ## Study data frame
+#' study <- data.frame(study.id = "MYDATA",
+#'                       study.desc = "Description",
+#'                       study.platform = "PLATFORM",
+#'                       stringsAsFactors = FALSE)
+#'
+#' gds1KG <- file.path(dataDir, "gds1KG.gds")
+#'
+#' gdsAnnot1KG <- file.path(dataDir, "exAnnot1kg.gds")
+#'
+#' ## Pedigree Study data frame
+#' ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+#'             Case.ID=c("TCGA-H01", "TCGA-H02"),
+#'             Sample.Type=c("DNA", "DNA"),
+#'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+#'
+#' ## Chromosome length information
+#' ## chr23 is chrX, chr24 is chrY and chrM is 25
+#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+#'     156040895L, 57227415L,  16569L)
+#'
+#' ## TODO
+#' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
+#' pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
+#' fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
+#' chrInfo=chrInfo, dataRefSyn)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
+            pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
+            chrInfo, dataRefSyn) {
+
+
+    return(0L)
 }

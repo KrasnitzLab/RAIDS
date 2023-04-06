@@ -1095,14 +1095,14 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[24] <- length(Hsapiens[["chrY"]])
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 
-runExomeAncestry(pedStudy = ped, studyDF = studyDF,
-                 pathProfileGDS = pathProfileGDS,
-                 pathGeno = pathGeno,
-                 PATH_OUT = PATHOUT,
-                 File.gds_1KG = file.GDS,
-                 File.gds_1KG.Annot = file.Annot,
-                 chrInfo = chrInfo,
-                 dataRefSyn = dataRef)
+runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+                 pathProfileGDS=pathProfileGDS,
+                 pathGeno=pathGeno,
+                 pathOut=PATHOUT,
+                 fileReferenceGDS=file.GDS,
+                 File.gds_1KG.Annot=file.Annot,
+                 chrInfo=chrInfo,
+                 dataRefSyn=dataRef)
 list.files(PATHOUT)
 list.files(file.path(PATHOUT, ped$Name.ID[1]))
 

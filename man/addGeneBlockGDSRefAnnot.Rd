@@ -33,7 +33,7 @@ Default: \code{EnsDb.Hsapiens.v86}.}
 \item{suffixe.blockName}{TODO ex Ensembl.Hsapiens.v86}
 }
 \value{
-\code{OL} when the function is successful.
+The integer \code{OL} when the function is successful.
 }
 \description{
 TODO

@@ -252,10 +252,10 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                                             dfGenneAllChr$start[genePos]), 1))
                     vEnd <- min(c(which(matFreq$pos[startIndex] >=
                                             dfGenneAllChr$end[genePos]),
-                                  length(startIndex)))
+                                            length(startIndex)))
                     # List of SNV in the gene
                     listP <- which(matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] >= dfGenneAllChr$start[genePos] &
-                                       matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
+                                matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
 
                     # if SNV in the gene
                     if (length(listP) > 0) {
@@ -372,10 +372,10 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 
                 preList <- listOrph[i]:startIndex[vStart]
                 listWin <- which(matFreq[preList, "pos"] >
-                                     (matFreq[listOrph[i], "pos"] + winSize) |
-                                     (matFreq[preList, "pos"] >
-                                          matFreq[listOrph[i], "pos"] &
-                                          matFreq[preList,"GeneS"] > 0))
+                                    (matFreq[listOrph[i], "pos"] + winSize) |
+                                    (matFreq[preList, "pos"] >
+                                        matFreq[listOrph[i], "pos"] &
+                                        matFreq[preList,"GeneS"] > 0))
 
                 j <- ifelse(length(listWin) > 0, preList[listWin[1]] - 1,
                                 listOrph[i])
@@ -385,7 +385,6 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
                 v <- v - 1
                 i <- which(listOrph == j) + 1
                 flag <- ifelse(i <= length(listOrph), TRUE, FALSE)
-
             }
             offsetGene.O <- min(offsetGene.O, min(matFreq$Gene))
         }

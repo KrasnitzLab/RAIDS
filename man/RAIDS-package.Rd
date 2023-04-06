@@ -5,10 +5,10 @@
 \name{RAIDS-package}
 \alias{RAIDS-package}
 \alias{RAIDS}
-\title{RAIDS: Ancestry Inference from Cancer Sequencing}
+\title{RAIDS: Ancestry Inference from Cancer-Derived Sequences}
 \description{
 The RAIDS package implements specialized algorithms that enable
-ancestry inference from various cancer sequencing sources (RNA,
+ancestry inference from various cancer data sources (RNA,
 Exome and Whole-Genome sequencing).
 }
 \details{
@@ -17,6 +17,12 @@ synthetic cancer-derived data.
 
 This code and analysis pipeline was designed and developed for the
 following publication:
+
+Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
+Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
+Molecular Data across Genomic and Transcriptomic Platforms.
+Cancer Res 1 January 2023; 83 (1): 49–58.
+https://doi.org/10.1158/0008-5472.CAN-22-0682
 }
 \references{
 Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
@@ -24,7 +30,6 @@ Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
 Molecular Data across Genomic and Transcriptomic Platforms.
 Cancer Res 1 January 2023; 83 (1): 49–58.
 https://doi.org/10.1158/0008-5472.CAN-22-0682
-[link to paper](https://doi.org/10.1158/0008-5472.CAN-22-0682)
 }
 \seealso{
 \itemize{

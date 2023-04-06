@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{generateGDS1KG}
 \alias{generateGDS1KG}
-\title{Generate the GDS file that will contain the information from 1KG}
+\title{Generate the GDS file that will contain the information from 1KG
+data set (reference data set)}
 \usage{
 generateGDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
@@ -63,7 +64,7 @@ https://bioconductor.org/packages/gdsfmt/
 }
 \examples{
 
-## Needed package
+## Required package
 library(withr)
 
 ## Path to the demo pedigree file is located in this package

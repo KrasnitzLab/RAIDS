@@ -292,7 +292,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @keywords internal
 generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
     listSamples, listPos, offset, minCov=10, minProb=0.999,
-    seqError=0.001, pedStudy,batch, studyDF, PATHGDSSAMPLE=NULL, verbose) {
+    seqError=0.001, pedStudy, batch, studyDF, PATHGDSSAMPLE=NULL, verbose) {
 
     # File with the description of the SNP keep
     listMat <- dir(pathGeno, pattern = ".+.txt.gz")
@@ -533,7 +533,11 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 
     ## Calculate IBD coefficients by KING method of moment
     ibd.robust <- snpgdsIBDKING(gdsobj=gds, sample.id=profileID,
-                snp.id=snpID, maf=maf, type="KING-robust",verbose=verbose)
+                        snp.id=snpID, maf=maf,
+                        type="KING-robust",
+                        verbose=verbose)
+
+    ## Return result
     return(ibd.robust)
 }
 
@@ -615,9 +619,11 @@ runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
         thresholdLD=sqrt(0.1), np=1L, verbose) {
 
     ## Call SNP LD pruning
-    result <- snpgdsLDpruning(gdsobj=gds, method="corr", sample.id=listSamples,
-                    snp.id=listKeep, slide.max.bp=slideWindowMaxBP,
-                    ld.threshold=thresholdLD, num.thread=np, verbose=verbose)
+    result <- snpgdsLDpruning(gdsobj=gds, method="corr",
+                                sample.id=listSamples,
+                                snp.id=listKeep, slide.max.bp=slideWindowMaxBP,
+                                ld.threshold=thresholdLD, num.thread=np,
+                                verbose=verbose)
 
     return(result)
 }

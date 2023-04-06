@@ -5,10 +5,10 @@
 \alias{groupChr1KGSNV}
 \title{Merge the genotyping files per chromosome into one file}
 \usage{
-groupChr1KGSNV(PATHGENOCHR, PATHOUT)
+groupChr1KGSNV(pathGenoChr, PATHOUT)
 }
 \arguments{
-\item{PATHGENOCHR}{a \code{character} string representing the path where
+\item{pathGenoChr}{a \code{character} string representing the path where
 the genotyping files for each sample and chromosome are located. The path
 must contains sub-directories (one per chromosome) and the genotyping files
 must be present in those sub-directories.

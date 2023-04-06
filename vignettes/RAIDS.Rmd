@@ -377,13 +377,13 @@ file.GDS <- file.path(PATH_1KG, fileName.GDS.1KG)
 ## The Sample SNP pileup files (one per sample) need  
 ## to be located in the same directory.
 #################################################################
-PATHGENO <- file.path(data.dir, "example", "snpPileup")
+pathGeno <- file.path(data.dir, "example", "snpPileup")
 
 #################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
 #################################################################
-PATHSAMPLEGDS <- file.path(data.dir, "example", "out")
+pathProfileGDS <- file.path(data.dir, "example", "out")
 
 #################################################################
 ## The path and file name for the PED RDS file
@@ -416,18 +416,18 @@ listSamples <- ped[, "Name.ID"]
 ## This function creates one Sample GDS file for each
 ## sample present in the 'listProfiles' parameter.
 #################################################################
-createStudy2GDS1KG(pathGeno = PATHGENO,
+createStudy2GDS1KG(pathGeno = pathGeno,
                         pedStudy = ped,
                         fileNameGDS = file.GDS,
                         listProfiles = listSamples,
                         studyDF = studyDF,
-                        pathProfileGDS = PATHSAMPLEGDS)
+                        pathProfileGDS = pathProfileGDS)
 
 #################################################################
 ## The Sample GDS file has been created in the 
-## directory PATHSAMPLEGDS using the name of the sample (ex1) 
+## directory pathProfileGDS using the name of the sample (ex1)
 #################################################################
-list.files(path = PATHSAMPLEGDS)
+list.files(path = pathProfileGDS)
 ```
 
 <br>
@@ -474,19 +474,19 @@ for(i in seq_len(length(listSamples))) {
     ##           sub-step 4. 
     pruningSample(gds=gds_1KG,
                     currentProfile=listSamples[i],
-                    studyID=studyDF$study.id, 
-                    pathProfileGDS=PATHSAMPLEGDS)
+                    studyID=studyDF$study.id,
+                    pathProfileGDS=pathProfileGDS)
     
     ## Profile GDS file for the current sample
     ## The file name corresponds to the path + profile identifier + ".gds"
-    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+    file.GDSSample <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
     ## Add the genotype information for the list of pruned SNVs 
     ## into the Profile GDS file
     ## The genotype information is extracted from the 1KG GDS file
     add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
-                        sampleCurrent = listSamples[i], 
-                        study.id = studyDF$study.id)
+                        currentProfile = listSamples[i],
+                        studyID = studyDF$study.id)
 
     ## Add annotation from the 1KG GDS file to the Sample GDS file
     ## This is required.
@@ -596,7 +596,7 @@ sampleName <- listSamples[1]
 
 ## Name of the Sample GDS file
 ## The name must correspond to the sample identifier
-file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
+file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
 
 ## Open the Sample GDS file in writing mode
 gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
@@ -612,8 +612,8 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## the block.id should be as listed in the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
-                                        sampleCurrent = sampleName,
-                                        study.id = studyDF$study.id,
+                                        currentProfile = sampleName,
+                                        studyID = studyDF$study.id,
                                         chrInfo = chrInfo)
 
 ## Close both GDS files
@@ -721,7 +721,7 @@ studyDF.syn <- data.frame(study.id = "MYDATA.Synthetic",
                           stringsAsFactors = FALSE)
 
 ## The Sample GDS file is needed
-file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(sampleName, ".gds"))
+file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
 
 ####################################################################
 ## The prepSynthetic() function prepares the annotation for
@@ -788,7 +788,7 @@ gds <- openfn.gds(file.GDS)
 ## in RDS files.
 ## The directory must exist.
 ####################################################################
-PATH_OUT <- file.path(PATHSAMPLEGDS)
+PATH_OUT <- file.path(pathProfileGDS)
 
 if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
@@ -819,7 +819,7 @@ sampleRM <- splitSelectByPop(dataRef)
 for(i in seq_len(length(listSamples))) {
 
     ## The Sample GDS file associated to the cancer sample     
-    file.GDSSample <- file.path(PATHSAMPLEGDS, 
+    file.GDSSample <- file.path(pathProfileGDS,
                                     paste0(listSamples[i], ".gds"))
 
     ## A sub-directory is created for the cancer sample
@@ -847,7 +847,7 @@ for(i in seq_len(length(listSamples))) {
         ##  a range of K and D values
         KNN.synt <- computePoolSyntheticAncestryGr(gdsSample = gdsSample,
                                             sampleRM =  sampleRM[j,],
-                                            study.id.syn = studyDF.syn$study.id,
+                                            studyIDSyn = studyDF.syn$study.id,
                                             np = 4L,
                                             spRef = spRef,
                                             eigen.cnt = 15L)
@@ -906,7 +906,7 @@ gds <- openfn.gds(file.GDS)
     
 ## A directory for the results, where a sub-directory 
 ## will be set up for each input profile 
-PATH_OUT <- file.path(PATHSAMPLEGDS)
+PATH_OUT <- file.path(pathProfileGDS)
 
 if(! file.exists(PATH_OUT)) {
     dir.create(PATH_OUT)
@@ -926,7 +926,7 @@ spRef <- getRef1KGPop(gds, "superPop")
 for(i in seq_len(length(listSamples))){
     
     ## Extract the GDS file name and path for the current sample      
-    file.GDSSample <- file.path(PATHSAMPLEGDS, paste0(listSamples[i], ".gds"))
+    file.GDSSample <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
     ## Directory where the KNN results have been saved      
     PATHKNN <- file.path(PATH_OUT, listSamples[i])
@@ -943,7 +943,7 @@ for(i in seq_len(length(listSamples))){
                                     listFiles = listFiles,
                                     sample.ana.id = listSamples[i],
                                     spRef = spRef,
-                                    study.id.syn = studyDF.syn$study.id,
+                                    studyIDSyn = studyDF.syn$study.id,
                                     np = 1L)
 
     saveRDS(resCall, file.path(PATH_OUT,
@@ -1039,13 +1039,13 @@ file.Annot <- file.path(PATH_1KG, fileName.GDS.Annot)
 ## The Sample SNP pileup files (one per sample) need
 ## to be located in the same directory.
 #################################################################
-PATHGENO <- file.path(data.dir, "example", "snpPileup")
+pathGeno <- file.path(data.dir, "example", "snpPileup")
 
 #################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
 #################################################################
-PATHPROFILEGDS <- file.path(data.dir, "example", "out.tmp")
+pathProfileGDS <- file.path(data.dir, "example", "out.tmp")
 
 PATHOUT <- file.path(data.dir, "example", "res.out")
 
@@ -1096,8 +1096,8 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 
 runExomeAncestry(pedStudy = ped, studyDF = studyDF,
-                 PATHPROFILEGDS = PATHPROFILEGDS,
-                 PATHGENO = PATHGENO,
+                 pathProfileGDS = pathProfileGDS,
+                 pathGeno = pathGeno,
                  PATH_OUT = PATHOUT,
                  File.gds_1KG = file.GDS,
                  File.gds_1KG.Annot = file.Annot,
@@ -1117,7 +1117,7 @@ resAncestry <- read.csv(file.path(PATHOUT,
 resAncestry
 
 ## Remove temporary files created for this demo
-unlink(PATHPROFILEGDS, recursive = TRUE, force=TRUE)
+unlink(pathProfileGDS, recursive = TRUE, force=TRUE)
 unlink(PATHOUT, recursive = TRUE, force=TRUE)
 ```
 

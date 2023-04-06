@@ -5,14 +5,14 @@
 \alias{generatePhase1KG2GDS}
 \title{TODO}
 \usage{
-generatePhase1KG2GDS(gds, gdsPhase, PATHGENO, fileLSNP, verbose = FALSE)
+generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileLSNP, verbose = FALSE)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened}
 
 \item{gdsPhase}{TODO}
 
-\item{PATHGENO}{a \code{character} string representing the path where
+\item{pathGeno}{a \code{character} string representing the path where
 the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.

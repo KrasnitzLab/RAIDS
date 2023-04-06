@@ -6,7 +6,7 @@
 \title{Generate the GDS file that will contain the information from 1KG}
 \usage{
 generateGDS1KG(
-  PATHGENO = file.path("data", "sampleGeno"),
+  pathGeno = file.path("data", "sampleGeno"),
   fileNamePED,
   fileListSNP,
   fileSNPSel,
@@ -16,7 +16,7 @@ generateGDS1KG(
 )
 }
 \arguments{
-\item{PATHGENO}{a \code{character} string representing the path where
+\item{pathGeno}{a \code{character} string representing the path where
 the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.
@@ -82,7 +82,7 @@ filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
 GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
 
 ## Create a temporary GDS file containing information from 1KG
-generateGDS1KG(PATHGENO=data.dir, fileNamePED=pedigreeFile,
+generateGDS1KG(pathGeno=data.dir, fileNamePED=pedigreeFile,
     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
     fileNameGDS=GDS_file, listSamples=NULL)
 

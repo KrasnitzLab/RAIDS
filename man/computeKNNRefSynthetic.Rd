@@ -10,7 +10,7 @@ computeKNNRefSynthetic(
   gdsSample,
   listEigenvector,
   listCatPop,
-  study.id.syn,
+  studyIDSyn,
   spRef,
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
@@ -28,7 +28,7 @@ GDS Sample file.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{study.id.syn}{a the study.id of the synthetic data}
+\item{studyIDSyn}{a the studyID of the synthetic data}
 
 \item{spRef}{TODO}
 

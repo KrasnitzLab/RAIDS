@@ -12,17 +12,17 @@ pruningSample(
   currentProfile,
   studyID,
   listSNP = NULL,
-  slide.max.bp.v = 500000L,
-  ld.threshold.v = sqrt(0.1),
+  slideWindowMaxBP = 500000L,
+  thresholdLD = sqrt(0.1),
   np = 1L,
   verbose = FALSE,
   chr = NULL,
-  minAF.SuperPop = NULL,
-  keepGDSpruned = TRUE,
+  superPopMinAF = NULL,
+  keepPrunedGDS = TRUE,
   pathProfileGDS = NULL,
   keepFile = FALSE,
-  PATHPRUNED = ".",
-  outPref = "pruned"
+  pathPrunedGDS = ".",
+  outPrefix = "pruned"
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.}
 corresponding to the profile identifier used in LD pruning done by the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
 corresponding to the profile identifier must exist and be located in the
-\code{PATHSAMPLEGDS} directory.}
+\code{pathProfileGDS} directory.}
 
 \item{studyID}{a \code{character} string corresponding to the study
 identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
@@ -49,13 +49,13 @@ be passed the the pruning function;
 if \code{NULL}, all SNVs are used in the
 \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.}
 
-\item{slide.max.bp.v}{a single positive \code{integer} that represents
+\item{slideWindowMaxBP}{a single positive \code{integer} that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.
 Default: \code{500000L}.}
 
-\item{ld.threshold.v}{a single \code{numeric} value that represents the LD
+\item{thresholdLD}{a single \code{numeric} value that represents the LD
 threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 Default: \code{sqrt(0.1)}.}
 
@@ -71,11 +71,11 @@ selected SNVs should belong. Only one chromosome can be handled. If
 \code{NULL}, the chromosome is not used as a filtering criterion.
 Default: \code{NULL}.}
 
-\item{minAF.SuperPop}{a single positive \code{numeric} representing the
+\item{superPopMinAF}{a single positive \code{numeric} representing the
 minimum allelic frequency used to select the SNVs. If \code{NULL}, the
 allelic frequency is not used as a filtering criterion. Default: \code{NULL}.}
 
-\item{keepGDSpruned}{a \code{logicial} indicating if the information about
+\item{keepPrunedGDS}{a \code{logicial} indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.
 Default: \code{TRUE}.}
 
@@ -86,10 +86,10 @@ where the Profile GDS files will be created. The directory must exist.}
 information about the pruned SNVs must be
 created. Default: \code{FALSE}.}
 
-\item{PATHPRUNED}{a \code{character} string representing an existing
+\item{pathPrunedGDS}{a \code{character} string representing an existing
 directory. The directory must exist. Default: \code{"."}.}
 
-\item{outPref}{a \code{character} string that represents the prefix of the
+\item{outPrefix}{a \code{character} string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
 the parameter \code{keepFile}=\code{TRUE}. Default: \code{"pruned"}.}
 }

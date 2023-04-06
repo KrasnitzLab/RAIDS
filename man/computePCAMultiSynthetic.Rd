@@ -5,7 +5,7 @@
 \alias{computePCAMultiSynthetic}
 \title{TODO}
 \usage{
-computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, study.id.syn)
+computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, studyIDSyn)
 }
 \arguments{
 \item{gdsSample}{an object of class \code{gds} opened related to
@@ -16,7 +16,7 @@ the sample}
 \item{sampleRef}{a \code{vector} of sample.id from 1KG with one entry for
 each synthetic to project.}
 
-\item{study.id.syn}{a \code{character} string corresponding to the study
+\item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
 The study identifier must be present in the GDS Sample file.}
 }

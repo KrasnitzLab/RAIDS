@@ -8,7 +8,7 @@
 validateComputePCARefSample(
   gdsSample,
   name.id,
-  study.id.ref,
+  studyIDRef,
   np,
   algorithm,
   eigen.cnt,
@@ -22,7 +22,7 @@ a GDS Sample file.}
 \item{name.id}{a single \code{character} string representing the sample
 identifier.}
 
-\item{study.id.ref}{a single \code{character} string representing the
+\item{studyIDRef}{a single \code{character} string representing the
 study identifier.}
 
 \item{np}{a single positive \code{integer} representing the number of CPU
@@ -57,7 +57,7 @@ gdsSample <- openfn.gds(file.path(data.dir,
 
 ## The validatiion should be successful
 RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
-    study.id.ref="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
+    studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
     missing.rate=0.02)
 
 ## All GDS file must be closed

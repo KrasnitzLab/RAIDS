@@ -9,8 +9,8 @@ the Profile GDS file (reference) and the 1KG GDS file}
 getTableSNV(
   gds,
   gdsSample,
-  sampleCurrent,
-  study.id,
+  currentProfile,
+  studyID,
   minCov = 10,
   minProb = 0.999,
   eProb = 0.001,
@@ -24,10 +24,10 @@ the opened 1KG GDS file.}
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
 
-\item{sampleCurrent}{a \code{character} string corresponding to
+\item{currentProfile}{a \code{character} string corresponding to
 the sample identifier used in \code{\link{pruningSample}} function.}
 
-\item{study.id}{a \code{character} string corresponding to the study
+\item{studyID}{a \code{character} string corresponding to the study
 identifier used in \code{\link{pruningSample}} function.}
 
 \item{minCov}{a single positive \code{integer} representing the minimum

@@ -22,10 +22,10 @@ test_that("validatePruningSample() must return expected results when all input a
 
     result1 <- RAIDS:::validatePruningSample(gds=gdsF, method="corr",
         currentProfile="test.gds", studyID="TCGA",
-        listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
-        ld.threshold.v=0.008, np=1L, verbose=TRUE, chr=1,
-        minAF.SuperPop=0.002, keepGDSpruned=TRUE, pathProfileGDS=data.dir,
-        keepFile=FALSE, PATHPRUNED=data.dir, outPref="test")
+        listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
+        thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
+        superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=data.dir,
+        keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="test")
 
     expect_identical(result1, 0L)
 })
@@ -48,7 +48,7 @@ test_that("validateComputePoolSyntheticAncestryGr() must return expected results
 
     result1 <- RAIDS:::validateComputePoolSyntheticAncestryGr(
         gdsSample=gdsF, sampleRM="TGCA_01", spRef="TCGA",
-        study.id.syn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
+        studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
         fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
         pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
         missing.rate=0.02)
@@ -103,7 +103,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
 
     result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gdsF,
                     gdsSample=gdsF, listFiles, sample.ana.id,
-                    spRef, study.id.syn="Synthetic", np=1L,
+                    spRef, studyIDSyn="Synthetic", np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
                     kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",
@@ -129,7 +129,7 @@ test_that("validateComputePCARefSample() must return expected results when all i
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
-                name.id="HCC01", study.id.ref="1KG", np=1L, algorithm="exact",
+                name.id="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
                 eigen.cnt=32L, missing.rate=0.02)
 
     expect_identical(result1, 0L)
@@ -154,10 +154,10 @@ test_that("validateAppendStudy2GDS1KG() must return expected results when all in
                         study.desc="Pancreatic study",  study.platform="WES",
                         stringsAsFactors=FALSE)
 
-    result1 <- RAIDS:::validateAppendStudy2GDS1KG(PATHGENO=test_path("fixtures"),
+    result1 <- RAIDS:::validateAppendStudy2GDS1KG(pathGeno=test_path("fixtures"),
                     fileNamePED=rdsFile, fileNameGDS=gdsFile,
                     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-                    PATHSAMPLEGDS=test_path("fixtures"), verbose=TRUE)
+                    pathProfileGDS=test_path("fixtures"), verbose=TRUE)
 
     expect_identical(result1, 0L)
 })
@@ -184,7 +184,7 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
 
     result1 <- RAIDS:::validateAdd1KG2SampleGDS(gds=gdsF,
                 gdsProfileFile=gdsFile, currentProfile="Sample01",
-                study.id="Synthetic")
+                studyID="Synthetic")
 
     expect_identical(result1, 0L)
 })

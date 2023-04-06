@@ -5,7 +5,7 @@
 \alias{validatePrepPed1KG}
 \title{Validate input parameters for prepPed1KG() function}
 \usage{
-validatePrepPed1KG(pedFile, PATHGENO, batch)
+validatePrepPed1KG(pedFile, pathGeno, batch)
 }
 \arguments{
 \item{pedFile}{a \code{character} string representing the path and
@@ -13,7 +13,7 @@ file name of the pedigree file (PED file) that contains the information
 related to the profiles present in the 1KG GDS file. The PED file must
 exist.}
 
-\item{PATHGENO}{a \code{character} string representing the path where
+\item{pathGeno}{a \code{character} string representing the path where
 the 1KG genotyping files for each profile are located. Only the profiles
 with associated genotyping files are retained in the creation of the final
 \code{data.frame}. The name of the genotyping files must correspond to
@@ -40,7 +40,7 @@ pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
 
 ## The validation should be successful
 RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-     PATHGENO=data.dir, batch=1)
+     pathGeno=data.dir, batch=1)
 
 
 }

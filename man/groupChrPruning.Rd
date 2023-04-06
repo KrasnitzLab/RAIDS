@@ -5,10 +5,10 @@
 \alias{groupChrPruning}
 \title{Merge the pruning files by chromosome in one file}
 \usage{
-groupChrPruning(PATHPRUNED, filePref, fileOUT)
+groupChrPruning(pathPrunedGDS, filePref, fileOUT)
 }
 \arguments{
-\item{PATHPRUNED}{TODO}
+\item{pathPrunedGDS}{TODO}
 
 \item{filePref}{TODO}
 

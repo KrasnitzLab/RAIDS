@@ -11,17 +11,17 @@ validatePruningSample(
   currentProfile,
   studyID,
   listSNP,
-  slide.max.bp.v,
-  ld.threshold.v,
+  slideWindowMaxBP,
+  thresholdLD,
   np,
   verbose,
   chr,
-  minAF.SuperPop,
-  keepGDSpruned,
+  superPopMinAF,
+  keepPrunedGDS,
   pathProfileGDS,
   keepFile,
-  PATHPRUNED,
-  outPref
+  pathPrunedGDS,
+  outPrefix
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ be used to calculate the linkage disequilibrium in the
 corresponding to the profile identifier used in LD pruning done by the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. A Profile GDS file
 corresponding to the profile identifier must exist and be located in the
-\code{PATHSAMPLEGDS} directory.}
+\code{pathProfileGDS} directory.}
 
 \item{studyID}{a \code{character} string corresponding to the study
 identifier used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
@@ -47,12 +47,12 @@ be passed the the pruning function;
 if \code{NULL}, all SNVs are used in the
 \code{\link[SNPRelate]{snpgdsLDpruning}} function.}
 
-\item{slide.max.bp.v}{a single positive \code{integer} that represents
+\item{slideWindowMaxBP}{a single positive \code{integer} that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}
 function.}
 
-\item{ld.threshold.v}{a single \code{numeric} value that represents the LD
+\item{thresholdLD}{a single \code{numeric} value that represents the LD
 threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.}
 
 \item{np}{a single positive \code{integer} specifying the number of
@@ -66,11 +66,11 @@ function.}
 selected SNVs should belong. Only one chromosome can be handled. If
 \code{NULL}, the chromosome is not used as a filtering criterion.}
 
-\item{minAF.SuperPop}{a single positive \code{numeric} representing the
+\item{superPopMinAF}{a single positive \code{numeric} representing the
 minimum allelic frequency used to select the SNVs. If \code{NULL}, the
 allelic frequency is not used as a filtering criterion.}
 
-\item{keepGDSpruned}{a \code{logicial} indicating if the information about
+\item{keepPrunedGDS}{a \code{logicial} indicating if the information about
 the pruned SNVs should be added to the GDS Sample file.}
 
 \item{pathProfileGDS}{a \code{character} string representing the directory
@@ -79,10 +79,10 @@ where the Profile GDS files will be created. The directory must exist.}
 \item{keepFile}{a \code{logical} indicating if RDS files containing the
 information about the pruned SNVs must be created.}
 
-\item{PATHPRUNED}{a \code{character} string representing an existing
+\item{pathPrunedGDS}{a \code{character} string representing an existing
 directory. The directory must exist.}
 
-\item{outPref}{a \code{character} string that represents the prefix of the
+\item{outPrefix}{a \code{character} string that represents the prefix of the
 RDS files that will be generated. The RDS files are only generated when
 the parameter \code{keepFile}=\code{TRUE}.}
 }
@@ -104,10 +104,10 @@ gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
 ## The validation should be successful
 RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
      currentProfile="TGCA_01", studyID="TCGA",
-     listSNP=c("sr10103", "sr10202"), slide.max.bp.v=1000L,
-     ld.threshold.v=0.008, np=1L, verbose=TRUE, chr=1,
-     minAF.SuperPop=0.002, keepGDSpruned=TRUE, pathProfileGDS=data.dir,
-     keepFile=FALSE, PATHPRUNED=data.dir, outPref="test")
+     listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
+     thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
+     superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=data.dir,
+     keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="test")
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

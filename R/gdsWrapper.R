@@ -593,7 +593,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each samples
+#' @param pathGeno TODO a PATH to a directory with the a file for each samples
 #' with the genotype.
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
@@ -614,11 +614,11 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose=TRUE) {
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
+generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
                                     verbose=FALSE) {
 
     # File with the description of the SNP keep
-    listMat1k <- dir(PATHGENO, pattern=".+.csv.bz2")
+    listMat1k <- dir(pathGeno, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
     listSNP <- readRDS(fileLSNP)
@@ -629,7 +629,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
         if(verbose) { message(listSamples[i]) }
 
         if( length(pos) == 1) {
-            matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
+            matSample <- read.csv2(file.path(pathGeno, listMat1k[pos]),
                                         row.names=NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
             if(i == 1) {
@@ -668,7 +668,7 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #'
 #' @param gds a \code{gds} object.
 #'
-#' @param PATHGENO TODO a PATH to a directory with the a file for each
+#' @param pathGeno TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
 #' @param fileLSNP TODO list of SNP to keep in the file genotype
@@ -690,11 +690,11 @@ generateGDSgenotype <- function(gds, PATHGENO, fileLSNP, listSamples,
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP,
+appendGDSgenotype <- function(gds, listSample, pathGeno, fileLSNP,
                                 verbose=FALSE) {
 
     # File with the description of the SNP keep
-    listMat1k <- dir(PATHGENO, pattern = ".+.csv.bz2")
+    listMat1k <- dir(pathGeno, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
     listSNP <- readRDS(file=fileLSNP)
@@ -705,7 +705,7 @@ appendGDSgenotype <- function(gds, listSample, PATHGENO, fileLSNP,
     for(i in seq_len(length(listSample))) {
         pos <- which(listSample1k == listSample[i])
         if( length(pos) == 1) {
-            matSample <- read.csv2(file.path(PATHGENO, listMat1k[pos]),
+            matSample <- read.csv2(file.path(pathGeno, listMat1k[pos]),
                                         row.names = NULL)
             matSample <- matSample[listSNP,, drop=FALSE]
 
@@ -1296,13 +1296,13 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 #' if \code{NULL}, all SNVs are used in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.
 #'
-#' @param slide.max.bp.v a single positive \code{integer} that represents
+#' @param slideWindowMaxBP a single positive \code{integer} that represents
 #' the maximum basepairs (bp) in the sliding window. This parameter is used
 #' for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}()
 #' function.
 #' Default: \code{500000L}.
 #'
-#' @param ld.threshold.v a single \code{numeric} value that represents the LD
+#' @param thresholdLD a single \code{numeric} value that represents the LD
 #' threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 #' Default: \code{sqrt(0.1)}.
 #'
@@ -1339,16 +1339,16 @@ runIBDKING <- function(gds, sampleId=NULL, snp.id=NULL, maf=0.05) {
 runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             listSamples=NULL,
                             listKeep=NULL,
-                            slide.max.bp.v = 500000L,
-                            ld.threshold.v=sqrt(0.1),
+                            slideWindowMaxBP = 500000L,
+                            thresholdLD=sqrt(0.1),
                             np=1L, verbose.v=FALSE) {
 
     ## Call SNP LD pruning
     snpset <- snpgdsLDpruning(gds, method="corr",
                                 sample.id=listSamples,
                                 snp.id=listKeep,
-                                slide.max.bp=slide.max.bp.v,
-                                ld.threshold=ld.threshold.v,
+                                slide.max.bp=slideWindowMaxBP,
+                                ld.threshold=thresholdLD,
                                 num.thread=np,
                                 verbose=verbose.v)
     return(snpset)

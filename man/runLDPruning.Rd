@@ -10,8 +10,8 @@ runLDPruning(
   method = c("corr", "r", "dprime", "composite"),
   listSamples = NULL,
   listKeep = NULL,
-  slide.max.bp.v = 500000L,
-  ld.threshold.v = sqrt(0.1),
+  slideWindowMaxBP = 500000L,
+  thresholdLD = sqrt(0.1),
   np = 1L,
   verbose.v = FALSE
 )
@@ -34,13 +34,13 @@ samples are used. Default: \code{NULL}.}
 if \code{NULL}, all SNVs are used in the
 \code{\link[SNPRelate]{snpgdsLDpruning}} function. Default: \code{NULL}.}
 
-\item{slide.max.bp.v}{a single positive \code{integer} that represents
+\item{slideWindowMaxBP}{a single positive \code{integer} that represents
 the maximum basepairs (bp) in the sliding window. This parameter is used
 for the LD pruning done in the \code{\link[SNPRelate]{snpgdsLDpruning}}()
 function.
 Default: \code{500000L}.}
 
-\item{ld.threshold.v}{a single \code{numeric} value that represents the LD
+\item{thresholdLD}{a single \code{numeric} value that represents the LD
 threshold used in the \code{\link[SNPRelate]{snpgdsLDpruning}} function.
 Default: \code{sqrt(0.1)}.}
 

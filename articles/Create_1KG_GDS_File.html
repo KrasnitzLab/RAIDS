@@ -425,16 +425,16 @@ phase information into the newly created 1KG GDS phase file.</p>
 <span><span class="co">## The name of the 1KG GDS file that already exists</span></span>
 <span><span class="va">fileGDS1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="st">"matGeno1000g.gds"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## The name of the 1KG GDS phase file that will be created</span></span>
+<span><span class="co">## The name of the 1KG Phase GDS file that will be created</span></span>
 <span><span class="va">fileGDSPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHGDS</span>, <span class="st">"matPhase1000g.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Open the 1KG GDS file</span></span>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileGDS1KG</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Create the 1KG GDS phase file</span></span>
+<span><span class="co">## Create the 1KG Phase GDS file</span></span>
 <span><span class="va">gdsPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">fileGDSPhase</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Add the phase information to the 1KG GDS phase file</span></span>
+<span><span class="co">## Add the phase information to the 1KG Phase GDSfile</span></span>
 <span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">pathGeno</span>, <span class="va">fileLSNP.v</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close both files</span></span>

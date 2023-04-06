@@ -120,8 +120,8 @@ the 1KG GDS file. The file must exist.</p></dd>
 
 
 <dt>File.gds_1KG.Annot</dt>
-<dd><p>a <code>character</code> string representing the file name of
-the 1KG GDS annotation file. The file must exist.</p></dd>
+<dd><p>a <code>character</code> string representing the
+file name of the 1KG GDS annotation file. The file must exist.</p></dd>
 
 
 <dt>chrInfo</dt>
@@ -143,19 +143,16 @@ super-population assigned to the sample.</p></li>
     <h2>Value</h2>
     
 
-<p>The integer <code>0L</code> when successful.</p>
-
-
-<p>The *computeAncestryFromSyntheticFile()* function generates 3 types of files
-in the *OUTPUT* directory.</p>
-
-
-<p>* The ancestry inference CSV file (".Ancestry.csv" file)
-* The inference information RDS file (".infoCall.rds" file)
-* The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)</p>
-
-
-<p>In addition, a sub-directory (named using the *profile ID*) is
+<p>The integer <code>0L</code> when successful. See details section for
+more information about the generated output files.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The runExomeAncestry() function generates 3 types of files
+in the OUTPUT directory.</p><ul><li><p>Ancestry InferenceThe ancestry inference CSV file (".Ancestry.csv" file)</p></li>
+<li><p>Inference InformatonThe inference information RDS file (".infoCall.rds" file)</p></li>
+<li><p>Synthetic InformationThe parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)</p></li>
+</ul><p>In addition, a sub-directory (named using the profile ID) is
 also created.</p>
     </div>
     <div id="references">
@@ -235,7 +232,6 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds_1KG</span>, nbSamples <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds_1KG</span><span class="op">)</span></span></span>
@@ -269,6 +265,7 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">PATHOUT</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

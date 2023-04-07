@@ -1154,7 +1154,7 @@ validateDataRefSynParameter <- function(dataRefSyn) {
     ## The reference profile data.frame must have the mandatory columns
     if (!(all(c("sample.id", "pop.group", "superPop")
                     %in% colnames(dataRefSyn)))) {
-        stop("The reference profile data frame is incomplete. ",
+        stop("The reference profile data frame \'dataRefSyn\' is incomplete. ",
                 "One or more mandatory columns are missing. The mandatory ",
                 "columns are: \'sample.id\', \'pop.group\', \'superPop\'.")
     }

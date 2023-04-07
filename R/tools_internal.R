@@ -293,12 +293,15 @@ readSNVPileupFile <- function(fileName, offset = 0L) {
 #' @description TODO
 #'
 #' @param fileName File name with the path to a
-#' csv with the columns:
-#' Chromosome,Position,Ref,Alt,count,File1R,File1A
+#' csv with at least the columns:
+#' Chromosome,Position,Ref,Alt,Count,File1R,File1A
+#' where Count is the deep at the position,
+#' FileR is the deep of the reference allele, and
+#' File1A is the deep of the specific alternative allele
 #'
 #' @param offset TODO
 #'
-#' @return the a \code{data.frame} containing at least:
+#' @return a \code{data.frame} containing at least:
 #' \itemize{
 #' \item{Chromosome} {TODO}
 #' \item{Position} {TODO}
@@ -320,12 +323,12 @@ readSNVPileupFile <- function(fileName, offset = 0L) {
 readSNVFileGeneric <- function(fileName, offset = 0L) {
 
     matSample <- read.csv(fileName)
-
+    # Check if the mendatory column are there
 
     matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
                                                  matSample[, "Chromosome"]))
     matSample[, "Position"] <- matSample[, "Position"] + offset
-
+    colnames(matSample)[colnames(matSample) == "Count"] <- "count"
 
     return(matSample)
 }

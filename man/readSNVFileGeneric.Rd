@@ -9,13 +9,16 @@ readSNVFileGeneric(fileName, offset = 0L)
 }
 \arguments{
 \item{fileName}{File name with the path to a
-csv with the columns:
-Chromosome,Position,Ref,Alt,count,File1R,File1A}
+csv with at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele}
 
 \item{offset}{TODO}
 }
 \value{
-the a \code{data.frame} containing at least:
+a \code{data.frame} containing at least:
 \itemize{
 \item{Chromosome} {TODO}
 \item{Position} {TODO}

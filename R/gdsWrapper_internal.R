@@ -270,6 +270,16 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param PATHGDSSAMPLE TODO a PATH to a directory where a gds specific
 #' to the samples with coverage info is keep
 #'
+#' @param genoSource a \code{stirng} with two possible values:
+#' snp-pileup and generic. It specify if the genotype files
+#' are generate by snp-pileup(Facets) or generic format csv
+#' with the column at least the columns:
+#' Chromosome,Position,Ref,Alt,Count,File1R,File1A
+#' where Count is the deep at the position,
+#' FileR is the deep of the reference allele, and
+#' File1A is the deep of the specific alternative allele
+#'
+#'
 #' @param verbose a \code{logical} indicating if the function must print
 #' messages when running.
 #'
@@ -292,12 +302,13 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @keywords internal
 generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
     listSamples, listPos, offset, minCov=10, minProb=0.999,
-    seqError=0.001, pedStudy, batch, studyDF, PATHGDSSAMPLE=NULL, verbose) {
+    seqError=0.001, pedStudy, batch, studyDF, PATHGDSSAMPLE=NULL,
+    genoSource = c("snp-pileup", "generic"), verbose) {
 
     # File with the description of the SNP keep
     listMat <- dir(pathGeno, pattern = ".+.txt.gz")
     listSampleFile <- gsub(".txt.gz", "", listMat)
-    genoTypeSource = "snp-pileup"
+
     g <- as.matrix(rep(-1, nrow(listPos)))
 
     for(i in seq_len(length(listSamples))) {
@@ -308,8 +319,12 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
         if(length(pos) == 1) {
 
             #
-            if(genoTypeSource == "snp-pileup"){
-                matSample <- readSNVPileupFile(file.path(pathGeno, listMat[pos]), offset)
+            if(genoSource == "snp-pileup") {
+                matSample <- readSNVPileupFile(file.path(pathGeno,
+                                        listMat[pos]), offset)
+            } else if(genoTypeSource == "generic") {
+                matSample <- readSNVFileGeneric(file.path(pathGeno,
+                                        listMat[pos]), offset)
             }
             # matAll <- merge(matSample[,c( "Chromosome", "Position",
             #                               "File1R",  "File1A",

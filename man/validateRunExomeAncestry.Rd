@@ -86,7 +86,7 @@ study <- data.frame(study.id = "MYDATA",
 
 gds1KG <- file.path(dataDir, "gds1KG.gds")
 
-gdsAnnot1KG <- file.path(dataDir, "exAnnot1kg.gds")
+gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
 
 ## Pedigree Study data frame
 ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),

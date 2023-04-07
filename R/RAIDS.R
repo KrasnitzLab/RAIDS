@@ -67,6 +67,7 @@
 #'     estimation method is adapted to the type of study (DNA or RNA). }
 #' }
 #'
+#' @return RAIDS
 #' @encoding UTF-8
 #' @keywords package
 NULL

@@ -27,9 +27,9 @@ test_that("select1KGPop() must return error when nbSamples is a character string
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
 
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'nbSamples\' parameter must be a ",
@@ -44,9 +44,9 @@ test_that("select1KGPop() must return expected results", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
 
-    gdsFile <- file.path(data.dir, "1KG_Test_02.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test_02.gds")
 
-    gdsF <- openfn.gds(gdsFile)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     expected <- data.frame(sample.id=c("HG00101", "HG00097",
@@ -125,15 +125,15 @@ context("syntheticGeno() results")
 test_that("syntheticGeno() must return error when gds is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
-    expect_error(syntheticGeno(gds=33, gdsRefAnnot=gdsFIle,
-            gdsSampleFile=2, data.id.profile="test",
+    expect_error(syntheticGeno(gds=33, gdsRefAnnot=fileGDS,
+            fileProfileGDS=2, data.id.profile="test",
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb=0.01,
             minProb=0.999, seqError=0.001), error_message)
@@ -143,34 +143,34 @@ test_that("syntheticGeno() must return error when gds is a numeric value", {
 test_that("syntheticGeno() must return error when gdsRefAnnot is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'gdsRefAnnot\' must be an object of class \'gds.class\'."
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=33,
-                              gdsSampleFile=2, data.id.profile="test",
+                              fileProfileGDS=2, data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),
                               nbSim=1, prefId="", pRecomb=0.01,
                               minProb=0.999, seqError=0.001), error_message)
 })
 
 
-test_that("syntheticGeno() must return error when gdsSampleFile is a numeric value", {
+test_that("syntheticGeno() must return error when fileProfileGDS is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    error_message <- paste0("The \'gdsSampleFile\' must be a character ",
+    error_message <- paste0("The \'fileProfileGDS\' must be a character ",
                                 "string and the file must exist.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                        gdsSampleFile=2, data.id.profile="test",
+                        fileProfileGDS=2, data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
                         nbSim=1, prefId="", pRecomb=0.01,
                         minProb=0.999, seqError=0.001), error_message)
@@ -180,15 +180,15 @@ test_that("syntheticGeno() must return error when gdsSampleFile is a numeric val
 test_that("syntheticGeno() must return error when data.id.profile is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'data.id.profile\' must be a character string."
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-            gdsSampleFile=gdsFIle, data.id.profile=22,
+            fileProfileGDS=fileGDS, data.id.profile=22,
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb=0.01,
             minProb=0.999, seqError=0.001), error_message)
@@ -198,15 +198,15 @@ test_that("syntheticGeno() must return error when data.id.profile is a numeric v
 test_that("syntheticGeno() must return error when listSampleRef is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'listSampleRef\' must be a vector of character strings."
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-        gdsSampleFile=gdsFIle, data.id.profile="sample01", listSampleRef=33,
+        fileProfileGDS=fileGDS, data.id.profile="sample01", listSampleRef=33,
         nbSim=1, prefId="", pRecomb=0.01,
         minProb=0.999, seqError=0.001), error_message)
 })
@@ -215,15 +215,15 @@ test_that("syntheticGeno() must return error when listSampleRef is a numeric val
 test_that("syntheticGeno() must return error when data.id.profile is a vector of strings", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'data.id.profile\' must be a character string."
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                    gdsSampleFile=gdsFIle, data.id.profile=c("01", "02"),
+                    fileProfileGDS=fileGDS, data.id.profile=c("01", "02"),
                     listSampleRef=c("Sample1", "sample2"),
                     nbSim=1, prefId="", pRecomb=0.01,
                     minProb=0.999, seqError=0.001), error_message)
@@ -233,16 +233,16 @@ test_that("syntheticGeno() must return error when data.id.profile is a vector of
 test_that("syntheticGeno() must return error when nbSim is a character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'nbSim\' parameter must be a single ",
                                 "positive numeric value.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                        gdsSampleFile=gdsFIle,
+                        fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
                         nbSim="zero", prefId="", pRecomb=0.01,
@@ -254,16 +254,16 @@ test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
             "of character strings"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'prefId\' parameter must be a single ",
                                 "character string.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                        gdsSampleFile=gdsFIle,
+                        fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
                         nbSim=2, prefId=c("", "eee"),
@@ -275,16 +275,16 @@ test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
 test_that("syntheticGeno() must return error when prefId is a numeric value", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'prefId\' parameter must be a single ",
                                 "character string.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                        gdsSampleFile=gdsFIle,
+                        fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
                         nbSim=2, prefId=2,
@@ -296,16 +296,16 @@ test_that("syntheticGeno() must return error when prefId is a numeric value", {
 test_that(paste0("syntheticGeno() must return error when pRecomb is a character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'pRecomb\' parameter must be a single positive ",
                                 "numeric value between 0 and 1.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-            gdsSampleFile=gdsFIle, data.id.profile="test",
+            fileProfileGDS=fileGDS, data.id.profile="test",
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb="0.01",
             minProb=0.999, seqError=0.001), error_message)
@@ -316,16 +316,16 @@ test_that(paste0("syntheticGeno() must return error when seqError is a ",
                     "character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'seqError\' parameter must be a single ",
                 "positive numeric value between 0 and 1.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                              gdsSampleFile=gdsFIle,
+                              fileProfileGDS=fileGDS,
                               data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),
                               nbSim=1, prefId="", pRecomb=0.01,
@@ -337,16 +337,16 @@ test_that(paste0("syntheticGeno() must return error when minProb is a ",
                     "character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'minProb\' parameter must be a single ",
                             "positive numeric value between 0 and 1.")
 
     expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-                              gdsSampleFile=gdsFIle,
+                              fileProfileGDS=fileGDS,
                               data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),
                               nbSim=1, prefId="", pRecomb=0.01,
@@ -361,14 +361,14 @@ test_that(paste0("syntheticGeno() must return error when minProb is a ",
 context("prepSynthetic() results")
 
 
-test_that(paste0("prepSynthetic() must return error when gdsSampleFile is",
+test_that(paste0("prepSynthetic() must return error when fileProfileGDS is",
                     " a numeric value"), {
 
-    error_message <- paste0("The \'gdsSampleFile\' must be a character ",
+    error_message <- paste0("The \'fileProfileGDS\' must be a character ",
                     "string representing the GDS Sample information file. ",
                     "The file must exist.")
 
-    expect_error(prepSynthetic(gdsSampleFile=22, listSampleRef=c("S_1", "S_2"),
+    expect_error(prepSynthetic(fileProfileGDS=22, listSampleRef=c("S_1", "S_2"),
                     data.id.profile="S_1", studyDF="TCGA", nbSim=1L,
                     prefId=""), error_message)
 })
@@ -378,7 +378,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
                     "a character string"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id = "Id of the study",
                             study.desc = "Description",
@@ -387,7 +387,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
 
     error_message <- "The \'nbSim\' must be a single positive integer."
 
-    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
                     listSampleRef=c("S_1", "S_2"),
                     data.id.profile="S_1", studyDF=studyDF, nbSim="1L",
                     prefId=""), error_message)
@@ -397,12 +397,12 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
 test_that(paste0("prepSynthetic() must return error when listSampleRef is vector of numerics"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
     error_message <- paste0("The \'listSampleRef\' must be a vector of ",
                                 "character strings.")
 
-    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
                 listSampleRef=c(1, 2),
                 data.id.profile="S_1", studyDF=NULL, nbSim=1L,
                 prefId=""), error_message)
@@ -412,7 +412,7 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
 test_that(paste0("prepSynthetic() must return error when studyDF is missing mandatory column"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
                                 study.platform="Whole-Exome",
@@ -421,7 +421,7 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
     error_message <- paste0("The \'studyDF\' data frame is incomplete. ",
                                 "One or more mandatory column is missing.\n")
 
-    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
                         listSampleRef=c("S_1", "S_2"),
                             data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
                             prefId=""), error_message)
@@ -431,7 +431,7 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
 test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id = "Id of the study",
                           study.desc = "Description",
@@ -440,7 +440,7 @@ test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
 
     error_message <- "The \'prefId\' must be a single character string."
 
-    expect_error(prepSynthetic(gdsSampleFile=gdsFIle,
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
                         listSampleRef=c("S_1", "S_2"),
                         data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
                         prefId=33), error_message)

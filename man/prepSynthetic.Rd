@@ -7,7 +7,7 @@
 (study and sample information) into a GDS Sample file}
 \usage{
 prepSynthetic(
-  gdsSampleFile,
+  fileProfileGDS,
   listSampleRef,
   data.id.profile,
   studyDF,
@@ -16,7 +16,7 @@ prepSynthetic(
 )
 }
 \arguments{
-\item{gdsSampleFile}{a \code{character} string representing the file name
+\item{fileProfileGDS}{a \code{character} string representing the file name
 of the GDS Sample file containing the information about the sample
 used to generate the synthetic profiles.}
 

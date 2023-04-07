@@ -37,17 +37,17 @@ a VCF file.
 data.dir <- system.file("extdata", package="RAIDS")
 
 ## Demo 1KG GDS file
-gdsFile <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
+fileGDS <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
 
 ## Output VCF file that will be created
 vcfFile <- file.path(data.dir, "Demo_TMP_01.vcf")
 
 ## Create a VCF file with the SNV dataset present in the GDS file
 ## No cutoff on frequency, so all SNVs are saved
-snvListVCF(gds=gdsFile, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+snvListVCF(gds=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
 
 ## Close GDS file (IMPORTANT)
-closefn.gds(gdsFile)
+closefn.gds(fileGDS)
 
 ## Remove temporary VCF file
 unlink(vcfFile, force=TRUE)

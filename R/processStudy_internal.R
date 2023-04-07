@@ -923,7 +923,7 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 
     ## The gdsProfileFile must be a character string and the file must exists
     if(!(is.character(gdsProfileFile) && (file.exists(gdsProfileFile)))) {
-        stop("The \'gdsSampleFile\' must be a character string representing ",
+        stop("The \'fileProfileGDS\' must be a character string representing ",
                 "the GDS Sample file. The file must exist.")
     }
 

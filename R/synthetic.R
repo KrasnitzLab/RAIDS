@@ -35,8 +35,8 @@
 #' ## Open 1KG GDS Demo file
 #' ## This file only one superpopulation (for demonstration purpose)
 #' data.dir <- system.file("extdata", package="RAIDS")
-#' gdsFile <- file.path(data.dir, "gds1KG.gds")
-#' gdsFileOpen <- openfn.gds(gdsFile)
+#' fileGDS <- file.path(data.dir, "gds1KG.gds")
+#' gdsFileOpen <- openfn.gds(fileGDS)
 #'
 #' ## Extract a selected number of random samples
 #' ## for each subcontinental population
@@ -180,7 +180,7 @@ splitSelectByPop <- function(dataRef) {
 #' The synthetic samples are assigned unique names by combining :
 #' [prefId].[data.id.profile].[listSampleRef].[simulation number(1 to nbSim)]
 #'
-#' @param gdsSampleFile a \code{character} string representing the file name
+#' @param fileProfileGDS a \code{character} string representing the file name
 #' of the GDS Sample file containing the information about the sample
 #' used to generate the synthetic profiles.
 #'
@@ -215,16 +215,16 @@ splitSelectByPop <- function(dataRef) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-prepSynthetic <- function(gdsSampleFile,
+prepSynthetic <- function(fileProfileGDS,
                             listSampleRef,
                             data.id.profile,
                             studyDF,
                             nbSim=1L,
                             prefId="") {
 
-    ## The gdsSampleFile must be a character string and the file must exists
-    if (!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
-        stop("The \'gdsSampleFile\' must be a character string representing ",
+    ## The fileProfileGDS must be a character string and the file must exists
+    if (!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
+        stop("The \'fileProfileGDS\' must be a character string representing ",
                 "the GDS Sample information file. The file must exist.")
     }
 
@@ -250,7 +250,7 @@ prepSynthetic <- function(gdsSampleFile,
     }
 
     ## Open the GDS Sample file
-    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
+    gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
 
     ## Extract information about the samples listed in the GDS Samples
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
@@ -319,7 +319,7 @@ prepSynthetic <- function(gdsSampleFile,
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the1 1KG SNV Annotation GDS file.
 #'
-#' @param gdsSampleFile a \code{character} string representing the file name of
+#' @param fileProfileGDS a \code{character} string representing the file name of
 #' the GDS Sample file containing the information about the sample.
 #' The file must exist.
 #'
@@ -360,7 +360,7 @@ prepSynthetic <- function(gdsSampleFile,
 #' @encoding UTF-8
 #' @export
 syntheticGeno <- function(gds, gdsRefAnnot,
-                            gdsSampleFile,
+                            fileProfileGDS,
                             data.id.profile,
                             listSampleRef,
                             nbSim=1L,
@@ -371,12 +371,12 @@ syntheticGeno <- function(gds, gdsRefAnnot,
 
     ## Validate the input parameters
     validateSyntheticGeno(gds=gds, gdsRefAnnot=gdsRefAnnot,
-                gdsSampleFile=gdsSampleFile, data.id.profile=data.id.profile,
+                fileProfileGDS=fileProfileGDS, data.id.profile=data.id.profile,
                 listSampleRef=listSampleRef, nbSim=nbSim, prefId=prefId,
                 pRecomb=pRecomb, minProb=minProb, seqError=seqError)
 
     ## Open the GDS Sample file
-    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
+    gdsSample <- openfn.gds(filename=fileProfileGDS, readonly=FALSE)
 
     ## The name of the simulated profiles
     sampleSim <- paste(paste0(prefId, ".", data.id.profile),

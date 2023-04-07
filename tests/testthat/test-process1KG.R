@@ -478,9 +478,9 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 
     data.dir <- test_path("fixtures")
 
-    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'popName\' parameter must be a single character string."
@@ -493,9 +493,9 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 
     data.dir <- test_path("fixtures")
 
-    gdsFIle <- test_path("fixtures", "1KG_Test.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'popName\' parameter must be a single character string."
@@ -506,9 +506,9 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 
 test_that("select1KGPop() must return expected result", {
 
-    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+    fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    gds_1KG <- local_GDS_1KG_file(fileGDS, env=parent.frame())
 
     results <- getRef1KGPop(gds_1KG, popName="superPop")
 
@@ -525,9 +525,9 @@ test_that("select1KGPop() must return expected result", {
 
 test_that("select1KGPop() must return error when popName does not exist", {
 
-    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+    fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    gds_1KG <- local_GDS_1KG_file(fileGDS, env=parent.frame())
     withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
 
     error_message <- paste0("The population DO_NOT_EXIST is not supported ",
@@ -556,9 +556,9 @@ test_that("addGeneBlockGDSRefAnnot() must return error when gds is a character s
 
 test_that("addGeneBlockGDSRefAnnot() must return error when file.gdsRefAnnot does not exist", {
 
-    gdsFIle <- test_path("fixtures", "1KG_TEMP_001.gds")
+    fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds_1KG <- local_GDS_1KG_file(gdsFIle, env=parent.frame())
+    gds_1KG <- local_GDS_1KG_file(fileGDS, env=parent.frame())
     withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
 
     error_message <- "The file \'fixtures/titi.gds\' does not exist."
@@ -570,9 +570,9 @@ test_that("addGeneBlockGDSRefAnnot() must return error when file.gdsRefAnnot doe
 
 test_that("addGeneBlockGDSRefAnnot() must return error when winSize is a character string", {
 
-    gdsFile <- test_path("fixtures", "1KG_TEMP_001.gds")
+    fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds_1KG <- local_GDS_1KG_file(gdsFile, env=parent.frame())
+    gds_1KG <- local_GDS_1KG_file(fileGDS, env=parent.frame())
     withr::defer(closefn.gds(gds_1KG), envir = parent.frame())
 
     error_message <- "The \'winSize\' parameter must be a single numeric value."
@@ -595,9 +595,9 @@ test_that("generatePhase1KG2GDS() must return error when verbose is a numeric", 
 
     dataDir <- test_path("fixtures")
 
-    gdsFile <- test_path("fixtures", "1KG_TEMP_001.gds")
+    fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
-    gds1KG <- local_GDS_1KG_file(gdsFile, env=parent.frame())
+    gds1KG <- local_GDS_1KG_file(fileGDS, env=parent.frame())
     withr::defer(closefn.gds(gds1KG), envir = parent.frame())
 
     error_message <- paste0("The \'verbose\' parameter must be a logical",

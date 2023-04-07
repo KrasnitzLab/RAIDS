@@ -52,7 +52,7 @@ data.dir <- system.file("extdata", package="RAIDS")
 
 ## Open existing 1K GDS file
 GDS_file <- file.path(data.dir, "1KG_Demo.gds")
-gdsFile <- snpgdsOpen(GDS_file)
+fileGDS <- snpgdsOpen(GDS_file)
 
 ## Temporary output files
 ## The first RDS file will contain the list of unrelated patients
@@ -62,11 +62,11 @@ patientTmpFile <- local_file(file.path(data.dir,
 ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
 
 ## Identify unrelated patients in 1KG GDS file
-identifyRelative(gds=gdsFile, maf=0.05, thresh=2^(-11/2),
+identifyRelative(gds=fileGDS, maf=0.05, thresh=2^(-11/2),
     fileIBD=ibdTmpFile, filePart=patientTmpFile)
 
 ## Close 1K GDS file
-closefn.gds(gdsFile)
+closefn.gds(fileGDS)
 
 ## Remove temporary files
 deferred_run()

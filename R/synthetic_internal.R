@@ -9,7 +9,7 @@
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the1 1KG SNV Annotation GDS file.
 #'
-#' @param gdsSampleFile a \code{character} string representing the file name of
+#' @param fileProfileGDS a \code{character} string representing the file name of
 #' the GDS Sample file containing the information about the sample.
 #' The file must exist.
 #'
@@ -53,7 +53,7 @@
 #'
 #' ## The validation should be successful
 #' RAIDS:::validateSyntheticGeno(gds=gds1KG, gdsRefAnnot=gds1KGAnnot,
-#'      gdsSampleFile=gdsSample, data.id.profile="A101TCGA",
+#'      fileProfileGDS=gdsSample, data.id.profile="A101TCGA",
 #'      listSampleRef="A101TCGA", nbSim=1L, prefId="TCGA", pRecomb=0.02,
 #'      minProb=0.999, seqError=0.002)
 #'
@@ -65,7 +65,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
+validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
                                         data.id.profile,
                                         listSampleRef,
                                         nbSim,
@@ -84,9 +84,9 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, gdsSampleFile,
         stop("The \'gdsRefAnnot\' must be an object of class \'gds.class\'.")
     }
 
-    ## The gdsSampleFile must be an character string and the file must exist
-    if (!(is.character(gdsSampleFile) && file.exists(gdsSampleFile))) {
-        stop("The \'gdsSampleFile\' must be a character string and the file ",
+    ## The fileProfileGDS must be an character string and the file must exist
+    if (!(is.character(fileProfileGDS) && file.exists(fileProfileGDS))) {
+        stop("The \'fileProfileGDS\' must be a character string and the file ",
                 "must exist.")
     }
 

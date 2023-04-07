@@ -82,7 +82,7 @@ entry present in the \code{listSamples} parameter.
 
 ## Path to the demo 1KG GDS file is located in this package
 data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -105,7 +105,7 @@ rownames(samplePED) <- samplePED$Name.ID
 ## (in this case, samples "ex1")
 ## The Profile GDS file is created in the pathProfileGDS directory
 result <- createStudy2GDS1KG(pathGeno=data.dir,
-            pedStudy=samplePED, fileNameGDS=gdsFile,
+            pedStudy=samplePED, fileNameGDS=fileGDS,
             studyDF=studyDF, listProfiles=c("ex1"),
             pathProfileGDS=data.dir, verbose=FALSE)
 

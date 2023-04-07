@@ -6,13 +6,13 @@
 \title{Add the genotype information for the list of pruned SNVs
 into the Profile GDS file}
 \usage{
-add1KG2SampleGDS(gds, gdsSampleFile, currentProfile, studyID)
+add1KG2SampleGDS(gds, fileProfileGDS, currentProfile, studyID)
 }
 \arguments{
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{gdsSampleFile}{a \code{character} string representing the path and
+\item{fileProfileGDS}{a \code{character} string representing the path and
 file name of the Profile GDS file. The Profile GDS file must exist.}
 
 \item{currentProfile}{a \code{character} string corresponding to the sample
@@ -33,7 +33,7 @@ the Profile GDS file.
 
 ## Path to the demo 1KG GDS file is located in this package
 data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -53,12 +53,12 @@ file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
                  file.path(data.dir.genotype, "ex1.gds"))
 
 ## Open 1KG file
-gds1KG <- snpgdsOpen(gdsFile)
+gds1KG <- snpgdsOpen(fileGDS)
 
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 add1KG2SampleGDS(gds=gds1KG,
-         gdsSampleFile=file.path(data.dir.genotype, "ex1.gds"),
+         fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
          currentProfile=c("ex1"),
          studyID=studyDF$study.id)
 

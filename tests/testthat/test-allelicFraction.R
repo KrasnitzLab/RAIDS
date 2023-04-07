@@ -16,9 +16,9 @@ context("computeLOHBlocksDNAChr() results")
 test_that("computeLOHBlocksDNAChr() must return error when chr is vector of numerics", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'chr\' must be a single integer value representing ",
@@ -33,9 +33,9 @@ test_that("computeLOHBlocksDNAChr() must return error when chr is vector of nume
 test_that("computeLOHBlocksDNAChr() must return error when chr is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'chr\' must be a single integer value representing ",
@@ -49,9 +49,9 @@ test_that("computeLOHBlocksDNAChr() must return error when chr is character stri
 test_that("computeLOHBlocksDNAChr() must return error when genoN is character string", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'genoN\' must be a single numeric positive ",
@@ -67,9 +67,9 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is character st
 test_that("computeLOHBlocksDNAChr() must return error when genoN is vector of numerics", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'genoN\' must be a single numeric positive ",
@@ -84,9 +84,9 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is vector of nu
 test_that("computeLOHBlocksDNAChr() must return error when genoN is negative numeric", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'genoN\' must be a single numeric positive ",
@@ -101,9 +101,9 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is negative num
 test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric above 1", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'genoN\' must be a single numeric positive ",
@@ -118,9 +118,9 @@ test_that("computeLOHBlocksDNAChr() must return error when genoN is numeric abov
 test_that("computeLOHBlocksDNAChr() must return error when chr not in chrInfo", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- paste0("The \'chr\' must be present in the ",
@@ -135,9 +135,9 @@ test_that("computeLOHBlocksDNAChr() must return error when chr not in chrInfo", 
 test_that("computeLOHBlocksDNAChr() must return error when snp.pos is a numeric", {
 
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     error_message <- "The \'snp.pos\' must be a data.frame."

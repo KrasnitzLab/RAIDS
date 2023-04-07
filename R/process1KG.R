@@ -524,7 +524,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #'
 #' ## Open existing 1K GDS file
 #' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
-#' gdsFile <- snpgdsOpen(GDS_file)
+#' fileGDS <- snpgdsOpen(GDS_file)
 #'
 #' ## Temporary output files
 #' ## The first RDS file will contain the list of unrelated patients
@@ -534,11 +534,11 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
 #'
 #' ## Identify unrelated patients in 1KG GDS file
-#' identifyRelative(gds=gdsFile, maf=0.05, thresh=2^(-11/2),
+#' identifyRelative(gds=fileGDS, maf=0.05, thresh=2^(-11/2),
 #'     fileIBD=ibdTmpFile, filePart=patientTmpFile)
 #'
 #' ## Close 1K GDS file
-#' closefn.gds(gdsFile)
+#' closefn.gds(fileGDS)
 #'
 #' ## Remove temporary files
 #' deferred_run()
@@ -646,9 +646,9 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' addRef2GDS1KG(fileNameGDS=gdsFilePath, filePart=rdsFilePath)
 #'
 #' ## Read sample reference data.frame
-#' gdsFile <- openfn.gds(gdsFilePath, readonly=TRUE)
-#' read.gdsn(index.gdsn(node=gdsFile, path="sample.ref"))
-#' closefn.gds(gdsfile=gdsFile)
+#' fileGDS <- openfn.gds(gdsFilePath, readonly=TRUE)
+#' read.gdsn(index.gdsn(node=fileGDS, path="sample.ref"))
+#' closefn.gds(gdsfile=fileGDS)
 #'
 #' ## Delete the temporary GDS file
 #' unlink(x=gdsFilePath, force=TRUE)
@@ -867,13 +867,13 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #'
 #' ## Open existing 1K GDS file with "sample.ref" node
 #' GDS_file <- file.path(data.dir, "1KG_Demo_with_sampleREF.gds")
-#' gdsFile <- snpgdsOpen(GDS_file)
+#' fileGDS <- snpgdsOpen(GDS_file)
 #'
 #' ## Extract super population information for the 1KG samples
-#' getRef1KGPop(gds=gdsFile, popName="superPop")
+#' getRef1KGPop(gds=fileGDS, popName="superPop")
 #'
 #' ## Close 1K GDS file
-#' closefn.gds(gdsFile)
+#' closefn.gds(fileGDS)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

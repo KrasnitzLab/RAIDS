@@ -15,9 +15,9 @@ context("validateGDSClass() results")
 test_that("validateGDSClass() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     result1 <- RAIDS:::validateGDSClass(gds=gdsF, name="gds")

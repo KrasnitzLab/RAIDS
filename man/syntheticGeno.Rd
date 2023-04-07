@@ -9,7 +9,7 @@ reference sample combination and add them to the GDS Sample file}
 syntheticGeno(
   gds,
   gdsRefAnnot,
-  gdsSampleFile,
+  fileProfileGDS,
   data.id.profile,
   listSampleRef,
   nbSim = 1L,
@@ -26,7 +26,7 @@ syntheticGeno(
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the1 1KG SNV Annotation GDS file.}
 
-\item{gdsSampleFile}{a \code{character} string representing the file name of
+\item{fileProfileGDS}{a \code{character} string representing the file name of
 the GDS Sample file containing the information about the sample.
 The file must exist.}
 

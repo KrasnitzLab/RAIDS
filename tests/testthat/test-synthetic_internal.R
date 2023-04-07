@@ -15,13 +15,13 @@ context("validateSyntheticGeno() results")
 test_that("validateSyntheticGeno() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
-    gdsFIle <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gdsF <- openfn.gds(gdsFIle)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     result1 <- RAIDS:::validateSyntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
-            gdsSampleFile=gdsFIle, data.id.profile="TCGA_001",
+            fileProfileGDS=fileGDS, data.id.profile="TCGA_001",
             listSampleRef=c("Sample01", "Sample02"), nbSim=1L,
             prefId="TEST", pRecomb=0.2, minProb=0.3, seqError=0.2)
 
@@ -38,15 +38,15 @@ context("prepPedSynthetic1KG() results")
 
 test_that(paste0("prepPedSynthetic1KG() must return expected results"), {
 
-    gdsFile <- test_path("fixtures", "1KG_Test.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    gds1KG <- openfn.gds(gdsFile)
+    gds1KG <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gds1KG)), envir = parent.frame())
 
 
-    gdsSampleFile <- test_path("fixtures", "GDS_Sample_TMP_201.gds")
-    gdsSample <- createfn.gds(gdsSampleFile)
-    withr::defer(unlink(gdsSampleFile, force=TRUE), envir = parent.frame())
+    fileProfileGDS <- test_path("fixtures", "GDS_Sample_TMP_201.gds")
+    gdsSample <- createfn.gds(fileProfileGDS)
+    withr::defer(unlink(fileProfileGDS, force=TRUE), envir = parent.frame())
     withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
 
 

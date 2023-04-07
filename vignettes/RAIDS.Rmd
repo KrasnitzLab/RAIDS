@@ -484,7 +484,7 @@ for(i in seq_len(length(listSamples))) {
     ## Add the genotype information for the list of pruned SNVs 
     ## into the Profile GDS file
     ## The genotype information is extracted from the 1KG GDS file
-    add1KG2SampleGDS(gds = gds_1KG, gdsSampleFile = file.GDSSample, 
+    add1KG2SampleGDS(gds = gds_1KG, fileProfileGDS = file.GDSSample,
                         currentProfile = listSamples[i],
                         studyID = studyDF$study.id)
 
@@ -728,7 +728,7 @@ file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
 ## the synthetic data
 ## The information is saved into the Sample GDS file
 ####################################################################
-prepSynthetic(gdsSampleFile = file.GDSSample,
+prepSynthetic(fileProfileGDS = file.GDSSample,
                 listSampleRef = listSampleRef,
                 data.id.profile = sampleName,
                 studyDF = studyDF.syn,
@@ -753,7 +753,7 @@ gds.Annot <- openfn.gds(file.Annot)
 ####################################################################
 resG <- syntheticGeno(gds = gds,
                         gdsRefAnnot = gds.Annot,
-                        gdsSampleFile = file.GDSSample,
+                        fileProfileGDS = file.GDSSample,
                         data.id.profile = sampleName,
                         listSampleRef = listSampleRef,
                         prefId = "1")

@@ -94,10 +94,10 @@ test_that("appendGDSSample() must copy the expected entry in \"sample.annot\" no
 
     ## Create a temporary GDS file in an test directory
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "GDS_TEMP_05.gds")
+    fileGDS <- file.path(data.dir, "GDS_TEMP_05.gds")
 
     ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(gdsFile)
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
 
     ## Create sample.id field
     add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
@@ -148,10 +148,10 @@ test_that("appendGDSSample() must print the expected message", {
 
     ## Create a temporary GDS file in an test directory
     data.dir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(data.dir, "GDS_TEMP_05.gds")
+    fileGDS <- file.path(data.dir, "GDS_TEMP_05.gds")
 
     ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(gdsFile)
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
 
     ## Create sample.id field
     add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",

@@ -62,7 +62,7 @@
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -85,7 +85,7 @@
 #' ## (in this case, samples "ex1")
 #' ## The Profile GDS file is created in the pathProfileGDS directory
 #' result <- createStudy2GDS1KG(pathGeno=data.dir,
-#'             pedStudy=samplePED, fileNameGDS=gdsFile,
+#'             pedStudy=samplePED, fileNameGDS=fileGDS,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
 #'             pathProfileGDS=data.dir, verbose=FALSE)
 #'
@@ -367,7 +367,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -396,7 +396,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'                  file.path(data.dir.pruning, "ex1.gds"))
 #'
 #' ## Open 1KG file
-#' gds1KG <- snpgdsOpen(gdsFile)
+#' gds1KG <- snpgdsOpen(fileGDS)
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
@@ -553,7 +553,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param gdsSampleFile a \code{character} string representing the path and
+#' @param fileProfileGDS a \code{character} string representing the path and
 #' file name of the Profile GDS file. The Profile GDS file must exist.
 #'
 #' @param currentProfile a \code{character} string corresponding to the sample
@@ -568,7 +568,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -588,12 +588,12 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'                  file.path(data.dir.genotype, "ex1.gds"))
 #'
 #' ## Open 1KG file
-#' gds1KG <- snpgdsOpen(gdsFile)
+#' gds1KG <- snpgdsOpen(fileGDS)
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' add1KG2SampleGDS(gds=gds1KG,
-#'          gdsSampleFile=file.path(data.dir.genotype, "ex1.gds"),
+#'          fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
 #'          currentProfile=c("ex1"),
 #'          studyID=studyDF$study.id)
 #'
@@ -616,15 +616,15 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
 #' @encoding UTF-8
 #' @export
-add1KG2SampleGDS <- function(gds, gdsSampleFile, currentProfile,
+add1KG2SampleGDS <- function(gds, fileProfileGDS, currentProfile,
                                 studyID) {
 
     ## Validate inputs
-    validateAdd1KG2SampleGDS(gds=gds, gdsProfileFile=gdsSampleFile,
+    validateAdd1KG2SampleGDS(gds=gds, gdsProfileFile=fileProfileGDS,
             currentProfile=currentProfile, studyID=studyID)
 
     ## Open Profile GDS file
-    gdsSample <- openfn.gds(gdsSampleFile, readonly=FALSE)
+    gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
 
     ## Extract needed information from 1KG GDS file
     snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))
@@ -739,9 +739,9 @@ addPhase1KG2SampleGDSFromFile <- function(gds, pathProfileGDS, pathGeno,
     listGDSSample <- dir(pathProfileGDS, pattern = ".+.gds")
 
     indexAll <- NULL
-    for(gdsSampleFile in listGDSSample) {
+    for(fileProfileGDS in listGDSSample) {
         gdsSample <- openfn.gds(filename=file.path(pathProfileGDS,
-                                                        gdsSampleFile))
+                                                        fileProfileGDS))
 
         snp.index <- read.gdsn(node=index.gdsn(node=gdsSample, "snp.index"))
 
@@ -821,8 +821,8 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
     listGDSSample <- dir(pathProfileGDS, pattern = ".+.gds")
 
     indexAll <- NULL
-    for(gdsSampleFile in listGDSSample){
-        gdsSample <- openfn.gds(file.path(pathProfileGDS, gdsSampleFile))
+    for(fileProfileGDS in listGDSSample){
+        gdsSample <- openfn.gds(file.path(pathProfileGDS, fileProfileGDS))
 
         snp.index <- read.gdsn(index.gdsn(gdsSample,"snp.index"))
 
@@ -1208,7 +1208,7 @@ estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param gdsSampleFile a \code{character} string representing the path and
+#' @param fileProfileGDS a \code{character} string representing the path and
 #' file name of the GDS Sample file. The GDS Sample file must exist.
 #'
 #' @return The integer \code{0L} when successful.
@@ -1222,19 +1222,19 @@ estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @export
-addStudy1Kg <- function(gds, gdsSampleFile) {
+addStudy1Kg <- function(gds, fileProfileGDS) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds, "gds")
 
-    ## The gdsSampleFile must be a character string and the file must exists
-    if(!(is.character(gdsSampleFile) && (file.exists(gdsSampleFile)))) {
-        stop("The \'gdsSampleFile\' must be a character string representing ",
+    ## The fileProfileGDS must be a character string and the file must exists
+    if(!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
+        stop("The \'fileProfileGDS\' must be a character string representing ",
                 "the GDS Sample file. The file must exist.")
     }
 
     ## Open GDS Sample file
-    gdsSample <- openfn.gds(filename=gdsSampleFile, readonly=FALSE)
+    gdsSample <- openfn.gds(filename=fileProfileGDS, readonly=FALSE)
 
     ## Extract study information from GDS Sample file
     snp.study <- read.gdsn(index.gdsn(node=gdsSample, "study.list"))
@@ -2325,7 +2325,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS)
         file.GDSProfile <- file.path(pathProfileGDS,
                                         paste0(listProfiles[i], ".gds"))
-        add1KG2SampleGDS(gds=gds1KG, gdsSampleFile=file.GDSProfile,
+        add1KG2SampleGDS(gds=gds1KG, fileProfileGDS=file.GDSProfile,
                             currentProfile=listProfiles[i],
                             studyID=studyDF$study.id)
         addStudy1Kg(gds1KG, file.GDSProfile)
@@ -2337,13 +2337,13 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                                     studyID=studyDF$study.id, chrInfo=chrInfo)
         closefn.gds(gdsProfile)
 
-        prepSynthetic(gdsSampleFile=file.GDSProfile,
+        prepSynthetic(fileProfileGDS=file.GDSProfile,
                         listSampleRef=listProfileRef,
                         data.id.profile=listProfiles[i],
                         studyDF=studyDF.syn, prefId="1")
 
         resG <- syntheticGeno(gds=gds1KG, gdsRefAnnot=gdsAnnot1KG,
-                                gdsSampleFile=file.GDSProfile,
+                                fileProfileGDS=file.GDSProfile,
                                 data.id.profile=listProfiles[i],
                                 listSampleRef=listProfileRef, prefId="1")
 

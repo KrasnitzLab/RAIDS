@@ -6,13 +6,13 @@
 \title{Append information about the 1KG samples into
 the GDS Sample file}
 \usage{
-addStudy1Kg(gds, gdsSampleFile)
+addStudy1Kg(gds, fileProfileGDS)
 }
 \arguments{
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{gdsSampleFile}{a \code{character} string representing the path and
+\item{fileProfileGDS}{a \code{character} string representing the path and
 file name of the GDS Sample file. The GDS Sample file must exist.}
 }
 \value{

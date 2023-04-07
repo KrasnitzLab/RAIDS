@@ -17,29 +17,29 @@ test_that("snvListVCF() must return error when offset is a character string", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
-    gdsFile <- local_file(file.path(data.dir, "GDS_TEMP2.gds"))
+    fileGDS <- local_file(file.path(data.dir, "GDS_TEMP2.gds"))
 
-    gdsFileTMP <- createfn.gds(gdsFile)
-    put.attr.gdsn(gdsFileTMP$root, "FileFormat", "SNP_ARRAY")
-    add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
+    tmpFileGDS <- createfn.gds(fileGDS)
+    put.attr.gdsn(tmpFileGDS$root, "FileFormat", "SNP_ARRAY")
+    add.gdsn(tmpFileGDS, "sample.id", c("test01", "test02"))
 
     samp.annot <- data.frame(sex=c("1", "2"),
                                 pop.group=c("ACB", "ACB"),
                                 superPop=c("AFR", "AFR"),
                                 batch=c("0", "0"),
                                 stringsAsFactors=FALSE)
-    add.gdsn(gdsFileTMP, "sample.annot", samp.annot)
+    add.gdsn(tmpFileGDS, "sample.annot", samp.annot)
 
 
-    add.gdsn(gdsFileTMP, "snp.id", paste0("s",seq_len(2)))
-    add.gdsn(gdsFileTMP, "snp.chromosome", c(1L, 1L), storage = "uint16")
-    add.gdsn(gdsFileTMP, "snp.position", c(10L, 12L), storage = "int32")
-    add.gdsn(gdsFileTMP, "snp.allele", c("0/1", "1/1"))
-    add.gdsn(gdsFileTMP, "genotype", valdim=c(2, 2), storage="bit2")
+    add.gdsn(tmpFileGDS, "snp.id", paste0("s",seq_len(2)))
+    add.gdsn(tmpFileGDS, "snp.chromosome", c(1L, 1L), storage = "uint16")
+    add.gdsn(tmpFileGDS, "snp.position", c(10L, 12L), storage = "int32")
+    add.gdsn(tmpFileGDS, "snp.allele", c("0/1", "1/1"))
+    add.gdsn(tmpFileGDS, "genotype", valdim=c(2, 2), storage="bit2")
 
-    closefn.gds(gdsFileTMP)
+    closefn.gds(tmpFileGDS)
 
-    gds <- snpgdsOpen(gdsFile)
+    gds <- snpgdsOpen(fileGDS)
 
     error_message <- "The \'offset\' must be a single integer."
 
@@ -69,29 +69,29 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
 
     data.dir <- test_path("fixtures")
 
-    gdsFile <- local_file(file.path(data.dir, "GDS_TEMP3.gds"))
-    withr::defer(unlink(gdsFile, force=TRUE), envir = parent.frame())
+    fileGDS <- local_file(file.path(data.dir, "GDS_TEMP3.gds"))
+    withr::defer(unlink(fileGDS, force=TRUE), envir = parent.frame())
 
-    gdsFileTMP <- createfn.gds(gdsFile)
-    put.attr.gdsn(gdsFileTMP$root, "FileFormat", "SNP_ARRAY")
-    add.gdsn(gdsFileTMP, "sample.id", c("test01", "test02"))
+    tmpFileGDS <- createfn.gds(fileGDS)
+    put.attr.gdsn(tmpFileGDS$root, "FileFormat", "SNP_ARRAY")
+    add.gdsn(tmpFileGDS, "sample.id", c("test01", "test02"))
 
     samp.annot <- data.frame(sex=c("1", "2"),
                                 pop.group=c("ACB", "ACB"),
                                 superPop=c("AFR", "AFR"),
                                 batch=c("0", "0"),
                                 stringsAsFactors=FALSE)
-    add.gdsn(gdsFileTMP, "sample.annot", samp.annot)
+    add.gdsn(tmpFileGDS, "sample.annot", samp.annot)
 
-    add.gdsn(gdsFileTMP, "snp.id", paste0("s", seq_len(2)))
-    add.gdsn(gdsFileTMP, "snp.chromosome", c(1L, 1L), storage = "uint16")
-    add.gdsn(gdsFileTMP, "snp.position", c(10L, 12L), storage = "int32")
-    add.gdsn(gdsFileTMP, "snp.allele", c("0/1", "1/1"))
-    add.gdsn(gdsFileTMP, "genotype", valdim=c(2,2), storage="bit2")
+    add.gdsn(tmpFileGDS, "snp.id", paste0("s", seq_len(2)))
+    add.gdsn(tmpFileGDS, "snp.chromosome", c(1L, 1L), storage = "uint16")
+    add.gdsn(tmpFileGDS, "snp.position", c(10L, 12L), storage = "int32")
+    add.gdsn(tmpFileGDS, "snp.allele", c("0/1", "1/1"))
+    add.gdsn(tmpFileGDS, "genotype", valdim=c(2,2), storage="bit2")
 
-    closefn.gds(gdsFileTMP)
+    closefn.gds(tmpFileGDS)
 
-    gds <- snpgdsOpen(gdsFile)
+    gds <- snpgdsOpen(fileGDS)
     withr::defer(closefn.gds(gds), envir = parent.frame())
 
     fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
@@ -107,9 +107,9 @@ test_that("snvListVCF() must return expected results when freqCutoff is NULL", {
 
     data.dir <- test_path("fixtures")
 
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gds <- openfn.gds(gdsFile)
+    gds <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds), envir=parent.frame())
 
     fileOUT <- file.path(data.dir, "VCF_TEMP_01.vcf")
@@ -140,9 +140,9 @@ test_that("snvListVCF() must return expected results when freqCutoff is 0.3", {
 
     data.dir <- test_path("fixtures")
 
-    gdsFile <- file.path(data.dir, "1KG_Test.gds")
+    fileGDS <- file.path(data.dir, "1KG_Test.gds")
 
-    gds <- openfn.gds(gdsFile)
+    gds <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds), envir=parent.frame())
 
     fileOUT <- file.path(data.dir, "VCF_TEMP_02.vcf")

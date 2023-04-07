@@ -69,9 +69,9 @@ closefn.gds(GDS_file_tmp)
 addRef2GDS1KG(fileNameGDS=gdsFilePath, filePart=rdsFilePath)
 
 ## Read sample reference data.frame
-gdsFile <- openfn.gds(gdsFilePath, readonly=TRUE)
-read.gdsn(index.gdsn(node=gdsFile, path="sample.ref"))
-closefn.gds(gdsfile=gdsFile)
+fileGDS <- openfn.gds(gdsFilePath, readonly=TRUE)
+read.gdsn(index.gdsn(node=fileGDS, path="sample.ref"))
+closefn.gds(gdsfile=fileGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

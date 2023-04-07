@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{validateRunExomeAncestry}
 \alias{validateRunExomeAncestry}
-\title{Validate the parameters of the runExomeAncestry function}
+\title{Validate the parameters of the runExomeAncestry() function}
 \usage{
 validateRunExomeAncestry(
   pedStudy,
@@ -67,16 +67,15 @@ The integer \code{0L} when successful.
 }
 \description{
 The function validates the input parameters for the
-runExomeAncestry function. When a parameter is not as expected, an error
-message is generated.
+\code{\link{runExomeAncestry}} function. When a parameter is not as
+expected, an error message is generated.
 }
 \examples{
-
 
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-
+## Path where the output file will be generated
 pathOut <- file.path(dataDir, "example", "res.out")
 
 ## Study data frame
@@ -87,7 +86,7 @@ study <- data.frame(study.id = "MYDATA",
 
 gds1KG <- file.path(dataDir, "gds1KG.gds")
 
-gdsAnnot1KG <- file.path(dataDir, "exAnnot1kg.gds")
+gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
 
 ## Pedigree Study data frame
 ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
@@ -103,11 +102,16 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
     156040895L, 57227415L,  16569L)
 
-## TODO
+## Profiles used for synthetic data set
+dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+    superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+## Returns OL when all parameters are valid
 RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
-pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
-fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-chrInfo=chrInfo, dataRefSyn)
+    pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
+    fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
+    chrInfo=chrInfo, dataRefSyn=dataRefSyn)
 
 }
 \author{

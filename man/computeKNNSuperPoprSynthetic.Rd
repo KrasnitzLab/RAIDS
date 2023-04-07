@@ -39,12 +39,6 @@ and a table with KNN callfor different K and pca dimension.
 \description{
 Deprecated
 }
-\examples{
-
-# TODO
-listEigenvector <- "TOTO"
-
-}
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

@@ -189,3 +189,63 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
     expect_identical(result1, 0L)
 })
 
+
+
+#############################################################################
+### Tests validateRunExomeAncestry() results
+#############################################################################
+
+context("validateRunExomeAncestry() results")
+
+
+test_that("validateRunExomeAncestry() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures")
+    gdsRefFile <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+    gdsRefAnnotFile <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                 Case.ID=c("TCGA-H01", "TCGA-H02"),
+                 Sample.Type=c("DNA", "DNA"),
+                 Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+
+    studyInfo <- data.frame(study.id="Pancreatic.WES",
+                    study.desc="Pancreatic study",  study.platform="WES",
+                    stringsAsFactors=FALSE)
+
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138",
+                    "HG00330", "HG00275"), pop.group=c("GBR", "GBR",
+                    "FIN", "FIN"), superPop=c("EUR", "EUR", "EUR", "EUR"),
+                    stringsAsFactors=FALSE)
+
+    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+
+    result <- RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=studyInfo,
+        pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
+        fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
+        chrInfo=chrInfo, dataRefSyn=dataRefSyn)
+
+    expect_identical(result, 0L)
+})
+
+
+#############################################################################
+### Tests validatePEDStudyParameter() results
+#############################################################################
+
+context("validatePEDStudyParameter() results")
+
+
+test_that("validatePEDStudyParameter() must return expected results when all input are valid", {
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                Case.ID=c("TCGA-H01", "TCGA-H02"),
+                Sample.Type=c("DNA", "DNA"),
+                Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+
+    result <- RAIDS:::validatePEDStudyParameter(pedStudy=ped)
+
+    expect_identical(result, 0L)
+})

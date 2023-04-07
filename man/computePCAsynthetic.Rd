@@ -42,13 +42,7 @@ Default: \code{32L}.}
 A \code{list} TODO with the sample.id and eigenvectors.
 }
 \description{
-TODO Deprecated
-}
-\examples{
-
-# TODO
-gds <- "TOTO"
-
+Deprecated
 }
 \references{
 Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,

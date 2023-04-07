@@ -34,12 +34,6 @@ More information about the method used to calculate the patient eigenvectors
 can be found at the Bioconductor SNPRelate website:
 https://bioconductor.org/packages/SNPRelate/
 }
-\examples{
-
-## TODO
-gds <- "TODO"
-
-}
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }

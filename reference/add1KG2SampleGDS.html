@@ -70,7 +70,7 @@ the Profile GDS file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSampleFile</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">fileProfileGDS</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,7 +80,7 @@ the Profile GDS file.</p>
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
 
-<dt>gdsSampleFile</dt>
+<dt>fileProfileGDS</dt>
 <dd><p>a <code>character</code> string representing the path and
 file name of the Profile GDS file. The Profile GDS file must exist.</p></dd>
 
@@ -111,7 +111,7 @@ identifier associated to the current list of pruned SNVs.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Path to the demo 1KG GDS file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">gdsFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The data.frame containing the information about the study</span></span></span>
 <span class="r-in"><span><span class="co">## The 3 mandatory columns: "studyID", "study.desc", "study.platform"</span></span></span>
@@ -132,12 +132,12 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open 1KG file</span></span></span>
-<span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compute the list of pruned SNVs for a specific profile 'ex1'</span></span></span>
 <span class="r-in"><span><span class="co">## and save it in the Profile GDS file 'ex1.gds'</span></span></span>
 <span class="r-in"><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
-<span class="r-in"><span>         gdsSampleFile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.genotype</span>, <span class="st">"ex1.gds"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         fileProfileGDS<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.genotype</span>, <span class="st">"ex1.gds"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>         currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>         studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

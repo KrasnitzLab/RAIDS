@@ -124,18 +124,20 @@ file name of the 1KG GDS annotation file. The file must exist.</p></dd>
 
 
 <dt>chrInfo</dt>
-<dd><p>a <code>vector</code> of <code>integer</code> values representing
-the length of the chromosomes. See 'details' section.</p></dd>
+<dd><p>a <code>vector</code> of positive <code>integer</code> values
+representing the length of the chromosomes. See 'details' section.</p></dd>
 
 
 <dt>dataRefSyn</dt>
-<dd><p>a <code>data.frame</code> containing those columns:</p><ul><li><p>sample.id  a <code>character</code> string representing the sample
+<dd><p>a <code>data.frame</code> containing a subset of
+reference profiles for each sub-population present in the Reference GDS
+file. The <code>data.frame</code> must have those columns:</p><ul><li><p>sample.id  a <code>character</code> string representing the sample
 identifier.</p></li>
 <li><p>pop.group  a <code>character</code> string representing the
 subcontinental population assigned to the sample.</p></li>
 <li><p>superPop  a <code>character</code> string representing the
 super-population assigned to the sample.</p></li>
-</ul><p>can be the return of select1KGPop</p></dd>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -148,9 +150,12 @@ more information about the generated output files.</p>
     <div id="details">
     <h2>Details</h2>
     <p>The runExomeAncestry() function generates 3 types of files
-in the OUTPUT directory.</p><ul><li><p>Ancestry InferenceThe ancestry inference CSV file (".Ancestry.csv" file)</p></li>
-<li><p>Inference InformatonThe inference information RDS file (".infoCall.rds" file)</p></li>
-<li><p>Synthetic InformationThe parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)</p></li>
+in the OUTPUT directory.</p><ul><li><p>Ancestry InferenceThe ancestry inference CSV file
+(".Ancestry.csv" file)</p></li>
+<li><p>Inference InformatonThe inference information RDS file
+(".infoCall.rds" file)</p></li>
+<li><p>Synthetic InformationThe parameter information RDS files
+from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)</p></li>
 </ul><p>In addition, a sub-directory (named using the profile ID) is
 also created.</p>
     </div>

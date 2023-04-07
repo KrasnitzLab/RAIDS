@@ -465,14 +465,16 @@ test_that("pruningSample() must return error when pathProfileGDS is a non existi
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- paste0("The \'pathProfileGDS\' parameter must be a character string ",
-                                "representing an existing directory.")
+    error_message <- paste0("The \'pathProfileGDS\' parameter must be a ",
+                    "character string representing an existing directory.")
 
-    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
-        np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
+    expect_error(pruningSample(gds=gdsF, method="corr",
+        currentProfile="Sample2", studyID="test", listSNP=NULL,
+        slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1), np=1L,
+        verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
         pathProfileGDS=paste0(dataDir, "_NOT_EXISTING_DIRECTORY"),
-        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"), error_message, fixed=TRUE)
+        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"),
+        error_message, fixed=TRUE)
 })
 
 
@@ -488,10 +490,10 @@ test_that("pruningSample() must return error when verbose is a character string"
 
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
-    expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
-        studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
-        thresholdLD=sqrt(0.1), np=1L, verbose="HI", chr=NULL,
-        superPopMinAF=NULL, keepPrunedGDS=FALSE,
+    expect_error(pruningSample(gds=gdsF, method="corr",
+        currentProfile="Sample2", studyID="test", listSNP=NULL,
+        slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1), np=1L, verbose="HI",
+        chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
         pathProfileGDS=pdataDir, keepFile=FALSE, pathPrunedGDS=dataDir,
         outPrefix="pruned"), error_message, fixed=TRUE)
 })
@@ -516,8 +518,8 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
         superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=dataDir,
-        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"), error_message,
-        fixed=TRUE)
+        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"),
+        error_message, fixed=TRUE)
 })
 
 
@@ -618,8 +620,8 @@ test_that("pruningSample() must return expect result", {
                 listSNP=NULL, slideWindowMaxBP=50000L,
                 thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
                 superPopMinAF=NULL, keepPrunedGDS=TRUE,
-                pathProfileGDS=dataDirSample,
-                keepFile=TRUE, pathPrunedGDS=dataDirSample, outPrefix="prunedTest")
+                pathProfileGDS=dataDirSample, keepFile=TRUE,
+                pathPrunedGDS=dataDirSample, outPrefix="prunedTest")
 
     expect_equal(result, 0L)
     expect_true(file.exists(file.path(dataDirSample, "prunedTest.Obj.rds")))
@@ -1402,11 +1404,13 @@ context("createStudy2GDS1KG() results")
 test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
             " a numeric value and pedStudy is NULL"), {
 
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+
     error_message <- paste0("The \'fileNamePED\' must be a character string ",
             "representing the RDS Sample information file. ",
             "The file must exist.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
             batch=1, studyDF=NULL, listProfiles=NULL,
             pathProfileGDS=NULL, verbose=TRUE), error_message)
@@ -1427,6 +1431,8 @@ test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and p
 
 test_that("createStudy2GDS1KG() must return error when pedDF is missing mandatory column", {
 
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
                     Sample.Type=rep("Primary Tumor", 3),
@@ -1435,7 +1441,7 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
     error_message <- paste0("The PED study data frame is incomplete. ",
                             "One or more mandatory columns are missing.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                     fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
                     pathProfileGDS=NULL, verbose=TRUE), error_message)
@@ -1443,6 +1449,8 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
 
 
 test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical value", {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                         Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1453,7 +1461,7 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
     error_message <- paste0("The \'fileNameGDS\' must be a character ",
                 "string representing the GDS 1KG file. The file must exist.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
                         batch=1, studyDF=NULL, listProfiles=NULL,
                         pathProfileGDS=NULL, verbose=TRUE), error_message)
@@ -1473,7 +1481,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch="1", studyDF=NULL, listProfiles=NULL,
             pathProfileGDS=NULL, verbose=TRUE), error_message)
@@ -1482,6 +1490,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
 test_that("createStudy2GDS1KG() must return error when batch is vector of numerics", {
 
+    dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1492,7 +1501,7 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
     error_message <- "The \'batch\' must be a single integer."
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                 fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
                 batch=c(1,2), studyDF=NULL, listProfiles=NULL,
                 pathProfileGDS=NULL, verbose=TRUE), error_message)
@@ -1501,6 +1510,7 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
 test_that("createStudy2GDS1KG() must return error when listSamples is vector of numerics", {
 
+    dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1509,18 +1519,22 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
                     Sample.Type=rep("Primary Tumor", 3),
                     Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM", stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                         "of character strings (1 entry or more) or NULL.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
-            batch=1, studyDF=NULL, listProfiles=c(1,2),
+            batch=1, studyDF=studyDF, listProfiles=c(1,2),
             pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
 test_that("createStudy2GDS1KG() must return error when listProfiles is numeric", {
 
+    dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1529,12 +1543,40 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
                 Sample.Type=rep("Primary Tumor", 3),
                 Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                        study.platform="PLATFORM", stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                             "of character strings (1 entry or more) or NULL.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
-        batch=1, studyDF=NULL, listProfiles=1,
+        batch=1, studyDF=studyDF, listProfiles=1,
+        pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+})
+
+
+test_that("createStudy2GDS1KG() must return error when studyDF is missing column", {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                         stringsAsFactors=FALSE)
+
+    error_message <- paste0("The study data frame \'studyDF\' is incomplete. ",
+        "One or more mandatory columns are missing. The mandatory ",
+        "columns are: \'study.id\', \'study.desc\', \'study.platform\'.")
+
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
+        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+        batch=1, studyDF=studyDF, listProfiles=1,
         pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
 })
 
@@ -1550,11 +1592,14 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
                     Sample.Type=rep("Primary Tumor", 3),
                     Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                    study.platform="PLATFORM", stringsAsFactors=FALSE)
+
     error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
-            batch=1, studyDF=NULL, listProfiles=NULL,
+            batch=1, studyDF=studyDF, listProfiles=NULL,
             pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
 })
 
@@ -1570,13 +1615,16 @@ test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric
                 Sample.Type=rep("Primary Tumor", 3),
                 Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                study.platform="PLATFORM", stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'pathProfileGDS\' must be a character ",
         "string representing the path where the Profile GDS files ",
         "will be generated.")
 
-    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
-        batch=1, studyDF=NULL, listProfiles=NULL,
+        batch=1, studyDF=studyDF, listProfiles=NULL,
         pathProfileGDS=33, verbose=FALSE), error_message, fixed=TRUE)
 })
 
@@ -1592,12 +1640,15 @@ test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedS
                         Sample.Type=rep("Primary Tumor", 3),
                         Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                    study.platform="PLATFORM", stringsAsFactors=FALSE)
+
     error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters ",
                         "cannot be defined at the same time.")
 
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=fileGDS, pedStudy=pedDF, fileNameGDS=fileGDS,
-                batch=1, studyDF=NULL, listProfiles=NULL,
+                batch=1, studyDF=studyDF, listProfiles=NULL,
                 pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
 })
 
@@ -2409,6 +2460,36 @@ test_that(paste0("runExomeAncestry() must return error when dataRefSyn missing c
 
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
-        fileReferenceGDS=gdsFile, fileReferenceAnnotGDS=gdsFileAnnot,
+        fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
+        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn), error_message)
+})
+
+
+test_that(paste0("runExomeAncestry() must return error when pathGeno does not exist"), {
+
+    pathOut <- test_path("fixtures")
+    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                    study.platform="PLATFORM", stringsAsFactors=FALSE)
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                        Case.ID=c("TCGA-H01", "TCGA-H02"),
+                        Sample.Type=c("DNA", "DNA"),
+                        Diagnosis=c("Cancer", "Cancer"),
+                        Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
+
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+                "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+                superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+    error_message <- "The \'pathGeno\' must be an existing directory."
+
+    expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+        pathProfileGDS=pathOut, pathGeno="DONOTEXISTDIR", pathOut=pathOut,
+        fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
         chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn), error_message)
 })

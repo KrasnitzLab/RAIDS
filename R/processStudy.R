@@ -54,15 +54,15 @@
 #' Default: \code{NULL}.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
-#' printed. Default: \code{TRUE}.
+#' printed. Default: \code{FALSE}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -74,30 +74,30 @@
 #'
 #' ## The data.frame containing the information about the samples
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-#' samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
-#'                     Case.ID = c("Patient_h11", "Patient_h12"),
-#'                     Diagnosis = rep("Cancer", 2),
-#'                     Sample.Type = rep("Primary Tumor", 2),
-#'                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
+#' samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
+#'                     Case.ID=c("Patient_h11", "Patient_h12"),
+#'                     Diagnosis=rep("Cancer", 2),
+#'                     Sample.Type=rep("Primary Tumor", 2),
+#'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
 #' ## Create the Sample GDS file for sample in listSamples vector
 #' ## (in this case, samples "ex1")
 #' ## The Profile GDS file is created in the pathProfileGDS directory
-#' result <- createStudy2GDS1KG(pathGeno=data.dir,
+#' result <- createStudy2GDS1KG(pathGeno=dataDir,
 #'             pedStudy=samplePED, fileNameGDS=fileGDS,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             pathProfileGDS=data.dir, verbose=FALSE)
+#'             pathProfileGDS=dataDir, verbose=FALSE)
 #'
 #' ## The function returns OL when successful
 #' result
 #'
 #' ## The Profile GDS file 'ex1.gds' has been created in the
 #' ## specified directory
-#' list.files(data.dir)
+#' list.files(dataDir)
 #'
 #' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(data.dir, "ex1.gds"))
+#' unlink(file.path(dataDir, "ex1.gds"))
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
@@ -107,7 +107,7 @@
 createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
                                 fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
                                 batch=1, studyDF, listProfiles=NULL,
-                                pathProfileGDS=NULL, verbose=TRUE) {
+                                pathProfileGDS=NULL, verbose=FALSE) {
 
     ## When fileNamePED is defined and pedStudy is null
     if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
@@ -127,9 +127,10 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     }
 
     ## Validate input parameters
-    validateCreateStudy2GDS1KG(pedStudy=pedStudy, fileNameGDS=fileNameGDS,
-                batch=batch, studyDF=studyDF, listProfiles=listProfiles,
-                pathProfileGDS=pathProfileGDS, verbose=verbose)
+    validateCreateStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
+        fileNameGDS=fileNameGDS, batch=batch, studyDF=studyDF,
+        listProfiles=listProfiles, pathProfileGDS=pathProfileGDS,
+        verbose=verbose)
 
     ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
@@ -2139,7 +2140,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
-#' those 3 columns: "studyID", "study.desc", "study.platform". All columns
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
 #' must be in \code{character} strings (no factor).
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to

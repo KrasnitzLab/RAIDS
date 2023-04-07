@@ -16,7 +16,7 @@ createStudy2GDS1KG(
   studyDF,
   listProfiles = NULL,
   pathProfileGDS = NULL,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -67,7 +67,7 @@ the directory where the Profile GDS files will be created.
 Default: \code{NULL}.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
-printed. Default: \code{TRUE}.}
+printed. Default: \code{FALSE}.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -81,8 +81,8 @@ entry present in the \code{listSamples} parameter.
 \examples{
 
 ## Path to the demo 1KG GDS file is located in this package
-data.dir <- system.file("extdata/tests", package="RAIDS")
-fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -94,30 +94,30 @@ studyDF <- data.frame(study.id = "MYDATA",
 
 ## The data.frame containing the information about the samples
 ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
-                    Case.ID = c("Patient_h11", "Patient_h12"),
-                    Diagnosis = rep("Cancer", 2),
-                    Sample.Type = rep("Primary Tumor", 2),
-                    Source = rep("Databank B", 2), stringsAsFactors = FALSE)
+samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
+                    Case.ID=c("Patient_h11", "Patient_h12"),
+                    Diagnosis=rep("Cancer", 2),
+                    Sample.Type=rep("Primary Tumor", 2),
+                    Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
 ## Create the Sample GDS file for sample in listSamples vector
 ## (in this case, samples "ex1")
 ## The Profile GDS file is created in the pathProfileGDS directory
-result <- createStudy2GDS1KG(pathGeno=data.dir,
+result <- createStudy2GDS1KG(pathGeno=dataDir,
             pedStudy=samplePED, fileNameGDS=fileGDS,
             studyDF=studyDF, listProfiles=c("ex1"),
-            pathProfileGDS=data.dir, verbose=FALSE)
+            pathProfileGDS=dataDir, verbose=FALSE)
 
 ## The function returns OL when successful
 result
 
 ## The Profile GDS file 'ex1.gds' has been created in the
 ## specified directory
-list.files(data.dir)
+list.files(dataDir)
 
 ## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(data.dir, "ex1.gds"))
+unlink(file.path(dataDir, "ex1.gds"))
 
 }
 \author{

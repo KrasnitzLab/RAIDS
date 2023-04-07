@@ -57,10 +57,10 @@ This function validates the input parameters for the
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
-gds1KG <- file.path(data.dir, "1KG_Demo.gds")
-ped <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+ped <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -71,10 +71,10 @@ studyInfo <- data.frame(study.id="Pancreatic.WES",
                 stringsAsFactors=FALSE)
 
 ## The validatiion should be successful
-RAIDS:::validateAppendStudy2GDS1KG(pathGeno=data.dir,
+RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
     fileNamePED=ped, fileNameGDS=gds1KG,
     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-    pathProfileGDS=data.dir, verbose=TRUE)
+    pathProfileGDS=dataDir, verbose=TRUE)
 
 
 }

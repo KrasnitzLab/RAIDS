@@ -69,18 +69,18 @@
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
 #'      currentProfile="TGCA_01", studyID="TCGA",
 #'      listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
 #'      thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
-#'      superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=data.dir,
-#'      keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="test")
+#'      superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=dataDir,
+#'      keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="test")
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -214,10 +214,10 @@ validatePruningSample <- function(gds, method, currentProfile, studyID,
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The GDS Sample (opened)
-#' gdsSample <- openfn.gds(file.path(data.dir,
+#' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
@@ -346,13 +346,13 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The GDS Sample (opened)
-#' gdsSample <- openfn.gds(file.path(data.dir,
+#' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## Get chromosome length information
@@ -437,6 +437,13 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #' @description This function validates the input parameters for the
 #' \code{\link{createStudy2GDS1KG}} function.
 #'
+#' @param pathGeno a \code{character} string representing the path to the
+#' directory containing the VCF output of SNP-pileup for each sample. The
+#' SNP-pileup files must be compressed (gz files) and have the name identifiers
+#' of the samples. A sample with "Name.ID" identifier would have an
+#' associated SNP-pileup file called "Name.ID.txt.gz". The directory must
+#' exist.
+#'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings (no factor). The \code{data.frame}
@@ -490,9 +497,9 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #'             Sample.Type=c("DNA", "DNA"),
 #'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 #'
-#' ## The validatiion should be successful
-#' RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
-#'             batch=1, studyDF=studyInfo,
+#' ## The validation should be successful
+#' RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir, pedStudy=ped,
+#'             fileNameGDS=gds1KG, batch=1, studyDF=studyInfo,
 #'             listProfiles=c("Sample_01", "Sample_02"),
 #'             pathProfileGDS=dataDir, verbose=TRUE)
 #'
@@ -500,8 +507,13 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
-                                    listProfiles, pathProfileGDS, verbose) {
+validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
+                            studyDF, listProfiles, pathProfileGDS, verbose) {
+
+    ## The pathGeno must be a existing directory
+    if (!dir.exists(pathGeno)) {
+        stop("The \'pathGeno\' must be an existing directory.")
+    }
 
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
@@ -516,6 +528,9 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
     if(!(isSingleNumber(batch))) {
         stop("The \'batch\' must be a single integer.")
     }
+
+    ## The Study DF must have the mandatory columns
+    validateStudyDataFrameParameter(studyDF=studyDF)
 
     ## The listProfiles must be a vector of character string
     if (!(is.character(listProfiles) || is.null(listProfiles))) {
@@ -600,16 +615,16 @@ validateCreateStudy2GDS1KG <- function(pedStudy, fileNameGDS, batch, studyDF,
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The GDS Sample (opened)
-#' gdsSample <- openfn.gds(file.path(data.dir,
+#' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
-#' listFiles <- file.path(data.dir,  "listSNPIndexes_Demo.rds")
+#' listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
@@ -706,10 +721,10 @@ validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The GDS Sample (opened)
-#' gdsSample <- openfn.gds(file.path(data.dir,
+#' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## The validatiion should be successful
@@ -808,10 +823,10 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' gds1KG <- file.path(data.dir, "1KG_Demo.gds")
-#' ped <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+#' gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+#' ped <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -822,10 +837,10 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #'                 stringsAsFactors=FALSE)
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateAppendStudy2GDS1KG(pathGeno=data.dir,
+#' RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
 #'     fileNamePED=ped, fileNameGDS=gds1KG,
 #'     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-#'     pathProfileGDS=data.dir, verbose=TRUE)
+#'     pathProfileGDS=dataDir, verbose=TRUE)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -899,14 +914,14 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
-#'     gdsProfileFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
+#'     gdsProfileFile=file.path(dataDir, "GDS_Sample_with_study_demo.gds"),
 #'     currentProfile="Sample01", studyID="Synthetic")
 #'
 #' ## All GDS file must be closed
@@ -958,7 +973,7 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
-#' those 3 columns: "studyID", "study.desc", "study.platform". All columns
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
 #' must be in \code{character} strings (no factor).
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
@@ -969,7 +984,8 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 #' directory containing the VCF output of SNP-pileup for each sample. The
 #' SNP-pileup files must be compressed (gz files) and have the name identifiers
 #' of the samples. A sample with "Name.ID" identifier would have an
-#' associated SNP-pileup file called "Name.ID.txt.gz".
+#' associated SNP-pileup file called "Name.ID.txt.gz". The directory must
+#' exist.
 #'
 #' @param pathOut a \code{character} string representing the path to
 #' the directory where the output files are created.
@@ -1048,8 +1064,19 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
 
-    ## The dataRefSyn must have the madatory columns
-    validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+    ## The study data frame must have the mandatory columns
+    validateStudyDataFrameParameter(studyDF=studyDF)
+
+    ## The pathGeno must be a existing directory
+    if (!dir.exists(pathGeno)) {
+        stop("The \'pathGeno\' must be an existing directory.")
+    }
+
+    ## The pathOut must be a character string
+    if (!is.character(pathOut)) {
+        stop("The \'pathOut\' must be a character string representing",
+                " the path where the output files will be generated.")
+    }
 
     ## The fileReferenceGDS must be a character string and the file must exists
     if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
@@ -1058,7 +1085,7 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     }
 
     ## The fileReferenceAnnotGDS must be a character string and
-    ## the file must exists
+    ## the file must exist
     if (!(is.character(fileReferenceAnnotGDS) &&
                 (file.exists(fileReferenceAnnotGDS)))) {
         stop("The \'fileReferenceAnnotGDS\' must be a character string ",
@@ -1066,14 +1093,11 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 "The file must exist.")
     }
 
-    ## The pathOut must be a character string
-    if (!is.character(pathOut)) {
-        stop("The \'pathOut\' must be a character string representing",
-             " the path where the output files will be generated.")
-    }
-
     ## The chrInfo must be a vector of integer
     validatePositiveIntegerVector(chrInfo, "chrInfo")
+
+    ## The dataRefSyn must have the madatory columns
+    validateDataRefSynParameter(dataRefSyn=dataRefSyn)
 
     return(0L)
 }
@@ -1109,7 +1133,8 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 validatePEDStudyParameter <- function(pedStudy) {
 
     ## The PED study must have the mandatory columns
-    if (!(all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
+    if (!(is.data.frame(pedStudy) &&
+            all(c("Name.ID", "Case.ID", "Sample.Type", "Diagnosis", "Source")
                             %in% colnames(pedStudy)))) {
         stop("The PED study data frame is incomplete. ",
                         "One or more mandatory columns are missing.")
@@ -1152,11 +1177,57 @@ validatePEDStudyParameter <- function(pedStudy) {
 validateDataRefSynParameter <- function(dataRefSyn) {
 
     ## The reference profile data.frame must have the mandatory columns
-    if (!(all(c("sample.id", "pop.group", "superPop")
+    if (!(is.data.frame(dataRefSyn) &&
+                all(c("sample.id", "pop.group", "superPop")
                     %in% colnames(dataRefSyn)))) {
         stop("The reference profile data frame \'dataRefSyn\' is incomplete. ",
                 "One or more mandatory columns are missing. The mandatory ",
                 "columns are: \'sample.id\', \'pop.group\', \'superPop\'.")
+    }
+
+    return(0L)
+}
+
+
+#' @title Validate that the study data set has
+#' the mandatory columns
+#'
+#' @description The function validates the input dtudy data set.
+#' The study data set
+#' must be a \code{data.frame} with those mandatory columns:
+#' "studyID", "study.desc", "study.platform". All columns must be in
+#' \code{character} strings (no factor).
+#'
+#' @param studyDF a \code{data.frame} containing the study information.
+#' The mandatory columns are:
+#' "study.id", "study.desc", "study.platform". All columns must be in
+#' \code{character} strings (no factor).
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Study data frame
+#' study <- data.frame(study.id = "MYDATA",
+#'                       study.desc = "Description",
+#'                       study.platform = "PLATFORM",
+#'                       stringsAsFactors = FALSE)
+#'
+#' ## Return 0L when the study data set is valid
+#' RAIDS:::validateStudyDataFrameParameter(studyDF=study)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateStudyDataFrameParameter <- function(studyDF) {
+
+    ## The study data.frame must have the mandatory columns
+    if (!(is.data.frame(studyDF) &&
+            all(c("study.id", "study.desc", "study.platform")
+              %in% colnames(studyDF)))) {
+        stop("The study data frame \'studyDF\' is incomplete. ",
+            "One or more mandatory columns are missing. The mandatory ",
+            "columns are: \'study.id\', \'study.desc\', \'study.platform\'.")
     }
 
     return(0L)

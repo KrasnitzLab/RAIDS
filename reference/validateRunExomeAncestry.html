@@ -94,7 +94,7 @@ can be defined.</p></dd>
 <dt>studyDF</dt>
 <dd><p>a <code>data.frame</code> containing the information about the
 study associated to the analysed sample(s). The <code>data.frame</code> must have
-those 3 columns: "studyID", "study.desc", "study.platform". All columns
+those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in <code>character</code> strings (no factor).</p></dd>
 
 
@@ -109,7 +109,8 @@ Default: <code>NULL</code>.</p></dd>
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
-associated SNP-pileup file called "Name.ID.txt.gz".</p></dd>
+associated SNP-pileup file called "Name.ID.txt.gz". The directory must
+exist.</p></dd>
 
 
 <dt>pathOut</dt>

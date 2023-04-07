@@ -228,7 +228,7 @@ context("pruningSample() results")
 
 test_that("pruningSample() must return error when gds is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
@@ -238,178 +238,177 @@ test_that("pruningSample() must return error when gds is a character string", {
     expect_error(pruningSample(gds=fileGDS, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".",
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".",
         outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when keepPrunedGDS is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures",  "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- 'The \'keepPrunedGDS\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS="YES",
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".",
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".",
         outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when keepFile is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
-    gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+        gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="1KG_Test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=TRUE,
-        pathProfileGDS=data.dir, keepFile="NO", pathPrunedGDS=".",
+        pathProfileGDS=dataDir, keepFile="NO", pathPrunedGDS=".",
         outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when np is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'np\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
         np="1", verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when slideWindowMaxBP is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'slideWindowMaxBP\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP="4", thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when thresholdLD is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'thresholdLD\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=4, thresholdLD="3",
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when thresholdLD is a vector of numerics", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'thresholdLD\' parameter must be a single positive numeric value."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=4, thresholdLD=c(3,3),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when method is a numeric", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
-
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
     error_message <- "The \'method\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method=3, currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when method is not in the list of choices", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     expect_error(pruningSample(gds=gdsF, method="test", currentProfile="test",
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
         np=1, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"))
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"))
 })
 
 
 test_that("pruningSample() must return error when currentProfile is a numeric", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'currentProfile\' parameter must be a character string."
 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile=2,
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1, verbose=FALSE, chr=NULL,
-        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=data.dir,
+        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=dataDir,
         keepFile=FALSE, pathPrunedGDS=".", outPrefix="pruned"),
         error_message, fixed=TRUE)
 })
@@ -418,13 +417,13 @@ test_that("pruningSample() must return error when currentProfile is a numeric", 
 
 test_that("pruningSample() must return error when pathPrunedGDS is a numeric", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'pathPrunedGDS\' parameter must be ",
         "a character string representing an existing directory.")
@@ -432,19 +431,19 @@ test_that("pruningSample() must return error when pathPrunedGDS is a numeric", {
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
         np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=data.dir, keepFile=FALSE, pathPrunedGDS=2, outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=dataDir, keepFile=FALSE, pathPrunedGDS=2, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when pathProfileGDS is a numeric", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'pathProfileGDS\' parameter must be a ",
                     "character string representing an existing directory.")
@@ -452,19 +451,19 @@ test_that("pruningSample() must return error when pathProfileGDS is a numeric", 
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
             studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
             np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-            pathProfileGDS=33, keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message, fixed=TRUE)
+            pathProfileGDS=33, keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when pathProfileGDS is a non existing directory", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'pathProfileGDS\' parameter must be a character string ",
                                 "representing an existing directory.")
@@ -472,20 +471,20 @@ test_that("pruningSample() must return error when pathProfileGDS is a non existi
     expect_error(pruningSample(gds=gdsF, method="corr", currentProfile="Sample2",
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L, thresholdLD=sqrt(0.1),
         np=1L, verbose=FALSE, chr=NULL, superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=paste0(data.dir, "_NOT_EXISTING_DIRECTORY"),
-        keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message, fixed=TRUE)
+        pathProfileGDS=paste0(dataDir, "_NOT_EXISTING_DIRECTORY"),
+        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when verbose is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
@@ -493,23 +492,22 @@ test_that("pruningSample() must return error when verbose is a character string"
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1L, verbose="HI", chr=NULL,
         superPopMinAF=NULL, keepPrunedGDS=FALSE,
-        pathProfileGDS=pdata.dir, keepFile=FALSE, pathPrunedGDS=data.dir,
+        pathProfileGDS=pdataDir, keepFile=FALSE, pathPrunedGDS=dataDir,
         outPrefix="pruned"), error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when GDS Sample file does not exist", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    fileProfileGDS <- file.path(data.dir, "A_File_That_DOES_NOT_EXIST.gds")
-
+    fileProfileGDS <- file.path(dataDir, "A_File_That_DOES_NOT_EXIST.gds")
     error_message <- paste0("The Profile GDS file \'", fileProfileGDS,
                                     " does not exist.")
 
@@ -517,30 +515,29 @@ test_that("pruningSample() must return error when GDS Sample file does not exist
         currentProfile="A_File_That_DOES_NOT_EXIST",
         studyID="test", listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
-        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=data.dir,
-        keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="pruned"), error_message,
+        superPopMinAF=NULL, keepPrunedGDS=FALSE, pathProfileGDS=dataDir,
+        keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="pruned"), error_message,
         fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return error when no SNV left after filtering", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
 
-    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
-                    study.platform = "PLATFORM",
-                    stringsAsFactors = FALSE)
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                    study.platform="PLATFORM",
+                    stringsAsFactors=FALSE)
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+    dataDirSample <- test_path("fixtures/sampleGDSforPruning")
 
-    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
-
-    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
-              file.path(data.dir.sample, "ex1.gds"))
-    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+    file.copy(file.path(dataDirSample, "ex1_demoForPruning.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
                  envir=parent.frame())
 
     error_message <- paste0("In pruningSample, the sample ex1 ",
@@ -550,8 +547,8 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
         currentProfile="ex1", studyID=studyDF$study.id,
         listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
-        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=data.dir.sample,
-        keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest"),
+        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=dataDirSample,
+        keepFile=TRUE, pathPrunedGDS=dataDirSample, outPrefix="prunedTest"),
         error_message, fixed=TRUE)
 })
 
@@ -560,23 +557,23 @@ test_that("pruningSample() must return error when no SNV left after filtering", 
 
 test_that("pruningSample() must return error when the study is not found", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
 
-    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
-                          study.platform = "PLATFORM",
-                          stringsAsFactors = FALSE)
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM",
+                          stringsAsFactors=FALSE)
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
+    dataDirSample <- test_path("fixtures/sampleGDSforPruning")
 
-    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
-              file.path(data.dir.sample, "ex1.gds"))
+    file.copy(file.path(dataDirSample, "ex1_demoForPruning.gds"),
+              file.path(dataDirSample, "ex1.gds"))
 
-    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
                  envir=parent.frame())
 
     error_message <- paste0("In pruningSample the profile \'ex1\'",
@@ -586,34 +583,34 @@ test_that("pruningSample() must return error when the study is not found", {
         currentProfile="ex1", studyID="demo",
         listSNP=NULL, slideWindowMaxBP=50000L,
         thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=22,
-        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=data.dir.sample,
-        keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest"),
+        superPopMinAF=0.41, keepPrunedGDS=TRUE, pathProfileGDS=dataDirSample,
+        keepFile=TRUE, pathPrunedGDS=dataDirSample, outPrefix="prunedTest"),
         error_message, fixed=TRUE)
 })
 
 
 test_that("pruningSample() must return expect result", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
 
-    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
-                          study.platform = "PLATFORM",
-                          stringsAsFactors = FALSE)
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM",
+                          stringsAsFactors=FALSE)
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    data.dir.sample <- test_path("fixtures/sampleGDSforPruning")
+    dataDirSample <- test_path("fixtures/sampleGDSforPruning")
 
-    file.copy(file.path(data.dir.sample, "ex1_demoForPruning.gds"),
-                      file.path(data.dir.sample, "ex1.gds"))
-    withr::defer((unlink(file.path(data.dir.sample, "prunedTest.Obj.rds"))),
+    file.copy(file.path(dataDirSample, "ex1_demoForPruning.gds"),
+                      file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "prunedTest.Obj.rds"))),
                         envir=parent.frame())
-    withr::defer((unlink(file.path(data.dir.sample, "prunedTest.rds"))),
+    withr::defer((unlink(file.path(dataDirSample, "prunedTest.rds"))),
                         envir=parent.frame())
-    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
                  envir=parent.frame())
 
     result <- pruningSample(gds=gdsF, method="corr",
@@ -621,12 +618,12 @@ test_that("pruningSample() must return expect result", {
                 listSNP=NULL, slideWindowMaxBP=50000L,
                 thresholdLD=sqrt(0.1), np=1L, verbose=FALSE, chr=NULL,
                 superPopMinAF=NULL, keepPrunedGDS=TRUE,
-                pathProfileGDS=data.dir.sample,
-                keepFile=TRUE, pathPrunedGDS=data.dir.sample, outPrefix="prunedTest")
+                pathProfileGDS=dataDirSample,
+                keepFile=TRUE, pathPrunedGDS=dataDirSample, outPrefix="prunedTest")
 
     expect_equal(result, 0L)
-    expect_true(file.exists(file.path(data.dir.sample, "prunedTest.Obj.rds")))
-    expect_true(file.exists(file.path(data.dir.sample, "prunedTest.rds")))
+    expect_true(file.exists(file.path(dataDirSample, "prunedTest.Obj.rds")))
+    expect_true(file.exists(file.path(dataDirSample, "prunedTest.rds")))
 })
 
 
@@ -652,7 +649,7 @@ test_that("add1KG2SampleGDS() must return error when fileProfileGDS is a numeric
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'fileProfileGDS\' must be a character ",
             "string representing the GDS Sample file. The file must exist.")
@@ -666,7 +663,7 @@ test_that("add1KG2SampleGDS() must return error when currentProfile is a numeric
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'currentProfile\' must be a character string."
 
@@ -680,7 +677,7 @@ test_that("add1KG2SampleGDS() must return error when studyID is a numeric value"
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'studyID\' must be a character string."
 
@@ -691,33 +688,33 @@ test_that("add1KG2SampleGDS() must return error when studyID is a numeric value"
 
 test_that("add1KG2SampleGDS() must return expect result", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
 
-    studyDF <- data.frame(study.id = "MYDATA", study.desc = "Description",
-                          study.platform = "PLATFORM",
-                          stringsAsFactors = FALSE)
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM",
+                          stringsAsFactors=FALSE)
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    data.dir.sample <- test_path("fixtures/sampleGDSforAddingGenotype")
+    dataDirSample <- test_path("fixtures/sampleGDSforAddingGenotype")
 
 
-    file.copy(file.path(data.dir.sample, "ex1_demoForAddGenotype.gds"),
-              file.path(data.dir.sample, "ex1.gds"))
-    withr::defer((unlink(file.path(data.dir.sample, "ex1.gds"))),
+    file.copy(file.path(dataDirSample, "ex1_demoForAddGenotype.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
                  envir=parent.frame())
 
     result <- add1KG2SampleGDS(gds=gdsF,
-                fileProfileGDS=file.path(data.dir.sample, "ex1.gds"),
-                currentProfile=c("ex1"), studyID = studyDF$study.id)
+                fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+                currentProfile=c("ex1"), studyID=studyDF$study.id)
 
     expect_equal(result, 0L)
 
-    content <- openfn.gds(file.path(data.dir.sample, "ex1.gds"))
-    withr::defer((gdsfmt::closefn.gds(content)), envir = parent.frame())
+    content <- openfn.gds(file.path(dataDirSample, "ex1.gds"))
+    withr::defer((gdsfmt::closefn.gds(content)), envir=parent.frame())
 
     expect_true(gdsfmt::exist.gdsn(content, "pruned.study"))
     expect_true(gdsfmt::exist.gdsn(content, "geno.ref"))
@@ -753,7 +750,7 @@ test_that("computePCARefSample() must return error when name.id is numeric value
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'name.id\' parameter must be a single character string."
 
@@ -768,7 +765,7 @@ test_that("computePCARefSample() must return error when studyIDRef is numeric va
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'studyIDRef\' parameter must be a character string."
 
@@ -783,7 +780,7 @@ test_that("computePCARefSample() must return error when np is a character string
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
@@ -799,7 +796,7 @@ test_that("computePCARefSample() must return error when np is a numeric value", 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
@@ -814,7 +811,7 @@ test_that("computePCARefSample() must return error when algorithm is a numeric v
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
@@ -829,7 +826,7 @@ test_that("computePCARefSample() must return error when algorithm is not a valid
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
             studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L))
@@ -841,7 +838,7 @@ test_that("computePCARefSample() must return error when eigen.cnt is a string", 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'eigen.cnt\' parameter must be a single integer."
 
@@ -856,7 +853,7 @@ test_that("computePCARefSample() must return error when missing.rate is negative
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'missing.rate\' must be a single numeric ",
                                 "positive value between 0 and 1 or NaN.")
@@ -922,7 +919,7 @@ test_that("addStudy1Kg() must return expected results", {
 
     study.list <- data.frame(study.id=c("HTT Study"),
                         study.desc=c("Important Study"),
-                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+                        study.platform=c("Panel"), stringsAsFactors=FALSE)
 
     add.gdsn(GDS_file_Sample, "study.list", study.list)
 
@@ -936,11 +933,11 @@ test_that("addStudy1Kg() must return expected results", {
     sync.gds(GDS_file_Sample)
 
     closefn.gds(GDS_file_Sample)
-    withr::defer((unlink(gdsFileSample, force = TRUE)), envir = parent.frame())
+    withr::defer((unlink(gdsFileSample, force=TRUE)), envir=parent.frame())
 
     result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, fileProfileGDS=gdsFileSample)
 
-    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly=TRUE)
 
     result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
 
@@ -985,7 +982,7 @@ test_that("addStudy1Kg() must return expected results when 1KG already present",
 
     study.list <- data.frame(study.id=c("Ref.1KG"),
                         study.desc=c("Important Study"),
-                        study.platform=c("Panel"), stringsAsFactors = FALSE)
+                        study.platform=c("Panel"), stringsAsFactors=FALSE)
 
     add.gdsn(GDS_file_Sample, "study.list", study.list)
 
@@ -999,11 +996,11 @@ test_that("addStudy1Kg() must return expected results when 1KG already present",
     sync.gds(GDS_file_Sample)
 
     closefn.gds(GDS_file_Sample)
-    withr::defer((unlink(gdsFileSample)), envir = parent.frame())
+    withr::defer((unlink(gdsFileSample)), envir=parent.frame())
 
     result0 <- addStudy1Kg(gds=GDS_file_tmp_1KG, fileProfileGDS=gdsFileSample)
 
-    gds_sample_file <- openfn.gds(gdsFileSample, readonly = TRUE)
+    gds_sample_file <- openfn.gds(gdsFileSample, readonly=TRUE)
 
     result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
 
@@ -1037,7 +1034,7 @@ test_that("estimateAllelicFraction() must return error when gds is a character s
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'gds\' must be an object of class \'gds.class\'."
 
@@ -1054,7 +1051,7 @@ test_that("estimateAllelicFraction() must return error when gdsSample is a chara
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
 
@@ -1071,7 +1068,7 @@ test_that("estimateAllelicFraction() must return error when currentProfile is a 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'currentProfile\' must be a character string."
 
@@ -1088,7 +1085,7 @@ test_that("estimateAllelicFraction() must return error when studyID is a numeric
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'studyID\' must be a character string."
 
@@ -1105,7 +1102,7 @@ test_that("estimateAllelicFraction() must return error when studyType is a numer
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'studyType\' must be a character string."
 
@@ -1122,7 +1119,7 @@ test_that("estimateAllelicFraction() must return error when minCov is vector of 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
@@ -1139,7 +1136,7 @@ test_that("estimateAllelicFraction() must return error when minCov is character 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
@@ -1156,7 +1153,7 @@ test_that("estimateAllelicFraction() must return error when minProb is character
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                       "value between 0 and 1.")
@@ -1174,7 +1171,7 @@ test_that("estimateAllelicFraction() must return error when minProb is negative 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1192,7 +1189,7 @@ test_that("estimateAllelicFraction() must return error when minProb is above 1",
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1210,7 +1207,7 @@ test_that("estimateAllelicFraction() must return error when minProb is vector of
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'minProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1228,7 +1225,7 @@ test_that("estimateAllelicFraction() must return error when eProb is character s
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1246,7 +1243,7 @@ test_that("estimateAllelicFraction() must return error when eProb is negative va
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                     "value between 0 and 1.")
@@ -1264,7 +1261,7 @@ test_that("estimateAllelicFraction() must return error when eProb is above 1", {
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1282,7 +1279,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'eProb\' must be a single numeric positive ",
                                 "value between 0 and 1.")
@@ -1300,7 +1297,7 @@ test_that("estimateAllelicFraction() must return error when wAR is vector of num
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'wAR\' parameter must be a single numeric positive value."
 
@@ -1317,7 +1314,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
@@ -1334,7 +1331,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is a chara
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
@@ -1353,7 +1350,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
@@ -1370,7 +1367,7 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
@@ -1387,7 +1384,7 @@ test_that("estimateAllelicFraction() must return error when studyType is not a v
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     expect_error(estimateAllelicFraction(gds=gdsF,
         gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
@@ -1430,10 +1427,10 @@ test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and p
 
 test_that("createStudy2GDS1KG() must return error when pedDF is missing mandatory column", {
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                    Sample.Type = rep("Primary Tumor", 3),
-                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- paste0("The PED study data frame is incomplete. ",
                             "One or more mandatory columns are missing.")
@@ -1447,11 +1444,11 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
 
 test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical value", {
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                        Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                        Diagnosis = rep("Cancer", 3),
-                        Sample.Type = rep("Primary Tumor", 3),
-                        Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis=rep("Cancer", 3),
+                        Sample.Type=rep("Primary Tumor", 3),
+                        Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'fileNameGDS\' must be a character ",
                 "string representing the GDS 1KG file. The file must exist.")
@@ -1465,14 +1462,14 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
 
 test_that("createStudy2GDS1KG() must return error when batch is character string", {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                    Diagnosis = rep("Cancer", 3),
-                    Sample.Type = rep("Primary Tumor", 3),
-                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- "The \'batch\' must be a single integer."
 
@@ -1487,11 +1484,11 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                    Diagnosis = rep("Cancer", 3),
-                    Sample.Type = rep("Primary Tumor", 3),
-                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- "The \'batch\' must be a single integer."
 
@@ -1506,11 +1503,11 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                    Diagnosis = rep("Cancer", 3),
-                    Sample.Type = rep("Primary Tumor", 3),
-                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                         "of character strings (1 entry or more) or NULL.")
@@ -1526,11 +1523,11 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                Diagnosis = rep("Cancer", 3),
-                Sample.Type = rep("Primary Tumor", 3),
-                Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                Diagnosis=rep("Cancer", 3),
+                Sample.Type=rep("Primary Tumor", 3),
+                Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'listProfiles\' must be a vector ",
                             "of character strings (1 entry or more) or NULL.")
@@ -1547,11 +1544,11 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                    Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                    Diagnosis = rep("Cancer", 3),
-                    Sample.Type = rep("Primary Tumor", 3),
-                    Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
 
@@ -1562,19 +1559,41 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 })
 
 
+test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric", {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    gdsFile <- file.path(dataDir, "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                Diagnosis=rep("Cancer", 3),
+                Sample.Type=rep("Primary Tumor", 3),
+                Source=rep("Databank B", 3), stringsAsFactors=FALSE)
+
+    error_message <- paste0("The \'pathProfileGDS\' must be a character ",
+        "string representing the path where the Profile GDS files ",
+        "will be generated.")
+
+    expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
+        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+        batch=1, studyDF=NULL, listProfiles=NULL,
+        pathProfileGDS=33, verbose=FALSE), error_message, fixed=TRUE)
+})
+
+
 test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedStudy are defined", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
-    pedDF <- data.frame(Name.ID = c("Sample_01", "Sample_02", "Sample_03"),
-                        Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                        Diagnosis = rep("Cancer", 3),
-                        Sample.Type = rep("Primary Tumor", 3),
-                        Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis=rep("Cancer", 3),
+                        Sample.Type=rep("Primary Tumor", 3),
+                        Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
-    error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
-                        "defined at the same time.")
+    error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters ",
+                        "cannot be defined at the same time.")
 
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=fileGDS, pedStudy=pedDF, fileNameGDS=fileGDS,
@@ -1590,17 +1609,17 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
 
     withr::defer((unlink(file.path(dataDir, "ex1.gds"))), envir=parent.frame())
 
-    pedDF <- data.frame(Name.ID = c("ex1", "ex2", "ex3"),
-                Case.ID = c("Patient_h11", "Patient_h12", "Patient_h18"),
-                Diagnosis = rep("Cancer", 3),
-                Sample.Type = rep("Primary Tumor", 3),
-                Source = rep("Databank B", 3), stringsAsFactors = FALSE)
+    pedDF <- data.frame(Name.ID=c("ex1", "ex2", "ex3"),
+                Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                Diagnosis=rep("Cancer", 3),
+                Sample.Type=rep("Primary Tumor", 3),
+                Source=rep("Databank B", 3), stringsAsFactors=FALSE)
     rownames(pedDF) <- pedDF$Name.ID
 
-    studyDF <- data.frame(study.id = "MYDATA",
-                            study.desc = "Description",
-                            study.platform = "PLATFORM",
-                            stringsAsFactors = FALSE)
+    studyDF <- data.frame(study.id="MYDATA",
+                            study.desc="Description",
+                            study.platform="PLATFORM",
+                            stringsAsFactors=FALSE)
 
     result <- createStudy2GDS1KG(pathGeno=dataDir,
                 pedStudy=pedDF, fileNameGDS=fileGDS,
@@ -1625,7 +1644,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSam
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample="test.gds",
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef = "test", eigen.cnt = 15L), error_message)
+                spRef="test", eigen.cnt=15L), error_message)
 })
 
 
@@ -1683,7 +1702,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np="12",
-                spRef = "test", eigen.cnt = 15L), error_message)
+                spRef="test", eigen.cnt=15L), error_message)
 })
 
 
@@ -1697,7 +1716,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                     sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=0L,
-                    spRef = "test", eigen.cnt = 15L), error_message)
+                    spRef="test", eigen.cnt=15L), error_message)
 })
 
 
@@ -1707,12 +1726,12 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when kList 
     gds1KG <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    error_message <- paste0("The \'kList\' parameter must be a vector of positive ",
-                                "integers.")
+    error_message <- paste0("The \'kList\' parameter must be a vector of ",
+                                "positive integers.")
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, kList=c(0, 1),
-        pcaList=c(1, 2), spRef = "test", eigen.cnt = 15L), error_message)
+        pcaList=c(1, 2), spRef="test", eigen.cnt=15L), error_message)
 })
 
 
@@ -1727,7 +1746,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaLis
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-        pcaList=c(0, 1, 2), spRef = "test", eigen.cnt = 15L), error_message)
+        pcaList=c(0, 1, 2), spRef="test", eigen.cnt=15L), error_message)
 })
 
 
@@ -1777,8 +1796,8 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when missin
     gds1KG <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    error_message <- paste0("The \'missing.rate\' parameter must be a single positive ",
-                                    "numeric between zero and one or NaN.")
+    error_message <- paste0("The \'missing.rate\' parameter must be a single ",
+                            "positive numeric between zero and one or NaN.")
 
     expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
@@ -1997,11 +2016,11 @@ context("computePoolSyntheticAncestry() results")
 test_that(paste0("computePoolSyntheticAncestry() must return error ",
                                 "when gds is a character string"), {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     dataRefDemo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC",
                                                     "SampleD"),
@@ -2014,9 +2033,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
     expect_error(computePoolSyntheticAncestry(gds="toto.gds", gdsSample=gdsF,
         sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
         studyIDSyn="synthetic",
-        np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
-        fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-        pcaList = seq(2, 15, 1), algorithm="exact",
+        np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
+        fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+        pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 
@@ -2024,11 +2043,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
 test_that(paste0("computePoolSyntheticAncestry() must return error ",
                     "when gds is a numerical value"), {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     dataRefDemo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC",
                                                          "SampleD"),
@@ -2041,9 +2060,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
     expect_error(computePoolSyntheticAncestry(gds=31, gdsSample=gdsF,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
-            np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
-            fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-            pcaList = seq(2, 15, 1), algorithm="exact",
+            np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
+            fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+            pcaList=seq(2, 15, 1), algorithm="exact",
             eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 
@@ -2051,11 +2070,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
 test_that(paste0("computePoolSyntheticAncestry() must return error ",
                         "when gdsSample is a numerical value"), {
 
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "1KG_Test.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     dataRefDemo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC",
                                             "SampleD"),
@@ -2068,9 +2087,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=33,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
-            np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
-            fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-            pcaList = seq(2, 15, 1), algorithm="exact",
+            np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
+            fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+            pcaList=seq(2, 15, 1), algorithm="exact",
             eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 
@@ -2087,9 +2106,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when ",
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
         sample.ana.id="test", dataRef="test", spRef="TODO",
         studyIDSyn="synthetic",
-        np = 1L, listCatPop = "EUR", fieldPopIn1KG = "superPop",
-        fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-        pcaList = seq(2, 15, 1), algorithm="exact",
+        np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
+        fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+        pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 
@@ -2109,9 +2128,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when studyIDS
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
         sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
         studyIDSyn=33,
-        np = 1L, listCatPop = "EUR", fieldPopIn1KG = "SuperPop",
-        fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-        pcaList = seq(2, 15, 1), algorithm="exact",
+        np=1L, listCatPop="EUR", fieldPopIn1KG="SuperPop",
+        fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+        pcaList=seq(2, 15, 1), algorithm="exact",
         eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 
@@ -2131,9 +2150,9 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPop
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=gdsF,
             sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
-            np = 1L, listCatPop = "EUR", fieldPopIn1KG = 33,
-            fieldPopInfAnc = "SuperPop", kList = seq(2, 15, 1),
-            pcaList = seq(2, 15, 1), algorithm="exact",
+            np=1L, listCatPop="EUR", fieldPopIn1KG=33,
+            fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
+            pcaList=seq(2, 15, 1), algorithm="exact",
             eigen.cnt=32L, missing.rate=0.025), error_message)
 })
 

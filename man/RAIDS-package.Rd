@@ -6,6 +6,9 @@
 \alias{RAIDS-package}
 \alias{RAIDS}
 \title{RAIDS: Accurate Inference of Genetic Ancestry from Cancer Sequences}
+\value{
+RAIDS
+}
 \description{
 The RAIDS package implements specialized algorithms that enable
 ancestry inference from various cancer data sources (RNA,

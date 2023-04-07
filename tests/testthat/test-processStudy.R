@@ -2298,7 +2298,7 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is numeric"), {
+test_that(paste0("runExomeAncestry() must return error when fileReferenceAnnotGDS is numeric"), {
 
     pathOut <- test_path("fixtures")
     gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2331,9 +2331,7 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
 })
 
 
-
-
-test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is numeric"), {
+test_that(paste0("runExomeAncestry() must return error when chrInfo is vector of characters"), {
 
     pathOut <- test_path("fixtures")
     gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2361,4 +2359,37 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=gdsFile, fileReferenceAnnotGDS=gdsFileAnnot,
         chrInfo=c("ALLO", "TEST"), dataRefSyn=dataRefSyn), error_message)
+})
+
+
+test_that(paste0("runExomeAncestry() must return error when dataRefSyn missing column"), {
+
+    pathOut <- test_path("fixtures")
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM", stringsAsFactors=FALSE)
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                      Case.ID=c("TCGA-H01", "TCGA-H02"),
+                      Sample.Type=c("DNA", "DNA"),
+                      Diagnosis=c("Cancer", "Cancer"),
+                      Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
+
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+            "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+            stringsAsFactors=FALSE)
+
+    error_message <- paste0("The reference profile data frame ",
+        "\'dataRefSyn\' is incomplete. One or more mandatory columns are ",
+        "missing. The mandatory columns are: \'sample.id\', ",
+        "\'pop.group\', \'superPop\'.")
+
+    expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+        pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
+        fileReferenceGDS=gdsFile, fileReferenceAnnotGDS=gdsFileAnnot,
+        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn), error_message)
 })

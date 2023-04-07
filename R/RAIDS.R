@@ -1,4 +1,4 @@
-#' RAIDS: Ancestry Inference from Cancer-Derived Sequences
+#' RAIDS: Accurate Inference of Genetic Ancestry from Cancer Sequences
 #'
 #' The RAIDS package implements specialized algorithms that enable
 #' ancestry inference from various cancer data sources (RNA,

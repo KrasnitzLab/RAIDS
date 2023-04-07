@@ -49,8 +49,8 @@ name of the 1KG GDS file. The file must exist.}
 \item{fileReferenceAnnotGDS}{a \code{character} string representing the
 file name of the 1KG GDS annotation file. The file must exist.}
 
-\item{chrInfo}{a \code{vector} of \code{integer} values representing
-the length of the chromosomes. See 'details' section.}
+\item{chrInfo}{a \code{vector} of positive \code{integer} values
+representing the length of the chromosomes. See 'details' section.}
 
 \item{dataRefSyn}{a \code{data.frame} containing those columns:
 \itemize{

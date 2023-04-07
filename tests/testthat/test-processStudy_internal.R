@@ -249,3 +249,23 @@ test_that("validatePEDStudyParameter() must return expected results when all inp
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests validateDataRefSynParameter() results
+#############################################################################
+
+context("validateDataRefSynParameter() results")
+
+
+test_that("validateDataRefSynParameter() must return expected results when all input are valid", {
+
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+        "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+        superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+    result <- RAIDS:::validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+
+    expect_identical(result, 0L)
+})

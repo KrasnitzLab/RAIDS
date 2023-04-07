@@ -49,10 +49,12 @@ name of the 1KG GDS file. The file must exist.}
 \item{fileReferenceAnnotGDS}{a \code{character} string representing the
 file name of the 1KG GDS annotation file. The file must exist.}
 
-\item{chrInfo}{a \code{vector} of \code{integer} values representing
-the length of the chromosomes. See 'details' section.}
+\item{chrInfo}{a \code{vector} of positive \code{integer} values
+representing the length of the chromosomes. See 'details' section.}
 
-\item{dataRefSyn}{a \code{data.frame} containing those columns:
+\item{dataRefSyn}{a \code{data.frame} containing a subset of
+reference profiles for each sub-population present in the Reference GDS
+file. The \code{data.frame} must have those columns:
 \itemize{
 \item{sample.id} { a \code{character} string representing the sample
 identifier. }
@@ -60,7 +62,7 @@ identifier. }
 subcontinental population assigned to the sample. }
 \item{superPop} { a \code{character} string representing the
 super-population assigned to the sample. }
-} can be the return of select1KGPop}
+}}
 }
 \value{
 The integer \code{0L} when successful. See details section for
@@ -73,9 +75,12 @@ TODO
 The runExomeAncestry() function generates 3 types of files
 in the OUTPUT directory.
 \itemize{
-\item{Ancestry Inference}{The ancestry inference CSV file (".Ancestry.csv" file)}
-\item{Inference Informaton}{The inference information RDS file (".infoCall.rds" file)}
-\item{Synthetic Information}{The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
+\item{Ancestry Inference}{The ancestry inference CSV file
+(".Ancestry.csv" file)}
+\item{Inference Informaton}{The inference information RDS file
+(".infoCall.rds" file)}
+\item{Synthetic Information}{The parameter information RDS files
+from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 }
 
 In addition, a sub-directory (named using the profile ID) is

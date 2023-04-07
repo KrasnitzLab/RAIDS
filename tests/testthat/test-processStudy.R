@@ -2250,14 +2250,19 @@ test_that(paste0("runExomeAncestry() must return error when pathOut is numeric")
                 Sample.Type=c("DNA", "DNA"),
                 Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+        "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+        superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'pathOut\' must be a character string ",
             "representing the path where the output files will be generated.")
 
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut,
         pathGeno=pathOut, pathOut=33, fileReferenceGDS=gdsFile,
-        fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chrInfo, dataRefSyn),
-        error_message)
+        fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chrInfo,
+        dataRefSyn=dataRefSyn), error_message)
 })
 
 
@@ -2277,6 +2282,11 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
                 Case.ID=c("TCGA-H01", "TCGA-H02"),
                 Sample.Type=c("DNA", "DNA"),
                 Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+            "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+            superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'fileReferenceGDS\' must be a character ",
         "string representing the Reference GDS file. The file must exist.")
@@ -2305,6 +2315,11 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
                       Sample.Type=c("DNA", "DNA"),
                       Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+            "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+            superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
     error_message <- paste0("The \'fileReferenceAnnotGDS\' must be a character",
             " string representing the Reference Annotation GDS file. ",
             "The file must exist.")
@@ -2312,5 +2327,38 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
             fileReferenceGDS=gdsFile, fileReferenceAnnotGDS=32,
-            chrInfo=chrInfo, dataRefSyn), error_message)
+            chrInfo=chrInfo, dataRefSyn=dataRefSyn), error_message)
+})
+
+
+
+
+test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is numeric"), {
+
+    pathOut <- test_path("fixtures")
+    gdsFile <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM", stringsAsFactors=FALSE)
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                      Case.ID=c("TCGA-H01", "TCGA-H02"),
+                      Sample.Type=c("DNA", "DNA"),
+                      Diagnosis=c("Cancer", "Cancer"),
+                      Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
+
+    ## Profiles used for synthetic data set
+    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+            "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+            superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+    error_message <- paste0("The 'chrInfo' parameter must be a ",
+            "vector of positive integers.")
+
+    expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+        pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
+        fileReferenceGDS=gdsFile, fileReferenceAnnotGDS=gdsFileAnnot,
+        chrInfo=c("ALLO", "TEST"), dataRefSyn=dataRefSyn), error_message)
 })

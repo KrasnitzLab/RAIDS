@@ -138,15 +138,15 @@ file.copy(file.path(data.dir, "ex1_demo.gds"),
                  file.path(data.dir.pruning, "ex1.gds"))
 
 ## Open 1KG file
-gds_1KG <- snpgdsOpen(gdsFile)
+gds1KG <- snpgdsOpen(gdsFile)
 
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
-pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
+pruningSample(gds=gds1KG, currentProfile=c("ex1"),
               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
-closefn.gds(gds_1KG)
+closefn.gds(gds1KG)
 
 ## Check content of Profile GDS file
 ## The 'pruned.study' entry should be present

@@ -980,8 +980,8 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
 #' file name of the 1KG GDS annotation file. The file must exist.
 #'
-#' @param chrInfo a \code{vector} of \code{integer} values representing
-#' the length of the chromosomes. See 'details' section.
+#' @param chrInfo a \code{vector} of positive \code{integer} values
+#' representing the length of the chromosomes. See 'details' section.
 #'
 #' @param dataRefSyn a \code{data.frame} containing those columns:
 #' \itemize{
@@ -1048,6 +1048,9 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
 
+    ## The dataRefSyn must have the madatory columns
+    validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+
     ## The fileReferenceGDS must be a character string and the file must exists
     if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
         stop("The \'fileReferenceGDS\' must be a character string ",
@@ -1068,6 +1071,9 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         stop("The \'pathOut\' must be a character string representing",
              " the path where the output files will be generated.")
     }
+
+    ## The chrInfo must be a vector of integer
+    validatePositiveIntegerVector(chrInfo, "chrInfo")
 
     return(0L)
 }
@@ -1107,6 +1113,50 @@ validatePEDStudyParameter <- function(pedStudy) {
                             %in% colnames(pedStudy)))) {
         stop("The PED study data frame is incomplete. ",
                         "One or more mandatory columns are missing.")
+    }
+
+    return(0L)
+}
+
+
+#' @title Validate that the reference profile data set has
+#' the mandatory columns
+#'
+#' @description The function validates the input reference profile data set.
+#' The reference profile data set
+#' must be a \code{data.frame} with those mandatory columns:
+#' "sample.id", "pop.group", "superPop". All columns must be in
+#' \code{character} strings (no factor).
+#'
+#' @param dataRefSyn a \code{data.frame} containing a subset of
+#' reference profiles for each sub-population present in the Reference GDS
+#' file. The mandatory columns are:
+#' "sample.id", "pop.group", "superPop". All columns must be in
+#' \code{character} strings (no factor).
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Profiles used for synthetic data set
+#' dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+#'     "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+#'     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+#'
+#' ## Return 0L when the reference profile data set is valid
+#' RAIDS:::validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateDataRefSynParameter <- function(dataRefSyn) {
+
+    ## The reference profile data.frame must have the mandatory columns
+    if (!(all(c("sample.id", "pop.group", "superPop")
+                    %in% colnames(dataRefSyn)))) {
+        stop("The reference profile data frame is incomplete. ",
+                "One or more mandatory columns are missing. The mandatory ",
+                "columns are: \'sample.id\', \'pop.group\', \'superPop\'.")
     }
 
     return(0L)

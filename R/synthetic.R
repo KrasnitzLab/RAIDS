@@ -1,4 +1,4 @@
-#' @title Random selection of a specific number of reference samples in each
+#' @title Random selection of a specific number of reference profiles in each
 #' subcontinental population present in the 1KG GDS file
 #'
 #' @description The function randomly selects a fixed number of reference

@@ -96,18 +96,18 @@ This function validates the input parameters for the
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validation should be successful
 RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
      currentProfile="TGCA_01", studyID="TCGA",
      listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
      thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
-     superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=data.dir,
-     keepFile=FALSE, pathPrunedGDS=data.dir, outPrefix="test")
+     superPopMinAF=0.002, keepPrunedGDS=TRUE, pathProfileGDS=dataDir,
+     keepFile=FALSE, pathPrunedGDS=dataDir, outPrefix="test")
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

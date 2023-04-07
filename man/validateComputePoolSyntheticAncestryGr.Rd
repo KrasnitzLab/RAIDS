@@ -80,10 +80,10 @@ This function validates the input parameters for the
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The GDS Sample (opened)
-gdsSample <- openfn.gds(file.path(data.dir,
+gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
 ## The validation should be successful

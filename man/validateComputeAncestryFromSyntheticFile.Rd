@@ -81,16 +81,16 @@ This function validates the input parameters for the
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The GDS Sample (opened)
-gdsSample <- openfn.gds(file.path(data.dir,
+gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
-listFiles <- file.path(data.dir,  "listSNPIndexes_Demo.rds")
+listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 
 ## The validatiion should be successful
 RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,

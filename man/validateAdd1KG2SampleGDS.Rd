@@ -30,14 +30,14 @@ This function validates the input parameters for the
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validatiion should be successful
 RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
-    gdsProfileFile=file.path(data.dir, "GDS_Sample_with_study_demo.gds"),
+    gdsProfileFile=file.path(dataDir, "GDS_Sample_with_study_demo.gds"),
     currentProfile="Sample01", studyID="Synthetic")
 
 ## All GDS file must be closed

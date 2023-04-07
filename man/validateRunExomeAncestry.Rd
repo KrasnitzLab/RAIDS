@@ -27,7 +27,7 @@ can be defined.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
-those 3 columns: "studyID", "study.desc", "study.platform". All columns
+those 3 columns: "study.id", "study.desc", "study.platform". All columns
 must be in \code{character} strings (no factor).}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to
@@ -38,7 +38,8 @@ Default: \code{NULL}.}
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
-associated SNP-pileup file called "Name.ID.txt.gz".}
+associated SNP-pileup file called "Name.ID.txt.gz". The directory must
+exist.}
 
 \item{pathOut}{a \code{character} string representing the path to
 the directory where the output files are created.}

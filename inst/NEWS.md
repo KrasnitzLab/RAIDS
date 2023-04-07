@@ -1,3 +1,15 @@
+CHANGES IN VERSION 0.99.3
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o More parameter names have been changed to follow the camelCase style.
+    
+BUG FIXES
+
+    o The warning related to the package man page has been removed. 
+    
+
 CHANGES IN VERSION 0.99.2
 ------------------------
 

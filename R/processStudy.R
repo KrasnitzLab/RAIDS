@@ -396,15 +396,15 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'                  file.path(data.dir.pruning, "ex1.gds"))
 #'
 #' ## Open 1KG file
-#' gds_1KG <- snpgdsOpen(gdsFile)
+#' gds1KG <- snpgdsOpen(gdsFile)
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
-#' pruningSample(gds=gds_1KG, currentProfile=c("ex1"),
+#' pruningSample(gds=gds1KG, currentProfile=c("ex1"),
 #'               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
-#' closefn.gds(gds_1KG)
+#' closefn.gds(gds1KG)
 #'
 #' ## Check content of Profile GDS file
 #' ## The 'pruned.study' entry should be present
@@ -573,10 +573,10 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-#' studyDF <- data.frame(study.id = "MYDATA",
-#'                         study.desc = "Description",
-#'                         study.platform = "PLATFORM",
-#'                         stringsAsFactors = FALSE)
+#' studyDF <- data.frame(study.id="MYDATA",
+#'                         study.desc="Description",
+#'                         study.platform="PLATFORM",
+#'                         stringsAsFactors=FALSE)
 #'
 #' ## Copy the Profile GDS file demo that has been pruned
 #' ## into a test directory (deleted after the example has been run)
@@ -588,17 +588,17 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'                  file.path(data.dir.genotype, "ex1.gds"))
 #'
 #' ## Open 1KG file
-#' gds_1KG <- snpgdsOpen(gdsFile)
+#' gds1KG <- snpgdsOpen(gdsFile)
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
-#' add1KG2SampleGDS(gds=gds_1KG,
+#' add1KG2SampleGDS(gds=gds1KG,
 #'          gdsSampleFile=file.path(data.dir.genotype, "ex1.gds"),
 #'          currentProfile=c("ex1"),
-#'          studyID = studyDF$study.id)
+#'          studyID=studyDF$study.id)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
-#' closefn.gds(gds_1KG)
+#' closefn.gds(gds1KG)
 #'
 #' ## Check content of Profile GDS file
 #' ## The 'pruned.study' entry should be present
@@ -646,7 +646,6 @@ add1KG2SampleGDS <- function(gds, gdsSampleFile, currentProfile,
     add.gdsn(gdsSample, "snp.position", snp.position)
     # snp.index is the index of the snp pruned in snp.id fro 1KG gds
     add.gdsn(gdsSample, "snp.index", listSNP)
-
 
     var.geno <- NULL
 
@@ -821,7 +820,6 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
 
     listGDSSample <- dir(pathProfileGDS, pattern = ".+.gds")
 
-
     indexAll <- NULL
     for(gdsSampleFile in listGDSSample){
         gdsSample <- openfn.gds(file.path(pathProfileGDS, gdsSampleFile))
@@ -844,12 +842,6 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
     for(sample1KG in listSample){
         if(verbose) { message("P ", i, " ", Sys.time()) }
 
-        #file1KG <- file.path(pathGeno, paste0(sample1KG,".csv.bz2"))
-        #matSample <- read.csv2( file1KG,
-        #                        row.names = NULL)
-        #matSample <- matSample[listSNP[indexAll],, drop=FALSE]
-        #matSample <- matrix(as.numeric(unlist(strsplit( matSample[,1],
-        #                        "\\|"))),nrow=2)[1,]
         matSample <- read.gdsn(index.gdsn(gdsPhase, "phase"),
                             start=c(1, listRef[i]), count=c(-1,1))[indexAll]
         i<-i+1
@@ -2169,10 +2161,12 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
 #' file name of the 1KG GDS annotation file. The file must exist.
 #'
-#' @param chrInfo a \code{vector} of \code{integer} values representing
-#' the length of the chromosomes. See 'details' section.
+#' @param chrInfo a \code{vector} of positive \code{integer} values
+#' representing the length of the chromosomes. See 'details' section.
 #'
-#' @param dataRefSyn a \code{data.frame} containing those columns:
+#' @param dataRefSyn a \code{data.frame} containing a subset of
+#' reference profiles for each sub-population present in the Reference GDS
+#' file. The \code{data.frame} must have those columns:
 #' \itemize{
 #' \item{sample.id} { a \code{character} string representing the sample
 #' identifier. }
@@ -2180,7 +2174,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' subcontinental population assigned to the sample. }
 #' \item{superPop} { a \code{character} string representing the
 #' super-population assigned to the sample. }
-#' } can be the return of select1KGPop
+#' }
 #'
 #' @return The integer \code{0L} when successful. See details section for
 #' more information about the generated output files.
@@ -2190,9 +2184,12 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' The runExomeAncestry() function generates 3 types of files
 #' in the OUTPUT directory.
 #' \itemize{
-#' \item{Ancestry Inference}{The ancestry inference CSV file (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{The inference information RDS file (".infoCall.rds" file)}
-#' \item{Synthetic Information}{The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
+#' \item{Ancestry Inference}{The ancestry inference CSV file
+#' (".Ancestry.csv" file)}
+#' \item{Inference Informaton}{The inference information RDS file
+#' (".infoCall.rds" file)}
+#' \item{Synthetic Information}{The parameter information RDS files
+#' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 #' }
 #'
 #' In addition, a sub-directory (named using the profile ID) is
@@ -2314,9 +2311,9 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 studyDF=studyDF, pathProfileGDS=pathProfileGDS)
 
     ## Open the 1KG GDS file (demo version)
-    gds_1KG <- snpgdsOpen(fileReferenceGDS)
+    gds1KG <- snpgdsOpen(fileReferenceGDS)
     ## Open the 1KG GDS file and 1KG SNV Annotation file
-    gds_1KG.Annot <- openfn.gds(fileReferenceAnnotGDS)
+    gdsAnnot1KG <- openfn.gds(fileReferenceAnnotGDS)
 
     listProfileRef <- dataRefSyn$sample.id
     studyDF.syn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
@@ -2324,18 +2321,18 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
     for(i in seq_len(length(listProfiles))) {
-        pruningSample(gds=gds_1KG, currentProfile=listProfiles[i],
+        pruningSample(gds=gds1KG, currentProfile=listProfiles[i],
                     studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS)
         file.GDSProfile <- file.path(pathProfileGDS,
                                         paste0(listProfiles[i], ".gds"))
-        add1KG2SampleGDS(gds=gds_1KG, gdsSampleFile=file.GDSProfile,
+        add1KG2SampleGDS(gds=gds1KG, gdsSampleFile=file.GDSProfile,
                             currentProfile=listProfiles[i],
                             studyID=studyDF$study.id)
-        addStudy1Kg(gds_1KG, file.GDSProfile)
+        addStudy1Kg(gds1KG, file.GDSProfile)
 
         gdsProfile <- openfn.gds(file.GDSProfile, readonly=FALSE)
 
-        estimateAllelicFraction(gds=gds_1KG, gdsSample=gdsProfile,
+        estimateAllelicFraction(gds=gds1KG, gdsSample=gdsProfile,
                                     currentProfile=listProfiles[i],
                                     studyID=studyDF$study.id, chrInfo=chrInfo)
         closefn.gds(gdsProfile)
@@ -2345,7 +2342,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                         data.id.profile=listProfiles[i],
                         studyDF=studyDF.syn, prefId="1")
 
-        resG <- syntheticGeno(gds=gds_1KG, gdsRefAnnot=gds_1KG.Annot,
+        resG <- syntheticGeno(gds=gds1KG, gdsRefAnnot=gdsAnnot1KG,
                                 gdsSampleFile=file.GDSProfile,
                                 data.id.profile=listProfiles[i],
                                 listSampleRef=listProfileRef, prefId="1")
@@ -2353,7 +2350,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         if(! file.exists(pathOut)) {
             dir.create(pathOut)
         }
-        spRef <- getRef1KGPop(gds_1KG, "superPop")
+        spRef <- getRef1KGPop(gds1KG, "superPop")
         sampleRM <- splitSelectByPop(dataRefSyn)
 
         pathOutProfile <- file.path(pathOut, listProfiles[i])
@@ -2390,7 +2387,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         ## List of the KNN result files from PCA on synthetic data
         listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-        resCall <- computeAncestryFromSyntheticFile(gds=gds_1KG,
+        resCall <- computeAncestryFromSyntheticFile(gds=gds1KG,
                         gdsSample=gdsProfile, listFiles=listFiles,
                         sample.ana.id=listProfiles[i], spRef=spRef,
                         studyIDSyn=studyDF.syn$study.id, np=1L)
@@ -2405,8 +2402,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         ## Close Profile GDS file (important)
         closefn.gds(gdsProfile)
     }
-    closefn.gds(gds_1KG)
-    closefn.gds(gds_1KG.Annot)
+    closefn.gds(gds1KG)
+    closefn.gds(gdsAnnot1KG)
     # Successful
     return(0L)
 }

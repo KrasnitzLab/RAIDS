@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{select1KGPop}
 \alias{select1KGPop}
-\title{Random selection of a specific number of reference samples in each
+\title{Random selection of a specific number of reference profiles in each
 subcontinental population present in the 1KG GDS file}
 \usage{
 select1KGPop(gds, nbSamples)

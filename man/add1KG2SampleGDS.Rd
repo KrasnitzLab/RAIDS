@@ -38,10 +38,10 @@ gdsFile <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
 ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-studyDF <- data.frame(study.id = "MYDATA",
-                        study.desc = "Description",
-                        study.platform = "PLATFORM",
-                        stringsAsFactors = FALSE)
+studyDF <- data.frame(study.id="MYDATA",
+                        study.desc="Description",
+                        study.platform="PLATFORM",
+                        stringsAsFactors=FALSE)
 
 ## Copy the Profile GDS file demo that has been pruned
 ## into a test directory (deleted after the example has been run)
@@ -53,17 +53,17 @@ file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
                  file.path(data.dir.genotype, "ex1.gds"))
 
 ## Open 1KG file
-gds_1KG <- snpgdsOpen(gdsFile)
+gds1KG <- snpgdsOpen(gdsFile)
 
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
-add1KG2SampleGDS(gds=gds_1KG,
+add1KG2SampleGDS(gds=gds1KG,
          gdsSampleFile=file.path(data.dir.genotype, "ex1.gds"),
          currentProfile=c("ex1"),
-         studyID = studyDF$study.id)
+         studyID=studyDF$study.id)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
-closefn.gds(gds_1KG)
+closefn.gds(gds1KG)
 
 ## Check content of Profile GDS file
 ## The 'pruned.study' entry should be present

@@ -70,7 +70,7 @@
 <span>  <span class="va">pathGeno</span>,</span>
 <span>  <span class="va">pathOut</span>,</span>
 <span>  <span class="va">fileReferenceGDS</span>,</span>
-<span>  <span class="va">File.gds_1KG.Annot</span>,</span>
+<span>  <span class="va">fileReferenceAnnotGDS</span>,</span>
 <span>  <span class="va">chrInfo</span>,</span>
 <span>  <span class="va">dataRefSyn</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -118,7 +118,7 @@ the directory where the output files are created.</p></dd>
 name of the 1KG GDS file. The file must exist.</p></dd>
 
 
-<dt>File.gds_1KG.Annot</dt>
+<dt>fileReferenceAnnotGDS</dt>
 <dd><p>a <code>character</code> string representing the
 file name of the 1KG GDS annotation file. The file must exist.</p></dd>
 
@@ -188,14 +188,10 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">## Note that the 1KG GDS file used for this example is a</span></span></span>
 <span class="r-in"><span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span></span>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
-<span class="r-in"><span><span class="va">PATH_1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">path1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">fileName.GDS.1KG</span> <span class="op">&lt;-</span> <span class="st">"ex1kg.gds"</span></span></span>
-<span class="r-in"><span><span class="va">file.GDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS.1KG</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">fileName.GDS.Annot</span> <span class="op">&lt;-</span> <span class="st">"exAnnot1kg.gds"</span></span></span>
-<span class="r-in"><span><span class="va">file.Annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATH_1KG</span>, <span class="va">fileName.GDS.Annot</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fileReferenceGDS</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
 <span class="r-in"><span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span></span>
@@ -209,7 +205,7 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
 <span class="r-in"><span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">PATHOUT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"res.out"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"res.out"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
 <span class="r-in"><span><span class="co">## A data frame containing general information about the study</span></span></span>
@@ -221,16 +217,14 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span>                        study.platform<span class="op">=</span><span class="st">"PLATFORM"</span>,</span></span>
 <span class="r-in"><span>                        stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">gds_1KG</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="va">file.GDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">####################################################################</span></span></span>
-<span class="r-in"><span><span class="co">## Fix RNG seed to ensure reproducible results</span></span></span>
+<span class="r-in"><span><span class="co">## Fix seed to ensure reproducible results</span></span></span>
 <span class="r-in"><span><span class="co">####################################################################</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds_1KG</span>, nbSamples<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds_1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="va">fileReferenceGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbSamples<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Chromosome length information</span></span></span>
 <span class="r-in"><span><span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span></span>
@@ -253,14 +247,14 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="fu">runExomeAncestry</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>
 <span class="r-in"><span>                    pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span></span>
 <span class="r-in"><span>                    pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span></span>
-<span class="r-in"><span>                    pathOut<span class="op">=</span><span class="va">PATHOUT</span>,</span></span>
-<span class="r-in"><span>                    fileReferenceGDS<span class="op">=</span><span class="va">file.GDS</span>,</span></span>
-<span class="r-in"><span>                    File.gds_1KG.Annot<span class="op">=</span><span class="va">file.Annot</span>,</span></span>
+<span class="r-in"><span>                    pathOut<span class="op">=</span><span class="va">pathOut</span>,</span></span>
+<span class="r-in"><span>                    fileReferenceGDS<span class="op">=</span><span class="va">fileReferenceGDS</span>,</span></span>
+<span class="r-in"><span>                    fileReferenceAnnotGDS<span class="op">=</span><span class="va">fileAnnotGDS</span>,</span></span>
 <span class="r-in"><span>                    chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span></span>
 <span class="r-in"><span>                    dataRefSyn<span class="op">=</span><span class="va">dataRef</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">PATHOUT</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

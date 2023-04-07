@@ -226,6 +226,12 @@
     <loc>/reference/pruningSample.html</loc>
   </url>
   <url>
+    <loc>/reference/readSNVFileGeneric.html</loc>
+  </url>
+  <url>
+    <loc>/reference/readSNVPileupFile.html</loc>
+  </url>
+  <url>
     <loc>/reference/runExomeAncestry.html</loc>
   </url>
   <url>

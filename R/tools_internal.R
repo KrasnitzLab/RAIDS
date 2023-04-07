@@ -246,3 +246,86 @@ processBlockChr <- function(snp.keep, PATHBLOCK, superPop, chr) {
 }
 
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param fileName Output from snp-pileup
+#' must csv with the columns:
+#' Chromosome,Position,Ref,Alt,File1R,File1A,File1E,File1D
+#'
+#' @param offset TODO
+#'
+#' @return the a \code{data.frame} containing at least:
+#' \itemize{
+#' \item{Chromosome} {TODO}
+#' \item{Position} {TODO}
+#' \item{File1R} {TODO}
+#' \item{File1A} {TODO}
+#' \item{count} {TODO}
+#' }
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+readSNVPileupFile <- function(fileName, offset = 0L) {
+
+    matSample <- read.csv(fileName)
+
+
+    matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
+                                                 matSample[, "Chromosome"]))
+    matSample[, "Position"] <- matSample[, "Position"] + offset
+    matSample[, "count"] <- rowSums(matSample[, c("File1R", "File1A",
+                                                  "File1E", "File1D")])
+
+    return(matSample)
+}
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param fileName File name with the path to a
+#' csv with the columns:
+#' Chromosome,Position,Ref,Alt,count,File1R,File1A
+#'
+#' @param offset TODO
+#'
+#' @return the a \code{data.frame} containing at least:
+#' \itemize{
+#' \item{Chromosome} {TODO}
+#' \item{Position} {TODO}
+#' \item{Ref}
+#' \item{Alt}
+#' \item{File1R} {deep of the reference allele}
+#' \item{File1A} {deep of the alternative allele}
+#' \item{count} {Total deep at the position}
+#' }
+#'
+#' @examples
+#'
+#' # TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+readSNVFileGeneric <- function(fileName, offset = 0L) {
+
+    matSample <- read.csv(fileName)
+
+
+    matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
+                                                 matSample[, "Chromosome"]))
+    matSample[, "Position"] <- matSample[, "Position"] + offset
+
+
+    return(matSample)
+}

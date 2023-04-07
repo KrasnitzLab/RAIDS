@@ -297,7 +297,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
     # File with the description of the SNP keep
     listMat <- dir(pathGeno, pattern = ".+.txt.gz")
     listSampleFile <- gsub(".txt.gz", "", listMat)
-
+    genoTypeSource = "snp-pileup"
     g <- as.matrix(rep(-1, nrow(listPos)))
 
     for(i in seq_len(length(listSamples))) {
@@ -307,15 +307,10 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 
         if(length(pos) == 1) {
 
-            matSample <- read.csv(file.path(pathGeno, listMat[pos]))
-
-
-            matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
-                                            matSample[, "Chromosome"]))
-            matSample[, "Position"] <- matSample[, "Position"] + offset
-            matSample[, "count"] <- rowSums(matSample[, c("File1R", "File1A",
-                                                    "File1E", "File1D")])
-
+            #
+            if(genoTypeSource == "snp-pileup"){
+                matSample <- readSNVPileupFile(file.path(pathGeno, listMat[pos]), offset)
+            }
             # matAll <- merge(matSample[,c( "Chromosome", "Position",
             #                               "File1R",  "File1A",
             #                               "count" )],

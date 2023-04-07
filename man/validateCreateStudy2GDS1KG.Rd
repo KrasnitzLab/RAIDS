@@ -6,6 +6,7 @@
 \title{Validate input parameters for createStudy2GDS1KG() function}
 \usage{
 validateCreateStudy2GDS1KG(
+  pathGeno,
   pedStudy,
   fileNameGDS,
   batch,
@@ -16,6 +17,13 @@ validateCreateStudy2GDS1KG(
 )
 }
 \arguments{
+\item{pathGeno}{a \code{character} string representing the path to the
+directory containing the VCF output of SNP-pileup for each sample. The
+SNP-pileup files must be compressed (gz files) and have the name identifiers
+of the samples. A sample with "Name.ID" identifier would have an
+associated SNP-pileup file called "Name.ID.txt.gz". The directory must
+exist.}
+
 \item{pedStudy}{a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings (no factor). The \code{data.frame}
@@ -74,9 +82,9 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
             Sample.Type=c("DNA", "DNA"),
             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
-## The validatiion should be successful
-RAIDS:::validateCreateStudy2GDS1KG(pedStudy=ped, fileNameGDS=gds1KG,
-            batch=1, studyDF=studyInfo,
+## The validation should be successful
+RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir, pedStudy=ped,
+            fileNameGDS=gds1KG, batch=1, studyDF=studyInfo,
             listProfiles=c("Sample_01", "Sample_02"),
             pathProfileGDS=dataDir, verbose=TRUE)
 

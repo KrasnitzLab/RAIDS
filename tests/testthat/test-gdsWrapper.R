@@ -33,8 +33,8 @@ context("addUpdateSegment() results")
 test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_01.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -59,8 +59,8 @@ test_that("addUpdateSegment() must copy the expected entry in \"segment\" node o
 test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_02.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_02.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -97,8 +97,8 @@ context("addUpdateLap() results")
 test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_01.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -132,8 +132,8 @@ context("addGDSStudyPruning() results")
 test_that("addGDSStudyPruning() must copy the expected entry in \"pruned.study\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_03.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_03.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -165,8 +165,8 @@ context("appendGDSSampleOnly() results")
 test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_04.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_04.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -205,8 +205,8 @@ context("appendGDSgenotypeMat() results")
 test_that("appendGDSgenotypeMat() must copy the expected entry in \"genotype\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_06.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_06.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -247,8 +247,8 @@ context("generateGDSSample() results")
 test_that("generateGDSSample() must copy the expected entry in \"sample.annot\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_06.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_06.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -299,8 +299,8 @@ context("addStudyGDSSample() results")
 test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_11.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_11.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -351,8 +351,8 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
 test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node when the node already exists", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_12.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_12.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -422,22 +422,23 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
 test_that("addStudyGDSSample() must generate an error when input PED is not correct", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_12.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_12.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
 
     ## Create Study information initial
     studyInfoInit <- data.frame(study.id="Ref.1KG",
-                                study.desc="Unrelated samples from 1000 Genomes",
-                                study.platform="GRCh38 1000 Genotypes",
-                                stringsAsFactors=FALSE)
+                        study.desc="Unrelated samples from 1000 Genomes",
+                        study.platform="GRCh38 1000 Genotypes",
+                        stringsAsFactors=FALSE)
 
     add.gdsn(GDS_file_tmp, "study.list", studyInfoInit)
 
     ## Create sample information initial
-    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"), case.id=c("sample_01", "sample_02"),
+    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"),
+            case.id=c("sample_01", "sample_02"),
             sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
             source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
             stringsAsFactors=FALSE)
@@ -463,9 +464,10 @@ test_that("addStudyGDSSample() must generate an error when input PED is not corr
                     "present in the \'Name.ID\' column.")
 
     ## Add samples to the GDS file
-    expect_error(RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
-                batch=2, listSamples=c("sample_101", "sample_102"),
-                studyDF=studyInfo, verbose=FALSE), message, fixed=TRUE)
+    expect_error(RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,
+        pedDF=pedInformation, batch=2,
+        listSamples=c("sample_101", "sample_102"),
+        studyDF=studyInfo, verbose=FALSE), message, fixed=TRUE)
 
     ## Close GDS file
     ## The file will automatically be deleted
@@ -476,8 +478,8 @@ test_that("addStudyGDSSample() must generate an error when input PED is not corr
 test_that("addStudyGDSSample() must generate an error when input study is not correct", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_14.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_14.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)
@@ -528,8 +530,8 @@ test_that("addStudyGDSSample() must generate an error when input study is not co
 test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
 
     ## Create a temporary GDS file in an test directory
-    data.dir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(data.dir, "GDS_TEMP_13.gds")
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_13.gds")
 
     ## Create and open a temporary GDS file
     GDS_file_tmp  <- local_GDS_file(fileGDS)

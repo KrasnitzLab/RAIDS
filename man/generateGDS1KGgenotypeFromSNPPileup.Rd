@@ -18,6 +18,7 @@ generateGDS1KGgenotypeFromSNPPileup(
   batch,
   studyDF,
   PATHGDSSAMPLE = NULL,
+  genoSource = c("snp-pileup", "generic"),
   verbose
 )
 }
@@ -53,6 +54,15 @@ must be in \code{character} strings.}
 
 \item{PATHGDSSAMPLE}{TODO a PATH to a directory where a gds specific
 to the samples with coverage info is keep}
+
+\item{genoSource}{a \code{stirng} with two possible values:
+snp-pileup and generic. It specify if the genotype files
+are generate by snp-pileup(Facets) or generic format csv
+with the column at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele}
 
 \item{verbose}{a \code{logical} indicating if the function must print
 messages when running.}

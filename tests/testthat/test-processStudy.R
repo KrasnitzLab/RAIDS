@@ -1413,7 +1413,8 @@ test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
             batch=1, studyDF=NULL, listProfiles=NULL,
-            pathProfileGDS=NULL, verbose=TRUE), error_message)
+            pathProfileGDS=NULL,
+            genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1425,7 +1426,8 @@ test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and p
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
-                    pathProfileGDS=NULL, verbose=TRUE), error_message)
+                    pathProfileGDS=NULL,
+                    genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1444,7 +1446,8 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                     fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
-                    pathProfileGDS=NULL, verbose=TRUE), error_message)
+                    pathProfileGDS=NULL,
+                    genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1464,7 +1467,8 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
                         batch=1, studyDF=NULL, listProfiles=NULL,
-                        pathProfileGDS=NULL, verbose=TRUE), error_message)
+                        pathProfileGDS=NULL,
+                        genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1484,7 +1488,8 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch="1", studyDF=NULL, listProfiles=NULL,
-            pathProfileGDS=NULL, verbose=TRUE), error_message)
+            pathProfileGDS=NULL,
+            genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1504,7 +1509,8 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                 fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
                 batch=c(1,2), studyDF=NULL, listProfiles=NULL,
-                pathProfileGDS=NULL, verbose=TRUE), error_message)
+                pathProfileGDS=NULL,
+                genoSource="snp-pileup", verbose=TRUE), error_message)
 })
 
 
@@ -1528,7 +1534,8 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch=1, studyDF=studyDF, listProfiles=c(1,2),
-            pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+            pathProfileGDS=NULL,
+            genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
@@ -1552,7 +1559,8 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=1,
-        pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+        pathProfileGDS=NULL,
+        genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
@@ -1577,7 +1585,8 @@ test_that("createStudy2GDS1KG() must return error when studyDF is missing column
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=1,
-        pathProfileGDS=NULL, verbose=TRUE), error_message, fixed=TRUE)
+        pathProfileGDS=NULL,
+        genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
 })
 
 
@@ -1600,7 +1609,8 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
             fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch=1, studyDF=studyDF, listProfiles=NULL,
-            pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
+            pathProfileGDS=dataDir,
+            genoSource="snp-pileup", verbose=22), error_message, fixed=TRUE)
 })
 
 
@@ -1625,7 +1635,8 @@ test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
         fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
         batch=1, studyDF=studyDF, listProfiles=NULL,
-        pathProfileGDS=33, verbose=FALSE), error_message, fixed=TRUE)
+        pathProfileGDS=33,
+        genoSource="snp-pileup", verbose=FALSE), error_message, fixed=TRUE)
 })
 
 
@@ -1649,7 +1660,8 @@ test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedS
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
                 fileNamePED=fileGDS, pedStudy=pedDF, fileNameGDS=fileGDS,
                 batch=1, studyDF=studyDF, listProfiles=NULL,
-                pathProfileGDS=dataDir, verbose=22), error_message, fixed=TRUE)
+                pathProfileGDS=dataDir,
+                genoSource="snp-pileup", verbose=22), error_message, fixed=TRUE)
 })
 
 
@@ -1675,7 +1687,8 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
     result <- createStudy2GDS1KG(pathGeno=dataDir,
                 pedStudy=pedDF, fileNameGDS=fileGDS,
                 batch=1, studyDF=studyDF, listProfiles=c("ex1"),
-                pathProfileGDS=dataDir, verbose=FALSE)
+                pathProfileGDS=dataDir,
+                genoSource="snp-pileup", verbose=FALSE)
 
     expect_true(file.exists(file.path(dataDir, "ex1.gds")))
     expect_equal(result, 0L)
@@ -2323,7 +2336,8 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
         pathProfileGDS=pathOut,
         pathGeno=pathOut, pathOut=33, fileReferenceGDS=fileGDS,
         fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chrInfo,
-        dataRefSyn=dataRefSyn), error_message)
+        dataRefSyn=dataRefSyn,
+        genoSource="snp-pileup"), error_message)
 })
 
 
@@ -2355,7 +2369,8 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=33, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=chrInfo, dataRefSyn), error_message)
+        chrInfo=chrInfo, dataRefSyn,
+        genoSource="snp-pileup"), error_message)
 })
 
 
@@ -2388,7 +2403,8 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
             fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=32,
-            chrInfo=chrInfo, dataRefSyn=dataRefSyn), error_message)
+            chrInfo=chrInfo, dataRefSyn=dataRefSyn,
+            genoSource="snp-pileup"), error_message)
 })
 
 
@@ -2419,7 +2435,8 @@ test_that("runExomeAncestry() must return error when chrInfo is vector of charac
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c("ALLO", "TEST"), dataRefSyn=dataRefSyn), error_message)
+        chrInfo=c("ALLO", "TEST"), dataRefSyn=dataRefSyn,
+        genoSource="snp-pileup"), error_message)
 })
 
 
@@ -2452,7 +2469,8 @@ test_that("runExomeAncestry() must return error when dataRefSyn missing column",
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn), error_message)
+        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn,
+        genoSource="snp-pileup"), error_message)
 })
 
 
@@ -2482,5 +2500,6 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno="DONOTEXISTDIR", pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn), error_message)
+        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn,
+        genoSource="snp-pileup"), error_message)
 })

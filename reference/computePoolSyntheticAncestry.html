@@ -78,7 +78,7 @@
 <span>  pcaList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  algorithm <span class="op">=</span> <span class="st">"exact"</span>,</span>
 <span>  eigen.cnt <span class="op">=</span> <span class="fl">32L</span>,</span>
-<span>  missing.rate <span class="op">=</span> <span class="fl">0.025</span></span>
+<span>  missingRate <span class="op">=</span> <span class="fl">0.025</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -86,20 +86,22 @@
     <h2>Arguments</h2>
     <dl><dt>gds</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the
-1KG GDS file.</p></dd>
+opened Reference GDS file.</p></dd>
 
 
 <dt>gdsSample</dt>
-<dd><p>an object of class <code>gds</code> opened related to
-the sample</p></dd>
+<dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file),
+an opened Profile GDS file.</p></dd>
 
 
 <dt>sample.ana.id</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a single <code>character</code> string representing the
+profile identifier of the synthetic profile.</p></dd>
 
 
 <dt>dataRef</dt>
-<dd><p>a <code>data.frame</code> TODO</p></dd>
+<dd><p>a <code>data.frame</code> containing the information of the
+synthetic profiles that will be</p></dd>
 
 
 <dt>spRef</dt>
@@ -108,7 +110,7 @@ the sample</p></dd>
 
 <dt>studyIDSyn</dt>
 <dd><p>a <code>character</code> string corresponding to the study
-identifier. The study identifier must be present in the GDS Sample file.</p></dd>
+identifier. The study identifier must be present in the Profile GDS file.</p></dd>
 
 
 <dt>np</dt>
@@ -123,7 +125,8 @@ representing the list of possible ancestry assignations. Default:
 
 
 <dt>fieldPopIn1KG</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>character</code> string representing TODO .
+Default: <code>"superPop"</code>.</p></dd>
 
 
 <dt>fieldPopInfAnc</dt>
@@ -162,11 +165,11 @@ function; if 'eigen.cnt' &lt;= 0, then all eigenvectors are returned.
 Default: <code>32L</code>.</p></dd>
 
 
-<dt>missing.rate</dt>
+<dt>missingRate</dt>
 <dd><p>a <code>numeric</code> value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 <a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsPCA.html" class="external-link">snpgdsPCA</a>
-with "&lt;= missing.rate" only; if <code>NaN</code>, no missing threshold.
+with "&lt;= missingRate" only; if <code>NaN</code>, no missing threshold.
 Default: <code>0.025</code>.</p></dd>
 
 </dl></div>

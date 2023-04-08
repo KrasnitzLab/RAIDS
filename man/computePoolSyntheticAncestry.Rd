@@ -20,24 +20,26 @@ computePoolSyntheticAncestry(
   pcaList = seq(2, 15, 1),
   algorithm = "exact",
   eigen.cnt = 32L,
-  missing.rate = 0.025
+  missingRate = 0.025
 )
 }
 \arguments{
 \item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1KG GDS file.}
+opened Reference GDS file.}
 
-\item{gdsSample}{an object of class \code{gds} opened related to
-the sample}
+\item{gdsSample}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
+an opened Profile GDS file.}
 
-\item{sample.ana.id}{TODO}
+\item{sample.ana.id}{a single \code{character} string representing the
+profile identifier of the synthetic profile.}
 
-\item{dataRef}{a \code{data.frame} TODO}
+\item{dataRef}{a \code{data.frame} containing the information of the
+synthetic profiles that will be}
 
 \item{spRef}{TODO}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
-identifier. The study identifier must be present in the GDS Sample file.}
+identifier. The study identifier must be present in the Profile GDS file.}
 
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
@@ -46,7 +48,8 @@ threads. Default: \code{1L}.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{fieldPopIn1KG}{TODO}
+\item{fieldPopIn1KG}{a \code{character} string representing TODO .
+Default: \code{"superPop"}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified
@@ -74,10 +77,10 @@ eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA}
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
 }
 \value{

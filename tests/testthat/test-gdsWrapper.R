@@ -599,7 +599,7 @@ test_that("addGDSRef() must return expected result", {
     ## Create and open a temporary GDS file
     GDS_path  <- test_path("fixtures", "GDS_addGDSRef_Temp_01.gds")
     GDS_file_tmp  <- createfn.gds(filename=GDS_path)
-    defer(unlink(x=GDS_path, force=TRUE), envir = parent.frame())
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
 
     ## Create "sample.id" node (the node must be present)
     sampleIDs <- c("HG00104", "HG00105", "HG00106", "HG00109", "HG00110")
@@ -612,10 +612,10 @@ test_that("addGDSRef() must return expected result", {
     RDS_file_tmp <- test_path("fixtures", "RDS_addGDSRef_Temp_01.RDS")
 
     saveRDS(listD, RDS_file_tmp)
-    defer(unlink(RDS_file_tmp), envir = parent.frame())
+    defer(unlink(RDS_file_tmp), envir=parent.frame())
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::addGDSRef(gds=GDS_file_tmp,  filePart = RDS_file_tmp)
+    results3 <- RAIDS:::addGDSRef(gds=GDS_file_tmp,  filePart=RDS_file_tmp)
 
     ## Read sample names from GDS file
     results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.ref"))

@@ -80,7 +80,7 @@ test_that("validateCreateStudy2GDS1KG() must return expected results when all in
     result1 <- RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir,
             pedStudy=ped, fileNameGDS=fileGDS, batch=12, studyDF=studyInfo,
             listProfiles=c("TCGA-H01", "TCGA-H02"), pathProfileGDS=dataDir,
-            verbose=TRUE)
+            genoSource="snp-pileup", verbose=TRUE)
 
     expect_identical(result1, 0L)
 })
@@ -224,7 +224,7 @@ test_that("validateRunExomeAncestry() must return expected results when all inpu
     result <- RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=studyInfo,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
         fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
-        chrInfo=chrInfo, dataRefSyn=dataRefSyn)
+        chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
 
     expect_identical(result, 0L)
 })

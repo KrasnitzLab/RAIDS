@@ -303,7 +303,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
     listSamples, listPos, offset, minCov=10, minProb=0.999,
     seqError=0.001, pedStudy, batch, studyDF, PATHGDSSAMPLE=NULL,
-    genoSource = c("snp-pileup", "generic"), verbose) {
+    genoSource=c("snp-pileup", "generic"), verbose) {
 
     # File with the description of the SNP keep
     listMat <- dir(pathGeno, pattern = ".+.txt.gz")
@@ -322,7 +322,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
             if(genoSource == "snp-pileup") {
                 matSample <- readSNVPileupFile(file.path(pathGeno,
                                         listMat[pos]), offset)
-            } else if(genoTypeSource == "generic") {
+            } else if(genoSource == "generic") {
                 matSample <- readSNVFileGeneric(file.path(pathGeno,
                                         listMat[pos]), offset)
             }

@@ -501,14 +501,16 @@ validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
 #' RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir, pedStudy=ped,
 #'             fileNameGDS=gds1KG, batch=1, studyDF=studyInfo,
 #'             listProfiles=c("Sample_01", "Sample_02"),
-#'             pathProfileGDS=dataDir, verbose=TRUE)
+#'             pathProfileGDS=dataDir,
+#'             genoSource="snp-pileup", verbose=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
 validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
-                            studyDF, listProfiles, pathProfileGDS, verbose) {
+                            studyDF, listProfiles, pathProfileGDS,
+                            genoSource, verbose) {
 
     ## The pathGeno must be a existing directory
     if (!dir.exists(pathGeno)) {
@@ -542,6 +544,11 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
     if (!is.character(pathProfileGDS)) {
         stop("The \'pathProfileGDS\' must be a character string representing",
                 " the path where the Profile GDS files will be generated.")
+    }
+
+    ## The genoSource must be a character string
+    if(!(is.character(genoSource))) {
+        stop("The \'genoSource\' parameter must be a character string.")
     }
 
     ## The verbose parameter must be a logical
@@ -1052,14 +1059,14 @@ validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
 #' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
 #'     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
 #'     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-#'     chrInfo=chrInfo, dataRefSyn=dataRefSyn)
+#'     chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
 validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-    chrInfo, dataRefSyn) {
+    chrInfo, dataRefSyn, genoSource) {
 
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
@@ -1093,11 +1100,17 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 "The file must exist.")
     }
 
+
     ## The chrInfo must be a vector of integer
     validatePositiveIntegerVector(chrInfo, "chrInfo")
 
     ## The dataRefSyn must have the madatory columns
     validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+
+    ## The genoSource must be a character string
+    if(!(is.character(genoSource))) {
+        stop("The \'genoSource\' parameter must be a character string.")
+    }
 
     return(0L)
 }

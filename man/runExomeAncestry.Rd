@@ -14,7 +14,8 @@ runExomeAncestry(
   fileReferenceGDS,
   fileReferenceAnnotGDS,
   chrInfo,
-  dataRefSyn
+  dataRefSyn,
+  genoSource = c("snp-pileup", "generic")
 )
 }
 \arguments{
@@ -63,6 +64,15 @@ subcontinental population assigned to the sample. }
 \item{superPop} { a \code{character} string representing the
 super-population assigned to the sample. }
 }}
+
+\item{genoSource}{a \code{stirng} with two possible values:
+snp-pileup and generic. It specify if the genotype files
+are generate by snp-pileup(Facets) or generic format csv
+with the column at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele}
 }
 \value{
 The integer \code{0L} when successful. See details section for
@@ -168,7 +178,8 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                     fileReferenceGDS=fileReferenceGDS,
                     fileReferenceAnnotGDS=fileAnnotGDS,
                     chrInfo=chrInfo,
-                    dataRefSyn=dataRef)
+                    dataRefSyn=dataRef,
+                    genoSource="snp-pileup")
 
 unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
 unlink(pathOut, recursive=TRUE, force=TRUE)

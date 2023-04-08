@@ -13,6 +13,7 @@ validateCreateStudy2GDS1KG(
   studyDF,
   listProfiles,
   pathProfileGDS,
+  genoSource,
   verbose
 )
 }
@@ -86,7 +87,8 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
 RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir, pedStudy=ped,
             fileNameGDS=gds1KG, batch=1, studyDF=studyInfo,
             listProfiles=c("Sample_01", "Sample_02"),
-            pathProfileGDS=dataDir, verbose=TRUE)
+            pathProfileGDS=dataDir,
+            genoSource="snp-pileup", verbose=TRUE)
 
 }
 \author{

@@ -14,7 +14,8 @@ validateRunExomeAncestry(
   fileReferenceGDS,
   fileReferenceAnnotGDS,
   chrInfo,
-  dataRefSyn
+  dataRefSyn,
+  genoSource
 )
 }
 \arguments{
@@ -112,7 +113,7 @@ dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
 RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-    chrInfo=chrInfo, dataRefSyn=dataRefSyn)
+    chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
 
 }
 \author{

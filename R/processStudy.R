@@ -53,6 +53,15 @@
 #' the directory where the Profile GDS files will be created.
 #' Default: \code{NULL}.
 #'
+#' @param genoSource a \code{stirng} with two possible values:
+#' snp-pileup and generic. It specify if the genotype files
+#' are generate by snp-pileup(Facets) or generic format csv
+#' with the column at least the columns:
+#' Chromosome,Position,Ref,Alt,Count,File1R,File1A
+#' where Count is the deep at the position,
+#' FileR is the deep of the reference allele, and
+#' File1A is the deep of the specific alternative allele
+#'
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed. Default: \code{FALSE}.
 #'
@@ -87,7 +96,9 @@
 #' result <- createStudy2GDS1KG(pathGeno=dataDir,
 #'             pedStudy=samplePED, fileNameGDS=fileGDS,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             pathProfileGDS=dataDir, verbose=FALSE)
+#'             pathProfileGDS=dataDir,
+#'             genoSource="snp-pileup",
+#'             verbose=FALSE)
 #'
 #' ## The function returns OL when successful
 #' result
@@ -107,7 +118,9 @@
 createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
                                 fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
                                 batch=1, studyDF, listProfiles=NULL,
-                                pathProfileGDS=NULL, verbose=FALSE) {
+                                pathProfileGDS=NULL,
+                                genoSource=c("snp-pileup", "generic"),
+                                verbose=FALSE) {
 
     ## When fileNamePED is defined and pedStudy is null
     if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
@@ -130,7 +143,9 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     validateCreateStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
         fileNameGDS=fileNameGDS, batch=batch, studyDF=studyDF,
         listProfiles=listProfiles, pathProfileGDS=pathProfileGDS,
-        verbose=verbose)
+        genoSource=genoSource, verbose=verbose)
+
+    genoSource <- match.arg(genoSource)
 
     ## Read the 1KG GDS file
     gds <- snpgdsOpen(filename=fileNameGDS)
@@ -151,7 +166,8 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     generateGDS1KGgenotypeFromSNPPileup(pathGeno=pathGeno,
         listSamples=listProfiles, listPos=listPos, offset=-1, minCov=10,
         minProb=0.999, seqError=0.001, pedStudy=pedStudy, batch=batch,
-        studyDF=studyDF, PATHGDSSAMPLE=pathProfileGDS, verbose=verbose)
+        studyDF=studyDF, PATHGDSSAMPLE=pathProfileGDS,
+        genoSource=genoSource, verbose=verbose)
 
     if(verbose) {
         message("Genotype DONE ", Sys.time())
@@ -2177,6 +2193,15 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' super-population assigned to the sample. }
 #' }
 #'
+#' @param genoSource a \code{stirng} with two possible values:
+#' snp-pileup and generic. It specify if the genotype files
+#' are generate by snp-pileup(Facets) or generic format csv
+#' with the column at least the columns:
+#' Chromosome,Position,Ref,Alt,Count,File1R,File1A
+#' where Count is the deep at the position,
+#' FileR is the deep of the reference allele, and
+#' File1A is the deep of the specific alternative allele
+#'
 #' @return The integer \code{0L} when successful. See details section for
 #' more information about the generated output files.
 #'
@@ -2285,7 +2310,8 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #'                     fileReferenceGDS=fileReferenceGDS,
 #'                     fileReferenceAnnotGDS=fileAnnotGDS,
 #'                     chrInfo=chrInfo,
-#'                     dataRefSyn=dataRef)
+#'                     dataRefSyn=dataRef,
+#'                     genoSource="snp-pileup")
 #'
 #' unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
 #' unlink(pathOut, recursive=TRUE, force=TRUE)
@@ -2297,19 +2323,23 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                        chrInfo, dataRefSyn) {
+                    chrInfo, dataRefSyn,
+                    genoSource=c("snp-pileup", "generic")) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy, studyDF, pathProfileGDS,
         pathGeno=pathGeno, pathOut=pathOut, fileReferenceGDS=fileReferenceGDS,
         fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
-        dataRefSyn=dataRefSyn)
+        dataRefSyn=dataRefSyn, genoSource=genoSource)
+
+    genoSource <- match.arg(genoSource)
 
     listProfiles <- pedStudy[, "Name.ID"]
 
     createStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
                 fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
-                studyDF=studyDF, pathProfileGDS=pathProfileGDS)
+                studyDF=studyDF, pathProfileGDS=pathProfileGDS,
+                genoSource=genoSource, verbose=FALSE)
 
     ## Open the 1KG GDS file (demo version)
     gds1KG <- snpgdsOpen(fileReferenceGDS)

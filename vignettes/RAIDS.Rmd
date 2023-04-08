@@ -421,7 +421,8 @@ createStudy2GDS1KG(pathGeno = pathGeno,
                         fileNameGDS = file.GDS,
                         listProfiles = listSamples,
                         studyDF = studyDF,
-                        pathProfileGDS = pathProfileGDS)
+                        pathProfileGDS = pathProfileGDS,
+                        genoSource="snp-pileup")
 
 #################################################################
 ## The Sample GDS file has been created in the 
@@ -1096,7 +1097,8 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  fileReferenceGDS=fileGDS,
                  fileReferenceAnnotGDS=fileAnnotGDS,
                  chrInfo=chrInfo,
-                 dataRefSyn=dataRef)
+                 dataRefSyn=dataRef,
+                 genoSource="snp-pileup")
 list.files(pathOut)
 list.files(file.path(pathOut, ped$Name.ID[1]))
 

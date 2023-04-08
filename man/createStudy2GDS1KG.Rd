@@ -16,6 +16,7 @@ createStudy2GDS1KG(
   studyDF,
   listProfiles = NULL,
   pathProfileGDS = NULL,
+  genoSource = c("snp-pileup", "generic"),
   verbose = FALSE
 )
 }
@@ -66,6 +67,15 @@ Default: \code{NULL}.}
 the directory where the Profile GDS files will be created.
 Default: \code{NULL}.}
 
+\item{genoSource}{a \code{stirng} with two possible values:
+snp-pileup and generic. It specify if the genotype files
+are generate by snp-pileup(Facets) or generic format csv
+with the column at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele}
+
 \item{verbose}{a \code{logical} indicating if message information should be
 printed. Default: \code{FALSE}.}
 }
@@ -107,7 +117,9 @@ rownames(samplePED) <- samplePED$Name.ID
 result <- createStudy2GDS1KG(pathGeno=dataDir,
             pedStudy=samplePED, fileNameGDS=fileGDS,
             studyDF=studyDF, listProfiles=c("ex1"),
-            pathProfileGDS=dataDir, verbose=FALSE)
+            pathProfileGDS=dataDir,
+            genoSource="snp-pileup",
+            verbose=FALSE)
 
 ## The function returns OL when successful
 result

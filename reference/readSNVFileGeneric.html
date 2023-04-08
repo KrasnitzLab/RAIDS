@@ -70,8 +70,11 @@
     <h2>Arguments</h2>
     <dl><dt>fileName</dt>
 <dd><p>File name with the path to a
-csv with the columns:
-Chromosome,Position,Ref,Alt,count,File1R,File1A</p></dd>
+csv with at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele</p></dd>
 
 
 <dt>offset</dt>
@@ -82,7 +85,7 @@ Chromosome,Position,Ref,Alt,count,File1R,File1A</p></dd>
     <h2>Value</h2>
     
 
-<p>the a <code>data.frame</code> containing at least:</p><ul><li><p>Chromosome TODO</p></li>
+<p>a <code>data.frame</code> containing at least:</p><ul><li><p>Chromosome TODO</p></li>
 <li><p>Position TODO</p></li>
 <li><p>Ref</p></li>
 <li><p>Alt</p></li>

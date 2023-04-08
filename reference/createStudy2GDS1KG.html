@@ -84,6 +84,7 @@ entry present in the <code>listSamples</code> parameter.</p>
 <span>  <span class="va">studyDF</span>,</span>
 <span>  listProfiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pathProfileGDS <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  genoSource <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"snp-pileup"</span>, <span class="st">"generic"</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -152,6 +153,17 @@ the directory where the Profile GDS files will be created.
 Default: <code>NULL</code>.</p></dd>
 
 
+<dt>genoSource</dt>
+<dd><p>a <code>stirng</code> with two possible values:
+snp-pileup and generic. It specify if the genotype files
+are generate by snp-pileup(Facets) or generic format csv
+with the column at least the columns:
+Chromosome,Position,Ref,Alt,Count,File1R,File1A
+where Count is the deep at the position,
+FileR is the deep of the reference allele, and
+File1A is the deep of the specific alternative allele</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>a <code>logical</code> indicating if message information should be
 printed. Default: <code>FALSE</code>.</p></dd>
@@ -198,8 +210,10 @@ printed. Default: <code>FALSE</code>.</p></dd>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStudy2GDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>            pedStudy<span class="op">=</span><span class="va">samplePED</span>, fileNameGDS<span class="op">=</span><span class="va">fileGDS</span>,</span></span>
 <span class="r-in"><span>            studyDF<span class="op">=</span><span class="va">studyDF</span>, listProfiles<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> study.annot DONE 2023-04-08 02:14:34.163792</span>
+<span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span>            genoSource<span class="op">=</span><span class="st">"snp-pileup"</span>,</span></span>
+<span class="r-in"><span>            verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> study.annot DONE 2023-04-08 06:46:32.073942</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The function returns OL when successful</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>

@@ -1702,7 +1702,7 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
 context("computePoolSyntheticAncestryGr() results")
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSample is character string"), {
+test_that("computePoolSyntheticAncestryGr() must return error when gdsSample is character string", {
 
     error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
 
@@ -1712,7 +1712,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when gdsSam
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when sampleRM is vector of numeric values"), {
+test_that("computePoolSyntheticAncestryGr() must return error when sampleRM is vector of numeric values", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1726,7 +1726,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when sample
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when studyIDSyn is numeric value"), {
+test_that("computePoolSyntheticAncestryGr() must return error when studyIDSyn is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1740,7 +1740,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when studyI
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when listCatPop is numeric value"), {
+test_that("computePoolSyntheticAncestryGr() must return error when listCatPop is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1756,7 +1756,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when listCa
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is character string"), {
+test_that("computePoolSyntheticAncestryGr() must return error when np is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1770,7 +1770,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is zero"), {
+test_that("computePoolSyntheticAncestryGr() must return error when np is zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1784,7 +1784,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when np is 
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when kList is a vector with zero"), {
+test_that("computePoolSyntheticAncestryGr() must return error when kList is a vector with zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1799,7 +1799,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when kList 
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaList is a vector with zero"), {
+test_that("computePoolSyntheticAncestryGr() must return error when pcaList is a vector with zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1814,7 +1814,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when pcaLis
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when algorithm is zero"), {
+test_that("computePoolSyntheticAncestryGr() must return error when algorithm is zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1828,7 +1828,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when algorithm is not in the list of choices"), {
+test_that("computePoolSyntheticAncestryGr() must return error when algorithm is not in the list of choices", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1840,7 +1840,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when algori
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.cnt is character string"), {
+test_that("computePoolSyntheticAncestryGr() must return error when eigen.cnt is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1854,7 +1854,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when eigen.
 })
 
 
-test_that(paste0("computePoolSyntheticAncestryGr() must return error when missing.rate is character string"), {
+test_that("computePoolSyntheticAncestryGr() must return error when missing.rate is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
@@ -1877,7 +1877,7 @@ test_that(paste0("computePoolSyntheticAncestryGr() must return error when missin
 context("computeAncestryFromSyntheticFile() results")
 
 
-test_that(paste0("computeAncestryFromSyntheticFile() must return error when gds is character string"), {
+test_that("computeAncestryFromSyntheticFile() must return error when gds is character string", {
 
     fileGDS <- test_path("fixtures", "GDS_Sample_with_study_demo.gds")
     gdsSample <- openfn.gds(fileGDS)
@@ -2077,8 +2077,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
 context("computePoolSyntheticAncestry() results")
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error ",
-                                "when gds is a character string"), {
+test_that("computePoolSyntheticAncestry() must return error when gds is a character string", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
@@ -2091,7 +2090,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
                             pop.group=c("TSI", "TSI", "YRI", "YRI"),
                             superPop=c("EUR", "EUR", "AFR", "AFR"))
 
-    error_message <- paste0("The \'gds\' must be an object of ",
+    error_message <- paste0("The \'referenceGDS\' must be an object of ",
                                         "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gds="toto.gds", gdsSample=gdsF,
@@ -2100,7 +2099,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
         np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missing.rate=0.025), error_message)
+        eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2118,7 +2117,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
                             pop.group=c("TSI", "TSI", "YRI", "YRI"),
                             superPop=c("EUR", "EUR", "AFR", "AFR"))
 
-    error_message <- paste0("The \'gds\' must be an object of ",
+    error_message <- paste0("The \'referenceGDS\' must be an object of ",
                                     "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gds=31, gdsSample=gdsF,
@@ -2127,12 +2126,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
             np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missing.rate=0.025), error_message)
+            eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error ",
-                        "when gdsSample is a numerical value"), {
+test_that("computePoolSyntheticAncestry() must return error when gdsSample is a numerical value", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
@@ -2145,7 +2143,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
                                 pop.group=c("TSI", "TSI", "YRI", "YRI"),
                                 superPop=c("EUR", "EUR", "AFR", "AFR"))
 
-    error_message <- paste0("The \'gdsSample\' must be an object of ",
+    error_message <- paste0("The \'profileGDS\' must be an object of ",
                                     "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gds=gdsF, gdsSample=33,
@@ -2154,12 +2152,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
             np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missing.rate=0.025), error_message)
+            eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error when ",
-                    "dataRef is character string"), {
+test_that("computePoolSyntheticAncestry() must return error when dataRef is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2173,11 +2170,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when ",
         np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missing.rate=0.025), error_message)
+        eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error when studyIDSyn is numeric value"), {
+test_that("computePoolSyntheticAncestry() must return error when studyIDSyn is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2195,11 +2192,11 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when studyIDS
         np=1L, listCatPop="EUR", fieldPopIn1KG="SuperPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missing.rate=0.025), error_message)
+        eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPopIn1KG is numeric value"), {
+test_that("computePoolSyntheticAncestry() must return error when fieldPopIn1KG is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2217,7 +2214,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPop
             np=1L, listCatPop="EUR", fieldPopIn1KG=33,
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missing.rate=0.025), error_message)
+            eigen.cnt=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2228,8 +2225,7 @@ test_that(paste0("computePoolSyntheticAncestry() must return error when fieldPop
 context("addPhase1KG2SampleGDSFromFile() results")
 
 
-test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
-                    "gds is character string"), {
+test_that("addPhase1KG2SampleGDSFromFile() must return error when gds is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
@@ -2241,8 +2237,7 @@ test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
 })
 
 
-test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
-                    "verbose is character string"), {
+test_that("addPhase1KG2SampleGDSFromFile() must return error when verbose is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2264,8 +2259,7 @@ test_that(paste0("addPhase1KG2SampleGDSFromFile() must return error when ",
 context("computePrunedPCARef() results")
 
 
-test_that(paste0("computePrunedPCARef() must return error when ",
-                        "gds is character string"), {
+test_that("computePrunedPCARef() must return error when gds is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
@@ -2277,8 +2271,7 @@ test_that(paste0("computePrunedPCARef() must return error when ",
 })
 
 
-test_that(paste0("computePrunedPCARef() must return error when ",
-                        "np is character string"), {
+test_that("computePrunedPCARef() must return error when np is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2292,8 +2285,7 @@ test_that(paste0("computePrunedPCARef() must return error when ",
 })
 
 
-test_that(paste0("computePrunedPCARef() must return error when ",
-                 "verbose is character string"), {
+test_that("computePrunedPCARef() must return error when verbose is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
@@ -2307,7 +2299,6 @@ test_that(paste0("computePrunedPCARef() must return error when ",
 })
 
 
-
 #############################################################################
 ### Tests runExomeAncestry() results
 #############################################################################
@@ -2316,7 +2307,7 @@ test_that(paste0("computePrunedPCARef() must return error when ",
 context("runExomeAncestry() results")
 
 
-test_that(paste0("runExomeAncestry() must return error when pathOut is numeric"), {
+test_that("runExomeAncestry() must return error when pathOut is numeric", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2350,7 +2341,7 @@ test_that(paste0("runExomeAncestry() must return error when pathOut is numeric")
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is numeric"), {
+test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2383,7 +2374,7 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceGDS is 
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when fileReferenceAnnotGDS is numeric"), {
+test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is numeric", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2417,7 +2408,7 @@ test_that(paste0("runExomeAncestry() must return error when fileReferenceAnnotGD
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when chrInfo is vector of characters"), {
+test_that("runExomeAncestry() must return error when chrInfo is vector of characters", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2449,7 +2440,7 @@ test_that(paste0("runExomeAncestry() must return error when chrInfo is vector of
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when dataRefSyn missing column"), {
+test_that("runExomeAncestry() must return error when dataRefSyn missing column", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2483,7 +2474,7 @@ test_that(paste0("runExomeAncestry() must return error when dataRefSyn missing c
 })
 
 
-test_that(paste0("runExomeAncestry() must return error when pathGeno does not exist"), {
+test_that("runExomeAncestry() must return error when pathGeno does not exist", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")

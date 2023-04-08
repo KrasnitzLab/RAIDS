@@ -1247,6 +1247,160 @@ validateStudyDataFrameParameter <- function(studyDF) {
 }
 
 
+
+#' @title Validate the parameters of the computePoolSyntheticAncestry ()
+#' function
+#'
+#' @description The function validates the input parameters for the
+#' \code{\link{computePoolSyntheticAncestry}} function.
+#' When a parameter is not as expected, an error message is generated.
+#'
+#' @param referenceGDS an object of class \link[gdsfmt]{gds.class}
+#' (a GDS file), the opened 1KG GDS file.
+#'
+#' @param profileGDS an object of class \link[gdsfmt]{gds.class} (a GDS file),
+#' an opened Profile GDS file.
+#'
+#' @param profileAnaID TODO
+#'
+#' @param dataRef a \code{data.frame} TODO
+#'
+#' @param spRef TODO
+#'
+#' @param studyIDSyn a \code{character} string corresponding to the study
+#' identifier. The study identifier must be present in the GDS Sample file.
+#'
+#' @param np a single positive \code{integer} representing the number of
+#' threads. Default: \code{1L}.
+#'
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations. Default:
+#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
+#'
+#' @param fieldPopIn1KG a \code{character} string representing the TODO
+#'
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset. Default: \code{"SuperPop"}.
+#'
+#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _K_ parameter. The _K_ parameter represents the
+#' number of neighbors used in the K-nearest neighbors analysis. If
+#' \code{NULL}, the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  _D_ parameter. The _D_ parameter represents the
+#' number of dimensions used in the PCA analysis.  If \code{NULL},
+#' the value \code{seq(2,15,1)} is assigned.
+#' Default: \code{seq(2,15,1)}.
+#'
+#' @param algorithm a \code{character} string representing the algorithm used
+#' to calculate the PCA. The 2 choices are "exact" (traditional exact
+#' calculation) and "randomized" (fast PCA with randomized algorithm
+#' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
+#'
+#' @param eigen.cnt a single \code{integer} indicating the number of
+#' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
+#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#'
+#' @param missing.rate a \code{numeric} value representing the threshold
+#' missing rate at with the SNVs are discarded; the SNVs are retained in the
+#' \link[SNPRelate]{snpgdsPCA}
+#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#'
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileProfileGDS <- file.path(dataDir, "ex1_demo.gds")
+#'
+#' ## Open GDS files
+#' gds1KG <- snpgdsOpen(fileGDS)
+#' gdsProfile <- openfn.gds(fileProfileGDS)
+#'
+#' dataRef <- data.frame(test=c(1,2), stringAsFactro=FALSE)
+#'
+#' ## The function returns 0L when all parameters are valid
+#' RAIDS:::validateComputePoolSyntheticAncestry(referenceGDS=gds1KG,
+#'     profileGDS=gdsProfile, profileAnaID="SampleID",
+#'     dataRef=dataRef, spRef=NULL,  studyIDSyn="MyStudy",
+#'     np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+#'     fieldPopIn1KG="SuperPop", fieldPopInfAnc="SuperPop",
+#'     kList=seq(2,15,1), pcaList=seq(2,15,1),
+#'     algorithm="exact", eigenCnt=32L, missingRate=0.025)
+#'
+#' ## Close GDS files (it is important to always close the GDS files)
+#' closefn.gds(gds1KG)
+#' closefn.gds(gdsProfile)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validateComputePoolSyntheticAncestry <- function(referenceGDS, profileGDS,
+    profileAnaID, dataRef, spRef, studyIDSyn, np,
+    listCatPop, fieldPopIn1KG, fieldPopInfAnc,
+    kList, pcaList, algorithm, eigenCnt, missingRate) {
+
+    ## The gds and profileGDS must be objects of class "gds.class"
+    validateGDSClass(gds=referenceGDS, "referenceGDS")
+    validateGDSClass(gds=profileGDS, "profileGDS")
+
+    ## The dataRef must be an data.frame object
+    if (!is.data.frame(dataRef)) {
+        stop("The \'dataRef\' must be a data.frame object.")
+    }
+
+    ## The studyID must be a character string
+    if (!(is.character(studyIDSyn) && length(studyIDSyn) == 1)) {
+        stop("The \'studyIDSyn\' parameter must be a character string.")
+    }
+
+    ## The listCatPop must be a character string vector
+    if (!(is.character(listCatPop) && is.vector(listCatPop))) {
+        stop("The \'listCatPop\' parameter must be a vector of ",
+                "character strings.")
+    }
+
+    ## The population name in 1KG must be a character string
+    if (!(is.character(fieldPopIn1KG) && length(fieldPopIn1KG) == 1)) {
+        stop("The \'fieldPopIn1KG\' parameter must be a character string.")
+    }
+
+    ## The population inferred must be a character string
+    if (!(is.character(fieldPopInfAnc) && length(fieldPopInfAnc) == 1)) {
+        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
+    }
+
+    ## The parameters must be vectors of positive integers
+    validatePositiveIntegerVector(kList, "kList")
+    validatePositiveIntegerVector(pcaList, "pcaList")
+
+    ## The algorithm must be a character string
+    if (!(is.character(algorithm) && length(algorithm) == 1)) {
+        stop("The \'algorithm\' parameter must be a character string.")
+    }
+
+    ## The eigenCnt must be a single integer
+    if (!(isSingleNumber(eigenCnt))) {
+        stop("The \'eigenCnt\' parameter must be a single integer.")
+    }
+
+    ## The missingRate must be a numeric of NaN
+    if (!(isSingleNumber(missingRate) || is.nan(missingRate))) {
+        stop("The \'missingRate\' parameter must be a single numeric or NaN.")
+    }
+
+    return(0L)
+}
+
+
 #' @title Calculate Principal Component Analysis (PCA) on SNV genotype dataset
 #'
 #' @description The functions calculates the principal component analysis (PCA)
@@ -1723,7 +1877,7 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
 
     ## Loop on all PCA dimension values
     for (D in pcaList) {
-        matKNNCurD <- matKNN.All[which(matKNN.All$D == D ), ]
+        matKNNCurD <- matKNN.All[which(matKNN.All$D == D), ]
         listTMP <- list()
         listTMP.AUROC <- list()
         j <- 1

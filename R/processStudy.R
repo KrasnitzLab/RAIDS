@@ -1838,19 +1838,21 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #' @description TODO
 #'
 #' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1KG GDS file.
+#' opened Reference GDS file.
 #'
-#' @param gdsSample an object of class \code{gds} opened related to
-#' the sample
+#' @param gdsSample an object of class \link[gdsfmt]{gds.class} (a GDS file),
+#' an opened Profile GDS file.
 #'
-#' @param sample.ana.id TODO
+#' @param sample.ana.id a single \code{character} string representing the
+#' profile identifier of the synthetic profile.
 #'
-#' @param dataRef a \code{data.frame} TODO
+#' @param dataRef a \code{data.frame} containing the information of the
+#' synthetic profiles that will be
 #'
 #' @param spRef TODO
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
-#' identifier. The study identifier must be present in the GDS Sample file.
+#' identifier. The study identifier must be present in the Profile GDS file.
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
@@ -1859,7 +1861,8 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param fieldPopIn1KG TODO
+#' @param fieldPopIn1KG a \code{character} string representing TODO .
+#' Default: \code{"superPop"}.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
@@ -1887,10 +1890,10 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA}
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{0.025}.
 #'
 #'
@@ -1912,43 +1915,20 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computePoolSyntheticAncestry <- function(gds, gdsSample,
-                                            sample.ana.id,
-                                            dataRef, spRef,
-                                            studyIDSyn,
-                                            np = 1L,
-                                            listCatPop = c("EAS", "EUR",
-                                                        "AFR", "AMR", "SAS"),
-                                            fieldPopIn1KG = "superPop",
-                                            fieldPopInfAnc = "SuperPop",
-                                            kList = seq(2, 15, 1),
-                                            pcaList = seq(2, 15, 1),
-                                            algorithm="exact",
-                                            eigen.cnt=32L,
-                                            missing.rate=0.025) {
+computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
+                    dataRef, spRef, studyIDSyn, np=1L,
+                    listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                    fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+                    kList=seq(2, 15, 1), pcaList = seq(2, 15, 1),
+                    algorithm="exact", eigen.cnt=32L, missingRate=0.025) {
 
-    ## TODO Add parameter validation (not all done)
-
-    ## The gds and gdsSample must be objects of class "gds.class"
-    validateGDSClass(gds=gds, "gds")
-    validateGDSClass(gds=gdsSample, "gdsSample")
-
-    ## The dataRef must be an data.frame object
-    if (!is.data.frame(dataRef)) {
-        stop("The \'dataRef\' must be a data.frame object.")
-    }
-
-    ## The studyID must be a character string
-    if (!(is.character(studyIDSyn) && length(studyIDSyn) == 1)) {
-        stop("The \'studyIDSyn\' parameter must be a character string.")
-    }
-
-    ## The population name in 1KG must be a character string
-    if (!(is.character(fieldPopIn1KG) && length(fieldPopIn1KG) == 1)) {
-        stop("The \'fieldPopIn1KG\' parameter must be a character string.")
-    }
-
-
+    ## Add parameter validation (not all done)
+    validateComputePoolSyntheticAncestry(referenceGDS=gds, profileGDS=gdsSample,
+        profileAnaID=sample.ana.id, dataRef=dataRef, spRef=spRef,
+        studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
+        fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
+        kList=kList, pcaList=pcaList, algorithm=algorithm,
+        eigenCnt=eigen.cnt, missingRate=missingRate)
 
     sampleRM <- splitSelectByPop(dataRef)
 
@@ -1960,13 +1940,11 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
         ##  (the reference samples used to generate the synthetic profiles are
         ##  removed from this PCA)
         KNN.list[[j]] <- computePoolSyntheticAncestryGr(gdsSample=gdsSample,
-                            sampleRM=sampleRM[j,],
-                            spRef=spRef, studyIDSyn=studyIDSyn,
-                            np=np, listCatPop=listCatPop,
-                            fieldPopIn1KG=fieldPopIn1KG,
-                            fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-                            pcaList=pcaList, algorithm=algorithm,
-                            eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+                    sampleRM=sampleRM[j,], spRef=spRef, studyIDSyn=studyIDSyn,
+                    np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+                    fieldPopInfAnc=fieldPopInfAnc, kList=kList,
+                    pcaList=pcaList, algorithm=algorithm,
+                    eigen.cnt=eigen.cnt, missing.rate=missingRate)
     }
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
@@ -1975,17 +1953,14 @@ computePoolSyntheticAncestry <- function(gds, gdsSample,
                             studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
-                                            fieldPopIn1KG, fieldPopInfAnc,
-                                            listCatPop)
+                            fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
-                            name.id=sample.ana.id, studyIDRef="Ref.1KG",
-                            np=np, algorithm=algorithm,
-                            eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+        name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missing.rate=missingRate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
-                                                sample.ana.id,
-                                                spRef)
+                                                sample.ana.id, spRef)
 
     return(listKNNSample)
 }

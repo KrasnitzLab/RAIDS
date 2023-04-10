@@ -5,10 +5,15 @@
 \alias{addPhase1KG2SampleGDSFromGDS}
 \title{TODO}
 \usage{
-addPhase1KG2SampleGDSFromGDS(gds, gdsPhase, pathProfileGDS, verbose = FALSE)
+addPhase1KG2SampleGDSFromGDS(
+  gdsReference,
+  gdsPhase,
+  pathProfileGDS,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 

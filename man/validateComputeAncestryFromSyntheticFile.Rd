@@ -6,7 +6,7 @@
 \title{Validate input parameters for createStudy2GDS1KG() function}
 \usage{
 validateComputeAncestryFromSyntheticFile(
-  gds,
+  gdsReference,
   gdsSample,
   listFiles,
   sample.ana.id,
@@ -24,7 +24,7 @@ validateComputeAncestryFromSyntheticFile(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
@@ -93,7 +93,7 @@ gdsSample <- openfn.gds(file.path(dataDir,
 listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 
 ## The validatiion should be successful
-RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
+RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),

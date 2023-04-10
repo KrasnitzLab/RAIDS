@@ -6,7 +6,7 @@
 \title{TODO}
 \usage{
 addPhase1KG2SampleGDSFromFile(
-  gds,
+  gdsReference,
   pathProfileGDS,
   pathGeno,
   fileLSNP,
@@ -14,7 +14,7 @@ addPhase1KG2SampleGDSFromFile(
 )
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to

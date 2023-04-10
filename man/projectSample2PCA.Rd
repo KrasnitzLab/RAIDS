@@ -5,10 +5,16 @@
 \alias{projectSample2PCA}
 \title{Project profile onto existing principal component axes (PCA)}
 \usage{
-projectSample2PCA(gds, listPCA, currentProfile, np = 1L, verbose = FALSE)
+projectSample2PCA(
+  gdsProfile,
+  listPCA,
+  currentProfile,
+  np = 1L,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsProfile}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
 opened Profile GDS file.}
 

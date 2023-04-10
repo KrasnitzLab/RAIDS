@@ -2,7 +2,7 @@
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
@@ -65,7 +65,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
+computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr, genoN=0.0001) {
 
     ## The chr parameter must be a single integer value
     if (!isSingleNumber(chr))  {
@@ -112,7 +112,7 @@ computeLOHBlocksDNAChr <- function(gds, chrInfo, snp.pos, chr, genoN=0.0001) {
     blcSNV <- data.frame(block = cumsum(z[, 2])[z[, 2] == 0],
                 snv = z[z[, 2] == 0, 3])
 
-    listAF <- read.gdsn(index.gdsn(gds, "snp.AF"))
+    listAF <- read.gdsn(index.gdsn(gdsReference, "snp.AF"))
 
     # Compute if the block is LOH
     homoBlock$logLHR <- rep(0, nrow(homoBlock))

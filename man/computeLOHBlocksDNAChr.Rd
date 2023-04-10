@@ -5,10 +5,10 @@
 \alias{computeLOHBlocksDNAChr}
 \title{TODO}
 \usage{
-computeLOHBlocksDNAChr(gds, chrInfo, snp.pos, chr, genoN = 1e-04)
+computeLOHBlocksDNAChr(gdsReference, chrInfo, snp.pos, chr, genoN = 1e-04)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 

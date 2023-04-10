@@ -6,10 +6,10 @@
 \title{Append information about the 1KG samples into
 the GDS Sample file}
 \usage{
-addStudy1Kg(gds, fileProfileGDS)
+addStudy1Kg(gdsReference, fileProfileGDS)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{fileProfileGDS}{a \code{character} string representing the path and
@@ -31,7 +31,7 @@ The study information is appended to the GDS Sample file "study.list" node.
 \examples{
 
 # TODO
-gds <- "TODO"
+gdsReference <- "TODO"
 
 }
 \author{

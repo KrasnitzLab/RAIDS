@@ -6,7 +6,7 @@
 \title{TODO}
 \usage{
 computePoolSyntheticAncestry(
-  gds,
+  gdsReference,
   gdsSample,
   sample.ana.id,
   dataRef,
@@ -24,7 +24,7 @@ computePoolSyntheticAncestry(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 opened Reference GDS file.}
 
 \item{gdsSample}{an object of class \link[gdsfmt]{gds.class} (a GDS file),

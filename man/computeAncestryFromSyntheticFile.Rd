@@ -7,7 +7,7 @@
 infer the ancestry of a specific sample}
 \usage{
 computeAncestryFromSyntheticFile(
-  gds,
+  gdsReference,
   gdsSample,
   listFiles,
   sample.ana.id,
@@ -25,7 +25,7 @@ computeAncestryFromSyntheticFile(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}

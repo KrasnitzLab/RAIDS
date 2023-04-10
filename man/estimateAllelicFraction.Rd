@@ -7,7 +7,7 @@
 sample}
 \usage{
 estimateAllelicFraction(
-  gds,
+  gdsReference,
   gdsSample,
   currentProfile,
   studyID,
@@ -25,7 +25,7 @@ estimateAllelicFraction(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}

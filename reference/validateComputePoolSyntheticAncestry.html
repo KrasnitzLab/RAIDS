@@ -71,7 +71,7 @@ When a parameter is not as expected, an error message is generated.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateComputePoolSyntheticAncestry</span><span class="op">(</span></span>
-<span>  <span class="va">referenceGDS</span>,</span>
+<span>  <span class="va">gdsReference</span>,</span>
 <span>  <span class="va">profileGDS</span>,</span>
 <span>  <span class="va">profileAnaID</span>,</span>
 <span>  <span class="va">dataRef</span>,</span>
@@ -91,7 +91,7 @@ When a parameter is not as expected, an error message is generated.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>referenceGDS</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a>
 (a GDS file), the opened 1KG GDS file.</p></dd>
 
@@ -202,7 +202,7 @@ with "&lt;= missing.rate" only; if <code>NaN</code>, no missing threshold.</p></
 <span class="r-in"><span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>test<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, stringAsFactro<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The function returns 0L when all parameters are valid</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePoolSyntheticAncestry</span><span class="op">(</span>referenceGDS<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePoolSyntheticAncestry</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    profileGDS<span class="op">=</span><span class="va">gdsProfile</span>, profileAnaID<span class="op">=</span><span class="st">"SampleID"</span>,</span></span>
 <span class="r-in"><span>    dataRef<span class="op">=</span><span class="va">dataRef</span>, spRef<span class="op">=</span><span class="cn">NULL</span>,  studyIDSyn<span class="op">=</span><span class="st">"MyStudy"</span>,</span></span>
 <span class="r-in"><span>    np<span class="op">=</span><span class="fl">1L</span>, listCatPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EAS"</span>, <span class="st">"EUR"</span>, <span class="st">"AFR"</span>, <span class="st">"AMR"</span>, <span class="st">"SAS"</span><span class="op">)</span>,</span></span>

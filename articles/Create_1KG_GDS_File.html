@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.3<br><strong>Compiled date</strong>: 2023-04-08<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.3<br><strong>Compiled date</strong>: 2023-04-10<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <div class="section level2">
 <h2 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes
@@ -493,13 +493,13 @@ address:</p>
 </h2>
 <p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on
 which this document was compiled:</p>
-<pre><code><span><span class="co">## R Under development (unstable) (2023-03-16 r83996)</span></span>
+<pre><code><span><span class="co">## R version 4.3.0 beta (2023-04-06 r84184)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
-<span><span class="co">## </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
@@ -534,11 +534,11 @@ which this document was compiled:</p>
 <span><span class="co">##  [23] plyr_1.8.8                  sandwich_3.0-2             </span></span>
 <span><span class="co">##  [25] zoo_1.8-11                  cachem_1.0.7               </span></span>
 <span><span class="co">##  [27] GenomicAlignments_1.35.1    lifecycle_1.0.3            </span></span>
-<span><span class="co">##  [29] pkgconfig_2.0.3             Matrix_1.5-3               </span></span>
+<span><span class="co">##  [29] pkgconfig_2.0.3             Matrix_1.5-4               </span></span>
 <span><span class="co">##  [31] R6_2.5.1                    fastmap_1.1.1              </span></span>
 <span><span class="co">##  [33] GenomeInfoDbData_1.2.10     MatrixGenerics_1.11.1      </span></span>
 <span><span class="co">##  [35] digest_0.6.31               GWASTools_1.45.0           </span></span>
-<span><span class="co">##  [37] AnnotationDbi_1.61.2        S4Vectors_0.37.4           </span></span>
+<span><span class="co">##  [37] AnnotationDbi_1.61.2        S4Vectors_0.37.5           </span></span>
 <span><span class="co">##  [39] rprojroot_2.0.3             textshaping_0.3.6          </span></span>
 <span><span class="co">##  [41] GenomicRanges_1.51.4        RSQLite_2.3.1              </span></span>
 <span><span class="co">##  [43] filelock_1.0.2              fansi_1.0.4                </span></span>
@@ -546,8 +546,8 @@ which this document was compiled:</p>
 <span><span class="co">##  [47] compiler_4.3.0              bit64_4.0.5                </span></span>
 <span><span class="co">##  [49] backports_1.4.1             BiocParallel_1.33.12       </span></span>
 <span><span class="co">##  [51] DBI_1.1.3                   highr_0.10                 </span></span>
-<span><span class="co">##  [53] biomaRt_2.55.4              MASS_7.3-58.3              </span></span>
-<span><span class="co">##  [55] quantreg_5.94               rappdirs_0.3.3             </span></span>
+<span><span class="co">##  [53] biomaRt_2.55.4              MASS_7.3-58.4              </span></span>
+<span><span class="co">##  [55] quantreg_5.95               rappdirs_0.3.3             </span></span>
 <span><span class="co">##  [57] DelayedArray_0.25.0         rjson_0.2.21               </span></span>
 <span><span class="co">##  [59] DNAcopy_1.73.0              tools_4.3.0                </span></span>
 <span><span class="co">##  [61] lmtest_0.9-40               glue_1.6.2                 </span></span>
@@ -562,11 +562,11 @@ which this document was compiled:</p>
 <span><span class="co">##  [79] GWASExactHW_1.01            pillar_1.9.0               </span></span>
 <span><span class="co">##  [81] stringr_1.5.0               splines_4.3.0              </span></span>
 <span><span class="co">##  [83] dplyr_1.1.1                 BiocFileCache_2.7.2        </span></span>
-<span><span class="co">##  [85] lattice_0.20-45             survival_3.5-5             </span></span>
+<span><span class="co">##  [85] lattice_0.21-8              survival_3.5-5             </span></span>
 <span><span class="co">##  [87] rtracklayer_1.59.1          bit_4.0.5                  </span></span>
 <span><span class="co">##  [89] SparseM_1.81                tidyselect_1.2.0           </span></span>
 <span><span class="co">##  [91] SeqVarTools_1.37.0          Biostrings_2.67.2          </span></span>
-<span><span class="co">##  [93] bookdown_0.33               IRanges_2.33.0             </span></span>
+<span><span class="co">##  [93] bookdown_0.33               IRanges_2.33.1             </span></span>
 <span><span class="co">##  [95] ProtGenerics_1.31.0         SummarizedExperiment_1.29.1</span></span>
 <span><span class="co">##  [97] stats4_4.3.0                xfun_0.38                  </span></span>
 <span><span class="co">##  [99] Biobase_2.59.0              matrixStats_0.63.0         </span></span>

@@ -70,12 +70,12 @@ the Profile GDS file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">fileProfileGDS</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">fileProfileGDS</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
@@ -136,7 +136,7 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compute the list of pruned SNVs for a specific profile 'ex1'</span></span></span>
 <span class="r-in"><span><span class="co">## and save it in the Profile GDS file 'ex1.gds'</span></span></span>
-<span class="r-in"><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
+<span class="r-in"><span><span class="fu">add1KG2SampleGDS</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>         fileProfileGDS<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.genotype</span>, <span class="st">"ex1.gds"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>         currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>         studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span></span>

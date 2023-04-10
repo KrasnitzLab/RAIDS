@@ -65,12 +65,12 @@ add1KG2SampleGDS function."><!-- mathjax --><script src="https://cdnjs.cloudflar
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateAdd1KG2SampleGDS</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsProfileFile</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateAdd1KG2SampleGDS</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">gdsProfileFile</span>, <span class="va">currentProfile</span>, <span class="va">studyID</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
@@ -111,7 +111,7 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"gds1KG.gds"</span><span class="op">)</span>, readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateAdd1KG2SampleGDS</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateAdd1KG2SampleGDS</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    gdsProfileFile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"GDS_Sample_with_study_demo.gds"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    currentProfile<span class="op">=</span><span class="st">"Sample01"</span>, studyID<span class="op">=</span><span class="st">"Synthetic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

@@ -82,12 +82,12 @@ as an extra column to the final 'data.frame'.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsSample</span>, <span class="va">studyID</span>, <span class="va">popName</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">gdsSample</span>, <span class="va">studyID</span>, <span class="va">popName</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class
 <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gdsfmt::gds.class</a></code>, the opened 1 KG GDS file.</p></dd>
 
@@ -149,7 +149,7 @@ as an extra column to the final 'data.frame'. In that situation, the
 <span class="r-in"><span><span class="co">## returned data.frame</span></span></span>
 <span class="r-in"><span><span class="co">## This function enables to extract the super-population associated to the</span></span></span>
 <span class="r-in"><span><span class="co">## 1KG samples that has been used to create the synthetic profiles</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">prepPedSynthetic1KG</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>, gdsSample<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
 <span class="r-in"><span>    studyID<span class="op">=</span><span class="st">"TCGA.Synthetic"</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   data.id case.id sample.type diagnosis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> HG00101.Synthetic.01 HG00101.Synthetic.01 HG00101   Synthetic         C</span>

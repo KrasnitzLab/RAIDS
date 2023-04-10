@@ -65,12 +65,18 @@ the specified SNP loadings.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">projectSample2PCA</span><span class="op">(</span><span class="va">gds</span>, <span class="va">listPCA</span>, <span class="va">currentProfile</span>, np <span class="op">=</span> <span class="fl">1L</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">projectSample2PCA</span><span class="op">(</span></span>
+<span>  <span class="va">gdsProfile</span>,</span>
+<span>  <span class="va">listPCA</span>,</span>
+<span>  <span class="va">currentProfile</span>,</span>
+<span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsProfile</dt>
 <dd><p>an object of class
 <code><a href="https://rdrr.io/pkg/SNPRelate/man/SNPGDSFileClass-class.html" class="external-link">SNPRelate::SNPGDSFileClass</a></code>, an
 opened Profile GDS file.</p></dd>

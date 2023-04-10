@@ -6,7 +6,7 @@
 \title{Validate input parameters for syntheticGeno() function}
 \usage{
 validateSyntheticGeno(
-  gds,
+  gdsReference,
   gdsRefAnnot,
   fileProfileGDS,
   data.id.profile,
@@ -19,7 +19,7 @@ validateSyntheticGeno(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
@@ -73,7 +73,7 @@ gds1KGAnnot <- openfn.gds(file.path(data.dir, "gdsAnnot1KG.gds"),
 gdsSample <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
 
 ## The validation should be successful
-RAIDS:::validateSyntheticGeno(gds=gds1KG, gdsRefAnnot=gds1KGAnnot,
+RAIDS:::validateSyntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
      fileProfileGDS=gdsSample, data.id.profile="A101TCGA",
      listSampleRef="A101TCGA", nbSim=1L, prefId="TCGA", pRecomb=0.02,
      minProb=0.999, seqError=0.002)

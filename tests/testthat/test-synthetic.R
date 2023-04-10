@@ -142,9 +142,9 @@ test_that("syntheticGeno() must return error when gds is a numeric value", {
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- "The \'gds\' must be an object of class \'gds.class\'."
+    error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'."
 
-    expect_error(syntheticGeno(gds=33, gdsRefAnnot=fileGDS,
+    expect_error(syntheticGeno(gdsReference=33, gdsRefAnnot=fileGDS,
             fileProfileGDS=2, data.id.profile="test",
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb=0.01,
@@ -162,7 +162,7 @@ test_that("syntheticGeno() must return error when gdsRefAnnot is a numeric value
 
     error_message <- "The \'gdsRefAnnot\' must be an object of class \'gds.class\'."
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=33,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=33,
                               fileProfileGDS=2, data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),
                               nbSim=1, prefId="", pRecomb=0.01,
@@ -181,7 +181,7 @@ test_that("syntheticGeno() must return error when fileProfileGDS is a numeric va
     error_message <- paste0("The \'fileProfileGDS\' must be a character ",
                                 "string and the file must exist.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                         fileProfileGDS=2, data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
                         nbSim=1, prefId="", pRecomb=0.01,
@@ -199,7 +199,7 @@ test_that("syntheticGeno() must return error when data.id.profile is a numeric v
 
     error_message <- "The \'data.id.profile\' must be a character string."
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
             fileProfileGDS=fileGDS, data.id.profile=22,
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb=0.01,
@@ -217,7 +217,7 @@ test_that("syntheticGeno() must return error when listSampleRef is a numeric val
 
     error_message <- "The \'listSampleRef\' must be a vector of character strings."
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
         fileProfileGDS=fileGDS, data.id.profile="sample01", listSampleRef=33,
         nbSim=1, prefId="", pRecomb=0.01,
         minProb=0.999, seqError=0.001), error_message)
@@ -234,7 +234,7 @@ test_that("syntheticGeno() must return error when data.id.profile is a vector of
 
     error_message <- "The \'data.id.profile\' must be a character string."
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                     fileProfileGDS=fileGDS, data.id.profile=c("01", "02"),
                     listSampleRef=c("Sample1", "sample2"),
                     nbSim=1, prefId="", pRecomb=0.01,
@@ -253,7 +253,7 @@ test_that("syntheticGeno() must return error when nbSim is a character string", 
     error_message <- paste0("The \'nbSim\' parameter must be a single ",
                                 "positive numeric value.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                         fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
@@ -274,7 +274,7 @@ test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
     error_message <- paste0("The \'prefId\' parameter must be a single ",
                                 "character string.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                         fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
@@ -295,7 +295,7 @@ test_that("syntheticGeno() must return error when prefId is a numeric value", {
     error_message <- paste0("The \'prefId\' parameter must be a single ",
                                 "character string.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                         fileProfileGDS=fileGDS,
                         data.id.profile="test",
                         listSampleRef=c("Sample1", "sample2"),
@@ -316,7 +316,7 @@ test_that(paste0("syntheticGeno() must return error when pRecomb is a character 
     error_message <- paste0("The \'pRecomb\' parameter must be a single positive ",
                                 "numeric value between 0 and 1.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
             fileProfileGDS=fileGDS, data.id.profile="test",
             listSampleRef=c("Sample1", "sample2"),
             nbSim=1, prefId="", pRecomb="0.01",
@@ -336,7 +336,7 @@ test_that(paste0("syntheticGeno() must return error when seqError is a ",
     error_message <- paste0("The \'seqError\' parameter must be a single ",
                 "positive numeric value between 0 and 1.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                               fileProfileGDS=fileGDS,
                               data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),
@@ -357,7 +357,7 @@ test_that(paste0("syntheticGeno() must return error when minProb is a ",
     error_message <- paste0("The \'minProb\' parameter must be a single ",
                             "positive numeric value between 0 and 1.")
 
-    expect_error(syntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
                               fileProfileGDS=fileGDS,
                               data.id.profile="test",
                               listSampleRef=c("Sample1", "sample2"),

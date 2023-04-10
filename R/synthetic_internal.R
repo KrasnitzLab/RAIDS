@@ -3,7 +3,7 @@
 #' @description This function validates the input parameters for the
 #' \code{\link{syntheticGeno}} function.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
@@ -52,7 +52,7 @@
 #' gdsSample <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
 #'
 #' ## The validation should be successful
-#' RAIDS:::validateSyntheticGeno(gds=gds1KG, gdsRefAnnot=gds1KGAnnot,
+#' RAIDS:::validateSyntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
 #'      fileProfileGDS=gdsSample, data.id.profile="A101TCGA",
 #'      listSampleRef="A101TCGA", nbSim=1L, prefId="TCGA", pRecomb=0.02,
 #'      minProb=0.999, seqError=0.002)
@@ -65,7 +65,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
+validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
                                         data.id.profile,
                                         listSampleRef,
                                         nbSim,
@@ -75,8 +75,8 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
                                         seqError) {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    if (!inherits(gdsReference, "gds.class")) {
+        stop("The \'gdsReference\' must be an object of class \'gds.class\'.")
     }
 
     ## The gdsRefAnnot must be an object of class "gds.class"
@@ -149,7 +149,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
 #' generate each synthetic profile would be added
 #' as an extra column to the final 'data.frame'.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.
 #'
 #' @param gdsSample an object of class
@@ -196,7 +196,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
 #' ## returned data.frame
 #' ## This function enables to extract the super-population associated to the
 #' ## 1KG samples that has been used to create the synthetic profiles
-#' RAIDS:::prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
+#' RAIDS:::prepPedSynthetic1KG(gdsReference=gds1KG, gdsSample=gdsSample,
 #'     studyID="TCGA.Synthetic", popName="superPop")
 #'
 #' ## The GDS files must be closed
@@ -208,7 +208,7 @@ validateSyntheticGeno <- function(gds, gdsRefAnnot, fileProfileGDS,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-prepPedSynthetic1KG <- function(gds, gdsSample, studyID, popName) {
+prepPedSynthetic1KG <- function(gdsReference, gdsSample, studyID, popName) {
 
     ## Extract study information from the GDS Sample file
     study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
@@ -218,14 +218,14 @@ prepPedSynthetic1KG <- function(gds, gdsSample, studyID, popName) {
     rm(study.annot)
 
     ## Get the information from 1KG GDS file
-    dataRef <- read.gdsn(index.gdsn(node=gds, "sample.annot"))
+    dataRef <- read.gdsn(index.gdsn(node=gdsReference, "sample.annot"))
 
     if(! popName %in% colnames(dataRef)) {
         stop("The population ", popName, " is not supported.")
     }
 
     ## Assign sample names to the information
-    row.names(dataRef) <- read.gdsn(index.gdsn(node=gds, "sample.id"))
+    row.names(dataRef) <- read.gdsn(index.gdsn(node=gdsReference, "sample.id"))
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
     rownames(studyCur) <- studyCur$data.id

@@ -148,11 +148,11 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     genoSource <- match.arg(genoSource)
 
     ## Read the 1KG GDS file
-    gds <- snpgdsOpen(filename=fileNameGDS)
+    gdsReference <- snpgdsOpen(filename=fileNameGDS)
 
     ## Extract the chromosome and position information for all SNPs in 1KG GDS
-    snpCHR <- index.gdsn(node=gds, "snp.chromosome")
-    snpPOS <- index.gdsn(node=gds, "snp.position")
+    snpCHR <- index.gdsn(node=gdsReference, "snp.chromosome")
+    snpPOS <- index.gdsn(node=gdsReference, "snp.position")
 
     ## Create a data.frame containing the information
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
@@ -174,7 +174,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     }
 
     ## Close 1KG GDS file
-    closefn.gds(gds)
+    closefn.gds(gdsReference)
 
     ## Return successful code
     return(0L)
@@ -268,12 +268,12 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     pedStudy <- readRDS(file=fileNamePED)
 
     ## Read the 1KG GDS file
-    gds <- snpgdsOpen(filename=fileNameGDS)
+    gdsReference <- snpgdsOpen(filename=fileNameGDS)
 
     ## Extract the chromosome and position information for all SNPs in 1KG GDS
     ## Create a data.frame containing the information
-    snpCHR <- index.gdsn(node=gds, "snp.chromosome")
-    snpPOS <- index.gdsn(node=gds, "snp.position")
+    snpCHR <- index.gdsn(node=gdsReference, "snp.chromosome")
+    snpPOS <- index.gdsn(node=gdsReference, "snp.position")
 
     listPos <- data.frame(snp.chromosome=read.gdsn(snpCHR),
                             snp.position=read.gdsn(snpPOS))
@@ -293,7 +293,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     }
 
     ## Close 1KG GDS file
-    closefn.gds(gds)
+    closefn.gds(gdsReference)
 
     ## Return successful code
     return(0L)
@@ -311,7 +311,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' SNVs that are passed to the \code{\link[SNPRelate]{snpgdsLDpruning}}()
 #' function can be specified by the user.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1 KG GDS file (reference data set).
 #'
 #' @param method a \code{character} string that represents the method that will
@@ -417,7 +417,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
-#' pruningSample(gds=gds1KG, currentProfile=c("ex1"),
+#' pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
 #'               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
@@ -439,7 +439,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
+pruningSample <- function(gdsReference, method=c("corr", "r", "dprime", "composite"),
                             currentProfile,
                             studyID,
                             listSNP=NULL,
@@ -456,7 +456,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
                             outPrefix="pruned") {
 
     ## Validate input parameters
-    validatePruningSample(gds=gds, method=method, currentProfile=currentProfile,
+    validatePruningSample(gdsReference=gdsReference, method=method, currentProfile=currentProfile,
             studyID=studyID, listSNP=listSNP, slideWindowMaxBP=slideWindowMaxBP,
             thresholdLD=thresholdLD, np=np, verbose=verbose, chr=chr,
             superPopMinAF=superPopMinAF, keepPrunedGDS=keepPrunedGDS,
@@ -477,9 +477,9 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     filePruned <- file.path(pathPrunedGDS, paste0(outPrefix, ".rds"))
     fileObj <- file.path(pathPrunedGDS, paste0(outPrefix, ".Obj.rds"))
 
-    snp.id <- read.gdsn(node=index.gdsn(gds, "snp.id"))
+    snp.id <- read.gdsn(node=index.gdsn(gdsReference, "snp.id"))
 
-    sample.id <- read.gdsn(node=index.gdsn(gds, "sample.id"))
+    sample.id <- read.gdsn(node=index.gdsn(gdsReference, "sample.id"))
 
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(filename=fileGDSSample)
@@ -512,7 +512,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 
     ## Select SNVs based on the chromosome
     if(!is.null(chr)) {
-        snpCHR <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
+        snpCHR <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
         listKeepPos <- intersect(which(snpCHR == chr), listKeepPos)
     }
 
@@ -520,7 +520,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     if(!is.null(superPopMinAF)) {
         listTMP <- NULL
         for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
-            snpAF <- read.gdsn(index.gdsn(gds, paste0("snp.", sp, "_AF")))
+            snpAF <- read.gdsn(index.gdsn(gdsReference, paste0("snp.", sp, "_AF")))
             listTMP <- union(listTMP,
                 which(snpAF >= superPopMinAF & snpAF <= 1 - superPopMinAF))
         }
@@ -533,11 +533,11 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
     }
     listKeep <- snp.id[listKeepPos]
 
-    sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    sample.ref <- read.gdsn(index.gdsn(gdsReference, "sample.ref"))
     listSamples <- sample.id[which(sample.ref == 1)]
 
     ## Use a LD analysis to generate a subset of SNPs
-    snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
+    snpset <- runLDPruning(gds=gdsReference, method=method, listSamples=listSamples,
                 listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
                 thresholdLD=thresholdLD, np=np, verbose=verbose)
 
@@ -567,7 +567,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' from the 1KG GDS file and adds entries related to the pruned SNVs in
 #' the Profile GDS file.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param fileProfileGDS a \code{character} string representing the path and
@@ -609,7 +609,7 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
-#' add1KG2SampleGDS(gds=gds1KG,
+#' add1KG2SampleGDS(gdsReference=gds1KG,
 #'          fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
 #'          currentProfile=c("ex1"),
 #'          studyID=studyDF$study.id)
@@ -633,42 +633,42 @@ pruningSample <- function(gds, method=c("corr", "r", "dprime", "composite"),
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
 #' @encoding UTF-8
 #' @export
-add1KG2SampleGDS <- function(gds, fileProfileGDS, currentProfile,
+add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
                                 studyID) {
 
     ## Validate inputs
-    validateAdd1KG2SampleGDS(gds=gds, gdsProfileFile=fileProfileGDS,
+    validateAdd1KG2SampleGDS(gdsReference=gdsReference, gdsProfileFile=fileProfileGDS,
             currentProfile=currentProfile, studyID=studyID)
 
     ## Open Profile GDS file
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
 
     ## Extract needed information from 1KG GDS file
-    snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))
+    snp.id <- read.gdsn(index.gdsn(gdsReference,"snp.id"))
 
     ## Extract list of pruned SNVs from the GDS Sample file
     pruned <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
 
     listSNP <- which(snp.id %in% pruned)
-    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref")) == 1)
-    sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))
+    listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref")) == 1)
+    sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
 
-    snp.chromosome <- read.gdsn(index.gdsn(gds,"snp.chromosome"))[listSNP]
-    snp.position <-  read.gdsn(index.gdsn(gds,"snp.position"))[listSNP]
+    snp.chromosome <- read.gdsn(index.gdsn(gdsReference,"snp.chromosome"))[listSNP]
+    snp.position <-  read.gdsn(index.gdsn(gdsReference,"snp.position"))[listSNP]
 
     add.gdsn(gdsSample, "sample.id", c(sample.id[listRef], currentProfile))
 
     add.gdsn(gdsSample, "snp.id", snp.id[listSNP])
     add.gdsn(gdsSample, "snp.chromosome", snp.chromosome)
     add.gdsn(gdsSample, "snp.position", snp.position)
-    # snp.index is the index of the snp pruned in snp.id fro 1KG gds
+    # snp.index is the index of the snp pruned in snp.id from 1KG gds
     add.gdsn(gdsSample, "snp.index", listSNP)
 
     var.geno <- NULL
 
     j <- 1
     for(i in listRef) {
-        g <- read.gdsn(index.gdsn(gds, "genotype"), start=c(1,i),
+        g <- read.gdsn(index.gdsn(gdsReference, "genotype"), start=c(1,i),
                             count = c(-1,1))[listSNP]
 
         if(! ("genotype" %in% ls.gdsn(gdsSample))){
@@ -714,7 +714,7 @@ add1KG2SampleGDS <- function(gds, fileProfileGDS, currentProfile,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
@@ -742,11 +742,11 @@ add1KG2SampleGDS <- function(gds, fileProfileGDS, currentProfile,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromFile <- function(gds, pathProfileGDS, pathGeno,
+addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS, pathGeno,
                                             fileLSNP, verbose=FALSE) {
 
-    ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, name="gds")
+    ## The gdsReference must be an object of class "gds.class"
+    validateGDSClass(gds=gdsReference, name="gdsReference")
 
     ## Verbose must be a logical
     if (!is.logical(verbose)) {
@@ -768,11 +768,11 @@ addPhase1KG2SampleGDSFromFile <- function(gds, pathProfileGDS, pathGeno,
 
     gdsSample <- createfn.gds(file.path(pathProfileGDS, "phase1KG.gds"))
     indexAll <- indexAll[order(indexAll)]
-    snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))[indexAll]
+    snp.id <- read.gdsn(index.gdsn(gdsReference,"snp.id"))[indexAll]
     add.gdsn(gdsSample, "snp.id", snp.id)
     add.gdsn(gdsSample, "snp.index", indexAll)
-    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
-    listSample <- read.gdsn(index.gdsn(gds, "sample.id"))[listRef]
+    listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref"))==1)
+    listSample <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listRef]
     listSNP <- readRDS(file=fileLSNP)
     i<-1
     for(sample1KG in listSample){
@@ -807,7 +807,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, pathProfileGDS, pathGeno,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
@@ -832,7 +832,7 @@ addPhase1KG2SampleGDSFromFile <- function(gds, pathProfileGDS, pathGeno,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
+addPhase1KG2SampleGDSFromGDS <- function(gdsReference, gdsPhase, pathProfileGDS,
                                             verbose=FALSE) {
 
     listGDSSample <- dir(pathProfileGDS, pattern = ".+.gds")
@@ -849,11 +849,11 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
 
     gdsSample <- createfn.gds(file.path(pathProfileGDS, "phase1KG.gds"))
     indexAll <- indexAll[order(indexAll)]
-    snp.id <- read.gdsn(index.gdsn(gds,"snp.id"))[indexAll]
+    snp.id <- read.gdsn(index.gdsn(gdsReference,"snp.id"))[indexAll]
     add.gdsn(gdsSample, "snp.id", snp.id)
     add.gdsn(gdsSample, "snp.index", indexAll)
-    listRef <- which(read.gdsn(index.gdsn(gds, "sample.ref"))==1)
-    listSample <- read.gdsn(index.gdsn(gds, "sample.id"))[listRef]
+    listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref"))==1)
+    listSample <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listRef]
     #listSNP <- readRDS(fileLSNP)
     i<-1
     for(sample1KG in listSample){
@@ -890,7 +890,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
 #' @description This function compute the PCA on pruned SNV with the
 #' reference samples
 #'
-#' @param gds an object of class
+#' @param gdsProfile an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 #' GDS file.
 #'
@@ -926,10 +926,10 @@ addPhase1KG2SampleGDSFromGDS <- function(gds, gdsPhase, pathProfileGDS,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-computePrunedPCARef <- function(gds, listRef, np=1L, verbose=FALSE) {
+computePrunedPCARef <- function(gdsProfile, listRef, np=1L, verbose=FALSE) {
 
-    ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, name="gds")
+    ## The gdsReference must be an object of class "gds.class"
+    validateGDSClass(gds=gdsProfile, name="gdsProfile")
 
     ## Validate that np is a single positive integer
     if(! (isSingleNumber(np) && np > 0)) {
@@ -942,18 +942,18 @@ computePrunedPCARef <- function(gds, listRef, np=1L, verbose=FALSE) {
 
     listPCA <- list()
 
-    listPruned <- read.gdsn(index.gdsn(gds, "pruned.study"))
+    listPruned <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
 
     ## Calculate the eigenvectors using the specified SNP loadings for
     ## the reference profiles
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gds,
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsProfile,
                                             sample.id=listRef,
                                             snp.id=listPruned,
                                             num.thread=np,
                                             verbose=verbose)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(pcaobj=listPCA[["pca.unrel"]],
-                                                    gdsobj=gds,
+                                                    gdsobj=gdsProfile,
                                                     num.thread=np,
                                                     verbose=verbose)
     return(listPCA)
@@ -966,7 +966,7 @@ computePrunedPCARef <- function(gds, listRef, np=1L, verbose=FALSE) {
 #' @description This function calculates the profile eigenvectors using
 #' the specified SNP loadings.
 #'
-#' @param gds an object of class
+#' @param gdsProfile an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
 #' opened Profile GDS file.
 #'
@@ -1013,7 +1013,7 @@ computePrunedPCARef <- function(gds, listRef, np=1L, verbose=FALSE) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-projectSample2PCA <- function(gds, listPCA, currentProfile, np=1L,
+projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
                                 verbose=FALSE) {
 
 
@@ -1033,7 +1033,7 @@ projectSample2PCA <- function(gds, listPCA, currentProfile, np=1L,
 
     ## Calculate the sample eigenvectors using the specified SNP loadings
     samplePCA <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                gdsobj=gds, sample.id=currentProfile,
+                                gdsobj=gdsProfile, sample.id=currentProfile,
                                 num.thread=1, verbose=verbose)
 
     return(samplePCA)
@@ -1048,7 +1048,7 @@ projectSample2PCA <- function(gds, listPCA, currentProfile, np=1L,
 #' GDS Sample file. The allelic fraction estimation method is adapted to
 #' the type of study (DNA or RNA).
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -1155,13 +1155,13 @@ projectSample2PCA <- function(gds, listPCA, currentProfile, np=1L,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
+estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile, studyID,
     chrInfo, studyType=c("DNA", "RNA"), minCov=10L, minProb=0.999,
     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
     gdsRefAnnot=NULL, block.id=NULL) {
 
     ## Validate input parameters
-    validateEstimateAllelicFraction(gds=gds, gdsSample=gdsSample,
+    validateEstimateAllelicFraction(gdsReference=gdsReference, gdsSample=gdsSample,
         currentProfile=currentProfile, studyID=studyID, chrInfo=chrInfo,
         studyType=studyType, minCov=minCov, minProb=minProb, eProb=eProb,
         cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore, wAR=wAR,
@@ -1174,14 +1174,14 @@ estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
 
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
-        snp.pos <- computeAllelicFractionDNA(gds=gds, gdsSample=gdsSample,
+        snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference, gdsSample=gdsSample,
                         currentProfile=currentProfile, studyID=studyID,
                         chrInfo=chrInfo, minCov=minCov, minProb=minProb,
                         eProb=eProb, cutOffLOH=cutOffLOH,
                         cutOffHomoScore=cutOffHomoScore, wAR=wAR)
 
     } else if(studyType == "RNA") {
-        snp.pos <- computeAllelicFractionRNA(gds=gds, gdsSample=gdsSample,
+        snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference, gdsSample=gdsSample,
                         gdsRefAnnot=gdsRefAnnot, currentProfile=currentProfile,
                         studyID=studyID, block.id=block.id, chrInfo=chrInfo,
                         minCov=minCov, minProb=minProb, eProb=eProb,
@@ -1222,7 +1222,7 @@ estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
 #' selected samples is appended to the GDS Sample file "study.annot" node.
 #' The study information is appended to the GDS Sample file "study.list" node.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param fileProfileGDS a \code{character} string representing the path and
@@ -1233,16 +1233,16 @@ estimateAllelicFraction <- function(gds, gdsSample, currentProfile, studyID,
 #' @examples
 #'
 #' # TODO
-#' gds <- "TODO"
+#' gdsReference <- "TODO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @export
-addStudy1Kg <- function(gds, fileProfileGDS) {
+addStudy1Kg <- function(gdsReference, fileProfileGDS) {
 
-    ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds, "gds")
+    ## The gdsReference must be an object of class "gds.class"
+    validateGDSClass(gds=gdsReference, "gdsReference")
 
     ## The fileProfileGDS must be a character string and the file must exists
     if(!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
@@ -1261,8 +1261,8 @@ addStudy1Kg <- function(gds, fileProfileGDS) {
 
         ## Extract information about all samples from 1KG that are unrelated
         ## and can be used in the ancestry analysis
-        sample.ref <- read.gdsn(index.gdsn(node=gds, "sample.ref"))
-        sample.id <- read.gdsn(index.gdsn(node=gds,
+        sample.ref <- read.gdsn(index.gdsn(node=gdsReference, "sample.ref"))
+        sample.id <- read.gdsn(index.gdsn(node=gdsReference,
                                         "sample.id"))[which(sample.ref == 1)]
 
         ## Create study information for the 1KG Study
@@ -1837,7 +1837,7 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \link[gdsfmt]{gds.class} (a GDS file),
@@ -1915,7 +1915,7 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
+computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                     dataRef, spRef, studyIDSyn, np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1923,7 +1923,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
                     algorithm="exact", eigen.cnt=32L, missingRate=0.025) {
 
     ## Add parameter validation (not all done)
-    validateComputePoolSyntheticAncestry(referenceGDS=gds, profileGDS=gdsSample,
+    validateComputePoolSyntheticAncestry(gdsReference=gdsReference, profileGDS=gdsSample,
         profileAnaID=sample.ana.id, dataRef=dataRef, spRef=spRef,
         studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
@@ -1949,7 +1949,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
 
-    pedSyn <- prepPedSynthetic1KG(gds=gds, gdsSample=gdsSample,
+    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference, gdsSample=gdsSample,
                             studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
@@ -1970,7 +1970,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -2045,7 +2045,7 @@ computePoolSyntheticAncestry <- function(gds, gdsSample, sample.ana.id,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computeAncestryFromSyntheticFile <- function(gds, gdsSample,
+computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
                             listFiles,
                             sample.ana.id,
                             spRef,
@@ -2069,7 +2069,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
     }
 
     ## Validate input parameters
-    validateComputeAncestryFromSyntheticFile(gds=gds, gdsSample=gdsSample,
+    validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference, gdsSample=gdsSample,
         listFiles=listFiles, sample.ana.id=sample.ana.id, spRef=spRef,
         studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
@@ -2089,7 +2089,7 @@ computeAncestryFromSyntheticFile <- function(gds, gdsSample,
 
     ## Extract the sample super-population information from the 1KG GDS file
     ## for profiles associated to the specified study in the GDS Sample file
-    pedSyn <- prepPedSynthetic1KG(gds=gds, gdsSample=gdsSample,
+    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference, gdsSample=gdsSample,
         studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(matKNN.All=KNN.sample.syn,
@@ -2327,18 +2327,18 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
     for(i in seq_len(length(listProfiles))) {
-        pruningSample(gds=gds1KG, currentProfile=listProfiles[i],
+        pruningSample(gdsReference=gds1KG, currentProfile=listProfiles[i],
                     studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS)
         file.GDSProfile <- file.path(pathProfileGDS,
                                         paste0(listProfiles[i], ".gds"))
-        add1KG2SampleGDS(gds=gds1KG, fileProfileGDS=file.GDSProfile,
+        add1KG2SampleGDS(gdsReference=gds1KG, fileProfileGDS=file.GDSProfile,
                             currentProfile=listProfiles[i],
                             studyID=studyDF$study.id)
         addStudy1Kg(gds1KG, file.GDSProfile)
 
         gdsProfile <- openfn.gds(file.GDSProfile, readonly=FALSE)
 
-        estimateAllelicFraction(gds=gds1KG, gdsSample=gdsProfile,
+        estimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsProfile,
                                     currentProfile=listProfiles[i],
                                     studyID=studyDF$study.id, chrInfo=chrInfo)
         closefn.gds(gdsProfile)
@@ -2348,7 +2348,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                         data.id.profile=listProfiles[i],
                         studyDF=studyDF.syn, prefId="1")
 
-        resG <- syntheticGeno(gds=gds1KG, gdsRefAnnot=gdsAnnot1KG,
+        resG <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsAnnot1KG,
                                 fileProfileGDS=file.GDSProfile,
                                 data.id.profile=listProfiles[i],
                                 listSampleRef=listProfileRef, prefId="1")
@@ -2393,7 +2393,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         ## List of the KNN result files from PCA on synthetic data
         listFiles <- file.path(file.path(PATHKNN) , listFilesName)
 
-        resCall <- computeAncestryFromSyntheticFile(gds=gds1KG,
+        resCall <- computeAncestryFromSyntheticFile(gdsReference=gds1KG,
                         gdsSample=gdsProfile, listFiles=listFiles,
                         sample.ana.id=listProfiles[i], spRef=spRef,
                         studyIDSyn=studyDF.syn$study.id, np=1L)

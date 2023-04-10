@@ -6,7 +6,7 @@
 \title{Validate input parameters for estimateAllelicFraction() function}
 \usage{
 validateEstimateAllelicFraction(
-  gds,
+  gdsReference,
   gdsSample,
   currentProfile,
   studyID,
@@ -24,7 +24,7 @@ validateEstimateAllelicFraction(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
@@ -101,7 +101,7 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     156040895L, 57227415L,  16569L)
 
 ## The validatiion should be successful
-RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
+RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsSample,
     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,

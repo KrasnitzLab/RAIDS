@@ -6,10 +6,10 @@
 \title{Add the genotype information for the list of pruned SNVs
 into the Profile GDS file}
 \usage{
-add1KG2SampleGDS(gds, fileProfileGDS, currentProfile, studyID)
+add1KG2SampleGDS(gdsReference, fileProfileGDS, currentProfile, studyID)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{fileProfileGDS}{a \code{character} string representing the path and
@@ -57,7 +57,7 @@ gds1KG <- snpgdsOpen(fileGDS)
 
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
-add1KG2SampleGDS(gds=gds1KG,
+add1KG2SampleGDS(gdsReference=gds1KG,
          fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
          currentProfile=c("ex1"),
          studyID=studyDF$study.id)

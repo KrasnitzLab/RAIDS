@@ -20,7 +20,7 @@ test_that("validateSyntheticGeno() must return expected results when all input a
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    result1 <- RAIDS:::validateSyntheticGeno(gds=gdsF, gdsRefAnnot=gdsF,
+    result1 <- RAIDS:::validateSyntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
             fileProfileGDS=fileGDS, data.id.profile="TCGA_001",
             listSampleRef=c("Sample01", "Sample02"), nbSim=1L,
             prefId="TEST", pRecomb=0.2, minProb=0.3, seqError=0.2)
@@ -67,7 +67,7 @@ test_that(paste0("prepPedSynthetic1KG() must return expected results"), {
     add.gdsn(node=gdsSample, name="study.annot", val=dataF)
     sync.gds(gdsSample)
 
-    result1 <- RAIDS:::prepPedSynthetic1KG(gds=gds1KG,  gdsSample=gdsSample,
+    result1 <- RAIDS:::prepPedSynthetic1KG(gdsReference=gds1KG,  gdsSample=gdsSample,
                                    studyID="TCGA.Synthetic", popName="superPop")
 
     expected1 <- data.frame(data.id=c("HG00101.Synthetic.01", "HG00101.Synthetic.02",

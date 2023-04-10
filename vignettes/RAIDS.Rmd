@@ -473,7 +473,7 @@ for(i in seq_len(length(listSamples))) {
     ##           Profile GDS file.
     ## pathProfileGDS: All Profile GDS files must be in the same directory 
     ##           sub-step 4. 
-    pruningSample(gds=gds_1KG,
+    pruningSample(gdsReference=gds_1KG,
                     currentProfile=listSamples[i],
                     studyID=studyDF$study.id,
                     pathProfileGDS=pathProfileGDS)
@@ -485,7 +485,7 @@ for(i in seq_len(length(listSamples))) {
     ## Add the genotype information for the list of pruned SNVs 
     ## into the Profile GDS file
     ## The genotype information is extracted from the 1KG GDS file
-    add1KG2SampleGDS(gds = gds_1KG, fileProfileGDS = file.GDSSample,
+    add1KG2SampleGDS(gdsReference = gds_1KG, fileProfileGDS = file.GDSSample,
                         currentProfile = listSamples[i],
                         studyID = studyDF$study.id)
 
@@ -612,7 +612,7 @@ gdsSample <- openfn.gds(file.GDSSample, readonly = FALSE)
 ## such as the 1KG SNV Annotation GDS file and
 ## the block.id should be as listed in the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
-estimateAllelicFraction(gds = gds, gdsSample = gdsSample,
+estimateAllelicFraction(gdsReference = gds, gdsSample = gdsSample,
                                         currentProfile = sampleName,
                                         studyID = studyDF$study.id,
                                         chrInfo = chrInfo)
@@ -752,7 +752,7 @@ gds.Annot <- openfn.gds(file.Annot)
 ## The syntheticGeno() function generates the synthetic profiles.
 ## The synthetic profiles are saved in the Sample GDS file
 ####################################################################
-resG <- syntheticGeno(gds = gds,
+resG <- syntheticGeno(gdsReference = gds,
                         gdsRefAnnot = gds.Annot,
                         fileProfileGDS = file.GDSSample,
                         data.id.profile = sampleName,
@@ -939,7 +939,7 @@ for(i in seq_len(length(listSamples))){
     ## Open the Sample GDS file
     gdsSample <- snpgdsOpen(file.GDSSample)
 
-    resCall <- computeAncestryFromSyntheticFile(gds = gds, 
+    resCall <- computeAncestryFromSyntheticFile(gdsReference = gds, 
                                     gdsSample = gdsSample,
                                     listFiles = listFiles,
                                     sample.ana.id = listSamples[i],

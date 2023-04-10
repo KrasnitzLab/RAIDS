@@ -20,7 +20,7 @@ test_that("validatePruningSample() must return expected results when all input a
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    result1 <- RAIDS:::validatePruningSample(gds=gdsF, method="corr",
+    result1 <- RAIDS:::validatePruningSample(gdsReference=gdsF, method="corr",
         currentProfile="test.gds", studyID="TCGA",
         listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
         thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
@@ -101,7 +101,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gdsF,
+    result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gdsF,
                     gdsSample=gdsF, listFiles, sample.ana.id,
                     spRef, studyIDSyn="Synthetic", np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
@@ -182,7 +182,7 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
                         study.desc="Pancreatic study",  study.platform="WES",
                         stringsAsFactors=FALSE)
 
-    result1 <- RAIDS:::validateAdd1KG2SampleGDS(gds=gdsF,
+    result1 <- RAIDS:::validateAdd1KG2SampleGDS(gdsReference=gdsF,
                 gdsProfileFile=fileGDS, currentProfile="Sample01",
                 studyID="Synthetic")
 

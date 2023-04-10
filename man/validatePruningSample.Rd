@@ -6,7 +6,7 @@
 \title{Validate input parameters for pruningSample() function}
 \usage{
 validatePruningSample(
-  gds,
+  gdsReference,
   method,
   currentProfile,
   studyID,
@@ -25,7 +25,7 @@ validatePruningSample(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1 KG GDS file.}
 
 \item{method}{a \code{character} string that represents the method that will
@@ -102,7 +102,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validation should be successful
-RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
+RAIDS:::validatePruningSample(gdsReference=gds1KG, method="corr",
      currentProfile="TGCA_01", studyID="TCGA",
      listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
      thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,

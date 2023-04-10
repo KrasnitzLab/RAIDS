@@ -205,7 +205,7 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
 #' @description The function creates a \code{data.frame} containing the
 #' allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -260,14 +260,14 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAllelicFractionDNA <- function(gds, gdsSample, currentProfile, studyID,
+computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile, studyID,
                                 chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9L, verbose=FALSE) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
-    snp.pos <- getTableSNV(gds, gdsSample, currentProfile, studyID,
+    snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
                             minCov, minProb, eProb)
 
     snp.pos$lap <- rep(-1, nrow(snp.pos))
@@ -285,7 +285,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, currentProfile, studyID,
 
         listChr <- which(snp.pos$snp.chr == chr)
 
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gds=gds, chrInfo=chrInfo,
+        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference, chrInfo=chrInfo,
                                         snp.pos=snp.pos[listChr,], chr=chr)
 
         if (verbose) { message("Step 2 ", Sys.time()) }
@@ -342,7 +342,7 @@ computeAllelicFractionDNA <- function(gds, gdsSample, currentProfile, studyID,
 #' allelic fraction for the pruned SNV dataset specific to a RNA-seq sample.
 #' TODO
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -400,14 +400,14 @@ computeAllelicFractionDNA <- function(gds, gdsSample, currentProfile, studyID,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
+computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
                     currentProfile, studyID, block.id, chrInfo, minCov=10L,
                     minProb=0.999, eProb=0.001, cutOffLOH=-5,
                     cutOffAR=3, verbose=FALSE) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
-    snp.pos <- getTableSNV(gds, gdsSample, currentProfile, studyID,
+    snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
                                 minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
@@ -424,7 +424,7 @@ computeAllelicFractionRNA <- function(gds, gdsSample, gdsRefAnnot,
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
     snp.pos$imbAR <- rep(-1, nrow(snp.pos))
-    snp.pos$freq <- read.gdsn(index.gdsn(gds, "snp.AF"))[snp.pos$snp.index]
+    snp.pos$freq <- read.gdsn(index.gdsn(gdsReference, "snp.AF"))[snp.pos$snp.index]
     # for each chromosome
     listBlock <- list()
     for(chr in unique(snp.pos$snp.chr)) {

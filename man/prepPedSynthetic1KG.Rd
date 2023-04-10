@@ -6,10 +6,10 @@
 \title{Extract the sample information from the 1KG GDS file for a list
 of profiles associated to a specific study in the GDS Sample file}
 \usage{
-prepPedSynthetic1KG(gds, gdsSample, studyID, popName)
+prepPedSynthetic1KG(gdsReference, gdsSample, studyID, popName)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.}
 
 \item{gdsSample}{an object of class
@@ -66,7 +66,7 @@ gdsSample <- openfn.gds(gds_sample_file)
 ## returned data.frame
 ## This function enables to extract the super-population associated to the
 ## 1KG samples that has been used to create the synthetic profiles
-RAIDS:::prepPedSynthetic1KG(gds=gds1KG, gdsSample=gdsSample,
+RAIDS:::prepPedSynthetic1KG(gdsReference=gds1KG, gdsSample=gdsSample,
     studyID="TCGA.Synthetic", popName="superPop")
 
 ## The GDS files must be closed

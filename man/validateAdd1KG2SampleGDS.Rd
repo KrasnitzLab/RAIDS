@@ -5,10 +5,10 @@
 \alias{validateAdd1KG2SampleGDS}
 \title{Validate input parameters for add1KG2SampleGDS() function}
 \usage{
-validateAdd1KG2SampleGDS(gds, gdsProfileFile, currentProfile, studyID)
+validateAdd1KG2SampleGDS(gdsReference, gdsProfileFile, currentProfile, studyID)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{gdsProfileFile}{a \code{character} string representing the path and
@@ -36,7 +36,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validatiion should be successful
-RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
+RAIDS:::validateAdd1KG2SampleGDS(gdsReference=gds1KG,
     gdsProfileFile=file.path(dataDir, "GDS_Sample_with_study_demo.gds"),
     currentProfile="Sample01", studyID="Synthetic")
 

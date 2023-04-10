@@ -3,7 +3,7 @@
 #' @description This function validates the input parameters for the
 #' \code{\link{pruningSample}} function.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1 KG GDS file.
 #'
 #' @param method a \code{character} string that represents the method that will
@@ -75,7 +75,7 @@
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
-#' RAIDS:::validatePruningSample(gds=gds1KG, method="corr",
+#' RAIDS:::validatePruningSample(gdsReference=gds1KG, method="corr",
 #'      currentProfile="TGCA_01", studyID="TCGA",
 #'      listSNP=c("sr10103", "sr10202"), slideWindowMaxBP=1000L,
 #'      thresholdLD=0.008, np=1L, verbose=TRUE, chr=1,
@@ -89,13 +89,13 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePruningSample <- function(gds, method, currentProfile, studyID,
+validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
                         listSNP, slideWindowMaxBP, thresholdLD, np, verbose,
                         chr, superPopMinAF, keepPrunedGDS, pathProfileGDS,
                         keepFile, pathPrunedGDS, outPrefix) {
 
     ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, name="gds")
+    validateGDSClass(gds=gdsReference, name="gdsReference")
 
     ## The parameter currentProfile must be a character string
     if (!(is.character(currentProfile))) {
@@ -294,7 +294,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @description This function validates the input parameters for the
 #' \code{\link{estimateAllelicFraction}} function.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -366,7 +366,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #'     156040895L, 57227415L,  16569L)
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateEstimateAllelicFraction(gds=gds1KG, gdsSample=gdsSample,
+#' RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsSample,
 #'     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
 #'     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
 #'     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
@@ -380,12 +380,12 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateEstimateAllelicFraction <- function(gds, gdsSample, currentProfile,
+validateEstimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
         studyID, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
         cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, block.id) {
 
     ## The gds and gdsSample must be objects of class "gds.class"
-    validateGDSClass(gds, "gds")
+    validateGDSClass(gdsReference, "gdsReference")
     validateGDSClass(gdsSample, "gdsSample")
 
     ## The currentProfile must be a character string
@@ -563,7 +563,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @description This function validates the input parameters for the
 #' \code{\link{createStudy2GDS1KG}} function.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -634,7 +634,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateComputeAncestryFromSyntheticFile(gds=gds1KG,
+#' RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
 #'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
 #'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
@@ -648,13 +648,13 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputeAncestryFromSyntheticFile <- function(gds, gdsSample,
+validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
                 listFiles, sample.ana.id, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
                 algorithm, eigen.cnt, missing.rate) {
 
-    ## The gds and gdsSample must be objects of class "gds.class"
-    validateGDSClass(gds, "gds")
+    ## The gdsReference and gdsSample must be objects of class "gds.class"
+    validateGDSClass(gdsReference, "gdsReference")
     validateGDSClass(gdsSample, "gdsSample")
 
     ## The parameter np must be a single positive integer
@@ -904,7 +904,7 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
 #' @description This function validates the input parameters for the
 #' \code{\link{add1KG2SampleGDS}} function.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsProfileFile a \code{character} string representing the path and
@@ -927,7 +927,7 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateAdd1KG2SampleGDS(gds=gds1KG,
+#' RAIDS:::validateAdd1KG2SampleGDS(gdsReference=gds1KG,
 #'     gdsProfileFile=file.path(dataDir, "GDS_Sample_with_study_demo.gds"),
 #'     currentProfile="Sample01", studyID="Synthetic")
 #'
@@ -937,11 +937,11 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-validateAdd1KG2SampleGDS <- function(gds, gdsProfileFile, currentProfile,
+validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfile,
                                         studyID) {
 
     ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, name="gds")
+    validateGDSClass(gds=gdsReference, name="gdsReference")
 
     ## The gdsProfileFile must be a character string and the file must exists
     if(!(is.character(gdsProfileFile) && (file.exists(gdsProfileFile)))) {
@@ -1255,7 +1255,7 @@ validateStudyDataFrameParameter <- function(studyDF) {
 #' \code{\link{computePoolSyntheticAncestry}} function.
 #' When a parameter is not as expected, an error message is generated.
 #'
-#' @param referenceGDS an object of class \link[gdsfmt]{gds.class}
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class}
 #' (a GDS file), the opened 1KG GDS file.
 #'
 #' @param profileGDS an object of class \link[gdsfmt]{gds.class} (a GDS file),
@@ -1327,7 +1327,7 @@ validateStudyDataFrameParameter <- function(studyDF) {
 #' dataRef <- data.frame(test=c(1,2), stringAsFactro=FALSE)
 #'
 #' ## The function returns 0L when all parameters are valid
-#' RAIDS:::validateComputePoolSyntheticAncestry(referenceGDS=gds1KG,
+#' RAIDS:::validateComputePoolSyntheticAncestry(gdsReference=gds1KG,
 #'     profileGDS=gdsProfile, profileAnaID="SampleID",
 #'     dataRef=dataRef, spRef=NULL,  studyIDSyn="MyStudy",
 #'     np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
@@ -1343,13 +1343,13 @@ validateStudyDataFrameParameter <- function(studyDF) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePoolSyntheticAncestry <- function(referenceGDS, profileGDS,
+validateComputePoolSyntheticAncestry <- function(gdsReference, profileGDS,
     profileAnaID, dataRef, spRef, studyIDSyn, np,
     listCatPop, fieldPopIn1KG, fieldPopInfAnc,
     kList, pcaList, algorithm, eigenCnt, missingRate) {
 
     ## The gds and profileGDS must be objects of class "gds.class"
-    validateGDSClass(gds=referenceGDS, "referenceGDS")
+    validateGDSClass(gds=gdsReference, "gdsReference")
     validateGDSClass(gds=profileGDS, "profileGDS")
 
     ## The dataRef must be an data.frame object

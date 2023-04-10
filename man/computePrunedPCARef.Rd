@@ -6,10 +6,10 @@
 \title{Compute principal component axes (PCA) on pruned SNV with the
 reference samples}
 \usage{
-computePrunedPCARef(gds, listRef, np = 1L, verbose = FALSE)
+computePrunedPCARef(gdsProfile, listRef, np = 1L, verbose = FALSE)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsProfile}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
 GDS file.}
 

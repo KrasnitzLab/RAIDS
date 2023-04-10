@@ -7,7 +7,7 @@
 function}
 \usage{
 validateComputePoolSyntheticAncestry(
-  referenceGDS,
+  gdsReference,
   profileGDS,
   profileAnaID,
   dataRef,
@@ -25,7 +25,7 @@ validateComputePoolSyntheticAncestry(
 )
 }
 \arguments{
-\item{referenceGDS}{an object of class \link[gdsfmt]{gds.class}
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class}
 (a GDS file), the opened 1KG GDS file.}
 
 \item{profileGDS}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
@@ -102,7 +102,7 @@ gdsProfile <- openfn.gds(fileProfileGDS)
 dataRef <- data.frame(test=c(1,2), stringAsFactro=FALSE)
 
 ## The function returns 0L when all parameters are valid
-RAIDS:::validateComputePoolSyntheticAncestry(referenceGDS=gds1KG,
+RAIDS:::validateComputePoolSyntheticAncestry(gdsReference=gds1KG,
     profileGDS=gdsProfile, profileAnaID="SampleID",
     dataRef=dataRef, spRef=NULL,  studyIDSyn="MyStudy",
     np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),

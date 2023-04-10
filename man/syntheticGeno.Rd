@@ -7,7 +7,7 @@
 reference sample combination and add them to the GDS Sample file}
 \usage{
 syntheticGeno(
-  gds,
+  gdsReference,
   gdsRefAnnot,
   fileProfileGDS,
   data.id.profile,
@@ -20,7 +20,7 @@ syntheticGeno(
 )
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}

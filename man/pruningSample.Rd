@@ -7,7 +7,7 @@
 information from the 1KG GDS file and a linkage disequilibrium analysis}
 \usage{
 pruningSample(
-  gds,
+  gdsReference,
   method = c("corr", "r", "dprime", "composite"),
   currentProfile,
   studyID,
@@ -26,7 +26,7 @@ pruningSample(
 )
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 1 KG GDS file (reference data set).}
 
 \item{method}{a \code{character} string that represents the method that will
@@ -142,7 +142,7 @@ gds1KG <- snpgdsOpen(fileGDS)
 
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
-pruningSample(gds=gds1KG, currentProfile=c("ex1"),
+pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)

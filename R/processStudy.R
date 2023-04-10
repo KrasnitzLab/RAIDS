@@ -311,8 +311,8 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' SNVs that are passed to the \code{\link[SNPRelate]{snpgdsLDpruning}}()
 #' function can be specified by the user.
 #'
-#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1 KG GDS file (reference data set).
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
+#' file), the 1 KG GDS file (reference data set).
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
@@ -439,7 +439,8 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-pruningSample <- function(gdsReference, method=c("corr", "r", "dprime", "composite"),
+pruningSample <- function(gdsReference,
+                            method=c("corr", "r", "dprime", "composite"),
                             currentProfile,
                             studyID,
                             listSNP=NULL,
@@ -456,12 +457,12 @@ pruningSample <- function(gdsReference, method=c("corr", "r", "dprime", "composi
                             outPrefix="pruned") {
 
     ## Validate input parameters
-    validatePruningSample(gdsReference=gdsReference, method=method, currentProfile=currentProfile,
-            studyID=studyID, listSNP=listSNP, slideWindowMaxBP=slideWindowMaxBP,
-            thresholdLD=thresholdLD, np=np, verbose=verbose, chr=chr,
-            superPopMinAF=superPopMinAF, keepPrunedGDS=keepPrunedGDS,
-            pathProfileGDS=pathProfileGDS, keepFile=keepFile,
-            pathPrunedGDS=pathPrunedGDS, outPrefix=outPrefix)
+    validatePruningSample(gdsReference=gdsReference, method=method,
+        currentProfile=currentProfile, studyID=studyID, listSNP=listSNP,
+        slideWindowMaxBP=slideWindowMaxBP, thresholdLD=thresholdLD, np=np,
+        verbose=verbose, chr=chr, superPopMinAF=superPopMinAF,
+        keepPrunedGDS=keepPrunedGDS, pathProfileGDS=pathProfileGDS,
+        keepFile=keepFile, pathPrunedGDS=pathPrunedGDS, outPrefix=outPrefix)
 
     ## Matches a character method against a table of candidate values
     method <- match.arg(method, several.ok=FALSE)
@@ -520,7 +521,8 @@ pruningSample <- function(gdsReference, method=c("corr", "r", "dprime", "composi
     if(!is.null(superPopMinAF)) {
         listTMP <- NULL
         for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
-            snpAF <- read.gdsn(index.gdsn(gdsReference, paste0("snp.", sp, "_AF")))
+            snpAF <- read.gdsn(index.gdsn(gdsReference,
+                                            paste0("snp.", sp, "_AF")))
             listTMP <- union(listTMP,
                 which(snpAF >= superPopMinAF & snpAF <= 1 - superPopMinAF))
         }
@@ -537,7 +539,8 @@ pruningSample <- function(gdsReference, method=c("corr", "r", "dprime", "composi
     listSamples <- sample.id[which(sample.ref == 1)]
 
     ## Use a LD analysis to generate a subset of SNPs
-    snpset <- runLDPruning(gds=gdsReference, method=method, listSamples=listSamples,
+    snpset <- runLDPruning(gds=gdsReference, method=method,
+                listSamples=listSamples,
                 listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
                 thresholdLD=thresholdLD, np=np, verbose=verbose)
 
@@ -637,8 +640,9 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
                                 studyID) {
 
     ## Validate inputs
-    validateAdd1KG2SampleGDS(gdsReference=gdsReference, gdsProfileFile=fileProfileGDS,
-            currentProfile=currentProfile, studyID=studyID)
+    validateAdd1KG2SampleGDS(gdsReference=gdsReference,
+        gdsProfileFile=fileProfileGDS, currentProfile=currentProfile,
+        studyID=studyID)
 
     ## Open Profile GDS file
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
@@ -653,8 +657,10 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
     listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref")) == 1)
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
 
-    snp.chromosome <- read.gdsn(index.gdsn(gdsReference,"snp.chromosome"))[listSNP]
-    snp.position <-  read.gdsn(index.gdsn(gdsReference,"snp.position"))[listSNP]
+    snp.chromosome <- read.gdsn(index.gdsn(gdsReference,
+                                            "snp.chromosome"))[listSNP]
+    snp.position <-  read.gdsn(index.gdsn(gdsReference,
+                                            "snp.position"))[listSNP]
 
     add.gdsn(gdsSample, "sample.id", c(sample.id[listRef], currentProfile))
 
@@ -742,8 +748,8 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @export
-addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS, pathGeno,
-                                            fileLSNP, verbose=FALSE) {
+addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS,
+                                    pathGeno, fileLSNP, verbose=FALSE) {
 
     ## The gdsReference must be an object of class "gds.class"
     validateGDSClass(gds=gdsReference, name="gdsReference")
@@ -1155,17 +1161,17 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile, studyID,
-    chrInfo, studyType=c("DNA", "RNA"), minCov=10L, minProb=0.999,
+estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
+    studyID, chrInfo, studyType=c("DNA", "RNA"), minCov=10L, minProb=0.999,
     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
     gdsRefAnnot=NULL, block.id=NULL) {
 
     ## Validate input parameters
-    validateEstimateAllelicFraction(gdsReference=gdsReference, gdsSample=gdsSample,
-        currentProfile=currentProfile, studyID=studyID, chrInfo=chrInfo,
-        studyType=studyType, minCov=minCov, minProb=minProb, eProb=eProb,
-        cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore, wAR=wAR,
-        cutOffAR=cutOffAR, gdsRefAnnot=gdsRefAnnot, block.id=block.id)
+    validateEstimateAllelicFraction(gdsReference=gdsReference,
+        gdsSample=gdsSample, currentProfile=currentProfile, studyID=studyID,
+        chrInfo=chrInfo, studyType=studyType, minCov=minCov, minProb=minProb,
+        eProb=eProb, cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore,
+        wAR=wAR, cutOffAR=cutOffAR, gdsRefAnnot=gdsRefAnnot, block.id=block.id)
 
     ## Set study type
     studyType <- match.arg(studyType)
@@ -1174,14 +1180,16 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile, stu
 
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
-        snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference, gdsSample=gdsSample,
+        snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference,
+                        gdsSample=gdsSample,
                         currentProfile=currentProfile, studyID=studyID,
                         chrInfo=chrInfo, minCov=minCov, minProb=minProb,
                         eProb=eProb, cutOffLOH=cutOffLOH,
                         cutOffHomoScore=cutOffHomoScore, wAR=wAR)
 
     } else if(studyType == "RNA") {
-        snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference, gdsSample=gdsSample,
+        snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference,
+                        gdsSample=gdsSample,
                         gdsRefAnnot=gdsRefAnnot, currentProfile=currentProfile,
                         studyID=studyID, block.id=block.id, chrInfo=chrInfo,
                         minCov=minCov, minProb=minProb, eProb=eProb,

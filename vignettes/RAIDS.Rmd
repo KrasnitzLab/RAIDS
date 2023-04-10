@@ -436,7 +436,7 @@ list.files(path=pathProfileGDS)
 ### Sub-Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
 The initial list of 1KG SNVs is pruned, using linkage disequilibrium analysis, 
-and a sample-specific subset of SNVs is retained for each sample. This 
+and a profile-specific subset of SNVs is retained for each sample. This 
 information is added to the **Sample GDS file**.
 
 The __pruningSample()__ function requires the **1KG GDS file** as input. It 
@@ -457,14 +457,14 @@ library(RAIDS)
 ##############################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName.GDS.1KG <- "ex1kg.gds"
-file.GDS <- file.path(path1KG, fileName.GDS.1KG)
+fileName1KG <- "ex1kg.gds"
+fileGDS <- file.path(path1KG, fileName1KG)
 
 ## Open the 1KG GDS file (demo version)
-gds_1KG <- snpgdsOpen(file.GDS)
+gds1KG <- snpgdsOpen(fileGDS)
 
 ##############################################################
-## The pruning function is called with one sample as input at the time
+## The pruning function is called with one profile as input at the time
 ##############################################################
 for(i in seq_len(length(listSamples))) {
     ## Compute the SNV pruned subset
@@ -473,29 +473,29 @@ for(i in seq_len(length(listSamples))) {
     ##           Profile GDS file.
     ## pathProfileGDS: All Profile GDS files must be in the same directory 
     ##           sub-step 4. 
-    pruningSample(gdsReference=gds_1KG,
+    pruningSample(gdsReference=gds1KG,
                     currentProfile=listSamples[i],
                     studyID=studyDF$study.id,
                     pathProfileGDS=pathProfileGDS)
     
-    ## Profile GDS file for the current sample
+    ## Profile GDS file for the current profile
     ## The file name corresponds to the path + profile identifier + ".gds"
-    file.GDSSample <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
+    fileGDSProfile <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
     ## Add the genotype information for the list of pruned SNVs 
     ## into the Profile GDS file
     ## The genotype information is extracted from the 1KG GDS file
-    add1KG2SampleGDS(gdsReference=gds_1KG, fileProfileGDS=file.GDSSample,
+    add1KG2SampleGDS(gdsReference=gds1KG, fileProfileGDS=fileGDSProfile,
                         currentProfile=listSamples[i],
                         studyID=studyDF$study.id)
 
     ## Add annotation from the 1KG GDS file to the Sample GDS file
     ## This is required.
-    addStudy1Kg(gds_1KG, file.GDSSample)
+    addStudy1Kg(gds1KG, fileGDSProfile)
 }
     
 ## Close the 1KG GDS file (it is important to always close the GDS files)
-closefn.gds(gds_1KG)
+closefn.gds(gds1KG)
 ```
 
 <br>

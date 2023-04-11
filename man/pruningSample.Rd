@@ -26,8 +26,8 @@ pruningSample(
 )
 }
 \arguments{
-\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1 KG GDS file (reference data set).}
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS
+file), the 1 KG GDS file (reference data set).}
 
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the

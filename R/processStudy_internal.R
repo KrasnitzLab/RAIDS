@@ -719,7 +719,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 #' threshold.
 #'
@@ -737,7 +737,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
 #'     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-#'     missing.rate=0.02)
+#'     missingRate=0.02)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gdsSample)
@@ -748,7 +748,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' @keywords internal
 validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
                                             np, algorithm,
-                                            eigen.cnt, missing.rate) {
+                                            eigen.cnt, missingRate) {
 
     ## The gdsSample must be object of class "gds.class"
     validateGDSClass(gdsSample, "gdsSample")
@@ -779,10 +779,10 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
     }
 
     ## The missing.rate must be a positive numeric between zero and one or NaN
-    if (!is.nan(missing.rate)) {
-        if (!(isSingleNumber(missing.rate) && (missing.rate >= 0.0) &&
-                (missing.rate <= 1.0))) {
-            stop("The \'missing.rate\' must be a single numeric positive ",
+    if (!is.nan(missingRate)) {
+        if (!(isSingleNumber(missingRate) && (missingRate >= 0.0) &&
+                (missingRate <= 1.0))) {
+            stop("The \'missingRate\' must be a single numeric positive ",
                     "value between 0 and 1 or NaN.")
         }
     }

@@ -303,7 +303,7 @@ in R (with _read.csv()_ or else).
 ## Location of the Sample PED RDS file to be created
 ##############################################################
 dataDir <- system.file("extdata", package="RAIDS")
-demo_PED_File <- file.path(dataDir, "Demo_PED.RDS")
+demoPEDFile <- file.path(dataDir, "Demo_PED.RDS")
 
 ##############################################################
 ## Create a data frame with the mandatory columns
@@ -324,10 +324,10 @@ rownames(pedDF) <- pedDF$Name.ID
 ##############################################################
 ## Save the data frame into a RDS file
 ##############################################################
-saveRDS(object=pedDF, file=demo_PED_File)
+saveRDS(object=pedDF, file=demoPEDFile)
 
 ## Remove RDS file (created for demo purpose)
-rm(demo_PED_File)
+rm(demoPEDFile)
 ```
 
 <br>
@@ -370,8 +370,8 @@ library(RAIDS)
 dataDir <- system.file("extdata", package="RAIDS")
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName.GDS.1KG <- "ex1kg.gds"
-file.GDS <- file.path(path1KG, fileName.GDS.1KG)
+fileName1KG <- "ex1kg.gds"
+file.GDS <- file.path(path1KG, fileName1KG)
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need  
@@ -569,10 +569,10 @@ library(RAIDS)
 ###################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName.GDS.1KG <- "ex1kg.gds"
+fileName1KG <- "ex1kg.gds"
 fileName.GDS.Annot <- "exAnnot1kg.gds"
 
-file.GDS <- file.path(path1KG, fileName.GDS.1KG)
+file.GDS <- file.path(path1KG, fileName1KG)
 file.Annot <- file.path(path1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file

@@ -24,8 +24,8 @@ computePoolSyntheticAncestry(
 )
 }
 \arguments{
-\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-opened Reference GDS file.}
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS
+file), the opened Reference GDS file.}
 
 \item{gdsSample}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
 an opened Profile GDS file.}

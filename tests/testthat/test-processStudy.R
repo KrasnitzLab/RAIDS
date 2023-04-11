@@ -850,20 +850,37 @@ test_that("computePCARefSample() must return error when eigen.cnt is a string", 
 })
 
 
-test_that("computePCARefSample() must return error when missing.rate is negative value", {
+test_that("computePCARefSample() must return error when missingRate is negative value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- paste0("The \'missing.rate\' must be a single numeric ",
+    error_message <- paste0("The \'missingRate\' must be a single numeric ",
                                 "positive value between 0 and 1 or NaN.")
 
     expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
         studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
-        missing.rate=-0.02), error_message, fixed=TRUE)
+        missingRate=-0.02), error_message, fixed=TRUE)
 })
+
+
+test_that("computePCARefSample() must return error when algorithm is not in the list", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    error_message <- paste0("\'arg\' should be one of \"exact\", ",
+                                        "\"randomized\"")
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+        studyIDRef="Ref.1KG", np=1L, algorithm="TITI", eigen.cnt=32L,
+        missingRate=0.02), error_message, fixed=TRUE)
+})
+
 
 
 

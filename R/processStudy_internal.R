@@ -822,6 +822,10 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' @param pathProfileGDS a \code{character} string representing the path to
 #' the directory where the GDS Sample files will be created.
 #'
+#' @param genoSource a \code{character} string with two possible values:
+#' 'snp-pileup' or 'generic'. It specifies if the genotype files
+#' are generate by snp-pileup (Facets) or generic format csv.
+#'
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed.
 #'
@@ -847,7 +851,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
 #'     fileNamePED=ped, fileNameGDS=gds1KG,
 #'     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-#'     pathProfileGDS=dataDir, verbose=TRUE)
+#'     pathProfileGDS=dataDir, genoSource="snp-pileup", verbose=TRUE)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -856,7 +860,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' @keywords internal
 validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
                                 batch, studyDF, listSamples, pathProfileGDS,
-                                verbose) {
+                                genoSource, verbose) {
 
     ## The pathGeno must be a character string and the path must exists
     if (!(is.character(pathGeno) && (dir.exists(pathGeno)))) {
@@ -891,6 +895,11 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
     if (!(is.character(listSamples) || is.null(listSamples))) {
         stop("The \'listSamples\' must be a vector ",
                 "of character strings (1 entry or more) or NULL.")
+    }
+
+    ## The genoSource must be a character string
+    if (!is.character(genoSource)) {
+        stop("The \'genoSource\' parameter must be a character string.")
     }
 
     ## The verbose parameter must be a logical

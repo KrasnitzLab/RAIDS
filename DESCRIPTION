@@ -35,7 +35,8 @@ Imports: S4Vectors,
     class,
     pROC,
     IRanges,
-    AnnotationFilter
+    AnnotationFilter,
+    rlang
 Suggests: testthat,
     knitr,
     rmarkdown,

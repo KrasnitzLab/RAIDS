@@ -1246,7 +1246,7 @@ validateStudyDataFrameParameter <- function(studyDF) {
     ## The study data.frame must have the mandatory columns
     if (!(is.data.frame(studyDF) &&
             all(c("study.id", "study.desc", "study.platform")
-              %in% colnames(studyDF)))) {
+                                    %in% colnames(studyDF)))) {
         stop("The study data frame \'studyDF\' is incomplete. ",
             "One or more mandatory columns are missing. The mandatory ",
             "columns are: \'study.id\', \'study.desc\', \'study.platform\'.")

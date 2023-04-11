@@ -1256,8 +1256,63 @@ validateStudyDataFrameParameter <- function(studyDF) {
 }
 
 
+#' @title Validate the parameters for the addStudy1Kg() function
+#'
+#' @description The function validates the input parameters for the
+#' \code{\link{addStudy1Kg}} function. When a parameter is not as
+#' expected, an error message is generated.
+#'
+#' @param gdsReference an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#'
+#' @param fileProfileGDS a \code{character} string representing the path and
+#' file name of the GDS Sample file. The GDS Sample file must exist.
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#' fileReferenceGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' gds1KG <- snpgdsOpen(fileReferenceGDS)
+#'
+#' ## Path to demo Profile GDS file
+#' fileProfileGDS  <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+#'
+#' ## Returns OL when all parameters are valid
+#' RAIDS:::validateAddStudy1Kg(gdsReference=gds1KG,
+#'     fileProfileGDS=fileProfileGDS, verbose=TRUE)
+#'
+#' ## All GDS file must be closed
+#' closefn.gds(gdsfile=gds1KG)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 
-#' @title Validate the parameters of the computePoolSyntheticAncestry ()
+    ## The gdsReference must be an object of class "gds.class"
+    validateGDSClass(gds=gdsReference, "gdsReference")
+
+    ## The fileProfileGDS must be a character string and the file must exists
+    if(!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
+        stop("The \'fileProfileGDS\' must be a character string representing ",
+                "the GDS Sample file. The file must exist.")
+    }
+
+    ## Validate that verbose is a logical
+    validateLogical(logical=verbose, name="verbose")
+
+    return(0L)
+}
+
+
+#' @title Validate the input parameters for computePoolSyntheticAncestry()
 #' function
 #'
 #' @description The function validates the input parameters for the

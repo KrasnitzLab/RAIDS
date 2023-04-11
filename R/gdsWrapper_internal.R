@@ -439,7 +439,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 
             listSampleGDS <- addStudyGDSSample(gdsSample, pedDF=pedStudy,
                                 batch=batch, listSamples=c(listSamples[i]),
-                                studyDF=studyDF)
+                                studyDF=studyDF, verbose=verbose)
 
             listCount <- table(matAll$count[matAll$count >= minCov])
             cutOffA <-
@@ -514,6 +514,180 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 }
 
 
+#' @title Add information related to a specific study and specific samples
+#' into a GDS Sample file
+#'
+#' @description This function add entries related to 1) a specific study and
+#' 2) specific samples into a GDS Sample file.
+#' The study information is appended to the GDS Sample file "study.list" node
+#' when the node is already present in the file. Otherwise, the node is
+#' created and then, the information is added.
+#' The sample information for all selected samples is appended to the GDS
+#' Sample file "study.annot" node
+#' when the node is already present in the file. Otherwise, the node is
+#' created and then, the information is added.
+#'
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
+#'
+#' @param pedDF a \code{data.frame} with the sample information. The
+#' \code{data.frame} must have the columns:
+#' "Name.ID", "Case.ID", "Sample.Type", "Diagnosis" and "Source".
+#' The unique sample identifier of the \code{data.frame} is the "Name.ID"
+#' column and the row names of the \code{data.frame} must be the "Name.ID"
+#' values.
+#'
+#' @param batch a \code{integer} corresponding the batch associated to the
+#' study.
+#'
+#' @param listSamples a \code{vector} of \code{character} string representing
+#' the samples (samples identifiers) that are saved into the GDS. All the
+#' samples must be present in the 'pdeDF' \code{data.frame}.
+#' If \code{NULL}, all samples present in the \code{pedDF} are used.
+#'
+#' @param studyDF a \code{data.frame} with at least the 3 columns: "study.id",
+#' "study.desc" and "study.platform". The three columns are in character
+#' string format (no factor).
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
+#' @return a \code{vector} of \code{character} strings representing the sample
+#' identifiers that have been saved in the GDS Sample file.
+#'
+#' @examples
+#'
+#' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_11.gds")
+#'
+#' ## Create and open the GDS file
+#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create a PED data frame with sample information
+#' ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
+#'     Case.ID=c("1KG_sample_01", "1KG_sample_02"),
+#'     Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
+#'     Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+#'
+#' ## Create a Study data frame with information about the study
+#' ## All samples are associated to the same study
+#' studyInfo <- data.frame(study.id="Ref.1KG",
+#'     study.desc="Unrelated samples from 1000 Genomes",
+#'     study.platform="GRCh38 1000 genotypes",
+#'     stringsAsFactors=FALSE)
+#'
+#' ## Add the sample information to the GDS Sample file
+#' ## The information for all samples is added (listSamples=NULL)
+#' RAIDS:::addStudyGDSSample(gds=GDS_file_tmp, pedDF=ped1KG, batch=1,
+#'     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+#'
+#' ## Read study information from GDS Sample file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+#'
+#' ## Read sample information from GDS Sample file
+#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn append.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
+                                    verbose) {
+
+    ## This validation is not necessary as the function is internal
+    if(sum(c("study.id", "study.desc", "study.platform") %in%
+                colnames(studyDF)) != 3 ) {
+        stop("The \'studyDF\' data frame is incomplete. ",
+                    "One or more mandatory column is missing.\n")
+    }
+
+    ## Used only the selected samples (all when listSamples == NULL)
+    if(!(is.null(listSamples))) {
+        if(length(listSamples) == length(intersect(listSamples,
+                                                    rownames(pedDF)))) {
+            pedDF <- pedDF[listSamples,]
+        } else {
+            stop("List of samples includes samples not present in ",
+                    "the \'pedDF\' data frame. The sample names must be ",
+                    "present in the \'Name.ID\' column. The row names should",
+                    " be assigned the \'Name.ID\'.")
+        }
+    } else {
+        listSamples <- pedDF$Name.ID
+    }
+
+    ## Create the study data frame that is going to be saved
+    df <- data.frame(study.id=studyDF$study.id,
+                     study.desc=studyDF$study.desc,
+                     study.platform=studyDF$study.platform,
+                     stringsAsFactors=FALSE)
+
+    ## Append study information to "study.list" when node already present
+    ## Otherwise, create node and add study information into it
+    if(! "study.list" %in% ls.gdsn(gds)) {
+
+        ## Create study node and add study information into GDS Sample file
+        add.gdsn(gds, "study.list", df)
+
+        ## Create data frame containing sample information
+        study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
+                                case.id=pedDF[, "Case.ID"],
+                                sample.type=pedDF[, "Sample.Type"],
+                                diagnosis=pedDF[, "Diagnosis"],
+                                source=pedDF[, "Source"],
+                                study.id=rep(studyDF$study.id, nrow(pedDF)),
+                                stringsAsFactors=FALSE)
+
+        ## Create node and add sample information
+        add.gdsn(gds, "study.annot", study.annot)
+
+        if(verbose) { message("study.annot DONE ", Sys.time()) }
+    } else{
+        ## Append study information to existing node
+        append.gdsn(index.gdsn(gds, "study.list/study.id"),
+                        df$study.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.desc"),
+                        df$study.desc, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.list/study.platform"),
+                        df$study.platform, check=TRUE)
+
+        ## Create data frame containing sample information
+        study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
+                            case.id=pedDF[, "Case.ID"],
+                            sample.type=pedDF[, "Sample.Type"],
+                            diagnosis=pedDF[, "Diagnosis"],
+                            source=pedDF[, "Source"],
+                            study.id=rep(studyDF$study.id, nrow(pedDF)),
+                            stringsAsFactors=FALSE)
+
+        ## Append sample information to existing node
+        append.gdsn(index.gdsn(gds, "study.annot/data.id"),
+                        study.annot$data.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/case.id"),
+                        study.annot$case.id, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/sample.type"),
+                        study.annot$sample.type, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/diagnosis"),
+                        study.annot$diagnosis, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/source"),
+                        study.annot$source, check=TRUE)
+        append.gdsn(index.gdsn(gds, "study.annot/study.id"),
+                        study.annot$study.id, check=TRUE)
+
+        if(verbose) { message("study.annot DONE ", Sys.time()) }
+    }
+
+    ## Return the vector of sample identifiers that have been added
+    ## to the GDS Sample file
+    return(pedDF[,"Name.ID"])
+}
 
 
 #' @title Identity-by-descent (IBD) analysis

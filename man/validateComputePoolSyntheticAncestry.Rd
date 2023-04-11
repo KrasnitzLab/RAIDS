@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{validateComputePoolSyntheticAncestry}
 \alias{validateComputePoolSyntheticAncestry}
-\title{Validate the parameters of the computePoolSyntheticAncestry ()
+\title{Validate the input parameters for computePoolSyntheticAncestry()
 function}
 \usage{
 validateComputePoolSyntheticAncestry(

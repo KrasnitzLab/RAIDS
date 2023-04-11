@@ -984,12 +984,12 @@ test_that("addStudy1Kg() must return expected results", {
     closefn.gds(GDS_file_Sample)
     withr::defer((unlink(gdsFileSample, force=TRUE)), envir=parent.frame())
 
-    result0 <- addStudy1Kg(gdsReference=GDS_file_tmp_1KG, fileProfileGDS=gdsFileSample)
+    result0 <- addStudy1Kg(gdsReference=GDS_file_tmp_1KG,
+                                fileProfileGDS=gdsFileSample)
 
     gds_sample_file <- openfn.gds(gdsFileSample, readonly=TRUE)
 
     result1 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.list"))
-
     result2 <- read.gdsn(index.gdsn(node=gds_sample_file, path="study.annot"))
 
     ## Close GDS file

@@ -65,7 +65,7 @@ created and then, the information is added.'><!-- mathjax --><script src="https:
     <div class="page-header">
     <h1>Add information related to a specific study and specific samples
 into a GDS Sample file</h1>
-    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper.R" class="external-link"><code>R/gdsWrapper.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper_internal.R" class="external-link"><code>R/gdsWrapper_internal.R</code></a></small>
     <div class="hidden name"><code>addStudyGDSSample.Rd</code></div>
     </div>
 
@@ -82,14 +82,7 @@ created and then, the information is added.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span></span>
-<span>  <span class="va">gds</span>,</span>
-<span>  <span class="va">pedDF</span>,</span>
-<span>  batch <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  listSamples <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">studyDF</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span><span class="va">gds</span>, <span class="va">pedDF</span>, <span class="va">batch</span>, <span class="va">listSamples</span>, <span class="va">studyDF</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -110,15 +103,14 @@ values.</p></dd>
 
 <dt>batch</dt>
 <dd><p>a <code>integer</code> corresponding the batch associated to the
-study. Default: <code>1</code>.</p></dd>
+study.</p></dd>
 
 
 <dt>listSamples</dt>
 <dd><p>a <code>vector</code> of <code>character</code> string representing
 the samples (samples identifiers) that are saved into the GDS. All the
 samples must be present in the 'pdeDF' <code>data.frame</code>.
-If <code>NULL</code>, all samples present in the <code>pedDF</code> are used.
-Default: <code>NULL</code>.</p></dd>
+If <code>NULL</code>, all samples present in the <code>pedDF</code> are used.</p></dd>
 
 
 <dt>studyDF</dt>
@@ -129,7 +121,7 @@ string format (no factor).</p></dd>
 
 <dt>verbose</dt>
 <dd><p>a <code>logical</code> indicating if messages should be printed
-to show how the different steps in the function. Default: <code>TRUE</code>.</p></dd>
+to show how the different steps in the function.</p></dd>
 
 </dl></div>
     <div id="value">

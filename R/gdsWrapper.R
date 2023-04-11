@@ -460,66 +460,6 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 }
 
 
-#' @title Add the pruned.study entry related to the SNV dataset in the
-#' Profile GDS file
-#'
-#' @description This function adds the names of the SNVs into the node called
-#' "pruned.study" in GDS
-#' Sample file. If a "pruned.study" entry is already present, the entry is
-#' deleted and a new entry is created.
-#'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' opened Profile GDS file.
-#'
-#' @param pruned a \code{vector} of \code{character} string representing the
-#' name of the SNVs.
-#'
-#' @return The integer \code{0L} when successful.
-#'
-#' @examples
-#'
-#' #' ## Create a temporary GDS file in an test directory
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
-#'
-#' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
-#'
-#' ## Vector of low allelic fraction
-#' study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
-#'
-#' ## Add segments to the GDS file
-#' RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
-#'
-#' ## Read lap information from GDS file
-#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
-#'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=GDS_file_tmp)
-#'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-addGDSStudyPruning <- function(gds, pruned) {
-
-    ## Delete the pruned.study entry if present in the GDS Sample file
-    if("pruned.study" %in% ls.gdsn(gds)) {
-        delete.gdsn(index.gdsn(node=gds, "pruned.study"))
-    }
-
-    ## Create the pruned.study node in the GDS Sample file
-    var.Pruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
-
-    # Write the data cached in memory to the GDS Sample file
-    sync.gds(gdsfile=gds)
-
-    return(0L)
-}
-
 #' @title TODO
 #'
 #' @description TODO

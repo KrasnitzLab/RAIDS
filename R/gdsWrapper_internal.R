@@ -601,13 +601,6 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
                                     verbose) {
 
-    ## This validation is not necessary as the function is internal
-    if(sum(c("study.id", "study.desc", "study.platform") %in%
-                colnames(studyDF)) != 3 ) {
-        stop("The \'studyDF\' data frame is incomplete. ",
-                    "One or more mandatory column is missing.\n")
-    }
-
     ## Used only the selected samples (all when listSamples == NULL)
     if(!(is.null(listSamples))) {
         if(length(listSamples) == length(intersect(listSamples,
@@ -624,28 +617,20 @@ addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
     }
 
     ## Create the study data frame that is going to be saved
-    df <- data.frame(study.id=studyDF$study.id,
-                     study.desc=studyDF$study.desc,
-                     study.platform=studyDF$study.platform,
-                     stringsAsFactors=FALSE)
+    df <- data.frame(study.id=studyDF$study.id, study.desc=studyDF$study.desc,
+        study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
     ## Append study information to "study.list" when node already present
     ## Otherwise, create node and add study information into it
     if(! "study.list" %in% ls.gdsn(gds)) {
-
         ## Create study node and add study information into GDS Sample file
         add.gdsn(gds, "study.list", df)
 
-        ## Create data frame containing sample information
+        ## Create data frame containing sample information and add it to GDS
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
-                                case.id=pedDF[, "Case.ID"],
-                                sample.type=pedDF[, "Sample.Type"],
-                                diagnosis=pedDF[, "Diagnosis"],
-                                source=pedDF[, "Source"],
-                                study.id=rep(studyDF$study.id, nrow(pedDF)),
-                                stringsAsFactors=FALSE)
-
-        ## Create node and add sample information
+            case.id=pedDF[, "Case.ID"], sample.type=pedDF[, "Sample.Type"],
+            diagnosis=pedDF[, "Diagnosis"], source=pedDF[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(pedDF)), stringsAsFactors=FALSE)
         add.gdsn(gds, "study.annot", study.annot)
 
         if(verbose) { message("study.annot DONE ", Sys.time()) }
@@ -660,12 +645,9 @@ addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
 
         ## Create data frame containing sample information
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
-                            case.id=pedDF[, "Case.ID"],
-                            sample.type=pedDF[, "Sample.Type"],
-                            diagnosis=pedDF[, "Diagnosis"],
-                            source=pedDF[, "Source"],
-                            study.id=rep(studyDF$study.id, nrow(pedDF)),
-                            stringsAsFactors=FALSE)
+            case.id=pedDF[, "Case.ID"], sample.type=pedDF[, "Sample.Type"],
+            diagnosis=pedDF[, "Diagnosis"], source=pedDF[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(pedDF)), stringsAsFactors=FALSE)
 
         ## Append sample information to existing node
         append.gdsn(index.gdsn(gds, "study.annot/data.id"),
@@ -684,8 +666,7 @@ addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
         if(verbose) { message("study.annot DONE ", Sys.time()) }
     }
 
-    ## Return the vector of sample identifiers that have been added
-    ## to the GDS Sample file
+    ## Return the vector of profile IDs that have been added to Profile GDS file
     return(pedDF[,"Name.ID"])
 }
 
@@ -780,7 +761,7 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
-#' are: "corr", "r", "dprime" and "composite". Default: \code{"corr"}.
+#' are: "corr", "r", "dprime" and "composite".
 #'
 #' @param listSamples a \code{vector} of \code{character} strings
 #' corresponding to the sample identifiers used in LD pruning done by the
@@ -840,7 +821,7 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 #' @importFrom gdsfmt closefn.gds
 #' @encoding UTF-8
 #' @keywords internal
-runLDPruning <- function(gds, method=c("corr", "r", "dprime", "composite"),
+runLDPruning <- function(gds, method,
         listSamples=NULL, listKeep=NULL, slideWindowMaxBP=500000L,
         thresholdLD=sqrt(0.1), np=1L, verbose) {
 
@@ -971,6 +952,67 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
     append.gdsn(curAnnot, samp.annot$batch, check=TRUE)
 
     if(verbose) { message("Annot done") }
+
+    return(0L)
+}
+
+
+#' @title Add the pruned.study entry related to the SNV dataset in the
+#' Profile GDS file
+#'
+#' @description This function adds the names of the SNVs into the node called
+#' "pruned.study" in GDS
+#' Sample file. If a "pruned.study" entry is already present, the entry is
+#' deleted and a new entry is created.
+#'
+#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' opened Profile GDS file.
+#'
+#' @param pruned a \code{vector} of \code{character} string representing the
+#' name of the SNVs.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' #' ## Create a temporary GDS file in an test directory
+#' data.dir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
+#'
+#' ## Create and open the GDS file
+#' tmpGDS  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Vector of low allelic fraction
+#' study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addGDSStudyPruning(gds=tmpGDS, pruned=study)
+#'
+#' ## Read lap information from GDS file
+#' read.gdsn(index.gdsn(node=tmpGDS, path="pruned.study"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=tmpGDS)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+addGDSStudyPruning <- function(gds, pruned) {
+
+    ## Delete the pruned.study entry if present in the Profile GDS file
+    if("pruned.study" %in% ls.gdsn(gds)) {
+            delete.gdsn(index.gdsn(node=gds, "pruned.study"))
+    }
+
+    ## Create the pruned.study node in the Profile GDS file
+    var.Pruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
+
+    # Write the data cached in memory to the Profile GDS file
+    sync.gds(gdsfile=gds)
 
     return(0L)
 }

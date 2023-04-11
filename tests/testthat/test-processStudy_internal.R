@@ -4,6 +4,19 @@ library(RAIDS)
 library(withr)
 library(gdsfmt)
 
+local_GDS_file <- function(path) {
+    GDS_file_tmp  <- createfn.gds(filename=path)
+    defer_parent(remove_local_GDS_file(path=path))
+
+    add.gdsn(GDS_file_tmp, "Ref.count", rep(10L, 12))
+    add.gdsn(GDS_file_tmp, "Alt.count", rep(12L, 12))
+    add.gdsn(GDS_file_tmp, "Total.count", rep(22L, 12))
+    add.gdsn(GDS_file_tmp, "lap", rep(0.5, 12))
+    sync.gds(GDS_file_tmp)
+
+    return(GDS_file_tmp)
+}
+
 
 #############################################################################
 ### Tests validatePruningSample() results
@@ -293,3 +306,4 @@ test_that("validateAddStudy1Kg() must return expected results when all input are
 
     expect_identical(result, 0L)
 })
+

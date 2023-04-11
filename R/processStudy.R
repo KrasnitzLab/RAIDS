@@ -452,6 +452,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
 pruningSample <- function(gdsReference,
@@ -480,7 +481,7 @@ pruningSample <- function(gdsReference,
         keepFile=keepFile, pathPrunedGDS=pathPrunedGDS, outPrefix=outPrefix)
 
     ## Matches a character method against a table of candidate values
-    method <- match.arg(method, several.ok=FALSE)
+    method <- arg_match(method)
 
     ## Profile GDS file name
     fileGDSSample <- file.path(pathProfileGDS, paste0(currentProfile, ".gds"))
@@ -494,7 +495,6 @@ pruningSample <- function(gdsReference,
     fileObj <- file.path(pathPrunedGDS, paste0(outPrefix, ".Obj.rds"))
 
     snp.id <- read.gdsn(node=index.gdsn(gdsReference, "snp.id"))
-
     sample.id <- read.gdsn(node=index.gdsn(gdsReference, "sample.id"))
 
     ## Open the GDS Sample file
@@ -555,8 +555,8 @@ pruningSample <- function(gdsReference,
 
     ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gdsReference, method=method,
-                listSamples=listSamples,
-                listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
+                listSamples=listSamples, listKeep=listKeep,
+                slideWindowMaxBP=slideWindowMaxBP,
                 thresholdLD=thresholdLD, np=np, verbose=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
@@ -694,8 +694,7 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 
         if(! ("genotype" %in% ls.gdsn(gdsSample))){
             var.geno <- add.gdsn(gdsSample, "genotype",
-                                    valdim=c(length(listSNP), 1),
-                                    g, storage="bit2")
+                            valdim=c(length(listSNP), 1), g, storage="bit2")
 
         }else {
             if(is.null(var.geno)) {
@@ -1174,6 +1173,7 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
 estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
@@ -1189,7 +1189,7 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
         wAR=wAR, cutOffAR=cutOffAR, gdsRefAnnot=gdsRefAnnot, block.id=block.id)
 
     ## Set study type
-    studyType <- match.arg(studyType)
+    studyType <- arg_match(studyType)
 
     snp.pos <- NULL
 

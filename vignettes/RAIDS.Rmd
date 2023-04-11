@@ -370,8 +370,7 @@ library(RAIDS)
 dataDir <- system.file("extdata", package="RAIDS")
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName1KG <- "ex1kg.gds"
-file.GDS <- file.path(path1KG, fileName1KG)
+gds1KG <- file.path(path1KG, "ex1kg.gds")
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need  
@@ -418,7 +417,7 @@ listSamples <- ped[, "Name.ID"]
 #################################################################
 createStudy2GDS1KG(pathGeno=pathGeno,
                         pedStudy=ped,
-                        fileNameGDS=file.GDS,
+                        fileNameGDS=gds1KG,
                         listProfiles=listSamples,
                         studyDF=studyDF,
                         pathProfileGDS=pathProfileGDS,
@@ -457,8 +456,7 @@ library(RAIDS)
 ##############################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName1KG <- "ex1kg.gds"
-fileGDS <- file.path(path1KG, fileName1KG)
+fileGDS <- file.path(path1KG, "ex1kg.gds")
 
 ## Open the 1KG GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
@@ -491,7 +489,8 @@ for(i in seq_len(length(listSamples))) {
 
     ## Add annotation from the 1KG GDS file to the Sample GDS file
     ## This is required.
-    addStudy1Kg(gds1KG, fileGDSProfile)
+    addStudy1Kg(gdsReference=gds1KG, fileProfileGDS=fileGDSProfile, 
+                        verbose=FALSE)
 }
     
 ## Close the 1KG GDS file (it is important to always close the GDS files)
@@ -557,7 +556,7 @@ The __estimateAllelicFraction()__ function processes one sample at the time,
 as shown in this example.  
 
 
-```{r estimateAllelicFraction, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE}
+```{r estimateAllelicFraction, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 ###################################################################
 ## Load the required package
 ###################################################################
@@ -569,14 +568,13 @@ library(RAIDS)
 ###################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
-fileName1KG <- "ex1kg.gds"
 fileName.GDS.Annot <- "exAnnot1kg.gds"
 
-file.GDS <- file.path(path1KG, fileName1KG)
+gds1KG <- file.path(path1KG, "ex1kg.gds")
 file.Annot <- file.path(path1KG, fileName.GDS.Annot)
 
 ## Open the 1KG GDS file
-gds <- snpgdsOpen(file.GDS)
+gds <- snpgdsOpen(gds1KG)
     
 ###################################################################
 ## The information about the length of the chromosomes
@@ -587,17 +585,15 @@ head(chrInfo)
 ## The function must be called for each sample
 ## This example only uses one sample
 ##############################################################
-
 ## The first sample is used in the demo
-sampleName <- listSamples[1]
+profileName <- listSamples[1]
 
 ###################################################################
-## The Sample GDS file is required
+## The Profile GDS file is required
 ###################################################################
-
-## Name of the Sample GDS file
+## Name of the Profile GDS file
 ## The name must correspond to the sample identifier
-file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
+file.GDSSample <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 
 ## Open the Sample GDS file in writing mode
 gdsSample <- openfn.gds(file.GDSSample, readonly=FALSE)
@@ -605,7 +601,6 @@ gdsSample <- openfn.gds(file.GDSSample, readonly=FALSE)
 ###################################################################
 ## The estimation of the allelic fraction
 ###################################################################
-
 ## Estimate the allele fraction of the pruned SNVs
 ## The current example is for a DNA sample
 ## In the case of RNA sample, the function needs different inputs
@@ -613,11 +608,11 @@ gdsSample <- openfn.gds(file.GDSSample, readonly=FALSE)
 ## the block.id should be as listed in the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gdsReference=gds, gdsSample=gdsSample,
-                                        currentProfile=sampleName,
+                                        currentProfile=profileName,
                                         studyID=studyDF$study.id,
                                         chrInfo=chrInfo)
 
-## Close both GDS files
+## Close both GDS files (important)
 closefn.gds(gdsSample)
 closefn.gds(gds)
 ```
@@ -678,19 +673,18 @@ These 3 files are required:
 3. The **1KG SNv Annotation GDS file**
 
 
-```{r generateSynthetic, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE}
+```{r generateSynthetic, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 ####################################################################
 ## Load required package
 ####################################################################
 library(RAIDS)    
-
 
 ####################################################################
 ## Randomly extract a fixed number of samples for each
 ## subcontinental population present in the 1KG GDS file.
 ## When not enough samples are available, all samples are selected.  
 ####################################################################   
-gds <- snpgdsOpen(file.GDS)
+gds <- snpgdsOpen(gds1KG)
 
 ####################################################################
 ## Fix RNG seed to ensure reproducible results
@@ -722,7 +716,7 @@ studyDF.syn <- data.frame(study.id="MYDATA.Synthetic",
                           stringsAsFactors=FALSE)
 
 ## The Sample GDS file is needed
-file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
+file.GDSSample <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 
 ####################################################################
 ## The prepSynthetic() function prepares the annotation for
@@ -731,7 +725,7 @@ file.GDSSample <- file.path(pathProfileGDS, paste0(sampleName, ".gds"))
 ####################################################################
 prepSynthetic(fileProfileGDS=file.GDSSample,
                 listSampleRef=listSampleRef,
-                data.id.profile=sampleName,
+                data.id.profile=profileName,
                 studyDF=studyDF.syn,
                 prefId="1")
 
@@ -755,7 +749,7 @@ gds.Annot <- openfn.gds(file.Annot)
 resG <- syntheticGeno(gdsReference=gds,
                         gdsRefAnnot=gds.Annot,
                         fileProfileGDS=file.GDSSample,
-                        data.id.profile=sampleName,
+                        data.id.profile=profileName,
                         listSampleRef=listSampleRef,
                         prefId="1")
 
@@ -780,9 +774,8 @@ library(RAIDS)
 ####################################################################
 ## The 1KG GDS file is required
 ####################################################################
-
 ## Open the 1KG GDS file     
-gds <- openfn.gds(file.GDS)
+gds <- openfn.gds(gds1KG)
 
 ####################################################################
 ## The path to the directory where the PCA results will be saved 
@@ -903,7 +896,7 @@ library(RAIDS)
 ####################################################################
 
 ## Open the 1KG GDS file 
-gds <- openfn.gds(file.GDS)
+gds <- openfn.gds(gds1KG)
     
 ## A directory for the results, where a sub-directory 
 ## will be set up for each input profile 

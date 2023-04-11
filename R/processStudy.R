@@ -1402,7 +1402,7 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA}
 #' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
@@ -1434,12 +1434,12 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' @export
 computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
-                            eigen.cnt=32L, missing.rate=NaN) {
+                            eigen.cnt=32L, missingRate=NaN) {
 
     ## Validate parameters
     validateComputePCARefSample(gdsSample=gdsSample, name.id=name.id,
         studyIDRef=studyIDRef, np=np, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+        eigen.cnt=eigen.cnt, missingRate=missingRate)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
@@ -1461,7 +1461,7 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
     listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample, sample.id=sample.Unrel,
                                 snp.id=listPCA[["pruned"]], num.thread=np,
                                 algorithm=algorithm, eigen.cnt=eigen.cnt,
-                                missing.rate=missing.rate, verbose=TRUE)
+                                missing.rate=missingRate, verbose=TRUE)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
                                 gdsobj=gdsSample, num.thread=np, verbose=TRUE)
@@ -1845,8 +1845,8 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 #'
 #' @description TODO
 #'
-#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' opened Reference GDS file.
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
+#' file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \link[gdsfmt]{gds.class} (a GDS file),
 #' an opened Profile GDS file.
@@ -1931,9 +1931,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                     algorithm="exact", eigen.cnt=32L, missingRate=0.025) {
 
     ## Add parameter validation (not all done)
-    validateComputePoolSyntheticAncestry(gdsReference=gdsReference, profileGDS=gdsSample,
-        profileAnaID=sample.ana.id, dataRef=dataRef, spRef=spRef,
-        studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
+    validateComputePoolSyntheticAncestry(gdsReference=gdsReference,
+        profileGDS=gdsSample, profileAnaID=sample.ana.id, dataRef=dataRef,
+        spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList, algorithm=algorithm,
         eigenCnt=eigen.cnt, missingRate=missingRate)
@@ -1957,15 +1957,15 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
 
-    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference, gdsSample=gdsSample,
-                            studyID=studyIDSyn, popName=fieldPopIn1KG)
+    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
+                gdsSample=gdsSample, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
                             fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
         name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missing.rate=missingRate)
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
                                                 sample.ana.id, spRef)
@@ -1978,8 +1978,8 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
 #'
 #' @description TODO
 #'
-#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1KG GDS file.
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
+#' file), the 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the GDS Sample file.
@@ -2077,7 +2077,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
     }
 
     ## Validate input parameters
-    validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference, gdsSample=gdsSample,
+    validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference,
+        gdsSample=gdsSample,
         listFiles=listFiles, sample.ana.id=sample.ana.id, spRef=spRef,
         studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
@@ -2106,7 +2107,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
         name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missing.rate=missing.rate)
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missing.rate)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
         listCatPop=listCatPop, spRef=spRef,fieldPopInfAnc=fieldPopInfAnc,

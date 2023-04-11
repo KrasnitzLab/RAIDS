@@ -12,7 +12,7 @@ validateComputePCARefSample(
   np,
   algorithm,
   eigen.cnt,
-  missing.rate
+  missingRate
 )
 }
 \arguments{
@@ -35,7 +35,7 @@ to calculate the PCA.}
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 threshold.}
 }
@@ -58,7 +58,7 @@ gdsSample <- openfn.gds(file.path(dataDir,
 ## The validatiion should be successful
 RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-    missing.rate=0.02)
+    missingRate=0.02)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gdsSample)

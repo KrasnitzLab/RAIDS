@@ -130,7 +130,7 @@ test_that("validateComputePCARefSample() must return expected results when all i
 
     result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
                 name.id="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
-                eigen.cnt=32L, missing.rate=0.02)
+                eigen.cnt=32L, missingRate=0.02)
 
     expect_identical(result1, 0L)
 })

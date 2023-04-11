@@ -72,7 +72,7 @@ computePCARefSample function."><!-- mathjax --><script src="https://cdnjs.cloudf
 <span>  <span class="va">np</span>,</span>
 <span>  <span class="va">algorithm</span>,</span>
 <span>  <span class="va">eigen.cnt</span>,</span>
-<span>  <span class="va">missing.rate</span></span>
+<span>  <span class="va">missingRate</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,7 +109,7 @@ eigenvectors that will be in the output of the <a href="https://rdrr.io/pkg/SNPR
 function; if 'eigen.cnt' &lt;= 0, then all eigenvectors are returned.</p></dd>
 
 
-<dt>missing.rate</dt>
+<dt>missingRate</dt>
 <dd><p>a <code>numeric</code> value representing the threshold
 missing rate at with the SNVs are discarded; if <code>NaN</code>, no missing
 threshold.</p></dd>
@@ -139,7 +139,7 @@ threshold.</p></dd>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePCARefSample</span><span class="op">(</span>gdsSample<span class="op">=</span><span class="va">gdsSample</span>, name.id<span class="op">=</span><span class="st">"HCC01"</span>,</span></span>
 <span class="r-in"><span>    studyIDRef<span class="op">=</span><span class="st">"1KG"</span>, np<span class="op">=</span><span class="fl">1L</span>, algorithm<span class="op">=</span><span class="st">"exact"</span>, eigen.cnt<span class="op">=</span><span class="fl">32L</span>,</span></span>
-<span class="r-in"><span>    missing.rate<span class="op">=</span><span class="fl">0.02</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    missingRate<span class="op">=</span><span class="fl">0.02</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>

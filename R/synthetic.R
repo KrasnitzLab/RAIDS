@@ -205,6 +205,9 @@ splitSelectByPop <- function(dataRef) {
 #' enables the creation of multiple synthetic profile using the same
 #' combination of sample and 1KG reference. Default: \code{""}.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
 #' @return \code{0L} when successful.
 #'
 #' @examples
@@ -218,9 +221,8 @@ splitSelectByPop <- function(dataRef) {
 prepSynthetic <- function(fileProfileGDS,
                             listSampleRef,
                             data.id.profile,
-                            studyDF,
-                            nbSim=1L,
-                            prefId="") {
+                            studyDF, nbSim=1L,
+                            prefId="", verbose=FALSE) {
 
     ## The fileProfileGDS must be a character string and the file must exists
     if (!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
@@ -291,7 +293,8 @@ prepSynthetic <- function(fileProfileGDS,
                 Source=rep("Synthetic", length(listSampleRef) * nbSim),
                 stringsAsFactors=FALSE)
 
-    addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL, study.list)
+    addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL,
+        studyDF=study.list, verbose=verbose)
 
     closefn.gds(gdsSample)
 

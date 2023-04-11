@@ -12,7 +12,8 @@ prepSynthetic(
   data.id.profile,
   studyDF,
   nbSim = 1L,
-  prefId = ""
+  prefId = "",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ simulations per combination of sample and 1KG reference. Default: \code{1L}.}
 is going to be added to the name of the synthetic profile. The prefix
 enables the creation of multiple synthetic profile using the same
 combination of sample and 1KG reference. Default: \code{""}.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function.}
 }
 \value{
 \code{0L} when successful.

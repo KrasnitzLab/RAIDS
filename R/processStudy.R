@@ -1152,7 +1152,7 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", "RAIDS")
+#' dataDir <- system.file("extdata", "RAIDS")
 #'
 #' ## Chromosome length information
 #' ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -1234,7 +1234,7 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
 
 
 #' @title Append information about the 1KG samples into
-#' the GDS Sample file
+#' the Profile GDS file
 #'
 #' @description The information about the samples present in the 1KG GDS file
 #' is added into the GDS Sample file. Only the information about the
@@ -1251,27 +1251,67 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
 #' @param fileProfileGDS a \code{character} string representing the path and
 #' file name of the GDS Sample file. The GDS Sample file must exist.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gdsReference <- "TODO"
+#' ## Get the temp folder
+#' tempDir <- tempdir()
+#'
+#' ## Create a temporary 1KG GDS file and add needed information
+#' fileName1KG <- file.path(tempDir, "GDS_TEMP_addStudy1Kg_1KG.gds")
+#' gds1KG  <- createfn.gds(filename=fileName1KG)
+#' add.gdsn(gds1KG, "sample.id", c("HTT101", "HTT102", "HTT103"))
+#'
+#' samples <- data.frame(sex=c(1, 1, 2), pop.group=c("GBR", "GIH", "GBR"),
+#'     superPop=c("EUR", "SAS", "EUR"), batch=rep(0, 3),
+#'     stringsAsFactors = FALSE)
+#'
+#' add.gdsn(gds1KG, "sample.annot", samples)
+#' add.gdsn(gds1KG, "sample.ref", c(1,0, 1))
+#' sync.gds(gds1KG)
+#'
+#' ## Create a temporary Profile GDS file
+#' fileNameProfile <- file.path(tempDir, "GDS_TEMP_addStudy1Kg_Sample.gds")
+#' gdsProfile <- createfn.gds(fileNameProfile)
+#'
+#' study.list <- data.frame(study.id=c("HTT Study"),
+#'     study.desc=c("Important Study"),
+#'     study.platform=c("Panel"), stringsAsFactors=FALSE)
+#'
+#' add.gdsn(gdsProfile, "study.list", study.list)
+#'
+#' study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+#'                 sample.type=c("Study"), diagnosis=c("Study"),
+#'                 source=rep("IGSR"), study.id=c("Study"),
+#'                 stringsAsFactors=FALSE)
+#'
+#' add.gdsn(gdsProfile, "study.annot", study.annot)
+#' sync.gds(gdsProfile)
+#' closefn.gds(gdsProfile)
+#'
+#' ## Append information about the 1KG samples into the Profile GDS file
+#' ## The Profile GDS file will contain 'study.list' and 'study.annot' entries
+#' addStudy1Kg(gdsReference=gds1KG, fileProfileGDS=fileNameProfile,
+#'     verbose=TRUE)
+#'
+#' closefn.gds(gds1KG)
+#' unlink(fileNameProfile, recursive=TRUE, force=TRUE)
+#' unlink(fileName1KG, recursive=TRUE, force=TRUE)
+#' unlink(tempDir)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @export
-addStudy1Kg <- function(gdsReference, fileProfileGDS) {
+addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 
-    ## The gdsReference must be an object of class "gds.class"
-    validateGDSClass(gds=gdsReference, "gdsReference")
-
-    ## The fileProfileGDS must be a character string and the file must exists
-    if(!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
-        stop("The \'fileProfileGDS\' must be a character string representing ",
-                "the GDS Sample file. The file must exist.")
-    }
+    ## Validate parameters
+    validateAddStudy1Kg(gdsReference=gdsReference,
+        fileProfileGDS=fileProfileGDS, verbose=verbose)
 
     ## Open GDS Sample file
     gdsSample <- openfn.gds(filename=fileProfileGDS, readonly=FALSE)
@@ -1296,18 +1336,17 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS) {
 
         ## Create the pedigree information  for the 1KG samples
         ped1KG <- data.frame(Name.ID=sample.id, Case.ID=sample.id,
-                            Sample.Type=rep("Reference", length(sample.id)),
-                            Diagnosis=rep("Reference", length(sample.id)),
-                            Source=rep("IGSR", length(sample.id)),
-                            stringsAsFactors=FALSE)
+                    Sample.Type=rep("Reference", length(sample.id)),
+                    Diagnosis=rep("Reference", length(sample.id)),
+                    Source=rep("IGSR", length(sample.id)),
+                    stringsAsFactors=FALSE)
 
         ## Row names must be the sample identifiers
         rownames(ped1KG) <- ped1KG$Name.ID
 
-        ## Add the information about the 1KG samples into the
-        ## GDS sample
+        ## Add the information about the 1KG samples into the Profile GDS
         addStudyGDSSample(gds=gdsSample, pedDF=ped1KG, batch=1,
-                            listSamples=NULL, studyDF=study.list)
+                    listSamples=NULL, studyDF=study.list, verbose=verbose)
 
         sync.gds(gdsSample)
     }
@@ -2113,8 +2152,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     ## Extract the sample super-population information from the 1KG GDS file
     ## for profiles associated to the specified study in the GDS Sample file
-    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference, gdsSample=gdsSample,
-        studyID=studyIDSyn, popName=fieldPopIn1KG)
+    pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
+        gdsSample=gdsSample, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(matKNN.All=KNN.sample.syn,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,

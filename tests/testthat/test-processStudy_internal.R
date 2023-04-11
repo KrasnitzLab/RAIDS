@@ -270,3 +270,26 @@ test_that("validateDataRefSynParameter() must return expected results when all i
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests validateAddStudy1Kg() results
+#############################################################################
+
+context("validateAddStudy1Kg() results")
+
+
+test_that("validateAddStudy1Kg() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures")
+    gdsRefFile <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+    gdsRef <- openfn.gds(gdsRefFile)
+    withr::defer((gdsfmt::closefn.gds(gdsRef)), envir = parent.frame())
+
+    fileProfileGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+
+    result <- RAIDS:::validateAddStudy1Kg(gdsReference=gdsRef,
+                        fileProfileGDS=fileProfileGDS, verbose=FALSE)
+
+    expect_identical(result, 0L)
+})

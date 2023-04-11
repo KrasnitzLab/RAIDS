@@ -114,7 +114,7 @@ chrInfo[25] <- length(Hsapiens[["chrM"]])
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", "RAIDS")
+dataDir <- system.file("extdata", "RAIDS")
 
 ## Chromosome length information
 ## chr23 is chrX, chr24 is chrY and chrM is 25

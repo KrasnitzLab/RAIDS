@@ -4,9 +4,9 @@
 \name{addStudy1Kg}
 \alias{addStudy1Kg}
 \title{Append information about the 1KG samples into
-the GDS Sample file}
+the Profile GDS file}
 \usage{
-addStudy1Kg(gdsReference, fileProfileGDS)
+addStudy1Kg(gdsReference, fileProfileGDS, verbose = FALSE)
 }
 \arguments{
 \item{gdsReference}{an object of class
@@ -14,6 +14,9 @@ addStudy1Kg(gdsReference, fileProfileGDS)
 
 \item{fileProfileGDS}{a \code{character} string representing the path and
 file name of the GDS Sample file. The GDS Sample file must exist.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function.}
 }
 \value{
 The integer \code{0L} when successful.
@@ -30,8 +33,50 @@ The study information is appended to the GDS Sample file "study.list" node.
 }
 \examples{
 
-# TODO
-gdsReference <- "TODO"
+## Get the temp folder
+tempDir <- tempdir()
+
+## Create a temporary 1KG GDS file and add needed information
+fileName1KG <- file.path(tempDir, "GDS_TEMP_addStudy1Kg_1KG.gds")
+gds1KG  <- createfn.gds(filename=fileName1KG)
+add.gdsn(gds1KG, "sample.id", c("HTT101", "HTT102", "HTT103"))
+
+samples <- data.frame(sex=c(1, 1, 2), pop.group=c("GBR", "GIH", "GBR"),
+    superPop=c("EUR", "SAS", "EUR"), batch=rep(0, 3),
+    stringsAsFactors = FALSE)
+
+add.gdsn(gds1KG, "sample.annot", samples)
+add.gdsn(gds1KG, "sample.ref", c(1,0, 1))
+sync.gds(gds1KG)
+
+## Create a temporary Profile GDS file
+fileNameProfile <- file.path(tempDir, "GDS_TEMP_addStudy1Kg_Sample.gds")
+gdsProfile <- createfn.gds(fileNameProfile)
+
+study.list <- data.frame(study.id=c("HTT Study"),
+    study.desc=c("Important Study"),
+    study.platform=c("Panel"), stringsAsFactors=FALSE)
+
+add.gdsn(gdsProfile, "study.list", study.list)
+
+study.annot <- data.frame(data.id=c("TOTO1"), case.id=c("TOTO1"),
+                sample.type=c("Study"), diagnosis=c("Study"),
+                source=rep("IGSR"), study.id=c("Study"),
+                stringsAsFactors=FALSE)
+
+add.gdsn(gdsProfile, "study.annot", study.annot)
+sync.gds(gdsProfile)
+closefn.gds(gdsProfile)
+
+## Append information about the 1KG samples into the Profile GDS file
+## The Profile GDS file will contain 'study.list' and 'study.annot' entries
+addStudy1Kg(gdsReference=gds1KG, fileProfileGDS=fileNameProfile,
+    verbose=TRUE)
+
+closefn.gds(gds1KG)
+unlink(fileNameProfile, recursive=TRUE, force=TRUE)
+unlink(fileName1KG, recursive=TRUE, force=TRUE)
+unlink(tempDir)
 
 }
 \author{

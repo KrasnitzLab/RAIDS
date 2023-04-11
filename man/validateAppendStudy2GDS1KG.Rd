@@ -13,6 +13,7 @@ validateAppendStudy2GDS1KG(
   studyDF,
   listSamples,
   pathProfileGDS,
+  genoSource,
   verbose
 )
 }
@@ -44,6 +45,10 @@ If \code{NULL}, all samples in the \code{fileNamePED} are selected.}
 \item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Sample files will be created.}
 
+\item{genoSource}{a \code{character} string with two possible values:
+'snp-pileup' or 'generic'. It specifies if the genotype files
+are generate by snp-pileup (Facets) or generic format csv.}
+
 \item{verbose}{a \code{logical} indicating if message information should be
 printed.}
 }
@@ -74,7 +79,7 @@ studyInfo <- data.frame(study.id="Pancreatic.WES",
 RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
     fileNamePED=ped, fileNameGDS=gds1KG,
     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-    pathProfileGDS=dataDir, verbose=TRUE)
+    pathProfileGDS=dataDir, genoSource="snp-pileup", verbose=TRUE)
 
 
 }

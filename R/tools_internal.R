@@ -279,10 +279,10 @@ readSNVPileupFile <- function(fileName, offset = 0L) {
 
 
     matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
-                                                 matSample[, "Chromosome"]))
+                                            matSample[, "Chromosome"]))
     matSample[, "Position"] <- matSample[, "Position"] + offset
     matSample[, "count"] <- rowSums(matSample[, c("File1R", "File1A",
-                                                  "File1E", "File1D")])
+                                            "File1E", "File1D")])
 
     return(matSample)
 }
@@ -326,7 +326,7 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
     # Check if the mendatory column are there
 
     matSample[, "Chromosome"] <- as.integer(gsub("chr", "",
-                                                 matSample[, "Chromosome"]))
+                                        matSample[, "Chromosome"]))
     matSample[, "Position"] <- matSample[, "Position"] + offset
     colnames(matSample)[colnames(matSample) == "Count"] <- "count"
 

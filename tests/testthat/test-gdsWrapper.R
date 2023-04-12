@@ -88,40 +88,6 @@ test_that("addUpdateSegment() must copy the expected entry in \"segment\" node o
 
 
 #############################################################################
-### Tests addUpdateLap() results
-#############################################################################
-
-context("addUpdateLap() results")
-
-
-test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GDS file", {
-
-    ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
-
-    ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
-
-    ## Vector of segment identifiers
-    lap <- c(0.1, 0.22, 0.12, 0.43, 0.00, 0.00, 0.15, 0.43,
-                0.00, 0.00, 0.15, 0.43)
-
-    ## Add segments to the GDS file
-    RAIDS:::addUpdateLap(gds=GDS_file_tmp, snp.lap=lap)
-
-    ## Read segments information from GDS file
-    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="lap"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expect_equal(results, lap)
-})
-
-
-#############################################################################
 ### Tests appendGDSSampleOnly() results
 #############################################################################
 

@@ -1065,14 +1065,14 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #'
 #' @description The function estimates the allelic fraction of the pruned
 #' SNVs for a specific sample and add the information to the associated
-#' GDS Sample file. The allelic fraction estimation method is adapted to
+#' Profile GDS file. The allelic fraction estimation method is adapted to
 #' the type of study (DNA or RNA).
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the Profile GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -1176,14 +1176,14 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
-estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
+estimateAllelicFraction <- function(gdsReference, gdsProfile, currentProfile,
     studyID, chrInfo, studyType=c("DNA", "RNA"), minCov=10L, minProb=0.999,
     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
     gdsRefAnnot=NULL, block.id=NULL) {
 
     ## Validate input parameters
     validateEstimateAllelicFraction(gdsReference=gdsReference,
-        gdsSample=gdsSample, currentProfile=currentProfile, studyID=studyID,
+        gdsProfile=gdsProfile, currentProfile=currentProfile, studyID=studyID,
         chrInfo=chrInfo, studyType=studyType, minCov=minCov, minProb=minProb,
         eProb=eProb, cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore,
         wAR=wAR, cutOffAR=cutOffAR, gdsRefAnnot=gdsRefAnnot, block.id=block.id)
@@ -1196,7 +1196,7 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
         snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference,
-                        gdsSample=gdsSample,
+                        gdsSample=gdsProfile,
                         currentProfile=currentProfile, studyID=studyID,
                         chrInfo=chrInfo, minCov=minCov, minProb=minProb,
                         eProb=eProb, cutOffLOH=cutOffLOH,
@@ -1204,7 +1204,7 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
 
     } else if(studyType == "RNA") {
         snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference,
-                        gdsSample=gdsSample,
+                        gdsSample=gdsProfile,
                         gdsRefAnnot=gdsRefAnnot, currentProfile=currentProfile,
                         studyID=studyID, block.id=block.id, chrInfo=chrInfo,
                         minCov=minCov, minProb=minProb, eProb=eProb,
@@ -1225,8 +1225,8 @@ estimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
     ## Save information into the "lap" node in the GDS Sample file
     ## Save information into the "segment" node in the GDS Sample file
     ## Suppose we keep only the pruned SNVs
-    addUpdateLap(gdsSample, snp.pos$lap[which(snp.pos$pruned == TRUE)])
-    addUpdateSegment(gdsSample, snp.pos$seg[which(snp.pos$pruned == TRUE)])
+    addUpdateLap(gdsProfile, snp.pos$lap[which(snp.pos$pruned == TRUE)])
+    addUpdateSegment(gdsProfile, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
     # Successful
     return(0L)
@@ -2401,7 +2401,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
         gdsProfile <- openfn.gds(file.GDSProfile, readonly=FALSE)
 
-        estimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsProfile,
+        estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=gdsProfile,
                                     currentProfile=listProfiles[i],
                                     studyID=studyDF$study.id, chrInfo=chrInfo)
         closefn.gds(gdsProfile)

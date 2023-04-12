@@ -15,8 +15,8 @@
 #' @examples
 #'
 #' ## Create a temporary GDS file in an test directory
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_04.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(dataDir, "GDS_TEMP_04.gds")
 #'
 #' ## Create and open the GDS file
 #' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
@@ -78,14 +78,14 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Temporary Reference GDS file
-#' file1KG <- local_file(file.path(data.dir, "1KG_TEMP_002.gds"))
+#' file1KG <- local_file(file.path(dataDir, "1KG_TEMP_002.gds"))
 #' filenewGDS <- createfn.gds(file1KG)
 #'
 #' ## The RDS file containing the filtered SNP information
-#' fileFilerterSNVs <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+#' fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Add SNV information to Reference GDS
 #' RAIDS:::generateGDSSNPinfo(gds=filenewGDS, fileFREQ=fileFilerterSNVs,
@@ -522,70 +522,6 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 }
 
 
-
-#' @title Add information related to low allelic fraction associated to
-#' the SNV dataset for a specific sample into a GDS file
-#'
-#' @description The function adds the information related to low allelic
-#' fraction
-#' associated to the SNV dataset for a specific sample into a
-#' GDS file, more specifically, in the "lap" node. The "lap" node must
-#' already be present in the GDS file.
-#'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), a GDS file.
-#'
-#' @param snp.lap a \code{vector} of \code{numeric} value representing the
-#' low allelic fraction for each SNV present in the SNV dataset. The
-#' values should be between \code{0} and \code{0.50}. The
-#' length of the \code{vector} should correspond to the number of SNVs
-#' present in the "snp.id" entry of the GDS sample file.
-#'
-#' @return The integer \code{0L} when successful.
-#'
-#' @examples
-#'
-#' ## Create a temporary GDS file in an test directory
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
-#'
-#' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
-#'
-#' ## Create a "lap" node
-#' lap_initial <- rep(0.0, 8)
-#' add.gdsn(node=GDS_file_tmp, name="lap", val=rep(10L, 12))
-#' sync.gds(GDS_file_tmp)
-#'
-#' ## Vector of low allelic fraction
-#' lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
-#'
-#' ## Add segments to the GDS file
-#' RAIDS:::addUpdateLap(gds=GDS_file_tmp, snp.lap=lap)
-#'
-#' ## Read lap information from GDS file
-#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="lap"))
-#'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=GDS_file_tmp)
-#'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-addUpdateLap <- function(gds, snp.lap) {
-
-    snpLap <- write.gdsn(index.gdsn(gds, "lap"), snp.lap)
-
-    sync.gds(gds)
-
-    return(0L)
-}
-
-
 #' @title Add information related to segments associated to the SNV
 #' dataset for a specific sample into a GDS file
 #'
@@ -607,8 +543,8 @@ addUpdateLap <- function(gds, snp.lap) {
 #' @examples
 #'
 #' ## Create a temporary GDS file in an test directory
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")
 #'
 #' ## Create and open the GDS file
 #' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)

@@ -30,14 +30,14 @@ GDS file.
 library(withr)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Temporary Reference GDS file
-file1KG <- local_file(file.path(data.dir, "1KG_TEMP_002.gds"))
+file1KG <- local_file(file.path(dataDir, "1KG_TEMP_002.gds"))
 filenewGDS <- createfn.gds(file1KG)
 
 ## The RDS file containing the filtered SNP information
-fileFilerterSNVs <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Add SNV information to Reference GDS
 RAIDS:::generateGDSSNPinfo(gds=filenewGDS, fileFREQ=fileFilerterSNVs,

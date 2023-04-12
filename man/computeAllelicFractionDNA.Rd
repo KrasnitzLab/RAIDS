@@ -73,7 +73,7 @@ allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

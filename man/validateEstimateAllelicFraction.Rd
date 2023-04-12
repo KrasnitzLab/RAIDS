@@ -7,7 +7,7 @@
 \usage{
 validateEstimateAllelicFraction(
   gdsReference,
-  gdsSample,
+  gdsProfile,
   currentProfile,
   studyID,
   chrInfo,
@@ -27,8 +27,8 @@ validateEstimateAllelicFraction(
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+\item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the Profile GDS file.}
 
 \item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
@@ -101,7 +101,8 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     156040895L, 57227415L,  16569L)
 
 ## The validatiion should be successful
-RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsSample,
+RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG,
+    gdsProfile=gdsSample,
     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,

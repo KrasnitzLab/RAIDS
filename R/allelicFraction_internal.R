@@ -52,7 +52,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -251,7 +251,7 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -260,8 +260,8 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile, studyID,
-                                chrInfo, minCov=10L, minProb=0.999,
+computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
+                                studyID, chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                                 wAR=9L, verbose=FALSE) {
 
@@ -285,8 +285,8 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile, s
 
         listChr <- which(snp.pos$snp.chr == chr)
 
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference, chrInfo=chrInfo,
-                                        snp.pos=snp.pos[listChr,], chr=chr)
+        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference,
+                chrInfo=chrInfo, snp.pos=snp.pos[listChr,], chr=chr)
 
         if (verbose) { message("Step 2 ", Sys.time()) }
 
@@ -391,7 +391,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile, s
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -484,7 +484,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -546,7 +546,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

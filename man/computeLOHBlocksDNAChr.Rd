@@ -47,7 +47,7 @@ TODO
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Chromosome length information
 ## chr23 is chrX, chr24 is chrY and chrM is 25

@@ -6,7 +6,7 @@
 #' profile. The function uses the information present in the 1KG GDS file
 #' (reference) and the Profile GDS file.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
 #' the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
@@ -61,7 +61,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
+getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID, minCov=10,
                         minProb=0.999, eProb=0.001, verbose=FALSE) {
 
     ## Extract study information (data.frame) from GDS Sample file
@@ -86,12 +86,12 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                                     start=c(1, posCur),
                                     count=c(-1, 1))[listKeep],
-                    snp.pos=read.gdsn(index.gdsn(node=gds,
+                    snp.pos=read.gdsn(index.gdsn(node=gdsReference,
                                     "snp.position"))[listKeep],
-                    snp.chr=read.gdsn(index.gdsn(node=gds,
+                    snp.chr=read.gdsn(index.gdsn(node=gdsReference,
                                     "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3, length(listKeep)),#ormal genotype unknown
-                    pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep)),
+                    normal.geno=rep(3, length(listKeep)),# Normal genotype unknown
+                    pruned=rep(FALSE, length(listKeep)), # bit(length(listKeep)),
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
 
@@ -102,7 +102,7 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
 
     rm(cnt.total, snp.pruned, listKeepPruned)
 
-    # Add snv info for snv not in Reference
+    # Add snv info for snv in normal
     if ("normal.geno" %in% ls.gdsn(node=gdsSample)) {
         # if normal.geno exist mean there is count not in the ref
         # I have other genotype than 1KG
@@ -118,11 +118,11 @@ getTableSNV <- function(gds, gdsSample, currentProfile, studyID, minCov=10,
                                         "Ref.count.o"))[listKeep.o],
                                 cnt.alt=read.gdsn(index.gdsn(gdsSample,
                                         "Alt.count.o"))[listKeep.o],
-                                snp.pos=read.gdsn(index.gdsn(gds,
+                                snp.pos=read.gdsn(index.gdsn(gdsReference,
                                         "snp.position.o"))[listKeep.o],
-                                snp.chr=read.gdsn(index.gdsn(gds,
+                                snp.chr=read.gdsn(index.gdsn(gdsReference,
                                         "snp.chromosome.o"))[listKeep.o],
-                                normal.geno=read.gdsn(index.gdsn(gds,
+                                normal.geno=read.gdsn(index.gdsn(gdsSample,
                                         "normal.geno"))[listKeep.o],
                                 pruned=rep(0, length(listKeep)),
                                 snp.index=rep(0, length(listKeep.o)),

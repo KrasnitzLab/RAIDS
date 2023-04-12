@@ -6,10 +6,10 @@
 \title{Add information related to segments associated to the SNV
 dataset for a specific sample into a GDS file}
 \usage{
-addUpdateSegment(gds, snp.seg)
+addUpdateSegment(gdsProfile, snp.seg)
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), a GDS Sample file.}
 
 \item{snp.seg}{a \code{vector} of \code{integer} representing the segment
@@ -39,7 +39,7 @@ GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
 segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
 
 ## Add segments to the GDS file
-RAIDS:::addUpdateSegment(gds=GDS_file_tmp, snp.seg=segments)
+RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
 
 ## Read segments information from GDS file
 read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))

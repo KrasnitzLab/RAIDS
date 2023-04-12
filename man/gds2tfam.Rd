@@ -3,12 +3,12 @@
 \encoding{UTF-8}
 \name{gds2tfam}
 \alias{gds2tfam}
-\title{create a file tfam file for plink from the gds file}
+\title{create a file tfam file for plink from the gdsReference file}
 \usage{
-gds2tfam(gds, listSample, pedOUT)
+gds2tfam(gdsReference, listSample, pedOUT)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{listSample}{a \code{array} with the sample to keep TODO}

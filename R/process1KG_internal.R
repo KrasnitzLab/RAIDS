@@ -55,7 +55,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -152,7 +152,7 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' # TODO
 #'
@@ -427,14 +427,14 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
 #' @examples
 #'
 #' ## Directory where demo GDS files are located
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo pedigree file
-#' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+#' pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-#'      pathGeno=data.dir, batch=1)
+#'      pathGeno=dataDir, batch=1)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

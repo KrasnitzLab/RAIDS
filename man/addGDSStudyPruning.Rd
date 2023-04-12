@@ -27,8 +27,8 @@ deleted and a new entry is created.
 \examples{
 
 #' ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_1.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_1.gds")
 
 ## Create and open the GDS file
 tmpGDS  <- createfn.gds(filename=gdsFilePath)

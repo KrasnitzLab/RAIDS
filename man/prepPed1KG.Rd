@@ -49,14 +49,14 @@ sample be available in a specified directory.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Demo pedigree file
-pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)
-prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir, batch.v=0L)
+prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch.v=0L)
 
 
 }

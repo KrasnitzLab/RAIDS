@@ -31,11 +31,11 @@ the reference samples is returned.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Open existing 1K GDS file with "sample.ref" node
-GDS_file <- file.path(data.dir, "1KG_Demo_with_sampleREF.gds")
-fileGDS <- snpgdsOpen(GDS_file)
+nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
+fileGDS <- snpgdsOpen(nameFileGDS)
 
 ## Extract super population information for the 1KG samples
 getRef1KGPop(gds=fileGDS, popName="superPop")

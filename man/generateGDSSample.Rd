@@ -38,11 +38,11 @@ the \code{data.frame} passed to the function. The nodes "sample.id" and
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_10.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_10.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
 ## Create "sample.annot" node (the node must be present)
 pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
@@ -57,17 +57,17 @@ pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
 rownames(pedInformation) <- pedInformation$Name.ID
 
 ## Add information about 2 samples to the GDS file
-RAIDS:::generateGDSSample(gds=GDS_file_tmp, pedDF=pedInformation,
+RAIDS:::generateGDSSample(gds=tmpGDS, pedDF=pedInformation,
     listSamples=NULL)
 
 ## Read sample identifier list
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 
 ## Read sample information from GDS file
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 
 ## Close GDS file
-closefn.gds(gdsfile=GDS_file_tmp)
+closefn.gds(gdsfile=tmpGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

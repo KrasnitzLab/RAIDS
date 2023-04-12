@@ -24,10 +24,10 @@ the \link[gdsfmt]{gds.class} class.
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validation should be successful
 RAIDS:::validateGDSClass(gds=gds1KG, name="gds")

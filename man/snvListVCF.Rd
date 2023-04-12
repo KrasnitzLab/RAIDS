@@ -34,13 +34,13 @@ a VCF file.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Demo 1KG GDS file
-fileGDS <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
+fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
 
 ## Output VCF file that will be created
-vcfFile <- file.path(data.dir, "Demo_TMP_01.vcf")
+vcfFile <- file.path(dataDir, "Demo_TMP_01.vcf")
 
 ## Create a VCF file with the SNV dataset present in the GDS file
 ## No cutoff on frequency, so all SNVs are saved

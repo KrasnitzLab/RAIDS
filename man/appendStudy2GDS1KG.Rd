@@ -83,7 +83,7 @@ entry present in the \code{listSamples} parameter.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"

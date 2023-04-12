@@ -246,7 +246,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -398,8 +398,8 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @examples
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -420,12 +420,12 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' ## Copy the Profile GDS file demo that has not been pruned yet
 #' ## into a test directory (deleted after the example has been run)
-#' data.dir.pruning <- file.path(system.file("extdata", package="RAIDS"),
+#' dataDirPruning <- file.path(system.file("extdata", package="RAIDS"),
 #'                  "demoPruning")
-#' dir.create(data.dir.pruning, showWarnings=FALSE,
+#' dir.create(dataDirPruning, showWarnings=FALSE,
 #'                  recursive=FALSE, mode="0777")
-#' file.copy(file.path(data.dir, "ex1_demo.gds"),
-#'                  file.path(data.dir.pruning, "ex1.gds"))
+#' file.copy(file.path(dataDir, "ex1_demo.gds"),
+#'                  file.path(dataDirPruning, "ex1.gds"))
 #'
 #' ## Open 1KG file
 #' gds1KG <- snpgdsOpen(fileGDS)
@@ -433,22 +433,22 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
-#'               studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
+#'               studyID = studyDF$study.id, pathProfileGDS=dataDirPruning)
 #'
 #' ## Close the 1KG GDS file (it is important to always close the GDS files)
 #' closefn.gds(gds1KG)
 #'
 #' ## Check content of Profile GDS file
 #' ## The 'pruned.study' entry should be present
-#' content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+#' content <- openfn.gds(file.path(dataDirPruning, "ex1.gds"))
 #' content
 #'
 #' ## Close the Profile GDS file (it is important to always close the GDS files)
 #' closefn.gds(content)
 #'
 #' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(data.dir.pruning, "ex1.gds"))
-#' unlink(data.dir.pruning)
+#' unlink(file.path(dataDirPruning, "ex1.gds"))
+#' unlink(dataDirPruning)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -602,8 +602,8 @@ pruningSample <- function(gdsReference,
 #' @examples
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -615,12 +615,12 @@ pruningSample <- function(gdsReference,
 #'
 #' ## Copy the Profile GDS file demo that has been pruned
 #' ## into a test directory (deleted after the example has been run)
-#' data.dir.genotype <- file.path(system.file("extdata", package="RAIDS"),
+#' dataDirGenotyping <- file.path(system.file("extdata", package="RAIDS"),
 #'                  "demoAddGenotype")
-#' dir.create(data.dir.genotype, showWarnings=FALSE,
+#' dir.create(dataDirGenotyping, showWarnings=FALSE,
 #'                  recursive=FALSE, mode="0777")
-#' file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
-#'                  file.path(data.dir.genotype, "ex1.gds"))
+#' file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
+#'                  file.path(dataDirGenotyping, "ex1.gds"))
 #'
 #' ## Open 1KG file
 #' gds1KG <- snpgdsOpen(fileGDS)
@@ -628,7 +628,7 @@ pruningSample <- function(gdsReference,
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' add1KG2SampleGDS(gdsReference=gds1KG,
-#'          fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
+#'          fileProfileGDS=file.path(dataDirGenotyping, "ex1.gds"),
 #'          currentProfile=c("ex1"),
 #'          studyID=studyDF$study.id)
 #'
@@ -637,15 +637,15 @@ pruningSample <- function(gdsReference,
 #'
 #' ## Check content of Profile GDS file
 #' ## The 'pruned.study' entry should be present
-#' content <- openfn.gds(file.path(data.dir.genotype, "ex1.gds"))
+#' content <- openfn.gds(file.path(dataDirGenotyping, "ex1.gds"))
 #' content
 #'
 #' ## Close the Profile GDS file (it is important to always close the GDS files)
 #' closefn.gds(content)
 #'
 #' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(data.dir.genotype, "ex1.gds"))
-#' unlink(data.dir.genotype)
+#' unlink(file.path(dataDirGenotyping, "ex1.gds"))
+#' unlink(dataDirGenotyping)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn
@@ -754,7 +754,7 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", 'RAIDS')
+#' dataDir <- system.file("extdata", 'RAIDS')
 #'
 #' ## TODO
 #'
@@ -844,7 +844,7 @@ addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", "RAIDS")
+#' dataDir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'
@@ -936,7 +936,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gdsReference, gdsPhase, pathProfileGDS,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", "RAIDS")
+#' dataDir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'
@@ -1024,7 +1024,7 @@ computePrunedPCARef <- function(gdsProfile, listRef, np=1L, verbose=FALSE) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", "RAIDS")
+#' dataDir <- system.file("extdata", "RAIDS")
 #'
 #' ## TODO
 #'

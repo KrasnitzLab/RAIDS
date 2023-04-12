@@ -5,7 +5,7 @@
 \alias{groupChr1KGSNV}
 \title{Merge the genotyping files per chromosome into one file}
 \usage{
-groupChr1KGSNV(pathGenoChr, PATHOUT)
+groupChr1KGSNV(pathGenoChr, pathOut)
 }
 \arguments{
 \item{pathGenoChr}{a \code{character} string representing the path where
@@ -14,7 +14,7 @@ must contains sub-directories (one per chromosome) and the genotyping files
 must be present in those sub-directories.
 The path must exists.}
 
-\item{PATHOUT}{a \code{character} string representing the path where
+\item{pathOut}{a \code{character} string representing the path where
 the merged genotyping files for each sample will be created.
 The path must exists.}
 }
@@ -31,7 +31,7 @@ files for all samples present in the input directory.
 \examples{
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## TODO
 

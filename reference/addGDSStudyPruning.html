@@ -60,7 +60,7 @@ deleted and a new entry is created.'><!-- mathjax --><script src="https://cdnjs.
     <div class="page-header">
     <h1>Add the pruned.study entry related to the SNV dataset in the
 Profile GDS file</h1>
-    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper.R" class="external-link"><code>R/gdsWrapper.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/R/gdsWrapper_internal.R" class="external-link"><code>R/gdsWrapper_internal.R</code></a></small>
     <div class="hidden name"><code>addGDSStudyPruning.Rd</code></div>
     </div>
 
@@ -106,21 +106,21 @@ name of the SNVs.</p></dd>
 <span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"GDS_TEMP_1.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create and open the GDS file</span></span></span>
-<span class="r-in"><span><span class="va">GDS_file_tmp</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmpGDS</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Vector of low allelic fraction</span></span></span>
 <span class="r-in"><span><span class="va">study</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"s19222"</span>, <span class="st">'s19588'</span>, <span class="st">'s19988'</span>, <span class="st">'s20588'</span>, <span class="st">'s23598'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add segments to the GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addGDSStudyPruning</span><span class="op">(</span>gds<span class="op">=</span><span class="va">GDS_file_tmp</span>, pruned<span class="op">=</span><span class="va">study</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addGDSStudyPruning</span><span class="op">(</span>gds<span class="op">=</span><span class="va">tmpGDS</span>, pruned<span class="op">=</span><span class="va">study</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read lap information from GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">GDS_file_tmp</span>, path<span class="op">=</span><span class="st">"pruned.study"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"pruned.study"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "s19222" "s19588" "s19988" "s20588" "s23598"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">GDS_file_tmp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Delete the temporary GDS file</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>

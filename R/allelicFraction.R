@@ -37,7 +37,7 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Chromosome length information
 #' ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -205,7 +205,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr, genoN=0.
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -269,7 +269,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

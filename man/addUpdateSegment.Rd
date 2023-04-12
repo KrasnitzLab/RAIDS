@@ -29,8 +29,8 @@ already exists, the previous information is erased.
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")
 
 ## Create and open the GDS file
 GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)

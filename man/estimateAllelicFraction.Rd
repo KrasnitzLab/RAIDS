@@ -8,7 +8,7 @@ sample}
 \usage{
 estimateAllelicFraction(
   gdsReference,
-  gdsSample,
+  gdsProfile,
   currentProfile,
   studyID,
   chrInfo,
@@ -28,8 +28,8 @@ estimateAllelicFraction(
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+\item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the Profile GDS file.}
 
 \item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
@@ -84,7 +84,7 @@ The integer \code{0L} when successful.
 \description{
 The function estimates the allelic fraction of the pruned
 SNVs for a specific sample and add the information to the associated
-GDS Sample file. The allelic fraction estimation method is adapted to
+Profile GDS file. The allelic fraction estimation method is adapted to
 the type of study (DNA or RNA).
 }
 \details{

@@ -1009,10 +1009,72 @@ addGDSStudyPruning <- function(gds, pruned) {
     }
 
     ## Create the pruned.study node in the Profile GDS file
-    var.Pruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
+    varPruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
 
     # Write the data cached in memory to the Profile GDS file
     sync.gds(gdsfile=gds)
+
+    return(0L)
+}
+
+
+#' @title Add information related to low allelic fraction associated to
+#' the SNV dataset for a specific sample into a GDS file
+#'
+#' @description The function adds the information related to low allelic
+#' fraction
+#' associated to the SNV dataset for a specific sample into a
+#' GDS file, more specifically, in the "lap" node. The "lap" node must
+#' already be present in the GDS file.
+#'
+#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), a GDS file.
+#'
+#' @param snpLap a \code{vector} of \code{numeric} value representing the
+#' low allelic fraction for each SNV present in the SNV dataset. The
+#' values should be between \code{0} and \code{0.50}. The
+#' length of the \code{vector} should correspond to the number of SNVs
+#' present in the "snp.id" entry of the GDS sample file.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Create a temporary GDS file in an test directory
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")
+#'
+#' ## Create and open the GDS file
+#' gdsFile  <- createfn.gds(filename=gdsFilePath)
+#'
+#' ## Create a "lap" node
+#' add.gdsn(node=gdsFile, name="lap", val=rep(10L, 12))
+#' sync.gds(gdsFile)
+#'
+#' ## Vector of low allelic fraction
+#' lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
+#'
+#' ## Add segments to the GDS file
+#' RAIDS:::addUpdateLap(gds=gdsFile, snpLap=lap)
+#'
+#' ## Read lap information from GDS file
+#' read.gdsn(index.gdsn(node=gdsFile, path="lap"))
+#'
+#' ## Close GDS file
+#' closefn.gds(gdsfile=gdsFile)
+#'
+#' ## Delete the temporary GDS file
+#' unlink(x=gdsFilePath, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+addUpdateLap <- function(gds, snpLap) {
+
+    snpLap2 <- write.gdsn(index.gdsn(gds, "lap"), snpLap)
+
+    sync.gds(gds)
 
     return(0L)
 }

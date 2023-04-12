@@ -297,8 +297,8 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the Profile GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -366,7 +366,8 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #'     156040895L, 57227415L,  16569L)
 #'
 #' ## The validatiion should be successful
-#' RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG, gdsSample=gdsSample,
+#' RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG,
+#'     gdsProfile=gdsSample,
 #'     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
 #'     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
 #'     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
@@ -380,13 +381,14 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateEstimateAllelicFraction <- function(gdsReference, gdsSample, currentProfile,
+validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
+        currentProfile,
         studyID, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
         cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, block.id) {
 
     ## The gds and gdsSample must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
-    validateGDSClass(gdsSample, "gdsSample")
+    validateGDSClass(gdsProfile, "gdsProfile")
 
     ## The currentProfile must be a character string
     if (!is.character(currentProfile)) {

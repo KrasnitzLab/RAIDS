@@ -24,8 +24,8 @@ This function append the sample identifiers into the
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_04.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_04.gds")
 
 ## Create and open the GDS file
 GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)

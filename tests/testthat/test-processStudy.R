@@ -1088,7 +1088,7 @@ test_that("estimateAllelicFraction() must return error when gdsReference is a ch
     error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'."
 
     expect_error(estimateAllelicFraction(gdsReference="test.gds",
-                    gdsSample=gdsF, currentProfile="gds", studyID= "TCGA",
+                    gdsProfile=gdsF, currentProfile="gds", studyID= "TCGA",
                     chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                     wAR=9), error_message, fixed=TRUE)
@@ -1102,10 +1102,10 @@ test_that("estimateAllelicFraction() must return error when gdsSample is a chara
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+    error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample="test.gds", currentProfile="gds", studyID= "TCGA",
+                gdsProfile="test.gds", currentProfile="gds", studyID= "TCGA",
                 chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1122,7 +1122,7 @@ test_that("estimateAllelicFraction() must return error when currentProfile is a 
     error_message <- "The \'currentProfile\' must be a character string."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                    gdsSample=gdsF, currentProfile=33, studyID= "TCGA",
+                    gdsProfile=gdsF, currentProfile=33, studyID= "TCGA",
                     chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
                     eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                     wAR=9), error_message, fixed=TRUE)
@@ -1139,10 +1139,10 @@ test_that("estimateAllelicFraction() must return error when studyID is a numeric
     error_message <- "The \'studyID\' must be a character string."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                    gdsSample=gdsF, currentProfile="test", studyID= 33,
-                    chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
-                    eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                    wAR=9), error_message, fixed=TRUE)
+            gdsProfile=gdsF, currentProfile="test", studyID= 33,
+            chrInfo=chrInfo, studyType="DNA", minCov=10, minProb=0.999,
+            eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
+            wAR=9), error_message, fixed=TRUE)
 })
 
 
@@ -1156,7 +1156,7 @@ test_that("estimateAllelicFraction() must return error when studyType is a numer
     error_message <- "The \'studyType\' must be a character string."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType=33, minCov=10, minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1173,7 +1173,7 @@ test_that("estimateAllelicFraction() must return error when minCov is vector of 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=c(10, 11), minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1190,7 +1190,7 @@ test_that("estimateAllelicFraction() must return error when minCov is character 
     error_message <- "The \'minCov\' must be a single numeric positive value"
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov="3", minProb=0.999,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1208,7 +1208,7 @@ test_that("estimateAllelicFraction() must return error when minProb is character
                       "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb="0.1",
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1226,7 +1226,7 @@ test_that("estimateAllelicFraction() must return error when minProb is negative 
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=-0.1,
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1244,7 +1244,7 @@ test_that("estimateAllelicFraction() must return error when minProb is above 1",
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=1.01,
                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1262,7 +1262,7 @@ test_that("estimateAllelicFraction() must return error when minProb is vector of
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=c(0.01, 0.02),
             eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1280,7 +1280,7 @@ test_that("estimateAllelicFraction() must return error when eProb is character s
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb="0.001", cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1298,7 +1298,7 @@ test_that("estimateAllelicFraction() must return error when eProb is negative va
                                     "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=-0.01, cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1316,7 +1316,7 @@ test_that("estimateAllelicFraction() must return error when eProb is above 1", {
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=1.01, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1334,7 +1334,7 @@ test_that("estimateAllelicFraction() must return error when eProb is vector of n
                                 "value between 0 and 1.")
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=c(0.01, 0.001), cutOffLOH=-5, cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1351,7 +1351,7 @@ test_that("estimateAllelicFraction() must return error when wAR is vector of num
     error_message <- "The \'wAR\' parameter must be a single numeric positive value."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3,
                 wAR="9"), error_message, fixed=TRUE)
@@ -1368,7 +1368,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-            gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+            gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
             chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
             eProb=0.01, cutOffLOH=c(-5, -3), cutOffHomoScore=-3,
             wAR=9), error_message, fixed=TRUE)
@@ -1385,7 +1385,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is a chara
     error_message <- "The \'cutOffLOH\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH="-3", cutOffHomoScore=-3,
                 wAR=9), error_message, fixed=TRUE)
@@ -1404,7 +1404,7 @@ test_that("estimateAllelicFraction() must return error when cutOffLOH is vector 
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                 chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                 eProb=0.01, cutOffLOH=-5, cutOffHomoScore=c(-3, -4),
                 wAR=9), error_message, fixed=TRUE)
@@ -1421,7 +1421,7 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
     error_message <- "The \'cutOffHomoScore\' parameter must be a single numeric value."
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-                    gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+                    gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
                     chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.1,
                     eProb=0.01, cutOffLOH=-5, cutOffHomoScore="-3",
                     wAR=9), error_message, fixed=TRUE)
@@ -1436,7 +1436,7 @@ test_that("estimateAllelicFraction() must return error when studyType is not a v
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     expect_error(estimateAllelicFraction(gdsReference=gdsF,
-        gdsSample=gdsF, currentProfile="test", studyID="DNA_1",
+        gdsProfile=gdsF, currentProfile="test", studyID="DNA_1",
         chrInfo=chrInfo, studyType="TOTO", minCov=10L, minProb=0.1,
         eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9))
 })

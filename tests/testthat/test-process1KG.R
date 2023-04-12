@@ -108,7 +108,7 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
     error_message <- paste0("The file \'", snpFile, "\' does not exist.")
 
     expect_error(generateMapSnvSel(cutOff=0.01, fileSNV=snpFile,
-                    fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+                    fileSNPsRDS=outFile1 , fileFREQ=outFile2), error_message)
 })
 
 
@@ -125,7 +125,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
     error_message <- "The cutOff must be a single numeric value."
 
     expect_error(generateMapSnvSel(cutOff="CANADA", fileSNV=snpFile,
-                        fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+                        fileSNPsRDS=outFile1 , fileFREQ=outFile2), error_message)
 })
 
 
@@ -142,7 +142,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
     error_message <- "The cutOff must be a single numeric value."
 
     expect_error(generateMapSnvSel(cutOff=c(0.01, 0.02), fileSNV=snpFile,
-                        fileLSNP=outFile1 , fileFREQ=outFile2), error_message)
+                        fileSNPsRDS=outFile1 , fileFREQ=outFile2), error_message)
 })
 
 
@@ -158,7 +158,7 @@ test_that("generateMapSnvSel() must generate expected output", {
     filterSNVFile <- local_file(test_path("fixtures", "mapSNVSel_TEMP01.rds"))
 
     expect_equal(generateMapSnvSel(cutOff=c(0.01), fileSNV=snvFile,
-                fileLSNP=snpIndexFile , fileFREQ=filterSNVFile), 0L)
+                fileSNPsRDS=snpIndexFile , fileFREQ=filterSNVFile), 0L)
 
     expect_true(file.exists(snpIndexFile))
 
@@ -604,7 +604,7 @@ test_that("generatePhase1KG2GDS() must return error when verbose is a numeric", 
                                 " (TRUE or FALSE).")
 
     expect_error(generatePhase1KG2GDS(gdsReference=gds1KG,
-            gdsReferencePhase=gds1KG, pathGeno=dataDir, fileLSNP="test",
+            gdsReferencePhase=gds1KG, pathGeno=dataDir, fileSNPsRDS="test",
             verbose="SAVE"), error_message,  fixed=TRUE)
 })
 

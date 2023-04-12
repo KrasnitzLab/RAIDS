@@ -744,7 +744,7 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 #' @param pathGeno a \code{character} string representing the path to
 #' the directory that contains TODO
 #'
-#' @param fileLSNP TODO
+#' @param fileSNPsRDS TODO
 #'
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed. Default: \code{FALSE}.
@@ -763,7 +763,7 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 #' @encoding UTF-8
 #' @export
 addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS,
-                                    pathGeno, fileLSNP, verbose=FALSE) {
+                                    pathGeno, fileSNPsRDS, verbose=FALSE) {
 
     ## The gdsReference must be an object of class "gds.class"
     validateGDSClass(gds=gdsReference, name="gdsReference")
@@ -793,7 +793,7 @@ addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS,
     add.gdsn(gdsSample, "snp.index", indexAll)
     listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref"))==1)
     listSample <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listRef]
-    listSNP <- readRDS(file=fileLSNP)
+    listSNP <- readRDS(file=fileSNPsRDS)
     i<-1
     for(sample1KG in listSample){
         if(verbose) { message("P ", i, " ", Sys.time()) }
@@ -874,7 +874,7 @@ addPhase1KG2SampleGDSFromGDS <- function(gdsReference, gdsPhase, pathProfileGDS,
     add.gdsn(gdsSample, "snp.index", indexAll)
     listRef <- which(read.gdsn(index.gdsn(gdsReference, "sample.ref"))==1)
     listSample <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listRef]
-    #listSNP <- readRDS(fileLSNP)
+    #listSNP <- readRDS(fileSNPsRDS)
     i<-1
     for(sample1KG in listSample){
         if(verbose) { message("P ", i, " ", Sys.time()) }

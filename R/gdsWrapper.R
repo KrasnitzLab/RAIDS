@@ -61,7 +61,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @description the function adds the SNV information into a Reference
 #' GDS file.
 #'
-#' @param an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
 #' @param fileFREQ a \code{character} string representing the path and file
@@ -88,7 +88,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Add SNV information to Reference GDS
-#' RAIDS:::generateGDSSNPinfo(gds=filenewGDS, fileFREQ=fileFilerterSNVs,
+#' RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS, fileFREQ=fileFilerterSNVs,
 #'     verbose=TRUE)
 #'
 #' ## Close GDS file (important)
@@ -101,45 +101,45 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
+generateGDSSNPinfo <- function(gdsReference, fileFREQ, verbose) {
 
     mapSNVSel <- readRDS(file=fileFREQ)
 
     if(verbose) { message("Read mapSNVSel DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
+    add.gdsn(node=gdsReference, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
 
     if(verbose) { message("SNP part snp.id DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.chromosome",
+    add.gdsn(node=gdsReference, name="snp.chromosome",
             as.integer(gsub("chr", "", mapSNVSel$CHROM)), storage = "uint16")
 
     if(verbose) { message("SNP part snp.chromosome DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.position", as.integer(mapSNVSel$POS),
+    add.gdsn(node=gdsReference, name="snp.position", as.integer(mapSNVSel$POS),
                 storage="int32")
 
     if(verbose) { message("SNP part snp.position DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.allele",
+    add.gdsn(node=gdsReference, name="snp.allele",
                 paste0(mapSNVSel$REF, "/", mapSNVSel$ALT))
 
     if(verbose) { message("SNP part 1 DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.AF", as.numeric(mapSNVSel$AF),
+    add.gdsn(node=gdsReference, name="snp.AF", as.numeric(mapSNVSel$AF),
                     storage="packedreal24")
 
     if(verbose) { message("SNP part AF DONE ", Sys.time()) }
 
-    add.gdsn(node=gds, name="snp.EAS_AF", val=as.numeric(mapSNVSel$EAS_AF),
+    add.gdsn(node=gdsReference, name="snp.EAS_AF", val=as.numeric(mapSNVSel$EAS_AF),
                     storage="packedreal24")
-    add.gdsn(node=gds, name="snp.EUR_AF", val=as.numeric(mapSNVSel$EUR_AF),
+    add.gdsn(node=gdsReference, name="snp.EUR_AF", val=as.numeric(mapSNVSel$EUR_AF),
                     storage="packedreal24")
-    add.gdsn(node=gds, name="snp.AFR_AF", val=as.numeric(mapSNVSel$AFR_AF),
+    add.gdsn(node=gdsReference, name="snp.AFR_AF", val=as.numeric(mapSNVSel$AFR_AF),
                     storage="packedreal24")
-    add.gdsn(node=gds, name="snp.AMR_AF", val=as.numeric(mapSNVSel$AMR_AF),
+    add.gdsn(node=gdsReference, name="snp.AMR_AF", val=as.numeric(mapSNVSel$AMR_AF),
                     storage="packedreal24")
-    add.gdsn(node=gds, name="snp.SAS_AF", val=as.numeric(mapSNVSel$SAS_AF),
+    add.gdsn(node=gdsReference, name="snp.SAS_AF", val=as.numeric(mapSNVSel$SAS_AF),
                     storage="packedreal24")
 
     ## Return OL when successful
@@ -161,7 +161,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
 #' genotyping files must correspond to
 #' the individual identification (Individual.ID) in the pedigree file.
 #'
-#' @param fileLSNP a \code{character} string representing the path and file
+#' @param fileSNPsRDS a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
@@ -183,14 +183,14 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
+generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
                                     verbose) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(pathGeno, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(fileSNPsRDS)
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSample1k == listSamples[i])
@@ -237,7 +237,7 @@ generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
 #' @param pathGeno TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
-#' @param fileLSNP TODO list of SNP to keep in the file genotype
+#' @param fileSNPsRDS TODO list of SNP to keep in the file genotype
 #'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
@@ -256,14 +256,14 @@ generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSgenotype <- function(gds, listSample, pathGeno, fileLSNP,
+appendGDSgenotype <- function(gds, listSample, pathGeno, fileSNPsRDS,
                                 verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(pathGeno, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
-    listSNP <- readRDS(file=fileLSNP)
+    listSNP <- readRDS(file=fileSNPsRDS)
     geno.var <- index.gdsn(gds, "genotype")
     g <- read.gdsn(node=geno.var, start=c(1, 1), count=c(1,-1))
     nbSample <- length(g)
@@ -298,11 +298,11 @@ appendGDSgenotype <- function(gds, listSample, pathGeno, fileLSNP,
 }
 
 
-#' @title create a file tfam file for plink from the gds file
+#' @title create a file tfam file for plink from the gdsReference file
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param listSample a \code{array} with the sample to keep TODO
@@ -321,13 +321,13 @@ appendGDSgenotype <- function(gds, listSample, pathGeno, fileLSNP,
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @keywords export
-gds2tfam <- function(gds, listSample, pedOUT) {
+gds2tfam <- function(gdsReference, listSample, pedOUT) {
 
-    sampleGDS <- index.gdsn(gds, "sample.id")
+    sampleGDS <- index.gdsn(gdsReference, "sample.id")
     sampleId <-read.gdsn(sampleGDS)
     listS <- which(sampleId %in% listSample)
 
-    sampleGDS <- index.gdsn(gds, "sample.annot")
+    sampleGDS <- index.gdsn(gdsReference, "sample.annot")
     sampleANNO <-read.gdsn(sampleGDS)
 
     pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
@@ -345,12 +345,12 @@ gds2tfam <- function(gds, listSample, pedOUT) {
 
 }
 
-#' @title create a file tfam file for plink from the gds file
+#' @title create a file tfam file for plink from the gdsProfile file
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1 KG GDS file.
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' gds from the profile file.
 #'
 #' @param listSample  a \code{array} with the sample to keep
 #'
@@ -372,9 +372,9 @@ gds2tfam <- function(gds, listSample, pedOUT) {
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @keywords export
-gds2tfamSample <- function(gds, listSample, sampleANNO, pedOUT) {
+gds2tfamSample <- function(gdsProfile, listSample, sampleANNO, pedOUT) {
 
-    sampleGDS <- index.gdsn(gds, "sample.id")
+    sampleGDS <- index.gdsn(gdsProfile, "sample.id")
     sampleId <-read.gdsn(sampleGDS)
     listS <- which(sampleId %in% listSample)
 
@@ -530,7 +530,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' GDS file, more specifically, in the "segment" node. If the "segment" node
 #' already exists, the previous information is erased.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), a GDS Sample file.
 #'
 #' @param snp.seg a \code{vector} of \code{integer} representing the segment
@@ -553,7 +553,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
 #'
 #' ## Add segments to the GDS file
-#' RAIDS:::addUpdateSegment(gds=GDS_file_tmp, snp.seg=segments)
+#' RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
 #'
 #' ## Read segments information from GDS file
 #' read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
@@ -568,15 +568,15 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addUpdateSegment <- function(gds, snp.seg) {
+addUpdateSegment <- function(gdsProfile, snp.seg) {
 
-    if("segment" %in% ls.gdsn(gds)) {
-        snpLap <- write.gdsn(index.gdsn(gds, "segment"), snp.seg)
+    if("segment" %in% ls.gdsn(gdsProfile)) {
+        snpLap <- write.gdsn(index.gdsn(gdsProfile, "segment"), snp.seg)
     } else{
-        snpLap <- add.gdsn(gds, "segment", snp.seg, storage="uint32")
+        snpLap <- add.gdsn(gdsProfile, "segment", snp.seg, storage="uint32")
     }
 
-    sync.gds(gds)
+    sync.gds(gdsProfile)
 
     ## Successful
     return(0L)

@@ -3,13 +3,13 @@
 \encoding{UTF-8}
 \name{gds2tfamSample}
 \alias{gds2tfamSample}
-\title{create a file tfam file for plink from the gds file}
+\title{create a file tfam file for plink from the gdsProfile file}
 \usage{
-gds2tfamSample(gds, listSample, sampleANNO, pedOUT)
+gds2tfamSample(gdsProfile, listSample, sampleANNO, pedOUT)
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1 KG GDS file.}
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+gds from the profile file.}
 
 \item{listSample}{a \code{array} with the sample to keep}
 

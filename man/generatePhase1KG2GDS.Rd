@@ -9,7 +9,7 @@ generatePhase1KG2GDS(
   gdsReference,
   gdsReferencePhase,
   pathGeno,
-  fileLSNP,
+  fileSNPsRDS,
   verbose = FALSE
 )
 }
@@ -26,7 +26,7 @@ genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.
 Default: \code{"./data/sampleGeno"}.}
 
-\item{fileLSNP}{a \code{character} string representing the path and file
+\item{fileSNPsRDS}{a \code{character} string representing the path and file
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.}
 
@@ -79,7 +79,7 @@ gdsRef <- openfn.gds(fileReferenceGDS)
 \dontrun{
 ## Fill temporary Reference Phase GDS file
 generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-    pathGeno=dataDir, fileLSNP=filterSNVFile, verbose=FALSE)
+    pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
 }
 
 ## Close 1KG Phase information file

@@ -293,7 +293,7 @@ prepSynthetic <- function(fileProfileGDS,
                 Source=rep("Synthetic", length(listSampleRef) * nbSim),
                 stringsAsFactors=FALSE)
 
-    addStudyGDSSample(gdsSample, pedSim, batch=1, listSamples=NULL,
+    addStudyGDSSample(gds=gdsSample, pedDF=pedSim, batch=1, listSamples=NULL,
         studyDF=study.list, verbose=verbose)
 
     closefn.gds(gdsSample)

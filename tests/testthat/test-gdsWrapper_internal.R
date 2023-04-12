@@ -185,3 +185,275 @@ test_that("appendGDSSample() must print the expected message", {
 })
 
 
+#############################################################################
+### Tests addStudyGDSSample() results
+#############################################################################
+
+context("addStudyGDSSample() results")
+
+
+test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_11.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Create PEF information
+    pedInformation <- data.frame(Name.ID=c("sample_01", "sample_02", "sample_03"),
+        Case.ID=c("sample_01", "sample_02", "sample_03"),
+        Sample.Type=rep("Reference", 3), Diagnosis=rep("Reference", 3),
+        Source=rep("IGSR", 3), stringsAsFactors=FALSE)
+
+    rownames(pedInformation) <- pedInformation$Name.ID
+
+    ## Create Study information
+    studyInfo <- data.frame(study.id="Ref.1KG",
+                        study.desc="Unrelated samples from 1000 Genomes",
+                        study.platform="GRCh38 1000 Genotypes",
+                        stringsAsFactors=FALSE)
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+        batch=2, listSamples=c("sample_01", "sample_02"),
+        studyDF=studyInfo, verbose=FALSE)
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+
+    results2 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected3 <- c("sample_01", "sample_02")
+
+    expected1 <- studyInfo
+
+    expected2 <- data.frame(data.id=expected3, case.id=expected3,
+        sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+        source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+        stringsAsFactors=FALSE)
+
+    expect_equal(results1, expected1)
+    expect_equal(results2, expected2)
+    expect_equal(results3, expected3)
+})
+
+
+test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" node when the node already exists", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_12.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Create Study information initial
+    studyInfoInit <- data.frame(study.id="Ref.1KG",
+            study.desc="Unrelated samples from 1000 Genomes",
+            study.platform="GRCh38 1000 Genotypes",
+            stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.list", studyInfoInit)
+
+    ## Create sample information initial
+    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"), case.id=c("sample_01", "sample_02"),
+        sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+        source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+        stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.annot", sampleInfo)
+
+    sync.gds(GDS_file_tmp)
+
+    ## Create sample information novel
+    pedInformation <- data.frame(Name.ID=c("sample_11", "sample_12"),
+        Case.ID=c("sample_11", "sample_12"),
+        Sample.Type=rep("Reference 2", 2), Diagnosis=rep("Reference 2", 2),
+        Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+
+    ## Create study information novel
+    studyInfo <- data.frame(study.id="Ref.1KG New",
+                        study.desc="Unrelated samples from 1000 Genomes New",
+                        study.platform="GRCh38 1000 Genotypes",
+                        stringsAsFactors=FALSE)
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+        batch=2, listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+
+    ## Read sample names from GDS file
+    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+
+    results2 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected3 <- c("sample_11", "sample_12")
+
+    expected1 <- rbind(studyInfoInit, studyInfo)
+
+    expected2 <- data.frame(data.id=c("sample_01", "sample_02", expected3),
+        case.id=c("sample_01", "sample_02", expected3),
+        sample.type=c(rep("Reference", 2), rep("Reference 2",2)),
+        diagnosis=c(rep("Reference", 2), rep("Reference 2",2)),
+        source=rep("IGSR", 4),
+        study.id=c("Ref.1KG", "Ref.1KG", "Ref.1KG New", "Ref.1KG New"),
+        stringsAsFactors=FALSE)
+
+    expect_equal(results1, expected1)
+    expect_equal(results2, expected2)
+    expect_equal(results3, expected3)
+})
+
+
+test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_13.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Create Study information initial
+    studyInfoInit <- data.frame(study.id="Ref.1KG",
+        study.desc="Unrelated samples from 1000 Genomes",
+        study.platform="GRCh38 1000 Genotypes", stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.list", studyInfoInit)
+
+    ## Create sample information initial
+    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"),
+        case.id=c("sample_01", "sample_02"),
+        sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+        source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+        stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.annot", sampleInfo)
+
+    sync.gds(GDS_file_tmp)
+
+    ## Create sample information novel
+    pedInformation <- data.frame(Name.ID=c("sample_11", "sample_12"),
+        Case.ID=c("sample_11", "sample_12"),
+        Sample.Type=rep("Reference 2", 2), Diagnosis=rep("Reference 2", 2),
+        Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+
+    ## Create study information novel
+    studyInfo <- data.frame(study.id="Ref.1KG New",
+        study.desc="Unrelated samples from 1000 Genomes New",
+        study.platform="GRCh38 1000 Genotypes", stringsAsFactors=FALSE)
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,
+        pedDF=pedInformation, batch=2, listSamples=NULL,
+        studyDF=studyInfo, verbose=FALSE)
+
+    message <- "DONE"
+
+    ## Add samples to the GDS file
+    expect_message(RAIDS:::addStudyGDSSample(gds=GDS_file_tmp, pedDF=pedInformation,
+        batch=2, listSamples=NULL, studyDF=studyInfo, verbose=TRUE),
+        regexp=message, all=TRUE, perl=TRUE)
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+})
+
+
+test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_13.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Create Study information initial
+    studyInfoInit <- data.frame(study.id="Ref.1KG",
+        study.desc="Unrelated samples from 1000 Genomes",
+        study.platform="GRCh38 1000 Genotypes", stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.list", studyInfoInit)
+
+    ## Create sample information initial
+    sampleInfo <- data.frame(data.id=c("sample_01", "sample_02"),
+        case.id=c("sample_01", "sample_02"),
+        sample.type=rep("Reference", 2), diagnosis=rep("Reference", 2),
+        source=rep("IGSR", 2), study.id=rep("Ref.1KG", 2),
+        stringsAsFactors=FALSE)
+
+    add.gdsn(GDS_file_tmp, "study.annot", sampleInfo)
+
+    sync.gds(GDS_file_tmp)
+
+    ## Create sample information novel
+    pedInformation <- data.frame(Name.ID=c("sample_11", "sample_12"),
+        Case.ID=c("sample_11", "sample_12"),
+        Sample.Type=rep("Reference 2", 2), Diagnosis=rep("Reference 2", 2),
+        Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+
+    ## Create study information novel
+    studyInfo <- data.frame(study.id="Ref.1KG New",
+        study.desc="Unrelated samples from 1000 Genomes New",
+        study.platform="GRCh38 1000 Genotypes", stringsAsFactors=FALSE)
+
+    ## Add samples to the GDS file
+    results3 <- RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+        batch=2, listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+
+    message <- "DONE"
+
+    ## Add samples to the GDS file
+    expect_message(RAIDS:::addStudyGDSSample(gds=GDS_file_tmp,
+        pedDF=pedInformation, batch=2, listSamples=NULL, studyDF=studyInfo,
+        verbose=TRUE), regexp=message, all=TRUE, perl=TRUE)
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+})
+
+
+#############################################################################
+### Tests addGDSStudyPruning() results
+#############################################################################
+
+context("addGDSStudyPruning() results")
+
+
+test_that("addGDSStudyPruning() must copy the expected entry in \"pruned.study\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_03.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Vector of SNV names
+    study <- c('s19771', 's19999', 's20122', 's21222')
+
+    ## Add name of SNVs to the GDS file
+    RAIDS:::addGDSStudyPruning(gds=GDS_file_tmp, pruned=study)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="pruned.study"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(results, study)
+})
+

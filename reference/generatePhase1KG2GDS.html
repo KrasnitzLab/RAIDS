@@ -73,7 +73,7 @@ GDS file and is added into a Reference Phase GDS file. An entry called
 <span>  <span class="va">gdsReference</span>,</span>
 <span>  <span class="va">gdsReferencePhase</span>,</span>
 <span>  <span class="va">pathGeno</span>,</span>
-<span>  <span class="va">fileLSNP</span>,</span>
+<span>  <span class="va">fileSNPsRDS</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -98,7 +98,7 @@ the individual identification (Individual.ID) in the pedigree file.
 Default: <code>"./data/sampleGeno"</code>.</p></dd>
 
 
-<dt>fileLSNP</dt>
+<dt>fileSNPsRDS</dt>
 <dd><p>a <code>character</code> string representing the path and file
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.</p></dd>
@@ -159,7 +159,7 @@ print messages when running. Default: <code>FALSE</code>.</p></dd>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co">## Fill temporary Reference Phase GDS file</span></span></span>
 <span class="r-in"><span><span class="fu">generatePhase1KG2GDS</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gdsRef</span>, gdsReferencePhase<span class="op">=</span><span class="va">gdsPhase</span>,</span></span>
-<span class="r-in"><span>    pathGeno<span class="op">=</span><span class="va">dataDir</span>, fileLSNP<span class="op">=</span><span class="va">filterSNVFile</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    pathGeno<span class="op">=</span><span class="va">dataDir</span>, fileSNPsRDS<span class="op">=</span><span class="va">filterSNVFile</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close 1KG Phase information file</span></span></span>

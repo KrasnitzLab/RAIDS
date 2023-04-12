@@ -65,12 +65,17 @@ GDS file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span><span class="va">gds</span>, <span class="va">fileFREQ</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">fileFREQ</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>fileFREQ</dt>
+    <dl><dt>gdsReference</dt>
+<dd><p>an object of class
+<a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened Reference GDS file.</p></dd>
+
+
+<dt>fileFREQ</dt>
 <dd><p>a <code>character</code> string representing the path and file
 name of the RDS file with the filtered SNP information.</p></dd>
 
@@ -78,11 +83,6 @@ name of the RDS file with the filtered SNP information.</p></dd>
 <dt>verbose</dt>
 <dd><p>a <code>logical</code> indicating if messages should be printed
 to show how the different steps in the function.</p></dd>
-
-
-<dt>an</dt>
-<dd><p>object of class
-<a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened Reference GDS file.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -113,14 +113,14 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span><span class="va">fileFilerterSNVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add SNV information to Reference GDS</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gds<span class="op">=</span><span class="va">filenewGDS</span>, fileFREQ<span class="op">=</span><span class="va">fileFilerterSNVs</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>, fileFREQ<span class="op">=</span><span class="va">fileFilerterSNVs</span>,</span></span>
 <span class="r-in"><span>    verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-12 06:38:39.056772</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-12 06:38:39.058718</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-12 06:38:39.059385</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-12 06:38:39.059857</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-12 06:38:39.060238</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-12 06:38:39.060584</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-12 15:25:13.19711</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-12 15:25:13.197626</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-12 15:25:13.198009</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-12 15:25:13.198321</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-12 15:25:13.198634</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-12 15:25:13.19893</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file (important)</span></span></span>

@@ -302,9 +302,9 @@ the frequency in each super population.</p>
 <p>The bulk SNP file is filtered to only retain the SNPs with frequency
 higher then a specific cut-off (here &gt;=0.01) for at least one super
 population.</p>
-<p>The filter SNP file is saved in RDS format (<em>fileLSNP</em>
+<p>The filter SNP file is saved in RDS format (<em>fileSNPsRDS</em>
 parameter). A second file containing the index of the retained SNPs is
-also created (<em>fileLSNP</em> parameter)</p>
+also created (<em>fileSNPsRDS</em> parameter)</p>
 <p>The function <strong>generateMapSnvSel()</strong> is used to filter
 the SNP file and generated the needed RDS files:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -317,14 +317,14 @@ the SNP file and generated the needed RDS files:</p>
 <span><span class="co">## The paths and names of the two output files</span></span>
 <span><span class="co">## One file contains the index of retained SNPs ("listSNP.rds")</span></span>
 <span><span class="co">## One file contains the filter SNP information ("mapSNVSel.rds")</span></span>
-<span><span class="va">fileLSNP.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
+<span><span class="va">fileSNPsRDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
 <span><span class="va">fileFREQ.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"mapSNVSel.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Filter the bulk SNP file (fileSNV parameter)</span></span>
 <span><span class="co">## Create a RDS with filter SNPs (fileFREQ parameter)</span></span>
 <span><span class="co">## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)</span></span>
 <span><span class="fu"><a href="../reference/generateMapSnvSel.html">generateMapSnvSel</a></span><span class="op">(</span>cutOff<span class="op">=</span><span class="fl">0.01</span>, fileSNV<span class="op">=</span><span class="va">fileSNV.v</span>,</span>
-<span>                         fileLSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
+<span>                         fileSNPsRDS<span class="op">=</span><span class="va">fileSNPsRDS</span>,</span>
 <span>                         fileFREQ<span class="op">=</span><span class="va">fileFREQ.v</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
@@ -344,7 +344,7 @@ the GDS file that will contain the information related to 1KG:</p>
 <span><span class="co">## Second, the RDS file with the indexes of the retained SNPs</span></span>
 <span><span class="co">## Third, the RDS file with the filtered SNP information</span></span>
 <span><span class="va">filePED1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHMETA</span>,<span class="st">"ped1KG.rds"</span><span class="op">)</span></span>
-<span><span class="va">fileLSNP.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
+<span><span class="va">fileSNPsRDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"listSNP.rds"</span><span class="op">)</span></span>
 <span><span class="va">fileFREQ.v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">PATHSEL</span>, <span class="st">"mapSNVSel.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The name of the GDS file that will be created</span></span>
@@ -355,7 +355,7 @@ the GDS file that will contain the information related to 1KG:</p>
 <span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>pathGeno<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
 <span>                    fileNamePED<span class="op">=</span><span class="va">filePED1KG</span>,</span>
 <span>                    fileSNPSel<span class="op">=</span><span class="va">fileFREQ.v</span>,</span>
-<span>                    fileListSNP<span class="op">=</span><span class="va">fileLSNP.v</span>,</span>
+<span>                    fileListSNP<span class="op">=</span><span class="va">fileSNPsRDS</span>,</span>
 <span>                    fileNameGDS<span class="op">=</span><span class="va">fileGDS</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
@@ -435,7 +435,7 @@ phase information into the newly created 1KG GDS phase file.</p>
 <span><span class="va">gdsPhase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">fileGDSPhase</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Add the phase information to the 1KG Phase GDSfile</span></span>
-<span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">pathGeno</span>, <span class="va">fileLSNP.v</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/generatePhase1KG2GDS.html">generatePhase1KG2GDS</a></span><span class="op">(</span><span class="va">gds</span>, <span class="va">gdsPhase</span>, <span class="va">pathGeno</span>, <span class="va">fileSNPsRDS</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close both files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsPhase</span><span class="op">)</span></span>

@@ -71,7 +71,7 @@ indexes of the retained SNP is also created.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateMapSnvSel</span><span class="op">(</span>cutOff <span class="op">=</span> <span class="fl">0.01</span>, <span class="va">fileSNV</span>, <span class="va">fileLSNP</span>, <span class="va">fileFREQ</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateMapSnvSel</span><span class="op">(</span>cutOff <span class="op">=</span> <span class="fl">0.01</span>, <span class="va">fileSNV</span>, <span class="va">fileSNPsRDS</span>, <span class="va">fileFREQ</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,7 +87,7 @@ file name of the bulk SNP information file from 1KG. The file must be in
 text format. The file must exist.</p></dd>
 
 
-<dt>fileLSNP</dt>
+<dt>fileSNPsRDS</dt>
 <dd><p>a <code>character</code> string representing the path and
 file name of the RDS file that will contain the indexes of the retained
 SNPs. The file extension must be '.rds'.</p></dd>
@@ -151,7 +151,7 @@ of the SAS super population.</p></li>
 <span class="r-in"><span><span class="co">## Create a data.frame containing the information of the retained</span></span></span>
 <span class="r-in"><span><span class="co">## samples (samples with existing genotyping files)</span></span></span>
 <span class="r-in"><span><span class="fu">generateMapSnvSel</span><span class="op">(</span>cutOff<span class="op">=</span><span class="fl">0.01</span>, fileSNV<span class="op">=</span><span class="va">snvFile</span>,</span></span>
-<span class="r-in"><span>    fileLSNP<span class="op">=</span><span class="va">snpIndexFile</span>, fileFREQ<span class="op">=</span><span class="va">filterSNVFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    fileSNPsRDS<span class="op">=</span><span class="va">snpIndexFile</span>, fileFREQ<span class="op">=</span><span class="va">filterSNVFile</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>

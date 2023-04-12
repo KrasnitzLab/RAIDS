@@ -52,7 +52,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 
 ## Open existing 1K GDS file
 fileGDS <- file.path(dataDir, "1KG_Demo.gds")
-tmpGDS <- snpgdsOpen(GDS_file)
+tmpGDS <- snpgdsOpen(fileGDS)
 
 ## Temporary output files
 ## The first RDS file will contain the list of unrelated patients

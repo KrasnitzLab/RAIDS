@@ -31,27 +31,27 @@ that contains the information about the unrelated reference samples.
 \examples{
 
 ## Locate RDS with unrelated/related status for 1KG samples
-data.dir <- system.file("extdata", package="RAIDS")
-rdsFilePath <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+dataDir <- system.file("extdata", package="RAIDS")
+rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_11.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 ## Create "sample.id" node (the node must be present)
 sampleIDs <- c("HG00104", "HG00109", "HG00110")
-add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 
 ## Create  "sample.ref" node in GDS file using RDS information
-RAIDS:::addGDSRef(gds=GDS_file_tmp, filePart=rdsFilePath)
+RAIDS:::addGDSRef(gds=tmpGDS, filePart=rdsFilePath)
 
 ## Read sample reference data.frame
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.ref"))
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.ref"))
 
 ## Close GDS file
-closefn.gds(gdsfile=GDS_file_tmp)
+closefn.gds(gdsfile=tmpGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

@@ -34,8 +34,8 @@
 #'
 #' ## Open 1KG GDS Demo file
 #' ## This file only one superpopulation (for demonstration purpose)
-#' data.dir <- system.file("extdata", package="RAIDS")
-#' fileGDS <- file.path(data.dir, "gds1KG.gds")
+#' dataDir <- system.file("extdata", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "gds1KG.gds")
 #' gdsFileOpen <- openfn.gds(fileGDS)
 #'
 #' ## Extract a selected number of random samples

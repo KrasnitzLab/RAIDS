@@ -196,8 +196,8 @@ pathGenoChr <- file.path("data", "pathgenochr")
 PATHOUT <- file.path("data", "pathgenoOUT")
 
 ## Combining the genotyping information for all chromosome in one file per
-## sample
-groupChr1KGSNV(pathGenoChr, PATHOUT)
+## profile
+groupChr1KGSNV(pathGenoChr=pathGenoChr, pathOut=PATHOUT)
 
 ```
 

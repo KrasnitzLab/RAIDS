@@ -39,14 +39,14 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo pedigree file
-#' pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+#' pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 #'
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
-#' prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir, batch.v=0L)
+#' prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch.v=0L)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -159,16 +159,16 @@ prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo SNV information file used as input
-#' snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+#' snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 #'
 #' ## Temporary output files
 #' ## The first file contains the indexes of the retained SNPs
 #' ## The second file contains the filtered SNP information
-#' snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
-#' filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+#' snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
+#' filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
 #'
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
@@ -276,24 +276,24 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' library(withr)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
-#' pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
 #'
 #' ## The RDS file containing the indexes of the retained SNPs
-#' snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+#' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 #'
 #' ## The RDS file containing the filtered SNP information
-#' filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+#' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary GDS file containing 1KG information
-#' GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
+#' gdsFile <- local_file(file.path(dataDir, "1KG_TEMP.gds"))
 #'
 #' ## Create a temporary GDS file containing information from 1KG
-#' generateGDS1KG(pathGeno=data.dir, fileNamePED=pedigreeFile,
+#' generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
 #'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
-#'     fileNameGDS=GDS_file, listSamples=NULL)
+#'     fileNameGDS=gdsFile, listSamples=NULL)
 #'
 #' ## Remove temporary files
 #' deferred_run()
@@ -520,25 +520,25 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Open existing 1K GDS file
-#' GDS_file <- file.path(data.dir, "1KG_Demo.gds")
-#' fileGDS <- snpgdsOpen(GDS_file)
+#' fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' tmpGDS <- snpgdsOpen(fileGDS)
 #'
 #' ## Temporary output files
 #' ## The first RDS file will contain the list of unrelated patients
 #' ## The second RDS file will contain the kinship information between patients
-#' patientTmpFile <- local_file(file.path(data.dir,
+#' patientTmpFile <- local_file(file.path(dataDir,
 #'     "unrelatedPatients_TEMP.rds"))
-#' ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
+#' ibdTmpFile <- local_file(file.path(dataDir,"ibd_TEMP.rds"))
 #'
 #' ## Identify unrelated patients in 1KG GDS file
-#' identifyRelative(gds=fileGDS, maf=0.05, thresh=2^(-11/2),
+#' identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
 #'     fileIBD=ibdTmpFile, filePart=patientTmpFile)
 #'
 #' ## Close 1K GDS file
-#' closefn.gds(fileGDS)
+#' closefn.gds(tmpGDS)
 #'
 #' ## Remove temporary files
 #' deferred_run()
@@ -609,38 +609,38 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' @examples
 #'
 #' ## Locate RDS with unrelated/related status for 1KG samples
-#' data.dir <- system.file("extdata", package="RAIDS")
-#' rdsFilePath <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+#' dataDir <- system.file("extdata", package="RAIDS")
+#' rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 #'
 #' ## Create a temporary GDS file in an test directory
-#' data.dir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(data.dir, "GDS_TEMP_201.gds")
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' gdsFilePath <- file.path(dataDir, "GDS_TEMP_201.gds")
 #'
 #' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#' tmpGDS  <- createfn.gds(filename=gdsFilePath)
 #
 #' ## Create "sample.id" node (the node must be present)
 #' sampleIDs <- c("HG00104", "HG00109", "HG00110")
-#' add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+#' add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 #'
 #' ## Create "snp.id" node (the node must be present)
 #' snpIDs <- c("s1", "s2", "s3", "s4", "s5", "s6")
-#' add.gdsn(node=GDS_file_tmp, name="snp.id", val=snpIDs)
+#' add.gdsn(node=tmpGDS, name="snp.id", val=snpIDs)
 #'
 #' ## Create "snp.position" node (the node must be present)
 #' snpPositions <- c(16102, 51478, 51897, 51927, 54489, 54707)
-#' add.gdsn(node=GDS_file_tmp, name="snp.position", val=snpPositions)
+#' add.gdsn(node=tmpGDS, name="snp.position", val=snpPositions)
 #'
 #' ## Create "snp.chromosome" node (the node must be present)
 #' snpPositions <- c(1, 1, 1, 1, 1, 1)
-#' add.gdsn(node=GDS_file_tmp, name="snp.chromosome", val=snpPositions)
+#' add.gdsn(node=tmpGDS, name="snp.chromosome", val=snpPositions)
 #'
 #' ## Create "genotype" node (the node must be present)
 #' genotype <- matrix(rep(1, 18), ncol = 3)
-#' add.gdsn(node=GDS_file_tmp, name="genotype", val=genotype)
+#' add.gdsn(node=tmpGDS, name="genotype", val=genotype)
 #'
 #' ## Close GDS file
-#' closefn.gds(GDS_file_tmp)
+#' closefn.gds(tmpGDS)
 #'
 #' ## Create  "sample.ref" node in GDS file using RDS information
 #' addRef2GDS1KG(fileNameGDS=gdsFilePath, filePart=rdsFilePath)
@@ -723,7 +723,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -863,11 +863,11 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Open existing 1K GDS file with "sample.ref" node
-#' GDS_file <- file.path(data.dir, "1KG_Demo_with_sampleREF.gds")
-#' fileGDS <- snpgdsOpen(GDS_file)
+#' nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
+#' fileGDS <- snpgdsOpen(nameFileGDS)
 #'
 #' ## Extract super population information for the 1KG samples
 #' getRef1KGPop(gds=fileGDS, popName="superPop")
@@ -883,9 +883,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 getRef1KGPop <- function(gds, popName="superPop") {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
-    }
+    validateGDSClass(gds=gds, "gds")
 
     ## The popName is a character string
     if (!is.character(popName)) {
@@ -936,7 +934,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'

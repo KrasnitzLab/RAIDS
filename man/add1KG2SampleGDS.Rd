@@ -32,8 +32,8 @@ the Profile GDS file.
 \examples{
 
 ## Path to the demo 1KG GDS file is located in this package
-data.dir <- system.file("extdata/tests", package="RAIDS")
-fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -45,12 +45,12 @@ studyDF <- data.frame(study.id="MYDATA",
 
 ## Copy the Profile GDS file demo that has been pruned
 ## into a test directory (deleted after the example has been run)
-data.dir.genotype <- file.path(system.file("extdata", package="RAIDS"),
+dataDirGenotyping <- file.path(system.file("extdata", package="RAIDS"),
                  "demoAddGenotype")
-dir.create(data.dir.genotype, showWarnings=FALSE,
+dir.create(dataDirGenotyping, showWarnings=FALSE,
                  recursive=FALSE, mode="0777")
-file.copy(file.path(data.dir, "ex1_demo_with_pruning.gds"),
-                 file.path(data.dir.genotype, "ex1.gds"))
+file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
+                 file.path(dataDirGenotyping, "ex1.gds"))
 
 ## Open 1KG file
 gds1KG <- snpgdsOpen(fileGDS)
@@ -58,7 +58,7 @@ gds1KG <- snpgdsOpen(fileGDS)
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 add1KG2SampleGDS(gdsReference=gds1KG,
-         fileProfileGDS=file.path(data.dir.genotype, "ex1.gds"),
+         fileProfileGDS=file.path(dataDirGenotyping, "ex1.gds"),
          currentProfile=c("ex1"),
          studyID=studyDF$study.id)
 
@@ -67,15 +67,15 @@ closefn.gds(gds1KG)
 
 ## Check content of Profile GDS file
 ## The 'pruned.study' entry should be present
-content <- openfn.gds(file.path(data.dir.genotype, "ex1.gds"))
+content <- openfn.gds(file.path(dataDirGenotyping, "ex1.gds"))
 content
 
 ## Close the Profile GDS file (it is important to always close the GDS files)
 closefn.gds(content)
 
 ## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(data.dir.genotype, "ex1.gds"))
-unlink(data.dir.genotype)
+unlink(file.path(dataDirGenotyping, "ex1.gds"))
+unlink(dataDirGenotyping)
 
 }
 \author{

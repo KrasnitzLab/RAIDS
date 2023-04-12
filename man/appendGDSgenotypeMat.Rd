@@ -34,31 +34,31 @@ correspond to the number of rows of the matrix present in the
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_06.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_06.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
 ## Create a "genotype" node with initial matrix
-geno_initial <- matrix(rep(0L, 10), nrow=2)
+genoInitial <- matrix(rep(0L, 10), nrow=2)
 
-add.gdsn(node=GDS_file_tmp, name="genotype", val=geno_initial)
-sync.gds(GDS_file_tmp)
+add.gdsn(node=tmpGDS, name="genotype", val=genoInitial)
+sync.gds(tmpGDS)
 
 ## New genotype information to be added
-new_genotype <- matrix(rep(1L, 6), nrow=2)
+newGenotype <- matrix(rep(1L, 6), nrow=2)
 
 ## Add segments to the GDS file
-RAIDS:::appendGDSgenotypeMat(gds=GDS_file_tmp, matG=new_genotype)
+RAIDS:::appendGDSgenotypeMat(gds=tmpGDS, matG=newGenotype)
 
 ## Read genotype information from GDS file
-## The return matrix should be a combinaison of both initial matrix
+## The return matrix should be a combination of both initial matrix
 ## and new matrix (column binded)
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="genotype"))
+read.gdsn(index.gdsn(node=tmpGDS, path="genotype"))
 
 ## Close GDS file
-closefn.gds(gdsfile=GDS_file_tmp)
+closefn.gds(gdsfile=tmpGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

@@ -108,8 +108,8 @@ function can be specified by the user.
 \examples{
 
 ## Path to the demo 1KG GDS file is located in this package
-data.dir <- system.file("extdata/tests", package="RAIDS")
-fileGDS <- file.path(data.dir, "ex1_good_small_1KG_GDS.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -130,12 +130,12 @@ rownames(samplePED) <- samplePED$Name.ID
 
 ## Copy the Profile GDS file demo that has not been pruned yet
 ## into a test directory (deleted after the example has been run)
-data.dir.pruning <- file.path(system.file("extdata", package="RAIDS"),
+dataDirPruning <- file.path(system.file("extdata", package="RAIDS"),
                  "demoPruning")
-dir.create(data.dir.pruning, showWarnings=FALSE,
+dir.create(dataDirPruning, showWarnings=FALSE,
                  recursive=FALSE, mode="0777")
-file.copy(file.path(data.dir, "ex1_demo.gds"),
-                 file.path(data.dir.pruning, "ex1.gds"))
+file.copy(file.path(dataDir, "ex1_demo.gds"),
+                 file.path(dataDirPruning, "ex1.gds"))
 
 ## Open 1KG file
 gds1KG <- snpgdsOpen(fileGDS)
@@ -143,22 +143,22 @@ gds1KG <- snpgdsOpen(fileGDS)
 ## Compute the list of pruned SNVs for a specific profile 'ex1'
 ## and save it in the Profile GDS file 'ex1.gds'
 pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
-              studyID = studyDF$study.id, pathProfileGDS=data.dir.pruning)
+              studyID = studyDF$study.id, pathProfileGDS=dataDirPruning)
 
 ## Close the 1KG GDS file (it is important to always close the GDS files)
 closefn.gds(gds1KG)
 
 ## Check content of Profile GDS file
 ## The 'pruned.study' entry should be present
-content <- openfn.gds(file.path(data.dir.pruning, "ex1.gds"))
+content <- openfn.gds(file.path(dataDirPruning, "ex1.gds"))
 content
 
 ## Close the Profile GDS file (it is important to always close the GDS files)
 closefn.gds(content)
 
 ## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(data.dir.pruning, "ex1.gds"))
-unlink(data.dir.pruning)
+unlink(file.path(dataDirPruning, "ex1.gds"))
+unlink(dataDirPruning)
 
 }
 \author{

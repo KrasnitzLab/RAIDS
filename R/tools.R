@@ -24,13 +24,13 @@
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo 1KG GDS file
-#' fileGDS <- openfn.gds(file.path(data.dir, "1KG_Demo.gds"))
+#' fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
 #'
 #' ## Output VCF file that will be created
-#' vcfFile <- file.path(data.dir, "Demo_TMP_01.vcf")
+#' vcfFile <- file.path(dataDir, "Demo_TMP_01.vcf")
 #'
 #' ## Create a VCF file with the SNV dataset present in the GDS file
 #' ## No cutoff on frequency, so all SNVs are saved
@@ -142,7 +142,7 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -186,7 +186,7 @@ groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
 #' must be present in those sub-directories.
 #' The path must exists.
 #'
-#' @param PATHOUT a \code{character} string representing the path where
+#' @param pathOut a \code{character} string representing the path where
 #' the merged genotyping files for each sample will be created.
 #' The path must exists.
 #'
@@ -195,7 +195,7 @@ groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
 #' @examples
 #'
 #' ## Path to the demo pedigree file is located in this package
-#' data.dir <- system.file("extdata", package="RAIDS")
+#' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## TODO
 #'
@@ -203,7 +203,7 @@ groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
 #' @importFrom utils write.csv2 read.csv2
 #' @encoding UTF-8
 #' @export
-groupChr1KGSNV <- function(pathGenoChr, PATHOUT) {
+groupChr1KGSNV <- function(pathGenoChr, pathOut) {
 
     ## Validate that the input path for the genotyping files exists
     if (! file.exists(pathGenoChr)) {
@@ -211,8 +211,8 @@ groupChr1KGSNV <- function(pathGenoChr, PATHOUT) {
     }
 
     ## Validate that the output path for the genotyping files exists
-    if (! file.exists(PATHOUT)) {
-        stop("The path \'", PATHOUT, "\' does not exist.")
+    if (! file.exists(pathOut)) {
+        stop("The path \'", pathOut, "\' does not exist.")
     }
 
     ## Obtain the comprehensive list of samples
@@ -235,7 +235,7 @@ groupChr1KGSNV <- function(pathGenoChr, PATHOUT) {
         genoAll <- do.call(rbind, listGeno)
 
         ## Save the genotyping information into one file
-        write.csv2(genoAll, file=bzfile(file.path(PATHOUT,
+        write.csv2(genoAll, file=bzfile(file.path(pathOut,
                             paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
     }
 

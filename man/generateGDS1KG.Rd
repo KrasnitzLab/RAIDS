@@ -68,24 +68,24 @@ https://bioconductor.org/packages/gdsfmt/
 library(withr)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The RDS file containing the pedigree information
-pedigreeFile <- file.path(data.dir, "PedigreeDemo.rds")
+pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
 
 ## The RDS file containing the indexes of the retained SNPs
-snpIndexFile <- file.path(data.dir, "listSNPIndexes_Demo.rds")
+snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 
 ## The RDS file containing the filtered SNP information
-filterSNVFile <- file.path(data.dir, "mapSNVSelected_Demo.rds")
+filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Temporary GDS file containing 1KG information
-GDS_file <- local_file(file.path(data.dir, "1KG_TEMP.gds"))
+gdsFile <- local_file(file.path(dataDir, "1KG_TEMP.gds"))
 
 ## Create a temporary GDS file containing information from 1KG
-generateGDS1KG(pathGeno=data.dir, fileNamePED=pedigreeFile,
+generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
-    fileNameGDS=GDS_file, listSamples=NULL)
+    fileNameGDS=gdsFile, listSamples=NULL)
 
 ## Remove temporary files
 deferred_run()

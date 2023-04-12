@@ -2301,7 +2301,7 @@ test_that("addPhase1KG2SampleGDSFromFile() must return error when gdsReference i
 
     expect_error(addPhase1KG2SampleGDSFromFile(gdsReference=fileGDS,
             pathProfileGDS=test_path("fixtures"), pathGenotest_path("fixtures"),
-            fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
+            fileSNPsRDS="test", verbose="CANADA"), error_message, fixed=TRUE)
 })
 
 
@@ -2316,7 +2316,7 @@ test_that("addPhase1KG2SampleGDSFromFile() must return error when verbose is cha
 
     expect_error(addPhase1KG2SampleGDSFromFile(gdsReference=gdsF,
             pathProfileGDS=test_path("fixtures"), pathGenotest_path("fixtures"),
-            fileLSNP="test", verbose="CANADA"), error_message, fixed=TRUE)
+            fileSNPsRDS="test", verbose="CANADA"), error_message, fixed=TRUE)
 })
 
 

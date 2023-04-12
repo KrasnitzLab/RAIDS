@@ -5,7 +5,7 @@
 \alias{generateMapSnvSel}
 \title{Generate the filter SNP information file in RDS format}
 \usage{
-generateMapSnvSel(cutOff = 0.01, fileSNV, fileLSNP, fileFREQ)
+generateMapSnvSel(cutOff = 0.01, fileSNV, fileSNPsRDS, fileFREQ)
 }
 \arguments{
 \item{cutOff}{a single \code{numeric} value, the cut-off
@@ -15,7 +15,7 @@ for the frequency in at least one super population. Default: \code{0.01}.}
 file name of the bulk SNP information file from 1KG. The file must be in
 text format. The file must exist.}
 
-\item{fileLSNP}{a \code{character} string representing the path and
+\item{fileSNPsRDS}{a \code{character} string representing the path and
 file name of the RDS file that will contain the indexes of the retained
 SNPs. The file extension must be '.rds'.}
 
@@ -75,7 +75,7 @@ filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)
 generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
-    fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+    fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
 
 ## Remove temporary files
 deferred_run()

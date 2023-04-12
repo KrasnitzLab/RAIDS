@@ -161,7 +161,7 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
 #' genotyping files must correspond to
 #' the individual identification (Individual.ID) in the pedigree file.
 #'
-#' @param fileLSNP a \code{character} string representing the path and file
+#' @param fileSNPsRDS a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
@@ -183,14 +183,14 @@ generateGDSSNPinfo <- function(gds, fileFREQ, verbose) {
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
+generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
                                     verbose) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(pathGeno, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(fileSNPsRDS)
 
     for(i in seq_len(length(listSamples))) {
         pos <- which(listSample1k == listSamples[i])
@@ -237,7 +237,7 @@ generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
 #' @param pathGeno TODO a PATH to a directory with the a file for each
 #' samples with the genotype.
 #'
-#' @param fileLSNP TODO list of SNP to keep in the file genotype
+#' @param fileSNPsRDS TODO list of SNP to keep in the file genotype
 #'
 #' @param listSamples  a \code{array} with the sample to keep
 #'
@@ -256,14 +256,14 @@ generateGDSgenotype <- function(gds, pathGeno, fileLSNP, listSamples,
 #' @importFrom utils read.csv2
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSgenotype <- function(gds, listSample, pathGeno, fileLSNP,
+appendGDSgenotype <- function(gds, listSample, pathGeno, fileSNPsRDS,
                                 verbose=FALSE) {
 
     # File with the description of the SNP keep
     listMat1k <- dir(pathGeno, pattern = ".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
-    listSNP <- readRDS(file=fileLSNP)
+    listSNP <- readRDS(file=fileSNPsRDS)
     geno.var <- index.gdsn(gds, "genotype")
     g <- read.gdsn(node=geno.var, start=c(1, 1), count=c(1,-1))
     nbSample <- length(g)

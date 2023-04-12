@@ -120,7 +120,7 @@ prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
 #' file name of the bulk SNP information file from 1KG. The file must be in
 #' text format. The file must exist.
 #'
-#' @param fileLSNP a \code{character} string representing the path and
+#' @param fileSNPsRDS a \code{character} string representing the path and
 #' file name of the RDS file that will contain the indexes of the retained
 #' SNPs. The file extension must be '.rds'.
 #'
@@ -173,7 +173,7 @@ prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
 #' generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
-#'     fileLSNP=snpIndexFile, fileFREQ=filterSNVFile)
+#'     fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
 #'
 #' ## Remove temporary files
 #' deferred_run()
@@ -182,7 +182,7 @@ prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
+generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 
     ## The cut-off must be a single number
     if (!isSingleNumber(cutOff)) {
@@ -215,7 +215,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileLSNP, fileFREQ) {
     mapSNVSel <- mapSNVSel[listSNP,]
 
     ## Save the indexes of the retained SNPs in RDS
-    saveRDS(listSNP, fileLSNP)
+    saveRDS(listSNP, fileSNPsRDS)
     ## Save the filtered SNP information file in RDS
     saveRDS(mapSNVSel, fileFREQ)
 
@@ -334,7 +334,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     ## Read the pedigree file
     ped1KG <- readRDS(fileNamePED)
 
-    # list in the file genotype we keep from fileLSNP in generateMapSnvSel
+    # list in the file genotype we keep from fileSNPsRDS in generateMapSnvSel
     listKeep <- readRDS(fileListSNP)
 
     # Create the GDS file
@@ -350,7 +350,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     generateGDSSNPinfo(gds=newGDS, fileFREQ=fileSNPSel, verbose=verbose)
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
-    generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileLSNP=fileListSNP,
+    generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileSNPsRDS=fileListSNP,
         listSamples=listSampleGDS, verbose=verbose)
     if(verbose) { message("Genotype DONE ", Sys.time()) }
 
@@ -377,7 +377,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' the individual identification (Individual.ID) in the pedigree file.
 #' Default: \code{"./data/sampleGeno"}.
 #'
-#' @param fileLSNP a \code{character} string representing the path and file
+#' @param fileSNPsRDS a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
@@ -423,7 +423,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' \dontrun{
 #' ## Fill temporary Reference Phase GDS file
 #' generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'     pathGeno=dataDir, fileLSNP=filterSNVFile, verbose=FALSE)
+#'     pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
 #' }
 #'
 #' ## Close 1KG Phase information file
@@ -440,13 +440,13 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
-                                    pathGeno, fileLSNP, verbose=FALSE) {
+                                    pathGeno, fileSNPsRDS, verbose=FALSE) {
 
     ## The verbose parameter must be a logical
     validateLogical(logical=verbose, "verbose")
 
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
-    listSNP <- readRDS(fileLSNP)
+    listSNP <- readRDS(fileSNPsRDS)
 
     var.phase <- NULL
     for(i in seq_len(length(sample.id))){

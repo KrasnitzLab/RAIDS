@@ -9,7 +9,7 @@ addPhase1KG2SampleGDSFromFile(
   gdsReference,
   pathProfileGDS,
   pathGeno,
-  fileLSNP,
+  fileSNPsRDS,
   verbose = FALSE
 )
 }
@@ -24,7 +24,7 @@ exist.}
 \item{pathGeno}{a \code{character} string representing the path to
 the directory that contains TODO}
 
-\item{fileLSNP}{TODO}
+\item{fileSNPsRDS}{TODO}
 
 \item{verbose}{a \code{logical} indicating if message information should be
 printed. Default: \code{FALSE}.}

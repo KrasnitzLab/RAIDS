@@ -5,7 +5,7 @@
 \alias{generateGDSgenotype}
 \title{Add information related to profile genotype into a Reference GDS file}
 \usage{
-generateGDSgenotype(gds, pathGeno, fileLSNP, listSamples, verbose)
+generateGDSgenotype(gds, pathGeno, fileSNPsRDS, listSamples, verbose)
 }
 \arguments{
 \item{gds}{an object of class
@@ -16,7 +16,7 @@ the 1K genotyping files for each sample are located. The name of the
 genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.}
 
-\item{fileLSNP}{a \code{character} string representing the path and file
+\item{fileSNPsRDS}{a \code{character} string representing the path and file
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.}
 

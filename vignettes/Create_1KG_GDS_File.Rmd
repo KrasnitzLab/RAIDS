@@ -272,9 +272,9 @@ The bulk SNP file is filtered to only retain the SNPs with frequency
 higher then a specific cut-off (here >=0.01) for at least one super 
 population. 
 
-The filter SNP file is saved in RDS format (_fileLSNP_ parameter). A 
+The filter SNP file is saved in RDS format (_fileSNPsRDS_ parameter). A
 second file containing the index of the retained SNPs is also 
-created (*fileLSNP* parameter)
+created (*fileSNPsRDS* parameter)
 
 The function __generateMapSnvSel()__ is used to filter the SNP file and 
 generated the needed RDS files:
@@ -289,14 +289,14 @@ fileSNV.v <- file.path(pathGeno, "matFreqSNV.txt.bz2")
 ## The paths and names of the two output files
 ## One file contains the index of retained SNPs ("listSNP.rds")
 ## One file contains the filter SNP information ("mapSNVSel.rds")
-fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
+fileSNPsRDS <- file.path(PATHSEL, "listSNP.rds")
 fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 
 ## Filter the bulk SNP file (fileSNV parameter)
 ## Create a RDS with filter SNPs (fileFREQ parameter)
 ## Also creates a RDS with the indexes of the retained SNPs (fileFREQ parameter)
 generateMapSnvSel(cutOff=0.01, fileSNV=fileSNV.v,
-                         fileLSNP=fileLSNP.v,
+                         fileSNPsRDS=fileSNPsRDS,
                          fileFREQ=fileFREQ.v)
 ```
 
@@ -322,7 +322,7 @@ contain the information related to 1KG:
 ## Second, the RDS file with the indexes of the retained SNPs
 ## Third, the RDS file with the filtered SNP information
 filePED1KG <- file.path(PATHMETA,"ped1KG.rds")
-fileLSNP.v <- file.path(PATHSEL, "listSNP.rds")
+fileSNPsRDS <- file.path(PATHSEL, "listSNP.rds")
 fileFREQ.v <- file.path(PATHSEL, "mapSNVSel.rds")
 
 ## The name of the GDS file that will be created
@@ -333,7 +333,7 @@ fileGDS <- file.path(PATHGDS, fileNameGDS)
 generateGDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     fileNamePED=filePED1KG,
                     fileSNPSel=fileFREQ.v,
-                    fileListSNP=fileLSNP.v,
+                    fileListSNP=fileSNPsRDS,
                     fileNameGDS=fileGDS)
 ```
 
@@ -424,7 +424,7 @@ gds <- openfn.gds(fileGDS1KG)
 gdsPhase <- createfn.gds(fileGDSPhase)
 
 ## Add the phase information to the 1KG Phase GDSfile
-generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileLSNP.v)
+generatePhase1KG2GDS(gds, gdsPhase, pathGeno, fileSNPsRDS)
 
 ## Close both files
 closefn.gds(gdsPhase)

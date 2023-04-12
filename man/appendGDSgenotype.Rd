@@ -5,7 +5,7 @@
 \alias{appendGDSgenotype}
 \title{This function append the field genotype in the gds file}
 \usage{
-appendGDSgenotype(gds, listSample, pathGeno, fileLSNP, verbose = FALSE)
+appendGDSgenotype(gds, listSample, pathGeno, fileSNPsRDS, verbose = FALSE)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
@@ -13,7 +13,7 @@ appendGDSgenotype(gds, listSample, pathGeno, fileLSNP, verbose = FALSE)
 \item{pathGeno}{TODO a PATH to a directory with the a file for each
 samples with the genotype.}
 
-\item{fileLSNP}{TODO list of SNP to keep in the file genotype}
+\item{fileSNPsRDS}{TODO list of SNP to keep in the file genotype}
 
 \item{verbose}{a \code{logical} indicating if the function must print
 messages when running. Default: \code{FALSE}.}

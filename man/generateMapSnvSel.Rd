@@ -61,16 +61,16 @@ of the SAS super population.}
 library(withr)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Demo SNV information file used as input
-snvFile <- file.path(data.dir, "matFreqSNV_Demo.txt.bz2")
+snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 
 ## Temporary output files
 ## The first file contains the indexes of the retained SNPs
 ## The second file contains the filtered SNP information
-snpIndexFile <- local_file(file.path(data.dir, "listSNP_TEMP.rds"))
-filterSNVFile <- local_file(file.path(data.dir, "mapSNVSel_TEMP.rds"))
+snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
+filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
 
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)

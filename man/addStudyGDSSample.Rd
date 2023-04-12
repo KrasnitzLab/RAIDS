@@ -52,11 +52,11 @@ created and then, the information is added.
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_11.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
 ## Create a PED data frame with sample information
 ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
@@ -73,17 +73,17 @@ studyInfo <- data.frame(study.id="Ref.1KG",
 
 ## Add the sample information to the GDS Sample file
 ## The information for all samples is added (listSamples=NULL)
-RAIDS:::addStudyGDSSample(gds=GDS_file_tmp, pedDF=ped1KG, batch=1,
+RAIDS:::addStudyGDSSample(gds=tmpGDS, pedDF=ped1KG, batch=1,
     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 
 ## Read study information from GDS Sample file
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.list"))
+read.gdsn(index.gdsn(node=tmpGDS, path="study.list"))
 
 ## Read sample information from GDS Sample file
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="study.annot"))
+read.gdsn(index.gdsn(node=tmpGDS, path="study.annot"))
 
 ## Close GDS file
-closefn.gds(gdsfile=GDS_file_tmp)
+closefn.gds(gdsfile=tmpGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

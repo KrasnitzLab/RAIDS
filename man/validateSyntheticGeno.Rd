@@ -60,17 +60,17 @@ This function validates the input parameters for the
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(data.dir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The 1KG GDS Annotation file (opened)
-gds1KGAnnot <- openfn.gds(file.path(data.dir, "gdsAnnot1KG.gds"),
+gds1KGAnnot <- openfn.gds(file.path(dataDir, "gdsAnnot1KG.gds"),
                              readonly=TRUE)
 
 ## The GDS Sample file
-gdsSample <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
+gdsSample <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
 
 ## The validation should be successful
 RAIDS:::validateSyntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,

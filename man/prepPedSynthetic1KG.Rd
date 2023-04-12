@@ -54,12 +54,12 @@ as an extra column to the final 'data.frame'. In that situation, the
 \examples{
 
 ## The open 1KG GDS file is required (this is a demo file)
-data.dir <- system.file("extdata", package="RAIDS")
-gds_1KG_file <- file.path(data.dir, "1KG_Demo.gds")
+dataDir <- system.file("extdata", package="RAIDS")
+gds_1KG_file <- file.path(dataDir, "1KG_Demo.gds")
 gds1KG <- openfn.gds(gds_1KG_file)
 
-gds_sample_file <- file.path(data.dir, "GDS_Sample_with_study_demo.gds")
-gdsSample <- openfn.gds(gds_sample_file)
+fileSampleGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+gdsSample <- openfn.gds(fileSampleGDS)
 
 ## Extract the study information for "TCGA.Synthetic" study present in the
 ## GDS Sample file and merge column "superPop" from 1KG GDS to the

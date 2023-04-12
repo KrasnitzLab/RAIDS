@@ -33,37 +33,37 @@ input RDS file.
 \examples{
 
 ## Locate RDS with unrelated/related status for 1KG samples
-data.dir <- system.file("extdata", package="RAIDS")
-rdsFilePath <- file.path(data.dir, "unrelatedPatientsInfo_Demo.rds")
+dataDir <- system.file("extdata", package="RAIDS")
+rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_201.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_201.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 ## Create "sample.id" node (the node must be present)
 sampleIDs <- c("HG00104", "HG00109", "HG00110")
-add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
+add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 
 ## Create "snp.id" node (the node must be present)
 snpIDs <- c("s1", "s2", "s3", "s4", "s5", "s6")
-add.gdsn(node=GDS_file_tmp, name="snp.id", val=snpIDs)
+add.gdsn(node=tmpGDS, name="snp.id", val=snpIDs)
 
 ## Create "snp.position" node (the node must be present)
 snpPositions <- c(16102, 51478, 51897, 51927, 54489, 54707)
-add.gdsn(node=GDS_file_tmp, name="snp.position", val=snpPositions)
+add.gdsn(node=tmpGDS, name="snp.position", val=snpPositions)
 
 ## Create "snp.chromosome" node (the node must be present)
 snpPositions <- c(1, 1, 1, 1, 1, 1)
-add.gdsn(node=GDS_file_tmp, name="snp.chromosome", val=snpPositions)
+add.gdsn(node=tmpGDS, name="snp.chromosome", val=snpPositions)
 
 ## Create "genotype" node (the node must be present)
 genotype <- matrix(rep(1, 18), ncol = 3)
-add.gdsn(node=GDS_file_tmp, name="genotype", val=genotype)
+add.gdsn(node=tmpGDS, name="genotype", val=genotype)
 
 ## Close GDS file
-closefn.gds(GDS_file_tmp)
+closefn.gds(tmpGDS)
 
 ## Create  "sample.ref" node in GDS file using RDS information
 addRef2GDS1KG(fileNameGDS=gdsFilePath, filePart=rdsFilePath)

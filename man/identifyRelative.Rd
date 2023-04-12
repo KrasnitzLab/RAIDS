@@ -48,25 +48,25 @@ library(withr)
 library(gdsfmt)
 
 ## Path to the demo pedigree file is located in this package
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Open existing 1K GDS file
-GDS_file <- file.path(data.dir, "1KG_Demo.gds")
-fileGDS <- snpgdsOpen(GDS_file)
+fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+tmpGDS <- snpgdsOpen(GDS_file)
 
 ## Temporary output files
 ## The first RDS file will contain the list of unrelated patients
 ## The second RDS file will contain the kinship information between patients
-patientTmpFile <- local_file(file.path(data.dir,
+patientTmpFile <- local_file(file.path(dataDir,
     "unrelatedPatients_TEMP.rds"))
-ibdTmpFile <- local_file(file.path(data.dir,"ibd_TEMP.rds"))
+ibdTmpFile <- local_file(file.path(dataDir,"ibd_TEMP.rds"))
 
 ## Identify unrelated patients in 1KG GDS file
-identifyRelative(gds=fileGDS, maf=0.05, thresh=2^(-11/2),
+identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
     fileIBD=ibdTmpFile, filePart=patientTmpFile)
 
 ## Close 1K GDS file
-closefn.gds(fileGDS)
+closefn.gds(tmpGDS)
 
 ## Remove temporary files
 deferred_run()

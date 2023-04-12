@@ -33,14 +33,14 @@ This function validates the input parameters for the
 \examples{
 
 ## Directory where demo GDS files are located
-data.dir <- system.file("extdata", package="RAIDS")
+dataDir <- system.file("extdata", package="RAIDS")
 
 ## Demo pedigree file
-pedDemoFile <- file.path(data.dir, "PedigreeDemo.ped")
+pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## The validation should be successful
 RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
-     pathGeno=data.dir, batch=1)
+     pathGeno=dataDir, batch=1)
 
 
 }

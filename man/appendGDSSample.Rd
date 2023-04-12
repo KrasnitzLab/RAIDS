@@ -39,18 +39,18 @@ addStudyGDSSample() must be used.
 \examples{
 
 ## Create a temporary GDS file in an test directory
-data.dir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(data.dir, "GDS_TEMP_03.gds")
+dataDir <- system.file("extdata/tests", package="RAIDS")
+gdsFilePath <- file.path(dataDir, "GDS_TEMP_03.gds")
 
 ## Create and open the GDS file
-GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+tmpGDS <- createfn.gds(filename=gdsFilePath)
 
 ## Create "sample.id" node (the node must be present)
-add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+add.gdsn(node=tmpGDS, name="sample.id", val=c("sample_01",
     "sample_02"))
 
 ## Create "sample.annot" node (the node must be present)
-add.gdsn(node=GDS_file_tmp, name="sample.annot", val=data.frame(
+add.gdsn(node=tmpGDS, name="sample.annot", val=data.frame(
   Name.ID=c("sample_01", "sample_02"),
     sex=c(1,1),  # 1:Male  2: Female
     pop.group=c("ACB", "ACB"),
@@ -58,7 +58,7 @@ add.gdsn(node=GDS_file_tmp, name="sample.annot", val=data.frame(
     batch=c(1, 1),
     stringsAsFactors=FALSE))
 
-sync.gds(gdsfile=GDS_file_tmp)
+sync.gds(gdsfile=tmpGDS)
 
 ## Create a data.frame with information about samples
 sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
@@ -71,19 +71,19 @@ sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
 rownames(sample_info) <- sample_info$Name.ID
 
 ## Add information about 2 samples to the GDS file
-RAIDS:::appendGDSSample(gds=GDS_file_tmp, pedDF=sample_info, batch=2,
+RAIDS:::appendGDSSample(gds=tmpGDS, pedDF=sample_info, batch=2,
     listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 
 ## Read sample identifier list
 ## Only "sample_04" and "sample_06" should have been added
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 
 ## Read sample information from GDS file
 ## Only "sample_04" and "sample_06" should have been added
-read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.annot"))
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 
 ## Close GDS file
-closefn.gds(gdsfile=GDS_file_tmp)
+closefn.gds(gdsfile=tmpGDS)
 
 ## Delete the temporary GDS file
 unlink(x=gdsFilePath, force=TRUE)

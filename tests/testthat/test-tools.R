@@ -185,11 +185,11 @@ test_that("groupChr1KGSNV() must return error when pathGenoChr does not exist", 
                                 "\' does not exist.")
 
     expect_error(groupChr1KGSNV(pathGenoChr=dirNotExisting,
-                                    PATHOUT=data.dir), error_message)
+                                    pathOut=data.dir), error_message)
 })
 
 
-test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
+test_that("groupChr1KGSNV() must return error when pathOut does not exist", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
@@ -199,6 +199,6 @@ test_that("groupChr1KGSNV() must return error when PATHOUT does not exist", {
                             "\' does not exist.")
 
     expect_error(groupChr1KGSNV(pathGenoChr=data.dir,
-                                PATHOUT=dirNotExisting), error_message)
+                                    pathOut=dirNotExisting), error_message)
 })
 

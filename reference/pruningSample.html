@@ -214,8 +214,8 @@ the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Path to the demo 1KG GDS file is located in this package</span></span></span>
-<span class="r-in"><span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The data.frame containing the information about the study</span></span></span>
 <span class="r-in"><span><span class="co">## The 3 mandatory columns: "study.id", "study.desc", "study.platform"</span></span></span>
@@ -236,12 +236,12 @@ the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Copy the Profile GDS file demo that has not been pruned yet</span></span></span>
 <span class="r-in"><span><span class="co">## into a test directory (deleted after the example has been run)</span></span></span>
-<span class="r-in"><span><span class="va">data.dir.pruning</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">dataDirPruning</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                 <span class="st">"demoPruning"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">data.dir.pruning</span>, showWarnings<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dataDirPruning</span>, showWarnings<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                 recursive<span class="op">=</span><span class="cn">FALSE</span>, mode<span class="op">=</span><span class="st">"0777"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"ex1_demo.gds"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.pruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo.gds"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirPruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open 1KG file</span></span></span>
@@ -250,7 +250,7 @@ the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</
 <span class="r-in"><span><span class="co">## Compute the list of pruned SNVs for a specific profile 'ex1'</span></span></span>
 <span class="r-in"><span><span class="co">## and save it in the Profile GDS file 'ex1.gds'</span></span></span>
 <span class="r-in"><span><span class="fu">pruningSample</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>, currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>              studyID <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, pathProfileGDS<span class="op">=</span><span class="va">data.dir.pruning</span><span class="op">)</span></span></span>
+<span class="r-in"><span>              studyID <span class="op">=</span> <span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>, pathProfileGDS<span class="op">=</span><span class="va">dataDirPruning</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span></span>
@@ -258,7 +258,7 @@ the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Check content of Profile GDS file</span></span></span>
 <span class="r-in"><span><span class="co">## The 'pruned.study' entry should be present</span></span></span>
-<span class="r-in"><span><span class="va">content</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.pruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">content</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirPruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">content</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> File: /__w/_temp/Library/RAIDS/extdata/demoPruning/ex1.gds <span style="color: #555555;">(4.5K)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> +    [  ]</span>
@@ -283,8 +283,8 @@ the parameter <code>keepFile</code>=<code>TRUE</code>. Default: <code>"pruned"</
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">content</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir.pruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">data.dir.pruning</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirPruning</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dataDirPruning</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

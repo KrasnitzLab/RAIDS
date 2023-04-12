@@ -113,35 +113,35 @@ correspond to the number of rows of the matrix present in the
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a temporary GDS file in an test directory</span></span></span>
-<span class="r-in"><span><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"GDS_TEMP_06.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"GDS_TEMP_06.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create and open the GDS file</span></span></span>
-<span class="r-in"><span><span class="va">GDS_file_tmp</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmpGDS</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a "genotype" node with initial matrix</span></span></span>
-<span class="r-in"><span><span class="va">geno_initial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">10</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">genoInitial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">10</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">add.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">GDS_file_tmp</span>, name<span class="op">=</span><span class="st">"genotype"</span>, val<span class="op">=</span><span class="va">geno_initial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sync.gds</span><span class="op">(</span><span class="va">GDS_file_tmp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">add.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, name<span class="op">=</span><span class="st">"genotype"</span>, val<span class="op">=</span><span class="va">genoInitial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sync.gds</span><span class="op">(</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## New genotype information to be added</span></span></span>
-<span class="r-in"><span><span class="va">new_genotype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">6</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">newGenotype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">6</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add segments to the GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">appendGDSgenotypeMat</span><span class="op">(</span>gds<span class="op">=</span><span class="va">GDS_file_tmp</span>, matG<span class="op">=</span><span class="va">new_genotype</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">appendGDSgenotypeMat</span><span class="op">(</span>gds<span class="op">=</span><span class="va">tmpGDS</span>, matG<span class="op">=</span><span class="va">newGenotype</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read genotype information from GDS file</span></span></span>
-<span class="r-in"><span><span class="co">## The return matrix should be a combinaison of both initial matrix</span></span></span>
+<span class="r-in"><span><span class="co">## The return matrix should be a combination of both initial matrix</span></span></span>
 <span class="r-in"><span><span class="co">## and new matrix (column binded)</span></span></span>
-<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">GDS_file_tmp</span>, path<span class="op">=</span><span class="st">"genotype"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"genotype"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0    0    0    0    1    1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0    0    0    0    0    1    1    1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">GDS_file_tmp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Delete the temporary GDS file</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>

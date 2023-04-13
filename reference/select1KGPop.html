@@ -72,12 +72,12 @@ samples from the subcontinental population are selected.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select1KGPop</span><span class="op">(</span><span class="va">gds</span>, <span class="va">nbSamples</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select1KGPop</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">nbSamples</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
@@ -123,7 +123,7 @@ super-population assigned to the sample.</p></li>
 <span class="r-in"><span><span class="co">## Extract a selected number of random samples</span></span></span>
 <span class="r-in"><span><span class="co">## for each subcontinental population</span></span></span>
 <span class="r-in"><span><span class="co">## In the 1KG GDS Demo file, there is one subcontinental population</span></span></span>
-<span class="r-in"><span><span class="va">dataR</span> <span class="op">&lt;-</span> <span class="fu">select1KGPop</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gdsFileOpen</span>, nbSamples<span class="op">=</span><span class="va">nbSamples</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataR</span> <span class="op">&lt;-</span> <span class="fu">select1KGPop</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gdsFileOpen</span>, nbSamples<span class="op">=</span><span class="va">nbSamples</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close the 1KG GDS Demo file (important)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsFileOpen</span><span class="op">)</span></span></span>

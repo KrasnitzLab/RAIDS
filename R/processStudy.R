@@ -570,7 +570,7 @@ pruningSample <- function(gdsReference,
     ## When TRUE, add the pruned SNvs information to the Profile GDS file
     if(keepPrunedGDS) {
         gdsSample <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
-        addGDSStudyPruning(gds=gdsSample, pruned=pruned)
+        addGDSStudyPruning(gdsProfile=gdsSample, pruned=pruned)
         closefn.gds(gdsfile=gdsSample)
     }
 
@@ -1382,7 +1382,7 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
         rownames(ped1KG) <- ped1KG$Name.ID
 
         ## Add the information about the 1KG samples into the Profile GDS
-        addStudyGDSSample(gds=gdsSample, pedDF=ped1KG, batch=1,
+        addStudyGDSSample(gdsProfile=gdsSample, pedDF=ped1KG, batch=1,
                     listSamples=NULL, studyDF=study.list, verbose=verbose)
 
         sync.gds(gdsSample)

@@ -96,7 +96,7 @@ generateGDSRefSample <- function(gdsReference, pedDF, listSamples=NULL) {
 #' The information used to fill the "sample.ref" node comes from the RDS file
 #' that contains the information about the unrelated reference samples.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param filePart a \code{character} string representing the path and file
@@ -125,7 +125,7 @@ generateGDSRefSample <- function(gdsReference, pedDF, listSamples=NULL) {
 #' add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 #'
 #' ## Create  "sample.ref" node in GDS file using RDS information
-#' RAIDS:::addGDSRef(gds=tmpGDS, filePart=rdsFilePath)
+#' RAIDS:::addGDSRef(gdsReference=tmpGDS, filePart=rdsFilePath)
 #'
 #' ## Read sample reference data.frame
 #' read.gdsn(index.gdsn(node=tmpGDS, path="sample.ref"))
@@ -140,17 +140,17 @@ generateGDSRefSample <- function(gdsReference, pedDF, listSamples=NULL) {
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addGDSRef <- function(gds, filePart) {
+addGDSRef <- function(gdsReference, filePart) {
 
     part <- readRDS(filePart)
 
-    sampleGDS <- index.gdsn(gds, "sample.id")
+    sampleGDS <- index.gdsn(gdsReference, "sample.id")
     df <- data.frame(sample.id=read.gdsn(sampleGDS),
                         sample.ref=0, stringsAsFactors=FALSE)
 
     # The order of part$unrels is not the same than df$sample.id
     df[df$sample.id %in% part$unrels, "sample.ref"] <- 1
-    add.gdsn(gds, "sample.ref", df$sample.ref, storage="bit1")
+    add.gdsn(gdsReference, "sample.ref", df$sample.ref, storage="bit1")
 
     ## Success
     return(0L)
@@ -527,7 +527,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' when the node is already present in the file. Otherwise, the node is
 #' created and then, the information is added.
 #'
-#' @param gds an object of class
+#' @param gdsProfile an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} with the sample information. The
@@ -579,7 +579,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #'
 #' ## Add the sample information to the GDS Sample file
 #' ## The information for all samples is added (listSamples=NULL)
-#' RAIDS:::addStudyGDSSample(gds=tmpGDS, pedDF=ped1KG, batch=1,
+#' RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedDF=ped1KG, batch=1,
 #'     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 #'
 #' ## Read study information from GDS Sample file
@@ -598,7 +598,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
+addStudyGDSSample <- function(gdsProfile, pedDF, batch, listSamples, studyDF,
                                     verbose) {
 
     ## Used only the selected samples (all when listSamples == NULL)
@@ -622,25 +622,25 @@ addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
 
     ## Append study information to "study.list" when node already present
     ## Otherwise, create node and add study information into it
-    if(! "study.list" %in% ls.gdsn(gds)) {
+    if(! "study.list" %in% ls.gdsn(gdsProfile)) {
         ## Create study node and add study information into GDS Sample file
-        add.gdsn(gds, "study.list", df)
+        add.gdsn(gdsProfile, "study.list", df)
 
         ## Create data frame containing sample information and add it to GDS
         study.annot <- data.frame(data.id=pedDF[, "Name.ID"],
             case.id=pedDF[, "Case.ID"], sample.type=pedDF[, "Sample.Type"],
             diagnosis=pedDF[, "Diagnosis"], source=pedDF[, "Source"],
             study.id=rep(studyDF$study.id, nrow(pedDF)), stringsAsFactors=FALSE)
-        add.gdsn(gds, "study.annot", study.annot)
+        add.gdsn(gdsProfile, "study.annot", study.annot)
 
         if(verbose) { message("study.annot DONE ", Sys.time()) }
     } else{
         ## Append study information to existing node
-        append.gdsn(index.gdsn(gds, "study.list/study.id"),
+        append.gdsn(index.gdsn(gdsProfile, "study.list/study.id"),
                         df$study.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.list/study.desc"),
+        append.gdsn(index.gdsn(gdsProfile, "study.list/study.desc"),
                         df$study.desc, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.list/study.platform"),
+        append.gdsn(index.gdsn(gdsProfile, "study.list/study.platform"),
                         df$study.platform, check=TRUE)
 
         ## Create data frame containing sample information
@@ -650,17 +650,17 @@ addStudyGDSSample <- function(gds, pedDF, batch, listSamples, studyDF,
             study.id=rep(studyDF$study.id, nrow(pedDF)), stringsAsFactors=FALSE)
 
         ## Append sample information to existing node
-        append.gdsn(index.gdsn(gds, "study.annot/data.id"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/data.id"),
                         study.annot$data.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/case.id"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/case.id"),
                         study.annot$case.id, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/sample.type"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/sample.type"),
                         study.annot$sample.type, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/diagnosis"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/diagnosis"),
                         study.annot$diagnosis, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/source"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/source"),
                         study.annot$source, check=TRUE)
-        append.gdsn(index.gdsn(gds, "study.annot/study.id"),
+        append.gdsn(index.gdsn(gdsProfile, "study.annot/study.id"),
                         study.annot$study.id, check=TRUE)
 
         if(verbose) { message("study.annot DONE ", Sys.time()) }
@@ -845,7 +845,7 @@ runLDPruning <- function(gds, method,
 #' If the samples are part of a study, the function
 #' addStudyGDSSample() must be used.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} with the information about the sample(s).
@@ -899,7 +899,7 @@ runLDPruning <- function(gds, method,
 #' rownames(sample_info) <- sample_info$Name.ID
 #'
 #' ## Add information about 2 samples to the GDS file
-#' RAIDS:::appendGDSSample(gds=tmpGDS, pedDF=sample_info, batch=2,
+#' RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, pedDF=sample_info, batch=2,
 #'     listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 #'
 #' ## Read sample identifier list
@@ -920,7 +920,7 @@ runLDPruning <- function(gds, method,
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
+appendGDSRefSample <- function(gdsReference, pedDF, batch=1, listSamples=NULL,
                                 verbose=TRUE) {
 
     ## Only keep selected samples
@@ -929,7 +929,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
     }
 
     ## Append sample identifiers to the "sample.id" node
-    sampleGDS <- index.gdsn(gds, "sample.id")
+    sampleGDS <- index.gdsn(gdsReference, "sample.id")
     append.gdsn(sampleGDS, val=pedDF$Name.ID, check=TRUE)
 
     ## Create the data.frame with the sample information
@@ -942,13 +942,13 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
     if(verbose) { message("Annot") }
 
     ## Append data.frame to "sample.annot" node
-    curAnnot <- index.gdsn(gds, "sample.annot/sex")
+    curAnnot <- index.gdsn(gdsReference, "sample.annot/sex")
     append.gdsn(curAnnot, samp.annot$sex, check=TRUE)
-    curAnnot <- index.gdsn(gds, "sample.annot/pop.group")
+    curAnnot <- index.gdsn(gdsReference, "sample.annot/pop.group")
     append.gdsn(curAnnot, samp.annot$pop.group, check=TRUE)
-    curAnnot <- index.gdsn(gds, "sample.annot/superPop")
+    curAnnot <- index.gdsn(gdsReference, "sample.annot/superPop")
     append.gdsn(curAnnot, samp.annot$superPop, check=TRUE)
-    curAnnot <- index.gdsn(gds, "sample.annot/batch")
+    curAnnot <- index.gdsn(gdsReference, "sample.annot/batch")
     append.gdsn(curAnnot, samp.annot$batch, check=TRUE)
 
     if(verbose) { message("Annot done") }
@@ -965,7 +965,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
 #' Sample file. If a "pruned.study" entry is already present, the entry is
 #' deleted and a new entry is created.
 #'
-#' @param gds an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 #' opened Profile GDS file.
 #'
 #' @param pruned a \code{vector} of \code{character} string representing the
@@ -986,7 +986,7 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
 #' study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
 #'
 #' ## Add segments to the GDS file
-#' RAIDS:::addGDSStudyPruning(gds=tmpGDS, pruned=study)
+#' RAIDS:::addGDSStudyPruning(gdsProfile=tmpGDS, pruned=study)
 #'
 #' ## Read lap information from GDS file
 #' read.gdsn(index.gdsn(node=tmpGDS, path="pruned.study"))
@@ -1001,18 +1001,18 @@ appendGDSSample <- function(gds, pedDF, batch=1, listSamples=NULL,
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addGDSStudyPruning <- function(gds, pruned) {
+addGDSStudyPruning <- function(gdsProfile, pruned) {
 
     ## Delete the pruned.study entry if present in the Profile GDS file
-    if("pruned.study" %in% ls.gdsn(gds)) {
-            delete.gdsn(index.gdsn(node=gds, "pruned.study"))
+    if("pruned.study" %in% ls.gdsn(gdsProfile)) {
+            delete.gdsn(index.gdsn(node=gdsProfile, "pruned.study"))
     }
 
     ## Create the pruned.study node in the Profile GDS file
-    varPruned <- add.gdsn(node=gds, name="pruned.study", val=pruned)
+    varPruned <- add.gdsn(node=gdsProfile, name="pruned.study", val=pruned)
 
     # Write the data cached in memory to the Profile GDS file
-    sync.gds(gdsfile=gds)
+    sync.gds(gdsfile=gdsProfile)
 
     return(0L)
 }
@@ -1027,7 +1027,7 @@ addGDSStudyPruning <- function(gds, pruned) {
 #' GDS file, more specifically, in the "lap" node. The "lap" node must
 #' already be present in the GDS file.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), a GDS file.
 #'
 #' @param snpLap a \code{vector} of \code{numeric} value representing the
@@ -1055,7 +1055,7 @@ addGDSStudyPruning <- function(gds, pruned) {
 #' lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
 #'
 #' ## Add segments to the GDS file
-#' RAIDS:::addUpdateLap(gds=gdsFile, snpLap=lap)
+#' RAIDS:::addUpdateLap(gdsProfile=gdsFile, snpLap=lap)
 #'
 #' ## Read lap information from GDS file
 #' read.gdsn(index.gdsn(node=gdsFile, path="lap"))
@@ -1070,11 +1070,11 @@ addGDSStudyPruning <- function(gds, pruned) {
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addUpdateLap <- function(gds, snpLap) {
+addUpdateLap <- function(gdsProfile, snpLap) {
 
-    snpLap2 <- write.gdsn(index.gdsn(gds, "lap"), snpLap)
+    snpLap2 <- write.gdsn(index.gdsn(gdsProfile, "lap"), snpLap)
 
-    sync.gds(gds)
+    sync.gds(gdsProfile)
 
     return(0L)
 }

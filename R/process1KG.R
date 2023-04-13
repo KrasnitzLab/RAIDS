@@ -673,7 +673,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
     gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
     ## Add information to the GDS file
-    addGDSRef(gds, filePart)
+    addGDSRef(gdsReference=gds, filePart)
 
     ## Close GDS file
     closefn.gds(gds)

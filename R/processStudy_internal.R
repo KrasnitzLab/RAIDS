@@ -277,7 +277,6 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The parameter eigen.cnt must be a single integer
     if(!(isSingleNumber(eigen.cnt))) {
         stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
@@ -290,7 +289,6 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
     }
 
     validateLogical(logical=verbose, name="verbose")
-
     return(0L)
 }
 

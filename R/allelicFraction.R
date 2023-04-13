@@ -68,44 +68,20 @@
 computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
                                     genoN=0.0001) {
 
-    ## The chr parameter must be a single integer value
-    if (!isSingleNumber(chr))  {
-        stop("The \'chr\' must be a single integer value representing ",
-            "a chromosome")
-    }
-
-    ## The genoN parameter must be a single positive numeric between 0 and 1
-    if (!(isSingleNumber(genoN) && (genoN >= 0.0) && (genoN <= 1.0)))  {
-        stop("The \'genoN\' must be a single numeric positive ",
-                "value between 0 and 1.")
-    }
-
-    ## The specified chromosome is not included in the chrInfo parameter
-    if (is.na(chrInfo[chr])) {
-        stop("The \'chr\' must be present in the \'chrInfo\' parameter.")
-    }
-
-    ## The snp.pos must be a data.frame
-    if (!is.data.frame(snp.pos)) {
-        stop("The \'snp.pos\' must be a data.frame.")
-    }
-
     genoN1 <- 1 - 2 * genoN
 
     chrEnd <- chrInfo[chr]
     listHetero <- snp.pos[snp.pos$hetero == TRUE, "snp.pos"]
 
     homoBlock <- data.frame(chr=rep(chr, length(listHetero) + 1),
-                                start=c(1, listHetero + 1),
-                                end=c(listHetero, chrEnd))
+                    start=c(1, listHetero + 1), end=c(listHetero, chrEnd))
 
     z <- cbind(c(homoBlock$start, homoBlock$end,
                         snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
-                c(seq_len(length(homoBlock$start)),
+            c(seq_len(length(homoBlock$start)),
                         -1*seq_len(length(homoBlock$start)),
                         rep(0, length(which(snp.pos$homo == TRUE)))),
-                c(rep(0, length(homoBlock$start)),
-                        rep(0, length(homoBlock$start)),
+            c(rep(0, length(homoBlock$start)), rep(0, length(homoBlock$start)),
                         seq_len(length(which(snp.pos$homo == TRUE)))))
 
     z <- z[order(z[, 1]), ]
@@ -136,7 +112,6 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
         homoBlock$nbSNV[i] <- nrow(blcCur)
         homoBlock$nbPruned[i] <- length(which(snvH$pruned))
         if (length(which(snvH$normal.geno != 3)) > 0) {
-
             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
             homoBlock$nbNorm[i] <- length(listCount)
 
@@ -156,7 +131,6 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
             logLHR <- -100
 
         } else if (length(which(snvH$pruned)) > 2) {
-
             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
             afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
                             FUN=function(x){max(x, 0.01)})
@@ -185,69 +159,6 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 
     return(homoBlock)
 }
-
-#' @title TODO
-#'
-#' @description TODO
-#'
-#' @param matCov TODO
-#'
-#' @param pCutOff TODO, Default: \code{-3}.
-#'
-#'
-#' @return a \code{list} containing 4 entries:
-#' \itemize{
-#' \item{pWin}{TODO}
-#' \item{p}{TODO}
-#' \item{pCut}{TODO}
-#' \item{pCut1}{TODO}
-#' }
-#'
-#' @examples
-#'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
-#'
-#' ## TODO
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
-#' @importFrom stats pbinom
-#' @encoding UTF-8
-#' @keywords internal
-testEmptyBox <- function(matCov, pCutOff=-3) {
-
-    p <- 0
-    pO <- 0
-    vMean <- 0.5
-    matCov$pWin <- rep(1, nrow(matCov))
-
-    for (i in seq_len(nrow(matCov))) {
-
-        vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-                            matCov$cnt.alt[i], matCov$cnt.ref[i])
-
-        pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
-                        prob=vMean)
-
-        pCurO <- max(1 - max(2 * pCur,0.01),0.01)
-
-        matCov$pWin[i] <- pCur * 2
-
-        p <- p + log10(max(pCur,0.01))
-        pO <- pO + log10(pCurO)
-    }
-
-    pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
-                                matCov$pWin[1] < 0.5 &
-                                (matCov$pWin[nrow(matCov)] < 0.5) &
-                                ((p-pO) <= pCutOff))
-    res <- list(pWin=matCov$pWin, p=p,
-                    pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
-                    pCut1=pCut1)
-    return(res)
-}
-
 
 
 #' @title TODO
@@ -418,7 +329,7 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-calcAF.MLRNA <- function(snp.pos.Hetero) {
+calcAFMLRNA <- function(snp.pos.Hetero) {
 
     listPhase <- which(snp.pos.Hetero$phase < 2)
     m <- data.frame(aL = rep(0, nrow(snp.pos.Hetero)),
@@ -569,9 +480,8 @@ tableBlockAF <- function(snp.pos) {
         # get hetero and compute AF
         if (resBlock[i, "nbKeep"] > 0 & resBlock[i, "nbHetero"] > 1) {
 
-            resML <- calcAF.MLRNA(snp.pos[which(snp.pos$block.id ==
-                                                        resBlock$block[i] &
-                                                        snp.pos$hetero),])
+            resML <- calcAFMLRNA(snp.pos[which(snp.pos$block.id ==
+                                    resBlock$block[i] & snp.pos$hetero),])
 
             resBlock$aFraction[i] <- resML$aFraction
             resBlock$lR[i] <- resML$lR

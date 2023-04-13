@@ -413,8 +413,8 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
 
     # Get the block structure base on genes from gdsRefAnnot
-    snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index,
-                                            blockID)
+    snp.pos$block.id <- getGeneBlock(gdsRefAnnot=gdsRefAnnot,
+                            snp.index=snp.pos$snp.index, blockID=blockID)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
     if ("phase" %in% ls.gdsn(node=gdsSample)) {
@@ -588,6 +588,70 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                             matCov$pWin[1] < 0.5 &
                             (matCov$pWin[nrow(matCov)] < 0.5)  &
+                            ((p-pO) <= pCutOff))
+    res <- list(pWin=matCov$pWin, p=p,
+                pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
+                pCut1=pCut1)
+    return(res)
+}
+
+
+
+
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param matCov TODO
+#'
+#' @param pCutOff TODO, Default: \code{-3}.
+#'
+#'
+#' @return a \code{list} containing 4 entries:
+#' \itemize{
+#' \item{pWin}{TODO}
+#' \item{p}{TODO}
+#' \item{pCut}{TODO}
+#' \item{pCut1}{TODO}
+#' }
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## TODO
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats pbinom
+#' @encoding UTF-8
+#' @keywords internal
+testEmptyBox <- function(matCov, pCutOff=-3) {
+
+    p <- 0
+    pO <- 0
+    vMean <- 0.5
+    matCov$pWin <- rep(1, nrow(matCov))
+
+    for (i in seq_len(nrow(matCov))) {
+
+        vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
+                        matCov$cnt.alt[i], matCov$cnt.ref[i])
+
+        pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
+                       prob=vMean)
+
+        pCurO <- max(1 - max(2 * pCur,0.01),0.01)
+
+        matCov$pWin[i] <- pCur * 2
+
+        p <- p + log10(max(pCur,0.01))
+        pO <- pO + log10(pCurO)
+    }
+
+    pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
+                matCov$pWin[1] < 0.5 & (matCov$pWin[nrow(matCov)] < 0.5) &
                             ((p-pO) <= pCutOff))
     res <- list(pWin=matCov$pWin, p=p,
                 pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),

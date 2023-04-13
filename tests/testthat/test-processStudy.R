@@ -1519,10 +1519,10 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
     dataDir <- system.file("extdata/tests", package="RAIDS")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
-                        Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
-                        Diagnosis=rep("Cancer", 3),
-                        Sample.Type=rep("Primary Tumor", 3),
-                        Source=rep("Databank B", 3), stringsAsFactors=FALSE)
+                    Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                    Diagnosis=rep("Cancer", 3),
+                    Sample.Type=rep("Primary Tumor", 3),
+                    Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'fileNameGDS\' must be a character ",
                 "string representing the GDS 1KG file. The file must exist.")

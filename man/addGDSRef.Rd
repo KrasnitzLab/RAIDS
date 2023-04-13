@@ -6,10 +6,10 @@
 \title{Create a "sample.ref" node i a GDS file with the information about
 the related/unrelated state of the reference samples}
 \usage{
-addGDSRef(gds, filePart)
+addGDSRef(gdsReference, filePart)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
 \item{filePart}{a \code{character} string representing the path and file
@@ -45,7 +45,7 @@ sampleIDs <- c("HG00104", "HG00109", "HG00110")
 add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 
 ## Create  "sample.ref" node in GDS file using RDS information
-RAIDS:::addGDSRef(gds=tmpGDS, filePart=rdsFilePath)
+RAIDS:::addGDSRef(gdsReference=tmpGDS, filePart=rdsFilePath)
 
 ## Read sample reference data.frame
 read.gdsn(index.gdsn(node=tmpGDS, path="sample.ref"))

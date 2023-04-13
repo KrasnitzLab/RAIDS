@@ -6,10 +6,10 @@
 \title{Add the pruned.study entry related to the SNV dataset in the
 Profile GDS file}
 \usage{
-addGDSStudyPruning(gds, pruned)
+addGDSStudyPruning(gdsProfile, pruned)
 }
 \arguments{
-\item{gds}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
 opened Profile GDS file.}
 
 \item{pruned}{a \code{vector} of \code{character} string representing the
@@ -37,7 +37,7 @@ tmpGDS  <- createfn.gds(filename=gdsFilePath)
 study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
 
 ## Add segments to the GDS file
-RAIDS:::addGDSStudyPruning(gds=tmpGDS, pruned=study)
+RAIDS:::addGDSStudyPruning(gdsProfile=tmpGDS, pruned=study)
 
 ## Read lap information from GDS file
 read.gdsn(index.gdsn(node=tmpGDS, path="pruned.study"))

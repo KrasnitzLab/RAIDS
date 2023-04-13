@@ -248,7 +248,7 @@ test_that("addGDSRef() must return expected result", {
     defer(unlink(RDS_file_tmp), envir=parent.frame())
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::addGDSRef(gds=GDS_file_tmp,  filePart=RDS_file_tmp)
+    results3 <- RAIDS:::addGDSRef(gdsReference=GDS_file_tmp,  filePart=RDS_file_tmp)
 
     ## Read sample names from GDS file
     results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.ref"))

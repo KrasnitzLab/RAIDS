@@ -6,10 +6,10 @@
 \title{Add information related to low allelic fraction associated to
 the SNV dataset for a specific sample into a GDS file}
 \usage{
-addUpdateLap(gds, snpLap)
+addUpdateLap(gdsProfile, snpLap)
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), a GDS file.}
 
 \item{snpLap}{a \code{vector} of \code{numeric} value representing the
@@ -45,7 +45,7 @@ sync.gds(gdsFile)
 lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
 
 ## Add segments to the GDS file
-RAIDS:::addUpdateLap(gds=gdsFile, snpLap=lap)
+RAIDS:::addUpdateLap(gdsProfile=gdsFile, snpLap=lap)
 
 ## Read lap information from GDS file
 read.gdsn(index.gdsn(node=gdsFile, path="lap"))

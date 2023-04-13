@@ -1216,7 +1216,6 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     minProb=0.999, eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9,
     cutOffAR=3, gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE) {
 
-    ## Validate input parameters
     validateEstimateAllelicFraction(gdsReference=gdsReference,
         gdsProfile=gdsProfile, currentProfile=currentProfile, studyID=studyID,
         chrInfo=chrInfo, studyType=studyType, minCov=minCov, minProb=minProb,
@@ -1232,20 +1231,16 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
         snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference,
-                        gdsSample=gdsProfile,
-                        currentProfile=currentProfile, studyID=studyID,
-                        chrInfo=chrInfo, minCov=minCov, minProb=minProb,
-                        eProb=eProb, cutOffLOH=cutOffLOH,
-                        cutOffHomoScore=cutOffHomoScore, wAR=wAR,
-                        verbose=verbose)
-
+            gdsSample=gdsProfile, currentProfile=currentProfile,
+            studyID=studyID, chrInfo=chrInfo, minCov=minCov, minProb=minProb,
+            eProb=eProb, cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore,
+            wAR=wAR, verbose=verbose)
     } else if(studyType == "RNA") {
         snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference,
-                        gdsSample=gdsProfile, gdsRefAnnot=gdsRefAnnot,
-                        currentProfile=currentProfile, studyID=studyID,
-                        blockID=blockID, chrInfo=chrInfo, minCov=minCov,
-                        minProb=minProb, eProb=eProb, cutOffLOH=cutOffLOH,
-                        cutOffAR=cutOffAR, verbose=verbose)
+            gdsSample=gdsProfile, gdsRefAnnot=gdsRefAnnot,
+            currentProfile=currentProfile, studyID=studyID, blockID=blockID,
+            chrInfo=chrInfo, minCov=minCov, minProb=minProb, eProb=eProb,
+            cutOffLOH=cutOffLOH, cutOffAR=cutOffAR, verbose=verbose)
     }
 
     snp.pos$seg <- rep(0, nrow(snp.pos))
@@ -1265,7 +1260,6 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     addUpdateLap(gdsProfile, snp.pos$lap[which(snp.pos$pruned == TRUE)])
     addUpdateSegment(gdsProfile, snp.pos$seg[which(snp.pos$pruned == TRUE)])
 
-    # Successful
     return(0L)
 }
 
@@ -1367,16 +1361,14 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 
         ## Create study information for the 1KG Study
         study.list <- data.frame(study.id="Ref.1KG",
-                        study.desc="Unrelated samples from 1000 Genomes",
-                        study.platform="GRCh38 1000 genotypes",
-                        stringsAsFactors=FALSE)
+            study.desc="Unrelated samples from 1000 Genomes",
+            study.platform="GRCh38 1000 genotypes", stringsAsFactors=FALSE)
 
         ## Create the pedigree information  for the 1KG samples
         ped1KG <- data.frame(Name.ID=sample.id, Case.ID=sample.id,
-                    Sample.Type=rep("Reference", length(sample.id)),
-                    Diagnosis=rep("Reference", length(sample.id)),
-                    Source=rep("IGSR", length(sample.id)),
-                    stringsAsFactors=FALSE)
+            Sample.Type=rep("Reference", length(sample.id)),
+            Diagnosis=rep("Reference", length(sample.id)),
+            Source=rep("IGSR", length(sample.id)), stringsAsFactors=FALSE)
 
         ## Row names must be the sample identifiers
         rownames(ped1KG) <- ped1KG$Name.ID
@@ -1654,8 +1646,7 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     study.annot <- study.annot.all[which(study.annot.all$study.id ==
-                                                studyIDSyn &
-                                study.annot.all$data.id %in%
+                        studyIDSyn & study.annot.all$data.id %in%
                                                 listEigenvector$sample.id), ]
 
     listMat <- list()
@@ -1664,7 +1655,6 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
                                             length(pcaList) * length(kList)),
                                 D=rep(0,length(pcaList) * length(kList)),
                                 K=rep(0,length(pcaList) * length(kList)),
-                        # SuperPop=character(length(pcaList) * length(kList)),
                                 stringsAsFactors=FALSE)
         resMat[[fieldPopInfAnc]] <- character(length(pcaList) * length(kList))
 
@@ -1913,9 +1903,8 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,
-                        sample.ref=names(spRef), listRM=sampleRM, np=np,
-                        algorithm=algorithm, eigen.cnt=eigen.cnt,
-                        missing.rate=missing.rate)
+        sample.ref=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
+        eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
                         sampleRef=sampleRM, studyIDSyn=studyIDSyn)
@@ -1923,10 +1912,9 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
     ## Calculate the k-nearest neighbor analyses on a subset of the
     ## synthetic dataset
     KNN.synt <- computeKNNRefSynthetic(gdsSample=gdsSample,
-                        listEigenvector=resPCA, listCatPop=listCatPop,
-                        studyIDSyn=studyIDSyn, spRef=spRef,
-                        fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-                        pcaList=pcaList)
+        listEigenvector=resPCA, listCatPop=listCatPop, studyIDSyn=studyIDSyn,
+        spRef=spRef, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
+        pcaList=pcaList)
 
     return(KNN.synt)
 }
@@ -2169,9 +2157,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     ## Validate input parameters
     validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference,
-        gdsSample=gdsSample,
-        listFiles=listFiles, sample.ana.id=sample.ana.id, spRef=spRef,
-        studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
+        gdsSample=gdsSample, listFiles=listFiles, sample.ana.id=sample.ana.id,
+        spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
         pcaList=pcaList, algorithm=algorithm, eigen.cnt=eigen.cnt,
         missing.rate=missing.rate)
@@ -2211,8 +2198,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
     res <- list(pcaSample=listPCASample, # PCA of the sample + 1KG
                 paraSample=listParaSample, # Result of the parameter selection
                 KNNSample=listKNNSample, # KNN for the sample
-                Ancestry=resCall # the ancestry call fo rthe sample
-                )
+                Ancestry=resCall) # the ancestry call fo rthe sample
 
     return(res)
 }

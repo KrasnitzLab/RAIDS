@@ -6,10 +6,10 @@
 \title{Extract the specified column from the 1KG GDS 'sample.ref' node
 for the reference samples}
 \usage{
-getRef1KGPop(gds, popName = "superPop")
+getRef1KGPop(gdsReference, popName = "superPop")
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{popName}{a \code{character} string representing the name of the column
@@ -38,7 +38,7 @@ nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
 fileGDS <- snpgdsOpen(nameFileGDS)
 
 ## Extract super population information for the 1KG samples
-getRef1KGPop(gds=fileGDS, popName="superPop")
+getRef1KGPop(gdsReference=fileGDS, popName="superPop")
 
 ## Close 1K GDS file
 closefn.gds(fileGDS)

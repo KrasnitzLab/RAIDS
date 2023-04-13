@@ -14,7 +14,7 @@ validateRunExomeAncestry(
   fileReferenceGDS,
   fileReferenceAnnotGDS,
   chrInfo,
-  dataRefSyn,
+  syntheticRefDF,
   genoSource
 )
 }
@@ -54,7 +54,7 @@ file name of the 1KG GDS annotation file. The file must exist.}
 \item{chrInfo}{a \code{vector} of positive \code{integer} values
 representing the length of the chromosomes. See 'details' section.}
 
-\item{dataRefSyn}{a \code{data.frame} containing those columns:
+\item{syntheticRefDF}{a \code{data.frame} containing those columns:
 \itemize{
 \item{sample.id} { a \code{character} string representing the sample
 identifier. }
@@ -105,7 +105,7 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     156040895L, 57227415L,  16569L)
 
 ## Profiles used for synthetic data set
-dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
     "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -113,7 +113,7 @@ dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
 RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-    chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
+    chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
 
 }
 \author{

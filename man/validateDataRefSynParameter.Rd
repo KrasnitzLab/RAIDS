@@ -6,10 +6,10 @@
 \title{Validate that the reference profile data set has
 the mandatory columns}
 \usage{
-validateDataRefSynParameter(dataRefSyn)
+validateDataRefSynParameter(syntheticRefDF)
 }
 \arguments{
-\item{dataRefSyn}{a \code{data.frame} containing a subset of
+\item{syntheticRefDF}{a \code{data.frame} containing a subset of
 reference profiles for each sub-population present in the Reference GDS
 file. The mandatory columns are:
 "sample.id", "pop.group", "superPop". All columns must be in
@@ -28,12 +28,12 @@ must be a \code{data.frame} with those mandatory columns:
 \examples{
 
 ## Profiles used for synthetic data set
-dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
     "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
 ## Return 0L when the reference profile data set is valid
-RAIDS:::validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+RAIDS:::validateDataRefSynParameter(syntheticRefDF=syntheticRefDF)
 
 }
 \author{

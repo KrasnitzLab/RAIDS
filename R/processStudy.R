@@ -2242,7 +2242,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.
 #'
-#' @param dataRefSyn a \code{data.frame} containing a subset of
+#' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The \code{data.frame} must have those columns:
 #' \itemize{
@@ -2371,7 +2371,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #'                     fileReferenceGDS=fileReferenceGDS,
 #'                     fileReferenceAnnotGDS=fileAnnotGDS,
 #'                     chrInfo=chrInfo,
-#'                     dataRefSyn=dataRef,
+#'                     syntheticRefDF=dataRef,
 #'                     genoSource="snp-pileup")
 #'
 #' unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
@@ -2384,14 +2384,14 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                    chrInfo, dataRefSyn,
+                    chrInfo, syntheticRefDF,
                     genoSource=c("snp-pileup", "generic")) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy, studyDF, pathProfileGDS,
         pathGeno=pathGeno, pathOut=pathOut, fileReferenceGDS=fileReferenceGDS,
         fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
-        dataRefSyn=dataRefSyn, genoSource=genoSource)
+        syntheticRefDF=syntheticRefDF, genoSource=genoSource)
 
     genoSource <- match.arg(genoSource)
 
@@ -2407,7 +2407,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     ## Open the 1KG GDS file and 1KG SNV Annotation file
     gdsAnnot1KG <- openfn.gds(fileReferenceAnnotGDS)
 
-    listProfileRef <- dataRefSyn$sample.id
+    listProfileRef <- syntheticRefDF$sample.id
     studyDF.syn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
             study.desc=paste0(studyDF$study.id, " synthetic data"),
             study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
@@ -2443,7 +2443,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             dir.create(pathOut)
         }
         spRef <- getRef1KGPop(gds1KG, "superPop")
-        sampleRM <- splitSelectByPop(dataRefSyn)
+        sampleRM <- splitSelectByPop(syntheticRefDF)
 
         pathOutProfile <- file.path(pathOut, listProfiles[i])
         if(! file.exists(pathOutProfile)) {

@@ -228,7 +228,7 @@ test_that("validateRunExomeAncestry() must return expected results when all inpu
                     study.desc="Pancreatic study",  study.platform="WES",
                     stringsAsFactors=FALSE)
 
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138",
                     "HG00330", "HG00275"), pop.group=c("GBR", "GBR",
                     "FIN", "FIN"), superPop=c("EUR", "EUR", "EUR", "EUR"),
                     stringsAsFactors=FALSE)
@@ -238,7 +238,7 @@ test_that("validateRunExomeAncestry() must return expected results when all inpu
     result <- RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=studyInfo,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
         fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
-        chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
+        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
 
     expect_identical(result, 0L)
 })
@@ -275,11 +275,11 @@ context("validateDataRefSynParameter() results")
 test_that("validateDataRefSynParameter() must return expected results when all input are valid", {
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
         "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
         superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
-    result <- RAIDS:::validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+    result <- RAIDS:::validateDataRefSynParameter(syntheticRefDF=syntheticRefDF)
 
     expect_identical(result, 0L)
 })

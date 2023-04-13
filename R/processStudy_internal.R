@@ -1023,7 +1023,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.
 #'
-#' @param dataRefSyn a \code{data.frame} containing those columns:
+#' @param syntheticRefDF a \code{data.frame} containing those columns:
 #' \itemize{
 #' \item{sample.id} { a \code{character} string representing the sample
 #' identifier. }
@@ -1068,7 +1068,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'     156040895L, 57227415L,  16569L)
 #'
 #' ## Profiles used for synthetic data set
-#' dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+#' syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
 #'     "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
 #'     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 #'
@@ -1076,14 +1076,14 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
 #'     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
 #'     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-#'     chrInfo=chrInfo, dataRefSyn=dataRefSyn, genoSource="snp-pileup")
+#'     chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
 validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-    chrInfo, dataRefSyn, genoSource) {
+    chrInfo, syntheticRefDF, genoSource) {
 
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
@@ -1121,8 +1121,8 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     ## The chrInfo must be a vector of integer
     validatePositiveIntegerVector(chrInfo, "chrInfo")
 
-    ## The dataRefSyn must have the madatory columns
-    validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+    ## The syntheticRefDF must have the madatory columns
+    validateDataRefSynParameter(syntheticRefDF=syntheticRefDF)
 
     ## The genoSource must be a character string
     if(!(is.character(genoSource))) {
@@ -1183,7 +1183,7 @@ validatePEDStudyParameter <- function(pedStudy) {
 #' "sample.id", "pop.group", "superPop". All columns must be in
 #' \code{character} strings (no factor).
 #'
-#' @param dataRefSyn a \code{data.frame} containing a subset of
+#' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The mandatory columns are:
 #' "sample.id", "pop.group", "superPop". All columns must be in
@@ -1194,23 +1194,23 @@ validatePEDStudyParameter <- function(pedStudy) {
 #' @examples
 #'
 #' ## Profiles used for synthetic data set
-#' dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+#' syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
 #'     "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
 #'     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 #'
 #' ## Return 0L when the reference profile data set is valid
-#' RAIDS:::validateDataRefSynParameter(dataRefSyn=dataRefSyn)
+#' RAIDS:::validateDataRefSynParameter(syntheticRefDF=syntheticRefDF)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-validateDataRefSynParameter <- function(dataRefSyn) {
+validateDataRefSynParameter <- function(syntheticRefDF) {
 
     ## The reference profile data.frame must have the mandatory columns
-    if (!(is.data.frame(dataRefSyn) &&
+    if (!(is.data.frame(syntheticRefDF) &&
                 all(c("sample.id", "pop.group", "superPop")
-                    %in% colnames(dataRefSyn)))) {
-        stop("The reference profile data frame \'dataRefSyn\' is incomplete. ",
+                    %in% colnames(syntheticRefDF)))) {
+        stop("The reference profile data frame \'syntheticRefDF\' is incomplete. ",
                 "One or more mandatory columns are missing. The mandatory ",
                 "columns are: \'sample.id\', \'pop.group\', \'superPop\'.")
     }

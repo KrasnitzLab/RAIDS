@@ -14,7 +14,7 @@ runExomeAncestry(
   fileReferenceGDS,
   fileReferenceAnnotGDS,
   chrInfo,
-  dataRefSyn,
+  syntheticRefDF,
   genoSource = c("snp-pileup", "generic")
 )
 }
@@ -53,7 +53,7 @@ file name of the 1KG GDS annotation file. The file must exist.}
 \item{chrInfo}{a \code{vector} of positive \code{integer} values
 representing the length of the chromosomes. See 'details' section.}
 
-\item{dataRefSyn}{a \code{data.frame} containing a subset of
+\item{syntheticRefDF}{a \code{data.frame} containing a subset of
 reference profiles for each sub-population present in the Reference GDS
 file. The \code{data.frame} must have those columns:
 \itemize{
@@ -178,7 +178,7 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                     fileReferenceGDS=fileReferenceGDS,
                     fileReferenceAnnotGDS=fileAnnotGDS,
                     chrInfo=chrInfo,
-                    dataRefSyn=dataRef,
+                    syntheticRefDF=dataRef,
                     genoSource="snp-pileup")
 
 unlink(pathProfileGDS, recursive=TRUE, force=TRUE)

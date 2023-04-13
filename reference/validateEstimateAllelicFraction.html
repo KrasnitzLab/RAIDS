@@ -80,7 +80,8 @@ estimateAllelicFraction function."><!-- mathjax --><script src="https://cdnjs.cl
 <span>  <span class="va">wAR</span>,</span>
 <span>  <span class="va">cutOffAR</span>,</span>
 <span>  <span class="va">gdsRefAnnot</span>,</span>
-<span>  <span class="va">block.id</span></span>
+<span>  <span class="va">blockID</span>,</span>
+<span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -158,9 +159,14 @@ log score, that the SNVs in a gene are allelic fraction different from 0.5.</p><
 This parameter is RNA specific.</p></dd>
 
 
-<dt>block.id</dt>
+<dt>blockID</dt>
 <dd><p>a <code>character</code> string corresponding to the block
 identifier in <code>gdsRefAnnot</code>. This parameter is RNA specific.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>a <code>logicial</code> indicating if the function should print
+message when running.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -197,13 +203,13 @@ identifier in <code>gdsRefAnnot</code>. This parameter is RNA specific.</p></dd>
 <span class="r-in"><span>    <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span></span>
 <span class="r-in"><span>    <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
+<span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateEstimateAllelicFraction</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    gdsProfile<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
 <span class="r-in"><span>    currentProfile<span class="op">=</span><span class="st">"Sample01"</span>, studyID<span class="op">=</span><span class="st">"Synthetic"</span>, chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span></span>
 <span class="r-in"><span>    studyType<span class="op">=</span><span class="st">"DNA"</span>, minCov<span class="op">=</span><span class="fl">10L</span>, minProb<span class="op">=</span><span class="fl">0.03</span>, eProb<span class="op">=</span><span class="fl">0.002</span>, cutOffLOH<span class="op">=</span><span class="fl">10</span>,</span></span>
 <span class="r-in"><span>    cutOffHomoScore<span class="op">=</span><span class="fl">11</span>, wAR<span class="op">=</span><span class="fl">2</span>, cutOffAR<span class="op">=</span><span class="fl">10</span>, gdsRefAnnot<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
-<span class="r-in"><span>    block.id<span class="op">=</span><span class="st">"1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    blockID<span class="op">=</span><span class="st">"1"</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>

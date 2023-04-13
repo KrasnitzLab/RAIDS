@@ -76,14 +76,14 @@ TODO</p>
 <span>  <span class="va">gdsRefAnnot</span>,</span>
 <span>  <span class="va">currentProfile</span>,</span>
 <span>  <span class="va">studyID</span>,</span>
-<span>  <span class="va">block.id</span>,</span>
+<span>  <span class="va">blockID</span>,</span>
 <span>  <span class="va">chrInfo</span>,</span>
 <span>  minCov <span class="op">=</span> <span class="fl">10L</span>,</span>
 <span>  minProb <span class="op">=</span> <span class="fl">0.999</span>,</span>
 <span>  eProb <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  cutOffLOH <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>,</span>
 <span>  cutOffAR <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -115,9 +115,9 @@ the study as
 used in <code><a href="pruningSample.html">pruningSample</a></code> function.</p></dd>
 
 
-<dt>block.id</dt>
-<dd><p>a <code>character</code> corresponding to the field gene block
-in the GDS <code>gdsRefAnnot</code> to use split by gene.</p></dd>
+<dt>blockID</dt>
+<dd><p>a <code>character</code> string corresponding to the field gene
+block in the GDS <code>gdsRefAnnot</code> to use split by gene.</p></dd>
 
 
 <dt>chrInfo</dt>
@@ -155,7 +155,7 @@ Default: <code>3</code>.</p></dd>
 
 <dt>verbose</dt>
 <dd><p>a <code>logicial</code> indicating if the function should print
-message when running. Default: <code>FALSE</code>.</p></dd>
+message when running.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -465,7 +465,7 @@ test_that("addRef2GDS1KG() must return expected results", {
 context("getRef1KGPop() results")
 
 
-test_that("select1KGPop() must return error when gds is a character string", {
+test_that("getRef1KGPop() must return error when gds is a character string", {
 
     error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'"
 
@@ -474,7 +474,7 @@ test_that("select1KGPop() must return error when gds is a character string", {
 })
 
 
-test_that("select1KGPop() must return error when popName is a numeric", {
+test_that("getRef1KGPop() must return error when popName is a numeric", {
 
     data.dir <- test_path("fixtures")
 
@@ -489,7 +489,7 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 })
 
 
-test_that("select1KGPop() must return error when popName is a numeric", {
+test_that("getRef1KGPop() must return error when popName is a numeric", {
 
     data.dir <- test_path("fixtures")
 
@@ -504,7 +504,7 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 })
 
 
-test_that("select1KGPop() must return expected result", {
+test_that("getRef1KGPop() must return expected result", {
 
     fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 
@@ -523,7 +523,7 @@ test_that("select1KGPop() must return expected result", {
 })
 
 
-test_that("select1KGPop() must return error when popName does not exist", {
+test_that("getRef1KGPop() must return error when popName does not exist", {
 
     fileGDS <- test_path("fixtures", "1KG_TEMP_001.gds")
 

@@ -82,7 +82,7 @@
     <loc>/reference/basePCASample.html</loc>
   </url>
   <url>
-    <loc>/reference/calcAF.MLRNA.html</loc>
+    <loc>/reference/calcAFMLRNA.html</loc>
   </url>
   <url>
     <loc>/reference/computeAlleleFraction.html</loc>
@@ -184,7 +184,7 @@
     <loc>/reference/generatePhase1KG2GDS.html</loc>
   </url>
   <url>
-    <loc>/reference/get.Gene.Block.html</loc>
+    <loc>/reference/getGeneBlock.html</loc>
   </url>
   <url>
     <loc>/reference/getRef1KGPop.html</loc>

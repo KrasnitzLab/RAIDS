@@ -170,13 +170,13 @@ test_that("appendGDSgenotypeMat() must copy the expected entry in \"genotype\" n
 
 
 #############################################################################
-### Tests generateGDSSample() results
+### Tests generateGDSRefSample() results
 #############################################################################
 
-context("generateGDSSample() results")
+context("generateGDSRefSample() results")
 
 
-test_that("generateGDSSample() must copy the expected entry in \"sample.annot\" node of the GDS file", {
+test_that("generateGDSRefSample() must copy the expected entry in \"sample.annot\" node of the GDS file", {
 
     ## Create a temporary GDS file in an test directory
     dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -195,7 +195,7 @@ test_that("generateGDSSample() must copy the expected entry in \"sample.annot\" 
     rownames(pedInformation) <- pedInformation$Name.ID
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::generateGDSSample(gds=GDS_file_tmp,  pedDF=pedInformation,
+    results3 <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,  pedDF=pedInformation,
                                 listSamples=c("sample_01", "sample_02"))
 
     ## Read sample names from GDS file

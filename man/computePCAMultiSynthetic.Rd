@@ -5,7 +5,7 @@
 \alias{computePCAMultiSynthetic}
 \title{TODO}
 \usage{
-computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, studyIDSyn)
+computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, studyIDSyn, verbose)
 }
 \arguments{
 \item{gdsSample}{an object of class \code{gds} opened related to
@@ -19,6 +19,9 @@ each synthetic to project.}
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
 The study identifier must be present in the GDS Sample file.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 a \code{list} containing 3 entries:

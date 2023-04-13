@@ -1113,8 +1113,8 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' Default: \code{3}.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file.
-#'  **This parameter is RNA specific.**
+#' (a GDS file), the1 1KG Annotation GDS file.
+#' This parameter is RNA specific.
 #' Default: \code{NULL}.
 #'
 #' @param blockID a \code{character} string corresponding to the block
@@ -1283,7 +1283,7 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' file name of the GDS Sample file. The GDS Sample file must exist.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
-#' to show how the different steps in the function.
+#' to show how the different steps in the function. Default: \code{FALSE}.
 #'
 #' @return The integer \code{0L} when successful.
 #'
@@ -1404,6 +1404,9 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #' identifier.
 #' The study identifier must be present in the GDS Sample file.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
+#'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
 #' \item{sample.id} { TODO }
@@ -1422,7 +1425,7 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #' @encoding UTF-8
 #' @export
 computePCAMultiSynthetic <- function(gdsSample, listPCA,
-                                        sampleRef, studyIDSyn) {
+                                        sampleRef, studyIDSyn, verbose) {
 
     if(length(sampleRef) < 1) {
         stop("Number of sample in study.annot not equal to 1\n")
@@ -1435,14 +1438,14 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 
     ## SNP loading in principal component analysis
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                                    gdsobj=gdsSample,
-                                                    num.thread=1, verbose=TRUE)
+                                gdsobj=gdsSample, num.thread=1,
+                                verbose=verbose)
 
     ## Project samples onto existing principal component axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                                gdsobj=gdsSample,
-                                                sample.id=study.annot$data.id,
-                                                num.thread=1L, verbose=TRUE)
+                                gdsobj=gdsSample,
+                                sample.id=study.annot$data.id,
+                                num.thread=1L, verbose=verbose)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
                                             listPCA[["pca.unrel"]]$sample.id

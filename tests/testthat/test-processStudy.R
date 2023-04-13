@@ -1457,6 +1457,50 @@ test_that("estimateAllelicFraction() must return error when studyType is not a v
         eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9))
 })
 
+
+test_that("estimateAllelicFraction() must return valid results", {
+
+    file1KG <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
+
+    gds1KG <- openfn.gds(file1KG)
+    withr::defer((gdsfmt::closefn.gds(gds1KG)), envir=parent.frame())
+
+
+    dataDirSample <- test_path("fixtures/sampleGDSforEstimAlleFraction")
+    file.copy(file.path(dataDirSample, "ex1_demoForEstimAllFrac.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    gdsProfile <- openfn.gds(file.path(dataDirSample, "ex1.gds"),
+                                readonly=FALSE)
+    withr::defer((gdsfmt::closefn.gds(gdsProfile)), envir=parent.frame())
+
+    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+        181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+        135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+        83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+        156040895L, 57227415L,  16569L)
+
+    result <- estimateAllelicFraction(gdsReference=gds1KG,
+        gdsProfile=gdsProfile, currentProfile="ex1", studyID="MYDATA",
+        chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
+        gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE)
+
+    expect_equal(result, 0L)
+
+    result1 <- read.gdsn(index.gdsn(node=gdsProfile, path="lap"))
+    result2 <- read.gdsn(index.gdsn(node=gdsProfile, path="segment"))
+
+    expect_equal(result1, rep(0.5, 61))
+    expect_equal(result2, c(rep(1, 6), 2, 3, rep(4, 5), rep(5, 4), rep(6, 3),
+        rep(7, 2), 9, rep(10, 5), rep(11, 4), 12, 12, rep(13, 4), rep(14, 4),
+        15, rep(16, 3), rep(17, 3), 18, 18, 19, 19, rep(20, 3), 21, rep(22, 4)))
+
+})
+
+
 #############################################################################
 ### Tests createStudy2GDS1KG() results
 #############################################################################
@@ -1755,6 +1799,7 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
     fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
     withr::defer((unlink(file.path(dataDir, "ex1.gds"))), envir=parent.frame())
+
 
     pedDF <- data.frame(Name.ID=c("ex1", "ex2", "ex3"),
                 Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -2587,3 +2632,5 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
         chrInfo=c(100L, 200L), syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
+
+

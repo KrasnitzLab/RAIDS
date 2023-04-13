@@ -1428,6 +1428,22 @@ test_that("estimateAllelicFraction() must return error when cutOffHomoScore is a
 })
 
 
+test_that("estimateAllelicFraction() must return error when verbose is not a numeric", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(estimateAllelicFraction(gdsReference=gdsF,
+        gdsProfile=gdsF, currentProfile="test", studyID="DNA",
+        chrInfo=chrInfo, studyType="TOTO", minCov=10L, minProb=0.1,
+        eProb=0.01, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, verbose=22),
+        error_message, fixed=TRUE)
+})
+
 test_that("estimateAllelicFraction() must return error when studyType is not a valid choice", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")

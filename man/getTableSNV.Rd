@@ -18,8 +18,8 @@ getTableSNV(
 )
 }
 \arguments{
-\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
-the opened 1KG GDS file.}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}} (a
+GDS file), the opened 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}

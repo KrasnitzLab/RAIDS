@@ -307,3 +307,32 @@ test_that("validateAddStudy1Kg() must return expected results when all input are
     expect_identical(result, 0L)
 })
 
+
+#############################################################################
+### Tests validateEstimateAllelicFraction() results
+#############################################################################
+
+context("validateEstimateAllelicFraction() results")
+
+
+test_that("validateEstimateAllelicFraction() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures")
+    gdsRefFile <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+    gdsRef <- openfn.gds(gdsRefFile)
+    withr::defer((gdsfmt::closefn.gds(gdsRef)), envir = parent.frame())
+
+    fileProfileGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+    gdsSample <- openfn.gds(fileProfileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
+
+    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+
+    result <- RAIDS:::validateEstimateAllelicFraction(gdsReference=gdsRef,
+        gdsProfile=gdsSample, currentProfile="ex1", studyID="MYDATA",
+        chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.999,
+        eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
+        gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE)
+
+    expect_identical(result, 0L)
+})

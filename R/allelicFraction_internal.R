@@ -6,8 +6,8 @@
 #' profile. The function uses the information present in the 1KG GDS file
 #' (reference) and the Profile GDS file.
 #'
-#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a GDS file),
-#' the opened 1KG GDS file.
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a
+#' GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -61,8 +61,8 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID, minCov=10,
-                        minProb=0.999, eProb=0.001, verbose=FALSE) {
+getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
+                minCov=10, minProb=0.999, eProb=0.001, verbose=FALSE) {
 
     ## Extract study information (data.frame) from GDS Sample file
     study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
@@ -90,8 +90,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID, minCov
                                     "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gdsReference,
                                     "snp.chromosome"))[listKeep],
-                    normal.geno=rep(3, length(listKeep)),# Normal genotype unknown
-                    pruned=rep(FALSE, length(listKeep)), # bit(length(listKeep)),
+                    normal.geno=rep(3, length(listKeep)),#Norm genotype unknown
+                    pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep))
                     snp.index=listKeep,
                     stringsAsFactors=FALSE)
 
@@ -243,7 +243,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID, minCov
 #' the window used to compute an empty box. Default: \code{9L}.
 #'
 #' @param verbose a \code{logicial} indicating if the function should print
-#' message when running. Default: \code{FALSE}.
+#' message when running.
 #'
 #' @return a \code{data.frame} with lap for the pruned SNV dataset with
 #' coverage > \code{minCov}. TODO
@@ -263,7 +263,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID, minCov
 computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                                 studyID, chrInfo, minCov=10L, minProb=0.999,
                                 eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3,
-                                wAR=9L, verbose=FALSE) {
+                                wAR=9L, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
@@ -358,8 +358,8 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' the study as
 #' used in \code{\link{pruningSample}} function.
 #'
-#' @param block.id a \code{character} corresponding to the field gene block
-#' in the GDS \code{gdsRefAnnot} to use split by gene.
+#' @param blockID a \code{character} string corresponding to the field gene
+#' block in the GDS \code{gdsRefAnnot} to use split by gene.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} values representing
 #' the length of the chromosomes.
@@ -383,7 +383,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' Default: \code{3}.
 #'
 #' @param verbose a \code{logicial} indicating if the function should print
-#' message when running. Default: \code{FALSE}.
+#' message when running.
 #'
 #' @return a \code{data.frame} with lap for the pruned SNV dataset with
 #' coverage > \code{minCov}. TODO
@@ -401,9 +401,9 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' @encoding UTF-8
 #' @keywords internal
 computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
-                    currentProfile, studyID, block.id, chrInfo, minCov=10L,
+                    currentProfile, studyID, blockID, chrInfo, minCov=10L,
                     minProb=0.999, eProb=0.001, cutOffLOH=-5,
-                    cutOffAR=3, verbose=FALSE) {
+                    cutOffAR=3, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the 1KG GDS file
@@ -414,7 +414,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 
     # Get the block structure base on genes from gdsRefAnnot
     snp.pos$block.id <- get.Gene.Block(gdsRefAnnot, snp.pos$snp.index,
-                                            block.id)
+                                            blockID)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
     if ("phase" %in% ls.gdsn(node=gdsSample)) {
@@ -424,7 +424,8 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))
     snp.pos$imbAR <- rep(-1, nrow(snp.pos))
-    snp.pos$freq <- read.gdsn(index.gdsn(gdsReference, "snp.AF"))[snp.pos$snp.index]
+    snp.pos$freq <- read.gdsn(index.gdsn(gdsReference,
+                                            "snp.AF"))[snp.pos$snp.index]
     # for each chromosome
     listBlock <- list()
     for(chr in unique(snp.pos$snp.chr)) {

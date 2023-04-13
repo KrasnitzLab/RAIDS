@@ -12,14 +12,14 @@ computeAllelicFractionRNA(
   gdsRefAnnot,
   currentProfile,
   studyID,
-  block.id,
+  blockID,
   chrInfo,
   minCov = 10L,
   minProb = 0.999,
   eProb = 0.001,
   cutOffLOH = -5,
   cutOffAR = 3,
-  verbose = FALSE
+  verbose
 )
 }
 \arguments{
@@ -39,8 +39,8 @@ the sample identifier as used in \code{\link{pruningSample}} function.}
 the study as
 used in \code{\link{pruningSample}} function.}
 
-\item{block.id}{a \code{character} corresponding to the field gene block
-in the GDS \code{gdsRefAnnot} to use split by gene.}
+\item{blockID}{a \code{character} string corresponding to the field gene
+block in the GDS \code{gdsRefAnnot} to use split by gene.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} values representing
 the length of the chromosomes.}
@@ -64,7 +64,7 @@ different 0.5
 Default: \code{3}.}
 
 \item{verbose}{a \code{logicial} indicating if the function should print
-message when running. Default: \code{FALSE}.}
+message when running.}
 }
 \value{
 a \code{data.frame} with lap for the pruned SNV dataset with

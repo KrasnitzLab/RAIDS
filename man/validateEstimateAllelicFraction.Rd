@@ -20,7 +20,8 @@ validateEstimateAllelicFraction(
   wAR,
   cutOffAR,
   gdsRefAnnot,
-  block.id
+  blockID,
+  verbose
 )
 }
 \arguments{
@@ -68,8 +69,11 @@ log score, that the SNVs in a gene are allelic fraction different from 0.5.}
 (a GDS file), the1 1KG SNV Annotation GDS file.
 This parameter is RNA specific.}
 
-\item{block.id}{a \code{character} string corresponding to the block
+\item{blockID}{a \code{character} string corresponding to the block
 identifier in \code{gdsRefAnnot}. This parameter is RNA specific.}
+
+\item{verbose}{a \code{logicial} indicating if the function should print
+message when running.}
 }
 \value{
 The integer \code{0L} when successful.
@@ -100,13 +104,13 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
     156040895L, 57227415L,  16569L)
 
-## The validatiion should be successful
+## The validation should be successful
 RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG,
     gdsProfile=gdsSample,
     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
-    block.id="1")
+    blockID="1", verbose=FALSE)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

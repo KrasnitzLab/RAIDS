@@ -8,7 +8,7 @@ block and add the indexes into the
 gdsAnnot1KG}
 \usage{
 addGeneBlockGDSRefAnnot(
-  gds,
+  gdsReference,
   file.gdsRefAnnot,
   winSize = 10000,
   EnsDb,
@@ -16,7 +16,7 @@ addGeneBlockGDSRefAnnot(
 )
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{file.gdsRefAnnot}{the filename corresponding the 1KG SNV

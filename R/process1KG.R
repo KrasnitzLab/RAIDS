@@ -670,13 +670,13 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
     }
 
     ## Open GDS file in write mode
-    gds <- snpgdsOpen(fileNameGDS, readonly=FALSE)
+    gdsReference <- snpgdsOpen(fileNameGDS, readonly=FALSE)
 
     ## Add information to the GDS file
-    addGDSRef(gdsReference=gds, filePart)
+    addGDSRef(gdsReference=gdsReference, filePart)
 
     ## Close GDS file
-    closefn.gds(gds)
+    closefn.gds(gdsReference)
 
     ## Success
     return(0L)
@@ -848,7 +848,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' \code{data.frame} saved in the 'sample.ref' node. Only the information for
 #' the reference samples is returned.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param popName a \code{character} string representing the name of the column
@@ -870,7 +870,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' fileGDS <- snpgdsOpen(nameFileGDS)
 #'
 #' ## Extract super population information for the 1KG samples
-#' getRef1KGPop(gds=fileGDS, popName="superPop")
+#' getRef1KGPop(gdsReference=fileGDS, popName="superPop")
 #'
 #' ## Close 1K GDS file
 #' closefn.gds(fileGDS)
@@ -880,18 +880,18 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
-getRef1KGPop <- function(gds, popName="superPop") {
+getRef1KGPop <- function(gdsReference, popName="superPop") {
 
-    ## The gds must be an object of class "gds.class"
-    validateGDSClass(gds=gds, "gds")
+    ## The gdsReference must be an object of class "gds.class"
+    validateGDSClass(gds=gdsReference, "gdsReference")
 
     ## The popName is a character string
     if (!is.character(popName)) {
         stop("The \'popName\' parameter must be a single character string.")
     }
 
-    sample.ref <- read.gdsn(index.gdsn(gds, "sample.ref"))
-    dataRef <- read.gdsn(index.gdsn(gds,
+    sample.ref <- read.gdsn(index.gdsn(gdsReference, "sample.ref"))
+    dataRef <- read.gdsn(index.gdsn(gdsReference,
                             "sample.annot"))[which(sample.ref == TRUE),]
 
     if(! popName %in% colnames(dataRef)) {
@@ -900,7 +900,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
     }
 
     dataRef <- dataRef[, popName]
-    names(dataRef) <- read.gdsn(index.gdsn(node=gds,
+    names(dataRef) <- read.gdsn(index.gdsn(node=gdsReference,
                             "sample.id"))[which(sample.ref == TRUE)]
 
     return(dataRef)
@@ -913,7 +913,7 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param file.gdsRefAnnot the filename corresponding the 1KG SNV
@@ -943,12 +943,12 @@ getRef1KGPop <- function(gds, popName="superPop") {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000,
+addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot, winSize=10000,
                                             EnsDb, suffixe.blockName) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
+    ## The gdsReference must be an object of class "gds.class"
+    if (!inherits(gdsReference, "gds.class")) {
+        stop("The \'gdsReference\' must be an object of class \'gds.class\'")
     }
 
     ## Validate that the file.gdsRefAnnot GDS file exists
@@ -962,7 +962,7 @@ addGeneBlockGDSRefAnnot <- function(gds, file.gdsRefAnnot, winSize=10000,
     }
 
     ## Generate two indexes based on gene annotation for gdsAnnot1KG block
-    dfGeneBlock <- generateGeneBlock(gds, winSize, EnsDb)
+    dfGeneBlock <- generateGeneBlock(gdsReference, winSize, EnsDb)
 
     ## Opne GDS 1KG Annotation file in writting mode
     gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)

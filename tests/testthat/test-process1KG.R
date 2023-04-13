@@ -467,9 +467,9 @@ context("getRef1KGPop() results")
 
 test_that("select1KGPop() must return error when gds is a character string", {
 
-    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+    error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'"
 
-    expect_error(getRef1KGPop(gds="test.gds", popName="superPop"),
+    expect_error(getRef1KGPop(gdsReference="test.gds", popName="superPop"),
                     error_message)
 })
 
@@ -485,7 +485,7 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 
     error_message <- "The \'popName\' parameter must be a single character string."
 
-    expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
+    expect_error(getRef1KGPop(gdsReference=gdsF, popName=33), error_message)
 })
 
 
@@ -500,7 +500,7 @@ test_that("select1KGPop() must return error when popName is a numeric", {
 
     error_message <- "The \'popName\' parameter must be a single character string."
 
-    expect_error(getRef1KGPop(gds=gdsF, popName=33), error_message)
+    expect_error(getRef1KGPop(gdsReference=gdsF, popName=33), error_message)
 })
 
 
@@ -547,9 +547,9 @@ context("addGeneBlockGDSRefAnnot() results")
 
 test_that("addGeneBlockGDSRefAnnot() must return error when gds is a character string", {
 
-    error_message <- "The \'gds\' must be an object of class \'gds.class\'"
+    error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'"
 
-    expect_error(addGeneBlockGDSRefAnnot(gds="test.gds",
+    expect_error(addGeneBlockGDSRefAnnot(gdsReference="test.gds",
         file.gdsRefAnnot="toto.gds", winSize=10000, EnsDb="human",
         suffixe.blockName="test"), error_message)
 })
@@ -563,7 +563,7 @@ test_that("addGeneBlockGDSRefAnnot() must return error when file.gdsRefAnnot doe
 
     error_message <- "The file \'fixtures/titi.gds\' does not exist."
 
-    expect_error(addGeneBlockGDSRefAnnot(gds=gds_1KG,
+    expect_error(addGeneBlockGDSRefAnnot(gdsReference=gds_1KG,
         file.gdsRefAnnot=test_path("fixtures", "titi.gds"),
         winSize=1000, EnsDb="human", suffixe.blockName="test"), error_message)
 })
@@ -577,7 +577,7 @@ test_that("addGeneBlockGDSRefAnnot() must return error when winSize is a charact
 
     error_message <- "The \'winSize\' parameter must be a single numeric value."
 
-    expect_error(addGeneBlockGDSRefAnnot(gds=gds_1KG,
+    expect_error(addGeneBlockGDSRefAnnot(gdsReference=gds_1KG,
         file.gdsRefAnnot=test_path("fixtures",
             "ex1_good_small_1KG_Annot_GDS.gds"), winSize="10", EnsDb="human",
         suffixe.blockName="test"), error_message)

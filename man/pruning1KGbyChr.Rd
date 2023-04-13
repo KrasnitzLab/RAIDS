@@ -7,7 +7,7 @@
 and/or allelic frequency}
 \usage{
 pruning1KGbyChr(
-  gds,
+  gdsReference,
   method = "corr",
   listSamples = NULL,
   slideWindowMaxBP = 5e+05,
@@ -21,7 +21,7 @@ pruning1KGbyChr(
 )
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
 opened SNP GDS file.}
 

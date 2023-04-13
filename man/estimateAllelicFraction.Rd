@@ -4,7 +4,7 @@
 \name{estimateAllelicFraction}
 \alias{estimateAllelicFraction}
 \title{Estimate the allelic fraction of the pruned SNVs for a specific
-sample}
+profile}
 \usage{
 estimateAllelicFraction(
   gdsReference,
@@ -21,7 +21,8 @@ estimateAllelicFraction(
   wAR = 9,
   cutOffAR = 3,
   gdsRefAnnot = NULL,
-  block.id = NULL
+  blockID = NULL,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -74,16 +75,19 @@ Default: \code{3}.}
  **This parameter is RNA specific.**
 Default: \code{NULL}.}
 
-\item{block.id}{a \code{character} string corresponding to the block
+\item{blockID}{a \code{character} string corresponding to the block
 identifier in \code{gdsRefAnnot}. **This parameter is RNA specific.**
 Default: \code{NULL}}
+
+\item{verbose}{a \code{logicial} indicating if the function should print
+message when running. Default: \code{FALSE}.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-The function estimates the allelic fraction of the pruned
-SNVs for a specific sample and add the information to the associated
+The function estimates the allelic fraction of the
+SNVs for a specific prfile and add the information to the associated
 Profile GDS file. The allelic fraction estimation method is adapted to
 the type of study (DNA or RNA).
 }
@@ -104,17 +108,32 @@ chrInfo <- integer(25L)
 for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
 
 chrInfo[23] <- length(Hsapiens[["chrX"]])
-
 chrInfo[24] <- length(Hsapiens[["chrY"]])
-
 chrInfo[25] <- length(Hsapiens[["chrM"]])
 
 ```
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", "RAIDS")
+## Path to the demo 1KG GDS file is located in this package
+dataDir <- system.file("extdata/tests", package="RAIDS")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+
+## Copy the Profile GDS file demo that has been pruned and annotated
+## into a test directory (deleted after the example has been run)
+dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
+                 "demoAllelicFraction")
+dir.create(dataDirAllelicFraction, showWarnings=FALSE,
+                 recursive=FALSE, mode="0777")
+file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+                 file.path(dataDirAllelicFraction, "ex1.gds"))
+
+## Open the reference GDS file (demo version)
+gds1KG <- snpgdsOpen(fileGDS)
+
+## Profile GDS file for one profile
+fileProfile <- file.path(dataDirAllelicFraction, "ex1.gds")
+profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 
 ## Chromosome length information
 ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -133,7 +152,24 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[24] <- length(Hsapiens[["chrY"]])
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 
-## TODO
+## Estimate the allelic fraction of the pruned SNVs
+estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,
+    currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo,
+    studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
+    cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
+    gdsRefAnnot=NULL, blockID=NULL)
+
+## The allelic fraction is saved in the 'lap' node of the Profile GDS file
+## The 'lap' entry should be present
+profileGDS
+
+## Close both GDS files (important)
+closefn.gds(profileGDS)
+closefn.gds(gds1KG)
+
+## Unlink Profile GDS file (created for demo purpose)
+unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
+unlink(dataDirAllelicFraction)
 
 }
 \author{

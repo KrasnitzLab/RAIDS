@@ -603,7 +603,7 @@ gdsProfile <- openfn.gds(fileProfile, readonly=FALSE)
 ## The current example is for a DNA sample
 ## In the case of RNA sample, the function needs different inputs
 ## such as the 1KG SNV Annotation GDS file and
-## the block.id should be as listed in the 1KG SNV Annotation GDS file 
+## The 'blockID' should be as listed in the 1KG SNV Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gdsReference=gds, gdsProfile=gdsProfile,
                                         currentProfile=profileName,

@@ -76,7 +76,7 @@ expected, an error message is generated.</p>
 <span>  <span class="va">fileReferenceGDS</span>,</span>
 <span>  <span class="va">fileReferenceAnnotGDS</span>,</span>
 <span>  <span class="va">chrInfo</span>,</span>
-<span>  <span class="va">dataRefSyn</span>,</span>
+<span>  <span class="va">syntheticRefDF</span>,</span>
 <span>  <span class="va">genoSource</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -134,7 +134,7 @@ file name of the 1KG GDS annotation file. The file must exist.</p></dd>
 representing the length of the chromosomes. See 'details' section.</p></dd>
 
 
-<dt>dataRefSyn</dt>
+<dt>syntheticRefDF</dt>
 <dd><p>a <code>data.frame</code> containing those columns:</p><ul><li><p>sample.id  a <code>character</code> string representing the sample
 identifier.</p></li>
 <li><p>pop.group  a <code>character</code> string representing the
@@ -189,7 +189,7 @@ super-population assigned to the sample.</p></li>
 <span class="r-in"><span>    <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Profiles used for synthetic data set</span></span></span>
-<span class="r-in"><span><span class="va">dataRefSyn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample.id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00150"</span>, <span class="st">"HG00138"</span>, <span class="st">"HG00330"</span>,</span></span>
+<span class="r-in"><span><span class="va">syntheticRefDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample.id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00150"</span>, <span class="st">"HG00138"</span>, <span class="st">"HG00330"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"HG00275"</span><span class="op">)</span>, pop.group<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GBR"</span>, <span class="st">"GBR"</span>,<span class="st">"FIN"</span>, <span class="st">"FIN"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    superPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EUR"</span>, <span class="st">"EUR"</span>, <span class="st">"EUR"</span>, <span class="st">"EUR"</span><span class="op">)</span>, stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -197,7 +197,7 @@ super-population assigned to the sample.</p></li>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateRunExomeAncestry</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">study</span>,</span></span>
 <span class="r-in"><span>    pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>, pathGeno<span class="op">=</span><span class="va">dataDir</span>, pathOut<span class="op">=</span><span class="va">pathOut</span>,</span></span>
 <span class="r-in"><span>    fileReferenceGDS<span class="op">=</span><span class="va">gds1KG</span>, fileReferenceAnnotGDS<span class="op">=</span><span class="va">gdsAnnot1KG</span>,</span></span>
-<span class="r-in"><span>    chrInfo<span class="op">=</span><span class="va">chrInfo</span>, dataRefSyn<span class="op">=</span><span class="va">dataRefSyn</span>, genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    chrInfo<span class="op">=</span><span class="va">chrInfo</span>, syntheticRefDF<span class="op">=</span><span class="va">syntheticRefDF</span>, genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -74,12 +74,12 @@ already be present in the GDS file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addUpdateLap</span><span class="op">(</span><span class="va">gds</span>, <span class="va">snpLap</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addUpdateLap</span><span class="op">(</span><span class="va">gdsProfile</span>, <span class="va">snpLap</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsProfile</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
 (a GDS file), a GDS file.</p></dd>
 
@@ -121,7 +121,7 @@ present in the "snp.id" entry of the GDS sample file.</p></dd>
 <span class="r-in"><span><span class="va">lap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.23</span>, <span class="fl">0.34</span>, <span class="fl">0.00</span>, <span class="fl">0.12</span>, <span class="fl">0.11</span>, <span class="fl">0.33</span>, <span class="fl">0.55</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add segments to the GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addUpdateLap</span><span class="op">(</span>gds<span class="op">=</span><span class="va">gdsFile</span>, snpLap<span class="op">=</span><span class="va">lap</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addUpdateLap</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">gdsFile</span>, snpLap<span class="op">=</span><span class="va">lap</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read lap information from GDS file</span></span></span>

@@ -6,7 +6,7 @@
 #' the \code{data.frame} passed to the function. The nodes "sample.id" and
 #' "sample.annot" are created in the GDS file.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
 #' @param pedDF a \code{data.frame} containing the information related to the
@@ -47,7 +47,7 @@
 #' rownames(pedInformation) <- pedInformation$Name.ID
 #'
 #' ## Add information about 2 samples to the GDS file
-#' RAIDS:::generateGDSSample(gds=tmpGDS, pedDF=pedInformation,
+#' RAIDS:::generateGDSRefSample(gdsReference=tmpGDS, pedDF=pedInformation,
 #'     listSamples=NULL)
 #'
 #' ## Read sample identifier list
@@ -66,13 +66,13 @@
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSample <- function(gds, pedDF, listSamples=NULL) {
+generateGDSRefSample <- function(gdsReference, pedDF, listSamples=NULL) {
 
     if(!(is.null(listSamples))){
         pedDF <- pedDF[listSamples,]
     }
 
-    add.gdsn(node=gds, name="sample.id", val=pedDF[, "Name.ID"])
+    add.gdsn(node=gdsReference, name="sample.id", val=pedDF[, "Name.ID"])
 
     ## Create a data.frame containing the information form the samples
     samp.annot <- data.frame(sex=pedDF[, "sex"],
@@ -80,7 +80,7 @@ generateGDSSample <- function(gds, pedDF, listSamples=NULL) {
         batch=pedDF[, "batch"],  stringsAsFactors=FALSE)
 
     ## Add the data.frame to the GDS object
-    add.gdsn(node=gds, name="sample.annot", val=samp.annot)
+    add.gdsn(node=gdsReference, name="sample.annot", val=samp.annot)
 
     ## Return the vector of saved samples
     return(pedDF[, "Name.ID"])

@@ -343,7 +343,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 
     if(verbose) { message("Start ", Sys.time()) }
 
-    listSampleGDS <- generateGDSSample(gds=newGDS, pedDF=ped1KG,
+    listSampleGDS <- generateGDSRefSample(gdsReference=newGDS, pedDF=ped1KG,
                                             listSamples=listSamples)
     if(verbose) { message("Sample info DONE ", Sys.time()) }
 

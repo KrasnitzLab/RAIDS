@@ -8,8 +8,8 @@
 gds2tfamSample(gdsProfile, listSample, sampleANNO, pedOUT)
 }
 \arguments{
-\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-gds from the profile file.}
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS
+file), the open Profile GDS file.}
 
 \item{listSample}{a \code{array} with the sample to keep}
 

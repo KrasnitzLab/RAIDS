@@ -107,7 +107,8 @@ generateGDSSNPinfo <- function(gdsReference, fileFREQ, verbose) {
 
     if(verbose) { message("Read mapSNVSel DONE ", Sys.time()) }
 
-    add.gdsn(node=gdsReference, name="snp.id", paste0("s",seq_len(nrow(mapSNVSel))))
+    add.gdsn(node=gdsReference, name="snp.id",
+                    paste0("s", seq_len(nrow(mapSNVSel))))
 
     if(verbose) { message("SNP part snp.id DONE ", Sys.time()) }
 
@@ -131,21 +132,20 @@ generateGDSSNPinfo <- function(gdsReference, fileFREQ, verbose) {
 
     if(verbose) { message("SNP part AF DONE ", Sys.time()) }
 
-    add.gdsn(node=gdsReference, name="snp.EAS_AF", val=as.numeric(mapSNVSel$EAS_AF),
-                    storage="packedreal24")
-    add.gdsn(node=gdsReference, name="snp.EUR_AF", val=as.numeric(mapSNVSel$EUR_AF),
-                    storage="packedreal24")
-    add.gdsn(node=gdsReference, name="snp.AFR_AF", val=as.numeric(mapSNVSel$AFR_AF),
-                    storage="packedreal24")
-    add.gdsn(node=gdsReference, name="snp.AMR_AF", val=as.numeric(mapSNVSel$AMR_AF),
-                    storage="packedreal24")
-    add.gdsn(node=gdsReference, name="snp.SAS_AF", val=as.numeric(mapSNVSel$SAS_AF),
-                    storage="packedreal24")
+    add.gdsn(node=gdsReference, name="snp.EAS_AF",
+        val=as.numeric(mapSNVSel$EAS_AF), storage="packedreal24")
+    add.gdsn(node=gdsReference, name="snp.EUR_AF",
+        val=as.numeric(mapSNVSel$EUR_AF), storage="packedreal24")
+    add.gdsn(node=gdsReference, name="snp.AFR_AF",
+        val=as.numeric(mapSNVSel$AFR_AF), storage="packedreal24")
+    add.gdsn(node=gdsReference, name="snp.AMR_AF",
+        val=as.numeric(mapSNVSel$AMR_AF), storage="packedreal24")
+    add.gdsn(node=gdsReference, name="snp.SAS_AF",
+        val=as.numeric(mapSNVSel$SAS_AF), storage="packedreal24")
 
     ## Return OL when successful
     return(0L)
 }
-
 
 
 #' @title Add information related to profile genotype into a Reference GDS file
@@ -349,8 +349,8 @@ gds2tfam <- function(gdsReference, listSample, pedOUT) {
 #'
 #' @description TODO
 #'
-#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' gds from the profile file.
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS
+#' file), the open Profile GDS file.
 #'
 #' @param listSample  a \code{array} with the sample to keep
 #'
@@ -388,7 +388,6 @@ gds2tfamSample <- function(gdsProfile, listSample, sampleANNO, pedOUT) {
 
     write.table(pedFile, pedOUT, quote=FALSE, sep="\t",
                     row.names=FALSE, col.names=FALSE)
-
 }
 
 
@@ -588,17 +587,17 @@ addUpdateSegment <- function(gdsProfile, snp.seg) {
 #' @description TODO
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file. RNA specific
+#' (a GDS file), the opened 1KG SNV Annotation GDS file. RNA specific
 #' Default: \code{NULL}.
 #'
 #' @param snp.index TODO
 #'
-#' @param block.id a \code{character} string corresponding to the block
+#' @param blockID a \code{character} string corresponding to the block
 #' identifier in \code{gdsRefAnnot}.  RNA specific
 #' Default: \code{NULL}
 #'
 #' @return TODO a \code{vector} of \code{numeric} corresponding to the
-#' block number
+#' block identifier
 #'
 #' @examples
 #'
@@ -609,13 +608,13 @@ addUpdateSegment <- function(gdsProfile, snp.seg) {
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-get.Gene.Block <- function(gdsRefAnnot, snp.index, block.id) {
+getGeneBlock <- function(gdsRefAnnot, snp.index, blockID) {
 
     block.annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
-    pos <- which(block.annot$block.id == block.id)
+    pos <- which(block.annot$block.id == blockID)
 
     if(length(pos) != 1) {
-        stop("Try to get Gene.Block with block.id problematic ", block.id)
+        stop("Try to get Gene.Block with blockID problematic ", blockID)
     }
 
     b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,pos),

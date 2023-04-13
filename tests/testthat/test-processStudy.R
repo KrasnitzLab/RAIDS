@@ -2409,7 +2409,7 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
                 Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
         "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
         superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -2420,7 +2420,7 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
         pathProfileGDS=pathOut,
         pathGeno=pathOut, pathOut=33, fileReferenceGDS=fileGDS,
         fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chrInfo,
-        dataRefSyn=dataRefSyn,
+        syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
 
@@ -2443,7 +2443,7 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
                 Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
             "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
             superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -2453,7 +2453,7 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=33, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=chrInfo, dataRefSyn,
+        chrInfo=chrInfo, syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
 
@@ -2476,7 +2476,7 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
                       Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
             "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
             superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -2487,7 +2487,7 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
             fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=32,
-            chrInfo=chrInfo, dataRefSyn=dataRefSyn,
+            chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
             genoSource="snp-pileup"), error_message)
 })
 
@@ -2509,7 +2509,7 @@ test_that("runExomeAncestry() must return error when chrInfo is vector of charac
                       Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
             "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
             superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -2519,12 +2519,12 @@ test_that("runExomeAncestry() must return error when chrInfo is vector of charac
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c("ALLO", "TEST"), dataRefSyn=dataRefSyn,
+        chrInfo=c("ALLO", "TEST"), syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
 
 
-test_that("runExomeAncestry() must return error when dataRefSyn missing column", {
+test_that("runExomeAncestry() must return error when syntheticRefDF missing column", {
 
     pathOut <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
@@ -2541,19 +2541,19 @@ test_that("runExomeAncestry() must return error when dataRefSyn missing column",
                       Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
             "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
             stringsAsFactors=FALSE)
 
     error_message <- paste0("The reference profile data frame ",
-        "\'dataRefSyn\' is incomplete. One or more mandatory columns are ",
+        "\'syntheticRefDF\' is incomplete. One or more mandatory columns are ",
         "missing. The mandatory columns are: \'sample.id\', ",
         "\'pop.group\', \'superPop\'.")
 
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn,
+        chrInfo=c(100L, 200L), syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
 
@@ -2575,7 +2575,7 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
                         Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
 
     ## Profiles used for synthetic data set
-    dataRefSyn <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
                 "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
                 superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 
@@ -2584,6 +2584,6 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno="DONOTEXISTDIR", pathOut=pathOut,
         fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=c(100L, 200L), dataRefSyn=dataRefSyn,
+        chrInfo=c(100L, 200L), syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })

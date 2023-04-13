@@ -1088,7 +1088,7 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  fileReferenceGDS=fileGDS,
                  fileReferenceAnnotGDS=fileAnnotGDS,
                  chrInfo=chrInfo,
-                 dataRefSyn=dataRef,
+                 syntheticRefDF=dataRef,
                  genoSource="snp-pileup")
 list.files(pathOut)
 list.files(file.path(pathOut, ped$Name.ID[1]))

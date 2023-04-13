@@ -6,7 +6,7 @@
 #' subcontinental population has less samples than the fixed number, all
 #' samples from the subcontinental population are selected.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
 #' @param nbSamples a single positive \code{integer} representing the number
@@ -41,7 +41,7 @@
 #' ## Extract a selected number of random samples
 #' ## for each subcontinental population
 #' ## In the 1KG GDS Demo file, there is one subcontinental population
-#' dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
+#' dataR <- select1KGPop(gdsReference=gdsFileOpen, nbSamples=nbSamples)
 #'
 #' ## Close the 1KG GDS Demo file (important)
 #' closefn.gds(gdsFileOpen)
@@ -51,11 +51,11 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-select1KGPop <- function(gds, nbSamples) {
+select1KGPop <- function(gdsReference, nbSamples) {
 
-    ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
+    ## The gdsReference must be an object of class "gds.class"
+    if (!inherits(gdsReference, "gds.class")) {
+        stop("The \'gdsReference\' must be an object of class \'gds.class\'")
     }
 
     ## Validate that nbSamples parameter is a single positive numeric
@@ -64,14 +64,14 @@ select1KGPop <- function(gds, nbSamples) {
     }
 
     ## Select reference samples
-    listRef <- read.gdsn(index.gdsn(gds, "sample.ref"))
+    listRef <- read.gdsn(index.gdsn(gdsReference, "sample.ref"))
     listKeep <- which(listRef == 1)
     rm(listRef)
 
     # Extract information about the selected reference samples
     # Including all the subcontinental population classes represented
-    sample.annot <- read.gdsn(index.gdsn(gds, "sample.annot"))[listKeep,]
-    sample.id <- read.gdsn(index.gdsn(gds, "sample.id"))[listKeep]
+    sample.annot <- read.gdsn(index.gdsn(gdsReference, "sample.annot"))[listKeep,]
+    sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
     listSel <- list()
 

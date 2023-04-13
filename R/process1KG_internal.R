@@ -5,7 +5,7 @@
 #' set (1KG) by chromosome and/or allelic frequency. The pruning is done
 #' through the linkage disequilibrium analysis.
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
 #' opened SNP GDS file.
 #'
@@ -63,35 +63,35 @@
 #' @importFrom gdsfmt index.gdsn read.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
+pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
                     slideWindowMaxBP=5e5, thresholdLD=sqrt(0.1),
                     np=1L, verbose=FALSE, chr=NULL,
                     minAF=NULL, outPrefix="pruned_1KG", keepObj=FALSE) {
 
     filePruned <- file.path(paste0(outPrefix, ".rds"))
     fileObj <- file.path(paste0(outPrefix, "Obj.rds"))
-    snpGDS <- index.gdsn(gds, "snp.id")
+    snpGDS <- index.gdsn(gdsReference, "snp.id")
     listKeep <- NULL
     if(is.null(minAF)){
         if(!is.null(chr)){
-            snpGDS <- index.gdsn(gds, "snp.id")
+            snpGDS <- index.gdsn(gdsReference, "snp.id")
             snpID <- read.gdsn(snpGDS)
 
-            chrGDS <- index.gdsn(gds, "snp.chromosome")
+            chrGDS <- index.gdsn(gdsReference, "snp.chromosome")
             snpCHR <- read.gdsn(chrGDS)
 
             listKeep <- snpID[which(snpCHR == chr)]
         }
     } else{
-        snpGDS <- index.gdsn(gds, "snp.id")
+        snpGDS <- index.gdsn(gdsReference, "snp.id")
         snpID <- read.gdsn(snpGDS)
-        afGDS <- index.gdsn(gds, "snp.AF")
+        afGDS <- index.gdsn(gdsReference, "snp.AF")
         snpAF <- read.gdsn(afGDS)
 
         if(is.null(chr)){
             listKeep <- snpID[which(snpAF >= minAF & snpAF <= 1-minAF)]
         } else{
-            chrGDS <- index.gdsn(gds, "snp.chromosome")
+            chrGDS <- index.gdsn(gdsReference, "snp.chromosome")
             snpCHR <- read.gdsn(chrGDS)
 
             listKeep <- snpID[which(snpCHR == chr & snpAF >= minAF &
@@ -99,7 +99,7 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
         }
     }
 
-    snpset <- runLDPruning(gds=gds, method=method, listSamples=listSamples,
+    snpset <- runLDPruning(gds=gdsReference, method=method, listSamples=listSamples,
                     listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
                     thresholdLD=thresholdLD, np=np, verbose=verbose)
 
@@ -117,7 +117,7 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
 #'
 #' @description TODO
 #'
-#' @param gds an object of class
+#' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file (reference).
 #'
 #' @param winSize a single positive \code{integer} representing the
@@ -166,7 +166,7 @@ pruning1KGbyChr <- function(gds, method="corr", listSamples=NULL,
 #' @importFrom AnnotationFilter GeneIdFilter
 #' @encoding UTF-8
 #' @keywords internal
-generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
+generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
 
     edb <- EnsDb
     listEnsId <- unique(names(genes(edb)))
@@ -203,9 +203,9 @@ generateGeneBlock <- function(gds, winSize=10000, EnsDb) {
     dfExonReduce <- toSAF(exonReduce)
     listMat <- list()
 
-    matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gds, "snp.chromosome")),
-                        pos=read.gdsn(index.gdsn(gds, "snp.position")),
-                        snp.allele=read.gdsn(index.gdsn(gds, "snp.allele")),
+    matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gdsReference, "snp.chromosome")),
+                        pos=read.gdsn(index.gdsn(gdsReference, "snp.position")),
+                        snp.allele=read.gdsn(index.gdsn(gdsReference, "snp.allele")),
                         stringsAsFactors=FALSE)
     offsetGene <- 0
     offsetGeneS <- 0

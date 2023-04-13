@@ -5,10 +5,10 @@
 \alias{generateGeneBlock}
 \title{Generate two indexes based on gene annotation for gdsAnnot1KG block}
 \usage{
-generateGeneBlock(gds, winSize = 10000, EnsDb)
+generateGeneBlock(gdsReference, winSize = 10000, EnsDb)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file (reference).}
 
 \item{winSize}{a single positive \code{integer} representing the

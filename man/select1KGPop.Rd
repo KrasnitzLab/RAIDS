@@ -6,10 +6,10 @@
 \title{Random selection of a specific number of reference profiles in each
 subcontinental population present in the 1KG GDS file}
 \usage{
-select1KGPop(gds, nbSamples)
+select1KGPop(gdsReference, nbSamples)
 }
 \arguments{
-\item{gds}{an object of class
+\item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
 \item{nbSamples}{a single positive \code{integer} representing the number
@@ -51,7 +51,7 @@ gdsFileOpen <- openfn.gds(fileGDS)
 ## Extract a selected number of random samples
 ## for each subcontinental population
 ## In the 1KG GDS Demo file, there is one subcontinental population
-dataR <- select1KGPop(gds=gdsFileOpen, nbSamples=nbSamples)
+dataR <- select1KGPop(gdsReference=gdsFileOpen, nbSamples=nbSamples)
 
 ## Close the 1KG GDS Demo file (important)
 closefn.gds(gdsFileOpen)

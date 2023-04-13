@@ -72,12 +72,12 @@ the reference samples is returned.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getRef1KGPop</span><span class="op">(</span><span class="va">gds</span>, popName <span class="op">=</span> <span class="st">"superPop"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getRef1KGPop</span><span class="op">(</span><span class="va">gdsReference</span>, popName <span class="op">=</span> <span class="st">"superPop"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
@@ -113,7 +113,7 @@ identifier are used as names for the <code>vector</code>.</p>
 <span class="r-in"><span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="va">nameFileGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Extract super population information for the 1KG samples</span></span></span>
-<span class="r-in"><span><span class="fu">getRef1KGPop</span><span class="op">(</span>gds<span class="op">=</span><span class="va">fileGDS</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">getRef1KGPop</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">fileGDS</span>, popName<span class="op">=</span><span class="st">"superPop"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> HG00100 HG00101 HG00102 HG00103 HG00104 HG00105 HG00106 HG00109 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "EUR"   "SAS"   "EAS"   "EUR"   "AFR"   "AFR"   "AFR"   "AMR" </span>
 <span class="r-in"><span></span></span>

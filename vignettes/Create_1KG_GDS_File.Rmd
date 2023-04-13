@@ -450,7 +450,7 @@ gds <- snpgdsOpen(fileGDS1kg)
 fileOUT <- "SNPretained.VCF"
 
 ## Generate the VCF with the retained SNP position
-snvListVCF(gds=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
+snvListVCF(gdsReference=gds, fileOUT=fileOUT, offset=1, freqCutoff=NULL)
 
 ## Close the 1KG GDS file
 closefn.gds(gds)

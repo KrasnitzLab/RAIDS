@@ -338,8 +338,11 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #' (a GDS file), the1 1KG SNV Annotation GDS file.
 #' This parameter is RNA specific.
 #'
-#' @param block.id a \code{character} string corresponding to the block
+#' @param blockID a \code{character} string corresponding to the block
 #' identifier in \code{gdsRefAnnot}. This parameter is RNA specific.
+#'
+#' @param verbose a \code{logicial} indicating if the function should print
+#' message when running.
 #'
 #' @return The integer \code{0L} when successful.
 #'
@@ -365,13 +368,13 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 #'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
 #'     156040895L, 57227415L,  16569L)
 #'
-#' ## The validatiion should be successful
+#' ## The validation should be successful
 #' RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG,
 #'     gdsProfile=gdsSample,
 #'     currentProfile="Sample01", studyID="Synthetic", chrInfo=chrInfo,
 #'     studyType="DNA", minCov=10L, minProb=0.03, eProb=0.002, cutOffLOH=10,
 #'     cutOffHomoScore=11, wAR=2, cutOffAR=10, gdsRefAnnot=gds1KG,
-#'     block.id="1")
+#'     blockID="1", verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -384,7 +387,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
 validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
         currentProfile,
         studyID, chrInfo, studyType, minCov, minProb, eProb, cutOffLOH,
-        cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, block.id) {
+        cutOffHomoScore, wAR, cutOffAR, gdsRefAnnot, blockID, verbose) {
 
     ## The gds and gdsSample must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
@@ -429,6 +432,9 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
         stop("The \'cutOffHomoScore\' parameter must be a single ",
                 "numeric value.")
     }
+
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, name="verbose")
 
     return(0L)
 }

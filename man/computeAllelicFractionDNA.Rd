@@ -18,7 +18,7 @@ computeAllelicFractionDNA(
   cutOffLOH = -5,
   cutOffHomoScore = -3,
   wAR = 9L,
-  verbose = FALSE
+  verbose
 )
 }
 \arguments{
@@ -60,7 +60,7 @@ Default: \code{-3}.}
 the window used to compute an empty box. Default: \code{9L}.}
 
 \item{verbose}{a \code{logicial} indicating if the function should print
-message when running. Default: \code{FALSE}.}
+message when running.}
 }
 \value{
 a \code{data.frame} with lap for the pruned SNV dataset with

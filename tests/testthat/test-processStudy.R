@@ -1983,19 +1983,36 @@ test_that("computePoolSyntheticAncestryGr() must return error when eigen.cnt is 
 })
 
 
-test_that("computePoolSyntheticAncestryGr() must return error when missing.rate is character string", {
+test_that("computePoolSyntheticAncestryGr() must return error when missingRate is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    error_message <- paste0("The \'missing.rate\' parameter must be a single ",
+    error_message <- paste0("The \'missingRate\' parameter must be a single ",
                             "positive numeric between zero and one or NaN.")
 
     expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
-        algorithm="exact", eigen.cnt=15L, missing.rate="0.02"), error_message)
+        algorithm="exact", eigen.cnt=15L, missingRate="0.02"), error_message)
 })
+
+
+test_that("computePoolSyntheticAncestryGr() must return error when verbose is character string", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    gds1KG <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+
+    error_message <- paste0("The \'verbose\' parameter must be a ",
+                                "logical (TRUE or FALSE).")
+
+    expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
+        algorithm="exact", eigen.cnt=15L, missingRate=0.02, verbose="QC"),
+        error_message, fixed=TRUE)
+})
+
 
 
 #############################################################################

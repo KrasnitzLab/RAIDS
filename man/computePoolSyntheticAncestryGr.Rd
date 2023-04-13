@@ -19,7 +19,8 @@ computePoolSyntheticAncestryGr(
   pcaList = seq(2, 15, 1),
   algorithm = c("exact", "randomized"),
   eigen.cnt = 32L,
-  missing.rate = 0.025
+  missingRate = 0.025,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -72,11 +73,14 @@ eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} function
 with "<= missing.rate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{FALSE}.}
 }
 \value{
 a \code{list} TODO with the sample.id and eigenvectors

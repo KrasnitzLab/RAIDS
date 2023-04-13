@@ -1910,7 +1910,8 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
         eigen.cnt=eigen.cnt, missing.rate=missing.rate)
 
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
-                        sampleRef=sampleRM, studyIDSyn=studyIDSyn)
+                        sampleRef=sampleRM, studyIDSyn=studyIDSyn,
+                        verbose=FALSE)
 
     ## Calculate the k-nearest neighbor analyses on a subset of the
     ## synthetic dataset

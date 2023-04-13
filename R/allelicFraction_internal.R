@@ -29,7 +29,7 @@
 #' representing the probability of sequencing error. Default: \code{0.001}.
 #'
 #' @param verbose a \code{logicial} indicating if messages should be printed
-#' when the function is running. Default: \code{FALSE}.
+#' when the function is running.
 #'
 #' @return a \code{data.frame} containing:
 #' \itemize{
@@ -62,7 +62,7 @@
 #' @encoding UTF-8
 #' @keywords internal
 getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
-                minCov=10, minProb=0.999, eProb=0.001, verbose=FALSE) {
+                minCov=10, minProb=0.999, eProb=0.001, verbose) {
 
     ## Extract study information (data.frame) from GDS Sample file
     study.annot <- read.gdsn(index.gdsn(node=gdsSample, path="study.annot"))
@@ -266,9 +266,10 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                                 wAR=9L, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
-    ## the GDS Sample file and the 1KG GDS file
-    snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
-                            minCov, minProb, eProb)
+    ## the Profile GDS file and the 1KG GDS file
+    snp.pos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
+        currentProfile=currentProfile, studyID=studyID,
+        minCov=minCov, minProb=minProb, eProb=eProb, verbose=verbose)
 
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))

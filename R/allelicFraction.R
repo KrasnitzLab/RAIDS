@@ -428,7 +428,6 @@ tableBlockAF <- function(snp.pos) {
     row.names(tmp) <- as.character(tmp[,1])
     resBlock$nbHetero <- tmp[as.character(listBlocks),2]
 
-
     for (i in seq_len(length(listBlocks))) {
         # start with LOH
 
@@ -488,7 +487,6 @@ tableBlockAF <- function(snp.pos) {
             resBlock$nPhase[i] <- resML$nPhase
             resBlock$sumAlleleLow[i] <- resML$sumAlleleLow
             resBlock$sumAlleleHigh[i] <- resML$sumAlleleHigh
-
         }
     }
 

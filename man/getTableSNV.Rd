@@ -14,7 +14,7 @@ getTableSNV(
   minCov = 10,
   minProb = 0.999,
   eProb = 0.001,
-  verbose = FALSE
+  verbose
 )
 }
 \arguments{
@@ -41,7 +41,7 @@ Default: \code{0.999}.}
 representing the probability of sequencing error. Default: \code{0.001}.}
 
 \item{verbose}{a \code{logicial} indicating if messages should be printed
-when the function is running. Default: \code{FALSE}.}
+when the function is running.}
 }
 \value{
 a \code{data.frame} containing:

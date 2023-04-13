@@ -472,21 +472,21 @@ test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GD
     fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
 
     ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
+    tmpGDS  <- local_GDS_file(fileGDS)
 
     ## Vector of segment identifiers
     lap <- c(0.1, 0.22, 0.12, 0.43, 0.00, 0.00, 0.15, 0.43,
              0.00, 0.00, 0.15, 0.43)
 
     ## Add segments to the GDS file
-    RAIDS:::addUpdateLap(gdsProfile=GDS_file_tmp, snpLap=lap)
+    RAIDS:::addUpdateLap(gdsProfile=tmpGDS, snpLap=lap)
 
     ## Read segments information from GDS file
-    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="lap"))
+    results <- read.gdsn(index.gdsn(node=tmpGDS, path="lap"))
 
     ## Close GDS file
     ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
+    closefn.gds(gdsfile=tmpGDS)
 
     expect_equal(results, lap)
 })

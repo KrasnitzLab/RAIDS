@@ -18,7 +18,8 @@ validateComputePoolSyntheticAncestryGr(
   pcaList,
   algorithm,
   eigen.cnt,
-  missing.rate
+  missingRate,
+  verbose
 )
 }
 \arguments{
@@ -65,10 +66,13 @@ introduced in Galinsky et al. 2016).}
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} only
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.}
+with "<= missingRate" only; if \code{NaN}, no missing threshold.}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed. Default: \code{FALSE}.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -92,7 +96,7 @@ RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
-     missing.rate=0.02)
+     missingRate=0.02, verbose=FALSE)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gdsSample)

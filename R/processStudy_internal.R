@@ -197,10 +197,13 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA} only
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{FALSE}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -226,7 +229,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #'      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
 #'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
 #'      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
-#'      missing.rate=0.02)
+#'      missingRate=0.02, verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gdsSample)
@@ -237,7 +240,8 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @keywords internal
 validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         spRef, studyIDSyn, np, listCatPop, fieldPopIn1KG,
-        fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missing.rate) {
+        fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missingRate,
+        verbose) {
 
     ## The gdsSample must be objects of class "gds.class"
     validateGDSClass(gdsSample, "gdsSample")
@@ -273,18 +277,18 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The parameter eigen.cnt must be a single integer
     if(!(isSingleNumber(eigen.cnt))) {
         stop("The \'eigen.cnt\' parameter must be a single integer.")
     }
 
-    ## The parameter missing.rate must be a single numer [0,1] or NaN
-    if(!(((isSingleNumber(missing.rate) && missing.rate >= 0.0 &&
-                    missing.rate <= 1.0)) || is.nan(missing.rate)))  {
-        stop("The \'missing.rate\' parameter must be a single positive ",
+    ## The parameter missingRate must be a single number [0,1] or NaN
+    if(!(((isSingleNumber(missingRate) && missingRate >= 0.0 &&
+                    missingRate <= 1.0)) || is.nan(missingRate)))  {
+        stop("The \'missingRate\' parameter must be a single positive ",
                 "numeric between zero and one or NaN.")
     }
 
+    validateLogical(logical=verbose, name="verbose")
     return(0L)
 }
 

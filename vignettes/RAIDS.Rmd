@@ -652,11 +652,11 @@ A synthetic profile is generated through the merging of one cancer profile
 with one 1KG sample of known ancestry. Multiple 1KG samples of different 
 ancestry are required to create a synthetic dataset that will be able to 
 show the specific accuracy for each super-population. All the synthetic 
-profiles are saved in the **Sample GDS file** corresponding to the 
+profiles are saved in the **Profile GDS file** corresponding to the 
 cancer profile used to generate the dataset.
 
 In summary, a fixed number of samples fo each super-population is extracted 
-from the 1KG study. The information is saved in the **Sample GDS file** 
+from the 1KG study. The information is saved in the **Profile GDS file** 
 associated to the selected cancer profile. A synthetic profile is created for 
 each combination of the 1KG samples and cancer profile. The synthetic profile 
 is then saved in the **Sample GDS file**.
@@ -666,9 +666,9 @@ are used for data synthesis.
 
 These 3 files are required:
 
-1. The **Sample GDS file**
+1. The **Profile GDS file**
 2. The **1KG GDS file**
-3. The **1KG SNv Annotation GDS file**
+3. The **1KG Annotation GDS file**
 
 
 ```{r generateSynthetic, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
@@ -694,10 +694,9 @@ set.seed(3043)
 ## Here we select 2 profiles from 1KG for each subcontinental-level
 ## Normally, we use 30 profiles from 1KG for each 
 ## subcontinental-level but it is too big for the example.
-## The 1KG files in this example only have 6 profiles for each 
+## The 1KG GDS file in this example only has 6 profiles for each 
 ## subcontinental-level (for demo purpose only)
 ####################################################################
-
 dataRef <- select1KGPop(gds, nbSamples=2L)
 
 ## Extract the list of selected 1KG sample identifiers
@@ -728,24 +727,21 @@ prepSynthetic(fileProfileGDS=fileProfile,
                 prefId="1")
 
 ####################################################################
-## Both the 1KG GDS file and the 1KG SNV Annotation GDS file
+## Both the 1KG GDS file and the 1KG Annotation GDS file
 ## are required
 ####################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
+fileRefAnnot <- file.path(path1KG, "exAnnot1kg.gds")
 
-fileName.GDS.Annot <- "exAnnot1kg.gds"
-
-file.Annot <- file.path(path1KG, fileName.GDS.Annot)
-
-## Open the 1KG GDS file and 1KG SNV Annotation file    
-gds.Annot <- openfn.gds(file.Annot)
+## Open  1KG Annotation GDS file    
+gdsRefAnnot <- openfn.gds(fileRefAnnot)
 
 ####################################################################
 ## The syntheticGeno() function generates the synthetic profiles.
-## The synthetic profiles are saved in the Sample GDS file
+## The synthetic profiles are saved in the Profile GDS file
 ####################################################################
 resG <- syntheticGeno(gdsReference=gds,
-                        gdsRefAnnot=gds.Annot,
+                        gdsRefAnnot=gdsRefAnnot,
                         fileProfileGDS=fileProfile,
                         data.id.profile=profileName,
                         listSampleRef=listSampleRef,
@@ -753,7 +749,7 @@ resG <- syntheticGeno(gdsReference=gds,
 
 ## Close both GDS files
 closefn.gds(gds)
-closefn.gds(gds.Annot)
+closefn.gds(gdsRefAnnot)
 ```
 
 <br>

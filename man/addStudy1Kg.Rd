@@ -16,7 +16,7 @@ addStudy1Kg(gdsReference, fileProfileGDS, verbose = FALSE)
 file name of the GDS Sample file. The GDS Sample file must exist.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
-to show how the different steps in the function.}
+to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 The integer \code{0L} when successful.

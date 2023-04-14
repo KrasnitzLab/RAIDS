@@ -285,14 +285,14 @@ The PED RDS file must contain a *data.frame* with these 5 columns:
 - **Name.ID**: The unique sample identifier. The profile VCF file  
 should be called "Name.ID.txt.gz". 
 - **Case.ID**: The patient identifier associated to the sample.
-- **Sample.Type**: The information about the profile tissue source (primary tumor,
-metastatic tumor, normal, etc..). 
+- **Sample.Type**: The information about the profile tissue source 
+(primary tumor, metastatic tumor, normal, etc..). 
 - **Diagnosis**: The donor's diagnosis.
 - **Source**: The source of the profile sequence data (example: dbGAP_XYZ).
 
 Important: The row names of the *data.frame* must be the profiles' **Name.ID**.
 
-This file is referred to as the **Sample PED RDS file** (PED for pedigree). 
+This file is referred to as the **Profile PED RDS file** (PED for pedigree). 
 Alternatively, the PED information can be saved in another type of 
 file (CVS, etc..) as long as the *data.frame* information can be regenerated 
 in R (with _read.csv()_ or else). 
@@ -300,7 +300,7 @@ in R (with _read.csv()_ or else).
 
 ```{r pedCreation, echo=TRUE, warning=FALSE, message=FALSE}
 ##############################################################
-## Location of the Sample PED RDS file to be created
+## Location of the Profile PED RDS file to be created
 ##############################################################
 dataDir <- system.file("extdata", package="RAIDS")
 demoPEDFile <- file.path(dataDir, "Demo_PED.RDS")
@@ -317,7 +317,7 @@ pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                     stringsAsFactors=FALSE)
 
 ##############################################################
-## The row names must correspond to the name of the samples
+## The row names must correspond to the name of the profiles
 ##############################################################
 rownames(pedDF) <- pedDF$Name.ID
 
@@ -341,8 +341,8 @@ or you can run each step separately as explained here.
 This step requires 3 files as input:
 
 - The **1KG GDS file**
-- The **Sample SNP pileup file** (one per profile present in the study)
-- The **Sample PED RDS file** (one file with information for all profiles in the study)
+- The **Profile SNP pileup file** (one per profile present in the study)
+- The **Profile PED RDS file** (one file with information for all profiles in the study)
 
 A *data.frame* containing the general information about the study is 
 also required. The *data.frame* must contain those 3 columns:
@@ -352,7 +352,7 @@ also required. The *data.frame* must contain those 3 columns:
 - **study.platform**: The type of sequencing (example: RNA-seq).
 
 Using all those inputs, the *createStudy2GDS1KG()* function will 
-generate a **Sample GDS file**. One **Sample GDS file** is created for each 
+generate a **Profile GDS file**. One **Profile GDS file** is created for each 
 sample passed to the *listSamples* argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
@@ -373,13 +373,13 @@ path1KG <- file.path(dataDir, "example", "gdsRef")
 gds1KG <- file.path(path1KG, "ex1kg.gds")
 
 #################################################################
-## The Sample SNP pileup files (one per sample) need  
+## The Profile SNP pileup files (one per sample) need  
 ## to be located in the same directory.
 #################################################################
 pathGeno <- file.path(dataDir, "example", "snpPileup")
 
 #################################################################
-## The path where the Sample GDS files (one per sample)
+## The path where the Profile GDS files (one per profile)
 ## will be created need to be specified.
 #################################################################
 pathProfileGDS <- file.path(dataDir, "example", "out")
@@ -412,8 +412,8 @@ studyDF <- data.frame(study.id="MYDATA",
 listSamples <- ped[, "Name.ID"]
 
 #################################################################
-## This function creates one Sample GDS file for each
-## sample present in the 'listProfiles' parameter.
+## This function creates one Profile GDS file for each
+## profile present in the 'listProfiles' parameter.
 #################################################################
 createStudy2GDS1KG(pathGeno=pathGeno,
                         pedStudy=ped,
@@ -487,7 +487,7 @@ for(i in seq_len(length(listSamples))) {
                         currentProfile=listSamples[i],
                         studyID=studyDF$study.id)
 
-    ## Add annotation from the 1KG GDS file to the Sample GDS file
+    ## Add annotation from the 1KG GDS file to the Profile GDS file
     ## This is required.
     addStudy1Kg(gdsReference=gds1KG, fileProfileGDS=fileGDSProfile, 
                         verbose=FALSE)
@@ -503,16 +503,16 @@ closefn.gds(gds1KG)
 
 The __estimateAllelicFraction()__ estimates the allele fraction for all 
 SNVs present in the pruned SNV dataset. Note that the function requires 
-different inputs for DNA and RNA samples.
+different inputs for DNA and RNA profiles.
 
 For the DNA samples, these 2 files are required:
 
-1. The **Sample GDS file**
+1. The **Profile GDS file**
 2. The **1KG GDS file**
 
 For the RNA samples, these 3 files are required:
 
-1. The **Sample GDS file**
+1. The **Profile GDS file**
 2. The **1KG GDS file**
 3. The **1KG SNV Annotation GDS file**
 
@@ -535,8 +535,7 @@ library(BSgenome.Hsapiens.UCSC.hg38)
 ###################################################################
 ## The length of each chromosome is required
 ## Chromosomes X, Y and M need relabeling (see below)
-## There are alternative ways to retrieve this information, e.g., 
-## 
+## There are alternative ways to retrieve this information
 ###################################################################
 chrInfo <- integer(25L)
 for(i in seq_len(22L)) {
@@ -557,15 +556,15 @@ as shown in this example.
 
 
 ```{r estimateAllelicFraction, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
-###################################################################
+#####################################################################
 ## Load the required package
-###################################################################
+#####################################################################
 library(RAIDS)
 
-###################################################################
+#####################################################################
 ## The 1KG GDS file is required
-## The 1KG SNV Annotation GDS file is only required for RNA samples
-###################################################################
+## The 1KG SNV Annotation GDS file is only required for RNA profiles
+#####################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
 file1KG <- file.path(path1KG, "ex1kg.gds")
@@ -574,22 +573,21 @@ fileAnnot1KG <- file.path(path1KG, "exAnnot1kg.gds")
 ## Open the 1KG GDS file
 gds <- snpgdsOpen(file1KG)
     
-###################################################################
+#####################################################################
 ## The information about the length of the chromosomes
-###################################################################
+#####################################################################
 head(chrInfo)
 
-##############################################################
+#####################################################################
 ## The function must be called for each profile
 ## This example only uses one profile
-##############################################################
+#####################################################################
 ## The first profile is used in the demo
 profileName <- listSamples[1]
 
-###################################################################
+#####################################################################
 ## The Profile GDS file is required
-###################################################################
-## Name of the Profile GDS file
+#####################################################################
 ## The name must correspond to the profile identifier
 fileProfile <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 

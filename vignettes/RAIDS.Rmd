@@ -519,7 +519,7 @@ For the RNA samples, these 3 files are required:
 In both cases, the other required input is:
 
 1. The information about the length of the chromosomes
-2. The sample identifier (it corresponds to the Sample GDS file name)
+2. The profile identifier (it corresponds to the Profile GDS file name)
 3. The study identifier (it should correspond to the one used previously)
 
 The information about the length of the chromosomes must be assigned into a 
@@ -552,7 +552,7 @@ chrInfo
 <br>
 <br>
 
-The __estimateAllelicFraction()__ function processes one sample at the time, 
+The __estimateAllelicFraction()__ function processes one profile at the time, 
 as shown in this example.  
 
 
@@ -580,17 +580,17 @@ gds <- snpgdsOpen(file1KG)
 head(chrInfo)
 
 ##############################################################
-## The function must be called for each sample
-## This example only uses one sample
+## The function must be called for each profile
+## This example only uses one profile
 ##############################################################
-## The first sample is used in the demo
+## The first profile is used in the demo
 profileName <- listSamples[1]
 
 ###################################################################
 ## The Profile GDS file is required
 ###################################################################
 ## Name of the Profile GDS file
-## The name must correspond to the sample identifier
+## The name must correspond to the profile identifier
 fileProfile <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 
 ## Open the Profile GDS file in writing mode

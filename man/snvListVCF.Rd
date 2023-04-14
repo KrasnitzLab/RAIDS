@@ -6,10 +6,10 @@
 \title{Generate a VCF with the information from the SNPs that pass
 a cut-off threshold}
 \usage{
-snvListVCF(gds, fileOUT, offset = 0L, freqCutoff = NULL)
+snvListVCF(gdsReference, fileOUT, offset = 0L, freqCutoff = NULL)
 }
 \arguments{
-\item{gds}{an object of class \code{\link[gdsfmt]{gds.class}}
+\item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the 1KG GDS file.}
 
 \item{fileOUT}{a \code{character} string representing the path and file
@@ -44,7 +44,7 @@ vcfFile <- file.path(dataDir, "Demo_TMP_01.vcf")
 
 ## Create a VCF file with the SNV dataset present in the GDS file
 ## No cutoff on frequency, so all SNVs are saved
-snvListVCF(gds=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+snvListVCF(gdsReference=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
 
 ## Close GDS file (IMPORTANT)
 closefn.gds(fileGDS)

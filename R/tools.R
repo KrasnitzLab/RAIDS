@@ -6,7 +6,7 @@
 #' from a GDS SNP information file and save the retained SNP information into
 #' a VCF file.
 #'
-#' @param gds an object of class \code{\link[gdsfmt]{gds.class}}
+#' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
 #' @param fileOUT a \code{character} string representing the path and file
@@ -34,7 +34,7 @@
 #'
 #' ## Create a VCF file with the SNV dataset present in the GDS file
 #' ## No cutoff on frequency, so all SNVs are saved
-#' snvListVCF(gds=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+#' snvListVCF(gdsReference=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
 #'
 #' ## Close GDS file (IMPORTANT)
 #' closefn.gds(fileGDS)
@@ -48,11 +48,11 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
+snvListVCF <- function(gdsReference, fileOUT, offset=0L, freqCutoff=NULL) {
 
-    ## Validate that gds is an object of class gds.class
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'.")
+    ## Validate that gdsReference is an object of class gds.class
+    if (!inherits(gdsReference, "gds.class")) {
+        stop("The \'gdsReference\' must be an object of class \'gds.class\'.")
     }
 
     ## Validate that offset is a single integer
@@ -65,16 +65,16 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
         stop("The \'freqCutoff\' must be a single numeric or NULL.")
     }
 
-    snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
-    snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
-    snp.allele <- read.gdsn(index.gdsn(gds, "snp.allele"))
+    snp.chromosome <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
+    snp.position <- read.gdsn(index.gdsn(gdsReference, "snp.position"))
+    snp.allele <- read.gdsn(index.gdsn(gdsReference, "snp.allele"))
 
     allele <- matrix(unlist(strsplit(snp.allele, "\\/")), nrow=2)
 
     df <- NULL
 
     if(is.null(freqCutoff)){
-        snp.AF <- read.gdsn(index.gdsn(gds, "snp.AF"))
+        snp.AF <- read.gdsn(index.gdsn(gdsReference, "snp.AF"))
         df <- data.frame(CHROM=snp.chromosome,
                             POS=as.integer(snp.position + offset),
                             ID=rep(".", length(snp.chromosome)),
@@ -85,12 +85,12 @@ snvListVCF <- function(gds, fileOUT, offset=0L, freqCutoff=NULL) {
                             INFO=paste0("AF=", snp.AF),
                             stringsAsFactors=FALSE)
     } else {
-        freqDF <- data.frame(snp.AF=read.gdsn(index.gdsn(gds, "snp.AF")),
-                        snp.EAS_AF=read.gdsn(index.gdsn(gds, "snp.EAS_AF")),
-                        snp.EUR_AF=read.gdsn(index.gdsn(gds, "snp.EUR_AF")),
-                        snp.AFR_AF=read.gdsn(index.gdsn(gds, "snp.AFR_AF")),
-                        snp.AMR_AF=read.gdsn(index.gdsn(gds, "snp.AMR_AF")),
-                        snp.SAS_AF=read.gdsn(index.gdsn(gds, "snp.SAS_AF")))
+        freqDF <- data.frame(snp.AF=read.gdsn(index.gdsn(gdsReference, "snp.AF")),
+                        snp.EAS_AF=read.gdsn(index.gdsn(gdsReference, "snp.EAS_AF")),
+                        snp.EUR_AF=read.gdsn(index.gdsn(gdsReference, "snp.EUR_AF")),
+                        snp.AFR_AF=read.gdsn(index.gdsn(gdsReference, "snp.AFR_AF")),
+                        snp.AMR_AF=read.gdsn(index.gdsn(gdsReference, "snp.AMR_AF")),
+                        snp.SAS_AF=read.gdsn(index.gdsn(gdsReference, "snp.SAS_AF")))
 
         listKeep <- which(rowSums(freqDF[,2:6] >= freqCutoff &
                                         freqDF[,2:6] <= 1 - freqCutoff) > 0)

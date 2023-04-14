@@ -72,12 +72,12 @@ a VCF file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">snvListVCF</span><span class="op">(</span><span class="va">gds</span>, <span class="va">fileOUT</span>, offset <span class="op">=</span> <span class="fl">0L</span>, freqCutoff <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">snvListVCF</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">fileOUT</span>, offset <span class="op">=</span> <span class="fl">0L</span>, freqCutoff <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gds</dt>
+    <dl><dt>gdsReference</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
 (a GDS file), the 1KG GDS file.</p></dd>
 
@@ -123,7 +123,7 @@ keep a SNP. If <code>NULL</code>, all SNPs are retained. Default: <code>NULL</co
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a VCF file with the SNV dataset present in the GDS file</span></span></span>
 <span class="r-in"><span><span class="co">## No cutoff on frequency, so all SNVs are saved</span></span></span>
-<span class="r-in"><span><span class="fu">snvListVCF</span><span class="op">(</span>gds<span class="op">=</span><span class="va">fileGDS</span>, fileOUT<span class="op">=</span><span class="va">vcfFile</span>, offset<span class="op">=</span><span class="fl">0L</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">snvListVCF</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">fileGDS</span>, fileOUT<span class="op">=</span><span class="va">vcfFile</span>, offset<span class="op">=</span><span class="fl">0L</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>appending column names to file</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>

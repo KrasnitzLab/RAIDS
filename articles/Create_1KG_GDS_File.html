@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.3<br><strong>Compiled date</strong>: 2023-04-13<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.3<br><strong>Compiled date</strong>: 2023-04-14<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <div class="section level2">
 <h2 id="step-1---formatting-the-information-from-1000-genomes-optional">Step 1 - Formatting the information from 1000 Genomes
@@ -459,7 +459,7 @@ file:</p>
 <span><span class="va">fileOUT</span> <span class="op">&lt;-</span> <span class="st">"SNPretained.VCF"</span></span>
 <span></span>
 <span><span class="co">## Generate the VCF with the retained SNP position</span></span>
-<span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">gds</span>, fileOUT<span class="op">=</span><span class="va">fileOUT</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds</span>, fileOUT<span class="op">=</span><span class="va">fileOUT</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close the 1KG GDS file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>

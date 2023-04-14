@@ -1837,7 +1837,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when gdsSample is 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample="test.gds",
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", eigen.cnt=15L), error_message)
+                spRef="test", eigenCount=15L), error_message)
 })
 
 
@@ -1851,7 +1851,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when sampleRM is v
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
             sampleRM=c(1, 2), studyIDSyn="Synthetic", np=1L,
-            spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+            spRef="test", algorithm="exact", eigenCount=32L), error_message)
 })
 
 
@@ -1865,7 +1865,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when studyIDSyn is
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("Sample01", "Sample02"), studyIDSyn=11, np=1L,
-        spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+        spRef="test", algorithm="exact", eigenCount=32L), error_message)
 })
 
 
@@ -1881,7 +1881,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when listCatPop is
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("Sample01", "Sample02"), studyIDSyn="Test", np=1L,
         listCatPop=11,
-        spRef="test", algorithm="exact", eigen.cnt=32L), error_message)
+        spRef="test", algorithm="exact", eigenCount=32L), error_message)
 })
 
 
@@ -1895,7 +1895,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when np is charact
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np="12",
-                spRef="test", eigen.cnt=15L), error_message)
+                spRef="test", eigenCount=15L), error_message)
 })
 
 
@@ -1909,7 +1909,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when np is zero", 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                     sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=0L,
-                    spRef="test", eigen.cnt=15L), error_message)
+                    spRef="test", eigenCount=15L), error_message)
 })
 
 
@@ -1924,7 +1924,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when kList is a ve
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, kList=c(0, 1),
-        pcaList=c(1, 2), spRef="test", eigen.cnt=15L), error_message)
+        pcaList=c(1, 2), spRef="test", eigenCount=15L), error_message)
 })
 
 
@@ -1939,7 +1939,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when pcaList is a 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-        pcaList=c(0, 1, 2), spRef="test", eigen.cnt=15L), error_message)
+        pcaList=c(0, 1, 2), spRef="test", eigenCount=15L), error_message)
 })
 
 
@@ -1953,7 +1953,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when algorithm is 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                     sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                    spRef="test", algorithm=22, eigen.cnt=15L), error_message)
+                    spRef="test", algorithm=22, eigenCount=15L), error_message)
 })
 
 
@@ -1965,21 +1965,21 @@ test_that("computePoolSyntheticAncestryGr() must return error when algorithm is 
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", algorithm="Hello", eigen.cnt=15L))
+                spRef="test", algorithm="Hello", eigenCount=15L))
 })
 
 
-test_that("computePoolSyntheticAncestryGr() must return error when eigen.cnt is character string", {
+test_that("computePoolSyntheticAncestryGr() must return error when eigenCount is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gds1KG <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds1KG), envir=parent.frame())
 
-    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+    error_message <- "The \'eigenCount\' parameter must be a single integer."
 
     expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", algorithm="exact", eigen.cnt="15"), error_message)
+                spRef="test", algorithm="exact", eigenCount="15"), error_message)
 })
 
 
@@ -1994,7 +1994,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when missingRate i
 
     expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
-        algorithm="exact", eigen.cnt=15L, missingRate="0.02"), error_message)
+        algorithm="exact", eigenCount=15L, missingRate="0.02"), error_message)
 })
 
 
@@ -2009,7 +2009,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when verbose is ch
 
     expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
-        algorithm="exact", eigen.cnt=15L, missingRate=0.02, verbose="QC"),
+        algorithm="exact", eigenCount=15L, missingRate=0.02, verbose="QC"),
         error_message, fixed=TRUE)
 })
 

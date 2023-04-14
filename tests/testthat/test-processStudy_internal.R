@@ -63,7 +63,7 @@ test_that("validateComputePoolSyntheticAncestryGr() must return expected results
         gdsSample=gdsF, sampleRM="TGCA_01", spRef="TCGA",
         studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
         fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
-        pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
+        pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
         missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)
@@ -335,4 +335,22 @@ test_that("validateEstimateAllelicFraction() must return expected results when a
         gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE)
 
     expect_identical(result, 0L)
+})
+
+
+#############################################################################
+### Tests validateProfileGDSExist() results
+#############################################################################
+
+context("validateProfileGDSExist() results")
+
+
+test_that("validateProfileGDSExist() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures/sampleGDSforPruning")
+
+    result <- RAIDS:::validateProfileGDSExist(pathProfile=dataDir,
+                                        profile="ex1_demoForPruning")
+
+    expect_identical(result, file.path(dataDir, "ex1_demoForPruning.gds"))
 })

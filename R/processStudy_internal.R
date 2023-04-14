@@ -193,9 +193,9 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016).
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 #'
 #' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
@@ -228,7 +228,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #'      sampleRM="TGCA_01", spRef="TCGA",
 #'      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
 #'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
-#'      pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
+#'      pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
 #'      missingRate=0.02, verbose=FALSE)
 #'
 #' ## All GDS file must be closed
@@ -240,7 +240,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @keywords internal
 validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         spRef, studyIDSyn, np, listCatPop, fieldPopIn1KG,
-        fieldPopInfAnc, kList, pcaList, algorithm, eigen.cnt, missingRate,
+        fieldPopInfAnc, kList, pcaList, algorithm, eigenCount, missingRate,
         verbose) {
 
     ## The gdsSample must be objects of class "gds.class"
@@ -277,8 +277,8 @@ validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    if(!(isSingleNumber(eigen.cnt))) {
-        stop("The \'eigen.cnt\' parameter must be a single integer.")
+    if(!(isSingleNumber(eigenCount))) {
+        stop("The \'eigenCount\' parameter must be a single integer.")
     }
 
     ## The parameter missingRate must be a single number [0,1] or NaN
@@ -1474,6 +1474,46 @@ validateComputePoolSyntheticAncestry <- function(gdsReference, profileGDS,
     }
 
     return(0L)
+}
+
+#' @title Validate that the Profile GDS file exists for the specified profile
+#'
+#' @description The function validates that the Profile GDS file associated
+#' to a profile identifier exists in the specified directory.
+#'
+#' @param pathProfile a \code{character} string representing the directory
+#' where the Profile GDS files will be created. The directory must exist.
+#'
+#' @param currentProfile  a \code{character} string
+#' corresponding to the profile identifier. A Profile GDS file
+#' corresponding to the profile identifier must exist and be located in the
+#' \code{pathProfile} directory.
+#'
+#' @return a \code{character} string representing the path to the existing
+#' Profile GDS file.
+#'
+#' @examples
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#'
+#' ## The function returns the path to the existing Profile GDS file
+#' RAIDS:::validateProfileGDSExist(pathProfile=dataDir,
+#'     profile="ex1_demo")
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateProfileGDSExist <- function(pathProfile, profile) {
+
+    pathFile <- file.path(pathProfile, paste0(profile, ".gds"))
+
+    ## The Profile GDS file must exists
+    if (!(file.exists(pathFile))) {
+        stop("The Profile GDS file \'", pathFile, " does not exist.")
+    }
+
+    return(pathFile)
 }
 
 

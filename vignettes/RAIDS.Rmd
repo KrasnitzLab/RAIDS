@@ -838,7 +838,7 @@ for(i in seq_len(length(listSamples))) {
                                             studyIDSyn=studyDF.syn$study.id,
                                             np=4L,
                                             spRef=spRef,
-                                            eigen.cnt=15L)
+                                            eigenCount=15L)
         
         ## Results are saved
         saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE, 

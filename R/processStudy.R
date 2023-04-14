@@ -469,8 +469,7 @@ pruningSample <- function(gdsReference,
                             keepPrunedGDS=TRUE,
                             pathProfileGDS=NULL,
                             keepFile=FALSE,
-                            pathPrunedGDS=".",
-                            outPrefix="pruned") {
+                            pathPrunedGDS=".", outPrefix="pruned") {
 
     ## Validate input parameters
     validatePruningSample(gdsReference=gdsReference, method=method,
@@ -484,12 +483,8 @@ pruningSample <- function(gdsReference,
     method <- arg_match(method)
 
     ## Profile GDS file name
-    fileGDSSample <- file.path(pathProfileGDS, paste0(currentProfile, ".gds"))
-
-    ## The Profile GDS file must exists
-    if (!(file.exists(fileGDSSample))) {
-        stop("The Profile GDS file \'", fileGDSSample, " does not exist.")
-    }
+    fileGDSSample <-  validateProfileGDSExist(pathProfile=pathProfileGDS,
+                                                    profile=currentProfile)
 
     filePruned <- file.path(pathPrunedGDS, paste0(outPrefix, ".rds"))
     fileObj <- file.path(pathPrunedGDS, paste0(outPrefix, ".Obj.rds"))
@@ -555,10 +550,9 @@ pruningSample <- function(gdsReference,
 
     ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gdsReference, method=method,
-                listSamples=listSamples, listKeep=listKeep,
-                slideWindowMaxBP=slideWindowMaxBP,
-                thresholdLD=thresholdLD, np=np, verbose=verbose)
-
+        listSamples=listSamples, listKeep=listKeep,
+        slideWindowMaxBP=slideWindowMaxBP, thresholdLD=thresholdLD,
+        np=np, verbose=verbose)
     pruned <- unlist(snpset, use.names=FALSE)
 
     ## When TRUE, generate 2 RDS file with the pruned SNVs information

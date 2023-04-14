@@ -1476,6 +1476,46 @@ validateComputePoolSyntheticAncestry <- function(gdsReference, profileGDS,
     return(0L)
 }
 
+#' @title Validate that the Profile GDS file exists for the specified profile
+#'
+#' @description The function validates that the Profile GDS file associated
+#' to a profile identifier exists in the specified directory.
+#'
+#' @param pathProfile a \code{character} string representing the directory
+#' where the Profile GDS files will be created. The directory must exist.
+#'
+#' @param currentProfile  a \code{character} string
+#' corresponding to the profile identifier. A Profile GDS file
+#' corresponding to the profile identifier must exist and be located in the
+#' \code{pathProfile} directory.
+#'
+#' @return a \code{character} string representing the path to the existing
+#' Profile GDS file.
+#'
+#' @examples
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#'
+#' ## The function returns the path to the existing Profile GDS file
+#' RAIDS:::validateProfileGDSExist(pathProfile=dataDir,
+#'     profile="ex1_demo")
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateProfileGDSExist <- function(pathProfile, profile) {
+
+    pathFile <- file.path(pathProfile, paste0(profile, ".gds"))
+
+    ## The Profile GDS file must exists
+    if (!(file.exists(pathFile))) {
+        stop("The Profile GDS file \'", pathFile, " does not exist.")
+    }
+
+    return(pathFile)
+}
+
 
 #' @title Calculate Principal Component Analysis (PCA) on SNV genotype dataset
 #'

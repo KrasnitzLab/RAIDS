@@ -336,3 +336,21 @@ test_that("validateEstimateAllelicFraction() must return expected results when a
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests validateProfileGDSExist() results
+#############################################################################
+
+context("validateProfileGDSExist() results")
+
+
+test_that("validateProfileGDSExist() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures/sampleGDSforPruning")
+
+    result <- RAIDS:::validateProfileGDSExist(pathProfile=dataDir,
+                                        profile="ex1_demoForPruning")
+
+    expect_identical(result, file.path(dataDir, "ex1_demoForPruning.gds"))
+})

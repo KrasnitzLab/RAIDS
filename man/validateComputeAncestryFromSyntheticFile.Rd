@@ -19,8 +19,8 @@ validateComputeAncestryFromSyntheticFile(
   kList,
   pcaList,
   algorithm,
-  eigen.cnt,
-  missing.rate
+  eigenCount,
+  missingRate
 )
 }
 \arguments{
@@ -62,14 +62,14 @@ number of dimensions used in the PCA analysis.}
 \item{algorithm}{a \code{character} string representing the algorithm used
 to calculate the PCA.}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA}
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.}
+with "<= missingRate" only; if \code{NaN}, no missing threshold.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -97,7 +97,7 @@ RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
-    pcaList=c(3, 4, 5), algorithm="exact", eigen.cnt=32L, missing.rate=0.2)
+    pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

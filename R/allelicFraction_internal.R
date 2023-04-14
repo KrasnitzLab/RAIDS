@@ -81,19 +81,16 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
     ## Create the data.frame with the required information
     snp.pos <- data.frame(cnt.tot=cnt.total[listKeep],
                     cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
-                                    start=c(1, posCur),
-                                    count=c(-1, 1))[listKeep],
+                        start=c(1, posCur), count=c(-1, 1))[listKeep],
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
-                                    start=c(1, posCur),
-                                    count=c(-1, 1))[listKeep],
+                        start=c(1, posCur), count=c(-1, 1))[listKeep],
                     snp.pos=read.gdsn(index.gdsn(node=gdsReference,
                                     "snp.position"))[listKeep],
                     snp.chr=read.gdsn(index.gdsn(node=gdsReference,
                                     "snp.chromosome"))[listKeep],
                     normal.geno=rep(3, length(listKeep)),#Norm genotype unknown
                     pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep))
-                    snp.index=listKeep,
-                    stringsAsFactors=FALSE)
+                    snp.index=listKeep, stringsAsFactors=FALSE)
 
     snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
 
@@ -114,19 +111,15 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
         listKeep.o <- which(cnt.total >= minCov)
 
         snp.pos.o <- data.frame(cnt.tot=cnt.total[listKeep.o],
-                                cnt.ref=read.gdsn(index.gdsn(gdsSample,
-                                        "Ref.count.o"))[listKeep.o],
-                                cnt.alt=read.gdsn(index.gdsn(gdsSample,
-                                        "Alt.count.o"))[listKeep.o],
-                                snp.pos=read.gdsn(index.gdsn(gdsReference,
-                                        "snp.position.o"))[listKeep.o],
-                                snp.chr=read.gdsn(index.gdsn(gdsReference,
-                                        "snp.chromosome.o"))[listKeep.o],
-                                normal.geno=read.gdsn(index.gdsn(gdsSample,
-                                        "normal.geno"))[listKeep.o],
-                                pruned=rep(0, length(listKeep)),
-                                snp.index=rep(0, length(listKeep.o)),
-                                stringsAsFactors=FALSE)
+            cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count.o"))[listKeep.o],
+            cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count.o"))[listKeep.o],
+            snp.pos=read.gdsn(index.gdsn(gdsReference,
+                "snp.position.o"))[listKeep.o],
+            snp.chr=read.gdsn(index.gdsn(gdsReference,
+                "snp.chromosome.o"))[listKeep.o],
+            normal.geno=read.gdsn(index.gdsn(gdsSample,
+                "normal.geno"))[listKeep.o], pruned=rep(0, length(listKeep)),
+            snp.index=rep(0, length(listKeep.o)), stringsAsFactors=FALSE)
         listChr <- unique(snp.pos.o$snp.chr)
         listUnion <- list()
 
@@ -140,9 +133,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
         z <- z[order(z[,1], z[,2], z[,3]), ]
         vCum <- cumsum(z[,3])
 
-        snp.pos[z[ vCum < 0 & z[,3] == 0, 4],
-                "normal.geno"] <- snp.pos.o[vCum[vCum < 0 & z[, 3] == 0],
-                                        "normal.geno"]
+        snp.pos[z[ vCum < 0 & z[,3] == 0, 4], "normal.geno"] <-
+            snp.pos.o[vCum[vCum < 0 & z[, 3] == 0], "normal.geno"]
         rm(z)
 
         # Keep the snp.pos.o not in snp.pos
@@ -161,8 +153,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
     listCnt <- listCnt[order(listCnt)]
 
     cutOffA <- data.frame(count=unlist(vapply(listCnt,
-                        FUN=function(x, minProb, eProb){
-                            return(max(2, qbinom(minProb, x,eProb)))},
+        FUN=function(x, minProb, eProb){
+                return(max(2, qbinom(minProb, x,eProb)))},
                         FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)),
                             allele = unlist(vapply(listCnt,
                             FUN=function(x, minProb, eProb){
@@ -267,7 +259,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
 #' (0=not LOH, 1=in LOH)}
 #' \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
-#' region (-1=not, 0=neutral; 1=in LOH) TODO}
+#' region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+#' positive for imbalance in at least 1 window)}
 #' }
 #'
 #' @examples
@@ -329,8 +322,8 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
     ## Extract the genotype information for a SNV dataset using
     ## the Profile GDS file and the 1KG GDS file
     snp.pos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
-        currentProfile=currentProfile, studyID=studyID,
-        minCov=minCov, minProb=minProb, eProb=eProb, verbose=verbose)
+        currentProfile=currentProfile, studyID=studyID, minCov=minCov,
+        minProb=minProb, eProb=eProb, verbose=verbose)
 
     snp.pos$lap <- rep(-1, nrow(snp.pos))
     snp.pos$LOH <- rep(0, nrow(snp.pos))

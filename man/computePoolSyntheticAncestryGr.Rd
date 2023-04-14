@@ -76,7 +76,7 @@ Default: \code{32L}.}
 \item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} function
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
 
 \item{verbose}{a \code{logical} indicating if message information should be

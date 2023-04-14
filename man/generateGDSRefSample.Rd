@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{generateGDSRefSample}
 \alias{generateGDSRefSample}
-\title{Initialization of the section related to the sample
+\title{Initialization of the section related to the profile
 information in the GDS file}
 \usage{
 generateGDSRefSample(gdsReference, pedDF, listSamples = NULL)
@@ -22,15 +22,15 @@ of this \code{data.frame} is the "Name.ID" column. The row names of the
 "Name.ID" column.}
 
 \item{listSamples}{a \code{vector} of \code{character} string representing
-the identifiers of the selected samples. If \code{NULL}, all samples are
+the identifiers of the selected profiles. If \code{NULL}, all profiles are
 selected. Default: \code{NULL}.}
 }
 \value{
 a \code{vector} of \code{character} string with the identifiers of
-the samples saved in the GDS file.
+the profiles saved in the GDS file.
 }
 \description{
-This function initializes the section related to the sample
+This function initializes the section related to the profile
 information in the GDS file. The information is extracted from
 the \code{data.frame} passed to the function. The nodes "sample.id" and
 "sample.annot" are created in the GDS file.

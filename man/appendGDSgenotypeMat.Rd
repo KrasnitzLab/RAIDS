@@ -3,14 +3,14 @@
 \encoding{UTF-8}
 \name{appendGDSgenotypeMat}
 \alias{appendGDSgenotypeMat}
-\title{Appends the genotype information for sepcific samples
-(1 column == 1 sample) into a GDS file}
+\title{Appends the genotype information for specific samples
+(1 column == 1 profile) into a GDS file}
 \usage{
 appendGDSgenotypeMat(gds, matG)
 }
 \arguments{
 \item{gds}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened GDS Sample file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened Profile GDS file.}
 
 \item{matG}{a \code{matrix} of \code{integer} representing the genotypes
 of the SNVs for one or multiple samples. The rows correspond to SNVs and

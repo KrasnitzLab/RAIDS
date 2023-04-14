@@ -4,7 +4,7 @@
 \name{computeAllelicFractionDNA}
 \alias{computeAllelicFractionDNA}
 \title{Estimate the allelic fraction of the pruned SNVs for a specific
-DNA-seq sample}
+DNA-seq profile}
 \usage{
 computeAllelicFractionDNA(
   gdsReference,
@@ -23,10 +23,10 @@ computeAllelicFractionDNA(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the 1KG GDS file.}
+(a GDS file), the opened 1KG GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+(a GDS file), the opened Profile GDS file.}
 
 \item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
@@ -63,19 +63,80 @@ the window used to compute an empty box. Default: \code{9L}.}
 message when running.}
 }
 \value{
-a \code{data.frame} with lap for the pruned SNV dataset with
-coverage > \code{minCov}. TODO
+a \code{data.frame} containing the allelic information for the
+pruned SNV dataset with coverage > \code{minCov}. The \code{data.frame}
+contains those columns:
+\itemize{
+\item{cnt.tot} {a \code{integer} representing the total allele count}
+\item{cnt.ref} {a \code{integer} representing the reference allele count}
+\item{cnt.alt} {a \code{integer} representing the alternative allele count}
+\item{snp.pos} {a \code{integer} representing the position on the chromosome}
+\item{snp.chr} {a \code{integer} representing the chromosome}
+\item{normal.geno} {a \code{integer} representing the genotype
+(0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)}
+\item{pruned} {a \code{logical} indicating if the SNV is retained after
+pruning}
+\item{snp.index} {a \code{integer} representing the index position of the
+SNV in the 1KG GDS file that contains all SNVs}
+\item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
+\item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
+\item{homo} {a \code{logical} indicating if the SNV is homozygote}
+\item{lap} {a \code{numeric} indicating lower allelic fraction}
+\item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+(0=not LOH, 1=in LOH)}
+\item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
+region (-1=not, 0=neutral; 1=in LOH) TODO}
+}
 }
 \description{
 The function creates a \code{data.frame} containing the
-allelic fraction for the pruned SNV dataset specific to a DNA-seq sample.
+allelic fraction for the pruned SNV dataset specific to a DNA-seq profile
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
+## Path to the demo 1KG GDS file is located in this package
+dataDir <- system.file("extdata/tests", package="RAIDS")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
-## TODO
+## Copy the Profile GDS file demo that has been pruned and annotated
+## into a test directory (deleted after the example has been run)
+dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
+                 "demoAllelicFraction")
+dir.create(dataDirAllelicFraction, showWarnings=FALSE,
+                 recursive=FALSE, mode="0777")
+file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+                 file.path(dataDirAllelicFraction, "ex1.gds"))
+
+## Open the reference GDS file (demo version)
+gds1KG <- snpgdsOpen(fileGDS)
+
+## Profile GDS file for one profile
+fileProfile <- file.path(dataDirAllelicFraction, "ex1.gds")
+profileGDS <- openfn.gds(fileProfile)
+
+## Chromosome length information
+## chr23 is chrX, chr24 is chrY and chrM is 25
+chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+    156040895L, 57227415L,  16569L)
+
+## The function returns a data frame containing the allelic fraction info
+result <- RAIDS:::computeAllelicFractionDNA(gdsReference=gds1KG,
+    gdsSample=profileGDS,
+    currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo, minCov=10L,
+    minProb=0.999, eProb=0.001, cutOffLOH=-5,
+    cutOffHomoScore=-3, wAR=9L, verbose=FALSE)
+head(result)
+
+## Close both GDS files (important)
+closefn.gds(profileGDS)
+closefn.gds(gds1KG)
+
+## Unlink Profile GDS file (created for demo purpose)
+unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
+unlink(dataDirAllelicFraction)
 
 }
 \author{

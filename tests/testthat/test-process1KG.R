@@ -12,7 +12,7 @@ library(withr)
 context("prepPed1KG() results")
 
 
-test_that("prepPed1KG() must return error when batch.v is a character string", {
+test_that("prepPed1KG() must return error when batch is a character string", {
 
     data.dir <- test_path("fixtures")
 
@@ -21,11 +21,11 @@ test_that("prepPed1KG() must return error when batch.v is a character string", {
     error_message <- "The batch must be an integer."
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir,
-                                batch.v="SAVE"), error_message)
+                                batch="SAVE"), error_message)
 })
 
 
-test_that("prepPed1KG() must return error when batch.v is a vector of float", {
+test_that("prepPed1KG() must return error when batch is a vector of float", {
 
     ddata.dir <- test_path("fixtures")
 
@@ -34,7 +34,7 @@ test_that("prepPed1KG() must return error when batch.v is a vector of float", {
     error_message <- "The batch must be an integer."
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir,
-                                batch.v=c(0.111, 2)), error_message)
+                                batch=c(0.111, 2)), error_message)
 })
 
 
@@ -51,7 +51,7 @@ test_that("prepPed1KG() must return error when pathGeno is not existing", {
         " string representing an existing directory.")
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, pathGeno=notExisting,
-                                batch.v=0L), error_message)
+                                batch=0L), error_message)
 })
 
 
@@ -64,7 +64,7 @@ test_that("prepPed1KG() must return error when pedigree file is not existing", {
     error_message <- paste0("The file \'", pedDemoFile, "\' does not exist.")
 
     expect_error(prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir,
-                                batch.v=0L), error_message)
+                                batch=0L), error_message)
 })
 
 
@@ -85,7 +85,7 @@ test_that("prepPed1KG() must return the expected output", {
     row.names(expected) <- expected$sample.id
 
     expect_equal(prepPed1KG(pedFile=pedDemoFile, pathGeno=data.dir,
-                                batch.v=0L), expected)
+                                batch=0L), expected)
 })
 
 

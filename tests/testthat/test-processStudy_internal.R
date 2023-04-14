@@ -120,7 +120,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
                     kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",
-                    eigen.cnt=32L, missing.rate=0.02)
+                    eigenCount=32L, missingRate=0.02)
 
     expect_identical(result1, 0L)
 })

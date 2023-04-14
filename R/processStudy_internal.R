@@ -613,14 +613,14 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA}
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -650,7 +650,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
 #'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
-#'     pcaList=c(3, 4, 5), algorithm="exact", eigen.cnt=32L, missing.rate=0.2)
+#'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -663,7 +663,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
                 listFiles, sample.ana.id, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
-                algorithm, eigen.cnt, missing.rate) {
+                algorithm, eigenCount, missingRate) {
 
     ## The gdsReference and gdsSample must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
@@ -694,11 +694,15 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The missing.rate must be a positive numeric between zero and one or NaN
-    if (!is.nan(missing.rate)) {
-        if (!(isSingleNumber(missing.rate) && (missing.rate >= 0.0) &&
-                    (missing.rate <= 1.0))) {
-            stop("The \'missing.rate\' must be a single numeric positive ",
+    if (!(isSingleNumber(eigenCount))) {
+        stop("The \'eigenCount\' parameter must be a single integer.")
+    }
+
+    ## The missingRate must be a positive numeric between zero and one or NaN
+    if (!is.nan(missingRate)) {
+        if (!(isSingleNumber(missingRate) && (missingRate >= 0.0) &&
+                    (missingRate <= 1.0))) {
+            stop("The \'missingRate\' must be a single numeric positive ",
                         "value between 0 and 1 or NaN.")
         }
     }

@@ -85,7 +85,8 @@ SNV in the 1KG GDS file that contains all SNVs}
 \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
 (0=not LOH, 1=in LOH)}
 \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
-region (-1=not, 0=neutral; 1=in LOH) TODO}
+region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+positive for imbalance in at least 1 window)}
 }
 }
 \description{

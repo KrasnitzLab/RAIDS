@@ -1,7 +1,7 @@
-#' @title Initialization of the section related to the sample
+#' @title Initialization of the section related to the profile
 #' information in the GDS file
 #'
-#' @description This function initializes the section related to the sample
+#' @description This function initializes the section related to the profile
 #' information in the GDS file. The information is extracted from
 #' the \code{data.frame} passed to the function. The nodes "sample.id" and
 #' "sample.annot" are created in the GDS file.
@@ -19,11 +19,11 @@
 #' "Name.ID" column.
 #'
 #' @param listSamples a \code{vector} of \code{character} string representing
-#' the identifiers of the selected samples. If \code{NULL}, all samples are
+#' the identifiers of the selected profiles. If \code{NULL}, all profiles are
 #' selected. Default: \code{NULL}.
 #'
 #' @return a \code{vector} of \code{character} string with the identifiers of
-#' the samples saved in the GDS file.
+#' the profiles saved in the GDS file.
 #'
 #' @examples
 #'
@@ -157,8 +157,8 @@ addGDSRef <- function(gdsReference, filePart) {
 }
 
 
-#' @title Appends the genotype information for sepcific samples
-#' (1 column == 1 sample) into a GDS file
+#' @title Appends the genotype information for specific samples
+#' (1 column == 1 profile) into a GDS file
 #'
 #' @description This function appends the genotype information into a
 #' GDS file. More specifically, the genotype information is added to the
@@ -170,7 +170,7 @@ addGDSRef <- function(gdsReference, filePart) {
 #' "genotype" node.
 #'
 #' @param gds an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS Sample file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Profile GDS file.
 #'
 #' @param matG a \code{matrix} of \code{integer} representing the genotypes
 #' of the SNVs for one or multiple samples. The rows correspond to SNVs and
@@ -238,7 +238,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' snp-pileup. The path must exist.
 #'
 #' @param listSamples a \code{vector} of \code{character} string corresponding
-#' to the sample identifiers that will have a GDS Sample file created. The
+#' to the sample identifiers that will have a Profile GDS file created. The
 #' sample identifiers must be present in the "Name.ID" column of the
 #' \code{data.frame} passed to the \code{pedDF} parameter.
 #'

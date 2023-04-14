@@ -1485,7 +1485,7 @@ computePCAMultiSynthetic <- function(gdsSample, listPCA,
 #' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA}
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{NaN}.
 #'
 #' @references
@@ -1845,7 +1845,7 @@ computeKNNRefSample <- function(listEigenvector,
 #' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA} function
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{0.025}.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
@@ -2107,10 +2107,10 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
-#' @param missing.rate a \code{numeric} value representing the threshold
+#' @param missingRate a \code{numeric} value representing the threshold
 #' missing rate at with the SNVs are discarded; the SNVs are retained in the
 #' \link[SNPRelate]{snpgdsPCA}
-#' with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+#' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{NaN}.
 #'
 #' @return a \code{list} TODO with the sample.id and eigenvectors
@@ -2145,7 +2145,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
                             pcaList=seq(2, 15, 1),
                             algorithm=c("exact", "randomized"),
                             eigen.cnt=32L,
-                            missing.rate=NaN) {
+                            missingRate=NaN) {
 
     if(is.null(pcaList)) {
         pcaList <- seq(2, 15, 1)
@@ -2160,8 +2160,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         gdsSample=gdsSample, listFiles=listFiles, sample.ana.id=sample.ana.id,
         spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-        pcaList=pcaList, algorithm=algorithm, eigen.cnt=eigen.cnt,
-        missing.rate=missing.rate)
+        pcaList=pcaList, algorithm=algorithm, eigenCount=eigen.cnt,
+        missingRate=missingRate)
 
     ## Matches a character method against a table of candidate values
     algorithm <- match.arg(algorithm, several.ok=FALSE)
@@ -2185,7 +2185,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
         name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missing.rate)
+        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
         listCatPop=listCatPop, spRef=spRef,fieldPopInfAnc=fieldPopInfAnc,

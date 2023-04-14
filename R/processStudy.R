@@ -1837,9 +1837,9 @@ computeKNNRefSample <- function(listEigenvector,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
 #' @param missingRate a \code{numeric} value representing the threshold
@@ -1878,7 +1878,7 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
                             kList=seq(2,15,1),
                             pcaList=seq(2,15,1),
                             algorithm=c("exact", "randomized"),
-                            eigen.cnt=32L, missingRate=0.025, verbose=FALSE) {
+                            eigenCount=32L, missingRate=0.025, verbose=FALSE) {
 
     ## Assign default value is kList is NULL
     if(is.null(kList)) {
@@ -1892,11 +1892,10 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
 
     ## Validate the input parameters
     validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
-        sampleRM=sampleRM, spRef=spRef, studyIDSyn=studyIDSyn,
-        np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
-        fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate,
-        verbose=verbose)
+        sampleRM=sampleRM, spRef=spRef, studyIDSyn=studyIDSyn, np=np,
+        listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG, pcaList=pcaList,
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList, verbose=verbose,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
@@ -1904,7 +1903,7 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,
         sample.ref=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missing.rate=missingRate)
+        eigen.cnt=eigenCount, missing.rate=missingRate)
 
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
                         sampleRef=sampleRM, studyIDSyn=studyIDSyn,
@@ -2031,8 +2030,8 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                     sampleRM=sampleRM[j,], spRef=spRef, studyIDSyn=studyIDSyn,
                     np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
                     fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-                    pcaList=pcaList, algorithm=algorithm,
-                    eigen.cnt=eigen.cnt, missingRate=missingRate, verbose=FALSE)
+                    pcaList=pcaList, algorithm=algorithm, eigenCount=eigen.cnt,
+                    missingRate=missingRate, verbose=FALSE)
     }
 
     KNN.sample.syn <- do.call(rbind, KNN.list)
@@ -2467,7 +2466,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             ##  a range of K and D values
             KNN.synt <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
                 sampleRM=sampleRM[j,], studyIDSyn=studyDF.syn$study.id,
-                np=1L, spRef=spRef, eigen.cnt=15L, verbose=FALSE)
+                np=1L, spRef=spRef, eigenCount=15L, verbose=FALSE)
 
             ## Results are saved
             saveRDS(KNN.synt$matKNN, file.path(pathOutProfile,

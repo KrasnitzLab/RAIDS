@@ -17,7 +17,7 @@ validateComputePoolSyntheticAncestryGr(
   kList,
   pcaList,
   algorithm,
-  eigen.cnt,
+  eigenCount,
   missingRate,
   verbose
 )
@@ -62,9 +62,9 @@ to calculate the PCA. The 2 choices are "exact" (traditional exact
 calculation) and "randomized" (fast PCA with randomized algorithm
 introduced in Galinsky et al. 2016).}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
+function; if 'eigenCount' <= 0, then all eigenvectors are returned.}
 
 \item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
@@ -95,7 +95,7 @@ RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
      sampleRM="TGCA_01", spRef="TCGA",
      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
-     pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
+     pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
      missingRate=0.02, verbose=FALSE)
 
 ## All GDS file must be closed

@@ -63,7 +63,7 @@ test_that("validateComputePoolSyntheticAncestryGr() must return expected results
         gdsSample=gdsF, sampleRM="TGCA_01", spRef="TCGA",
         studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
         fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
-        pcaList=seq_len(10), algorithm="exact", eigen.cnt=12L,
+        pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
         missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)

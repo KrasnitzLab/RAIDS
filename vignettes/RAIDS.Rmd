@@ -593,7 +593,7 @@ profileName <- listSamples[1]
 ## The name must correspond to the sample identifier
 fileProfile <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 
-## Open the Sample GDS file in writing mode
+## Open the Profile GDS file in writing mode
 gdsProfile <- openfn.gds(fileProfile, readonly=FALSE)
 
 ###################################################################
@@ -602,8 +602,8 @@ gdsProfile <- openfn.gds(fileProfile, readonly=FALSE)
 ## Estimate the allele fraction of the pruned SNVs
 ## The current example is for a DNA sample
 ## In the case of RNA sample, the function needs different inputs
-## such as the 1KG SNV Annotation GDS file and
-## The 'blockID' should be as listed in the 1KG SNV Annotation GDS file 
+## such as the 1KG Annotation GDS file and
+## The 'blockID' should be as listed in the 1KG Annotation GDS file 
 ## for the gene annotation of the SNVs
 estimateAllelicFraction(gdsReference=gds, gdsProfile=gdsProfile,
                                         currentProfile=profileName,
@@ -615,7 +615,7 @@ closefn.gds(gdsProfile)
 closefn.gds(gds)
 ```
 
-This step must be executed for each sample present in the study.
+This step must be executed for each profile present in the study.
 
 <br>
 
@@ -833,7 +833,7 @@ for(i in seq_len(length(listSamples))) {
         ##  removed from this PCA)
         ## The K-nearest neighbor analysis is done using 
         ##  a range of K and D values
-        KNN.synt <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
+        syntKNN <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
                                             sampleRM= sampleRM[j,],
                                             studyIDSyn=studyDF.syn$study.id,
                                             np=4L,
@@ -841,7 +841,7 @@ for(i in seq_len(length(listSamples))) {
                                             eigenCount=15L)
         
         ## Results are saved
-        saveRDS(KNN.synt$matKNN, file.path(PATH_OUT_SAMPLE, 
+        saveRDS(syntKNN$matKNN, file.path(PATH_OUT_SAMPLE, 
                         paste0("KNN.synt.", listSamples[i], ".", j, ".rds")))
     }
     

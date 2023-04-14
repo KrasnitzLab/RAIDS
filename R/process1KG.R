@@ -19,7 +19,7 @@
 #' (PED file).
 #' Default: \code{"./data/sampleGeno"}.
 #'
-#' @param batch.v a\code{integer} that uniquely identifies the source of the
+#' @param batch a\code{integer} that uniquely identifies the source of the
 #' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
 #'
 #' @return a \code{data.frame} containing the needed pedigree information
@@ -46,7 +46,7 @@
 #'
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
-#' prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch.v=0L)
+#' prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch=0L)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -54,10 +54,10 @@
 #' @encoding UTF-8
 #' @export
 prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
-                        batch.v=0L) {
+                        batch=0L) {
 
     ## Validate parameters
-    validatePrepPed1KG(pedFile=pedFile, pathGeno=pathGeno, batch=batch.v)
+    validatePrepPed1KG(pedFile=pedFile, pathGeno=pathGeno, batch=batch)
 
     ## Read the pedigree file from 1KG
     ped1KG <- read.delim(pedFile)
@@ -67,7 +67,7 @@ prepPed1KG <- function(pedFile, pathGeno=file.path("data", "sampleGeno"),
                 Name.ID=c(ped1KG$Individual.ID), sex=c(ped1KG$Gender),
                 pop.group=c(ped1KG$Population),
                 superPop=rep(NA, length(c(ped1KG$Population))),
-                batch=c(rep(batch.v, nrow(ped1KG))),
+                batch=c(rep(batch, nrow(ped1KG))),
                 stringsAsFactors=FALSE)
 
     ## Create a list with all populations associated to each super-population

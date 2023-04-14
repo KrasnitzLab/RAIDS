@@ -5,7 +5,7 @@
 \alias{prepPed1KG}
 \title{Prepare the pedigree file using pedigree information from 1KG}
 \usage{
-prepPed1KG(pedFile, pathGeno = file.path("data", "sampleGeno"), batch.v = 0L)
+prepPed1KG(pedFile, pathGeno = file.path("data", "sampleGeno"), batch = 0L)
 }
 \arguments{
 \item{pedFile}{a \code{character} string representing the path and
@@ -21,7 +21,7 @@ the individual identification (Individual.ID) in the pedigree file
 (PED file).
 Default: \code{"./data/sampleGeno"}.}
 
-\item{batch.v}{a\code{integer} that uniquely identifies the source of the
+\item{batch}{a\code{integer} that uniquely identifies the source of the
 pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.}
 }
 \value{
@@ -56,7 +56,7 @@ pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)
-prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch.v=0L)
+prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch=0L)
 
 
 }

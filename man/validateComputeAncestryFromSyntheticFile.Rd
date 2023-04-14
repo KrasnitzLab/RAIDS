@@ -64,7 +64,7 @@ to calculate the PCA.}
 
 \item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
+function; if 'eigenCount' <= 0, then all eigenvectors are returned.}
 
 \item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the

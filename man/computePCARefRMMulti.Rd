@@ -12,7 +12,7 @@ computePCARefRMMulti(
   np = 1L,
   algorithm = "exact",
   eigen.cnt = 32L,
-  missing.rate = 0.025
+  missingRate = 0.025
 )
 }
 \arguments{
@@ -38,10 +38,10 @@ eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
-\item{missing.rate}{a \code{numeric} value representing the threshold
+\item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} function
-with "<= missing.rate" only; if \code{NaN}, no missing threshold.
+with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
 }
 \value{

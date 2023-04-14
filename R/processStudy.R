@@ -1903,7 +1903,7 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,
         sample.ref=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
-        eigen.cnt=eigenCount, missing.rate=missingRate)
+        eigen.cnt=eigenCount, missingRate=missingRate)
 
     resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
                         sampleRef=sampleRM, studyIDSyn=studyIDSyn,

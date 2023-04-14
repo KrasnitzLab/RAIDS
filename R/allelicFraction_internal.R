@@ -1,5 +1,5 @@
 #' @title Extract the genotype information for a SNV dataset using
-#' the Profile GDS file (reference) and the 1KG GDS file
+#' the Profile GDS file and the 1KG GDS file
 #'
 #' @description The function generates a \code{data.frame} containing the
 #' genotype information from a initial list of SNVs associated to a specific
@@ -51,10 +51,39 @@
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
-#' ## TODO
+#' ## Copy the Profile GDS file demo that has been pruned and annotated
+#' ## into a test directory (deleted after the example has been run)
+#' dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
+#'                  "demoAllelicFraction")
+#' dir.create(dataDirAllelicFraction, showWarnings=FALSE,
+#'                  recursive=FALSE, mode="0777")
+#' file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+#'                  file.path(dataDirAllelicFraction, "ex1.gds"))
+#'
+#' ## Open the reference GDS file (demo version)
+#' gds1KG <- snpgdsOpen(fileGDS)
+#'
+#' ## Profile GDS file for one profile
+#' fileProfile <- file.path(dataDirAllelicFraction, "ex1.gds")
+#' profileGDS <- openfn.gds(fileProfile)
+#'
+#' ## The function returns a data frame containing the SNVs information
+#' result <- RAIDS:::getTableSNV(gdsReference=gds1KG, gdsSample=profileGDS,
+#'     currentProfile="ex1", studyID="MYDATA", minCov=10L, minProb=0.999,
+#'     eProb=0.001, verbose=FALSE)
+#' head(result)
+#'
+#' ## Close both GDS files (important)
+#' closefn.gds(profileGDS)
+#' closefn.gds(gds1KG)
+#'
+#' ## Unlink Profile GDS file (created for demo purpose)
+#' unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
+#' unlink(dataDirAllelicFraction)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

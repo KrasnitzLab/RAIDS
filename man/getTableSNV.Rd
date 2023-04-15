@@ -58,8 +58,12 @@ the alternative allele.}
 SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 the normal genotype is unknown.}
+\item{pruned} { a \code{logical}}
 \item{snp.index} {a \code{vector} of \code{integer} representing the
 position of the SNVs in the 1KG GDS file.}
+\item{keep} {a \code{logical} }
+\item{hetero} {a \code{logical} }
+\item{homo} {a \code{logical} }
 }
 }
 \description{
@@ -69,6 +73,9 @@ profile. The function uses the information present in the 1KG GDS file
 (reference) and the Profile GDS file.
 }
 \examples{
+
+## Required library
+library(gdsfmt)
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")

@@ -45,11 +45,18 @@
 #' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 #' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 #' the normal genotype is unknown.}
+#' \item{pruned} { a \code{logical}}
 #' \item{snp.index} {a \code{vector} of \code{integer} representing the
 #' position of the SNVs in the 1KG GDS file.}
+#' \item{keep} {a \code{logical} }
+#' \item{hetero} {a \code{logical} }
+#' \item{homo} {a \code{logical} }
 #' }
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -100,7 +107,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
     posCur <- which(study.annot$data.id == currentProfile &
                         study.annot$study.id == studyID)
 
-    ## Extract SNV coverage from Sample GDS file
+    ## Extract SNV coverage from Profile GDS file
     cnt.total <- read.gdsn(node=index.gdsn(gdsSample, "Total.count"),
                             start=c(1, posCur), count=c(-1, 1))
 
@@ -369,6 +376,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 
         listChr <- which(snp.pos$snp.chr == chr)
 
+        ## Identify LOH regions
         homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference,
                 chrInfo=chrInfo, snp.pos=snp.pos[listChr,], chr=chr)
 
@@ -381,8 +389,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                             snp.pos[listChr, "snp.pos"]),
                     c(rep(0,  2* nrow(homoBlock[[chr]])),
                             rep(1, length(listChr))),
-                    c(homoBlock[[chr]]$LOH,
-                            -1 * homoBlock[[chr]]$LOH,
+                    c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
                                 rep(0, length(listChr)) ),
                     c(rep(0, 2 * nrow(homoBlock[[chr]])),
                             seq_len(length(listChr))))
@@ -394,12 +401,14 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 
         if (verbose) { message("Step 3 ", Sys.time()) }
 
+        ## Identify imbalanced SNVs
         snp.pos[listChr, "imbAR"] <-
             computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
                                         wAR=10, cutOffEmptyBox=-3)
 
         if (verbose) { message("Step 4 ", Sys.time()) }
 
+        ## Compute allelic fraction
         blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
                                             w=10, cutOff=-3)
 

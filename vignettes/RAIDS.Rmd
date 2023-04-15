@@ -435,11 +435,11 @@ list.files(path=pathProfileGDS)
 ### Sub-Step 5. Generate a pruned subset of the single nucleotide variants (SNVs) 
 
 The initial list of 1KG SNVs is pruned, using linkage disequilibrium analysis, 
-and a profile-specific subset of SNVs is retained for each sample. This 
-information is added to the **Sample GDS file**.
+and a profile-specific subset of SNVs is retained for each profile. This 
+information is added to the **Profile GDS file**.
 
 The __pruningSample()__ function requires the **1KG GDS file** as input. It 
-also requires the path to the **Sample GDS file(s)**.
+also requires the path to the **Profile GDS file(s)**.
 
 Note that this step can require large disk space.
 

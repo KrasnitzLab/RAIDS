@@ -1063,10 +1063,10 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' the type of study (DNA or RNA).
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the 1KG GDS file.
+#' (a GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the Profile GDS file.
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -1144,6 +1144,9 @@ projectSample2PCA <- function(gdsProfile, listPCA, currentProfile, np=1L,
 #' ```
 #'
 #' @examples
+#'
+#' ## Required library for GDS
+#' library(gdsfmt)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")

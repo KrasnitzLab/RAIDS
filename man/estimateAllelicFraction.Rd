@@ -27,10 +27,10 @@ estimateAllelicFraction(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the 1KG GDS file.}
+(a GDS file), the opened 1KG GDS file.}
 
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the Profile GDS file.}
+(a GDS file), the opened Profile GDS file.}
 
 \item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}
@@ -114,6 +114,9 @@ chrInfo[25] <- length(Hsapiens[["chrM"]])
 ```
 }
 \examples{
+
+## Required library for GDS
+library(gdsfmt)
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")

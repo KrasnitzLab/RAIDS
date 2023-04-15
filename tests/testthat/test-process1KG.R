@@ -212,7 +212,7 @@ test_that("generateGDS1KG() must return error when pedigree file does not exist"
 
     expect_error(generateGDS1KG(pathGeno=data.dir,
                                 filePedRDS=fileNot,
-                                fileListSNP=pedDemoFile,
+                                fileSNVIndex=pedDemoFile,
                                 fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
@@ -229,7 +229,7 @@ test_that("generateGDS1KG() must return error when pathGeno is not existing", {
 
     expect_error(generateGDS1KG(pathGeno=notExisting,
                                 filePedRDS=pedDemoFile,
-                                fileListSNP=pedDemoFile,
+                                fileSNVIndex=pedDemoFile,
                                 fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
@@ -246,7 +246,7 @@ test_that("generateGDS1KG() must return error when SNP indexes file does not exi
 
     expect_error(generateGDS1KG(pathGeno=data.dir,
                                 filePedRDS=pedDemoFile,
-                                fileListSNP=notExisting,
+                                fileSNVIndex=notExisting,
                                 fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
@@ -263,7 +263,7 @@ test_that("generateGDS1KG() must return error when SNP information file does not
 
     expect_error(generateGDS1KG(pathGeno=data.dir,
                             filePedRDS=pedDemoFile,
-                            fileListSNP=pedDemoFile,
+                            fileSNVIndex=pedDemoFile,
                             fileSNPSel=notExisting, fileNameGDS=outFile1,
                             listSamples=NULL), error_message)
 })
@@ -283,7 +283,7 @@ test_that("generateGDS1KG() must create a GDS file", {
     GDS_file <- local_file(test_path("fixtures", "1KG_TOTO.gds"))
 
     generateGDS1KG(pathGeno=data.dir, filePedRDS=pedigreeFile,
-                            fileListSNP=snpIndexFile,
+                            fileSNVIndex=snpIndexFile,
                             fileSNPSel=filterSNVFile, fileNameGDS=GDS_file,
                             listSamples=NULL)
 

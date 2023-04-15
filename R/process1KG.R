@@ -240,7 +240,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' name of the RDS file that contains the pedigree information. The file must
 #' exist. The file must be a RDS file.
 #'
-#' @param fileListSNP a \code{character} string representing the path and file
+#' @param fileSNVIndex a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
@@ -292,7 +292,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #'
 #' ## Create a temporary GDS file containing information from 1KG
 #' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+#'     fileSNVIndex=snpIndexFile, fileSNPSel=filterSNVFile,
 #'     fileNameGDS=gdsFile, listSamples=NULL)
 #'
 #' ## Remove temporary files
@@ -304,7 +304,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' @encoding UTF-8
 #' @export
 generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
-                            filePedRDS, fileListSNP,
+                            filePedRDS, fileSNVIndex,
                             fileSNPSel, fileNameGDS,
                             listSamples=NULL, verbose=FALSE) {
 
@@ -319,8 +319,8 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     }
 
     ## Validate that the SNP indexes file exists
-    if (! file.exists(fileListSNP)) {
-        stop("The file \'", fileListSNP, "\' does not exist." )
+    if (! file.exists(fileSNVIndex)) {
+        stop("The file \'", fileSNVIndex, "\' does not exist." )
     }
 
     ## Validate that the SNP information file exists
@@ -335,7 +335,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     ped1KG <- readRDS(filePedRDS)
 
     # list in the file genotype we keep from fileSNPsRDS in generateMapSnvSel
-    listKeep <- readRDS(fileListSNP)
+    listKeep <- readRDS(fileSNVIndex)
 
     # Create the GDS file
     newGDS <- createfn.gds(fileNameGDS)
@@ -350,7 +350,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     generateGDSSNPinfo(gdsReference=newGDS, fileFREQ=fileSNPSel, verbose=verbose)
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
-    generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileSNPsRDS=fileListSNP,
+    generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileSNPsRDS=fileSNVIndex,
         listSamples=listSampleGDS, verbose=verbose)
     if(verbose) { message("Genotype DONE ", Sys.time()) }
 
@@ -408,7 +408,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' ## Create a temporary Reference GDS file containing information from 1KG
 #' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+#'     fileSNVIndex=snpIndexFile, fileSNPSel=filterSNVFile,
 #'     fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
 #' ## Temporary Phase GDS file that will contain the 1KG Phase information

@@ -1,16 +1,40 @@
-#' @title TODO
+#' @title Identify regions of LOH on one chromosome using homozygote SNVs
 #'
-#' @description TODO
+#' @description The function identifies regions of LOH on a specific
+#' chromosome using the homozygote SNVs present on the chromosome.
 #'
 #' @param gdsReference an object of class
-#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, a SNP
-#' GDS file.
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
+#' opened 1KG GDS file.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} representing the length of
 #' the chromosomes. As an example, the information ca be obtained from
 #' package 'BSgenome.Hsapiens.UCSC.hg38'.
 #'
-#' @param snp.pos a \code{data.frame} containing TODO.
+#' @param snp.pos a \code{data.frame} containing the SNV information for the
+#' chromosome specified by the \code{chr} argument. The \code{data.frame} must
+#' contain:
+#' \itemize{
+#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' the SNV.}
+#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' the reference allele.}
+#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' the alternative allele.}
+#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
+#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
+#' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
+#' the normal genotype is unknown.}
+#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' pruning}
+#' \item{snp.index} {a \code{integer} representing the index position of the
+#' SNV in the 1KG GDS file that contains all SNVs}
+#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
+#' }
 #'
 #' @param chr a single positive \code{integer} for the current chromosome. The
 #' \code{chrInfo} parameter must contain the value for the specified
@@ -19,25 +43,39 @@
 #' @param  genoN a single \code{numeric} between 0 and 1 representing TODO.
 #' Default: \code{0.0001}.
 #'
-#' @return a \code{data.frame} containing:
+#' @return a \code{data.frame} with the informations about LOH on a specific
+#' chromosome. The \code{data.frame} contains those columns:
 #' \itemize{
-#' \item{chr} {TODO}
-#' \item{start} {TODO}
-#' \item{end} {TODO}
+#' \item{chr} {a \code{integer} representing the current chromosome}
+#' \item{start} {a \code{integer} representing the starting position on the
+#' box containing only homozygote SNVs (or not SNV). The first box starts at
+#' position 1.}
+#' \item{end} {a \code{integer} representing the end position on the
+#' box containing only homozygote SNVs (or not SNV). The last box ends at the
+#' length of the chromosome.}
 #' \item{logLHR} {TODO}
 #' \item{LH1} {TODO}
 #' \item{LM1} {TODO}
-#' \item{homoScore} {TODO}
-#' \item{nbSNV} {TODO}
-#' \item{nbPruned} {TODO}
+#' \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
+#' \item{nbSNV} {a \code{integer} representing th number of SNVs in
+#' the box}
+#' \item{nbPruned} {a \code{integer} representing th number of pruned SNVs in
+#' the box}
 #' \item{nbNorm} {TODO}
 #' \item{LOH} {TODO}
 #' }
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Required library for GDS
+#' library(gdsfmt)
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#'
+#' ## Open the reference GDS file (demo version)
+#' gds1KG <- snpgdsOpen(fileGDS)
 #'
 #' ## Chromosome length information
 #' ## chr23 is chrX, chr24 is chrY and chrM is 25
@@ -47,17 +85,29 @@
 #'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
 #'     156040895L, 57227415L,  16569L)
 #'
-#' ## A formal way to get the chormosome length information
-#' ## library(BSgenome.Hsapiens.UCSC.hg38)
-#' ## chrInfo <- integer(25L)
-#' ## for(i in seq_len(22L)){ chrInfo[i] <-
-#' ##                          length(Hsapiens[[paste0("chr", i)]])}
-#' ## chrInfo[23] <- length(Hsapiens[["chrX"]])
-#' ## chrInfo[24] <- length(Hsapiens[["chrY"]])
-#' ## chrInfo[25] <- length(Hsapiens[["chrM"]])
+#' ## Data frame with SNV information for the specified chromosome (chr 1)
+#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'         6085318, 6213145),
+#'     snp.chr=c(rep(1, 8)),
+#'     normal.geno=c(rep(3, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
+#'     TRUE, TRUE),
+#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'     stringAsFactor=FALSE)
 #'
+#' ## The function returns a data frame containing the information about the
+#' ## LOH regions in the specified chromosome
+#' result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
+#'     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
+#' head(result)
 #'
-#' ## TODO
+#' ## Close GDS file (important)
+#' closefn.gds(gds1KG)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

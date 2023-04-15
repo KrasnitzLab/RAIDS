@@ -67,7 +67,7 @@ appendStudy2GDS1KG function."><!-- mathjax --><script src="https://cdnjs.cloudfl
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateAppendStudy2GDS1KG</span><span class="op">(</span></span>
 <span>  <span class="va">pathGeno</span>,</span>
-<span>  <span class="va">fileNamePED</span>,</span>
+<span>  <span class="va">filePedRDS</span>,</span>
 <span>  <span class="va">fileNameGDS</span>,</span>
 <span>  <span class="va">batch</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
@@ -86,7 +86,7 @@ directory containing the output of SNP-pileup, a VCF Sample file, for
 each sample.</p></dd>
 
 
-<dt>fileNamePED</dt>
+<dt>filePedRDS</dt>
 <dd><p>a <code>character</code> string representing the path to the
 RDS file that contains the information about the sample to analyse.</p></dd>
 
@@ -112,8 +112,8 @@ must be in <code>character</code> strings.</p></dd>
 <dd><p>a <code>vector</code> of <code>character</code> string corresponding
 to the sample identifiers that will have a GDS Sample file created. The
 sample identifiers must be present in the "Name.ID" column of the RDS file
-passed to the <code>fileNamePED</code> parameter.
-If <code>NULL</code>, all samples in the <code>fileNamePED</code> are selected.</p></dd>
+passed to the <code>filePedRDS</code> parameter.
+If <code>NULL</code>, all samples in the <code>filePedRDS</code> are selected.</p></dd>
 
 
 <dt>pathProfileGDS</dt>
@@ -162,7 +162,7 @@ printed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateAppendStudy2GDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
-<span class="r-in"><span>    fileNamePED<span class="op">=</span><span class="va">ped</span>, fileNameGDS<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
+<span class="r-in"><span>    filePedRDS<span class="op">=</span><span class="va">ped</span>, fileNameGDS<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    batch<span class="op">=</span><span class="fl">1L</span>, studyDF<span class="op">=</span><span class="va">studyInfo</span>, listSamples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HC01"</span>, <span class="st">"HC02"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>, genoSource<span class="op">=</span><span class="st">"snp-pileup"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

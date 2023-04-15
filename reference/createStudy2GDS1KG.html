@@ -77,7 +77,7 @@ entry present in the <code>listSamples</code> parameter.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createStudy2GDS1KG</span><span class="op">(</span></span>
 <span>  pathGeno <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
-<span>  fileNamePED <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filePedRDS <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pedStudy <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">fileNameGDS</span>,</span>
 <span>  batch <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -99,7 +99,7 @@ of the samples. A sample with "Name.ID" identifier would have an
 associated SNP-pileup file called "Name.ID.txt.gz".</p></dd>
 
 
-<dt>fileNamePED</dt>
+<dt>filePedRDS</dt>
 <dd><p>a <code>character</code> string representing the path to the
 RDS file that contains the information about the sample to analyse.
 The RDS file must
@@ -107,7 +107,7 @@ include a <code>data.frame</code> with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 <code>character</code> strings. The <code>data.frame</code>
 must contain the information for all the samples passed in the
-<code>listSamples</code> parameter. Only <code>fileNamePED</code> or <code>pedStudy</code>
+<code>listSamples</code> parameter. Only <code>filePedRDS</code> or <code>pedStudy</code>
 can be defined.</p></dd>
 
 
@@ -116,7 +116,7 @@ can be defined.</p></dd>
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 <code>character</code> strings (no factor). The <code>data.frame</code>
 must contain the information for all the samples passed in the
-<code>listSamples</code> parameter. Only <code>fileNamePED</code> or <code>pedStudy</code>
+<code>listSamples</code> parameter. Only <code>filePedRDS</code> or <code>pedStudy</code>
 can be defined.</p></dd>
 
 
@@ -142,8 +142,8 @@ must be in <code>character</code> strings (no factor).</p></dd>
 <dd><p>a <code>vector</code> of <code>character</code> string corresponding
 to the profile identifiers that will have a Profile GDS file created. The
 profile identifiers must be present in the "Name.ID" column of the Profile
-RDS file passed to the <code>fileNamePED</code> parameter.
-If <code>NULL</code>, all profiles present in the <code>fileNamePED</code> are selected.
+RDS file passed to the <code>filePedRDS</code> parameter.
+If <code>NULL</code>, all profiles present in the <code>filePedRDS</code> are selected.
 Default: <code>NULL</code>.</p></dd>
 
 

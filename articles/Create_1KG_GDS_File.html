@@ -261,7 +261,7 @@ pedigree file in RDS format:</p>
 <span><span class="co">## Extract needed information from the pedigree file from 1KG into a data.frame</span></span>
 <span><span class="co">## Only the samples with genotyping information (sample file present</span></span>
 <span><span class="co">## in pathGeno parameter) are retained to create the final data.frame</span></span>
-<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>pedFile<span class="op">=</span><span class="va">filePED1KGOri</span>,</span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepPed1KG.html">prepPed1KG</a></span><span class="op">(</span>filePed<span class="op">=</span><span class="va">filePED1KGOri</span>,</span>
 <span>                    pathGeno<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Save the pedigree information data.frame as a RDS file</span></span>
@@ -353,7 +353,7 @@ the GDS file that will contain the information related to 1KG:</p>
 <span></span>
 <span><span class="co">## Generate GDS file containing the 1KG information</span></span>
 <span><span class="fu"><a href="../reference/generateGDS1KG.html">generateGDS1KG</a></span><span class="op">(</span>pathGeno<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
-<span>                    fileNamePED<span class="op">=</span><span class="va">filePED1KG</span>,</span>
+<span>                    filePedRDS<span class="op">=</span><span class="va">filePED1KG</span>,</span>
 <span>                    fileSNPSel<span class="op">=</span><span class="va">fileFREQ.v</span>,</span>
 <span>                    fileListSNP<span class="op">=</span><span class="va">fileSNPsRDS</span>,</span>
 <span>                    fileNameGDS<span class="op">=</span><span class="va">fileGDS</span><span class="op">)</span></span></code></pre></div>

@@ -82,7 +82,14 @@ created and then, the information is added.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span><span class="va">gdsProfile</span>, <span class="va">pedDF</span>, <span class="va">batch</span>, <span class="va">listSamples</span>, <span class="va">studyDF</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addStudyGDSSample</span><span class="op">(</span></span>
+<span>  <span class="va">gdsProfile</span>,</span>
+<span>  <span class="va">dfPedProfile</span>,</span>
+<span>  <span class="va">batch</span>,</span>
+<span>  <span class="va">listSamples</span>,</span>
+<span>  <span class="va">studyDF</span>,</span>
+<span>  <span class="va">verbose</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -92,7 +99,7 @@ created and then, the information is added.</p>
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened GDS file.</p></dd>
 
 
-<dt>pedDF</dt>
+<dt>dfPedProfile</dt>
 <dd><p>a <code>data.frame</code> with the sample information. The
 <code>data.frame</code> must have the columns:
 "Name.ID", "Case.ID", "Sample.Type", "Diagnosis" and "Source".
@@ -110,7 +117,7 @@ study.</p></dd>
 <dd><p>a <code>vector</code> of <code>character</code> string representing
 the samples (samples identifiers) that are saved into the GDS. All the
 samples must be present in the 'pdeDF' <code>data.frame</code>.
-If <code>NULL</code>, all samples present in the <code>pedDF</code> are used.</p></dd>
+If <code>NULL</code>, all samples present in the <code>dfPedProfile</code> are used.</p></dd>
 
 
 <dt>studyDF</dt>
@@ -161,7 +168,7 @@ identifiers that have been saved in the GDS Sample file.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add the sample information to the GDS Sample file</span></span></span>
 <span class="r-in"><span><span class="co">## The information for all samples is added (listSamples=NULL)</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addStudyGDSSample</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">tmpGDS</span>, pedDF<span class="op">=</span><span class="va">ped1KG</span>, batch<span class="op">=</span><span class="fl">1</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addStudyGDSSample</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">tmpGDS</span>, dfPedProfile<span class="op">=</span><span class="va">ped1KG</span>, batch<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    listSamples<span class="op">=</span><span class="cn">NULL</span>, studyDF<span class="op">=</span><span class="va">studyInfo</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1KG_sample_01" "1KG_sample_02"</span>
 <span class="r-in"><span></span></span>

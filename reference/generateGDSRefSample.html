@@ -72,7 +72,7 @@ the <code>data.frame</code> passed to the function. The nodes "sample.id" and
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSRefSample</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">pedDF</span>, listSamples <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generateGDSRefSample</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">dfPedReference</span>, listSamples <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -82,7 +82,7 @@ the <code>data.frame</code> passed to the function. The nodes "sample.id" and
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened GDS file.</p></dd>
 
 
-<dt>pedDF</dt>
+<dt>dfPedReference</dt>
 <dd><p>a <code>data.frame</code> containing the information related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
 "pop.group", "superPop" and "batch". All columns, except "sex" and batch",
@@ -134,7 +134,7 @@ the profiles saved in the GDS file.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedInformation</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedInformation</span><span class="op">$</span><span class="va">Name.ID</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add information about 2 samples to the GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSRefSample</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">tmpGDS</span>, pedDF<span class="op">=</span><span class="va">pedInformation</span>,</span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSRefSample</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">tmpGDS</span>, dfPedReference<span class="op">=</span><span class="va">pedInformation</span>,</span></span>
 <span class="r-in"><span>    listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sample_01" "sample_02"</span>
 <span class="r-in"><span></span></span>

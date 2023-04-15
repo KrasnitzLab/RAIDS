@@ -94,7 +94,7 @@ exist.</p></dd>
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 <code>character</code> strings (no factor). The <code>data.frame</code>
 must contain the information for all the samples passed in the
-<code>listSamples</code> parameter. Only <code>fileNamePED</code> or <code>pedStudy</code>
+<code>listSamples</code> parameter. Only <code>filePedRDS</code> or <code>pedStudy</code>
 can be defined.</p></dd>
 
 
@@ -119,8 +119,8 @@ must be in <code>character</code> strings (no factor).</p></dd>
 <dd><p>a <code>vector</code> of <code>character</code> string corresponding
 to the profile identifiers that will have a GDS Sample file created. The
 profile identifiers must be present in the "Name.ID" column of the RDS file
-passed to the <code>fileNamePED</code> parameter.
-If <code>NULL</code>, all profiles in the <code>fileNamePED</code> are selected.</p></dd>
+passed to the <code>filePedRDS</code> parameter.
+If <code>NULL</code>, all profiles in the <code>filePedRDS</code> are selected.</p></dd>
 
 
 <dt>pathProfileGDS</dt>

@@ -119,7 +119,7 @@ the profiles saved in the GDS file.</p>
 <span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"GDS_TEMP_10.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create and open the GDS file</span></span></span>
-<span class="r-in"><span><span class="va">tmpGDS</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmpGDS</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create "sample.annot" node (the node must be present)</span></span></span>
 <span class="r-in"><span><span class="va">pedInformation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample.id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample_01"</span>, <span class="st">"sample_02"</span><span class="op">)</span>,</span></span>
@@ -139,17 +139,17 @@ the profiles saved in the GDS file.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sample_01" "sample_02"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read sample identifier list</span></span></span>
-<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"sample.id"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"sample.id"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sample_01" "sample_02"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read sample information from GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"sample.annot"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">tmpGDS</span>, path<span class="op">=</span><span class="st">"sample.annot"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sex pop.group superPop batch</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1       ACB      AFR     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   1       ACB      AFR     1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Delete the temporary GDS file</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>

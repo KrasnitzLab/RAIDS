@@ -107,7 +107,7 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Temporary Reference GDS file</span></span></span>
 <span class="r-in"><span><span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The RDS file containing the filtered SNP information</span></span></span>
 <span class="r-in"><span><span class="va">fileFilerterSNVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
@@ -115,16 +115,16 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span><span class="co">## Add SNV information to Reference GDS</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>, fileFREQ<span class="op">=</span><span class="va">fileFilerterSNVs</span>,</span></span>
 <span class="r-in"><span>    verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-14 21:48:40.708854</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-14 21:48:40.709318</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-14 21:48:40.70967</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-14 21:48:40.709975</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-14 21:48:40.710287</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-14 21:48:40.710583</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-04-15 03:59:05.211349</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-04-15 03:59:05.211911</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-04-15 03:59:05.212361</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-04-15 03:59:05.212752</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-04-15 03:59:05.213146</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-04-15 03:59:05.213533</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file (important)</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>

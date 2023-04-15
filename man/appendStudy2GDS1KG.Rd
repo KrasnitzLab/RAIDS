@@ -9,7 +9,7 @@ GDS file}
 \usage{
 appendStudy2GDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
-  fileNamePED,
+  filePedRDS,
   fileNameGDS,
   batch = 1,
   studyDF,
@@ -27,7 +27,7 @@ SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
 associated SNP-pileup file called "Name.ID.txt.gz".}
 
-\item{fileNamePED}{a \code{character} string representing the path to the
+\item{filePedRDS}{a \code{character} string representing the path to the
 RDS file that contains the information about the sample to analyse.
 The RDS file must
 include a \code{data.frame} with those mandatory columns: "Name.ID",
@@ -51,8 +51,8 @@ must be in \code{character} strings.}
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to the sample identifiers that will have a GDS Sample file created. The
 sample identifiers must be present in the "Name.ID" column of the RDS file
-passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+passed to the \code{filePedRDS} parameter.
+If \code{NULL}, all samples in the \code{filePedRDS} are selected.
 Default: \code{NULL}.}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to
@@ -94,7 +94,7 @@ studyInfo <- data.frame(study.id="Pancreatic.WES",
                 stringsAsFactors=FALSE)
 
 ## TODO
-fileNamePED <- "TODO"
+filePedRDS <- "TODO"
 
 
 }

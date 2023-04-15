@@ -330,7 +330,7 @@ gds2tfam <- function(gdsReference, listSample, pedOUT) {
     sampleGDS <- index.gdsn(gdsReference, "sample.annot")
     sampleANNO <-read.gdsn(sampleGDS)
 
-    pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
+    dfPed <- data.frame(famId=paste0("F", seq_len(length(listSample))),
                             id=sampleId[listS],
                             fa=rep("0",length(listSample)),
                             mo=rep("0",length(listSample)),
@@ -338,7 +338,7 @@ gds2tfam <- function(gdsReference, listSample, pedOUT) {
                             pheno=rep(1,length(listSample)),
                             stringsAsFactors=FALSE)
 
-    write.table(pedFile, pedOUT,
+    write.table(dfPed, pedOUT,
                     quote=FALSE, sep="\t",
                     row.names=FALSE,
                     col.names=FALSE)
@@ -378,7 +378,7 @@ gds2tfamSample <- function(gdsProfile, listSample, sampleANNO, pedOUT) {
     sampleId <-read.gdsn(sampleGDS)
     listS <- which(sampleId %in% listSample)
 
-    pedFile <- data.frame(famId=paste0("F", seq_len(length(listSample))),
+    dfPed <- data.frame(famId=paste0("F", seq_len(length(listSample))),
                             id=sampleId[listS],
                             fa=rep("0",length(listSample)),
                             mo=rep("0",length(listSample)),
@@ -386,7 +386,7 @@ gds2tfamSample <- function(gdsProfile, listSample, sampleANNO, pedOUT) {
                             pheno=rep(1,length(listSample)),
                             stringsAsFactors=FALSE)
 
-    write.table(pedFile, pedOUT, quote=FALSE, sep="\t",
+    write.table(dfPed, pedOUT, quote=FALSE, sep="\t",
                     row.names=FALSE, col.names=FALSE)
 }
 

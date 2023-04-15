@@ -23,7 +23,7 @@ validateRunExomeAncestry(
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings (no factor). The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+\code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 can be defined.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the

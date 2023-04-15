@@ -9,7 +9,7 @@ GDS file}
 \usage{
 createStudy2GDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
-  fileNamePED = NULL,
+  filePedRDS = NULL,
   pedStudy = NULL,
   fileNameGDS,
   batch = 1,
@@ -27,21 +27,21 @@ SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
 associated SNP-pileup file called "Name.ID.txt.gz".}
 
-\item{fileNamePED}{a \code{character} string representing the path to the
+\item{filePedRDS}{a \code{character} string representing the path to the
 RDS file that contains the information about the sample to analyse.
 The RDS file must
 include a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings. The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+\code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 can be defined.}
 
 \item{pedStudy}{a \code{data.frame} with those mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings (no factor). The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+\code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
@@ -59,8 +59,8 @@ must be in \code{character} strings (no factor).}
 \item{listProfiles}{a \code{vector} of \code{character} string corresponding
 to the profile identifiers that will have a Profile GDS file created. The
 profile identifiers must be present in the "Name.ID" column of the Profile
-RDS file passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
+RDS file passed to the \code{filePedRDS} parameter.
+If \code{NULL}, all profiles present in the \code{filePedRDS} are selected.
 Default: \code{NULL}.}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to

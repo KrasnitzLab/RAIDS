@@ -63,7 +63,7 @@ filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
 
 ## Create a temporary Reference GDS file containing information from 1KG
-generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
+generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
     fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
     fileNameGDS=fileReferenceGDS, listSamples=NULL)
 

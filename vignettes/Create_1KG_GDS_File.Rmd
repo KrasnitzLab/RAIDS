@@ -220,7 +220,7 @@ filePED1KGOri <- "20130606_g1k.ped"
 ## Extract needed information from the pedigree file from 1KG into a data.frame
 ## Only the samples with genotyping information (sample file present
 ## in pathGeno parameter) are retained to create the final data.frame
-ped <- prepPed1KG(pedFile=filePED1KGOri,
+ped <- prepPed1KG(filePed=filePED1KGOri,
                     pathGeno=file.path("data", "sampleGeno"))
 
 ## Save the pedigree information data.frame as a RDS file
@@ -331,7 +331,7 @@ fileGDS <- file.path(PATHGDS, fileNameGDS)
 
 ## Generate GDS file containing the 1KG information
 generateGDS1KG(pathGeno=file.path("data", "sampleGeno"),
-                    fileNamePED=filePED1KG,
+                    filePedRDS=filePED1KG,
                     fileSNPSel=fileFREQ.v,
                     fileListSNP=fileSNPsRDS,
                     fileNameGDS=fileGDS)

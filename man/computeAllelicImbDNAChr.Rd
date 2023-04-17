@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeAllelicImbDNAChr}
 \alias{computeAllelicImbDNAChr}
-\title{TODO}
+\title{Verify if SNVs are in an imbalance region}
 \usage{
 computeAllelicImbDNAChr(snp.pos, chr, wAR = 10, cutOffEmptyBox = -3)
 }
@@ -51,7 +51,8 @@ each SNV present in the
 input \code{snp.pos}.
 }
 \description{
-TODO
+The function verifies, for each SNV present in the data frame,
+if the SNV is in an imbalance region.
 }
 \examples{
 

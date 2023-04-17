@@ -559,9 +559,10 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 }
 
 
-#' @title TODO
+#' @title Verify if SNVs are in an imbalance region
 #'
-#' @description TODO
+#' @description The function verifies, for each SNV present in the data frame,
+#' if the SNV is in an imbalance region.
 #'
 #' @param snp.pos a \code{data.frame} containing the SNV information for the
 #' chromosome specified by the \code{chr} argument. The \code{data.frame} must
@@ -671,9 +672,10 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
             if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
+                ## Check for imbalance regions
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                 ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
-                if(cur$pCut == 1){
+                if(cur$pCut == 1) {
                     # Set all snv from tmpA (include homozygotes)
                     # in the window  to 1
                     snp.pos[listHetero[i]:listHetero[(i+wAR)], "imbAR"] <- 1
@@ -758,11 +760,21 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 
 
 
-#' @title TODO
+#' @title Calculate imbalance region for all specified heterozygote SNVs
+#' separately and together
 #'
-#' @description TODO
+#' @description The function tests imbalance region for all specified SNVs
+#' separately and together. The function reports the associated results,
+#' including statistic.
 #'
-#' @param matCov TODO
+#' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
+#' \code{data.frame} must contain those columns:
+#' \itemize{
+#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' the reference allele.}
+#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' the alternative allele.}
+#' }
 #'
 #' @param pCutOff TODO, Default: \code{-3}.
 #'
@@ -771,16 +783,22 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' \itemize{
 #' \item{pWin}{TODO}
 #' \item{p}{TODO}
-#' \item{pCut}{TODO}
-#' \item{pCut1}{TODO}
+#' \item{pCut}{a \code{integer} indicating if all SNVs tested
+#' positive (1=TRUE, 0-FALSE).
+#' TODO }
+#' \item{pCut1}{Calculate a global statistic using all SNVs TODO}
 #' }
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Data frame with SNV information for a list of heterozygote SNVs
+#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 #'
-#' ## TODO
+#' ## Calculate imbalance region
+#' RAIDS:::testEmptyBox(matCov=snpInfo, pCutOff=-3)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -796,23 +814,28 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 
     for (i in seq_len(nrow(matCov))) {
 
+        ## Always use the small count as input
         vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
                         matCov$cnt.alt[i], matCov$cnt.ref[i])
 
+        ## Calculate the probability with assumption 0f 0.5 ratio
         pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
                        prob=vMean)
 
-        pCurO <- max(1 - max(2 * pCur,0.01),0.01)
+        pCurO <- max(1 - max(2 * pCur, 0.01), 0.01)
 
         matCov$pWin[i] <- pCur * 2
 
-        p <- p + log10(max(pCur,0.01))
+        p <- p + log10(max(pCur, 0.01))
         pO <- pO + log10(pCurO)
     }
 
+    ## Calculate a global statistic using all SNVs (TODO: validate)
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                 matCov$pWin[1] < 0.5 & (matCov$pWin[nrow(matCov)] < 0.5) &
                             ((p-pO) <= pCutOff))
+
+    ## Return a list
     res <- list(pWin=matCov$pWin, p=p,
                 pCut=as.integer(sum(matCov$pWin < 0.5) == nrow(matCov)),
                 pCut1=pCut1)

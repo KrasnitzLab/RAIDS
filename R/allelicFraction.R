@@ -224,7 +224,15 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #'
 #' @param cutOff a single \code{numeric} representing TODO. Default: \code{-3}.
 #'
-#' @return a \code{matrix} or \code{NULL} when none of the SNVs
+#' @return a \code{matrix} of \code{numeric} with 3 columns where each
+#' row represent a segment
+#' of imbalanced SNVs. The first column represents the position, in
+#' \code{snp.pos}, of the first
+#' SNV in the segment. The second column represents the position, in the
+#' \code{snp.pos}, of the last SNV in the segment. The third column represents
+#' the lower allelic frequency of the segment and is \code{NA} when the value
+#' cannot be calculated. The value \code{NULL} is
+#' returned when none of the SNVs
 #' tested positive for the imbalance.
 #'
 #' @examples
@@ -236,8 +244,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
 #'         6085318, 6213145),
 #'     snp.chr=c(rep(1, 8)),
-#'     normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
-#'     TRUE, TRUE),
+#'     normal.geno=c(rep(1, 8)),
 #'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
 #'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
 #'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
@@ -250,7 +257,6 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats median
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
@@ -263,8 +269,10 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
     z <- cbind(c(tmp[1], tmp[-1] - tmp[seq_len(length(tmp) -1)]),
             c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
 
+    ## Split SNVs by segment of continuous imbalanced SNVs
+    ## There must be at least one segment with imbalanced SNVs to go one
     if(length(which(z[,1] == 1)) > 0) {
-
+        ## Find segmentsof imbalanced SNVs
         segImb <- data.frame(start=seq_len(nrow(snp.pos))[which(z[,1] > 0)],
                                 end=seq_len(nrow(snp.pos))[which(z[,2] < 0)])
 

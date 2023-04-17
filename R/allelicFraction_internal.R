@@ -704,9 +704,12 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 #' the alternative allele.}
 #' }
 #'
-#' @param pCutOff TODO Default: \code{-3}.
+#' @param pCutOff a \code{numeric} representing the cut-off for considering
+#' a region imbalanced when comparing likelihood to gave allelic fraction
+#' change and likelihood not to have allelic fraction change.
+#' Default: \code{-3}.
 #'
-#' @param vMean TODO
+#' @param vMean a \code{numeric} representing the
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{

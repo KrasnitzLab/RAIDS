@@ -17,9 +17,12 @@ the reference allele.}
 the alternative allele.}
 }}
 
-\item{pCutOff}{TODO Default: \code{-3}.}
+\item{pCutOff}{a \code{numeric} representing the cut-off for considering
+a region imbalanced when comparing likelihood to gave allelic fraction
+change and likelihood not to have allelic fraction change.
+Default: \code{-3}.}
 
-\item{vMean}{TODO}
+\item{vMean}{a \code{numeric} representing the}
 }
 \value{
 a \code{list} containing 4 entries:

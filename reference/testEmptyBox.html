@@ -94,11 +94,11 @@ likelihood not to be imbalanced. Default: <code>-3</code>.</p></dd>
     <h2>Value</h2>
     
 
-<p>a <code>list</code> containing 4 entries:</p><ul><li><p>pWina <code>vector</code> of <code>numeric</code> representing the
+<p>a <code>list</code> containing 4 entries:</p><ul><li><p>pWin a <code>vector</code> of <code>numeric</code> representing the
 probability (x2) of obtaining the current
 alternative/(alternative+reference) ratio from a 0.5 distribution.</p></li>
-<li><p>pa <code>numeric</code> representing the likelihood for the region</p></li>
-<li><p>pCuta <code>integer</code> indicating if all SNVs tested
+<li><p>p a <code>numeric</code> representing the likelihood for the region</p></li>
+<li><p>pCut a <code>integer</code> indicating if all SNVs tested
 positive (1=TRUE, 0=FALSE). The cut-off is 0.5.</p></li>
 <li><p>pCut1 a <code>integer</code> indicating if the window tested
 positive (1=TRUE, 0=FALSE) for imbalance.</p></li>
@@ -112,7 +112,7 @@ positive (1=TRUE, 0=FALSE) for imbalance.</p></li>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Data frame with SNV information for a list of heterozygote SNVs</span></span></span>
-<span class="r-in"><span><span class="va">snpInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>cnt.tot<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41</span>, <span class="fl">17</span>, <span class="fl">27</span>, <span class="fl">15</span>, <span class="fl">11</span>, <span class="fl">37</span>, <span class="fl">16</span>, <span class="fl">32</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">snpInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    cnt.ref<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">17</span>, <span class="fl">27</span>, <span class="fl">15</span>, <span class="fl">4</span>, <span class="fl">14</span>, <span class="fl">16</span>, <span class="fl">32</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    cnt.alt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">7</span>, <span class="fl">23</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

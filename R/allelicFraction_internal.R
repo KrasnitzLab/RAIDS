@@ -401,15 +401,15 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 
         if (verbose) { message("Step 3 ", Sys.time()) }
 
-        ## Identify imbalanced SNVs
+        ## Identify imbalanced SNVs in specified chromosome
         snp.pos[listChr, "imbAR"] <-
             computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
                                         wAR=10, cutOffEmptyBox=-3)
 
         if (verbose) { message("Step 4 ", Sys.time()) }
 
-        ## Compute allelic fraction
-        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ], chr=chr,
+        ## Compute allelic fraction for SNVs in specified chromosome
+        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ],
                                             w=10, cutOff=-3)
 
         if (verbose) { message("Step 5 ", Sys.time()) }
@@ -597,7 +597,9 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{10}.
 #'
-#' @param cutOffEmptyBox TODO Default: \code{-3}.
+#' @param cutOffEmptyBox a \code{numeric} representing the cut-off for
+#' considering a region imbalanced when comparing likelihood to be imbalanced
+#' and likelihood not to be imbalanced. Default: \code{-3}.
 #'
 #' @return a \code{vector} of \code{integer} indicating if the SNV is in an
 #' imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
@@ -672,7 +674,7 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
             if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
-                ## Check for imbalance regions
+                ## Check for imbalance regions for heterozygote SNVs
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                 ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
                 if(cur$pCut == 1) {
@@ -693,17 +695,27 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 #'
 #' @description TODO
 #'
-#' @param matCov TODO
+#' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
+#' \code{data.frame} must contain those columns:
+#' \itemize{
+#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' the reference allele.}
+#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' the alternative allele.}
+#' }
 #'
 #' @param pCutOff TODO Default: \code{-3}.
 #'
 #' @param vMean TODO
 #'
-#' @return a \code{list} containing 3 entries:
+#' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{pWin} {TODO.}
-#' \item{pCut} {TODO.}
-#' \item{pCut1} {TODO.}
+#' \item{pWin}{TODO}
+#' \item{p}{TODO}
+#' \item{pCut}{a \code{integer} indicating if all SNVs tested
+#' positive (1=TRUE, 0-FALSE).
+#' TODO }
+#' \item{pCut1}{Calculate a global statistic using all SNVs TODO}
 #' }
 #'
 #' @examples
@@ -714,7 +726,6 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 #' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @keywords internal
@@ -758,14 +769,12 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 }
 
 
-
-
-#' @title Calculate imbalance region for all specified heterozygote SNVs
+#' @title Calculate imbalance region using specified heterozygote SNVs
 #' separately and together
 #'
-#' @description The function tests imbalance region for all specified SNVs
+#' @description The function tests imbalance region using all specified SNVs
 #' separately and together. The function reports the associated results,
-#' including statistic.
+#' including statistic for the region.
 #'
 #' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
 #' \code{data.frame} must contain those columns:
@@ -776,17 +785,20 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' the alternative allele.}
 #' }
 #'
-#' @param pCutOff TODO, Default: \code{-3}.
-#'
+#' @param pCutOff a \code{numeric} representing the cut-off for considering
+#' a region imbalanced when comparing likelihood to be imbalanced and
+#' likelihood not to be imbalanced. Default: \code{-3}.
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{pWin}{TODO}
-#' \item{p}{TODO}
+#' \item{pWin}{a \code{vector} of \code{numeric} representing the
+#' probability (x2) of obtaining the current
+#' alternative/(alternative+reference) ratio from a 0.5 distribution.}
+#' \item{p}{a \code{numeric} representing the likelihood for the region}
 #' \item{pCut}{a \code{integer} indicating if all SNVs tested
-#' positive (1=TRUE, 0-FALSE).
-#' TODO }
-#' \item{pCut1}{Calculate a global statistic using all SNVs TODO}
+#' positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
+#' \item{pCut1}{ a \code{integer} indicating if the window tested
+#' positive (1=TRUE, 0=FALSE) for imbalance.}
 #' }
 #'
 #' @examples
@@ -796,12 +808,11 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
 #'     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 #'
-#' ## Calculate imbalance region
+#' ## Calculate imbalance for the region represented by the SNVs
 #' RAIDS:::testEmptyBox(matCov=snpInfo, pCutOff=-3)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
 #' @importFrom stats pbinom
 #' @encoding UTF-8
 #' @keywords internal
@@ -822,15 +833,20 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
         pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
                        prob=vMean)
 
+        ## Ensure value is not below 0.01
         pCurO <- max(1 - max(2 * pCur, 0.01), 0.01)
 
+        ## Twice the probability (2 tails)
         matCov$pWin[i] <- pCur * 2
 
+        ## Similar to likelihood for imbalance
         p <- p + log10(max(pCur, 0.01))
+        ## Similar to likelihood for not imbalance ( 1- probability)
         pO <- pO + log10(pCurO)
     }
 
-    ## Calculate a global statistic using all SNVs (TODO: validate)
+    ## Calculate a global statistic using all SNVs
+    ## The region is imbalance or not
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                 matCov$pWin[1] < 0.5 & (matCov$pWin[nrow(matCov)] < 0.5) &
                             ((p-pO) <= pCutOff))

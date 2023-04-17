@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{testEmptyBox}
 \alias{testEmptyBox}
-\title{Calculate imbalance region for all specified heterozygote SNVs
+\title{Calculate imbalance region using specified heterozygote SNVs
 separately and together}
 \usage{
 testEmptyBox(matCov, pCutOff = -3)
@@ -18,23 +18,27 @@ the reference allele.}
 the alternative allele.}
 }}
 
-\item{pCutOff}{TODO, Default: \code{-3}.}
+\item{pCutOff}{a \code{numeric} representing the cut-off for considering
+a region imbalanced when comparing likelihood to be imbalanced and
+likelihood not to be imbalanced. Default: \code{-3}.}
 }
 \value{
 a \code{list} containing 4 entries:
 \itemize{
-\item{pWin}{TODO}
-\item{p}{TODO}
+\item{pWin}{a \code{vector} of \code{numeric} representing the
+probability (x2) of obtaining the current
+alternative/(alternative+reference) ratio from a 0.5 distribution.}
+\item{p}{a \code{numeric} representing the likelihood for the region}
 \item{pCut}{a \code{integer} indicating if all SNVs tested
-positive (1=TRUE, 0-FALSE).
-TODO }
-\item{pCut1}{Calculate a global statistic using all SNVs TODO}
+positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
+\item{pCut1}{ a \code{integer} indicating if the window tested
+positive (1=TRUE, 0=FALSE) for imbalance.}
 }
 }
 \description{
-The function tests imbalance region for all specified SNVs
+The function tests imbalance region using all specified SNVs
 separately and together. The function reports the associated results,
-including statistic.
+including statistic for the region.
 }
 \examples{
 
@@ -43,7 +47,7 @@ snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 
-## Calculate imbalance region
+## Calculate imbalance for the region represented by the SNVs
 RAIDS:::testEmptyBox(matCov=snpInfo, pCutOff=-3)
 
 

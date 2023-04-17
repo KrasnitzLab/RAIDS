@@ -436,13 +436,13 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' TODO
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the 1KG GDS file.
+#' (a GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#' (a GDS file), the opeoned 1KG SNV Annotation GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -691,9 +691,13 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 }
 
 
-#' @title TODO
+#' @title Calculate presence of allelic fraction change using specified SNVs
+#' separately and together
 #'
-#' @description TODO
+#' @description The function tests allelic fraction change using all
+#' specified SNVs
+#' separately and together. The function reports the associated results,
+#' including statistic for the region represented by all the SNVs.
 #'
 #' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
 #' \code{data.frame} must contain those columns:
@@ -709,24 +713,33 @@ computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
 #' change and likelihood not to have allelic fraction change.
 #' Default: \code{-3}.
 #'
-#' @param vMean a \code{numeric} representing the
+#' @param vMean a positive \code{numeric} representing the current ratio
+#' (minor allele/(minor allele + second allele)) that is going to be used as
+#' reference to see if there is a allelic fraction change.
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{pWin}{TODO}
-#' \item{p}{TODO}
+#' \item{pWin}{ a \code{vector} of \code{numeric} representing the
+#' probability (x2) of obtaining the current
+#' alternative/(alternative+reference) ratio from a reference distribution
+#' specified by user.}
+#' \item{p}{a \code{integer} indicating if all SNVs tested
+#' positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
 #' \item{pCut}{a \code{integer} indicating if all SNVs tested
-#' positive (1=TRUE, 0-FALSE).
-#' TODO }
-#' \item{pCut1}{Calculate a global statistic using all SNVs TODO}
+#' positive (1=TRUE, 0-FALSE). }
+#' \item{pCut1}{a \code{integer} indicating if the region tested
+#' positive (1=TRUE, 0=FALSE) for allelic ratio change.}
 #' }
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Data frame with SNV information
+#' snpInfo <- data.frame(
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 #'
-#' ## TODO
+#' RAIDS:::testAlleleFractionChange(matCov=snpInfo, pCutOff=-3, vMean=0.5)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom stats pbinom
@@ -794,11 +807,11 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{pWin}{a \code{vector} of \code{numeric} representing the
+#' \item{pWin}{ a \code{vector} of \code{numeric} representing the
 #' probability (x2) of obtaining the current
 #' alternative/(alternative+reference) ratio from a 0.5 distribution.}
-#' \item{p}{a \code{numeric} representing the likelihood for the region}
-#' \item{pCut}{a \code{integer} indicating if all SNVs tested
+#' \item{p}{ a \code{numeric} representing the likelihood for the region}
+#' \item{pCut}{ a \code{integer} indicating if all SNVs tested
 #' positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
 #' \item{pCut1}{ a \code{integer} indicating if the window tested
 #' positive (1=TRUE, 0=FALSE) for imbalance.}
@@ -807,7 +820,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' @examples
 #'
 #' ## Data frame with SNV information for a list of heterozygote SNVs
-#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#' snpInfo <- data.frame(
 #'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
 #'     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 #'

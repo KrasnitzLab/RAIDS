@@ -25,11 +25,11 @@ likelihood not to be imbalanced. Default: \code{-3}.}
 \value{
 a \code{list} containing 4 entries:
 \itemize{
-\item{pWin}{a \code{vector} of \code{numeric} representing the
+\item{pWin}{ a \code{vector} of \code{numeric} representing the
 probability (x2) of obtaining the current
 alternative/(alternative+reference) ratio from a 0.5 distribution.}
-\item{p}{a \code{numeric} representing the likelihood for the region}
-\item{pCut}{a \code{integer} indicating if all SNVs tested
+\item{p}{ a \code{numeric} representing the likelihood for the region}
+\item{pCut}{ a \code{integer} indicating if all SNVs tested
 positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
 \item{pCut1}{ a \code{integer} indicating if the window tested
 positive (1=TRUE, 0=FALSE) for imbalance.}
@@ -43,7 +43,7 @@ including statistic for the region.
 \examples{
 
 ## Data frame with SNV information for a list of heterozygote SNVs
-snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+snpInfo <- data.frame(
     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
     cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 

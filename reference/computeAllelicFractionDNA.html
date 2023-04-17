@@ -206,7 +206,7 @@ positive for imbalance in at least 1 window)</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Profile GDS file for one profile</span></span></span>
 <span class="r-in"><span><span class="va">fileProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span>, <span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">profileGDS</span> <span class="op">&lt;-</span> <span class="fu">openfn.gds</span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">profileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Chromosome length information</span></span></span>
 <span class="r-in"><span><span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span></span>
@@ -239,8 +239,8 @@ positive for imbalance in at least 1 window)</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6   TRUE FALSE 0.5   0    -1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close both GDS files (important)</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span><span class="va">profileGDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">profileGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>

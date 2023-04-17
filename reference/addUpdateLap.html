@@ -111,11 +111,11 @@ present in the "snp.id" entry of the GDS sample file.</p></dd>
 <span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"GDS_TEMP.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create and open the GDS file</span></span></span>
-<span class="r-in"><span><span class="va">gdsFile</span>  <span class="op">&lt;-</span> <span class="fu">createfn.gds</span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gdsFile</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a "lap" node</span></span></span>
-<span class="r-in"><span><span class="fu">add.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsFile</span>, name<span class="op">=</span><span class="st">"lap"</span>, val<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10L</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sync.gds</span><span class="op">(</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsFile</span>, name<span class="op">=</span><span class="st">"lap"</span>, val<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10L</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/sync.gds.html" class="external-link">sync.gds</a></span><span class="op">(</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Vector of low allelic fraction</span></span></span>
 <span class="r-in"><span><span class="va">lap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.23</span>, <span class="fl">0.34</span>, <span class="fl">0.00</span>, <span class="fl">0.12</span>, <span class="fl">0.11</span>, <span class="fl">0.33</span>, <span class="fl">0.55</span><span class="op">)</span></span></span>
@@ -125,11 +125,11 @@ present in the "snp.id" entry of the GDS sample file.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read lap information from GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">read.gdsn</span><span class="op">(</span><span class="fu">index.gdsn</span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsFile</span>, path<span class="op">=</span><span class="st">"lap"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsFile</span>, path<span class="op">=</span><span class="st">"lap"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0 0 0 0 0 0 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">closefn.gds</span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">gdsFile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Delete the temporary GDS file</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>

@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{testAlleleFractionChange}
 \alias{testAlleleFractionChange}
-\title{TODO}
+\title{Calculate presence of allelic fraction change using specified SNVs
+separately and together}
 \usage{
 testAlleleFractionChange(matCov, pCutOff = -3, vMean)
 }
@@ -22,28 +23,40 @@ a region imbalanced when comparing likelihood to gave allelic fraction
 change and likelihood not to have allelic fraction change.
 Default: \code{-3}.}
 
-\item{vMean}{a \code{numeric} representing the}
+\item{vMean}{a positive \code{numeric} representing the current ratio
+(minor allele/(minor allele + second allele)) that is going to be used as
+reference to see if there is a allelic fraction change.}
 }
 \value{
 a \code{list} containing 4 entries:
 \itemize{
-\item{pWin}{TODO}
-\item{p}{TODO}
+\item{pWin}{ a \code{vector} of \code{numeric} representing the
+probability (x2) of obtaining the current
+alternative/(alternative+reference) ratio from a reference distribution
+specified by user.}
+\item{p}{a \code{integer} indicating if all SNVs tested
+positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
 \item{pCut}{a \code{integer} indicating if all SNVs tested
-positive (1=TRUE, 0-FALSE).
-TODO }
-\item{pCut1}{Calculate a global statistic using all SNVs TODO}
+positive (1=TRUE, 0-FALSE). }
+\item{pCut1}{a \code{integer} indicating if the region tested
+positive (1=TRUE, 0=FALSE) for allelic ratio change.}
 }
 }
 \description{
-TODO
+The function tests allelic fraction change using all
+specified SNVs
+separately and together. The function reports the associated results,
+including statistic for the region represented by all the SNVs.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
+## Data frame with SNV information
+snpInfo <- data.frame(
+    cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+    cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 
-## TODO
+RAIDS:::testAlleleFractionChange(matCov=snpInfo, pCutOff=-3, vMean=0.5)
+
 
 }
 \author{

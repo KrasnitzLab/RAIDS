@@ -18,7 +18,15 @@ Default: \code{10}.}
 \item{cutOff}{a single \code{numeric} representing TODO. Default: \code{-3}.}
 }
 \value{
-a \code{matrix} or \code{NULL} when none of the SNVs
+a \code{matrix} of \code{numeric} with 3 columns where each
+row represent a segment
+of imbalanced SNVs. The first column represents the position, in
+\code{snp.pos}, of the first
+SNV in the segment. The second column represents the position, in the
+\code{snp.pos}, of the last SNV in the segment. The third column represents
+the lower allelic frequency of the segment and is \code{NA} when the value
+cannot be calculated. The value \code{NULL} is
+returned when none of the SNVs
 tested positive for the imbalance.
 }
 \description{
@@ -33,8 +41,7 @@ snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
         6085318, 6213145),
     snp.chr=c(rep(1, 8)),
-    normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
-    TRUE, TRUE),
+    normal.geno=c(rep(1, 8)),
     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),

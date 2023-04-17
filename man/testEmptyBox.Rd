@@ -3,12 +3,20 @@
 \encoding{UTF-8}
 \name{testEmptyBox}
 \alias{testEmptyBox}
-\title{TODO}
+\title{Calculate imbalance region for all specified heterozygote SNVs
+separately and together}
 \usage{
 testEmptyBox(matCov, pCutOff = -3)
 }
 \arguments{
-\item{matCov}{TODO}
+\item{matCov}{a \code{data.frame} containing only heterozygote SNVs. The
+\code{data.frame} must contain those columns:
+\itemize{
+\item{cnt.ref} {a single \code{integer} representing the coverage for
+the reference allele.}
+\item{cnt.alt} {a single \code{integer} representing the coverage for
+the alternative allele.}
+}}
 
 \item{pCutOff}{TODO, Default: \code{-3}.}
 }
@@ -17,19 +25,27 @@ a \code{list} containing 4 entries:
 \itemize{
 \item{pWin}{TODO}
 \item{p}{TODO}
-\item{pCut}{TODO}
-\item{pCut1}{TODO}
+\item{pCut}{a \code{integer} indicating if all SNVs tested
+positive (1=TRUE, 0-FALSE).
+TODO }
+\item{pCut1}{Calculate a global statistic using all SNVs TODO}
 }
 }
 \description{
-TODO
+The function tests imbalance region for all specified SNVs
+separately and together. The function reports the associated results,
+including statistic.
 }
 \examples{
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
+## Data frame with SNV information for a list of heterozygote SNVs
+snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+    cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+    cnt.alt=c(2, 4, 5, 10, 7, 23, 0, 0))
 
-## TODO
+## Calculate imbalance region
+RAIDS:::testEmptyBox(matCov=snpInfo, pCutOff=-3)
+
 
 }
 \author{

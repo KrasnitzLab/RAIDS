@@ -8,18 +8,28 @@
 testAlleleFractionChange(matCov, pCutOff = -3, vMean)
 }
 \arguments{
-\item{matCov}{TODO}
+\item{matCov}{a \code{data.frame} containing only heterozygote SNVs. The
+\code{data.frame} must contain those columns:
+\itemize{
+\item{cnt.ref} {a single \code{integer} representing the coverage for
+the reference allele.}
+\item{cnt.alt} {a single \code{integer} representing the coverage for
+the alternative allele.}
+}}
 
 \item{pCutOff}{TODO Default: \code{-3}.}
 
 \item{vMean}{TODO}
 }
 \value{
-a \code{list} containing 3 entries:
+a \code{list} containing 4 entries:
 \itemize{
-\item{pWin} {TODO.}
-\item{pCut} {TODO.}
-\item{pCut1} {TODO.}
+\item{pWin}{TODO}
+\item{p}{TODO}
+\item{pCut}{a \code{integer} indicating if all SNVs tested
+positive (1=TRUE, 0-FALSE).
+TODO }
+\item{pCut1}{Calculate a global statistic using all SNVs TODO}
 }
 }
 \description{

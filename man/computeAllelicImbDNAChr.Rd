@@ -41,7 +41,9 @@ SNV in the 1KG GDS file that contains all SNVs}
 \item{wAR}{a single positive \code{integer} representing the size-1 of
 the window used to compute an empty box. Default: \code{10}.}
 
-\item{cutOffEmptyBox}{TODO Default: \code{-3}.}
+\item{cutOffEmptyBox}{a \code{numeric} representing the cut-off for
+considering a region imbalanced when comparing likelihood to be imbalanced
+and likelihood not to be imbalanced. Default: \code{-3}.}
 }
 \value{
 a \code{vector} of \code{integer} indicating if the SNV is in an

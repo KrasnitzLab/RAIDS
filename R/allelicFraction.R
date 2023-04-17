@@ -218,22 +218,36 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' @param snp.pos a \code{data.frame} containing the genotype information for
 #' a SNV dataset. TODO
 #'
-#' @param chr a single positive \code{integer} for the chromosome.
-#'
 #' @param w a single positive \code{numeric} representing the size of the
 #' window to compute the allelic fraction.
 #' Default: \code{10}.
 #'
 #' @param cutOff a single \code{numeric} representing TODO. Default: \code{-3}.
 #'
-#' @return TODO
+#' @return a \code{matrix} or \code{NULL} when none of the SNVs
+#' tested positive for the imbalance.
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Data frame with SNV information for the specified chromosome (chr 1)
+#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'         6085318, 6213145),
+#'     snp.chr=c(rep(1, 8)),
+#'     normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
+#'     TRUE, TRUE),
+#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'     lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
+#'     stringAsFactor=FALSE)
 #'
-#' ## TODO
+#' ## The function returns NULL when there is not imbalanced SNVs
+#' RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=10, cutOff=-3)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -241,7 +255,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
+computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 
     listBlockAR <- list()
     j <- 1
@@ -263,7 +277,6 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
             snp.hetero <- snp.pos[listHetero,]
 
             if(nrow(snp.hetero) >= 2 * w) {
-                # I am here
                 lapCur <- median(apply(snp.hetero[seq_len(w),
                             c("cnt.ref", "cnt.alt")], 1, min) /
                     (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
@@ -278,7 +291,6 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
                                     c("cnt.ref", "cnt.alt")], cutOff, lapCur)
 
                     if(curWin$pCut1 == 1){ # new Region the allelicFraction
-
                         # table of the index of the block with lapCur
                         listBlockAR[[j]] <- c(listHetero[start],
                                                 listHetero[k], lapCur)
@@ -296,7 +308,6 @@ computeAlleleFraction <- function(snp.pos, chr, w=10, cutOff=-3) {
                                     c("cnt.ref", "cnt.alt")], 1, min) /
                                 (rowSums(snp.hetero[start:nrow(snp.hetero),
                                     c("cnt.ref", "cnt.alt")])))
-
 
                             listBlockAR[[j]] <- c(listHetero[start],
                                                     segImb$end[i], lapCur)

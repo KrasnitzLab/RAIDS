@@ -397,6 +397,9 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
+#' ## Required library for GDS
+#' library(gdsfmt)
+#'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
@@ -594,6 +597,9 @@ pruningSample <- function(gdsReference,
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library for GDS
+#' library(gdsfmt)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -1285,6 +1291,9 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library for GDS
+#' library(gdsfmt)
 #'
 #' ## Get the temp folder
 #' tempDir <- tempdir()
@@ -2293,6 +2302,9 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 #'
 #' @examples
+#'
+#' ## Required library for GDS
+#' library(gdsfmt)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")

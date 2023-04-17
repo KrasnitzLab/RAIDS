@@ -31,6 +31,9 @@ the Profile GDS file.
 }
 \examples{
 
+## Required library for GDS
+library(gdsfmt)
+
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")

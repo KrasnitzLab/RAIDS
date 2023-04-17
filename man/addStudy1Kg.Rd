@@ -33,6 +33,9 @@ The study information is appended to the GDS Sample file "study.list" node.
 }
 \examples{
 
+## Required library for GDS
+library(gdsfmt)
+
 ## Get the temp folder
 tempDir <- tempdir()
 

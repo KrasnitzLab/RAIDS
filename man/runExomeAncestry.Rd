@@ -98,6 +98,9 @@ also created.
 }
 \examples{
 
+## Required library for GDS
+library(gdsfmt)
+
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 

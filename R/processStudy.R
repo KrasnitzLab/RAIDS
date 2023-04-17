@@ -13,21 +13,21 @@
 #' of the samples. A sample with "Name.ID" identifier would have an
 #' associated SNP-pileup file called "Name.ID.txt.gz".
 #'
-#' @param fileNamePED a \code{character} string representing the path to the
+#' @param filePedRDS a \code{character} string representing the path to the
 #' RDS file that contains the information about the sample to analyse.
 #' The RDS file must
 #' include a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings. The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 #' can be defined.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings (no factor). The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 #' can be defined.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
@@ -45,8 +45,8 @@
 #' @param listProfiles a \code{vector} of \code{character} string corresponding
 #' to the profile identifiers that will have a Profile GDS file created. The
 #' profile identifiers must be present in the "Name.ID" column of the Profile
-#' RDS file passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all profiles present in the \code{fileNamePED} are selected.
+#' RDS file passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all profiles present in the \code{filePedRDS} are selected.
 #' Default: \code{NULL}.
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
@@ -117,25 +117,25 @@
 #' @encoding UTF-8
 #' @export
 createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
-                                fileNamePED=NULL, pedStudy=NULL, fileNameGDS,
+                                filePedRDS=NULL, pedStudy=NULL, fileNameGDS,
                                 batch=1, studyDF, listProfiles=NULL,
                                 pathProfileGDS=NULL,
                                 genoSource=c("snp-pileup", "generic"),
                                 verbose=FALSE) {
 
-    ## When fileNamePED is defined and pedStudy is null
-    if (!(is.null(fileNamePED)) && is.null(pedStudy)) {
-        ## The fileNamePED must be a character string and the file must exists
-        if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
-            stop("The \'fileNamePED\' must be a character string representing",
+    ## When filePedRDS is defined and pedStudy is null
+    if (!(is.null(filePedRDS)) && is.null(pedStudy)) {
+        ## The filePedRDS must be a character string and the file must exists
+        if (!(is.character(filePedRDS) && (file.exists(filePedRDS)))) {
+            stop("The \'filePedRDS\' must be a character string representing",
                     " the RDS Sample information file. The file must exist.")
         }
         ## Open the RDS Sample information file
-        pedStudy <- readRDS(file=fileNamePED)
-    } else if (!(is.null(fileNamePED) || is.null(pedStudy))) {
-        stop("Both \'fileNamePED\' and \'pedStudy\' parameters cannot be ",
+        pedStudy <- readRDS(file=filePedRDS)
+    } else if (!(is.null(filePedRDS) || is.null(pedStudy))) {
+        stop("Both \'filePedRDS\' and \'pedStudy\' parameters cannot be ",
                 "defined at the same time.")
-    } else if (is.null(fileNamePED) && is.null(pedStudy)) {
+    } else if (is.null(filePedRDS) && is.null(pedStudy)) {
         stop("One of the parameter \'fineNamePED\' of \'pedStudy\' must ",
                 "be defined.")
     }
@@ -166,7 +166,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 
     generateGDS1KGgenotypeFromSNPPileup(pathGeno=pathGeno,
         listSamples=listProfiles, listPos=listPos, offset=-1, minCov=10,
-        minProb=0.999, seqError=0.001, pedStudy=pedStudy, batch=batch,
+        minProb=0.999, seqError=0.001, dfPedProfile=pedStudy, batch=batch,
         studyDF=studyDF, pathProfileGDS=pathProfileGDS,
         genoSource=genoSource, verbose=verbose)
 
@@ -197,7 +197,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' of the samples. A sample with "Name.ID" identifier would have an
 #' associated SNP-pileup file called "Name.ID.txt.gz".
 #'
-#' @param fileNamePED a \code{character} string representing the path to the
+#' @param filePedRDS a \code{character} string representing the path to the
 #' RDS file that contains the information about the sample to analyse.
 #' The RDS file must
 #' include a \code{data.frame} with those mandatory columns: "Name.ID",
@@ -221,8 +221,8 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @param listSamples a \code{vector} of \code{character} string corresponding
 #' to the sample identifiers that will have a GDS Sample file created. The
 #' sample identifiers must be present in the "Name.ID" column of the RDS file
-#' passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#' passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all samples in the \code{filePedRDS} are selected.
 #' Default: \code{NULL}.
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
@@ -257,7 +257,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'                 stringsAsFactors=FALSE)
 #'
 #' ## TODO
-#' fileNamePED <- "TODO"
+#' filePedRDS <- "TODO"
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -266,12 +266,12 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @encoding UTF-8
 #' @export
 appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
-                        fileNamePED, fileNameGDS, batch=1, studyDF,
+                        filePedRDS, fileNameGDS, batch=1, studyDF,
                         listSamples=NULL, pathProfileGDS=NULL,
                         genoSource=c("snp-pileup", "generic"), verbose=TRUE) {
 
     ## Validate inputs
-    validateAppendStudy2GDS1KG(pathGeno=pathGeno, fileNamePED=fileNamePED,
+    validateAppendStudy2GDS1KG(pathGeno=pathGeno, filePedRDS=filePedRDS,
         fileNameGDS=fileNameGDS, batch=batch, studyDF=studyDF,
         listSamples=listSamples, pathProfileGDS=pathProfileGDS,
         genoSource=genoSource, verbose=verbose)
@@ -279,7 +279,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
     genoSource <- arg_match(genoSource)
 
     ## Open the RDS Sample information file
-    pedStudy <- readRDS(file=fileNamePED)
+    pedStudy <- readRDS(file=filePedRDS)
 
     ## Read the 1KG GDS file
     gdsReference <- snpgdsOpen(filename=fileNameGDS)
@@ -299,7 +299,7 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 
     generateGDS1KGgenotypeFromSNPPileup(pathGeno=pathGeno,
         listSamples=listSamples, listPos=listPos, offset=-1,
-        minCov=10, minProb=0.999, seqError=0.001, pedStudy=pedStudy,
+        minCov=10, minProb=0.999, seqError=0.001, dfPedProfile=pedStudy,
         batch=batch, studyDF=studyDF, pathProfileGDS=pathProfileGDS,
         genoSource=genoSource, verbose=verbose)
 
@@ -1371,7 +1371,7 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
         rownames(ped1KG) <- ped1KG$Name.ID
 
         ## Add the information about the 1KG samples into the Profile GDS
-        addStudyGDSSample(gdsProfile=gdsSample, pedDF=ped1KG, batch=1,
+        addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=ped1KG, batch=1,
                     listSamples=NULL, studyDF=study.list, verbose=verbose)
 
         sync.gds(gdsSample)
@@ -2215,7 +2215,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings (no factor). The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 #' can be defined.
 #'
 #' @param studyDF a \code{data.frame} containing the information about the

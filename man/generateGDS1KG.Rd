@@ -8,8 +8,8 @@ data set (reference data set)}
 \usage{
 generateGDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
-  fileNamePED,
-  fileListSNP,
+  filePedRDS,
+  fileSNVIndex,
   fileSNPSel,
   fileNameGDS,
   listSamples = NULL,
@@ -23,11 +23,11 @@ genotyping files must correspond to
 the individual identification (Individual.ID) in the pedigree file.
 Default: \code{"./data/sampleGeno"}.}
 
-\item{fileNamePED}{a \code{character} string representing the path and file
+\item{filePedRDS}{a \code{character} string representing the path and file
 name of the RDS file that contains the pedigree information. The file must
 exist. The file must be a RDS file.}
 
-\item{fileListSNP}{a \code{character} string representing the path and file
+\item{fileSNVIndex}{a \code{character} string representing the path and file
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.}
 
@@ -83,8 +83,8 @@ filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 gdsFile <- local_file(file.path(dataDir, "1KG_TEMP.gds"))
 
 ## Create a temporary GDS file containing information from 1KG
-generateGDS1KG(pathGeno=dataDir, fileNamePED=pedigreeFile,
-    fileListSNP=snpIndexFile, fileSNPSel=filterSNVFile,
+generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+    fileSNVIndex=snpIndexFile, fileSNPSel=filterSNVFile,
     fileNameGDS=gdsFile, listSamples=NULL)
 
 ## Remove temporary files

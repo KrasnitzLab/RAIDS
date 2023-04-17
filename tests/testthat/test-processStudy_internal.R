@@ -168,7 +168,7 @@ test_that("validateAppendStudy2GDS1KG() must return expected results when all in
                         stringsAsFactors=FALSE)
 
     result1 <- RAIDS:::validateAppendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-            fileNamePED=rdsFile, fileNameGDS=fileGDS,
+            filePedRDS=rdsFile, fileNameGDS=fileGDS,
             batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
             pathProfileGDS=test_path("fixtures"), genoSource="snp-pileup",
             verbose=TRUE)

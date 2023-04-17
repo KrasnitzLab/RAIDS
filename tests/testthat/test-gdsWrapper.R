@@ -195,7 +195,7 @@ test_that("generateGDSRefSample() must copy the expected entry in \"sample.annot
     rownames(pedInformation) <- pedInformation$Name.ID
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,  pedDF=pedInformation,
+    results3 <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,  dfPedReference=pedInformation,
                                 listSamples=c("sample_01", "sample_02"))
 
     ## Read sample names from GDS file

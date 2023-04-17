@@ -5,10 +5,10 @@
 \alias{validatePrepPed1KG}
 \title{Validate input parameters for prepPed1KG() function}
 \usage{
-validatePrepPed1KG(pedFile, pathGeno, batch)
+validatePrepPed1KG(filePed, pathGeno, batch)
 }
 \arguments{
-\item{pedFile}{a \code{character} string representing the path and
+\item{filePed}{a \code{character} string representing the path and
 file name of the pedigree file (PED file) that contains the information
 related to the profiles present in the 1KG GDS file. The PED file must
 exist.}
@@ -39,7 +39,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## The validation should be successful
-RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
+RAIDS:::validatePrepPed1KG(filePed=pedDemoFile,
      pathGeno=dataDir, batch=1)
 
 

@@ -14,7 +14,7 @@ generateGDS1KGgenotypeFromSNPPileup(
   minCov = 10,
   minProb = 0.999,
   seqError = 0.001,
-  pedStudy,
+  dfPedProfile,
   batch,
   studyDF,
   pathProfileGDS,
@@ -30,7 +30,7 @@ snp-pileup. The path must exist.}
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to the sample identifiers that will have a Profile GDS file created. The
 sample identifiers must be present in the "Name.ID" column of the
-\code{data.frame} passed to the \code{pedDF} parameter.}
+\code{data.frame} passed to the \code{dfPedProfile} parameter.}
 
 \item{listPos}{a \code{data.frame} containing 2 columns. The first column,
 called "snp.chromosome" contains the name of the chromosome where the
@@ -49,6 +49,13 @@ Default: \code{0.999}.}
 
 \item{seqError}{a single positive \code{numeric} between 0 and 1
 representing the sequencing error rate. Default: \code{0.001}.}
+
+\item{dfPedProfile}{a \code{data.frame} with the information about the sample(s).
+Those are mandatory columns: "Name.ID",
+"Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+\code{character} strings. The \code{data.frame}
+must contain the information for all the samples passed in the
+\code{listSamples} parameter.}
 
 \item{batch}{a single positive \code{integer} representing the current
 identifier for the batch. Beware, this field is not stored anymore.}
@@ -72,13 +79,6 @@ The 'Count' is the depth at the specified position;
 
 \item{verbose}{a \code{logical} indicating if the function must print
 messages when running.}
-
-\item{pedDF}{a \code{data.frame} with the information about the sample(s).
-Those are mandatory columns: "Name.ID",
-"Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-\code{character} strings. The \code{data.frame}
-must contain the information for all the samples passed in the
-\code{listSamples} parameter.}
 }
 \value{
 The  function returns \code{0L} when successful.
@@ -119,7 +119,7 @@ listPositions <- data.frame(snp.chromosome=c(rep(1, 10)),
 result <- RAIDS:::generateGDS1KGgenotypeFromSNPPileup(pathGeno=dataDir,
             listSamples=c("ex1"), listPos=listPositions,
             offset=-1, minCov=10, minProb=0.999, seqError=0.001,
-            pedStudy=samplePED, batch=1, studyDF=studyDF,
+            dfPedProfile=samplePED, batch=1, studyDF=studyDF,
             pathProfileGDS=dataDir, genoSource="snp-pileup",
             verbose=FALSE)
 

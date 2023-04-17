@@ -5,10 +5,10 @@
 \alias{prepPed1KG}
 \title{Prepare the pedigree file using pedigree information from 1KG}
 \usage{
-prepPed1KG(pedFile, pathGeno = file.path("data", "sampleGeno"), batch = 0L)
+prepPed1KG(filePed, pathGeno = file.path("data", "sampleGeno"), batch = 0L)
 }
 \arguments{
-\item{pedFile}{a \code{character} string representing the path and
+\item{filePed}{a \code{character} string representing the path and
 file name of the pedigree file (PED file) that contains the information
 related to the profiles present in the 1KG GDS file. The PED file must
 exist.}
@@ -56,7 +56,7 @@ pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)
-prepPed1KG(pedFile=pedDemoFile, pathGeno=dataDir, batch=0L)
+prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir, batch=0L)
 
 
 }

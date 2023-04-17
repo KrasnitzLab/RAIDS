@@ -29,7 +29,7 @@ exist.}
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings (no factor). The \code{data.frame}
 must contain the information for all the samples passed in the
-\code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+\code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
@@ -46,8 +46,8 @@ must be in \code{character} strings (no factor).}
 \item{listProfiles}{a \code{vector} of \code{character} string corresponding
 to the profile identifiers that will have a GDS Sample file created. The
 profile identifiers must be present in the "Name.ID" column of the RDS file
-passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all profiles in the \code{fileNamePED} are selected.}
+passed to the \code{filePedRDS} parameter.
+If \code{NULL}, all profiles in the \code{filePedRDS} are selected.}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the Profile GDS files will be created.}

@@ -407,7 +407,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
 #' @description This function validates the input parameters for the
 #' \code{\link{prepPed1KG}} function.
 #'
-#' @param pedFile a \code{character} string representing the path and
+#' @param filePed a \code{character} string representing the path and
 #' file name of the pedigree file (PED file) that contains the information
 #' related to the profiles present in the 1KG GDS file. The PED file must
 #' exist.
@@ -433,7 +433,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
 #' pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 #'
 #' ## The validation should be successful
-#' RAIDS:::validatePrepPed1KG(pedFile=pedDemoFile,
+#' RAIDS:::validatePrepPed1KG(filePed=pedDemoFile,
 #'      pathGeno=dataDir, batch=1)
 #'
 #'
@@ -441,7 +441,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validatePrepPed1KG <- function(pedFile, pathGeno, batch) {
+validatePrepPed1KG <- function(filePed, pathGeno, batch) {
 
     ## Validate that the batch is an integer
     if (! isSingleNumber(batch)) {
@@ -449,8 +449,8 @@ validatePrepPed1KG <- function(pedFile, pathGeno, batch) {
     }
 
     ## Validate that the pedigree file exists
-    if (! file.exists(pedFile)) {
-        stop("The file \'", pedFile, "\' does not exist." )
+    if (! file.exists(filePed)) {
+        stop("The file \'", filePed, "\' does not exist." )
     }
 
     ## Validate that the path for the genotyping files exists

@@ -460,7 +460,7 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings (no factor). The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 #' can be defined.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
@@ -477,8 +477,8 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' @param listProfiles a \code{vector} of \code{character} string corresponding
 #' to the profile identifiers that will have a GDS Sample file created. The
 #' profile identifiers must be present in the "Name.ID" column of the RDS file
-#' passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all profiles in the \code{fileNamePED} are selected.
+#' passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all profiles in the \code{filePedRDS} are selected.
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
 #' the directory where the Profile GDS files will be created.
@@ -815,7 +815,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' directory containing the output of SNP-pileup, a VCF Sample file, for
 #' each sample.
 #'
-#' @param fileNamePED a \code{character} string representing the path to the
+#' @param filePedRDS a \code{character} string representing the path to the
 #' RDS file that contains the information about the sample to analyse.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
@@ -832,8 +832,8 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' @param listSamples a \code{vector} of \code{character} string corresponding
 #' to the sample identifiers that will have a GDS Sample file created. The
 #' sample identifiers must be present in the "Name.ID" column of the RDS file
-#' passed to the \code{fileNamePED} parameter.
-#' If \code{NULL}, all samples in the \code{fileNamePED} are selected.
+#' passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all samples in the \code{filePedRDS} are selected.
 #'
 #' @param pathProfileGDS a \code{character} string representing the path to
 #' the directory where the GDS Sample files will be created.
@@ -865,7 +865,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
-#'     fileNamePED=ped, fileNameGDS=gds1KG,
+#'     filePedRDS=ped, fileNameGDS=gds1KG,
 #'     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
 #'     pathProfileGDS=dataDir, genoSource="snp-pileup", verbose=TRUE)
 #'
@@ -874,7 +874,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
+validateAppendStudy2GDS1KG <- function(pathGeno, filePedRDS, fileNameGDS,
                                 batch, studyDF, listSamples, pathProfileGDS,
                                 genoSource, verbose) {
 
@@ -884,9 +884,9 @@ validateAppendStudy2GDS1KG <- function(pathGeno, fileNamePED, fileNameGDS,
                 "a path. The path must exist.")
     }
 
-    ## The fileNamePED must be a character string and the file must exists
-    if (!(is.character(fileNamePED) && (file.exists(fileNamePED)))) {
-        stop("The \'fileNamePED\' must be a character string representing ",
+    ## The filePedRDS must be a character string and the file must exists
+    if (!(is.character(filePedRDS) && (file.exists(filePedRDS)))) {
+        stop("The \'filePedRDS\' must be a character string representing ",
                 "the RDS Sample information file. The file must exist.")
     }
 
@@ -1000,7 +1000,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings (no factor). The \code{data.frame}
 #' must contain the information for all the samples passed in the
-#' \code{listSamples} parameter. Only \code{fileNamePED} or \code{pedStudy}
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
 #' can be defined.
 #'
 #' @param studyDF a \code{data.frame} containing the information about the

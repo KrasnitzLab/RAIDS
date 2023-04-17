@@ -7,7 +7,7 @@
 \usage{
 validateAppendStudy2GDS1KG(
   pathGeno,
-  fileNamePED,
+  filePedRDS,
   fileNameGDS,
   batch,
   studyDF,
@@ -22,7 +22,7 @@ validateAppendStudy2GDS1KG(
 directory containing the output of SNP-pileup, a VCF Sample file, for
 each sample.}
 
-\item{fileNamePED}{a \code{character} string representing the path to the
+\item{filePedRDS}{a \code{character} string representing the path to the
 RDS file that contains the information about the sample to analyse.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
@@ -39,8 +39,8 @@ must be in \code{character} strings.}
 \item{listSamples}{a \code{vector} of \code{character} string corresponding
 to the sample identifiers that will have a GDS Sample file created. The
 sample identifiers must be present in the "Name.ID" column of the RDS file
-passed to the \code{fileNamePED} parameter.
-If \code{NULL}, all samples in the \code{fileNamePED} are selected.}
+passed to the \code{filePedRDS} parameter.
+If \code{NULL}, all samples in the \code{filePedRDS} are selected.}
 
 \item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Sample files will be created.}
@@ -77,7 +77,7 @@ studyInfo <- data.frame(study.id="Pancreatic.WES",
 
 ## The validatiion should be successful
 RAIDS:::validateAppendStudy2GDS1KG(pathGeno=dataDir,
-    fileNamePED=ped, fileNameGDS=gds1KG,
+    filePedRDS=ped, fileNameGDS=gds1KG,
     batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
     pathProfileGDS=dataDir, genoSource="snp-pileup", verbose=TRUE)
 

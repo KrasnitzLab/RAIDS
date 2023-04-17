@@ -7,7 +7,7 @@
 \usage{
 appendGDSRefSample(
   gdsReference,
-  pedDF,
+  dfPedReference,
   batch = 1,
   listSamples = NULL,
   verbose = TRUE
@@ -17,7 +17,7 @@ appendGDSRefSample(
 \item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{pedDF}{a \code{data.frame} with the information about the sample(s).
+\item{dfPedReference}{a \code{data.frame} with the information about the sample(s).
 The \code{data.frame} must have the columns: "sample.id", "Name.ID", "sex",
 "pop.group" and "superPop". The unique identifier for the sample(s) is
 the "Name.ID" column and the row names of the \code{data.frame} must
@@ -77,7 +77,7 @@ sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
 rownames(sample_info) <- sample_info$Name.ID
 
 ## Add information about 2 samples to the GDS file
-RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, pedDF=sample_info, batch=2,
+RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, dfPedReference=sample_info, batch=2,
     listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 
 ## Read sample identifier list

@@ -83,14 +83,14 @@ test_that("appendStudy2GDS1KG() must return error when pathGeno is a numeric", {
     error_message <- paste0("The \'pathGeno\' must be a character string ",
                             "representing a path. The path must exist.")
 
-    expect_error(appendStudy2GDS1KG(pathGeno=22, fileNamePED=sampleRDS,
+    expect_error(appendStudy2GDS1KG(pathGeno=22, filePedRDS=sampleRDS,
         fileNameGDS=fileGDS, batch=2,
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose="TRUE"), error_message, fixed=TRUE)
 })
 
 
-test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", {
+test_that("appendStudy2GDS1KG() must return error when filePedRDS is numeric", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
@@ -99,11 +99,11 @@ test_that("appendStudy2GDS1KG() must return error when fileNamePED is numeric", 
                         study.desc="Pancreatic study", study.platform="WES",
                         stringsAsFactors=FALSE)
 
-    error_message <- paste0("The \'fileNamePED\' must be a character string ",
+    error_message <- paste0("The \'filePedRDS\' must be a character string ",
         "representing the RDS Sample information file. The file must exist.")
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=21, fileNameGDS=fileGDS, batch=1,
+        filePedRDS=21, fileNameGDS=fileGDS, batch=1,
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message)
 })
@@ -122,7 +122,7 @@ test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", 
                         "representing the GDS 1KG file. The file must exist.")
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=33, batch=1,
+        filePedRDS=sampleRDS, fileNameGDS=33, batch=1,
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message)
 })
@@ -139,7 +139,7 @@ test_that("appendStudy2GDS1KG() must return error when batch is a vector of nume
     error_message <- "The \'batch\' must be a single integer."
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=c(1,2),
+        filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=c(1,2),
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message)
 })
@@ -156,7 +156,7 @@ test_that("appendStudy2GDS1KG() must return error when batch is a character stri
     error_message <- "The \'batch\' must be a single integer."
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch="2",
+        filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch="2",
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message)
 })
@@ -175,7 +175,7 @@ test_that("appendStudy2GDS1KG() must return error when studyDF is missing mandat
         "those 3 columns: \'study.id\', \'study.desc\' and \'study.platform\'.")
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-            fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=1,
+            filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=1,
             studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
             genoSource="snp-pileup", verbose=TRUE), error_message)
 })
@@ -194,7 +194,7 @@ test_that("appendStudy2GDS1KG() must return error when listSamples is a numeric"
         "of character strings (1 entry or more) or NULL.")
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=2,
+        filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=2,
         studyDF=studyInfo, listSamples=33, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=FALSE), error_message, fixed=TRUE)
 })
@@ -211,7 +211,7 @@ test_that("appendStudy2GDS1KG() must return error when genoSource is a numeric",
     error_message <- 'The \'genoSource\' parameter must be a character string.'
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-            fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=2,
+            filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=2,
             studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
             genoSource=3, verbose=TRUE), error_message, fixed=TRUE)
 })
@@ -229,7 +229,7 @@ test_that("appendStudy2GDS1KG() must return error when verbose is a character st
     error_message <- 'The \'verbose\' parameter must be a logical (TRUE or FALSE).'
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=2,
+        filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=2,
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose="TRUE"), error_message, fixed=TRUE)
 })
@@ -245,7 +245,7 @@ test_that("appendStudy2GDS1KG() must return error when genoSource not in list of
                             stringsAsFactors=FALSE)
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-        fileNamePED=sampleRDS, fileNameGDS=fileGDS, batch=2,
+        filePedRDS=sampleRDS, fileNameGDS=fileGDS, batch=2,
         studyDF=studyInfo, listSamples=NULL, pathProfileGDS=NULL,
         genoSource="TOP-pileup", verbose=TRUE))
 })
@@ -1508,30 +1508,30 @@ test_that("estimateAllelicFraction() must return valid results", {
 context("createStudy2GDS1KG() results")
 
 
-test_that(paste0("createStudy2GDS1KG() must return error when fileNamePED is",
+test_that(paste0("createStudy2GDS1KG() must return error when filePedRDS is",
             " a numeric value and pedStudy is NULL"), {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
 
-    error_message <- paste0("The \'fileNamePED\' must be a character string ",
+    error_message <- paste0("The \'filePedRDS\' must be a character string ",
             "representing the RDS Sample information file. ",
             "The file must exist.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-            fileNamePED=33, pedStudy=NULL, fileNameGDS=NULL,
+            filePedRDS=33, pedStudy=NULL, fileNameGDS=NULL,
             batch=1, studyDF=NULL, listProfiles=NULL,
             pathProfileGDS=NULL, genoSource="snp-pileup", verbose=TRUE),
             error_message)
 })
 
 
-test_that("createStudy2GDS1KG() must return error when fileNamePED is NULL and pedStudy is NULL", {
+test_that("createStudy2GDS1KG() must return error when filePedRDS is NULL and pedStudy is NULL", {
 
     error_message <- paste0("One of the parameter \'fineNamePED\' of ",
                         "\'pedStudy\' must be defined.")
 
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
-                    fileNamePED=NULL, pedStudy=NULL, fileNameGDS=NULL,
+                    filePedRDS=NULL, pedStudy=NULL, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
                     pathProfileGDS=NULL,
                     genoSource="snp-pileup", verbose=TRUE), error_message)
@@ -1551,7 +1551,7 @@ test_that("createStudy2GDS1KG() must return error when pedDF is missing mandator
                             "One or more mandatory columns are missing.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-                    fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=NULL,
+                    filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=NULL,
                     batch=1, studyDF=NULL, listProfiles=NULL,
                     pathProfileGDS=NULL,
                     genoSource="snp-pileup", verbose=TRUE), error_message)
@@ -1572,7 +1572,7 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
                 "string representing the GDS 1KG file. The file must exist.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-                        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=33,
+                        filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=33,
                         batch=1, studyDF=NULL, listProfiles=NULL,
                         pathProfileGDS=NULL,
                         genoSource="snp-pileup", verbose=TRUE), error_message)
@@ -1593,7 +1593,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
     error_message <- "The \'batch\' must be a single integer."
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+            filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch="1", studyDF=NULL, listProfiles=NULL,
             pathProfileGDS=NULL,
             genoSource="snp-pileup", verbose=TRUE), error_message)
@@ -1614,7 +1614,7 @@ test_that("createStudy2GDS1KG() must return error when batch is vector of numeri
     error_message <- "The \'batch\' must be a single integer."
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-                fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+                filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
                 batch=c(1,2), studyDF=NULL, listProfiles=NULL,
                 pathProfileGDS=NULL,
                 genoSource="snp-pileup", verbose=TRUE), error_message)
@@ -1639,7 +1639,7 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
                         "of character strings (1 entry or more) or NULL.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+            filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch=1, studyDF=studyDF, listProfiles=c(1,2),
             pathProfileGDS=NULL,
             genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
@@ -1664,7 +1664,7 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
                             "of character strings (1 entry or more) or NULL.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+        filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=1,
         pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
@@ -1690,7 +1690,7 @@ test_that("createStudy2GDS1KG() must return error when studyDF is missing column
         "columns are: \'study.id\', \'study.desc\', \'study.platform\'.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+        filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=1,
         pathProfileGDS=NULL,
         genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
@@ -1714,7 +1714,7 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
     error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-            fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+            filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
             batch=1, studyDF=studyDF, listProfiles=NULL,
             pathProfileGDS=dataDir,
             genoSource="snp-pileup", verbose=22), error_message, fixed=TRUE)
@@ -1740,14 +1740,14 @@ test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric
         "will be generated.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
+        filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=gdsFile,
         batch=1, studyDF=studyDF, listProfiles=NULL,
         pathProfileGDS=33,
         genoSource="snp-pileup", verbose=FALSE), error_message, fixed=TRUE)
 })
 
 
-test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedStudy are defined", {
+test_that("createStudy2GDS1KG() must return error when both filePedRDS and pedStudy are defined", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
@@ -1761,11 +1761,11 @@ test_that("createStudy2GDS1KG() must return error when both fileNamePED and pedS
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                     study.platform="PLATFORM", stringsAsFactors=FALSE)
 
-    error_message <- paste0("Both \'fileNamePED\' and \'pedStudy\' parameters ",
+    error_message <- paste0("Both \'filePedRDS\' and \'pedStudy\' parameters ",
                         "cannot be defined at the same time.")
 
     expect_error(createStudy2GDS1KG(pathGeno=file.path("data", "sampleGeno"),
-        fileNamePED=fileGDS, pedStudy=pedDF, fileNameGDS=fileGDS,
+        filePedRDS=fileGDS, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=NULL,
         pathProfileGDS=dataDir,
         genoSource="snp-pileup", verbose=TRUE), error_message, fixed=TRUE)
@@ -1787,7 +1787,7 @@ test_that("createStudy2GDS1KG() must return error when genoSource not in list of
                           study.platform="PLATFORM", stringsAsFactors=FALSE)
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
-        fileNamePED=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+        filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
         batch=1, studyDF=studyDF, listProfiles=NULL,
         pathProfileGDS=dataDir, genoSource="snp-CANADA", verbose=TRUE))
 })

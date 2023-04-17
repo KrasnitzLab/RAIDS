@@ -15,9 +15,9 @@ context("validatePrepPed1KG() results")
 test_that("validatePrepPed1KG() must return expected results when all input are valid", {
 
     data.dir <- test_path("fixtures")
-    pedFile <- file.path(data.dir, "PedigreeDemo.ped")
+    filePed <- file.path(data.dir, "PedigreeDemo.ped")
 
-    result1 <- RAIDS:::validatePrepPed1KG(pedFile=pedFile, pathGeno=data.dir,
+    result1 <- RAIDS:::validatePrepPed1KG(filePed=filePed, pathGeno=data.dir,
                                                 batch=1L)
 
     expect_identical(result1, 0L)

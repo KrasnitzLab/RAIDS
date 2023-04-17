@@ -563,24 +563,91 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #'
 #' @description TODO
 #'
-#' @param snp.pos a \code{data.frame} containing the genotype information for
-#' a SNV dataset. TODO
+#' @param snp.pos a \code{data.frame} containing the SNV information for the
+#' chromosome specified by the \code{chr} argument. The \code{data.frame} must
+#' contain:
+#' \itemize{
+#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' the SNV.}
+#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' the reference allele.}
+#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' the alternative allele.}
+#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
+#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
+#' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
+#' the normal genotype is unknown.}
+#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' pruning}
+#' \item{snp.index} {a \code{integer} representing the index position of the
+#' SNV in the 1KG GDS file that contains all SNVs}
+#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
+#' \item{lap} {a \code{numeric} indicating lower allelic fraction}
+#' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' (0=not LOH, 1=in LOH)}
+#' }
 #'
-#' @param chr a single positive \code{integer} for the chromosome.
+#' @param chr a single positive \code{integer} for the current chromosome.
 #'
 #' @param wAR a single positive \code{integer} representing the size-1 of
 #' the window used to compute an empty box. Default: \code{10}.
 #'
 #' @param cutOffEmptyBox TODO Default: \code{-3}.
 #'
-#' @return a \code{vector} of TODO representing the imbAR TODO.
+#' @return a \code{vector} of \code{integer} indicating if the SNV is in an
+#' imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+#' positive for imbalance in at least 1 window). The vector as an entry for
+#' each SNV present in the
+#' input \code{snp.pos}.
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Required library for GDS
+#' library(gdsfmt)
 #'
-#' ## TODO
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#'
+#' ## Open the reference GDS file (demo version)
+#' gds1KG <- snpgdsOpen(fileGDS)
+#'
+#' ## Chromosome length information
+#' ## chr23 is chrX, chr24 is chrY and chrM is 25
+#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+#'     156040895L, 57227415L,  16569L)
+#'
+#' ## Data frame with SNV information for the specified chromosome (chr 1)
+#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'         6085318, 6213145),
+#'     snp.chr=c(rep(1, 8)),
+#'     normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
+#'     TRUE, TRUE),
+#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'     lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
+#'     stringAsFactor=FALSE)
+#'
+#' ## The function returns a data frame containing the information about the
+#' ## LOH regions in the specified chromosome
+#' result <- RAIDS:::computeAllelicImbDNAChr(snp.pos=snpInfo, chr=1, wAR=10,
+#'     cutOffEmptyBox=-3)
+#' head(result)
+#'
+#' ## Close GDS file (important)
+#' closefn.gds(gds1KG)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

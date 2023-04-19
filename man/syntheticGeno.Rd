@@ -21,13 +21,13 @@ syntheticGeno(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the 1KG GDS file.}
+(a GDS file), the opened 1KG GDS file.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG SNV Annotation GDS file.}
+(a GDS file), the opened 1KG SNV Annotation GDS file.}
 
-\item{fileProfileGDS}{a \code{character} string representing the file name of
-the GDS Sample file containing the information about the sample.
+\item{fileProfileGDS}{a \code{character} string representing the file name
+of Profile GDS file containing the information about the sample.
 The file must exist.}
 
 \item{data.id.profile}{a \code{character} string representing the unique

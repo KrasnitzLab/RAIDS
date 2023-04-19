@@ -9,10 +9,10 @@
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
 #'
-#' @param nbSamples a single positive \code{integer} representing the number
+#' @param nbProfiles a single positive \code{integer} representing the number
 #' of samples that will be selected for each subcontinental population present
 #' in the 1KG GDS file. If the number of samples in a specific subcontinental
-#' population is smaller than the \code{nbSamples}, the number of samples
+#' population is smaller than the \code{nbProfiles}, the number of samples
 #' selected in this
 #' subcontinental population will correspond to the size of this population.
 #'
@@ -28,9 +28,12 @@
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## The number of samples needed by subcontinental population
 #' ## The number is small for demonstration purpose
-#' nbSamples <- 5L
+#' nbProfiles <- 5L
 #'
 #' ## Open 1KG GDS Demo file
 #' ## This file only one superpopulation (for demonstration purpose)
@@ -41,7 +44,7 @@
 #' ## Extract a selected number of random samples
 #' ## for each subcontinental population
 #' ## In the 1KG GDS Demo file, there is one subcontinental population
-#' dataR <- select1KGPop(gdsReference=gdsFileOpen, nbSamples=nbSamples)
+#' dataR <- select1KGPop(gdsReference=gdsFileOpen, nbProfiles=nbProfiles)
 #'
 #' ## Close the 1KG GDS Demo file (important)
 #' closefn.gds(gdsFileOpen)
@@ -51,16 +54,16 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-select1KGPop <- function(gdsReference, nbSamples) {
+select1KGPop <- function(gdsReference, nbProfiles) {
 
     ## The gdsReference must be an object of class "gds.class"
     if (!inherits(gdsReference, "gds.class")) {
         stop("The \'gdsReference\' must be an object of class \'gds.class\'")
     }
 
-    ## Validate that nbSamples parameter is a single positive numeric
-    if(! (isSingleNumber(nbSamples) && nbSamples > 0)) {
-        stop("The \'nbSamples\' parameter must be a single positive integer.")
+    ## Validate that nbProfiles parameter is a single positive numeric
+    if(! (isSingleNumber(nbProfiles) && nbProfiles > 0)) {
+        stop("The \'nbProfiles\' parameter must be a single positive integer.")
     }
 
     ## Select reference samples
@@ -70,7 +73,8 @@ select1KGPop <- function(gdsReference, nbSamples) {
 
     # Extract information about the selected reference samples
     # Including all the subcontinental population classes represented
-    sample.annot <- read.gdsn(index.gdsn(gdsReference, "sample.annot"))[listKeep,]
+    sample.annot <- read.gdsn(index.gdsn(gdsReference,
+                                            "sample.annot"))[listKeep,]
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
     listSel <- list()
@@ -79,7 +83,7 @@ select1KGPop <- function(gdsReference, nbSamples) {
     ## samples
     for(i in seq_len(length(listPop))) {
         listGroup <- which(sample.annot$pop.group == listPop[i])
-        tmp <- sample(listGroup, min(nbSamples, length(listGroup)))
+        tmp <- sample(listGroup, min(nbProfiles, length(listGroup)))
         listSel[[i]] <- data.frame(sample.id=sample.id[tmp],
                                     pop.group=sample.annot$pop.group[tmp],
                                     superPop=sample.annot$superPop[tmp],
@@ -293,8 +297,8 @@ prepSynthetic <- function(fileProfileGDS,
                 Source=rep("Synthetic", length(listSampleRef) * nbSim),
                 stringsAsFactors=FALSE)
 
-    addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=pedSim, batch=1, listSamples=NULL,
-        studyDF=study.list, verbose=verbose)
+    addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=pedSim, batch=1,
+        listSamples=NULL, studyDF=study.list, verbose=verbose)
 
     closefn.gds(gdsSample)
 
@@ -317,13 +321,13 @@ prepSynthetic <- function(fileProfileGDS,
 #' simulation requested.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the 1KG GDS file.
+#' (a GDS file), the opened 1KG GDS file.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#' (a GDS file), the opened 1KG SNV Annotation GDS file.
 #'
-#' @param fileProfileGDS a \code{character} string representing the file name of
-#' the GDS Sample file containing the information about the sample.
+#' @param fileProfileGDS a \code{character} string representing the file name
+#' of Profile GDS file containing the information about the sample.
 #' The file must exist.
 #'
 #' @param listSampleRef a \code{vector} of \code{character} strings

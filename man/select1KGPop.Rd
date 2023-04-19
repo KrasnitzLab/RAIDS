@@ -6,16 +6,16 @@
 \title{Random selection of a specific number of reference profiles in each
 subcontinental population present in the 1KG GDS file}
 \usage{
-select1KGPop(gdsReference, nbSamples)
+select1KGPop(gdsReference, nbProfiles)
 }
 \arguments{
 \item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
 
-\item{nbSamples}{a single positive \code{integer} representing the number
+\item{nbProfiles}{a single positive \code{integer} representing the number
 of samples that will be selected for each subcontinental population present
 in the 1KG GDS file. If the number of samples in a specific subcontinental
-population is smaller than the \code{nbSamples}, the number of samples
+population is smaller than the \code{nbProfiles}, the number of samples
 selected in this
 subcontinental population will correspond to the size of this population.}
 }
@@ -38,9 +38,12 @@ samples from the subcontinental population are selected.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## The number of samples needed by subcontinental population
 ## The number is small for demonstration purpose
-nbSamples <- 5L
+nbProfiles <- 5L
 
 ## Open 1KG GDS Demo file
 ## This file only one superpopulation (for demonstration purpose)
@@ -51,7 +54,7 @@ gdsFileOpen <- openfn.gds(fileGDS)
 ## Extract a selected number of random samples
 ## for each subcontinental population
 ## In the 1KG GDS Demo file, there is one subcontinental population
-dataR <- select1KGPop(gdsReference=gdsFileOpen, nbSamples=nbSamples)
+dataR <- select1KGPop(gdsReference=gdsFileOpen, nbProfiles=nbProfiles)
 
 ## Close the 1KG GDS Demo file (important)
 closefn.gds(gdsFileOpen)

@@ -18,12 +18,12 @@ test_that("select1KGPop() must return error when gdsReference is a character str
     error_message <- paste0("The \'gdsReference\' must be an object of class ",
                                 "\'gds.class\'")
 
-    expect_error(select1KGPop(gdsReference="test.gds", nbSamples=10L),
+    expect_error(select1KGPop(gdsReference="test.gds", nbProfiles=10L),
                     error_message)
 })
 
 
-test_that("select1KGPop() must return error when nbSamples is a character string", {
+test_that("select1KGPop() must return error when nbProfiles is a character string", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
 
@@ -32,10 +32,10 @@ test_that("select1KGPop() must return error when nbSamples is a character string
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- paste0("The \'nbSamples\' parameter must be a ",
+    error_message <- paste0("The \'nbProfiles\' parameter must be a ",
                                 "single positive integer.")
 
-    expect_error(select1KGPop(gdsReference=gdsF, nbSamples="CANADA"),
+    expect_error(select1KGPop(gdsReference=gdsF, nbProfiles="CANADA"),
                     error_message)
 })
 
@@ -55,7 +55,7 @@ test_that("select1KGPop() must return expected result", {
                             superPop=rep("EUR", 4))
 
     set.seed(1212)
-    results <- select1KGPop(gdsReference=gdsF, nbSamples=4L)
+    results <- select1KGPop(gdsReference=gdsF, nbProfiles=4L)
 
     expect_equal(results, expected)
 })

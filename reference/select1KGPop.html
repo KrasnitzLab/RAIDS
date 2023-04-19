@@ -72,7 +72,7 @@ samples from the subcontinental population are selected.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select1KGPop</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">nbSamples</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select1KGPop</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">nbProfiles</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -82,11 +82,11 @@ samples from the subcontinental population are selected.</p>
 <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS file), the opened 1KG GDS file.</p></dd>
 
 
-<dt>nbSamples</dt>
+<dt>nbProfiles</dt>
 <dd><p>a single positive <code>integer</code> representing the number
 of samples that will be selected for each subcontinental population present
 in the 1KG GDS file. If the number of samples in a specific subcontinental
-population is smaller than the <code>nbSamples</code>, the number of samples
+population is smaller than the <code>nbProfiles</code>, the number of samples
 selected in this
 subcontinental population will correspond to the size of this population.</p></dd>
 
@@ -110,9 +110,12 @@ super-population assigned to the sample.</p></li>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Required library</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The number of samples needed by subcontinental population</span></span></span>
 <span class="r-in"><span><span class="co">## The number is small for demonstration purpose</span></span></span>
-<span class="r-in"><span><span class="va">nbSamples</span> <span class="op">&lt;-</span> <span class="fl">5L</span></span></span>
+<span class="r-in"><span><span class="va">nbProfiles</span> <span class="op">&lt;-</span> <span class="fl">5L</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open 1KG GDS Demo file</span></span></span>
 <span class="r-in"><span><span class="co">## This file only one superpopulation (for demonstration purpose)</span></span></span>
@@ -123,7 +126,7 @@ super-population assigned to the sample.</p></li>
 <span class="r-in"><span><span class="co">## Extract a selected number of random samples</span></span></span>
 <span class="r-in"><span><span class="co">## for each subcontinental population</span></span></span>
 <span class="r-in"><span><span class="co">## In the 1KG GDS Demo file, there is one subcontinental population</span></span></span>
-<span class="r-in"><span><span class="va">dataR</span> <span class="op">&lt;-</span> <span class="fu">select1KGPop</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gdsFileOpen</span>, nbSamples<span class="op">=</span><span class="va">nbSamples</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataR</span> <span class="op">&lt;-</span> <span class="fu">select1KGPop</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gdsFileOpen</span>, nbProfiles<span class="op">=</span><span class="va">nbProfiles</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Close the 1KG GDS Demo file (important)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsFileOpen</span><span class="op">)</span></span></span>

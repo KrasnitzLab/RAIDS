@@ -18,12 +18,12 @@ test_that("select1KGPop() must return error when gdsReference is a character str
     error_message <- paste0("The \'gdsReference\' must be an object of class ",
                                 "\'gds.class\'")
 
-    expect_error(select1KGPop(gdsReference="test.gds", nbSamples=10L),
+    expect_error(select1KGPop(gdsReference="test.gds", nbProfiles=10L),
                     error_message)
 })
 
 
-test_that("select1KGPop() must return error when nbSamples is a character string", {
+test_that("select1KGPop() must return error when nbProfiles is a character string", {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
 
@@ -32,10 +32,10 @@ test_that("select1KGPop() must return error when nbSamples is a character string
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- paste0("The \'nbSamples\' parameter must be a ",
+    error_message <- paste0("The \'nbProfiles\' parameter must be a ",
                                 "single positive integer.")
 
-    expect_error(select1KGPop(gdsReference=gdsF, nbSamples="CANADA"),
+    expect_error(select1KGPop(gdsReference=gdsF, nbProfiles="CANADA"),
                     error_message)
 })
 
@@ -55,7 +55,7 @@ test_that("select1KGPop() must return expected result", {
                             superPop=rep("EUR", 4))
 
     set.seed(1212)
-    results <- select1KGPop(gdsReference=gdsF, nbSamples=4L)
+    results <- select1KGPop(gdsReference=gdsF, nbProfiles=4L)
 
     expect_equal(results, expected)
 })
@@ -358,11 +358,9 @@ test_that(paste0("syntheticGeno() must return error when minProb is a ",
                             "positive numeric value between 0 and 1.")
 
     expect_error(syntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
-                              fileProfileGDS=fileGDS,
-                              data.id.profile="test",
-                              listSampleRef=c("Sample1", "sample2"),
-                              nbSim=1, prefId="", pRecomb=0.01,
-                              minProb="0.999", seqError=0.001), error_message)
+        fileProfileGDS=fileGDS, data.id.profile="test",
+        listSampleRef=c("Sample1", "sample2"), nbSim=1, prefId="",
+        pRecomb=0.01, minProb="0.999", seqError=0.001), error_message)
 })
 
 
@@ -393,16 +391,14 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
-                            study.desc="Description",
-                            study.platform="Whole-Exome",
-                            stringsAsFactors=FALSE)
+            study.desc="Description", study.platform="Whole-Exome",
+            stringsAsFactors=FALSE)
 
     error_message <- "The \'nbSim\' must be a single positive integer."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-                    listSampleRef=c("S_1", "S_2"),
-                    data.id.profile="S_1", studyDF=studyDF, nbSim="1L",
-                    prefId=""), error_message)
+        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1",
+        studyDF=studyDF, nbSim="1L", prefId=""), error_message)
 })
 
 
@@ -415,9 +411,8 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
                                 "character strings.")
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-                listSampleRef=c(1, 2),
-                data.id.profile="S_1", studyDF=NULL, nbSim=1L,
-                prefId=""), error_message)
+        listSampleRef=c(1, 2),  data.id.profile="S_1", studyDF=NULL, nbSim=1L,
+        prefId=""), error_message)
 })
 
 
@@ -427,16 +422,14 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
-                                study.platform="Whole-Exome",
-                                stringsAsFactors=FALSE)
+        study.platform="Whole-Exome", stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'studyDF\' data frame is incomplete. ",
                                 "One or more mandatory column is missing.\n")
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-                        listSampleRef=c("S_1", "S_2"),
-                            data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
-                            prefId=""), error_message)
+        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        nbSim=1L, prefId=""), error_message)
 })
 
 
@@ -446,14 +439,29 @@ test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
-                          study.desc="Description",
-                          study.platform="Whole-Exome",
-                          stringsAsFactors=FALSE)
+        study.desc="Description", study.platform="Whole-Exome",
+        stringsAsFactors=FALSE)
 
     error_message <- "The \'prefId\' must be a single character string."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-                        listSampleRef=c("S_1", "S_2"),
-                        data.id.profile="S_1", studyDF=studyDF, nbSim=1L,
-                        prefId=33), error_message)
+        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        nbSim=1L, prefId=33), error_message)
+})
+
+
+test_that(paste0("prepSynthetic() must return error when verbose is numeric"), {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+
+    studyDF <- data.frame(study.id="Id of the study",
+        study.desc="Description", study.platform="Whole-Exome",
+        stringsAsFactors=FALSE)
+
+    error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
+        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        nbSim=1L, prefId="test", verbose=33), error_message, fixed=TRUE)
 })

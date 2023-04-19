@@ -2358,7 +2358,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' set.seed(3043)
 #'
 #' gds1KG <- snpgdsOpen(fileReferenceGDS)
-#' dataRef <- select1KGPop(gds1KG, nbSamples=2L)
+#' dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 #' closefn.gds(gds1KG)
 #'
 #' ## Chromosome length information

@@ -134,6 +134,103 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 }
 
 
+#' @title Validate input parameters for prepSynthetic() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{prepSynthetic}} function.
+#'
+#' @param fileProfileGDS a \code{character} string representing the file name
+#' of the GDS Sample file containing the information about the sample
+#' used to generate the synthetic profiles.
+#'
+#' @param listSampleRef a \code{vector} of \code{character} string
+#' representing the
+#' identifiers of the selected 1KG samples that will be used as reference to
+#' generate the synthetic profiles.
+#'
+#' @param data.id.profile a \code{character} string TODO
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 2 columns: "study.id" and "study.desc". Those 2 columns
+#' must be in \code{character} strings (no factor). Other columns can be
+#' present, such as "study.platform", but won't be used.
+#'
+#' @param nbSim a single positive \code{integer} representing the number of
+#' simulations per combination of sample and 1KG reference.
+#'
+#' @param prefId a single \code{character} string representing the prefix that
+#' is going to be added to the name of the synthetic profile. The prefix
+#' enables the creation of multiple synthetic profile using the same
+#' combination of sample and 1KG reference.
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
+#' @return \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The Profile GDS Sample
+#' gdsSample <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+#'
+#' ## The study data frame
+#' studyDF <- data.frame(study.id="MYDATA.Synthetic",
+#'     study.desc="MYDATA synthetic data", study.platform="PLATFORM",
+#'     stringsAsFactors=FALSE)
+#'
+#' ## The validation should be successful
+#' RAIDS:::validatePepSynthetic(fileProfileGDS=gdsSample,
+#'      listSampleRef=c("Sample01", "Sample02"), data.id.profile="A101TCGA",
+#'      studyDF=studyDF, nbSim=1L, prefId="TCGA", verbose=TRUE)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validatePepSynthetic <- function(fileProfileGDS,
+                     listSampleRef, data.id.profile,
+                     studyDF, nbSim, prefId, verbose) {
+
+
+    ## The fileProfileGDS must be a character string and the file must exists
+    if (!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
+        stop("The \'fileProfileGDS\' must be a character string representing ",
+                "the GDS Sample information file. The file must exist.")
+    }
+
+    ## The listSampleRef must be character string
+    if (!is.character(listSampleRef)) {
+        stop("The \'listSampleRef\' must be a vector of character strings.")
+    }
+
+    ## The study.id must have the 2 mandatory columns
+    if(sum(c("study.id", "study.desc") %in% colnames(studyDF)) != 2 ) {
+        stop("The \'studyDF\' data frame is incomplete. ",
+                "One or more mandatory column is missing.\n")
+    }
+
+    ## The nbSim must be a single positive numeric
+    if (!(isSingleNumber(nbSim) && nbSim > 0)) {
+        stop("The \'nbSim\' must be a single positive integer.")
+    }
+
+    ## The prefId must be a single character String
+    if (!(is.character(prefId) && length(prefId) == 1)) {
+        stop("The \'prefId\' must be a single character string.")
+    }
+
+    ## The verbose must be a logical
+    validateLogical(logical=verbose, "verbose")
+
+    return(0L)
+}
+
+
 #' @title Extract the sample information from the 1KG GDS file for a list
 #' of profiles associated to a specific study in the GDS Sample file
 #'

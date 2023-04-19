@@ -208,6 +208,11 @@ validatePepSynthetic <- function(fileProfileGDS,
         stop("The \'listSampleRef\' must be a vector of character strings.")
     }
 
+    ## The profileID must be a single character String
+    if (!(is.character(profileID) && length(profileID) == 1)) {
+        stop("The \'profileID\' must be a single character string.")
+    }
+
     ## The study.id must have the 2 mandatory columns
     if(sum(c("study.id", "study.desc") %in% colnames(studyDF)) != 2 ) {
         stop("The \'studyDF\' data frame is incomplete. ",

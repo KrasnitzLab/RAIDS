@@ -68,10 +68,10 @@ prepSynthetic function."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validatePepSynthetic</span><span class="op">(</span></span>
 <span>  <span class="va">fileProfileGDS</span>,</span>
 <span>  <span class="va">listSampleRef</span>,</span>
-<span>  <span class="va">data.id.profile</span>,</span>
+<span>  <span class="va">profileID</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
 <span>  <span class="va">nbSim</span>,</span>
-<span>  <span class="va">prefId</span>,</span>
+<span>  <span class="va">prefix</span>,</span>
 <span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -91,8 +91,10 @@ identifiers of the selected 1KG samples that will be used as reference to
 generate the synthetic profiles.</p></dd>
 
 
-<dt>data.id.profile</dt>
-<dd><p>a <code>character</code> string TODO</p></dd>
+<dt>profileID</dt>
+<dd><p>a <code>character</code> string representing the profile
+identifier present in the <code>fileProfileGDS</code> that will be used to
+generate synthetic profiles.</p></dd>
 
 
 <dt>studyDF</dt>
@@ -108,7 +110,7 @@ present, such as "study.platform", but won't be used.</p></dd>
 simulations per combination of sample and 1KG reference.</p></dd>
 
 
-<dt>prefId</dt>
+<dt>prefix</dt>
 <dd><p>a single <code>character</code> string representing the prefix that
 is going to be added to the name of the synthetic profile. The prefix
 enables the creation of multiple synthetic profile using the same
@@ -147,8 +149,8 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validatePepSynthetic</span><span class="op">(</span>fileProfileGDS<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
-<span class="r-in"><span>     listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample01"</span>, <span class="st">"Sample02"</span><span class="op">)</span>, data.id.profile<span class="op">=</span><span class="st">"A101TCGA"</span>,</span></span>
-<span class="r-in"><span>     studyDF<span class="op">=</span><span class="va">studyDF</span>, nbSim<span class="op">=</span><span class="fl">1L</span>, prefId<span class="op">=</span><span class="st">"TCGA"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample01"</span>, <span class="st">"Sample02"</span><span class="op">)</span>, profileID<span class="op">=</span><span class="st">"A101TCGA"</span>,</span></span>
+<span class="r-in"><span>     studyDF<span class="op">=</span><span class="va">studyDF</span>, nbSim<span class="op">=</span><span class="fl">1L</span>, prefix<span class="op">=</span><span class="st">"TCGA"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

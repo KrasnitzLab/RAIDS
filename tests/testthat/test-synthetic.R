@@ -383,6 +383,23 @@ test_that(paste0("prepSynthetic() must return error when fileProfileGDS is",
 })
 
 
+test_that(paste0("prepSynthetic() must return error when profileID is numeric"), {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+
+    studyDF <- data.frame(study.id="Id of the study",
+                study.desc="Description", study.platform="Whole-Exome",
+                stringsAsFactors=FALSE)
+
+    error_message <- "The \'profileID\' must be a single character string."
+
+    expect_error(prepSynthetic(fileProfileGDS=fileGDS,
+            listSampleRef=c("S_1", "S_2"), profileID=33, studyDF=studyDF,
+            nbSim=1L, prefix="test"), error_message)
+})
+
+
 test_that(paste0("prepSynthetic() must return error when nbSim is ",
                     "a character string"), {
 

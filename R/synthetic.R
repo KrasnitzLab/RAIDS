@@ -210,7 +210,7 @@ splitSelectByPop <- function(dataRef) {
 #' combination of sample and 1KG reference. Default: \code{""}.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
-#' to show how the different steps in the function.
+#' to show how the different steps in the function. Default: \code{FALSE}.
 #'
 #' @return \code{0L} when successful.
 #'
@@ -228,32 +228,9 @@ prepSynthetic <- function(fileProfileGDS,
                             studyDF, nbSim=1L,
                             prefId="", verbose=FALSE) {
 
-    ## The fileProfileGDS must be a character string and the file must exists
-    if (!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
-        stop("The \'fileProfileGDS\' must be a character string representing ",
-                "the GDS Sample information file. The file must exist.")
-    }
-
-    ## The listSampleRef must be character string
-    if (!is.character(listSampleRef)) {
-        stop("The \'listSampleRef\' must be a vector of character strings.")
-    }
-
-    ## The study.id must have the 2 mandatory columns
-    if(sum(c("study.id", "study.desc") %in% colnames(studyDF)) != 2 ) {
-        stop("The \'studyDF\' data frame is incomplete. ",
-                "One or more mandatory column is missing.\n")
-    }
-
-    ## The nbSim must be a single positive numeric
-    if (!(isSingleNumber(nbSim) && nbSim > 0)) {
-        stop("The \'nbSim\' must be a single positive integer.")
-    }
-
-    ## The prefId must be a single character String
-    if (!(is.character(prefId) && length(prefId) == 1)) {
-        stop("The \'prefId\' must be a single character string.")
-    }
+    validatePepSynthetic(fileProfileGDS=fileProfileGDS,
+        listSampleRef=listSampleRef, data.id.profile=data.id.profile,
+        studyDF=studyDF, nbSim=nbSim, prefId=prefId, verbose=verbose)
 
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)

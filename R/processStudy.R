@@ -2446,7 +2446,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
         prepSynthetic(fileProfileGDS=file.GDSProfile,
             listSampleRef=listProfileRef,  profileID=listProfiles[i],
-            studyDF=studyDF.syn, prefId="1")
+            studyDF=studyDF.syn, prefix="1")
 
         resG <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsAnnot1KG,
             fileProfileGDS=file.GDSProfile, data.id.profile=listProfiles[i],

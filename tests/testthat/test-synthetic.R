@@ -379,8 +379,7 @@ test_that(paste0("prepSynthetic() must return error when fileProfileGDS is",
                     "The file must exist.")
 
     expect_error(prepSynthetic(fileProfileGDS=22, listSampleRef=c("S_1", "S_2"),
-                    profileID="S_1", studyDF="TCGA", nbSim=1L,
-                    prefId=""), error_message)
+        profileID="S_1", studyDF="TCGA", nbSim=1L, prefix=""), error_message)
 })
 
 
@@ -398,7 +397,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
         listSampleRef=c("S_1", "S_2"), profileID="S_1",
-        studyDF=studyDF, nbSim="1L", prefId=""), error_message)
+        studyDF=studyDF, nbSim="1L", prefix=""), error_message)
 })
 
 
@@ -412,7 +411,7 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
         listSampleRef=c(1, 2),  profileID="S_1", studyDF=NULL, nbSim=1L,
-        prefId=""), error_message)
+        prefix=""), error_message)
 })
 
 
@@ -429,11 +428,11 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
         listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
-        nbSim=1L, prefId=""), error_message)
+        nbSim=1L, prefix=""), error_message)
 })
 
 
-test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
+test_that(paste0("prepSynthetic() must return error when prefix is numeric"), {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
@@ -442,11 +441,11 @@ test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
         study.desc="Description", study.platform="Whole-Exome",
         stringsAsFactors=FALSE)
 
-    error_message <- "The \'prefId\' must be a single character string."
+    error_message <- "The \'prefix\' must be a single character string."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
         listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
-        nbSim=1L, prefId=33), error_message)
+        nbSim=1L, prefix=33), error_message)
 })
 
 
@@ -463,5 +462,5 @@ test_that(paste0("prepSynthetic() must return error when verbose is numeric"), {
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
         listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
-        nbSim=1L, prefId="test", verbose=33), error_message, fixed=TRUE)
+        nbSim=1L, prefix="test", verbose=33), error_message, fixed=TRUE)
 })

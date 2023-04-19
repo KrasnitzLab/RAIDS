@@ -9,7 +9,7 @@
 prepSynthetic(
   fileProfileGDS,
   listSampleRef,
-  data.id.profile,
+  profileID,
   studyDF,
   nbSim = 1L,
   prefId = "",
@@ -26,7 +26,7 @@ representing the
 identifiers of the selected 1KG samples that will be used as reference to
 generate the synthetic profiles.}
 
-\item{data.id.profile}{a \code{character} string TODO}
+\item{profileID}{a \code{character} string TODO}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have

@@ -379,7 +379,7 @@ test_that(paste0("prepSynthetic() must return error when fileProfileGDS is",
                     "The file must exist.")
 
     expect_error(prepSynthetic(fileProfileGDS=22, listSampleRef=c("S_1", "S_2"),
-                    data.id.profile="S_1", studyDF="TCGA", nbSim=1L,
+                    profileID="S_1", studyDF="TCGA", nbSim=1L,
                     prefId=""), error_message)
 })
 
@@ -397,7 +397,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
     error_message <- "The \'nbSim\' must be a single positive integer."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1",
+        listSampleRef=c("S_1", "S_2"), profileID="S_1",
         studyDF=studyDF, nbSim="1L", prefId=""), error_message)
 })
 
@@ -411,7 +411,7 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
                                 "character strings.")
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-        listSampleRef=c(1, 2),  data.id.profile="S_1", studyDF=NULL, nbSim=1L,
+        listSampleRef=c(1, 2),  profileID="S_1", studyDF=NULL, nbSim=1L,
         prefId=""), error_message)
 })
 
@@ -428,7 +428,7 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
                                 "One or more mandatory column is missing.\n")
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
         nbSim=1L, prefId=""), error_message)
 })
 
@@ -445,7 +445,7 @@ test_that(paste0("prepSynthetic() must return error when prefId is numeric"), {
     error_message <- "The \'prefId\' must be a single character string."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
         nbSim=1L, prefId=33), error_message)
 })
 
@@ -462,6 +462,6 @@ test_that(paste0("prepSynthetic() must return error when verbose is numeric"), {
     error_message <- "The \'verbose\' parameter must be a logical (TRUE or FALSE)."
 
     expect_error(prepSynthetic(fileProfileGDS=fileGDS,
-        listSampleRef=c("S_1", "S_2"), data.id.profile="S_1", studyDF=studyDF,
+        listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
         nbSim=1L, prefId="test", verbose=33), error_message, fixed=TRUE)
 })

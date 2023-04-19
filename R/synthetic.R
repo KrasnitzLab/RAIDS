@@ -193,7 +193,7 @@ splitSelectByPop <- function(dataRef) {
 #' identifiers of the selected 1KG samples that will be used as reference to
 #' generate the synthetic profiles.
 #'
-#' @param data.id.profile a \code{character} string TODO
+#' @param profileID a \code{character} string TODO
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
@@ -224,12 +224,12 @@ splitSelectByPop <- function(dataRef) {
 #' @export
 prepSynthetic <- function(fileProfileGDS,
                             listSampleRef,
-                            data.id.profile,
+                            profileID,
                             studyDF, nbSim=1L,
                             prefId="", verbose=FALSE) {
 
     validatePepSynthetic(fileProfileGDS=fileProfileGDS,
-        listSampleRef=listSampleRef, data.id.profile=data.id.profile,
+        listSampleRef=listSampleRef, data.id.profile=profileID,
         studyDF=studyDF, nbSim=nbSim, prefId=prefId, verbose=verbose)
 
     ## Open the GDS Sample file
@@ -237,17 +237,17 @@ prepSynthetic <- function(fileProfileGDS,
 
     ## Extract information about the samples listed in the GDS Samples
     study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
-    posStudy <- which(study.SRC$data.id == data.id.profile)
+    posStudy <- which(study.SRC$data.id == profileID)
     if(length(posStudy) != 1) {
         closefn.gds(gdsSample)
         stop("Error with the data.id of the profile for synthetic data ",
-                data.id.profile, "\n")
+                profileID, "\n")
     }
 
     ## Assign unique names to synthetic samples using
     ## the same of the sample, the name of the 1KG reference sample,
     ## the number of simulations and the prefix
-    sampleSim <- paste(paste0(prefId, ".", data.id.profile),
+    sampleSim <- paste(paste0(prefId, ".", profileID),
                         paste(rep(listSampleRef,each=nbSim),
                                 seq_len(nbSim), sep="."), sep = ".")
 

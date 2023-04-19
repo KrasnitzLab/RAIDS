@@ -722,7 +722,7 @@ fileProfile <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 ####################################################################
 prepSynthetic(fileProfileGDS=fileProfile,
                 listSampleRef=listProfileRef,
-                data.id.profile=profileName,
+                profileID=profileName,
                 studyDF=syntheticStudyDF,
                 prefId="1")
 

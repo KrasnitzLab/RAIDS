@@ -2445,14 +2445,12 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         closefn.gds(gdsProfile)
 
         prepSynthetic(fileProfileGDS=file.GDSProfile,
-                        listSampleRef=listProfileRef,
-                        data.id.profile=listProfiles[i],
-                        studyDF=studyDF.syn, prefId="1")
+            listSampleRef=listProfileRef,  profileID=listProfiles[i],
+            studyDF=studyDF.syn, prefId="1")
 
         resG <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsAnnot1KG,
-                                fileProfileGDS=file.GDSProfile,
-                                data.id.profile=listProfiles[i],
-                                listSampleRef=listProfileRef, prefId="1")
+            fileProfileGDS=file.GDSProfile, data.id.profile=listProfiles[i],
+            listSampleRef=listProfileRef, prefId="1")
 
         if(! file.exists(pathOut)) {
             dir.create(pathOut)

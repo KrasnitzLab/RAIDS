@@ -148,7 +148,9 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 #' identifiers of the selected 1KG samples that will be used as reference to
 #' generate the synthetic profiles.
 #'
-#' @param data.id.profile a \code{character} string TODO
+#' @param profileID a \code{character} string representing the profile
+#' identifier present in the \code{fileProfileGDS} that will be used to
+#' generate synthetic profiles.
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
@@ -159,7 +161,7 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 #' @param nbSim a single positive \code{integer} representing the number of
 #' simulations per combination of sample and 1KG reference.
 #'
-#' @param prefId a single \code{character} string representing the prefix that
+#' @param prefix a single \code{character} string representing the prefix that
 #' is going to be added to the name of the synthetic profile. The prefix
 #' enables the creation of multiple synthetic profile using the same
 #' combination of sample and 1KG reference.
@@ -184,8 +186,8 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePepSynthetic(fileProfileGDS=gdsSample,
-#'      listSampleRef=c("Sample01", "Sample02"), data.id.profile="A101TCGA",
-#'      studyDF=studyDF, nbSim=1L, prefId="TCGA", verbose=TRUE)
+#'      listSampleRef=c("Sample01", "Sample02"), profileID="A101TCGA",
+#'      studyDF=studyDF, nbSim=1L, prefix="TCGA", verbose=TRUE)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -193,9 +195,7 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 #' @encoding UTF-8
 #' @keywords internal
 validatePepSynthetic <- function(fileProfileGDS,
-                     listSampleRef, data.id.profile,
-                     studyDF, nbSim, prefId, verbose) {
-
+                listSampleRef, profileID, studyDF, nbSim, prefix, verbose) {
 
     ## The fileProfileGDS must be a character string and the file must exists
     if (!(is.character(fileProfileGDS) && (file.exists(fileProfileGDS)))) {
@@ -219,9 +219,9 @@ validatePepSynthetic <- function(fileProfileGDS,
         stop("The \'nbSim\' must be a single positive integer.")
     }
 
-    ## The prefId must be a single character String
-    if (!(is.character(prefId) && length(prefId) == 1)) {
-        stop("The \'prefId\' must be a single character string.")
+    ## The prefix must be a single character String
+    if (!(is.character(prefix) && length(prefix) == 1)) {
+        stop("The \'prefix\' must be a single character string.")
     }
 
     ## The verbose must be a logical

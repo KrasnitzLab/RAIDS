@@ -724,7 +724,7 @@ prepSynthetic(fileProfileGDS=fileProfile,
                 listSampleRef=listProfileRef,
                 profileID=profileName,
                 studyDF=syntheticStudyDF,
-                prefId="1")
+                prefix="1")
 
 ####################################################################
 ## Both the 1KG GDS file and the 1KG Annotation GDS file

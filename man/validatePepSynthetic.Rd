@@ -8,10 +8,10 @@
 validatePepSynthetic(
   fileProfileGDS,
   listSampleRef,
-  data.id.profile,
+  profileID,
   studyDF,
   nbSim,
-  prefId,
+  prefix,
   verbose
 )
 }
@@ -25,7 +25,9 @@ representing the
 identifiers of the selected 1KG samples that will be used as reference to
 generate the synthetic profiles.}
 
-\item{data.id.profile}{a \code{character} string TODO}
+\item{profileID}{a \code{character} string representing the profile
+identifier present in the \code{fileProfileGDS} that will be used to
+generate synthetic profiles.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
@@ -36,7 +38,7 @@ present, such as "study.platform", but won't be used.}
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and 1KG reference.}
 
-\item{prefId}{a single \code{character} string representing the prefix that
+\item{prefix}{a single \code{character} string representing the prefix that
 is going to be added to the name of the synthetic profile. The prefix
 enables the creation of multiple synthetic profile using the same
 combination of sample and 1KG reference.}
@@ -66,8 +68,8 @@ studyDF <- data.frame(study.id="MYDATA.Synthetic",
 
 ## The validation should be successful
 RAIDS:::validatePepSynthetic(fileProfileGDS=gdsSample,
-     listSampleRef=c("Sample01", "Sample02"), data.id.profile="A101TCGA",
-     studyDF=studyDF, nbSim=1L, prefId="TCGA", verbose=TRUE)
+     listSampleRef=c("Sample01", "Sample02"), profileID="A101TCGA",
+     studyDF=studyDF, nbSim=1L, prefix="TCGA", verbose=TRUE)
 
 
 }

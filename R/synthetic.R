@@ -168,32 +168,34 @@ splitSelectByPop <- function(dataRef) {
 
 
 #' @title Add information related to the synthetic profiles
-#' (study and sample information) into a GDS Sample file
+#' (study and synthetic reference profiles information) into a Profile GDS file
 #'
 #' @description This function add entries related to synthetic profiles into
-#' a GDS Sample file. The entries are related to two types of information:
+#' a Profile GDS file. The entries are related to two types of information:
 #' the synthetic study and the synthetic profiles.
 #'
-#' The study information is appended to the GDS Sample file "study.list" node.
+#' The study information is appended to the Profile GDS file "study.list" node.
 #' The "study.platform" entry is always set to 'Synthetic'.
 #'
 #' The profile information, for all selected synthetic profiles, is appended to
-#' the GDS Sample file "study.annot" node. Both the "Source" and the
+#' the Profile GDS file "study.annot" node. Both the "Source" and the
 #' "Sample.Type" entries are always set to 'Synthetic'.
 #'
-#' The synthetic samples are assigned unique names by combining :
+#' The synthetic profiles are assigned unique names by combining :
 #' [prefId].[data.id.profile].[listSampleRef].[simulation number(1 to nbSim)]
 #'
 #' @param fileProfileGDS a \code{character} string representing the file name
-#' of the GDS Sample file containing the information about the sample
-#' used to generate the synthetic profiles.
+#' of the Profile GDS file containing the information about the reference
+#' profiles used to generate the synthetic profiles.
 #'
 #' @param listSampleRef a \code{vector} of \code{character} string
 #' representing the
-#' identifiers of the selected 1KG samples that will be used as reference to
+#' identifiers of the selected 1KG profiles that will be used as reference to
 #' generate the synthetic profiles.
 #'
-#' @param profileID a \code{character} string TODO
+#' @param profileID a \code{character} string representing the profile
+#' identifier present in the \code{fileProfileGDS} that will be used to
+#' generate synthetic profiles.
 #'
 #' @param studyDF a \code{data.frame} containing the information about the
 #' study associated to the analysed sample(s). The \code{data.frame} must have
@@ -204,7 +206,7 @@ splitSelectByPop <- function(dataRef) {
 #' @param nbSim a single positive \code{integer} representing the number of
 #' simulations per combination of sample and 1KG reference. Default: \code{1L}.
 #'
-#' @param prefId a single \code{character} string representing the prefix that
+#' @param prefix a single \code{character} string representing the prefix that
 #' is going to be added to the name of the synthetic profile. The prefix
 #' enables the creation of multiple synthetic profile using the same
 #' combination of sample and 1KG reference. Default: \code{""}.
@@ -226,11 +228,11 @@ prepSynthetic <- function(fileProfileGDS,
                             listSampleRef,
                             profileID,
                             studyDF, nbSim=1L,
-                            prefId="", verbose=FALSE) {
+                            prefix="", verbose=FALSE) {
 
     validatePepSynthetic(fileProfileGDS=fileProfileGDS,
-        listSampleRef=listSampleRef, data.id.profile=profileID,
-        studyDF=studyDF, nbSim=nbSim, prefId=prefId, verbose=verbose)
+        listSampleRef=listSampleRef, profileID=profileID,
+        studyDF=studyDF, nbSim=nbSim, prefix=prefix, verbose=verbose)
 
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
@@ -244,16 +246,16 @@ prepSynthetic <- function(fileProfileGDS,
                 profileID, "\n")
     }
 
-    ## Assign unique names to synthetic samples using
-    ## the same of the sample, the name of the 1KG reference sample,
+    ## Assign unique names to synthetic profiles using
+    ## the same name of the profile, the name of the 1KG reference profile,
     ## the number of simulations and the prefix
-    sampleSim <- paste(paste0(prefId, ".", profileID),
+    sampleSim <- paste(paste0(prefix, ".", profileID),
                         paste(rep(listSampleRef,each=nbSim),
                                 seq_len(nbSim), sep="."), sep = ".")
 
     if(length(which(sampleSim %in% study.SRC$data.id)) > 0) {
         closefn.gds(gdsSample)
-        stop("Error data.id of the simulation exists change prefId\n")
+        stop("Error data.id of the simulation exists change prefix\n")
     }
 
     ## Create a study information data frame using the information passed

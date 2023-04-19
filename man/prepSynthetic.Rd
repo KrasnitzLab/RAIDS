@@ -4,7 +4,7 @@
 \name{prepSynthetic}
 \alias{prepSynthetic}
 \title{Add information related to the synthetic profiles
-(study and sample information) into a GDS Sample file}
+(study and synthetic reference profiles information) into a Profile GDS file}
 \usage{
 prepSynthetic(
   fileProfileGDS,
@@ -12,21 +12,23 @@ prepSynthetic(
   profileID,
   studyDF,
   nbSim = 1L,
-  prefId = "",
+  prefix = "",
   verbose = FALSE
 )
 }
 \arguments{
 \item{fileProfileGDS}{a \code{character} string representing the file name
-of the GDS Sample file containing the information about the sample
-used to generate the synthetic profiles.}
+of the Profile GDS file containing the information about the reference
+profiles used to generate the synthetic profiles.}
 
 \item{listSampleRef}{a \code{vector} of \code{character} string
 representing the
-identifiers of the selected 1KG samples that will be used as reference to
+identifiers of the selected 1KG profiles that will be used as reference to
 generate the synthetic profiles.}
 
-\item{profileID}{a \code{character} string TODO}
+\item{profileID}{a \code{character} string representing the profile
+identifier present in the \code{fileProfileGDS} that will be used to
+generate synthetic profiles.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
 study associated to the analysed sample(s). The \code{data.frame} must have
@@ -37,7 +39,7 @@ present, such as "study.platform", but won't be used.}
 \item{nbSim}{a single positive \code{integer} representing the number of
 simulations per combination of sample and 1KG reference. Default: \code{1L}.}
 
-\item{prefId}{a single \code{character} string representing the prefix that
+\item{prefix}{a single \code{character} string representing the prefix that
 is going to be added to the name of the synthetic profile. The prefix
 enables the creation of multiple synthetic profile using the same
 combination of sample and 1KG reference. Default: \code{""}.}
@@ -50,17 +52,17 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \description{
 This function add entries related to synthetic profiles into
-a GDS Sample file. The entries are related to two types of information:
+a Profile GDS file. The entries are related to two types of information:
 the synthetic study and the synthetic profiles.
 
-The study information is appended to the GDS Sample file "study.list" node.
+The study information is appended to the Profile GDS file "study.list" node.
 The "study.platform" entry is always set to 'Synthetic'.
 
 The profile information, for all selected synthetic profiles, is appended to
-the GDS Sample file "study.annot" node. Both the "Source" and the
+the Profile GDS file "study.annot" node. Both the "Source" and the
 "Sample.Type" entries are always set to 'Synthetic'.
 
-The synthetic samples are assigned unique names by combining :
+The synthetic profiles are assigned unique names by combining :
 [prefId].[data.id.profile].[listSampleRef].[simulation number(1 to nbSim)]
 }
 \examples{

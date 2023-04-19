@@ -266,11 +266,11 @@ This is the command line to run
 ## -r0 : Sets the minimum read counts for a position to be output to 0
 ## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the 
 ##     positions of all retained 1KG SNPs
-## PATH_OUT/Name.ID.txt : The name of the output Sample VCF file that will be
+## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be
 ##     compressed by the application
 ## FILEBAM.bam : The aligned reads from the sample used as input
 #####################################################################
-snp-pileup -g -d5000 -q15 -Q20  -r0 path1KG/snvSel0.01.vcf.gz PATH_OUT/Name.ID.txt FILEBAM.bam
+snp-pileup -g -d5000 -q15 -Q20  -r0 path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam
 ```
 
 <br>
@@ -777,10 +777,10 @@ gds <- openfn.gds(file1KG)
 ## in RDS files.
 ## The directory must exist.
 ####################################################################
-PATH_OUT <- file.path(pathProfileGDS)
+pathOut <- file.path(pathProfileGDS)
 
-if(! file.exists(PATH_OUT)) {
-    dir.create(PATH_OUT)
+if(! file.exists(pathOut)) {
+    dir.create(pathOut)
 }
 
 ####################################################################
@@ -814,7 +814,7 @@ for(i in seq_len(length(listSamples))) {
     ## A sub-directory is created for the cancer sample
     ## Beware that the number of files created will correspond to the 
     ## number of rows in the sampleRM matrix
-    PATH_OUT_SAMPLE <- file.path(PATH_OUT, listSamples[i])
+    PATH_OUT_SAMPLE <- file.path(pathOut, listSamples[i])
     if(! file.exists(PATH_OUT_SAMPLE)) {
             dir.create(PATH_OUT_SAMPLE)
     }
@@ -896,10 +896,10 @@ gds <- openfn.gds(file1KG)
     
 ## A directory for the results, where a sub-directory 
 ## will be set up for each input profile 
-PATH_OUT <- file.path(pathProfileGDS)
+pathOut <- file.path(pathProfileGDS)
 
-if(! file.exists(PATH_OUT)) {
-    dir.create(PATH_OUT)
+if(! file.exists(pathOut)) {
+    dir.create(pathOut)
 }
 
 ####################################################################
@@ -919,7 +919,7 @@ for(i in seq_len(length(listSamples))){
     fileProfile <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
     ## Directory where the KNN results have been saved      
-    PATHKNN <- file.path(PATH_OUT, listSamples[i])
+    PATHKNN <- file.path(pathOut, listSamples[i])
     listFilesName <- dir(file.path(PATHKNN), ".rds")
 
     ## List of the KNN result files from PCA on synthetic data
@@ -936,11 +936,11 @@ for(i in seq_len(length(listSamples))){
                                     studyIDSyn=syntheticStudyDF$study.id,
                                     np=1L)
 
-    saveRDS(resCall, file.path(PATH_OUT,
+    saveRDS(resCall, file.path(pathOut,
                                 paste0(listSamples[i], ".infoCall", ".rds")))
 
     write.csv(resCall$Ancestry,
-            file.path(PATH_OUT, paste0(listSamples[i], ".Ancestry",".csv")),
+            file.path(pathOut, paste0(listSamples[i], ".Ancestry",".csv")),
             quote=FALSE, row.names=FALSE)
     
     ## Close the Sample GDS file (important)
@@ -955,13 +955,13 @@ closefn.gds(gds)
 ## optimal number of PCA components D
 ## optimal number of neighbours K
 ####################################################################
-resAncestry <- read.csv(file.path(PATH_OUT, 
+resAncestry <- read.csv(file.path(pathOut, 
                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
 resAncestry
 
 ## Clean-up demo files
 unlink(fileProfile, force=TRUE)
-unlink(PATH_OUT, recursive=TRUE, force=TRUE)
+unlink(pathOut, recursive=TRUE, force=TRUE)
 ```
 
 

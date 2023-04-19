@@ -682,7 +682,7 @@ library(gdsfmt)
 ## subcontinental population present in the 1KG GDS file.
 ## When not enough profiles are available, all profiles are selected.  
 ####################################################################   
-gds <- snpgdsOpen(file1KG)
+gds1KG <- snpgdsOpen(file1KG)
 
 ####################################################################
 ## Fix seed to ensure reproducible results
@@ -697,17 +697,17 @@ set.seed(3043)
 ## The 1KG GDS file in this example only has 6 profiles for each 
 ## subcontinental-level (for demo purpose only)
 ####################################################################
-dataRef <- select1KGPop(gds, nbProfiles=2L)
+dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 
 ## Extract the list of selected 1KG sample identifiers
-listSampleRef <- dataRef$sample.id
+listProfileRef <- dataRef$sample.id
 
 ####################################################################
 ## A data.frame with the description of the study for the synthetic
 ## data is required.
 ## The column names must be as shown
 #################################################################### 
-studyDF.syn <- data.frame(study.id="MYDATA.Synthetic",
+syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
                           study.desc="MYDATA synthetic data",
                           study.platform="PLATFORM",
                           stringsAsFactors=FALSE)
@@ -721,9 +721,9 @@ fileProfile <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
 ## The information is saved into the Profile GDS file
 ####################################################################
 prepSynthetic(fileProfileGDS=fileProfile,
-                listSampleRef=listSampleRef,
+                listSampleRef=listProfileRef,
                 data.id.profile=profileName,
-                studyDF=studyDF.syn,
+                studyDF=syntheticStudyDF,
                 prefId="1")
 
 ####################################################################
@@ -740,15 +740,15 @@ gdsRefAnnot <- openfn.gds(fileRefAnnot)
 ## The syntheticGeno() function generates the synthetic profiles.
 ## The synthetic profiles are saved in the Profile GDS file
 ####################################################################
-resG <- syntheticGeno(gdsReference=gds,
+resG <- syntheticGeno(gdsReference=gds1KG,
                         gdsRefAnnot=gdsRefAnnot,
                         fileProfileGDS=fileProfile,
                         data.id.profile=profileName,
-                        listSampleRef=listSampleRef,
+                        listSampleRef=listProfileRef,
                         prefId="1")
 
 ## Close both GDS files
-closefn.gds(gds)
+closefn.gds(gds1KG)
 closefn.gds(gdsRefAnnot)
 ```
 
@@ -836,7 +836,7 @@ for(i in seq_len(length(listSamples))) {
         ##  a range of K and D values
         syntKNN <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
                                             sampleRM= sampleRM[j,],
-                                            studyIDSyn=studyDF.syn$study.id,
+                                            studyIDSyn=syntheticStudyDF$study.id,
                                             np=4L,
                                             spRef=spRef,
                                             eigenCount=15L)
@@ -933,7 +933,7 @@ for(i in seq_len(length(listSamples))){
                                     listFiles=listFiles,
                                     sample.ana.id=listSamples[i],
                                     spRef=spRef,
-                                    studyIDSyn=studyDF.syn$study.id,
+                                    studyIDSyn=syntheticStudyDF$study.id,
                                     np=1L)
 
     saveRDS(resCall, file.path(PATH_OUT,

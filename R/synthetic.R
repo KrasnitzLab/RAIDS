@@ -283,8 +283,8 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
     posStudy <- which(studySRC$data.id == profileID)
     if(length(posStudy) != 1) {
         closefn.gds(gdsSample)
-        stop("Error with the data.id of the profile for synthetic data ",
-                profileID, "\n")
+        stop("The profile \'", profileID, "\' is not found in the annoted ",
+                    "study present in the Profile GDS file.\n")
     }
 
     ## Assign unique names to synthetic profiles using

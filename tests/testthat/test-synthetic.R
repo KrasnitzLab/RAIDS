@@ -524,3 +524,26 @@ test_that(paste0("prepSynthetic() must return expected results"), {
 })
 
 
+
+test_that(paste0("prepSynthetic() must return error when profileID not present"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforEstimAlleFraction")
+    file.copy(file.path(dataDirSample, "ex1_demoForEstimAllFrac.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    synthStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+                               study.desc="MYDATA synthetic data",
+                               study.platform="PLATFORM",
+                               stringsAsFactors=FALSE)
+
+    error_message <- paste0("The profile \'toto\' is not found in the annoted ",
+            "study present in the Profile GDS file.\n")
+
+    expect_error(prepSynthetic(fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+        listSampleRef=c("HG00243", "HG00149"), profileID="toto",
+        studyDF=synthStudyDF, nbSim=1L, prefix="test", verbose=FALSE),
+        error_message, fixed=TRUE)
+})
+

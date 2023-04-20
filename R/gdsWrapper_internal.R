@@ -437,9 +437,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
                                             matAll$count)
             }
 
-            listSampleGDS <- addStudyGDSSample(gdsSample, dfPedProfile=dfPedProfile,
-                                batch=batch, listSamples=c(listSamples[i]),
-                                studyDF=studyDF, verbose=verbose)
+            listSampleGDS <- addStudyGDSSample(gdsSample,
+                pedProfile=dfPedProfile, batch=batch,
+                listSamples=c(listSamples[i]), studyDF=studyDF, verbose=verbose)
 
             listCount <- table(matAll$count[matAll$count >= minCov])
             cutOffA <-
@@ -530,7 +530,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @param gdsProfile an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param dfPedProfile a \code{data.frame} with the sample information. The
+#' @param pedProfile a \code{data.frame} with the sample information. The
 #' \code{data.frame} must have the columns:
 #' "Name.ID", "Case.ID", "Sample.Type", "Diagnosis" and "Source".
 #' The unique sample identifier of the \code{data.frame} is the "Name.ID"
@@ -579,7 +579,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #'
 #' ## Add the sample information to the GDS Sample file
 #' ## The information for all samples is added (listSamples=NULL)
-#' RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, dfPedProfile=ped1KG, batch=1,
+#' RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
 #'     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 #'
 #' ## Read study information from GDS Sample file
@@ -598,22 +598,22 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples,
+addStudyGDSSample <- function(gdsProfile, pedProfile, batch, listSamples,
                                 studyDF, verbose) {
 
     ## Used only the selected samples (all when listSamples == NULL)
     if(!(is.null(listSamples))) {
         if(length(listSamples) == length(intersect(listSamples,
-                                                    rownames(dfPedProfile)))) {
-            dfPedProfile <- dfPedProfile[listSamples,]
+                                                    rownames(pedProfile)))) {
+            pedProfile <- pedProfile[listSamples,]
         } else {
             stop("List of samples includes samples not present in ",
-                "the \'dfPedProfile\' data frame. The sample names must be ",
+                "the \'pedProfile\' data frame. The sample names must be ",
                 "present in the \'Name.ID\' column. The row names should",
                 " be assigned the \'Name.ID\'.")
         }
     } else {
-        listSamples <- dfPedProfile$Name.ID
+        listSamples <- pedProfile$Name.ID
     }
 
     ## Create the study data frame that is going to be saved
@@ -627,12 +627,12 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples,
         add.gdsn(gdsProfile, "study.list", df)
 
         ## Create data frame containing sample information and add it to GDS
-        study.annot <- data.frame(data.id=dfPedProfile[, "Name.ID"],
-            case.id=dfPedProfile[, "Case.ID"],
-            sample.type=dfPedProfile[, "Sample.Type"],
-            diagnosis=dfPedProfile[, "Diagnosis"],
-            source=dfPedProfile[, "Source"],
-            study.id=rep(studyDF$study.id, nrow(dfPedProfile)),
+        study.annot <- data.frame(data.id=pedProfile[, "Name.ID"],
+            case.id=pedProfile[, "Case.ID"],
+            sample.type=pedProfile[, "Sample.Type"],
+            diagnosis=pedProfile[, "Diagnosis"],
+            source=pedProfile[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(pedProfile)),
             stringsAsFactors=FALSE)
         add.gdsn(gdsProfile, "study.annot", study.annot)
 
@@ -647,12 +647,12 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples,
                         df$study.platform, check=TRUE)
 
         ## Create data frame containing sample information
-        study.annot <- data.frame(data.id=dfPedProfile[, "Name.ID"],
-            case.id=dfPedProfile[, "Case.ID"],
-            sample.type=dfPedProfile[, "Sample.Type"],
-            diagnosis=dfPedProfile[, "Diagnosis"],
-            source=dfPedProfile[, "Source"],
-            study.id=rep(studyDF$study.id, nrow(dfPedProfile)),
+        study.annot <- data.frame(data.id=pedProfile[, "Name.ID"],
+            case.id=pedProfile[, "Case.ID"],
+            sample.type=pedProfile[, "Sample.Type"],
+            diagnosis=pedProfile[, "Diagnosis"],
+            source=pedProfile[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(pedProfile)),
             stringsAsFactors=FALSE)
 
         ## Append sample information to existing node
@@ -673,7 +673,7 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples,
     }
 
     ## Return the vector of profile IDs that have been added to Profile GDS file
-    return(dfPedProfile[,"Name.ID"])
+    return(pedProfile[,"Name.ID"])
 }
 
 

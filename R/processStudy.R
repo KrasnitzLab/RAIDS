@@ -1173,7 +1173,7 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
         rownames(ped1KG) <- ped1KG$Name.ID
 
         ## Add the information about the 1KG samples into the Profile GDS
-        addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=ped1KG, batch=1,
+        addStudyGDSSample(gdsProfile=gdsSample, pedProfile=ped1KG, batch=1,
                     listSamples=NULL, studyDF=study.list, verbose=verbose)
 
         sync.gds(gdsSample)

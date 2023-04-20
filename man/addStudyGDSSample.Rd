@@ -6,20 +6,13 @@
 \title{Add information related to a specific study and specific samples
 into a GDS Sample file}
 \usage{
-addStudyGDSSample(
-  gdsProfile,
-  dfPedProfile,
-  batch,
-  listSamples,
-  studyDF,
-  verbose
-)
+addStudyGDSSample(gdsProfile, pedProfile, batch, listSamples, studyDF, verbose)
 }
 \arguments{
 \item{gdsProfile}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{dfPedProfile}{a \code{data.frame} with the sample information. The
+\item{pedProfile}{a \code{data.frame} with the sample information. The
 \code{data.frame} must have the columns:
 "Name.ID", "Case.ID", "Sample.Type", "Diagnosis" and "Source".
 The unique sample identifier of the \code{data.frame} is the "Name.ID"
@@ -80,7 +73,7 @@ studyInfo <- data.frame(study.id="Ref.1KG",
 
 ## Add the sample information to the GDS Sample file
 ## The information for all samples is added (listSamples=NULL)
-RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, dfPedProfile=ped1KG, batch=1,
+RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 
 ## Read study information from GDS Sample file

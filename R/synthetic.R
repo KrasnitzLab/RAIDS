@@ -279,8 +279,8 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
 
     ## Extract information about the samples listed in the GDS Samples
-    study.SRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
-    posStudy <- which(study.SRC$data.id == profileID)
+    studySRC <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    posStudy <- which(studySRC$data.id == profileID)
     if(length(posStudy) != 1) {
         closefn.gds(gdsSample)
         stop("Error with the data.id of the profile for synthetic data ",
@@ -294,7 +294,7 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
                         paste(rep(listSampleRef,each=nbSim),
                                 seq_len(nbSim), sep="."), sep = ".")
 
-    if(length(which(sampleSim %in% study.SRC$data.id)) > 0) {
+    if(length(which(sampleSim %in% studySRC$data.id)) > 0) {
         closefn.gds(gdsSample)
         stop("Error data.id of the simulation exists change prefix\n")
     }
@@ -303,7 +303,7 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
     ## as parameters
     ## The synthetic samples will be associated to this information
     ## The study platform is always set to "Synthetic"
-    study.list <- data.frame(study.id=studyDF$study.id,
+    study <- data.frame(study.id=studyDF$study.id,
                         study.desc=studyDF$study.desc,
                         study.platform="Synthetic", stringsAsFactors=FALSE)
 
@@ -312,13 +312,14 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
     pedSim <- data.frame(Name.ID=sampleSim,
                 Case.ID=rep(listSampleRef, each=nbSim),
                 Sample.Type=rep("Synthetic", length(listSampleRef) * nbSim),
-                Diagnosis=rep(study.SRC$diagnosis[posStudy],
+                Diagnosis=rep(studySRC$diagnosis[posStudy],
                                 length(listSampleRef) * nbSim),
                 Source=rep("Synthetic", length(listSampleRef) * nbSim),
                 stringsAsFactors=FALSE)
 
+    ## Add information to the Profile GDS file
     addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=pedSim, batch=1,
-        listSamples=NULL, studyDF=study.list, verbose=verbose)
+        listSamples=NULL, studyDF=study, verbose=verbose)
 
     closefn.gds(gdsSample)
 

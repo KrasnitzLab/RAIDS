@@ -481,3 +481,46 @@ test_that(paste0("prepSynthetic() must return error when verbose is numeric"), {
         listSampleRef=c("S_1", "S_2"), profileID="S_1", studyDF=studyDF,
         nbSim=1L, prefix="test", verbose=33), error_message, fixed=TRUE)
 })
+
+
+test_that(paste0("prepSynthetic() must return expected results"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforEstimAlleFraction")
+    file.copy(file.path(dataDirSample, "ex1_demoForEstimAllFrac.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    synthStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+                                    study.desc="MYDATA synthetic data",
+                                    study.platform="PLATFORM",
+                                    stringsAsFactors=FALSE)
+
+    result <- prepSynthetic(fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+        listSampleRef=c("HG00243", "HG00149"), profileID="ex1",
+        studyDF=synthStudyDF,
+        nbSim=1L, prefix="test", verbose=FALSE)
+
+    profileGDS <- openfn.gds(file.path(dataDirSample, "ex1.gds"))
+    withr::defer((closefn.gds(profileGDS)), envir=parent.frame())
+
+    studyAnnot <- read.gdsn(index.gdsn(profileGDS, "study.annot"))
+
+    studyList <- read.gdsn(index.gdsn(profileGDS, "study.list"))
+
+    expect_equal(studyAnnot$data.id[158:159],
+                   c("test.ex1.HG00243.1", "test.ex1.HG00149.1"))
+    expect_equal(studyAnnot$case.id[158:159],  c("HG00243", "HG00149"))
+    expect_equal(studyAnnot$sample.type[158:159],  c("Synthetic", "Synthetic"))
+    expect_equal(studyAnnot$diagnosis[158:159],  c("Cancer", "Cancer"))
+    expect_equal(studyAnnot$source[158:159],  c("Synthetic", "Synthetic"))
+    expect_equal(studyAnnot$study.id[158:159],  rep("MYDATA.Synthetic", 2))
+
+    expect_equal(studyList$study.id[3],  "MYDATA.Synthetic")
+    expect_equal(studyList$study.desc[3],  "MYDATA synthetic data")
+    expect_equal(studyList$study.platform[3],  "Synthetic")
+
+    expect_equal(result, 0L)
+})
+
+

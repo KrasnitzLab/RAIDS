@@ -598,8 +598,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples, studyDF,
-                                    verbose) {
+addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples,
+                                studyDF, verbose) {
 
     ## Used only the selected samples (all when listSamples == NULL)
     if(!(is.null(listSamples))) {
@@ -608,9 +608,9 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples, stud
             dfPedProfile <- dfPedProfile[listSamples,]
         } else {
             stop("List of samples includes samples not present in ",
-                    "the \'dfPedProfile\' data frame. The sample names must be ",
-                    "present in the \'Name.ID\' column. The row names should",
-                    " be assigned the \'Name.ID\'.")
+                "the \'dfPedProfile\' data frame. The sample names must be ",
+                "present in the \'Name.ID\' column. The row names should",
+                " be assigned the \'Name.ID\'.")
         }
     } else {
         listSamples <- dfPedProfile$Name.ID
@@ -628,9 +628,12 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples, stud
 
         ## Create data frame containing sample information and add it to GDS
         study.annot <- data.frame(data.id=dfPedProfile[, "Name.ID"],
-            case.id=dfPedProfile[, "Case.ID"], sample.type=dfPedProfile[, "Sample.Type"],
-            diagnosis=dfPedProfile[, "Diagnosis"], source=dfPedProfile[, "Source"],
-            study.id=rep(studyDF$study.id, nrow(dfPedProfile)), stringsAsFactors=FALSE)
+            case.id=dfPedProfile[, "Case.ID"],
+            sample.type=dfPedProfile[, "Sample.Type"],
+            diagnosis=dfPedProfile[, "Diagnosis"],
+            source=dfPedProfile[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(dfPedProfile)),
+            stringsAsFactors=FALSE)
         add.gdsn(gdsProfile, "study.annot", study.annot)
 
         if(verbose) { message("study.annot DONE ", Sys.time()) }
@@ -645,9 +648,12 @@ addStudyGDSSample <- function(gdsProfile, dfPedProfile, batch, listSamples, stud
 
         ## Create data frame containing sample information
         study.annot <- data.frame(data.id=dfPedProfile[, "Name.ID"],
-            case.id=dfPedProfile[, "Case.ID"], sample.type=dfPedProfile[, "Sample.Type"],
-            diagnosis=dfPedProfile[, "Diagnosis"], source=dfPedProfile[, "Source"],
-            study.id=rep(studyDF$study.id, nrow(dfPedProfile)), stringsAsFactors=FALSE)
+            case.id=dfPedProfile[, "Case.ID"],
+            sample.type=dfPedProfile[, "Sample.Type"],
+            diagnosis=dfPedProfile[, "Diagnosis"],
+            source=dfPedProfile[, "Source"],
+            study.id=rep(studyDF$study.id, nrow(dfPedProfile)),
+            stringsAsFactors=FALSE)
 
         ## Append sample information to existing node
         append.gdsn(index.gdsn(gdsProfile, "study.annot/data.id"),

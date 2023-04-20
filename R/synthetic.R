@@ -318,7 +318,7 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
                 stringsAsFactors=FALSE)
 
     ## Add information to the Profile GDS file
-    addStudyGDSSample(gdsProfile=gdsSample, dfPedProfile=pedSim, batch=1,
+    addStudyGDSSample(gdsProfile=gdsSample, pedProfile=pedSim, batch=1,
         listSamples=NULL, studyDF=study, verbose=verbose)
 
     closefn.gds(gdsSample)

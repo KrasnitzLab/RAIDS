@@ -216,7 +216,8 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
                         stringsAsFactors=FALSE)
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,  dfPedProfile=pedInformation,
+    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,
+        pedProfile=pedInformation,
         batch=2, listSamples=c("sample_01", "sample_02"),
         studyDF=studyInfo, verbose=FALSE)
 
@@ -284,7 +285,7 @@ test_that("addStudyGDSSample() must copy the expected entry in \"study.annot\" n
                         stringsAsFactors=FALSE)
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,  dfPedProfile=pedInformation,
+    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,  pedProfile=pedInformation,
         batch=2, listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 
     ## Read sample names from GDS file
@@ -354,14 +355,15 @@ test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
 
     ## Add samples to the GDS file
     results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,
-        dfPedProfile=pedInformation, batch=2, listSamples=NULL,
+        pedProfile=pedInformation, batch=2, listSamples=NULL,
         studyDF=studyInfo, verbose=FALSE)
 
     message <- "DONE"
 
     ## Add samples to the GDS file
-    expect_message(RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp, dfPedProfile=pedInformation,
-        batch=2, listSamples=NULL, studyDF=studyInfo, verbose=TRUE),
+    expect_message(RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,
+        pedProfile=pedInformation, batch=2, listSamples=NULL,
+        studyDF=studyInfo, verbose=TRUE),
         regexp=message, all=TRUE, perl=TRUE)
 
     ## Close GDS file
@@ -409,14 +411,15 @@ test_that("addStudyGDSSample() must generate messages when verbose is TRUE", {
         study.platform="GRCh38 1000 Genotypes", stringsAsFactors=FALSE)
 
     ## Add samples to the GDS file
-    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,  dfPedProfile=pedInformation,
-        batch=2, listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+    results3 <- RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,
+        pedProfile=pedInformation, batch=2, listSamples=NULL,
+        studyDF=studyInfo, verbose=FALSE)
 
     message <- "DONE"
 
     ## Add samples to the GDS file
     expect_message(RAIDS:::addStudyGDSSample(gdsProfile=GDS_file_tmp,
-        dfPedProfile=pedInformation, batch=2, listSamples=NULL, studyDF=studyInfo,
+        pedProfile=pedInformation, batch=2, listSamples=NULL, studyDF=studyInfo,
         verbose=TRUE), regexp=message, all=TRUE, perl=TRUE)
 
     ## Close GDS file

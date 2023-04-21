@@ -380,7 +380,62 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
 #'
 #' @examples
 #'
-#' # TODO
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#'
+#' ## Copy the Profile GDS file demo that has been pruned and annotated
+#' ## into a test directory (deleted after the example has been run)
+#' dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
+#'                  "demoAllelicFraction")
+#' dir.create(dataDirAllelicFraction, showWarnings=FALSE,
+#'                  recursive=FALSE, mode="0777")
+#'
+#' ## Profile GDS file
+#' fileNameGDS <- file.path(dataDirAllelicFraction, "ex1.gds")
+#'
+#' file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+#'                  fileNameGDS)
+#'
+#' ## Information about the synthetic data set
+#' syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+#'     study.desc="MYDATA synthetic data", study.platform="PLATFORM",
+#'     stringsAsFactors=FALSE)
+#'
+#' ## Add information related to the synthetic profiles into the Profile GDS
+#' prepSynthetic(fileProfileGDS=fileNameGDS,
+#'     listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
+#'     studyDF=syntheticStudyDF, nbSim=1L, prefix="synthTest",
+#'     verbose=FALSE)
+#'
+#' ## The 1KG files
+#' gds1KG <- snpgdsOpen(file.path(dataDir,
+#'                             "ex1_good_small_1KG_GDS.gds"))
+#' gds1KGAnnot <- openfn.gds(file.path(dataDir,
+#'                             "ex1_good_small_1KG_Annot_GDS.gds"))
+#'
+#' ## Generate the synthetic profiles and add them into the Profile GDS
+#' syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
+#'     fileProfileGDS=fileNameGDS, profileID="ex1",
+#'     listSampleRef=c("HG00243", "HG00150"), nbSim=1,
+#'     prefix="synthTest",
+#'     pRecomb=0.01, minProb=0.999, seqError=0.001)
+#'
+#' ## Open Profile GDS file
+#' profileGDS <- openfn.gds(fileNameGDS)
+#'
+#' tail(read.gdsn(index.gdsn(profileGDS, "sample.id")))
+#'
+#' ## Close GDS files (important)
+#' closefn.gds(profileGDS)
+#' closefn.gds(gds1KG)
+#' closefn.gds(gds1KGAnnot)
+#'
+#' ## Unlink Profile GDS file (created for demo purpose)
+#' unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
+#' unlink(dataDirAllelicFraction)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -500,8 +555,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
             p3 <- 2 * seqError
 
             tmp <- rmultinom(nbHetero * nbSim,
-                                as.numeric(as.character(df$count.tot[i])),
-                                c(p1, p2, p3))
+                    as.numeric(as.character(df$count.tot[i])),  c(p1, p2, p3))
             # depth of allele 1
             matSim1[listOrderSNP[hetero + posDF[i]],] <- matrix(tmp[1,],
                                                                     ncol=nbSim)
@@ -659,11 +713,10 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
                         ROC.AUC=numeric(1), ROC.CI=numeric(1), N=nrow(matKNN),
                         NBNA=length(which(is.na(matKNN[[predCall]]))))
-
     i <- 1
 
     if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1) {
-        stop("Compute synthetic accuracy with different pca dimension or K\n")
+        stop("Compute synthetic accuracy with different PCA dimensions or K\n")
     }
 
     listKeep <- which(!(is.na(matKNN[[predCall]])) )
@@ -681,7 +734,6 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     colnames(predMat) <- listCall
 
     listAccuPop <- list()
-
 
     df <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1], Call=listCall,
                         L=NA, AUC=NA, H=NA, stringsAsFactors=FALSE)
@@ -709,8 +761,7 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     }
 
     res <- list(matAUROC.All=matAccuracy,  matAUROC.Call=df,
-                    listROC.Call=listROC)
-
+                        listROC.Call=listROC)
     return(res)
 }
 

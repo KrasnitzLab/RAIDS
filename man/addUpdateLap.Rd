@@ -30,6 +30,9 @@ already be present in the GDS file.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Create a temporary GDS file in an test directory
 dataDir <- system.file("extdata/tests", package="RAIDS")
 gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")

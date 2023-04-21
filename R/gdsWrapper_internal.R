@@ -27,6 +27,9 @@
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(dataDir, "GDS_TEMP_10.gds")
@@ -109,6 +112,9 @@ generateGDSRefSample <- function(gdsReference, dfPedReference, listSamples=NULL)
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Locate RDS with unrelated/related status for 1KG samples
 #' dataDir <- system.file("extdata", package="RAIDS")
 #' rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
@@ -181,6 +187,9 @@ addGDSRef <- function(gdsReference, filePart) {
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -557,6 +566,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
@@ -872,6 +884,9 @@ runLDPruning <- function(gds, method,
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(dataDir, "GDS_TEMP_03.gds")
@@ -981,7 +996,10 @@ appendGDSRefSample <- function(gdsReference, dfPedReference, batch=1, listSample
 #'
 #' @examples
 #'
-#' #' ## Create a temporary GDS file in an test directory
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(dataDir, "GDS_TEMP_1.gds")
 #'
@@ -1045,6 +1063,9 @@ addGDSStudyPruning <- function(gdsProfile, pruned) {
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")

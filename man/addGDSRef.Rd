@@ -30,6 +30,9 @@ that contains the information about the unrelated reference samples.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Locate RDS with unrelated/related status for 1KG samples
 dataDir <- system.file("extdata", package="RAIDS")
 rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")

@@ -21,9 +21,9 @@ test_that("validateSyntheticGeno() must return expected results when all input a
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     result1 <- RAIDS:::validateSyntheticGeno(gdsReference=gdsF, gdsRefAnnot=gdsF,
-            fileProfileGDS=fileGDS, data.id.profile="TCGA_001",
+            fileProfileGDS=fileGDS, profileID="TCGA_001",
             listSampleRef=c("Sample01", "Sample02"), nbSim=1L,
-            prefId="TEST", pRecomb=0.2, minProb=0.3, seqError=0.2)
+            prefix="TEST", pRecomb=0.2, minProb=0.3, seqError=0.2)
 
     expect_identical(result1, 0L)
 })

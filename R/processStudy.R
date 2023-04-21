@@ -2242,8 +2242,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             studyDF=studyDF.syn, prefix="1")
 
         resG <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsAnnot1KG,
-            fileProfileGDS=file.GDSProfile, data.id.profile=listProfiles[i],
-            listSampleRef=listProfileRef, prefId="1")
+            fileProfileGDS=file.GDSProfile, profileID=listProfiles[i],
+            listSampleRef=listProfileRef, prefix="1")
 
         if(! file.exists(pathOut)) {
             dir.create(pathOut)

@@ -743,9 +743,9 @@ gdsRefAnnot <- openfn.gds(fileRefAnnot)
 resG <- syntheticGeno(gdsReference=gds1KG,
                         gdsRefAnnot=gdsRefAnnot,
                         fileProfileGDS=fileProfile,
-                        data.id.profile=profileName,
+                        profileID=profileName,
                         listSampleRef=listProfileRef,
-                        prefId="1")
+                        prefix="1")
 
 ## Close both GDS files
 closefn.gds(gds1KG)

@@ -73,7 +73,62 @@ simulation requested.
 }
 \examples{
 
-# TODO
+## Required library
+library(gdsfmt)
+
+## Path to the demo 1KG GDS file is located in this package
+dataDir <- system.file("extdata/tests", package="RAIDS")
+
+## Copy the Profile GDS file demo that has been pruned and annotated
+## into a test directory (deleted after the example has been run)
+dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
+                 "demoAllelicFraction")
+dir.create(dataDirAllelicFraction, showWarnings=FALSE,
+                 recursive=FALSE, mode="0777")
+
+## Profile GDS file
+fileNameGDS <- file.path(dataDirAllelicFraction, "ex1.gds")
+
+file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+                 fileNameGDS)
+
+## Information about the synthetic data set
+syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+    study.desc="MYDATA synthetic data", study.platform="PLATFORM",
+    stringsAsFactors=FALSE)
+
+## Add information related to the synthetic profiles into the Profile GDS
+prepSynthetic(fileProfileGDS=fileNameGDS,
+    listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
+    studyDF=syntheticStudyDF, nbSim=1L, prefix="synthTest",
+    verbose=FALSE)
+
+## The 1KG files
+gds1KG <- snpgdsOpen(file.path(dataDir,
+                            "ex1_good_small_1KG_GDS.gds"))
+gds1KGAnnot <- openfn.gds(file.path(dataDir,
+                            "ex1_good_small_1KG_Annot_GDS.gds"))
+
+## Generate the synthetic profiles and add them into the Profile GDS
+syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
+    fileProfileGDS=fileNameGDS, profileID="ex1",
+    listSampleRef=c("HG00243", "HG00150"), nbSim=1,
+    prefix="synthTest",
+    pRecomb=0.01, minProb=0.999, seqError=0.001)
+
+## Open Profile GDS file
+profileGDS <- openfn.gds(fileNameGDS)
+
+tail(read.gdsn(index.gdsn(profileGDS, "sample.id")))
+
+## Close GDS files (important)
+closefn.gds(profileGDS)
+closefn.gds(gds1KG)
+closefn.gds(gds1KGAnnot)
+
+## Unlink Profile GDS file (created for demo purpose)
+unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
+unlink(dataDirAllelicFraction)
 
 }
 \author{

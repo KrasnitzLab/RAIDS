@@ -26,7 +26,10 @@ deleted and a new entry is created.
 }
 \examples{
 
-#' ## Create a temporary GDS file in an test directory
+## Required library
+library(gdsfmt)
+
+## Create a temporary GDS file in an test directory
 dataDir <- system.file("extdata/tests", package="RAIDS")
 gdsFilePath <- file.path(dataDir, "GDS_TEMP_1.gds")
 

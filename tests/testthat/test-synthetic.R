@@ -543,3 +543,30 @@ test_that(paste0("prepSynthetic() must return error when profileID not present")
         error_message, fixed=TRUE)
 })
 
+
+test_that(paste0("prepSynthetic() must return error when prefix already used"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforEstimAlleFraction")
+    file.copy(file.path(dataDirSample, "ex1_demoForEstimAllFrac.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    synthStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+                                study.desc="MYDATA synthetic data",
+                                study.platform="PLATFORM",
+                                stringsAsFactors=FALSE)
+
+    result <- prepSynthetic(fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+        listSampleRef=c("HG00243", "HG00149"), profileID="ex1",
+        studyDF=synthStudyDF, nbSim=1L, prefix="test", verbose=FALSE)
+
+    expect_equal(result, 0L)
+
+    error_message <- "Error data.id of the simulation exists change prefix\n"
+
+    expect_error(prepSynthetic(fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+        listSampleRef=c("HG00243", "HG00149"), profileID="ex1",
+        studyDF=synthStudyDF, nbSim=1L, prefix="test", verbose=FALSE),
+        error_message, fixed=TRUE)
+})

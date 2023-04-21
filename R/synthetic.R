@@ -387,15 +387,9 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
 #' @importFrom stats rmultinom
 #' @encoding UTF-8
 #' @export
-syntheticGeno <- function(gdsReference, gdsRefAnnot,
-                            fileProfileGDS,
-                            profileID,
-                            listSampleRef,
-                            nbSim=1L,
-                            prefix="",
-                            pRecomb=0.01,
-                            minProb=0.999,
-                            seqError=0.001) {
+syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
+    listSampleRef, nbSim=1L, prefix="", pRecomb=0.01, minProb=0.999,
+    seqError=0.001) {
 
     ## Validate the input parameters
     validateSyntheticGeno(gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
@@ -428,8 +422,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot,
                                 "sample.annot/superPop"))[listPosRef.1kg]
 
     if (! all.equal(sample.id[listPosRef], sample.1kg[listPosRef.1kg])) {
-        stop("The order between 1kg and the list of samples is not ",
-                "the same.\n")
+        stop("The order between 1kg and the list of samples is not the same.\n")
     }
 
     ## Get indexes of the SNV associated to the sample from the GDS Sample file
@@ -575,8 +568,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot,
         }
 
         phaseVal <- read.gdsn(index.gdsn(gdsRefAnnot, "phase"),
-                                start = c(1,listPosRef.1kg[r]),
-                                count = c(-1,1))[list1KG]
+            start=c(1,listPosRef.1kg[r]), count=c(-1,1))[list1KG]
 
         # mat1 is lap mat2 is 1-lap
         # LAPparent if 0 lap left and 1 lap is right
@@ -615,8 +607,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot,
             (1 + (altC > 0) * (1 + (refC == 0)))
             # if altC == 0 than 1, altC > 0 and refC == 0 than 3
 
-        ## Append the name of the samples to the GDS Sample file "sample.id"
-        ## node
+        ## Append the profile names of to the Profile GDS file "sample.id" node
         appendGDSSampleOnly(gds=gdsSample,
             listSamples=paste(paste0(prefix, ".", profileID),
                 paste(rep(sample.id[curSynt], each=nbSim),

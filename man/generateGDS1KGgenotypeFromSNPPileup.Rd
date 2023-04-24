@@ -4,7 +4,7 @@
 \name{generateGDS1KGgenotypeFromSNPPileup}
 \alias{generateGDS1KGgenotypeFromSNPPileup}
 \title{Append the genotype information from a profile into the associated
-Porfile GDS File}
+Profile GDS File}
 \usage{
 generateGDS1KGgenotypeFromSNPPileup(
   pathGeno,

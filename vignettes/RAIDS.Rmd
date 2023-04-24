@@ -757,7 +757,9 @@ closefn.gds(gdsRefAnnot)
 
 ### Sub-Step 2. Perform the PCA-KNN ancestry call for each synthetic profile
 
-
+The ancestry is inferred for each synthetic profile. As the ancestry of origin 
+of the 1KG profile used to generate the synthetic profile is known, the 
+accuracy of the calls will be assessed for different parameters.
 
 ```{r PCA.KNN.Synthetic, collapse=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE}
 ####################################################################
@@ -814,16 +816,16 @@ for(i in seq_len(length(listSamples))) {
     ## A sub-directory is created for the cancer sample
     ## Beware that the number of files created will correspond to the 
     ## number of rows in the sampleRM matrix
-    PATH_OUT_SAMPLE <- file.path(pathOut, listSamples[i])
-    if(! file.exists(PATH_OUT_SAMPLE)) {
-            dir.create(PATH_OUT_SAMPLE)
+    pathOutProfile <- file.path(pathOut, listSamples[i])
+    if(! file.exists(pathOutProfile)) {
+            dir.create(pathOutProfile)
     }
     
     ## Open the Profile GDS file      
     gdsProfile <- snpgdsOpen(fileProfile)
 
     ## This variable will contain the results from the PCA analyses
-    KNN.list <- list()
+    ## KNNValues <- list()
 
     ## For each row of the sampleRM matrix      
     for(j in seq_len(nrow(sampleRM))) {
@@ -842,7 +844,7 @@ for(i in seq_len(length(listSamples))) {
                                             eigenCount=15L)
         
         ## Results are saved
-        saveRDS(syntKNN$matKNN, file.path(PATH_OUT_SAMPLE, 
+        saveRDS(syntKNN$matKNN, file.path(pathOutProfile, 
                         paste0("KNN.synt.", listSamples[i], ".", j, ".rds")))
     }
     
@@ -919,11 +921,11 @@ for(i in seq_len(length(listSamples))){
     fileProfile <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
     ## Directory where the KNN results have been saved      
-    PATHKNN <- file.path(pathOut, listSamples[i])
-    listFilesName <- dir(file.path(PATHKNN), ".rds")
+    pathKNN <- file.path(pathOut, listSamples[i])
+    listFilesName <- dir(file.path(pathKNN), ".rds")
 
     ## List of the KNN result files from PCA on synthetic data
-    listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+    listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
     ## Open the Sample GDS file
     gdsProfile <- snpgdsOpen(fileProfile)

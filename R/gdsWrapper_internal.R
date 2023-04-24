@@ -236,7 +236,7 @@ appendGDSgenotypeMat <- function(gds, matG) {
 
 
 #' @title Append the genotype information from a profile into the associated
-#' Porfile GDS File
+#' Profile GDS File
 #'
 #' @description This function append the genotype information from a specific
 #' profile into the Profile GDS file. The genotype information is extracted

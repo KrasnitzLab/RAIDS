@@ -5,10 +5,16 @@
 \alias{computePCAMultiSynthetic}
 \title{TODO}
 \usage{
-computePCAMultiSynthetic(gdsSample, listPCA, sampleRef, studyIDSyn, verbose)
+computePCAMultiSynthetic(
+  gdsProfile,
+  listPCA,
+  sampleRef,
+  studyIDSyn,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{gdsSample}{an object of class \code{gds} opened related to
+\item{gdsProfile}{an object of class \code{gds} opened related to
 the sample}
 
 \item{listPCA}{TODO}

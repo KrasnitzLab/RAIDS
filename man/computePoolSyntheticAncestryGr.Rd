@@ -7,7 +7,7 @@
 of synthetic data}
 \usage{
 computePoolSyntheticAncestryGr(
-  gdsSample,
+  gdsProfile,
   sampleRM,
   spRef,
   studyIDSyn,
@@ -24,15 +24,17 @@ computePoolSyntheticAncestryGr(
 )
 }
 \arguments{
-\item{gdsSample}{an object of class
+\item{gdsProfile}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-GDS Sample file.}
+opened Profile GDS file.}
 
 \item{sampleRM}{a \code{vector} of \code{character} strings representing
-the identifiers of the 1KG reference samples that should not be used to
+the identifiers of the 1KG reference profiles that should not be used to
 create the reference PCA.}
 
-\item{spRef}{TODO}
+\item{spRef}{\code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
@@ -88,9 +90,9 @@ and a table with KNN call for different K and pca dimension.
 }
 \description{
 The function runs a PCA analysis using 1 synthetic profile
-from each sub-continental population. The reference samples used to
+from each sub-continental population. The reference profile used to
 create those synthetic profiles are first removed from the 1KG list
-of samples that generates the reference PCA. Then, the retained synthetic
+of profiles that generates the reference PCA. Then, the retained synthetic
 profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
 analysis using a range of K and D values is done.
 }

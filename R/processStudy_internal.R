@@ -149,20 +149,23 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 }
 
 
-#' @title Validate input parameters for pruningSample() function
+#' @title Validate input parameters for computePoolSyntheticAncestryGr()
+#' function
 #'
 #' @description This function validates the input parameters for the
-#' \code{\link{pruningSample}} function.
+#' \code{\link{computePoolSyntheticAncestryGr}} function.
 #'
-#' @param gdsSample an object of class
+#' @param gdsProfile an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-#' GDS Sample file.
+#' opened Profile GDS file.
 #'
 #' @param sampleRM a \code{vector} of \code{character} strings representing
 #' the identifiers of the 1KG reference samples that should not be used to
 #' create the reference PCA.
 #'
-#' @param spRef TODO
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
@@ -174,19 +177,17 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
+#' @param fieldPopIn1KG a \code{character} string TODO.
 #'
-#' @param fieldPopInfAnc TODO. Default: \code{"SuperPop"}.
+#' @param fieldPopInfAnc a \code{character} string TODO.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
-#' number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-#' the value \code{seq(2,15,1)} is assigned.
+#' number of neighbors used in the K-nearest neighbor analysis.
 #'
 #' @param pcaList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
-#' number of dimensions used in the PCA analysis.  If \code{NULL},
-#' the value \code{seq(2,15,1)} is assigned.
+#' number of dimensions used in the PCA analysis.
 #'
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA. The 2 choices are "exact" (traditional exact
@@ -203,7 +204,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
-#' printed. Default: \code{FALSE}.
+#' printed.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -219,13 +220,17 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The GDS Sample (opened)
+#' ## The Profile GDS (opened)
 #' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
+#' ## The known super population ancestry for the 1KG profiles
+#' spRef <- c("EUR", "SAS", "EAS", "EUR", "AFR")
+#' names(spRef) <- c("HG00100", "HG00101", "HG00102", "HG00103", "HG00104")
+#'
 #' ## The validation should be successful
-#' RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
-#'      sampleRM="TGCA_01", spRef="TCGA",
+#' RAIDS:::validateComputePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+#'      sampleRM="TGCA_01", spRef=spRef,
 #'      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
 #'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
 #'      pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
@@ -238,18 +243,29 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePoolSyntheticAncestryGr <- function(gdsSample, sampleRM,
+validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
         spRef, studyIDSyn, np, listCatPop, fieldPopIn1KG,
         fieldPopInfAnc, kList, pcaList, algorithm, eigenCount, missingRate,
         verbose) {
 
-    ## The gdsSample must be objects of class "gds.class"
-    validateGDSClass(gdsSample, "gdsSample")
+    ## The gdsProfile must be objects of class "gds.class"
+    validateGDSClass(gdsProfile, "gdsProfile")
 
-    ## The parameter sampleRM must be a single positive integer
+    ## The parameter sampleRM must be character strings
     if(!(is.character(sampleRM))) {
         stop("The \'sampleRM\' parameter must be a vector of character ",
                 "strings.")
+    }
+
+    ## the parameter spRef must be a vector of chacters strings with names
+    if(!(is.character(spRef) && !is.null(names(spRef)))) {
+        stop("The \'spRef\' parameter must be a vector of character ",
+                "strings with profile identifiers as names.")
+    }
+
+    ## The parameter studyIDSyn must be a character string
+    if(!(is.character(studyIDSyn))) {
+        stop("The \'studyIDSyn\' parameter must be a character string.")
     }
 
     ## The parameter studyIDSyn must be a character string
@@ -1544,9 +1560,9 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
 #' @param missingRate a \code{numeric} value representing the threshold
@@ -1554,6 +1570,9 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' \link[SNPRelate]{snpgdsPCA} function
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{0.025}.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed.
 #'
 #' @return a \code{list} containing 2 entries:
 #' \itemize{
@@ -1581,8 +1600,8 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' @encoding UTF-8
 #' @keywords internal
 computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
-                                    algorithm="exact", eigen.cnt=32L,
-                                    missingRate=0.025) {
+                                    algorithm="exact", eigenCount=32L,
+                                    missingRate=0.025, verbose) {
 
     sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]
 
@@ -1597,8 +1616,8 @@ computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
                                             num.thread=np,
                                             missing.rate=missingRate,
                                             algorithm=algorithm,
-                                            eigen.cnt=eigen.cnt,
-                                            verbose=TRUE)
+                                            eigen.cnt=eigenCount,
+                                            verbose=verbose)
 
     return(listPCA)
 }

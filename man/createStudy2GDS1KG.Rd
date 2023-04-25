@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{createStudy2GDS1KG}
 \alias{createStudy2GDS1KG}
-\title{Create the GDS Sample file(s) for one or multiple specific samples
+\title{Create the Profile GDS file(s) for one or multiple specific profiles
 using the information from a RDS Sample description file and the 1KG
 GDS file}
 \usage{
@@ -84,9 +84,9 @@ The function returns \code{0L} when successful.
 }
 \description{
 The function uses the information for the 1KG GDS file and the
-RDS Sample Description file to create the GDS Sample file. One GDS Sample
-file is created per sample. One GDS Sample file will be created for each
-entry present in the \code{listSamples} parameter.
+RDS Sample Description file to create the Profile GDS file. One Profile GDS
+file is created per profile. One Profile GDS file will be created for each
+entry present in the \code{listProfiles} parameter.
 }
 \examples{
 

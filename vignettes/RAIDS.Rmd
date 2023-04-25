@@ -762,48 +762,48 @@ of the 1KG profile used to generate the synthetic profile is known, the
 accuracy of the calls will be assessed for different parameters.
 
 ```{r PCA.KNN.Synthetic, collapse=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE}
-####################################################################
+#####################################################################
 ## Load required packages
-####################################################################
+#####################################################################
 library(RAIDS)    
 library(gdsfmt)   
     
 ####################################################################
 ## The 1KG GDS file is required
-####################################################################
+#####################################################################
 ## Open the 1KG GDS file     
 gds <- openfn.gds(file1KG)
 
-####################################################################
+#####################################################################
 ## The path to the directory where the PCA results will be saved 
 ## in RDS files.
 ## The directory must exist.
-####################################################################
+#####################################################################
 pathOut <- file.path(pathProfileGDS)
 
 if(! file.exists(pathOut)) {
     dir.create(pathOut)
 }
 
-####################################################################
-## Get the super-population information for the reference samples
-## This is the ground truth for the 1KG samples
-####################################################################
-spRef <- getRef1KGPop(gds, "superPop")
+#####################################################################
+## Get the super-population information (known ancestry) for the 
+## reference profiles. This is the ground truth for the 1KG profiles.
+#####################################################################
+refKnownSuperPop <- getRef1KGPop(gds, "superPop")
     
-####################################################################
+#####################################################################
 ## Fix the RNG seed as in step 6 to ensure the same results
-####################################################################    
+#####################################################################    
 set.seed(3043)       
     
 ## Select the 1KG samples used to generate the synthetic dataset
 ## Already done in step 6, no need to repeat if the results have been saved
 dataRef <- select1KGPop(gds, nbProfiles=2L)
 
-####################################################################
+#####################################################################
 ## The function splitSelectByPop() generates a matrix with the
 ## reference samples split by sub-continental population
-####################################################################  
+#####################################################################  
 sampleRM <- splitSelectByPop(dataRef)
     
 ## Loop for all cancer samples with associated synthetic data
@@ -824,9 +824,6 @@ for(i in seq_len(length(listSamples))) {
     ## Open the Profile GDS file      
     gdsProfile <- snpgdsOpen(fileProfile)
 
-    ## This variable will contain the results from the PCA analyses
-    ## KNNValues <- list()
-
     ## For each row of the sampleRM matrix      
     for(j in seq_len(nrow(sampleRM))) {
         ## Run a PCA analysis using 1 synthetic profile from each 
@@ -836,12 +833,12 @@ for(i in seq_len(length(listSamples))) {
         ##  removed from this PCA)
         ## The K-nearest neighbor analysis is done using 
         ##  a range of K and D values
-        syntKNN <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
-                                            sampleRM= sampleRM[j,],
-                                            studyIDSyn=syntheticStudyDF$study.id,
-                                            np=4L,
-                                            spRef=spRef,
-                                            eigenCount=15L)
+        syntKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
+                                        sampleRM= sampleRM[j,],
+                                        studyIDSyn=syntheticStudyDF$study.id,
+                                        np=4L,
+                                        spRef=refKnownSuperPop,
+                                        eigenCount=15L)
         
         ## Results are saved
         saveRDS(syntKNN$matKNN, file.path(pathOutProfile, 
@@ -911,7 +908,7 @@ if(! file.exists(pathOut)) {
 ## correspond to the known ancestry of the reference sample used to 
 ## synthesize it.
 ####################################################################
-spRef <- getRef1KGPop(gds, "superPop")
+refKnownSuperPop <- getRef1KGPop(gds, "superPop")
     
 ## Loop on each sample 
 ## Can also be run in parallel or on different clusters...
@@ -934,7 +931,7 @@ for(i in seq_len(length(listSamples))){
                                     gdsSample=gdsProfile,
                                     listFiles=listFiles,
                                     sample.ana.id=listSamples[i],
-                                    spRef=spRef,
+                                    spRef=refKnownSuperPop,
                                     studyIDSyn=syntheticStudyDF$study.id,
                                     np=1L)
 

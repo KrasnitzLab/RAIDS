@@ -1400,169 +1400,205 @@ test_that("createStudy2GDS1KG() must return expected results when all parameters
 context("computePoolSyntheticAncestryGr() results")
 
 
-test_that("computePoolSyntheticAncestryGr() must return error when gdsSample is character string", {
+test_that("computePoolSyntheticAncestryGr() must return error when gdsProfile is character string", {
 
-    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
+    error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'"
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample="test.gds",
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
+
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile="test.gds",
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", eigenCount=15L), error_message)
+                spRef=spRef, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when sampleRM is vector of numeric values", {
 
-    fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    fileGDS <- test_path("fixtures", "GDS_Sample_with_study_demo.gds")
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
 
     error_message <- "The \'sampleRM\' parameter must be a vector of character strings."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
+
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
             sampleRM=c(1, 2), studyIDSyn="Synthetic", np=1L,
-            spRef="test", algorithm="exact", eigenCount=32L), error_message)
+            spRef=spRef, algorithm="exact", eigenCount=32L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when studyIDSyn is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
         sampleRM=c("Sample01", "Sample02"), studyIDSyn=11, np=1L,
-        spRef="test", algorithm="exact", eigenCount=32L), error_message)
+        spRef=spRef, algorithm="exact", eigenCount=32L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when listCatPop is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- paste0("The \'listCatPop\' parameter must be a vector of ",
                                 "character strings.")
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
         sampleRM=c("Sample01", "Sample02"), studyIDSyn="Test", np=1L,
         listCatPop=11,
-        spRef="test", algorithm="exact", eigenCount=32L), error_message)
+        spRef=spRef, algorithm="exact", eigenCount=32L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when np is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np="12",
-                spRef="test", eigenCount=15L), error_message)
+                spRef=spRef, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when np is zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                     sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=0L,
-                    spRef="test", eigenCount=15L), error_message)
+                    spRef=spRef, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when kList is a vector with zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- paste0("The \'kList\' parameter must be a vector of ",
                                 "positive integers.")
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, kList=c(0, 1),
-        pcaList=c(1, 2), spRef="test", eigenCount=15L), error_message)
+        pcaList=c(1, 2), spRef=spRef, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when pcaList is a vector with zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- paste0("The \'pcaList\' parameter must be a ",
                                 "vector of positive integers.")
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
         sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-        pcaList=c(0, 1, 2), spRef="test", eigenCount=15L), error_message)
+        pcaList=c(0, 1, 2), spRef=spRef, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when algorithm is zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                     sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                    spRef="test", algorithm=22, eigenCount=15L), error_message)
+                    spRef=spRef, algorithm=22, eigenCount=15L), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when algorithm is not in the list of choices", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
+
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", algorithm="Hello", eigenCount=15L))
+                spRef=spRef, algorithm="Hello", eigenCount=15L))
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when eigenCount is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- "The \'eigenCount\' parameter must be a single integer."
 
-    expect_error(computePoolSyntheticAncestryGr(gdsSample=gds1KG,
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                 sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L,
-                spRef="test", algorithm="exact", eigenCount="15"), error_message)
+                spRef=spRef, algorithm="exact", eigenCount="15"), error_message)
 })
 
 
 test_that("computePoolSyntheticAncestryGr() must return error when missingRate is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- paste0("The \'missingRate\' parameter must be a single ",
                             "positive numeric between zero and one or NaN.")
 
-    expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
-        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef=spRef,
         algorithm="exact", eigenCount=15L, missingRate="0.02"), error_message)
 })
 
@@ -1570,18 +1606,37 @@ test_that("computePoolSyntheticAncestryGr() must return error when missingRate i
 test_that("computePoolSyntheticAncestryGr() must return error when verbose is character string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
-    gds1KG <- openfn.gds(fileGDS)
-    withr::defer(closefn.gds(gds1KG), envir=parent.frame())
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
 
     error_message <- paste0("The \'verbose\' parameter must be a ",
                                 "logical (TRUE or FALSE).")
 
-    expect_error(computePoolSyntheticAncestryGr( gdsSample=gds1KG,
-        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="test",
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef=spRef,
         algorithm="exact", eigenCount=15L, missingRate=0.02, verbose="QC"),
         error_message, fixed=TRUE)
 })
 
+
+test_that("computePoolSyntheticAncestryGr() must return error when spRef is character string", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+
+    error_message <- paste0("The \'spRef\' parameter must be a vector of ",
+                    "character strings with profile identifiers as names.")
+
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef="HI",
+        algorithm="exact", eigenCount=15L, missingRate=0.02, verbose=TRUE),
+        error_message, fixed=TRUE)
+})
 
 
 #############################################################################

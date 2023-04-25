@@ -68,8 +68,8 @@ for a list of pruned SNVs present in a GDS Sample file. The
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computePCARefRMMulti</span><span class="op">(</span></span>
-<span>  <span class="va">gdsSample</span>,</span>
-<span>  <span class="va">sample.ref</span>,</span>
+<span>  <span class="va">gdsProfile</span>,</span>
+<span>  <span class="va">refProfileIDs</span>,</span>
 <span>  <span class="va">listRM</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  algorithm <span class="op">=</span> <span class="st">"exact"</span>,</span>
@@ -81,13 +81,15 @@ for a list of pruned SNVs present in a GDS Sample file. The
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gdsSample</dt>
+    <dl><dt>gdsProfile</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/SNPRelate/man/SNPGDSFileClass-class.html" class="external-link">SNPGDSFileClass</a>,
-the GDS Sample file.</p></dd>
+the opened Profile GDS file.</p></dd>
 
 
-<dt>sample.ref</dt>
-<dd><p>TODO</p></dd>
+<dt>refProfileIDs</dt>
+<dd><p>a <code>vector</code> of reference 1KG profile identifiers
+that are present in the Profile GDS file. The reference profiles that are
+not present in <code>listRM</code> will be retained to run the PCA analysis.</p></dd>
 
 
 <dt>listRM</dt>

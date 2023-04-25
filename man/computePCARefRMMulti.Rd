@@ -11,8 +11,9 @@ computePCARefRMMulti(
   listRM,
   np = 1L,
   algorithm = "exact",
-  eigen.cnt = 32L,
-  missingRate = 0.025
+  eigenCount = 32L,
+  missingRate = 0.025,
+  verbose
 )
 }
 \arguments{
@@ -33,9 +34,9 @@ to calculate the PCA. The 2 choices are "exact" (traditional exact
 calculation) and "randomized" (fast PCA with randomized algorithm
 introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
 \item{missingRate}{a \code{numeric} value representing the threshold
@@ -43,6 +44,9 @@ missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA} function
 with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{0.025}.}
+
+\item{verbose}{a \code{logical} indicating if message information should be
+printed.}
 }
 \value{
 a \code{list} containing 2 entries:

@@ -1,11 +1,11 @@
-#' @title Create the GDS Sample file(s) for one or multiple specific samples
+#' @title Create the Profile GDS file(s) for one or multiple specific profiles
 #' using the information from a RDS Sample description file and the 1KG
 #' GDS file
 #'
 #' @description The function uses the information for the 1KG GDS file and the
-#' RDS Sample Description file to create the GDS Sample file. One GDS Sample
-#' file is created per sample. One GDS Sample file will be created for each
-#' entry present in the \code{listSamples} parameter.
+#' RDS Sample Description file to create the Profile GDS file. One Profile GDS
+#' file is created per profile. One Profile GDS file will be created for each
+#' entry present in the \code{listProfiles} parameter.
 #'
 #' @param pathGeno a \code{character} string representing the path to the
 #' directory containing the VCF output of SNP-pileup for each sample. The
@@ -1191,7 +1191,7 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #'
 #' @description TODO
 #'
-#' @param gdsSample an object of class \code{gds} opened related to
+#' @param gdsProfile an object of class \code{gds} opened related to
 #' the sample
 #'
 #' @param listPCA TODO
@@ -1223,26 +1223,26 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #' @importFrom SNPRelate snpgdsPCASNPLoading snpgdsPCASampLoading
 #' @encoding UTF-8
 #' @export
-computePCAMultiSynthetic <- function(gdsSample, listPCA,
-                                        sampleRef, studyIDSyn, verbose) {
+computePCAMultiSynthetic <- function(gdsProfile, listPCA,
+                                sampleRef, studyIDSyn, verbose=FALSE) {
 
     if(length(sampleRef) < 1) {
         stop("Number of sample in study.annot not equal to 1\n")
     }
 
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    study.annot <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
     study.annot <- study.annot[which(study.annot$study.id == studyIDSyn &
                                         study.annot$case.id %in% sampleRef),]
 
 
     ## SNP loading in principal component analysis
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                gdsobj=gdsSample, num.thread=1,
+                                gdsobj=gdsProfile, num.thread=1,
                                 verbose=verbose)
 
     ## Project samples onto existing principal component axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                gdsobj=gdsSample,
+                                gdsobj=gdsProfile,
                                 sample.id=study.annot$data.id,
                                 num.thread=1L, verbose=verbose)
 
@@ -1592,21 +1592,23 @@ computeKNNRefSample <- function(listEigenvector,
 #' of synthetic data
 #'
 #' @description The function runs a PCA analysis using 1 synthetic profile
-#' from each sub-continental population. The reference samples used to
+#' from each sub-continental population. The reference profile used to
 #' create those synthetic profiles are first removed from the 1KG list
-#' of samples that generates the reference PCA. Then, the retained synthetic
+#' of profiles that generates the reference PCA. Then, the retained synthetic
 #' profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
 #' analysis using a range of K and D values is done.
 #'
-#' @param gdsSample an object of class
+#' @param gdsProfile an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-#' GDS Sample file.
+#' opened Profile GDS file.
 #'
 #' @param sampleRM a \code{vector} of \code{character} strings representing
-#' the identifiers of the 1KG reference samples that should not be used to
+#' the identifiers of the 1KG reference profiles that should not be used to
 #' create the reference PCA.
 #'
-#' @param spRef TODO
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
@@ -1672,10 +1674,10 @@ computeKNNRefSample <- function(listEigenvector,
 #' listEigenvector <- "TOTO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom S4Vectors isSingleNumber
+#' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
-computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
+computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
                             studyIDSyn, np=1L,
                             listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                             fieldPopIn1KG="superPop",
@@ -1696,32 +1698,33 @@ computePoolSyntheticAncestryGr <- function(gdsSample, sampleRM, spRef,
     }
 
     ## Validate the input parameters
-    validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
+    validateComputePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
         sampleRM=sampleRM, spRef=spRef, studyIDSyn=studyIDSyn, np=np,
         listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG, pcaList=pcaList,
-        fieldPopInfAnc=fieldPopInfAnc, kList=kList, verbose=verbose,
-        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
     ## Set algorithm
-    algorithm <- match.arg(algorithm)
+    algorithm <- arg_match(algorithm)
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
-    pca1KG <- computePCARefRMMulti(gdsSample=gdsSample,
+    ## excluded the selected profiles used to generate the synthetic profiles
+    pca1KG <- computePCARefRMMulti(gdsSample=gdsProfile,
         sample.ref=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
-        eigen.cnt=eigenCount, missingRate=missingRate)
+        eigenCount=eigenCount, missingRate=missingRate, verbose=verbose)
 
-    resPCA <- computePCAMultiSynthetic(gdsSample=gdsSample, listPCA=pca1KG,
-                        sampleRef=sampleRM, studyIDSyn=studyIDSyn,
-                        verbose=verbose)
+    resPCA <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca1KG,
+                sampleRef=sampleRM, studyIDSyn=studyIDSyn, verbose=verbose)
 
     ## Calculate the k-nearest neighbor analyses on a subset of the
     ## synthetic dataset
-    KNN.synt <- computeKNNRefSynthetic(gdsSample=gdsSample,
+    synthKNN <- computeKNNRefSynthetic(gdsSample=gdsProfile,
         listEigenvector=resPCA, listCatPop=listCatPop, studyIDSyn=studyIDSyn,
         spRef=spRef, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
         pcaList=pcaList)
 
-    return(KNN.synt)
+    return(synthKNN)
 }
 
 
@@ -1831,7 +1834,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
         ## The synthetic profiles are projected on the 1KG PCA space
         ##  (the reference samples used to generate the synthetic profiles are
         ##  removed from this PCA)
-        KNN.list[[j]] <- computePoolSyntheticAncestryGr(gdsSample=gdsSample,
+        KNN.list[[j]] <- computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                     sampleRM=sampleRM[j,], spRef=spRef, studyIDSyn=studyIDSyn,
                     np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
                     fieldPopInfAnc=fieldPopInfAnc, kList=kList,
@@ -1839,12 +1842,12 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                     missingRate=missingRate, verbose=FALSE)
     }
 
-    KNN.sample.syn <- do.call(rbind, KNN.list)
+    resultsKNN <- do.call(rbind, KNN.list)
 
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
                 gdsSample=gdsSample, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
-    listParaSample <- selParaPCAUpQuartile(KNN.sample.syn, pedSyn,
+    listParaSample <- selParaPCAUpQuartile(resultsKNN, pedSyn,
                             fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
@@ -1977,14 +1980,14 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         # We have to test if the file exist and format is OK
         KNN.list[[j]] <- readRDS(listFiles[j])
     }
-    KNN.sample.syn <- do.call(rbind, KNN.list)
+    resultsKNN <- do.call(rbind, KNN.list)
 
     ## Extract the sample super-population information from the 1KG GDS file
     ## for profiles associated to the specified study in the GDS Sample file
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
         gdsSample=gdsSample, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
-    listParaSample <- selParaPCAUpQuartile(matKNN.All=KNN.sample.syn,
+    listParaSample <- selParaPCAUpQuartile(matKNN.All=resultsKNN,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 
@@ -1993,7 +1996,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
-        listCatPop=listCatPop, spRef=spRef,fieldPopInfAnc=fieldPopInfAnc,
+        listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList)
 
     resCall <- listKNNSample$matKNN[
@@ -2260,7 +2263,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         gdsProfile <- snpgdsOpen(file.GDSProfile)
 
         ## This variable will contain the results from the PCA analyses
-        KNN.list <- list()
+        ##KNN.list <- list()
         ## For each row of the sampleRM matrix
         for(j in seq_len(nrow(sampleRM))) {
             ## Run a PCA analysis using 1 synthetic profile from each
@@ -2270,20 +2273,20 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             ##  are removed from this PCA)
             ## The K-nearest neighbor analysis is done using
             ##  a range of K and D values
-            KNN.synt <- computePoolSyntheticAncestryGr(gdsSample=gdsProfile,
+            synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
                 sampleRM=sampleRM[j,], studyIDSyn=studyDF.syn$study.id,
                 np=1L, spRef=spRef, eigenCount=15L, verbose=FALSE)
 
             ## Results are saved
-            saveRDS(KNN.synt$matKNN, file.path(pathOutProfile,
+            saveRDS(synthKNN$matKNN, file.path(pathOutProfile,
                         paste0("KNN.synt.", listProfiles[i], ".", j, ".rds")))
         }
 
         ## Directory where the KNN results have been saved
-        PATHKNN <- file.path(pathOut, listProfiles[i])
-        listFilesName <- dir(file.path(PATHKNN), ".rds")
+        pathKNN <- file.path(pathOut, listProfiles[i])
+        listFilesName <- dir(file.path(pathKNN), ".rds")
         ## List of the KNN result files from PCA on synthetic data
-        listFiles <- file.path(file.path(PATHKNN) , listFilesName)
+        listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
         resCall <- computeAncestryFromSyntheticFile(gdsReference=gds1KG,
                         gdsSample=gdsProfile, listFiles=listFiles,

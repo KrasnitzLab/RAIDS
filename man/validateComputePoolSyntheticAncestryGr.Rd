@@ -3,10 +3,11 @@
 \encoding{UTF-8}
 \name{validateComputePoolSyntheticAncestryGr}
 \alias{validateComputePoolSyntheticAncestryGr}
-\title{Validate input parameters for pruningSample() function}
+\title{Validate input parameters for computePoolSyntheticAncestryGr()
+function}
 \usage{
 validateComputePoolSyntheticAncestryGr(
-  gdsSample,
+  gdsProfile,
   sampleRM,
   spRef,
   studyIDSyn,
@@ -23,15 +24,17 @@ validateComputePoolSyntheticAncestryGr(
 )
 }
 \arguments{
-\item{gdsSample}{an object of class
+\item{gdsProfile}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-GDS Sample file.}
+opened Profile GDS file.}
 
 \item{sampleRM}{a \code{vector} of \code{character} strings representing
 the identifiers of the 1KG reference samples that should not be used to
 create the reference PCA.}
 
-\item{spRef}{TODO}
+\item{spRef}{\code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
@@ -43,19 +46,17 @@ threads.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}
 
-\item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
+\item{fieldPopIn1KG}{a \code{character} string TODO.}
 
-\item{fieldPopInfAnc}{TODO. Default: \code{"SuperPop"}.}
+\item{fieldPopInfAnc}{a \code{character} string TODO.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
-number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
-the value \code{seq(2,15,1)} is assigned.}
+number of neighbors used in the K-nearest neighbor analysis.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _D_ parameter. The _D_ parameter represents the
-number of dimensions used in the PCA analysis.  If \code{NULL},
-the value \code{seq(2,15,1)} is assigned.}
+number of dimensions used in the PCA analysis.}
 
 \item{algorithm}{a \code{character} string representing the algorithm used
 to calculate the PCA. The 2 choices are "exact" (traditional exact
@@ -72,27 +73,31 @@ missing rate at with the SNVs are discarded; the SNVs are retained in the
 with "<= missingRate" only; if \code{NaN}, no missing threshold.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
-printed. Default: \code{FALSE}.}
+printed.}
 }
 \value{
 The function returns \code{0L} when successful.
 }
 \description{
 This function validates the input parameters for the
-\code{\link{pruningSample}} function.
+\code{\link{computePoolSyntheticAncestryGr}} function.
 }
 \examples{
 
 ## Directory where demo GDS files are located
 dataDir <- system.file("extdata", package="RAIDS")
 
-## The GDS Sample (opened)
+## The Profile GDS (opened)
 gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
+## The known super population ancestry for the 1KG profiles
+spRef <- c("EUR", "SAS", "EAS", "EUR", "AFR")
+names(spRef) <- c("HG00100", "HG00101", "HG00102", "HG00103", "HG00104")
+
 ## The validation should be successful
-RAIDS:::validateComputePoolSyntheticAncestryGr(gdsSample=gdsSample,
-     sampleRM="TGCA_01", spRef="TCGA",
+RAIDS:::validateComputePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+     sampleRM="TGCA_01", spRef=spRef,
      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
      pcaList=seq_len(10), algorithm="exact", eigenCount=12L,

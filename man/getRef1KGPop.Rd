@@ -4,7 +4,7 @@
 \name{getRef1KGPop}
 \alias{getRef1KGPop}
 \title{Extract the specified column from the 1KG GDS 'sample.ref' node
-for the reference samples}
+for the reference profiles (real ancestry assignation)}
 \usage{
 getRef1KGPop(gdsReference, popName = "superPop")
 }
@@ -19,14 +19,16 @@ that will be fetched in the \code{data.frame} present in the 1KG GDS
 }
 \value{
 \code{vector} of \code{character} strings representing the content
-of the extracted column for the 1KG GDS 'sample.ref' node. The sample
-identifier are used as names for the \code{vector}.
+of the extracted column for the 1KG GDS 'sample.ref' node. The values
+represent the known ancestry assignation. The 1KG profile
+identifiers are used as names for the \code{vector}.
 }
 \description{
 The function extract the specified column for the 'sample.ref'
 node present in the 1KG GDS file. The column must be present in the
 \code{data.frame} saved in the 'sample.ref' node. Only the information for
-the reference samples is returned.
+the reference profiles is returned. The values
+represent the known ancestry assignation.
 }
 \examples{
 

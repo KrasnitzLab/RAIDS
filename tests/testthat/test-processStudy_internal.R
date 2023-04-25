@@ -59,8 +59,11 @@ test_that("validateComputePoolSyntheticAncestryGr() must return expected results
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
+
     result1 <- RAIDS:::validateComputePoolSyntheticAncestryGr(
-        gdsSample=gdsF, sampleRM="TGCA_01", spRef="TCGA",
+        gdsProfile=gdsF, sampleRM="TGCA_01", spRef=spRef,
         studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
         fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
         pcaList=seq_len(10), algorithm="exact", eigenCount=12L,

@@ -1621,8 +1621,6 @@ computeKNNRefSample <- function(listEigenvector,
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param fieldPopIn1KG TODO. Default: \code{"superPop"}.
-#'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
 #' dataset. Default: \code{"SuperPop"}.
@@ -1680,7 +1678,6 @@ computeKNNRefSample <- function(listEigenvector,
 computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
                             studyIDSyn, np=1L,
                             listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-                            fieldPopIn1KG="superPop",
                             fieldPopInfAnc="SuperPop",
                             kList=seq(2,15,1),
                             pcaList=seq(2,15,1),
@@ -1700,7 +1697,7 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
     ## Validate the input parameters
     validateComputePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
         sampleRM=sampleRM, spRef=spRef, studyIDSyn=studyIDSyn, np=np,
-        listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG, pcaList=pcaList,
+        listCatPop=listCatPop, pcaList=pcaList,
         fieldPopInfAnc=fieldPopInfAnc, kList=kList,
         algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
         verbose=verbose)
@@ -1710,8 +1707,8 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
     ## excluded the selected profiles used to generate the synthetic profiles
-    pca1KG <- computePCARefRMMulti(gdsSample=gdsProfile,
-        sample.ref=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
+    pca1KG <- computePCARefRMMulti(gdsProfile=gdsProfile,
+        refProfileIDs=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
         eigenCount=eigenCount, missingRate=missingRate, verbose=verbose)
 
     resPCA <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca1KG,
@@ -1836,7 +1833,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
         ##  removed from this PCA)
         KNN.list[[j]] <- computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
                     sampleRM=sampleRM[j,], spRef=spRef, studyIDSyn=studyIDSyn,
-                    np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+                    np=np, listCatPop=listCatPop,
                     fieldPopInfAnc=fieldPopInfAnc, kList=kList,
                     pcaList=pcaList, algorithm=algorithm, eigenCount=eigen.cnt,
                     missingRate=missingRate, verbose=FALSE)

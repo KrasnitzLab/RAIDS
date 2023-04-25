@@ -6,8 +6,8 @@
 \title{Calculate Principal Component Analysis (PCA) on SNV genotype dataset}
 \usage{
 computePCARefRMMulti(
-  gdsSample,
-  sample.ref,
+  gdsProfile,
+  refProfileIDs,
   listRM,
   np = 1L,
   algorithm = "exact",
@@ -17,10 +17,12 @@ computePCARefRMMulti(
 )
 }
 \arguments{
-\item{gdsSample}{an object of class \link[SNPRelate]{SNPGDSFileClass},
-the GDS Sample file.}
+\item{gdsProfile}{an object of class \link[SNPRelate]{SNPGDSFileClass},
+the opened Profile GDS file.}
 
-\item{sample.ref}{TODO}
+\item{refProfileIDs}{a \code{vector} of reference 1KG profile identifiers
+that are present in the Profile GDS file. The reference profiles that are
+not present in \code{listRM} will be retained to run the PCA analysis.}
 
 \item{listRM}{a \code{vector} of \code{character} strings containing the
 identifiers for the reference samples that need to be removed for the

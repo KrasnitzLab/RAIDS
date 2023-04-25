@@ -232,7 +232,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' RAIDS:::validateComputePoolSyntheticAncestryGr(gdsProfile=gdsSample,
 #'      sampleRM="TGCA_01", spRef=spRef,
 #'      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
-#'      fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
+#'      fieldPopInfAnc="Pop", kList=seq_len(3),
 #'      pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
 #'      missingRate=0.02, verbose=FALSE)
 #'
@@ -244,7 +244,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @encoding UTF-8
 #' @keywords internal
 validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
-        spRef, studyIDSyn, np, listCatPop, fieldPopIn1KG,
+        spRef, studyIDSyn, np, listCatPop,
         fieldPopInfAnc, kList, pcaList, algorithm, eigenCount, missingRate,
         verbose) {
 
@@ -268,9 +268,9 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
         stop("The \'studyIDSyn\' parameter must be a character string.")
     }
 
-    ## The parameter studyIDSyn must be a character string
-    if(!(is.character(studyIDSyn))) {
-        stop("The \'studyIDSyn\' parameter must be a character string.")
+    ## The parameter fieldPopInfAnc must be a character string
+    if(!(is.character(fieldPopInfAnc))) {
+        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
     }
 
     ## The parameter np must be a single positive integer
@@ -1543,10 +1543,12 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' for a list of pruned SNVs present in a GDS Sample file. The
 #' \link[SNPRelate]{snpgdsPCA} function is used to do the calculation.
 #'
-#' @param gdsSample an object of class \link[SNPRelate]{SNPGDSFileClass},
-#' the GDS Sample file.
+#' @param gdsProfile an object of class \link[SNPRelate]{SNPGDSFileClass},
+#' the opened Profile GDS file.
 #'
-#' @param sample.ref TODO
+#' @param refProfileIDs a \code{vector} of reference 1KG profile identifiers
+#' that are present in the Profile GDS file. The reference profiles that are
+#' not present in \code{listRM} will be retained to run the PCA analysis.
 #'
 #' @param listRM a \code{vector} of \code{character} strings containing the
 #' identifiers for the reference samples that need to be removed for the
@@ -1599,19 +1601,19 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' @importFrom SNPRelate snpgdsPCA
 #' @encoding UTF-8
 #' @keywords internal
-computePCARefRMMulti <- function(gdsSample, sample.ref, listRM, np=1L,
+computePCARefRMMulti <- function(gdsProfile, refProfileIDs, listRM, np=1L,
                                     algorithm="exact", eigenCount=32L,
                                     missingRate=0.025, verbose) {
 
-    sample.Unrel <- sample.ref[which(!(sample.ref %in% listRM))]
+    unrelatedSamples <- refProfileIDs[which(!(refProfileIDs %in% listRM))]
 
     listPCA <- list()
 
-    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
+    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
 
     ## Calculate Principal Component Analysis (PCA) on SNV genotype dataset
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsSample,
-                                            sample.id=sample.Unrel,
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsProfile,
+                                            sample.id=unrelatedSamples,
                                             snp.id=listPCA[["pruned"]],
                                             num.thread=np,
                                             missing.rate=missingRate,

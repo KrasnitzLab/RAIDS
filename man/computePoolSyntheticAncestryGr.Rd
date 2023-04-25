@@ -13,7 +13,6 @@ computePoolSyntheticAncestryGr(
   studyIDSyn,
   np = 1L,
   listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
-  fieldPopIn1KG = "superPop",
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1),
@@ -46,8 +45,6 @@ threads. Default: \code{1L}.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
-
-\item{fieldPopIn1KG}{TODO. Default: \code{"superPop"}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified

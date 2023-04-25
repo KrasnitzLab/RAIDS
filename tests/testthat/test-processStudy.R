@@ -1639,6 +1639,25 @@ test_that("computePoolSyntheticAncestryGr() must return error when spRef is char
 })
 
 
+test_that("computePoolSyntheticAncestryGr() must return error when fieldPopInfAnc is numeric", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    spRef <- c("EUR", "AFR")
+    names(spRef) <- c("HG01", "HG02")
+
+    error_message <- paste0("The \'fieldPopInfAnc\' parameter must be a ",
+                                "character string.")
+
+    expect_error(computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+        sampleRM=c("1", "2"), studyIDSyn="Synthetic", np=1L, spRef=spRef,
+        fieldPopInfAnc=33, algorithm="exact", eigenCount=15L, missingRate=0.02,
+        verbose=TRUE), error_message, fixed=TRUE)
+})
+
+
 #############################################################################
 ### Tests computeAncestryFromSyntheticFile() results
 #############################################################################

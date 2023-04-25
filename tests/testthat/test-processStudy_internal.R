@@ -65,7 +65,7 @@ test_that("validateComputePoolSyntheticAncestryGr() must return expected results
     result1 <- RAIDS:::validateComputePoolSyntheticAncestryGr(
         gdsProfile=gdsF, sampleRM="TGCA_01", spRef=spRef,
         studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
-        fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
+        fieldPopInfAnc="Pop", kList=seq_len(3),
         pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
         missingRate=0.02, verbose=FALSE)
 

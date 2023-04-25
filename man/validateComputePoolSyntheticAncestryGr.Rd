@@ -13,7 +13,6 @@ validateComputePoolSyntheticAncestryGr(
   studyIDSyn,
   np,
   listCatPop,
-  fieldPopIn1KG,
   fieldPopInfAnc,
   kList,
   pcaList,
@@ -46,8 +45,6 @@ threads.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}
 
-\item{fieldPopIn1KG}{a \code{character} string TODO.}
-
 \item{fieldPopInfAnc}{a \code{character} string TODO.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
@@ -74,6 +71,8 @@ with "<= missingRate" only; if \code{NaN}, no missing threshold.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
 printed.}
+
+\item{fieldPopIn1KG}{a \code{character} string TODO.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -99,7 +98,7 @@ names(spRef) <- c("HG00100", "HG00101", "HG00102", "HG00103", "HG00104")
 RAIDS:::validateComputePoolSyntheticAncestryGr(gdsProfile=gdsSample,
      sampleRM="TGCA_01", spRef=spRef,
      studyIDSyn="TCGA", np=1L, listCatPop=c("AFR", "EAS", "SAS"),
-     fieldPopIn1KG="SuperPop",  fieldPopInfAnc="Pop", kList=seq_len(3),
+     fieldPopInfAnc="Pop", kList=seq_len(3),
      pcaList=seq_len(10), algorithm="exact", eigenCount=12L,
      missingRate=0.02, verbose=FALSE)
 

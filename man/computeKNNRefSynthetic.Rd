@@ -9,7 +9,7 @@ synthetic dataset}
 computeKNNRefSynthetic(
   gdsProfile,
   listEigenvector,
-  listCatPop,
+  listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
   studyIDSyn,
   spRef,
   fieldPopInfAnc = "SuperPop",
@@ -26,7 +26,7 @@ opened Profile GDS file.}
 
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations. Default:
-\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
+\code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
@@ -38,7 +38,7 @@ identifiers are used as names for the \code{vector}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified
-dataset. Default: \code{"SuperPop"}.}
+data set. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  K parameter. The K parameter represents the

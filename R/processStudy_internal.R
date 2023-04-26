@@ -1604,18 +1604,19 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 }
 
 
-#' @title Calculate Principal Component Analysis (PCA) on SNV genotype dataset
+#' @title Calculate Principal Component Analysis (PCA) on SNV genotype data set
 #'
 #' @description The functions calculates the principal component analysis (PCA)
-#' for a list of pruned SNVs present in a GDS Sample file. The
+#' for a list of pruned SNVs present in a Profile GDS file. The
 #' \link[SNPRelate]{snpgdsPCA} function is used to do the calculation.
 #'
 #' @param gdsProfile an object of class \link[SNPRelate]{SNPGDSFileClass},
 #' the opened Profile GDS file.
 #'
 #' @param refProfileIDs a \code{vector} of reference 1KG profile identifiers
-#' that are present in the Profile GDS file. The reference profiles that are
-#' not present in \code{listRM} will be retained to run the PCA analysis.
+#' that are present in the Profile GDS file.
+#' Those profiles minus the one present in the \code{listRM} vector will be
+#' used to run the PCA analysis.
 #'
 #' @param listRM a \code{vector} of \code{character} strings containing the
 #' identifiers for the reference samples that need to be removed for the
@@ -1660,8 +1661,36 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "TOTO"
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' ## Profiles that should be removed from the PCA analysis
+#' ## Those profiles has been used to generate the synthetic data set
+#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+#'     "NA19731", "NA20528", "NA20908")
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Run a PCA analysis
+#' results <- RAIDS:::computePCARefRMMulti(gdsProfile=gdsProfile,
+#'     refProfileIDs=names(refKnownSuperPop), listRM=samplesRM, np=1L,
+#'     algorithm="exact", eigenCount=32L, missingRate=0.025, verbose=FALSE)
+#'
+#' ## The PCA on the pruned SNVs data set for selected profiles
+#' head(results$pca.unrel$eigenvect)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn

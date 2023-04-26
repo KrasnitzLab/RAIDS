@@ -18,7 +18,7 @@ computePCARefSample(
 }
 \arguments{
 \item{gdsSample}{an object of class \link[gdsfmt]{gds.class},
-a GDS Sample file.}
+an opened Profile GDS file.}
 
 \item{name.id}{a single \code{character} string representing the sample
 identifier.}

@@ -1187,17 +1187,26 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 }
 
 
-#' @title TODO
+#' @title Project synthetic profiles onto existing principal component axes
+#' generated using the reference 1KG profiles
 #'
-#' @description TODO
+#' @description The function projects  the synthetic profiles onto existing
+#' principal component axes generated using the reference 1KG profiles. The
+#' reference profiles used to generate the synthetic profiles have previously
+#' been removed from the set of reference profiles.
 #'
 #' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file),
 #' an opened Profile GDS file.
 #'
-#' @param listPCA TODO
+#' @param listPCA a \code{list} containing the PCA \code{object} generated
+#' with the 1KG reference profiles (excluding the ones used to generate the
+#' synthetic data set) in an entry called \code{"pca.unrel"}.
 #'
-#' @param sampleRef a \code{character} string representing the identifier
-#' of the current profile.
+#' @param sampleRef a \code{vector} of \code{character} strings representing
+#' the identifiers of the 1KG reference profiles that have been used to
+#' generate the synthetic profiles
+#' that are going to be analysed here. The sub-continental
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
@@ -1209,14 +1218,42 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
 #' \item{sample.id} { TODO }
-#' \item{eigenvector.ref} { TODO }
-#' \item{eigenvecto} { TODO }
+#' \item{eigenvector.ref} { a \code{matrix} }
+#' \item{eigenvector} { TODO }
 #' }
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "TOTO"
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+#'     "NA19731", "NA20528", "NA20908")
+#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+#'
+#' ## The PCA on the 1KG reference profiles
+#' pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Projects synthetic profiles on 1KG PCA
+#' results <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca,
+#'     sampleRef=samplesRM, studyIDSyn=studyID, verbose=FALSE)
+#'
+#' ## The eigenvectors for the synthetic profiles
+#' head(results$eigenvector)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
@@ -1231,6 +1268,7 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
         listPCA=listPCA, sampleRef=sampleRef, studyIDSyn=studyIDSyn,
         verbose=verbose)
 
+    ## Identify profiles from synthetic data set
     study.annot <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
     study.annot <- study.annot[which(study.annot$study.id == studyIDSyn &
                                         study.annot$case.id %in% sampleRef),]
@@ -1240,7 +1278,7 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
                                 gdsobj=gdsProfile, num.thread=1,
                                 verbose=verbose)
 
-    ## Project samples onto existing principal component axes
+    ## Project synthetic profiles onto existing principal component axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
                                 gdsobj=gdsProfile,
                                 sample.id=study.annot$data.id,
@@ -1252,6 +1290,8 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
     rownames(listPCA[["samp.load"]]$eigenvect) <-
                                             listPCA[["samp.load"]]$sample.id
 
+    ## Return the eigenvectors for the 1KG reference profiles
+    ## and the eigenvectors for the synthetic data set projected on the 1KG PCA
     listRes <- list(sample.id=listPCA[["samp.load"]]$sample.id,
                         eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
                         eigenvector=listPCA[["samp.load"]]$eigenvect)
@@ -1589,7 +1629,8 @@ computeKNNRefSample <- function(listEigenvector,
 }
 
 #' @title Run a PCA analysis and a K-nearest neighbors analysis on a small set
-#' of synthetic data
+#' of synthetic data using all 1KG profiles except the ones used to generate
+#' the synthetic profiles
 #'
 #' @description The function runs a PCA analysis using 1 synthetic profile
 #' from each sub-continental population. The reference profiles used to
@@ -1761,11 +1802,12 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
         refProfileIDs=names(spRef), listRM=sampleRM, np=np, algorithm=algorithm,
         eigenCount=eigenCount, missingRate=missingRate, verbose=verbose)
 
+    ## Calculate PCA on the synthetic profiles using 1KG PCA results
     resPCA <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca1KG,
                 sampleRef=sampleRM, studyIDSyn=studyIDSyn, verbose=verbose)
 
     ## Calculate the k-nearest neighbor analyses on a subset of the
-    ## synthetic dataset
+    ## synthetic data set
     synthKNN <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
         listEigenvector=resPCA, listCatPop=listCatPop, studyIDSyn=studyIDSyn,
         spRef=spRef, fieldPopInfAnc=fieldPopInfAnc, kList=kList,

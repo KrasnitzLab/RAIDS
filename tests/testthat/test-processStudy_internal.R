@@ -369,12 +369,16 @@ context("validateComputePCAMultiSynthetic() results")
 test_that("validateComputePCAMultiSynthetic() must return expected results when all input are valid", {
 
     dataDir <- test_path("fixtures")
-    fileProfileGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
-    gdsSample <- openfn.gds(fileProfileGDS)
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+    gdsSample <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
 
+    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+
     result <- RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsSample,
-        listPCA=c(1,2), sampleRef=c("HG01"), studyIDSyn="MyStudy",
+        listPCA=pca, sampleRef=c("HG01"), studyIDSyn="MyStudy",
         verbose=FALSE)
 
     expect_identical(result, 0L)

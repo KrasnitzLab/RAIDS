@@ -18,7 +18,9 @@ validateComputePCAMultiSynthetic(
 \item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
 an opened Profile GDS file.}
 
-\item{listPCA}{TODO}
+\item{listPCA}{a \code{list} containing the PCA \code{object} generated
+with the 1KG reference profiles (excluding the ones used to generate the
+synthetic data set) in an entry called \code{"pca.unrel"}.}
 
 \item{sampleRef}{a \code{vector} of \code{character} strings representing
 the identifiers of the 1KG reference profiles that should not be used to
@@ -41,20 +43,21 @@ When a parameter is not as expected, an error message is generated.
 \examples{
 
 ## Path to the demo GDS file is located in this package
-dataDir <- system.file("extdata/tests", package="RAIDS")
-fileProfileGDS <- file.path(dataDir, "ex1_demo.gds")
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+fileProfileGDS <- file.path(dataDir, "ex1.gds")
 
 ## Open GDS files
 gdsProfile <- openfn.gds(fileProfileGDS)
 
+pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
+
 ## The function returns 0L when all parameters are valid
 RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsProfile,
-    listPCA="TODO",
-    sampleRef="Sample01", studyIDSyn="MyStudy", verbose=FALSE)
+    listPCA=pca, sampleRef=c("HG00246", "HG00325"),
+    studyIDSyn="MyStudy", verbose=FALSE)
 
 ## Close GDS file (it is important to always close the GDS files)
 closefn.gds(gdsProfile)
-
 
 }
 \author{

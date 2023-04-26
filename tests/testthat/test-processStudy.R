@@ -301,7 +301,7 @@ test_that("pruningSample() must return error when keepFile is a character string
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     sampleRDS <- test_path("fixtures", "Sample_Info_Test.RDS")
 
-        gdsF <- openfn.gds(fileGDS)
+    gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- 'The \'keepFile\' parameter must be a logical (TRUE or FALSE).'
@@ -2375,3 +2375,108 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
 })
 
 
+
+
+#############################################################################
+### Tests computePCAMultiSynthetic() results
+#############################################################################
+
+
+context("computePCAMultiSynthetic() results")
+
+
+test_that("computePCAMultiSynthetic() must return error when gdsProfile is filepath", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+
+    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+
+    samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+        "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+        "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+        "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+        "NA19731", "NA20528", "NA20908")
+    names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+        "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+        "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+    error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'"
+
+    expect_error(computePCAMultiSynthetic(gdsProfile=fileGDS, listPCA=pca,
+        sampleRef=samplesRM, studyIDSyn="MyData", verbose=FALSE), error_message)
+})
+
+
+test_that("computePCAMultiSynthetic() must return error when listPCA is empty list", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+
+    samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+        "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+        "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+        "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+        "NA19731", "NA20528", "NA20908")
+    names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+        "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+        "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+    error_message <- paste0("The \'listPCA\' parameter must be a list with ",
+                                    "the entries \'pca.unrel\'.")
+
+    expect_error(computePCAMultiSynthetic(gdsProfile=gdsF, listPCA=list(),
+        sampleRef=samplesRM, studyIDSyn="MyData", verbose=FALSE), error_message)
+})
+
+
+test_that("computePCAMultiSynthetic() must return error when samplesRM is numeric", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+
+    samplesRM <- 33
+
+    error_message <- paste0("The \'sampleRef\' parameter must be a vector of ",
+                                "character strings.")
+
+    expect_error(computePCAMultiSynthetic(gdsProfile=gdsF, listPCA=pca,
+        sampleRef=samplesRM, studyIDSyn="MyData", verbose=FALSE), error_message)
+})
+
+
+test_that("computePCAMultiSynthetic() must return error when studyIDSyn is vector", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+
+    samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+        "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+        "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+        "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+        "NA19731", "NA20528", "NA20908")
+    names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+        "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+        "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+    error_message <- "The \'studyIDSyn\' parameter must be a character string."
+
+    expect_error(computePCAMultiSynthetic(gdsProfile=gdsF, listPCA=pca,
+        sampleRef=samplesRM, studyIDSyn=c("MyData", "TEST"), verbose=FALSE),
+        error_message)
+})

@@ -1547,7 +1547,9 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file),
 #' an opened Profile GDS file.
 #'
-#' @param listPCA TODO
+#' @param listPCA a \code{list} containing the PCA \code{object} generated
+#' with the 1KG reference profiles (excluding the ones used to generate the
+#' synthetic data set) in an entry called \code{"pca.unrel"}.
 #'
 #' @param sampleRef a \code{vector} of \code{character} strings representing
 #' the identifiers of the 1KG reference profiles that should not be used to
@@ -1565,20 +1567,21 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' @examples
 #'
 #' ## Path to the demo GDS file is located in this package
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileProfileGDS <- file.path(dataDir, "ex1_demo.gds")
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' fileProfileGDS <- file.path(dataDir, "ex1.gds")
 #'
 #' ## Open GDS files
 #' gdsProfile <- openfn.gds(fileProfileGDS)
 #'
+#' pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
+#'
 #' ## The function returns 0L when all parameters are valid
 #' RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsProfile,
-#'     listPCA="TODO",
-#'     sampleRef="Sample01", studyIDSyn="MyStudy", verbose=FALSE)
+#'     listPCA=pca, sampleRef=c("HG00246", "HG00325"),
+#'     studyIDSyn="MyStudy", verbose=FALSE)
 #'
 #' ## Close GDS file (it is important to always close the GDS files)
 #' closefn.gds(gdsProfile)
-#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
@@ -1588,8 +1591,15 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 
     validateGDSClass(gds=gdsProfile, "gdsProfile")
 
-    if(length(sampleRef) < 1) {
-        stop("Number of profiles in study.annot not equal to 1\n")
+    if(!(is.list(listPCA) &&
+            "pca.unrel" %in% names(listPCA))) {
+        stop("The \'listPCA\' parameter must be a list with the ",
+                    "entries \'pca.unrel\'.")
+    }
+
+    if(!(is.character(sampleRef) && is.vector(sampleRef))) {
+        stop("The \'sampleRef\' parameter must be a vector of ",
+                    "character strings.")
     }
 
     ## The studyID must be a character string

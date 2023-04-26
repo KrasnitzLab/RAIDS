@@ -4,7 +4,8 @@
 \name{computePoolSyntheticAncestryGr}
 \alias{computePoolSyntheticAncestryGr}
 \title{Run a PCA analysis and a K-nearest neighbors analysis on a small set
-of synthetic data}
+of synthetic data using all 1KG profiles except the ones used to generate
+the synthetic profiles}
 \usage{
 computePoolSyntheticAncestryGr(
   gdsProfile,

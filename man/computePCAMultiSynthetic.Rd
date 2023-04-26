@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computePCAMultiSynthetic}
 \alias{computePCAMultiSynthetic}
-\title{TODO}
+\title{Project synthetic profiles onto existing principal component axes
+generated using the reference 1KG profiles}
 \usage{
 computePCAMultiSynthetic(
   gdsProfile,
@@ -17,10 +18,15 @@ computePCAMultiSynthetic(
 \item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
 an opened Profile GDS file.}
 
-\item{listPCA}{TODO}
+\item{listPCA}{a \code{list} containing the PCA \code{object} generated
+with the 1KG reference profiles (excluding the ones used to generate the
+synthetic data set) in an entry called \code{"pca.unrel"}.}
 
-\item{sampleRef}{a \code{character} string representing the identifier
-of the current profile.}
+\item{sampleRef}{a \code{vector} of \code{character} strings representing
+the identifiers of the 1KG reference profiles that have been used to
+generate the synthetic profiles
+that are going to be analysed here. The sub-continental
+identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
@@ -33,17 +39,48 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 a \code{list} containing 3 entries:
 \itemize{
 \item{sample.id} { TODO }
-\item{eigenvector.ref} { TODO }
-\item{eigenvecto} { TODO }
+\item{eigenvector.ref} { a \code{matrix} }
+\item{eigenvector} { TODO }
 }
 }
 \description{
-TODO
+The function projects  the synthetic profiles onto existing
+principal component axes generated using the reference 1KG profiles. The
+reference profiles used to generate the synthetic profiles have previously
+been removed from the set of reference profiles.
 }
 \examples{
 
-# TODO
-gds <- "TOTO"
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+
+# The name of the synthetic study
+studyID <- "MYDATA.Synthetic"
+
+samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+    "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+    "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+    "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+    "NA19731", "NA20528", "NA20908")
+names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+    "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+    "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+## The PCA on the 1KG reference profiles
+pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
+
+## Open the Profile GDS file
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+
+## Projects synthetic profiles on 1KG PCA
+results <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca,
+    sampleRef=samplesRM, studyIDSyn=studyID, verbose=FALSE)
+
+## The eigenvectors for the synthetic profiles
+head(results$eigenvector)
+
+## Close Profile GDS file (important)
+closefn.gds(gdsProfile)
 
 }
 \author{

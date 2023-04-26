@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computePoolSyntheticAncestryGr}
 \alias{computePoolSyntheticAncestryGr}
-\title{Run a PCA analysis and a K nearest neighbor analysis on a small set
+\title{Run a PCA analysis and a K-nearest neighbors analysis on a small set
 of synthetic data}
 \usage{
 computePoolSyntheticAncestryGr(
@@ -29,7 +29,11 @@ opened Profile GDS file.}
 
 \item{sampleRM}{a \code{vector} of \code{character} strings representing
 the identifiers of the 1KG reference profiles that should not be used to
-create the reference PCA.}
+create the reference PCA. There should be one per sub-continental
+population. Those profiles are
+removed because those have been used to generate the synthetic profiles
+that are going to be analysed here. The sub-continental
+identifiers are used as names for the \code{vector}.}
 
 \item{spRef}{\code{vector} of \code{character} strings representing the
 known super population ancestry for the 1KG profiles. The 1KG profile
@@ -37,7 +41,7 @@ identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier.
-The study identifier must be present in the GDS Sample file.}
+The study identifier must be present in the Profile GDS file.}
 
 \item{np}{a single positive \code{integer} representing the number of
 threads. Default: \code{1L}.}
@@ -82,21 +86,67 @@ Default: \code{0.025}.}
 printed. Default: \code{FALSE}.}
 }
 \value{
-a \code{list} TODO with the sample.id and eigenvectors
-and a table with KNN call for different K and pca dimension.
+a \code{list} containing the following entries:
+\itemize{
+\item{sample.id}{a \code{vector} of \code{character} strings representing
+the identifiers of the synthetic profiles. }
+\item{sample1Kg}{a \code{vector} of \code{character} strings representing
+the identifiers of the reference 1KG profiles used to generate the
+synthetic profiles. }
+\item{sp}{a \code{vector} of \code{character} strings representing the
+known ancestry for the reference 1KG profiles used to generate the
+synthetic profiles. }
+\item{matKNN}{a \code{data.frame} containing 4 columns. The first column
+'sample.id' contains the name of the synthetic profile. The second column
+'D' represents the dimension D used to infer the ancestry. The third column
+'K' represents the number of neighbors K used to infer the ancestry. The
+fourth column 'SuperPop' contains the inferred ancestry. }
+}
 }
 \description{
 The function runs a PCA analysis using 1 synthetic profile
-from each sub-continental population. The reference profile used to
-create those synthetic profiles are first removed from the 1KG list
-of profiles that generates the reference PCA. Then, the retained synthetic
-profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
+from each sub-continental population. The reference profiles used to
+create those synthetic profiles are first removed from the list
+of 1KG reference profiles that generates the reference PCA. Then, the
+retained synthetic
+profiles are projected on the 1KG PCA space. Finally, a K-nearest neighbors
 analysis using a range of K and D values is done.
 }
 \examples{
 
-# TODO
-listEigenvector <- "TOTO"
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+
+# The name of the synthetic study
+studyID <- "MYDATA.Synthetic"
+
+samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+    "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+    "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+    "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+    "NA19731", "NA20528", "NA20908")
+names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+    "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+    "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+## The known ancestry for the 1KG reference profiles
+refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+
+## Open the Profile GDS file
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+
+## Run a PCA analysis and a K-nearest neighbors analysis on a small set
+## of synthetic data
+results <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
+    sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
+    kList=seq(10,15,1), pcaList=seq(10,15,1), eigenCount=15L)
+
+## The ancestry inference for the synthetic data using
+## different K and D values
+head(results$matKNN)
+
+## Close Profile GDS file (important)
+closefn.gds(gdsProfile)
 
 }
 \references{

@@ -20,7 +20,7 @@ that will be fetched in the \code{data.frame} present in the 1KG GDS
 \value{
 \code{vector} of \code{character} strings representing the content
 of the extracted column for the 1KG GDS 'sample.ref' node. The values
-represent the known ancestry assignation. The 1KG profile
+represent the known ancestry assignation. The profile
 identifiers are used as names for the \code{vector}.
 }
 \description{
@@ -39,7 +39,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
 fileGDS <- snpgdsOpen(nameFileGDS)
 
-## Extract super population information for the 1KG samples
+## Extract super population information for the 1KG profiles
 getRef1KGPop(gdsReference=fileGDS, popName="superPop")
 
 ## Close 1K GDS file

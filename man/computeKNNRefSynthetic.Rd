@@ -7,7 +7,7 @@
 synthetic dataset}
 \usage{
 computeKNNRefSynthetic(
-  gdsSample,
+  gdsProfile,
   listEigenvector,
   listCatPop,
   studyIDSyn,
@@ -18,9 +18,9 @@ computeKNNRefSynthetic(
 )
 }
 \arguments{
-\item{gdsSample}{an object of class
+\item{gdsProfile}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-GDS Sample file.}
+opened Profile GDS file.}
 
 \item{listEigenvector}{TODO see return of computePCAsynthetic}
 
@@ -28,9 +28,13 @@ GDS Sample file.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{studyIDSyn}{a the studyID of the synthetic data}
+\item{studyIDSyn}{a \code{character} string corresponding to the study
+identifier.
+The study identifier must be present in the Profile GDS file.}
 
-\item{spRef}{TODO}
+\item{spRef}{\code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified
@@ -59,7 +63,8 @@ and a table with KNN call for different K and PCA dimensions.
 }
 }
 \description{
-TODO
+The function runs k-nearest neighbors analysis on a
+subset of the synthetic data set. The function uses the 'knn' package.
 }
 \examples{
 

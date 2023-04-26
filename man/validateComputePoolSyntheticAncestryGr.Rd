@@ -31,7 +31,7 @@ opened Profile GDS file.}
 the identifiers of the 1KG reference samples that should not be used to
 create the reference PCA.}
 
-\item{spRef}{\code{vector} of \code{character} strings representing the
+\item{spRef}{a \code{vector} of \code{character} strings representing the
 known super population ancestry for the 1KG profiles. The 1KG profile
 identifiers are used as names for the \code{vector}.}
 

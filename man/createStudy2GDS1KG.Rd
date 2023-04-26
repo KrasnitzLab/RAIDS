@@ -111,7 +111,7 @@ samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
-## Create the Sample GDS file for sample in listSamples vector
+## Create the Profile GDS File for sample in listSamples vector
 ## (in this case, samples "ex1")
 ## The Profile GDS file is created in the pathProfileGDS directory
 result <- createStudy2GDS1KG(pathGeno=dataDir,

@@ -163,7 +163,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' the identifiers of the 1KG reference samples that should not be used to
 #' create the reference PCA.
 #'
-#' @param spRef \code{vector} of \code{character} strings representing the
+#' @param spRef a \code{vector} of \code{character} strings representing the
 #' known super population ancestry for the 1KG profiles. The 1KG profile
 #' identifiers are used as names for the \code{vector}.
 #'
@@ -257,7 +257,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
                 "strings.")
     }
 
-    ## the parameter spRef must be a vector of chacters strings with names
+    ## the parameter spRef must be a vector of character strings with names
     if(!(is.character(spRef) && !is.null(names(spRef)))) {
         stop("The \'spRef\' parameter must be a vector of character ",
                 "strings with profile identifiers as names.")
@@ -1534,6 +1534,73 @@ validateProfileGDSExist <- function(pathProfile, profile) {
     }
 
     return(pathFile)
+}
+
+
+#' @title Validate the input parameters for computePCAMultiSynthetic()
+#' function
+#'
+#' @description The function validates the input parameters for the
+#' \code{\link{computePCAMultiSynthetic}} function.
+#' When a parameter is not as expected, an error message is generated.
+#'
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file),
+#' an opened Profile GDS file.
+#'
+#' @param listPCA TODO
+#'
+#' @param sampleRef a \code{vector} of \code{character} strings representing
+#' the identifiers of the 1KG reference profiles that should not be used to
+#' create the reference PCA.
+#'
+#' @param studyIDSyn a \code{character} string corresponding to the study
+#' identifier. The study identifier must be present in the Profile GDS file.
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileProfileGDS <- file.path(dataDir, "ex1_demo.gds")
+#'
+#' ## Open GDS files
+#' gdsProfile <- openfn.gds(fileProfileGDS)
+#'
+#' ## The function returns 0L when all parameters are valid
+#' RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsProfile,
+#'     listPCA="TODO",
+#'     sampleRef="Sample01", studyIDSyn="MyStudy", verbose=FALSE)
+#'
+#' ## Close GDS file (it is important to always close the GDS files)
+#' closefn.gds(gdsProfile)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
+                                                    studyIDSyn, verbose) {
+
+    validateGDSClass(gds=gdsProfile, "gdsProfile")
+
+    if(length(sampleRef) < 1) {
+        stop("Number of profiles in study.annot not equal to 1\n")
+    }
+
+    ## The studyID must be a character string
+    if (!(is.character(studyIDSyn) && length(studyIDSyn) == 1)) {
+        stop("The \'studyIDSyn\' parameter must be a character string.")
+    }
+
+    ## Validate that verbose is a logical
+    validateLogical(logical=verbose, name="verbose")
+
+    return(0L)
 }
 
 

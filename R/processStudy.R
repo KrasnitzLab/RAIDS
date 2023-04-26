@@ -90,7 +90,7 @@
 #'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## Create the Sample GDS file for sample in listSamples vector
+#' ## Create the Profile GDS File for sample in listSamples vector
 #' ## (in this case, samples "ex1")
 #' ## The Profile GDS file is created in the pathProfileGDS directory
 #' result <- createStudy2GDS1KG(pathGeno=dataDir,
@@ -1191,17 +1191,17 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #'
 #' @description TODO
 #'
-#' @param gdsProfile an object of class \code{gds} opened related to
-#' the sample
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file),
+#' an opened Profile GDS file.
 #'
 #' @param listPCA TODO
 #'
-#' @param sampleRef a \code{vector} of sample.id from 1KG with one entry for
-#' each synthetic to project.
+#' @param sampleRef a \code{character} string representing the identifier
+#' of the current profile.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
-#' The study identifier must be present in the GDS Sample file.
+#' The study identifier must be present in the Profile GDS file.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
@@ -1226,14 +1226,14 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 computePCAMultiSynthetic <- function(gdsProfile, listPCA,
                                 sampleRef, studyIDSyn, verbose=FALSE) {
 
-    if(length(sampleRef) < 1) {
-        stop("Number of sample in study.annot not equal to 1\n")
-    }
+    ## Validate the input parameters
+    validateComputePCAMultiSynthetic(gdsProfile=gdsProfile,
+        listPCA=listPCA, sampleRef=sampleRef, studyIDSyn=studyIDSyn,
+        verbose=verbose)
 
     study.annot <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
     study.annot <- study.annot[which(study.annot$study.id == studyIDSyn &
                                         study.annot$case.id %in% sampleRef),]
-
 
     ## SNP loading in principal component analysis
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
@@ -1333,9 +1333,9 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 
     sample.pos <- which(sample.id == name.id)
 
-    study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    studyAnnotAll <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
-    sample.Unrel <- study.annot.all[which(study.annot.all$study.id ==
+    sample.Unrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
                                                 studyIDRef), "data.id"]
 
     listPCA <- list()
@@ -1372,11 +1372,12 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' @title Run a k-nearest neighbors analysis on a subset of the
 #' synthetic dataset
 #'
-#' @description TODO
+#' @description The function runs k-nearest neighbors analysis on a
+#' subset of the synthetic data set. The function uses the 'knn' package.
 #'
-#' @param gdsSample an object of class
+#' @param gdsProfile an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-#' GDS Sample file.
+#' opened Profile GDS file.
 #'
 #' @param listEigenvector TODO see return of computePCAsynthetic
 #'
@@ -1384,9 +1385,13 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param studyIDSyn a the studyID of the synthetic data
+#' @param studyIDSyn a \code{character} string corresponding to the study
+#' identifier.
+#' The study identifier must be present in the Profile GDS file.
 #'
-#' @param spRef TODO
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
@@ -1423,16 +1428,12 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' @importFrom class knn
 #' @encoding UTF-8
 #' @export
-computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
+computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
                                     listCatPop, studyIDSyn,
                                     spRef, fieldPopInfAnc="SuperPop",
                                     kList=seq(2, 15, 1),
                                     pcaList=seq(2, 15, 1)) {
 
-    ## The number of rows in study.annot must be one.
-    # if(nrow(study.annot) < 1) {
-    #     stop("Number of samples in study.annot not equal to 1\n")
-    # }
 
     ## Assign default value if kList is NULL
     if(is.null(kList)) {
@@ -1445,10 +1446,10 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     }
 
     ## Get study information from the GDS Sample file
-    study.annot.all <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    studyAnnotAll <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
 
-    study.annot <- study.annot.all[which(study.annot.all$study.id ==
-                        studyIDSyn & study.annot.all$data.id %in%
+    studyAnnot <- studyAnnotAll[which(studyAnnotAll$study.id ==
+                        studyIDSyn & studyAnnotAll$data.id %in%
                                                 listEigenvector$sample.id), ]
 
     listMat <- list()
@@ -1490,15 +1491,14 @@ computeKNNRefSynthetic <- function(gdsSample, listEigenvector,
     resMat <- do.call(rbind, listMat)
 
     listKNN <- list(sample.id=listEigenvector$sample.id,
-                    sample1Kg=study.annot$case.id,
-                    sp=spRef[study.annot$case.id], matKNN=resMat)
+                    sample1Kg=studyAnnot$case.id,
+                    sp=spRef[studyAnnot$case.id], matKNN=resMat)
 
     return(listKNN)
 }
 
 
-
-#' @title Run a k-nearest neighbors analysis on a referenc sample
+#' @title Run a k-nearest neighbors analysis on a reference profile
 #'
 #' @description TODO
 #'
@@ -1588,14 +1588,15 @@ computeKNNRefSample <- function(listEigenvector,
     return(listKNN)
 }
 
-#' @title Run a PCA analysis and a K nearest neighbor analysis on a small set
+#' @title Run a PCA analysis and a K-nearest neighbors analysis on a small set
 #' of synthetic data
 #'
 #' @description The function runs a PCA analysis using 1 synthetic profile
-#' from each sub-continental population. The reference profile used to
-#' create those synthetic profiles are first removed from the 1KG list
-#' of profiles that generates the reference PCA. Then, the retained synthetic
-#' profiles are projected on the 1KG PCA space. Finally, a K nearest neighbor
+#' from each sub-continental population. The reference profiles used to
+#' create those synthetic profiles are first removed from the list
+#' of 1KG reference profiles that generates the reference PCA. Then, the
+#' retained synthetic
+#' profiles are projected on the 1KG PCA space. Finally, a K-nearest neighbors
 #' analysis using a range of K and D values is done.
 #'
 #' @param gdsProfile an object of class
@@ -1604,7 +1605,11 @@ computeKNNRefSample <- function(listEigenvector,
 #'
 #' @param sampleRM a \code{vector} of \code{character} strings representing
 #' the identifiers of the 1KG reference profiles that should not be used to
-#' create the reference PCA.
+#' create the reference PCA. There should be one per sub-continental
+#' population. Those profiles are
+#' removed because those have been used to generate the synthetic profiles
+#' that are going to be analysed here. The sub-continental
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param spRef \code{vector} of \code{character} strings representing the
 #' known super population ancestry for the 1KG profiles. The 1KG profile
@@ -1612,7 +1617,7 @@ computeKNNRefSample <- function(listEigenvector,
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
-#' The study identifier must be present in the GDS Sample file.
+#' The study identifier must be present in the Profile GDS file.
 #'
 #' @param np a single positive \code{integer} representing the number of
 #' threads. Default: \code{1L}.
@@ -1656,8 +1661,22 @@ computeKNNRefSample <- function(listEigenvector,
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed. Default: \code{FALSE}.
 #'
-#' @return a \code{list} TODO with the sample.id and eigenvectors
-#' and a table with KNN call for different K and pca dimension.
+#' @return a \code{list} containing the following entries:
+#' \itemize{
+#' \item{sample.id}{a \code{vector} of \code{character} strings representing
+#' the identifiers of the synthetic profiles. }
+#' \item{sample1Kg}{a \code{vector} of \code{character} strings representing
+#' the identifiers of the reference 1KG profiles used to generate the
+#' synthetic profiles. }
+#' \item{sp}{a \code{vector} of \code{character} strings representing the
+#' known ancestry for the reference 1KG profiles used to generate the
+#' synthetic profiles. }
+#' \item{matKNN}{a \code{data.frame} containing 4 columns. The first column
+#' 'sample.id' contains the name of the synthetic profile. The second column
+#' 'D' represents the dimension D used to infer the ancestry. The third column
+#' 'K' represents the number of neighbors K used to infer the ancestry. The
+#' fourth column 'SuperPop' contains the inferred ancestry. }
+#' }
 #'
 #' @references
 #'
@@ -1668,8 +1687,39 @@ computeKNNRefSample <- function(listEigenvector,
 #'
 #' @examples
 #'
-#' # TODO
-#' listEigenvector <- "TOTO"
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+#'     "NA19731", "NA20528", "NA20908")
+#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Run a PCA analysis and a K-nearest neighbors analysis on a small set
+#' ## of synthetic data
+#' results <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
+#'     sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
+#'     kList=seq(10,15,1), pcaList=seq(10,15,1), eigenCount=15L)
+#'
+#' ## The ancestry inference for the synthetic data using
+#' ## different K and D values
+#' head(results$matKNN)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match
@@ -1716,7 +1766,7 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 
     ## Calculate the k-nearest neighbor analyses on a subset of the
     ## synthetic dataset
-    synthKNN <- computeKNNRefSynthetic(gdsSample=gdsProfile,
+    synthKNN <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
         listEigenvector=resPCA, listCatPop=listCatPop, studyIDSyn=studyIDSyn,
         spRef=spRef, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
         pcaList=pcaList)
@@ -2128,7 +2178,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 #' pathGeno <- file.path(dataDir, "example", "snpPileup")
 #'
 #' #################################################################
-#' ## The path where the Sample GDS files (one per sample)
+#' ## The path where the Profile GDS Files (one per sample)
 #' ## will be created need to be specified.
 #' #################################################################
 #' pathProfileGDS <- file.path(dataDir, "example", "out.tmp")

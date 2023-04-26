@@ -130,7 +130,7 @@ fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
 pathGeno <- file.path(dataDir, "example", "snpPileup")
 
 #################################################################
-## The path where the Sample GDS files (one per sample)
+## The path where the Profile GDS Files (one per sample)
 ## will be created need to be specified.
 #################################################################
 pathProfileGDS <- file.path(dataDir, "example", "out.tmp")

@@ -357,3 +357,25 @@ test_that("validateProfileGDSExist() must return expected results when all input
 
     expect_identical(result, file.path(dataDir, "ex1_demoForPruning.gds"))
 })
+
+
+#############################################################################
+### Tests validateComputePCAMultiSynthetic() results
+#############################################################################
+
+context("validateComputePCAMultiSynthetic() results")
+
+
+test_that("validateComputePCAMultiSynthetic() must return expected results when all input are valid", {
+
+    dataDir <- test_path("fixtures")
+    fileProfileGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
+    gdsSample <- openfn.gds(fileProfileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
+
+    result <- RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsSample,
+        listPCA=c(1,2), sampleRef=c("HG01"), studyIDSyn="MyStudy",
+        verbose=FALSE)
+
+    expect_identical(result, 0L)
+})

@@ -424,7 +424,7 @@ createStudy2GDS1KG(pathGeno=pathGeno,
                         genoSource="snp-pileup")
 
 #################################################################
-## The Sample GDS file has been created in the 
+## The Profile GDS file has been created in the 
 ## directory pathProfileGDS using the name of the sample (ex1)
 #################################################################
 list.files(path=pathProfileGDS)
@@ -829,12 +829,12 @@ for(i in seq_len(length(listSamples))) {
         ## Run a PCA analysis using 1 synthetic profile from each 
         ##  sub-continental ancestry
         ## The synthetic profiles are projected on the 1KG PCA space 
-        ##  (the reference samples used to generate the synthetic profiles are 
-        ##  removed from this PCA)
-        ## The K-nearest neighbor analysis is done using 
+        ##  (the 1KG reference profiles used to generate the synthetic profiles 
+        ##  are removed from this PCA)
+        ## The K-nearest neighbors analysis is done using 
         ##  a range of K and D values
         syntKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
-                                        sampleRM= sampleRM[j,],
+                                        sampleRM=sampleRM[j,],
                                         studyIDSyn=syntheticStudyDF$study.id,
                                         np=4L,
                                         spRef=refKnownSuperPop,
@@ -858,7 +858,7 @@ closefn.gds(gds)
 
 ## Step 4 - Run the ancestry inference in the input data set
 
-The ancestry inference is done with the optimized K and D parameters. More 
+The ancestry inference is done with the optimized _K_ and _D_ parameters. More 
 specifically, a PCA is generated using the 1KG reference samples and the 
 cancer sample. The _D_ parameter specifies the number of dimension for the 
 PCA. Then, the ancestry of the cancer sample is inferred using

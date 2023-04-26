@@ -1658,6 +1658,73 @@ test_that("computePoolSyntheticAncestryGr() must return error when fieldPopInfAn
 })
 
 
+test_that("computePoolSyntheticAncestryGr() must return expected results", {
+
+    fileGDS <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry", "ex1.gds")
+    gdsSample <- snpgdsOpen(fileGDS)
+    withr::defer(closefn.gds(gdsSample), envir=parent.frame())
+
+    # The name of the synthetic study
+    studyID <- "MYDATA.Synthetic"
+
+    samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+        "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+        "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+        "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+        "NA19731", "NA20528", "NA20908")
+    names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+        "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+        "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+    refAncestry <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry",
+                                "knownSuperPop1KG.RDS")
+    refKnownSuperPop <- readRDS(refAncestry)
+
+    set.seed(121)
+    results <- computePoolSyntheticAncestryGr(gdsProfile=gdsSample,
+        sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        fieldPopInfAnc="SuperPop", algorithm="exact",
+        kList=seq(12,15,1), pcaList=seq(13,15,1),
+        eigenCount=15L, missingRate=0.02,
+        verbose=FALSE)
+
+    expect_equal(nrow(results$matKNN), 312)
+    expect_equal(ncol(results$matKNN), 4)
+    expect_equal(colnames(results$matKNN), c("sample.id", "D", "K", "SuperPop"))
+    expect_equal(unique(results$matKNN$D), c(13, 14, 15))
+    expect_equal(unique(results$matKNN$K), c(12, 13, 14, 15))
+    expect_equal(unique(results$matKNN$SuperPop),
+                                    c("SAS", "EUR", "EAS", "AFR", "AMR"))
+    expect_equal(unique(results$matKNN$SuperPop),
+                 c("SAS", "EUR", "EAS", "AFR", "AMR"))
+
+    expect_equal(results$sample.id, c( "1.ex1.HG00246.1", "1.ex1.HG00325.1",
+        "1.ex1.HG00611.1", "1.ex1.HG01173.1", "1.ex1.HG02165.1",
+        "1.ex1.HG01112.1", "1.ex1.HG01615.1", "1.ex1.HG01968.1",
+        "1.ex1.HG02658.1", "1.ex1.HG01850.1", "1.ex1.HG02013.1",
+        "1.ex1.HG02465.1", "1.ex1.HG02974.1", "1.ex1.HG03814.1",
+        "1.ex1.HG03445.1", "1.ex1.HG03689.1", "1.ex1.HG03789.1",
+        "1.ex1.NA12751.1", "1.ex1.NA19107.1", "1.ex1.NA18548.1",
+        "1.ex1.NA19075.1", "1.ex1.NA19475.1", "1.ex1.NA19712.1",
+        "1.ex1.NA19731.1", "1.ex1.NA20528.1", "1.ex1.NA20908.1"))
+
+    expect_equal(results$sample1Kg, c("HG00246", "HG00325", "HG00611",
+        "HG01173", "HG02165", "HG01112", "HG01615", "HG01968", "HG02658",
+        "HG01850", "HG02013", "HG02465", "HG02974", "HG03814", "HG03445",
+        "HG03689", "HG03789", "NA12751", "NA19107", "NA18548", "NA19075",
+        "NA19475", "NA19712", "NA19731", "NA20528", "NA20908"))
+
+    expect_equal(results$sp, c("HG00246"="EUR", "HG00325"="EUR", "HG00611"="EAS",
+        "HG01173"="AMR", "HG02165"="EAS", "HG01112"="AMR", "HG01615"="EUR",
+        "HG01968"="AMR", "HG02658"="SAS", "HG01850"="EAS", "HG02013"="AFR",
+        "HG02465"="AFR", "HG02974"="AFR", "HG03814"="SAS", "HG03445"="AFR",
+        "HG03689"="SAS", "HG03789"="SAS", "NA12751"="EUR", "NA19107"="AFR",
+        "NA18548"="EAS", "NA19075"="EAS", "NA19475"="AFR",
+        "NA19712"="AFR", "NA19731"="AMR", "NA20528"="EUR", "NA20908"="SAS"))
+})
+
+
 #############################################################################
 ### Tests computeAncestryFromSyntheticFile() results
 #############################################################################

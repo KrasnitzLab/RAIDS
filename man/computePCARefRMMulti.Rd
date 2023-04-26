@@ -87,7 +87,8 @@ refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 
-## Run a PCA analysis
+## Compute PCA for the 1KG reference profiles excluding
+## the profiles used to generate the synthetic profiles
 results <- RAIDS:::computePCARefRMMulti(gdsProfile=gdsProfile,
     refProfileIDs=names(refKnownSuperPop), listRM=samplesRM, np=1L,
     algorithm="exact", eigenCount=32L, missingRate=0.025, verbose=FALSE)

@@ -1266,7 +1266,7 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' @description TODO
 #'
 #' @param gdsSample an object of class \link[gdsfmt]{gds.class},
-#' a GDS Sample file.
+#' an opened Profile GDS file.
 #'
 #' @param name.id a single \code{character} string representing the sample
 #' identifier.
@@ -1985,6 +1985,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
 #' listEigenvector <- "TOTO"
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
 computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
@@ -2019,7 +2020,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         missingRate=missingRate)
 
     ## Matches a character method against a table of candidate values
-    algorithm <- match.arg(algorithm, several.ok=FALSE)
+    algorithm <- arg_match(algorithm, multiple=FALSE)
 
     ## Merge results from PCA run on synthetic data present in RDS files
     KNN.list <- list()

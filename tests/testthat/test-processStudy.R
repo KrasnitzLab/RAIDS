@@ -1658,7 +1658,7 @@ test_that("computePoolSyntheticAncestryGr() must return error when fieldPopInfAn
 })
 
 
-test_that("computePoolSyntheticAncestryGr() must return expected results", {
+test_that("computePoolSyntheticAncestryGr() must return expected results when Klist and pcaList NULL", {
 
     fileGDS <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry", "ex1.gds")
     gdsSample <- snpgdsOpen(fileGDS)
@@ -1677,7 +1677,7 @@ test_that("computePoolSyntheticAncestryGr() must return expected results", {
         "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
 
     refAncestry <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry",
-                                "knownSuperPop1KG.RDS")
+                                    "knownSuperPop1KG.RDS")
     refKnownSuperPop <- readRDS(refAncestry)
 
     set.seed(121)
@@ -1685,19 +1685,16 @@ test_that("computePoolSyntheticAncestryGr() must return expected results", {
         sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
         listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopInfAnc="SuperPop", algorithm="exact",
-        kList=seq(12,15,1), pcaList=seq(13,15,1),
-        eigenCount=15L, missingRate=0.02,
+        kList=NULL, pcaList=NULL, eigenCount=15L, missingRate=0.02,
         verbose=FALSE)
 
-    expect_equal(nrow(results$matKNN), 312)
+    expect_equal(nrow(results$matKNN), 5096)
     expect_equal(ncol(results$matKNN), 4)
     expect_equal(colnames(results$matKNN), c("sample.id", "D", "K", "SuperPop"))
-    expect_equal(unique(results$matKNN$D), c(13, 14, 15))
-    expect_equal(unique(results$matKNN$K), c(12, 13, 14, 15))
+    expect_equal(unique(results$matKNN$D), seq(2, 15, 1))
+    expect_equal(unique(results$matKNN$K), seq(2, 15, 1))
     expect_equal(unique(results$matKNN$SuperPop),
-                                    c("SAS", "EUR", "EAS", "AFR", "AMR"))
-    expect_equal(unique(results$matKNN$SuperPop),
-                 c("SAS", "EUR", "EAS", "AFR", "AMR"))
+                 c("SAS", "EAS", "EUR", "AMR", "AFR"))
 
     expect_equal(results$sample.id, c( "1.ex1.HG00246.1", "1.ex1.HG00325.1",
         "1.ex1.HG00611.1", "1.ex1.HG01173.1", "1.ex1.HG02165.1",

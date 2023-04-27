@@ -383,3 +383,31 @@ test_that("validateComputePCAMultiSynthetic() must return expected results when 
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests validateComputeKNNRefSynthetic() results
+#############################################################################
+
+context("validateComputeKNNRefSynthetic() results")
+
+
+test_that("validateComputeKNNRefSynthetic() must return expected results when all input are valid", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+    gdsSample <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    result <- RAIDS:::validateComputeKNNRefSynthetic(gdsProfile=gdsSample,
+        listEigenvector=pca, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        studyIDSyn="MyStudy", spRef=refKnownSuperPop, fieldPopInfAnc="SuperPop",
+        kList=c(11, 12), pcaList=c(10, 11, 12, 13))
+
+    expect_identical(result, 0L)
+})

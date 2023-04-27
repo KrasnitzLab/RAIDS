@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNRefSample}
 \alias{computeKNNRefSample}
-\title{Run a k-nearest neighbors analysis on a reference profile}
+\title{Run a k-nearest neighbors analysis on a 1KG reference profile}
 \usage{
 computeKNNRefSample(
   listEigenvector,
@@ -15,13 +15,18 @@ computeKNNRefSample(
 )
 }
 \arguments{
-\item{listEigenvector}{TODO see return of computePCARefSample}
+\item{listEigenvector}{a \code{list} with 3 entries:
+'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+the PCA done on the 1KG reference profiles and the synthetic profiles
+projected onto it.}
 
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{spRef}{TODO}
+\item{spRef}{\code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified

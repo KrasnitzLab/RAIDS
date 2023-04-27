@@ -1423,7 +1423,10 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 #' opened Profile GDS file.
 #'
-#' @param listEigenvector TODO see return of computePCAsynthetic
+#' @param listEigenvector a \code{list} with 3 entries:
+#' 'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+#' the PCA done on the 1KG reference profiles and the synthetic profiles
+#' projected onto it.
 #'
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations. Default:
@@ -1464,8 +1467,31 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #'
 #' @examples
 #'
-#' # TODO
-#' listEigenvector <- "TOTO"
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' ## The PCA on the synthetic profiles projected on the 1KG reference PCA
+#' pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Projects synthetic profiles on 1KG PCA
+#' results <- computeKNNRefSynthetic(gdsProfile=gdsProfile, listEigenvector=pca,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
+#'     spRef=refKnownSuperPop)
+#'
+#' ## The assigned superpopulation to the synthetic profiles
+#' head(results$sp)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
@@ -1546,17 +1572,22 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 }
 
 
-#' @title Run a k-nearest neighbors analysis on a reference profile
+#' @title Run a k-nearest neighbors analysis on a 1KG reference profile
 #'
 #' @description TODO
 #'
-#' @param listEigenvector TODO see return of computePCARefSample
+#' @param listEigenvector a \code{list} with 3 entries:
+#' 'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+#' the PCA done on the 1KG reference profiles and the synthetic profiles
+#' projected onto it.
 #'
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param spRef TODO
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
@@ -1588,10 +1619,10 @@ computeKNNRefSample <- function(listEigenvector,
                             kList=seq(2, 15, 1), pcaList=seq(2, 15, 1)) {
 
     if(is.null(kList)){
-        kList <- seq_len(15)#c(seq_len(14), seq(15,100, by=5))
+        kList <- seq(2, 15, 1)
     }
     if(is.null(pcaList)){
-        pcaList <- 2:15
+        pcaList <- seq(2, 15, 1)
     }
     if(length(listEigenvector$sample.id) != 1) {
         stop("Number of sample in study.annot not equal to 1\n")

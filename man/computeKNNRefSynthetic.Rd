@@ -22,7 +22,10 @@ computeKNNRefSynthetic(
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 opened Profile GDS file.}
 
-\item{listEigenvector}{TODO see return of computePCAsynthetic}
+\item{listEigenvector}{a \code{list} with 3 entries:
+'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+the PCA done on the 1KG reference profiles and the synthetic profiles
+projected onto it.}
 
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations. Default:
@@ -68,8 +71,31 @@ subset of the synthetic data set. The function uses the 'knn' package.
 }
 \examples{
 
-# TODO
-listEigenvector <- "TOTO"
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+
+# The name of the synthetic study
+studyID <- "MYDATA.Synthetic"
+
+## The PCA on the synthetic profiles projected on the 1KG reference PCA
+pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+
+## The known ancestry for the 1KG reference profiles
+refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+
+## Open the Profile GDS file
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+
+## Projects synthetic profiles on 1KG PCA
+results <- computeKNNRefSynthetic(gdsProfile=gdsProfile, listEigenvector=pca,
+    listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
+    spRef=refKnownSuperPop)
+
+## The assigned superpopulation to the synthetic profiles
+head(results$sp)
+
+## Close Profile GDS file (important)
+closefn.gds(gdsProfile)
 
 }
 \author{

@@ -1627,7 +1627,10 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 #' opened Profile GDS file.
 #'
-#' @param listEigenvector TODO see return of computePCAsynthetic
+#' @param listEigenvector a \code{list} with 3 entries:
+#' 'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+#' the PCA done on the 1KG reference profiles and the synthetic profiles
+#' projected onto it.
 #'
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
@@ -1688,6 +1691,13 @@ validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
     listCatPop, studyIDSyn, spRef, fieldPopInfAnc, kList, pcaList) {
 
     validateGDSClass(gds=gdsProfile, "gdsProfile")
+
+    if(!(is.list(listEigenvector) &&
+            all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                names(listEigenvector)))) {
+        stop("The \'listEigenvector\' parameter must be a list with 3 ",
+            "entries: \'sample.id\', \'eigenvector.ref\' and \'eigenvector\'.")
+    }
 
     if(!(is.character(listCatPop) && is.vector(listCatPop))) {
         stop("The \'listCatPop\' parameter must be a vector of ",

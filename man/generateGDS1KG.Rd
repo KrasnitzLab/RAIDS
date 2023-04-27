@@ -10,7 +10,7 @@ generateGDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
   filePedRDS,
   fileSNVIndex,
-  fileSNPSel,
+  fileSNVSelected,
   fileNameGDS,
   listSamples = NULL,
   verbose = FALSE
@@ -31,7 +31,7 @@ exist. The file must be a RDS file.}
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.}
 
-\item{fileSNPSel}{a \code{character} string representing the path and file
+\item{fileSNVSelected}{a \code{character} string representing the path and file
 name of the RDS file that contains the filtered SNP information. The
 file must exist. The file must be a RDS file.}
 
@@ -84,7 +84,7 @@ gdsFile <- local_file(file.path(dataDir, "1KG_TEMP.gds"))
 
 ## Create a temporary GDS file containing information from 1KG
 generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-    fileSNVIndex=snpIndexFile, fileSNPSel=filterSNVFile,
+    fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
     fileNameGDS=gdsFile, listSamples=NULL)
 
 ## Remove temporary files

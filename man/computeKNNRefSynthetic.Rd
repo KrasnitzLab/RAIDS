@@ -81,7 +81,7 @@ studyID <- "MYDATA.Synthetic"
 pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
 
 ## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))

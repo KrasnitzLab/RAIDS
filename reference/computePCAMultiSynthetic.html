@@ -117,9 +117,13 @@ to show how the different steps in the function. Default: <code>FALSE</code>.</p
     <h2>Value</h2>
     
 
-<p>a <code>list</code> containing 3 entries:</p><ul><li><p>sample.id  TODO</p></li>
-<li><p>eigenvector.ref  a <code>matrix</code></p></li>
-<li><p>eigenvector  TODO</p></li>
+<p>a <code>list</code> containing 3 entries:</p><ul><li><p>sample.id  a <code>vector</code> of <code>character</code> strings representing
+the identifiers of the synthetic profiles that have been projected onto
+the 1KG PCA.</p></li>
+<li><p>eigenvector.ref  a <code>matrix</code> of <code>numeric</code> with the
+eigenvectors of the 1KG reference profiles used to generate the PCA.</p></li>
+<li><p>eigenvector  a <code>matrix</code> of <code>numeric</code> with the
+eigenvectors of the synthetic profiles projected onto the 1KG PCA.</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>

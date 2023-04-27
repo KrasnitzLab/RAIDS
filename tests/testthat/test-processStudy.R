@@ -2638,3 +2638,26 @@ test_that("computeKNNRefSynthetic() must return error when kList is character", 
         spRef=refKnownSuperPop, fieldPopInfAnc="Superpop", kList="CANADA",
         pcaList=c(13, 14, 15)), error_message)
 })
+
+
+test_that("computeKNNRefSynthetic() must return error when pcaList is character", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    fileGDS <- test_path(pathFile, "ex1.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    error_message <- paste0("The \'pcaList\' parameter must be a vector of ",
+        "positive numerics representing the PCA dimensions that are tested.")
+
+    expect_error(computeKNNRefSynthetic(gdsProfile=gdsF,listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),  studyIDSyn="MyData",
+        spRef=refKnownSuperPop, fieldPopInfAnc="Superpop", pcaList="CANADA",
+                                kList=c(13, 14, 15)), error_message)
+})

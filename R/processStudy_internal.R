@@ -1614,6 +1614,117 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 }
 
 
+
+
+#' @title Validate the input parameters for computeKNNRefSynthetic()
+#' function
+#'
+#' @description The function validates the input parameters for the
+#' \code{\link{computeKNNRefSynthetic}} function.
+#' When a parameter is not as expected, an error message is generated.
+#'
+#' @param gdsProfile an object of class
+#' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
+#' opened Profile GDS file.
+#'
+#' @param listEigenvector TODO see return of computePCAsynthetic
+#'
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations.
+#'
+#' @param studyIDSyn a \code{character} string corresponding to the study
+#' identifier.
+#' The study identifier must be present in the Profile GDS file.
+#'
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
+#'
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
+#'
+#' @param kList  a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  K parameter. The K parameter represents the
+#' number of neighbors used in the K-nearest neighbors analysis.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  D parameter. The D parameter represents the
+#' number of dimensions used in the PCA analysis.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' fileProfileGDS <- file.path(dataDir, "ex1.gds")
+#'
+#' pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## Open GDS files
+#' gdsProfile <- openfn.gds(fileProfileGDS)
+#'
+#' ## The function returns 0L when all parameters are valid
+#' RAIDS:::validateComputeKNNRefSynthetic(gdsProfile=gdsProfile,
+#'     listEigenvector=pcaSynthetic,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+#'     studyIDSyn="MyStudy", spRef=refKnownSuperPop,
+#'     fieldPopInfAnc="Superpop", kList=c(10, 11, 12),
+#'     pcaList=c(13, 14, 15))
+#'
+#' ## Close GDS file (it is important to always close the GDS files)
+#' closefn.gds(gdsProfile)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
+    listCatPop, studyIDSyn, spRef, fieldPopInfAnc, kList, pcaList) {
+
+    validateGDSClass(gds=gdsProfile, "gdsProfile")
+
+    if(!(is.character(listCatPop) && is.vector(listCatPop))) {
+        stop("The \'listCatPop\' parameter must be a vector of ",
+             "character strings.")
+    }
+
+    ## The studyIDSyn must be a character string
+    if (!(is.character(studyIDSyn) && length(studyIDSyn) == 1)) {
+        stop("The \'studyIDSyn\' parameter must be a character string.")
+    }
+
+    if(!(is.character(spRef) && is.vector(spRef))) {
+        stop("The \'spRef\' parameter must be a vector of ",
+                "character strings.")
+    }
+
+    ## The fieldPopInfAnc must be a character string
+    if (!(is.character(fieldPopInfAnc) && length(fieldPopInfAnc) == 1)) {
+        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
+    }
+
+    ## The kList must be a vector of positive numerics
+    if (!(is.numeric(kList) && is.vector(kList))) {
+        stop("The \'kList\' parameter must be a vector of positive numerics",
+                " representing the K-neighbors values tested.")
+    }
+
+    ## The pcaList must be a vector of positive numerics
+    if (!(is.numeric(pcaList) && is.vector(pcaList))) {
+        stop("The \'pcaList\' parameter must be a vector of positive ",
+                "numerics representing the PCA dimensions that are tested.")
+    }
+
+    return(0L)
+}
+
+
 #' @title Calculate Principal Component Analysis (PCA) on SNV genotype data set
 #'
 #' @description The functions calculates the principal component analysis (PCA)

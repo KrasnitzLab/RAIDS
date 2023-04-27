@@ -1217,9 +1217,13 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
-#' \item{sample.id} { TODO }
-#' \item{eigenvector.ref} { a \code{matrix} }
-#' \item{eigenvector} { TODO }
+#' \item{sample.id} { a \code{vector} of \code{character} strings representing
+#' the identifiers of the synthetic profiles that have been projected onto
+#' the 1KG PCA. }
+#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} with the
+#' eigenvectors of the 1KG reference profiles used to generate the PCA.}
+#' \item{eigenvector} { a \code{matrix} of \code{numeric} with the
+#' eigenvectors of the synthetic profiles projected onto the 1KG PCA. }
 #' }
 #'
 #' @examples
@@ -1423,7 +1427,7 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #'
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations. Default:
-#' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
+#' \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier.
@@ -1435,7 +1439,7 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
-#' dataset. Default: \code{"SuperPop"}.
+#' data set. Default: \code{"SuperPop"}.
 #'
 #' @param kList  a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  K parameter. The K parameter represents the
@@ -1469,21 +1473,25 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' @encoding UTF-8
 #' @export
 computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
-                                    listCatPop, studyIDSyn,
-                                    spRef, fieldPopInfAnc="SuperPop",
-                                    kList=seq(2, 15, 1),
-                                    pcaList=seq(2, 15, 1)) {
-
+                listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+                studyIDSyn, spRef, fieldPopInfAnc="SuperPop",
+                kList=seq(2, 15, 1), pcaList=seq(2, 15, 1)) {
 
     ## Assign default value if kList is NULL
     if(is.null(kList)) {
-        kList <- seq(2, 15, 1) #c(seq_len(14), seq(15,100, by=5))
+        kList <- seq(2, 15, 1)
     }
 
     ## Assign default value if pcaList is NULL
     if(is.null(pcaList)) {
         pcaList <- seq(2, 15, 1)
     }
+
+    ## Validate the input parameters
+    validateComputeKNNRefSynthetic(gdsProfile=gdsProfile,
+        listEigenvector=listEigenvector,
+        listCatPop=listCatPop, studyIDSyn=studyIDSyn, spRef=spRef,
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList)
 
     ## Get study information from the GDS Sample file
     studyAnnotAll <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
@@ -1809,9 +1817,9 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
     ## Calculate the k-nearest neighbor analyses on a subset of the
     ## synthetic data set
     synthKNN <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
-        listEigenvector=resPCA, listCatPop=listCatPop, studyIDSyn=studyIDSyn,
-        spRef=spRef, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-        pcaList=pcaList)
+        listEigenvector=resPCA,
+        listCatPop=listCatPop, studyIDSyn=studyIDSyn, spRef=spRef,
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList)
 
     return(synthKNN)
 }

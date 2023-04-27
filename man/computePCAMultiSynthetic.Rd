@@ -38,9 +38,13 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 \value{
 a \code{list} containing 3 entries:
 \itemize{
-\item{sample.id} { TODO }
-\item{eigenvector.ref} { a \code{matrix} }
-\item{eigenvector} { TODO }
+\item{sample.id} { a \code{vector} of \code{character} strings representing
+the identifiers of the synthetic profiles that have been projected onto
+the 1KG PCA. }
+\item{eigenvector.ref} { a \code{matrix} of \code{numeric} with the
+eigenvectors of the 1KG reference profiles used to generate the PCA.}
+\item{eigenvector} { a \code{matrix} of \code{numeric} with the
+eigenvectors of the synthetic profiles projected onto the 1KG PCA. }
 }
 }
 \description{

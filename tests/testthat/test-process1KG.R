@@ -213,7 +213,7 @@ test_that("generateGDS1KG() must return error when pedigree file does not exist"
     expect_error(generateGDS1KG(pathGeno=data.dir,
                                 filePedRDS=fileNot,
                                 fileSNVIndex=pedDemoFile,
-                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
+                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
 
@@ -230,7 +230,7 @@ test_that("generateGDS1KG() must return error when pathGeno is not existing", {
     expect_error(generateGDS1KG(pathGeno=notExisting,
                                 filePedRDS=pedDemoFile,
                                 fileSNVIndex=pedDemoFile,
-                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
+                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
 
@@ -247,7 +247,7 @@ test_that("generateGDS1KG() must return error when SNP indexes file does not exi
     expect_error(generateGDS1KG(pathGeno=data.dir,
                                 filePedRDS=pedDemoFile,
                                 fileSNVIndex=notExisting,
-                                fileSNPSel=pedDemoFile, fileNameGDS=outFile1,
+                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
                                 listSamples=NULL), error_message)
 })
 
@@ -264,7 +264,7 @@ test_that("generateGDS1KG() must return error when SNP information file does not
     expect_error(generateGDS1KG(pathGeno=data.dir,
                             filePedRDS=pedDemoFile,
                             fileSNVIndex=pedDemoFile,
-                            fileSNPSel=notExisting, fileNameGDS=outFile1,
+                            fileSNVSelected=notExisting, fileNameGDS=outFile1,
                             listSamples=NULL), error_message)
 })
 
@@ -284,7 +284,7 @@ test_that("generateGDS1KG() must create a GDS file", {
 
     generateGDS1KG(pathGeno=data.dir, filePedRDS=pedigreeFile,
                             fileSNVIndex=snpIndexFile,
-                            fileSNPSel=filterSNVFile, fileNameGDS=GDS_file,
+                            fileSNVSelected=filterSNVFile, fileNameGDS=GDS_file,
                             listSamples=NULL)
 
     expect_true(file.exists(GDS_file))

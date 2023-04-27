@@ -332,7 +332,7 @@ fileGDS <- file.path(PATHGDS, fileNameGDS)
 ## Generate GDS file containing the 1KG information
 generateGDS1KG(pathGeno=file.path("data", "sampleGeno"),
                     filePedRDS=filePED1KG,
-                    fileSNPSel=fileFREQ.v,
+                    fileSNVSelected=fileFREQ.v,
                     fileSNVIndex=fileSNPsRDS,
                     fileNameGDS=fileGDS)
 ```

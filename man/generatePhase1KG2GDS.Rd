@@ -64,7 +64,7 @@ fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
 
 ## Create a temporary Reference GDS file containing information from 1KG
 generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-    fileSNVIndex=snpIndexFile, fileSNPSel=filterSNVFile,
+    fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
     fileNameGDS=fileReferenceGDS, listSamples=NULL)
 
 ## Temporary Phase GDS file that will contain the 1KG Phase information

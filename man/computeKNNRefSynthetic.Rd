@@ -56,13 +56,32 @@ the value \code{seq(2, 15, 1)} is assigned.
 Default: \code{seq(2, 15, 1)}.}
 }
 \value{
-a \code{list} TODO with the sample.id and eigenvectors
+a \code{list} containing  with the sample.id and eigenvectors
 and a table with KNN call for different K and PCA dimensions.
 \itemize{
-\item{sample.id} {TODO}
-\item{sample1Kg} {TODO}
-\item{sp} {TODO}
-\item{matKNN} {TODO}
+\item{\code{sample.id}} {a \code{vector} of \code{character} strings
+representing the identifiers of the synthetic profiles analysed.}
+\item{\code{sample1Kg}} {a \code{vector} of \code{character} strings
+representing the identifiers of the 1KG reference profiles used to
+generate the synthetic profiles.}
+\item{\code{sp}} {a \code{vector} of \code{character} strings representing
+the know super population ancestry of the 1KG reference profiles used
+to generate the synthetic profiles.}
+\item{\code{matKNN}} {a \code{data.frame} containing the super population
+inference for each synthetic profiles for different values of PCA
+dimensions \code{D} and k-neighbors values \code{K}.
+The \code{data.frame} contains 4 columns:
+\itemize{
+\item{\code{sample.id}} {a \code{character} string representing
+the identifier of the synthetic profile analysed.}
+\item{\code{D}} {a \code{numeric} strings representing
+the value of the PCA dimension used to infer the super population.}
+\item{\code{K}} {a \code{numeric} strings representing
+the value of the k-neighbors used to infer the super population.}
+\item{\code{SuperPop}} {a \code{character} string representing
+the inferred super population.}
+}
+}
 }
 }
 \description{

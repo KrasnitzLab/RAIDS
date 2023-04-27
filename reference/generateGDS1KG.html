@@ -74,7 +74,7 @@ SNP information and the genotyping information into the GDS file.</p>
 <span>  pathGeno <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sampleGeno"</span><span class="op">)</span>,</span>
 <span>  <span class="va">filePedRDS</span>,</span>
 <span>  <span class="va">fileSNVIndex</span>,</span>
-<span>  <span class="va">fileSNPSel</span>,</span>
+<span>  <span class="va">fileSNVSelected</span>,</span>
 <span>  <span class="va">fileNameGDS</span>,</span>
 <span>  listSamples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -103,7 +103,7 @@ name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.</p></dd>
 
 
-<dt>fileSNPSel</dt>
+<dt>fileSNVSelected</dt>
 <dd><p>a <code>character</code> string representing the path and file
 name of the RDS file that contains the filtered SNP information. The
 file must exist. The file must be a RDS file.</p></dd>
@@ -169,7 +169,7 @@ https://bioconductor.org/packages/gdsfmt/</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a temporary GDS file containing information from 1KG</span></span></span>
 <span class="r-in"><span><span class="fu">generateGDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>, filePedRDS<span class="op">=</span><span class="va">pedigreeFile</span>,</span></span>
-<span class="r-in"><span>    fileSNVIndex<span class="op">=</span><span class="va">snpIndexFile</span>, fileSNPSel<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
+<span class="r-in"><span>    fileSNVIndex<span class="op">=</span><span class="va">snpIndexFile</span>, fileSNVSelected<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
 <span class="r-in"><span>    fileNameGDS<span class="op">=</span><span class="va">gdsFile</span>, listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>

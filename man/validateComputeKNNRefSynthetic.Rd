@@ -22,7 +22,10 @@ validateComputeKNNRefSynthetic(
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
 opened Profile GDS file.}
 
-\item{listEigenvector}{TODO see return of computePCAsynthetic}
+\item{listEigenvector}{a \code{list} with 3 entries:
+'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+the PCA done on the 1KG reference profiles and the synthetic profiles
+projected onto it.}
 
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}

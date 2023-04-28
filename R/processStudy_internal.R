@@ -1614,8 +1614,6 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 }
 
 
-
-
 #' @title Validate the input parameters for computeKNNRefSynthetic()
 #' function
 #'
@@ -1712,6 +1710,108 @@ validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
     if(!(is.character(spRef) && is.vector(spRef))) {
         stop("The \'spRef\' parameter must be a vector of ",
                 "character strings.")
+    }
+
+    ## The fieldPopInfAnc must be a character string
+    if (!(is.character(fieldPopInfAnc) && length(fieldPopInfAnc) == 1)) {
+        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
+    }
+
+    ## The kList must be a vector of positive numerics
+    if (!(is.numeric(kList) && is.vector(kList))) {
+        stop("The \'kList\' parameter must be a vector of positive numerics",
+                " representing the K-neighbors values tested.")
+    }
+
+    ## The pcaList must be a vector of positive numerics
+    if (!(is.numeric(pcaList) && is.vector(pcaList))) {
+        stop("The \'pcaList\' parameter must be a vector of positive ",
+                "numerics representing the PCA dimensions that are tested.")
+    }
+
+    return(0L)
+}
+
+
+#' @title Validate the input parameters for computeKNNRefSample()
+#' function
+#'
+#' @description The function validates the input parameters for the
+#' \code{\link{computeKNNRefSample}} function.
+#' When a parameter is not as expected, an error message is generated.
+#'
+#' @param listEigenvector a \code{list} with 3 entries:
+#' 'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
+#' the PCA done on the 1KG reference profiles and the specific profile
+#' projected onto it. The 'sample.id' entry must contain only one identifier
+#' (one profile).
+#'
+#' @param listCatPop a \code{vector} of \code{character} string
+#' representing the list of possible ancestry assignations.
+#'
+#' @param spRef \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
+#'
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
+#'
+#' @param kList  a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  K parameter. The K parameter represents the
+#' number of neighbors used in the K-nearest neighbors analysis.
+#'
+#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' values tested for the  D parameter. The D parameter represents the
+#' number of dimensions used in the PCA analysis.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+#' pcaSynthetic$sample.id <- pcaSynthetic$sample.id[1]
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## The function returns 0L when all parameters are valid
+#' RAIDS:::validateComputeKNNRefSample(listEigenvector=pcaSynthetic,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+#'     spRef=refKnownSuperPop, fieldPopInfAnc="Superpop",
+#'     kList=c(10, 11, 12), pcaList=c(13, 14, 15))
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateComputeKNNRefSample <- function(listEigenvector, listCatPop, spRef,
+                                    fieldPopInfAnc, kList, pcaList) {
+
+    if(!(is.list(listEigenvector) &&
+         all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                names(listEigenvector)))) {
+        stop("The \'listEigenvector\' parameter must be a list with 3 ",
+            "entries: \'sample.id\', \'eigenvector.ref\' and \'eigenvector\'.")
+    }
+
+    if(length(listEigenvector$sample.id) != 1) {
+        stop("Only one profile can be present in the \'sample.id\'",
+                " entry from the \'listEigenvector\' parameter.\n")
+    }
+
+    if(!(is.character(listCatPop) && is.vector(listCatPop))) {
+        stop("The \'listCatPop\' parameter must be a vector of ",
+                    "character strings.")
+    }
+
+    if(!(is.character(spRef) && is.vector(spRef))) {
+        stop("The \'spRef\' parameter must be a vector of ",
+                    "character strings.")
     }
 
     ## The fieldPopInfAnc must be a character string

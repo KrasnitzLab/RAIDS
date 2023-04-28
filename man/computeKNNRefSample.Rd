@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{computeKNNRefSample}
 \alias{computeKNNRefSample}
-\title{Run a k-nearest neighbors analysis on a 1KG reference profile}
+\title{Run a k-nearest neighbors analysis on one specific profile}
 \usage{
 computeKNNRefSample(
   listEigenvector,
@@ -17,12 +17,13 @@ computeKNNRefSample(
 \arguments{
 \item{listEigenvector}{a \code{list} with 3 entries:
 'sample.id', 'eigenvector.ref' and 'eigenvector'. The \code{list} represents
-the PCA done on the 1KG reference profiles and the synthetic profiles
-projected onto it.}
+the PCA done on the 1KG reference profiles and one specific profile
+projected onto it. The 'sample.id' entry must contain only one identifier
+(one profile).}
 
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations. Default:
-\code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
+\code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
 \item{spRef}{\code{vector} of \code{character} strings representing the
 known super population ancestry for the 1KG profiles. The 1KG profile
@@ -30,27 +31,69 @@ identifiers are used as names for the \code{vector}.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified
-dataset. Default: \code{"SuperPop"}.}
+profile. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
+values tested for the _K_ parameter. The _K_ parameter represents the
 number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
 the value \code{seq(2,15,1)} is assigned.
 Default: \code{seq(2,15,1)}.}
 
-\item{pcaList}{TODO array of the pca dimension possible values}
+\item{pcaList}{a \code{vector} of \code{integer} representing  the list of
+values tested for the _D_ parameter. The D parameter represents the
+number of dimensions used in the PCA analysis.  If \code{NULL},
+the value \code{seq(2, 15, 1)} is assigned.
+Default: \code{seq(2, 15, 1)}.}
 }
 \value{
-A \code{list} TODO with the sample.id and eigenvectors
-and a table with KNN callfor different K and pca dimension.
+a \code{list} containing 4 entries:
+\itemize{
+\item{\code{sample.id}} {a \code{vector} of \code{character} strings
+representing the identifier of the profile analysed.}
+\item{\code{matKNN}} {a \code{data.frame} containing the super population
+inference for the profile for different values of PCA
+dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
+corresponds to the \code{fieldPopInfAnc} parameter.
+The \code{data.frame} contains 4 columns:
+\itemize{
+\item{\code{sample.id}} {a \code{character} string representing
+the identifier of the profile analysed.}
+\item{\code{D}} {a \code{numeric} strings representing
+the value of the PCA dimension used to infer the ancestry.}
+\item{\code{K}} {a \code{numeric} strings representing
+the value of the k-neighbors used to infer the ancestry..}
+\item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+the inferred ancestry.}
+}
+}
+}
 }
 \description{
-TODO
+The function runs k-nearest neighbors analysis on a
+one specific profile. The function uses the 'knn' package.
 }
 \examples{
 
-# TODO
-listEigenvector <- "TOTO"
+## Path to the demo files located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+
+## The PCA with 1 profile projected on the 1KG reference PCA
+## Only one profile is retained
+pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+pca$sample.id <- pca$sample.id[1]
+pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+## The known ancestry for the 1KG reference profiles
+refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+
+## Projects profile on 1KG PCA
+results <- computeKNNRefSample(listEigenvector=pca,
+    listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+    spRef=refKnownSuperPop, fieldPopInfAnc="SuperPop",
+    kList=seq(10, 15, 1), pcaList=seq(10, 15, 1))
+
+## The assigned ancestry to the profile for different values of K and D
+head(results$matKNN)
 
 }
 \author{

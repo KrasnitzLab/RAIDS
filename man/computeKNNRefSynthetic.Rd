@@ -56,8 +56,7 @@ the value \code{seq(2, 15, 1)} is assigned.
 Default: \code{seq(2, 15, 1)}.}
 }
 \value{
-a \code{list} containing  with the sample.id and eigenvectors
-and a table with KNN call for different K and PCA dimensions.
+a \code{list} containing 4 entries:
 \itemize{
 \item{\code{sample.id}} {a \code{vector} of \code{character} strings
 representing the identifiers of the synthetic profiles analysed.}
@@ -69,7 +68,8 @@ the know super population ancestry of the 1KG reference profiles used
 to generate the synthetic profiles.}
 \item{\code{matKNN}} {a \code{data.frame} containing the super population
 inference for each synthetic profiles for different values of PCA
-dimensions \code{D} and k-neighbors values \code{K}.
+dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
+corresponds to the \code{fieldPopInfAnc} parameter.
 The \code{data.frame} contains 4 columns:
 \itemize{
 \item{\code{sample.id}} {a \code{character} string representing
@@ -78,8 +78,8 @@ the identifier of the synthetic profile analysed.}
 the value of the PCA dimension used to infer the super population.}
 \item{\code{K}} {a \code{numeric} strings representing
 the value of the k-neighbors used to infer the super population.}
-\item{\code{SuperPop}} {a \code{character} string representing
-the inferred super population.}
+\item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+the inferred ancestry.}
 }
 }
 }
@@ -110,8 +110,9 @@ results <- computeKNNRefSynthetic(gdsProfile=gdsProfile, listEigenvector=pca,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
     spRef=refKnownSuperPop)
 
-## The assigned superpopulation to the synthetic profiles
-head(results$sp)
+## The inferred ancestry for the synthetic profiles for differents values
+## of D and K
+head(results$matKNN)
 
 ## Close Profile GDS file (important)
 closefn.gds(gdsProfile)

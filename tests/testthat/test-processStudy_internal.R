@@ -411,3 +411,29 @@ test_that("validateComputeKNNRefSynthetic() must return expected results when al
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests validateComputeKNNRefSample() results
+#############################################################################
+
+context("validateComputeKNNRefSample() results")
+
+
+test_that("validateComputeKNNRefSample() must return expected results when all input are valid", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    result <- RAIDS:::validateComputeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        spRef=refKnownSuperPop, fieldPopInfAnc="SuperPop",
+        kList=c(11, 12), pcaList=c(10, 11, 12, 13))
+
+    expect_identical(result, 0L)
+})

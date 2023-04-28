@@ -2724,3 +2724,85 @@ test_that("computeKNNRefSample() must return error when listCatPop is numeric", 
         listCatPop=33, spRef=refKnownSuperPop, fieldPopInfAnc="Superpop",
         kList=c(10, 11, 12), pcaList=c(13, 14, 15)), error_message)
 })
+
+
+test_that("computeKNNRefSample() must return error when spRef is numeric", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+    pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+    error_message <- paste0("The \'spRef\' parameter must be a vector of ",
+                                "character strings.")
+
+    expect_error(computeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), spRef=44,
+        fieldPopInfAnc="Superpop", kList=c(10, 11, 12),
+        pcaList=c(13, 14, 15)), error_message)
+})
+
+
+test_that("computeKNNRefSample() must return error when fieldPopInfAnc is vector of strings", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+    pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    error_message <- paste0("The \'fieldPopInfAnc\' parameter must be a ",
+                                    "character string.")
+
+    expect_error(computeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), spRef=refKnownSuperPop,
+        fieldPopInfAnc=c("Superpop", "B"), kList=c(10, 11, 12),
+        pcaList=c(13, 14, 15)), error_message)
+})
+
+
+test_that("computeKNNRefSample() must return error when kList is vector of strings", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+    pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    error_message <- paste0("The \'kList\' parameter must be a vector of ",
+        "positive numerics representing the K-neighbors values tested.")
+
+    expect_error(computeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), spRef=refKnownSuperPop,
+        fieldPopInfAnc="Superpop", kList=c("A", "B"),
+        pcaList=c(13, 14, 15)), error_message)
+})
+
+
+test_that("computeKNNRefSample() must return error when pcaList is vector of strings", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+    pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    error_message <- paste0("The \'pcaList\' parameter must be a vector of ",
+        "positive numerics representing the PCA dimensions that are tested.")
+
+    expect_error(computeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), spRef=refKnownSuperPop,
+        fieldPopInfAnc="Superpop", kList=c(13, 14, 15),
+        pcaList=c("A", "B")), error_message)
+})
+

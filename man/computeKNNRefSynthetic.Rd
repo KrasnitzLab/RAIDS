@@ -90,6 +90,9 @@ subset of the synthetic data set. The function uses the 'knn' package.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 

@@ -115,6 +115,9 @@ analysis using a range of K and D values is done.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 

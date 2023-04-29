@@ -1228,6 +1228,9 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #'
@@ -1485,6 +1488,9 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' }
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
@@ -1830,6 +1836,9 @@ computeKNNRefSample <- function(listEigenvector,
 #' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")

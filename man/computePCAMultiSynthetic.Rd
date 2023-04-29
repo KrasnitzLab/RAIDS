@@ -55,6 +55,9 @@ been removed from the set of reference profiles.
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 

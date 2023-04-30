@@ -40,6 +40,7 @@ test_that("projectSample2PCA() must return error when np is negative integer", {
                                     np=-1L), error_message)
 })
 
+
 test_that("projectSample2PCA() must return error when np is zero", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
@@ -47,9 +48,9 @@ test_that("projectSample2PCA() must return error when np is zero", {
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(projectSample2PCA(gdsProfile=fileGDS, listPCA=list(),
-                                    currentProfile="sample1",
-                                    np=0L), error_message)
+        currentProfile="sample1", np=0L), error_message)
 })
+
 
 test_that("projectSample2PCA() must return error when currentProfile is number", {
 
@@ -59,8 +60,20 @@ test_that("projectSample2PCA() must return error when currentProfile is number",
                                 "parameter must be a character string.")
 
     expect_error(projectSample2PCA(gdsProfile=fileGDS, listPCA=list(),
-                                        currentProfile=101,
-                                        np=1L), error_message)
+        currentProfile=101, np=1L), error_message)
+})
+
+
+test_that("projectSample2PCA() must return error when verbose is number", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    error_message <- paste0("The \'verbose\' parameter must be logical ",
+                                "(TRUE or FALSE).")
+
+    expect_error(projectSample2PCA(gdsProfile=fileGDS, listPCA=list(),
+        currentProfile="sample01", np=1L, verbose=33), error_message,
+        fixed=TRUE)
 })
 
 
@@ -2180,8 +2193,8 @@ context("runExomeAncestry() results")
 test_that("runExomeAncestry() must return error when pathOut is numeric", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
 
@@ -2214,8 +2227,8 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
 test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
 
@@ -2247,8 +2260,8 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
 test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is numeric", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
 
@@ -2281,8 +2294,8 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
 test_that("runExomeAncestry() must return error when chrInfo is vector of characters", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                           study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -2313,8 +2326,8 @@ test_that("runExomeAncestry() must return error when chrInfo is vector of charac
 test_that("runExomeAncestry() must return error when syntheticRefDF missing column", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                           study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -2347,8 +2360,8 @@ test_that("runExomeAncestry() must return error when syntheticRefDF missing colu
 test_that("runExomeAncestry() must return error when pathGeno does not exist", {
 
     pathOut <- test_path("fixtures")
-    fileGDS <- test_path("fixtures", "ex1_good_small_1KG_GDS.gds")
-    gdsFileAnnot <- test_path("fixtures", "ex1_good_small_1KG_Annot_GDS.gds")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                     study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -2386,9 +2399,9 @@ context("computePCAMultiSynthetic() results")
 test_that("computePCAMultiSynthetic() must return error when gdsProfile is filepath", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
-    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+    pca <- readRDS(file.path(pathFile, "pca1KG.RDS"))
 
     samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
         "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
@@ -2409,12 +2422,12 @@ test_that("computePCAMultiSynthetic() must return error when gdsProfile is filep
 test_that("computePCAMultiSynthetic() must return error when listPCA is empty list", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+    pca <- readRDS(file.path(pathFile, "pca1KG.RDS"))
 
     samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
         "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
@@ -2436,12 +2449,12 @@ test_that("computePCAMultiSynthetic() must return error when listPCA is empty li
 test_that("computePCAMultiSynthetic() must return error when samplesRM is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+    pca <- readRDS(file.path(pathFile, "pca1KG.RDS"))
 
     samplesRM <- 33
 
@@ -2456,12 +2469,12 @@ test_that("computePCAMultiSynthetic() must return error when samplesRM is numeri
 test_that("computePCAMultiSynthetic() must return error when studyIDSyn is vector", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pca1KG.RDS"))
+    pca <- readRDS(file.path(pathFile, "pca1KG.RDS"))
 
     samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
         "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
@@ -2491,9 +2504,9 @@ context("computeKNNRefSynthetic() results")
 test_that("computeKNNRefSynthetic() must return error when gdsProfile is filepath", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2510,12 +2523,12 @@ test_that("computeKNNRefSynthetic() must return error when gdsProfile is filepat
 test_that("computeKNNRefSynthetic() must return error when listCatPop is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2533,12 +2546,12 @@ test_that("computeKNNRefSynthetic() must return error when listCatPop is numeric
 test_that("computeKNNRefSynthetic() must return error when studyIDSyn is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2555,7 +2568,7 @@ test_that("computeKNNRefSynthetic() must return error when studyIDSyn is numeric
 test_that("computeKNNRefSynthetic() must return error when listEigenvector is empty list", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
@@ -2576,12 +2589,12 @@ test_that("computeKNNRefSynthetic() must return error when listEigenvector is em
 test_that("computeKNNRefSynthetic() must return error when spRef is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     error_message <- paste0("The \'spRef\' parameter must be a vector of ",
                                     "character strings.")
@@ -2596,12 +2609,12 @@ test_that("computeKNNRefSynthetic() must return error when spRef is numeric", {
 test_that("computeKNNRefSynthetic() must return error when fieldPopInfAnc is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2619,12 +2632,12 @@ test_that("computeKNNRefSynthetic() must return error when fieldPopInfAnc is num
 test_that("computeKNNRefSynthetic() must return error when kList is character", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2642,12 +2655,12 @@ test_that("computeKNNRefSynthetic() must return error when kList is character", 
 test_that("computeKNNRefSynthetic() must return error when pcaList is character", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
-    fileGDS <- test_path(pathFile, "ex1.gds")
+    fileGDS <- file.path(pathFile, "ex1.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2691,7 +2704,7 @@ test_that("computeKNNRefSample() must return error when listEigenvector has mult
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
 
     ## The known ancestry for the 1KG reference profiles
     refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
@@ -2710,7 +2723,7 @@ test_that("computeKNNRefSample() must return error when listCatPop is numeric", 
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
     pca$sample.id <- pca$sample.id[1]
     pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 
@@ -2730,7 +2743,7 @@ test_that("computeKNNRefSample() must return error when spRef is numeric", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
     pca$sample.id <- pca$sample.id[1]
     pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 
@@ -2748,7 +2761,7 @@ test_that("computeKNNRefSample() must return error when fieldPopInfAnc is vector
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
     pca$sample.id <- pca$sample.id[1]
     pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 
@@ -2769,7 +2782,7 @@ test_that("computeKNNRefSample() must return error when kList is vector of strin
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
     pca$sample.id <- pca$sample.id[1]
     pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 
@@ -2790,7 +2803,7 @@ test_that("computeKNNRefSample() must return error when pcaList is vector of str
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 
-    pca <- readRDS(test_path(pathFile, "pcaSynthetic.RDS"))
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
     pca$sample.id <- pca$sample.id[1]
     pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 
@@ -2806,3 +2819,31 @@ test_that("computeKNNRefSample() must return error when pcaList is vector of str
         pcaList=c("A", "B")), error_message)
 })
 
+
+test_that("computeKNNRefSample() must return error expected results", {
+
+    pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+
+    pca <- readRDS(file.path(pathFile, "pcaSynthetic.RDS"))
+    pca$sample.id <- pca$sample.id[1]
+    pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
+
+    ## The known ancestry for the 1KG reference profiles
+    refKnownSuperPop <- readRDS(file.path(pathFile, "knownSuperPop1KG.RDS"))
+
+    set.seed(121)
+    result <- computeKNNRefSample(listEigenvector=pca,
+        listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), spRef=refKnownSuperPop,
+        fieldPopInfAnc="Superpop", kList=NULL,
+        pcaList=NULL)
+
+    expect_true(is.list(result))
+    expect_equal(names(result), c("sample.id", "matKNN"))
+    expect_equal(result$sample.id, "1.ex1.HG00246.1")
+    expect_true(is.data.frame(result$matKNN))
+    expect_equal(colnames(result$matKNN), c("sample.id", "D", "K", "Superpop"))
+    expect_equal(unique(result$matKNN$D), seq(2, 15, by=1))
+    expect_equal(unique(result$matKNN$K), seq(2, 15, by=1))
+    expect_equal(unique(result$matKNN$Superpop), c("SAS", "EAS", "EUR", "AMR"))
+    expect_equal(unique(result$matKNN$sample.id), "1.ex1.HG00246.1")
+})

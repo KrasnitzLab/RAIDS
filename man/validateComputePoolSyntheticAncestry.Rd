@@ -9,7 +9,7 @@ function}
 validateComputePoolSyntheticAncestry(
   gdsReference,
   profileGDS,
-  profileAnaID,
+  profileID,
   dataRef,
   spRef,
   studyIDSyn,
@@ -20,7 +20,7 @@ validateComputePoolSyntheticAncestry(
   kList,
   pcaList,
   algorithm,
-  eigenCnt,
+  eigenCount,
   missingRate
 )
 }
@@ -31,7 +31,8 @@ validateComputePoolSyntheticAncestry(
 \item{profileGDS}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
 an opened Profile GDS file.}
 
-\item{profileAnaID}{TODO}
+\item{profileID}{a single \code{character} string representing the
+profile identifier.}
 
 \item{dataRef}{a \code{data.frame} TODO}
 
@@ -89,7 +90,6 @@ When a parameter is not as expected, an error message is generated.
 }
 \examples{
 
-
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
@@ -103,12 +103,12 @@ dataRef <- data.frame(test=c(1,2), stringAsFactro=FALSE)
 
 ## The function returns 0L when all parameters are valid
 RAIDS:::validateComputePoolSyntheticAncestry(gdsReference=gds1KG,
-    profileGDS=gdsProfile, profileAnaID="SampleID",
+    profileGDS=gdsProfile, profileID="SampleID",
     dataRef=dataRef, spRef=NULL,  studyIDSyn="MyStudy",
     np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
     fieldPopIn1KG="SuperPop", fieldPopInfAnc="SuperPop",
     kList=seq(2,15,1), pcaList=seq(2,15,1),
-    algorithm="exact", eigenCnt=32L, missingRate=0.025)
+    algorithm="exact", eigenCount=32L, missingRate=0.025)
 
 ## Close GDS files (it is important to always close the GDS files)
 closefn.gds(gds1KG)

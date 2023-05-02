@@ -8,7 +8,7 @@
 computePoolSyntheticAncestry(
   gdsReference,
   gdsSample,
-  sample.ana.id,
+  profileID,
   dataRef,
   spRef,
   studyIDSyn,
@@ -19,7 +19,7 @@ computePoolSyntheticAncestry(
   kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1),
   algorithm = "exact",
-  eigen.cnt = 32L,
+  eigenCount = 32L,
   missingRate = 0.025
 )
 }
@@ -30,8 +30,8 @@ file), the opened Reference GDS file.}
 \item{gdsSample}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
 an opened Profile GDS file.}
 
-\item{sample.ana.id}{a single \code{character} string representing the
-profile identifier of the synthetic profile.}
+\item{profileID}{a single \code{character} string representing the
+profile identifier.}
 
 \item{dataRef}{a \code{data.frame} containing the information of the
 synthetic profiles that will be}
@@ -72,9 +72,9 @@ to calculate the PCA. The 2 choices are "exact" (traditional exact
 calculation) and "randomized" (fast PCA with randomized algorithm
 introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
 
 \item{missingRate}{a \code{numeric} value representing the threshold

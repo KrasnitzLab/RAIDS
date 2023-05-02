@@ -1939,8 +1939,8 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' @param gdsSample an object of class \link[gdsfmt]{gds.class} (a GDS file),
 #' an opened Profile GDS file.
 #'
-#' @param sample.ana.id a single \code{character} string representing the
-#' profile identifier of the synthetic profile.
+#' @param profileID a single \code{character} string representing the
+#' profile identifier.
 #'
 #' @param dataRef a \code{data.frame} containing the information of the
 #' synthetic profiles that will be
@@ -1981,9 +1981,9 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
 #' @param missingRate a \code{numeric} value representing the threshold
@@ -2011,20 +2011,29 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @export
-computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
+computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
                     dataRef, spRef, studyIDSyn, np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
                     kList=seq(2, 15, 1), pcaList = seq(2, 15, 1),
-                    algorithm="exact", eigen.cnt=32L, missingRate=0.025) {
+                    algorithm="exact", eigenCount=32L, missingRate=0.025) {
 
-    ## Add parameter validation (not all done)
+    ## Assign default value is kList is NULL
+    if(is.null(kList)) {
+        kList <- seq(2,15,1)
+    }
+
+    ## Assign default value is pcaList is NULL
+    if(is.null(pcaList)) {
+        pcaList <- seq(2,15,1)
+    }
+    ## Add parameter validation
     validateComputePoolSyntheticAncestry(gdsReference=gdsReference,
-        profileGDS=gdsSample, profileAnaID=sample.ana.id, dataRef=dataRef,
+        profileGDS=gdsSample, profileID=profileID, dataRef=dataRef,
         spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList, algorithm=algorithm,
-        eigenCnt=eigen.cnt, missingRate=missingRate)
+        eigenCount=eigenCount, missingRate=missingRate)
 
     sampleRM <- splitSelectByPop(dataRef)
 
@@ -2039,7 +2048,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                     sampleRM=sampleRM[j,], spRef=spRef, studyIDSyn=studyIDSyn,
                     np=np, listCatPop=listCatPop,
                     fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-                    pcaList=pcaList, algorithm=algorithm, eigenCount=eigen.cnt,
+                    pcaList=pcaList, algorithm=algorithm, eigenCount=eigenCount,
                     missingRate=missingRate, verbose=FALSE)
     }
 
@@ -2052,11 +2061,11 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, sample.ana.id,
                             fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
-        name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate)
+        name.id=profileID, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
-                                                sample.ana.id, spRef)
+                                                profileID, spRef)
 
     return(listKNNSample)
 }

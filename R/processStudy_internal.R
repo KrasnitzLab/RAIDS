@@ -1357,7 +1357,8 @@ validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 #' @param profileGDS an object of class \link[gdsfmt]{gds.class} (a GDS file),
 #' an opened Profile GDS file.
 #'
-#' @param profileAnaID TODO
+#' @param profileID a single \code{character} string representing the
+#' profile identifier.
 #'
 #' @param dataRef a \code{data.frame} TODO
 #'
@@ -1410,7 +1411,6 @@ validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 #'
 #' @examples
 #'
-#'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
@@ -1424,12 +1424,12 @@ validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 #'
 #' ## The function returns 0L when all parameters are valid
 #' RAIDS:::validateComputePoolSyntheticAncestry(gdsReference=gds1KG,
-#'     profileGDS=gdsProfile, profileAnaID="SampleID",
+#'     profileGDS=gdsProfile, profileID="SampleID",
 #'     dataRef=dataRef, spRef=NULL,  studyIDSyn="MyStudy",
 #'     np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
 #'     fieldPopIn1KG="SuperPop", fieldPopInfAnc="SuperPop",
 #'     kList=seq(2,15,1), pcaList=seq(2,15,1),
-#'     algorithm="exact", eigenCnt=32L, missingRate=0.025)
+#'     algorithm="exact", eigenCount=32L, missingRate=0.025)
 #'
 #' ## Close GDS files (it is important to always close the GDS files)
 #' closefn.gds(gds1KG)
@@ -1440,20 +1440,25 @@ validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 #' @encoding UTF-8
 #' @keywords internal
 validateComputePoolSyntheticAncestry <- function(gdsReference, profileGDS,
-    profileAnaID, dataRef, spRef, studyIDSyn, np,
+    profileID, dataRef, spRef, studyIDSyn, np,
     listCatPop, fieldPopIn1KG, fieldPopInfAnc,
-    kList, pcaList, algorithm, eigenCnt, missingRate) {
+    kList, pcaList, algorithm, eigenCount, missingRate) {
 
     ## The gds and profileGDS must be objects of class "gds.class"
     validateGDSClass(gds=gdsReference, "gdsReference")
     validateGDSClass(gds=profileGDS, "profileGDS")
+
+    ## The profileID must be one character string
+    if (!(is.character(profileID) && length(profileID) == 1)) {
+        stop("The \'profileID\' parameter must be a character string.")
+    }
 
     ## The dataRef must be an data.frame object
     if (!is.data.frame(dataRef)) {
         stop("The \'dataRef\' must be a data.frame object.")
     }
 
-    ## The studyID must be a character string
+    ## The studyIDSyn must be a character string
     if (!(is.character(studyIDSyn) && length(studyIDSyn) == 1)) {
         stop("The \'studyIDSyn\' parameter must be a character string.")
     }
@@ -1483,9 +1488,9 @@ validateComputePoolSyntheticAncestry <- function(gdsReference, profileGDS,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The eigenCnt must be a single integer
-    if (!(isSingleNumber(eigenCnt))) {
-        stop("The \'eigenCnt\' parameter must be a single integer.")
+    ## The eigenCount must be a single integer
+    if (!(isSingleNumber(eigenCount))) {
+        stop("The \'eigenCount\' parameter must be a single integer.")
     }
 
     ## The missingRate must be a numeric of NaN
@@ -2186,7 +2191,7 @@ computePCAForSamples <- function(gds, pathProfileGDS, listSamples, np=1L) {
 
         sample.Unrel.All <- study.annot$data.id[study.annot$study.id ==
                                                         "Ref.1KG"]
-        #sample.ref <- sample.Unrel.All$data.id
+
         listPCA <- computePrunedPCARef(gdsSample, sample.Unrel.All, np)
 
         listPCA[["samp.load"]] <- projectSample2PCA(gdsSample, listPCA,

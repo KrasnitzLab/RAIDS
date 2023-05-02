@@ -1977,17 +1977,16 @@ test_that("computePoolSyntheticAncestry() must return error when gdsReference is
                                         "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gdsReference="toto.gds", gdsSample=gdsF,
-        sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
+        profileID="test", dataRef=dataRefDemo, spRef="TODO",
         studyIDSyn="synthetic",
         np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missingRate=0.025), error_message)
+        eigenCount=32L, missingRate=0.025), error_message)
 })
 
 
-test_that(paste0("computePoolSyntheticAncestry() must return error ",
-                    "when gds is a numerical value"), {
+test_that(paste0("computePoolSyntheticAncestry() must return error when gds is a numerical value"), {
 
     dataDir <- system.file("extdata/tests", package="RAIDS")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
@@ -2004,12 +2003,12 @@ test_that(paste0("computePoolSyntheticAncestry() must return error ",
                                     "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gdsReference=31, gdsSample=gdsF,
-            sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
+            profileID="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
             np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missingRate=0.025), error_message)
+            eigenCount=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2030,12 +2029,36 @@ test_that("computePoolSyntheticAncestry() must return error when profileGDS is a
                                     "class \'gds.class\'.")
 
     expect_error(computePoolSyntheticAncestry(gdsReference=gdsF, gdsSample=33,
-            sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
+            profileID="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
             np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missingRate=0.025), error_message)
+            eigenCount=32L, missingRate=0.025), error_message)
+})
+
+
+test_that("computePoolSyntheticAncestry() must return error when profileID is a numerical value", {
+
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    dataRefDemo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC",
+                                            "SampleD"),
+                                pop.group=c("TSI", "TSI", "YRI", "YRI"),
+                                superPop=c("EUR", "EUR", "AFR", "AFR"))
+
+    error_message <- "The \'profileID\' parameter must be a character string."
+
+    expect_error(computePoolSyntheticAncestry(gdsReference=gdsF, gdsSample=gdsF,
+        profileID=22, dataRef=dataRefDemo, spRef="TODO",
+        studyIDSyn="synthetic", np=1L, listCatPop="EUR",
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigenCount=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2048,12 +2071,12 @@ test_that("computePoolSyntheticAncestry() must return error when dataRef is char
     error_message <- "The \'dataRef\' must be a data.frame object."
 
     expect_error(computePoolSyntheticAncestry(gdsReference=gdsF, gdsSample=gdsF,
-        sample.ana.id="test", dataRef="test", spRef="TODO",
+        profileID="test", dataRef="test", spRef="TODO",
         studyIDSyn="synthetic",
         np=1L, listCatPop="EUR", fieldPopIn1KG="superPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missingRate=0.025), error_message)
+        eigenCount=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2070,12 +2093,12 @@ test_that("computePoolSyntheticAncestry() must return error when studyIDSyn is n
     error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestry(gdsReference=gdsF, gdsSample=gdsF,
-        sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
+        profileID="test", dataRef=dataRefDemo, spRef="TODO",
         studyIDSyn=33,
         np=1L, listCatPop="EUR", fieldPopIn1KG="SuperPop",
         fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
         pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L, missingRate=0.025), error_message)
+        eigenCount=32L, missingRate=0.025), error_message)
 })
 
 
@@ -2092,12 +2115,12 @@ test_that("computePoolSyntheticAncestry() must return error when fieldPopIn1KG i
     error_message <- "The \'fieldPopIn1KG\' parameter must be a character string."
 
     expect_error(computePoolSyntheticAncestry(gdsReference=gdsF, gdsSample=gdsF,
-            sample.ana.id="test", dataRef=dataRefDemo, spRef="TODO",
+            profileID="test", dataRef=dataRefDemo, spRef="TODO",
             studyIDSyn="synthetic",
             np=1L, listCatPop="EUR", fieldPopIn1KG=33,
             fieldPopInfAnc="SuperPop", kList=seq(2, 15, 1),
             pcaList=seq(2, 15, 1), algorithm="exact",
-            eigen.cnt=32L, missingRate=0.025), error_message)
+            eigenCount=32L, missingRate=0.025), error_message)
 })
 
 

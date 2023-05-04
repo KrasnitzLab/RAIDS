@@ -2120,9 +2120,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
-#' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
+#' function; if 'eigenCount' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
 #'
 #' @param missingRate a \code{numeric} value representing the threshold
@@ -2163,7 +2163,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
                             kList=seq(2, 15, 1),
                             pcaList=seq(2, 15, 1),
                             algorithm=c("exact", "randomized"),
-                            eigen.cnt=32L,
+                            eigenCount=32L,
                             missingRate=NaN) {
 
     if(is.null(pcaList)) {
@@ -2179,7 +2179,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
         gdsSample=gdsSample, listFiles=listFiles, sample.ana.id=sample.ana.id,
         spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-        pcaList=pcaList, algorithm=algorithm, eigenCount=eigen.cnt,
+        pcaList=pcaList, algorithm=algorithm, eigenCount=eigenCount,
         missingRate=missingRate)
 
     ## Matches a character method against a table of candidate values
@@ -2204,7 +2204,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     listPCASample <- computePCARefSample(gdsSample=gdsSample,
         name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigen.cnt, missingRate=missingRate)
+        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
         listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,

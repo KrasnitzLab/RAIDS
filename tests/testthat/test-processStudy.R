@@ -1756,7 +1756,7 @@ test_that("computeAncestryFromSyntheticFile() must return error when gdsReferenc
         listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=NaN), error_message)
+        eigenCount=32L,  missingRate=NaN), error_message)
 })
 
 
@@ -1773,7 +1773,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsS
         np=1L,  listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=NaN), error_message)
+        eigenCount=32L,  missingRate=NaN), error_message)
 })
 
 
@@ -1790,7 +1790,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when stud
         studyIDSyn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=NaN), error_message)
+        eigenCount=32L,  missingRate=NaN), error_message)
 })
 
 
@@ -1807,7 +1807,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when algo
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm=23,
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1824,7 +1824,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when np i
         studyIDSyn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1842,7 +1842,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when list
         studyIDSyn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1860,7 +1860,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when miss
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=-0.2), error_message)
+        eigenCount=32L,  missingRate=-0.2), error_message)
 })
 
 
@@ -1877,7 +1877,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when eige
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=c(2L, 3L),  missingRate=0.2), error_message)
+        eigenCount=c(2L, 3L),  missingRate=0.2), error_message)
 })
 
 
@@ -1895,7 +1895,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG=22, fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1913,7 +1913,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc=c("SuperPop", "test"),
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1931,7 +1931,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when kLis
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, -3, 4), pcaList=seq(2, 15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 
@@ -1949,7 +1949,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, 3, 4), pcaList=c(2, -15, 1), algorithm="exact",
-        eigen.cnt=32L,  missingRate=0.2), error_message)
+        eigenCount=32L,  missingRate=0.2), error_message)
 })
 
 

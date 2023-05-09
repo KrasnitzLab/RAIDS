@@ -930,7 +930,7 @@ for(i in seq_len(length(listSamples))){
     resCall <- computeAncestryFromSyntheticFile(gdsReference=gds, 
                                     gdsProfile=gdsProfile,
                                     listFiles=listFiles,
-                                    sample.ana.id=listSamples[i],
+                                    currentProfile=listSamples[i],
                                     spRef=refKnownSuperPop,
                                     studyIDSyn=syntheticStudyDF$study.id,
                                     np=1L)

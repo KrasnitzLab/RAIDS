@@ -600,7 +600,8 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #'
 #' @param listFiles TODO.
 #'
-#' @param sample.ana.id TODO
+#' @param currentProfile a \code{character} string representing the profile
+#' identifier of the current profile on which ancestry will be inferred.
 #'
 #' @param spRef TODO
 #'
@@ -664,7 +665,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
-#'     gdsProfile=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
+#'     gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
 #'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
 #'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
@@ -674,17 +675,21 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' closefn.gds(gdsfile=gdsSample)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom S4Vectors isSingleNumber
+#' @importFrom S4Vectors isSingleNumber isSingleString
 #' @encoding UTF-8
 #' @keywords internal
 validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
-                listFiles, sample.ana.id, spRef, studyIDSyn, np, listCatPop,
+                listFiles, currentProfile, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
                 algorithm, eigenCount, missingRate) {
 
     ## The gdsReference and gdsProfile must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
     validateGDSClass(gdsProfile, "gdsProfile")
+
+    if(!isSingleString(currentProfile)) {
+        stop("The \'currentProfile\' parameter must be a character string.")
+    }
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {

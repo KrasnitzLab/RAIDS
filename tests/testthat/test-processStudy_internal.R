@@ -118,7 +118,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
     result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gdsF,
-                    gdsSample=gdsF, listFiles, sample.ana.id,
+                    gdsProfile=gdsF, listFiles, sample.ana.id,
                     spRef, studyIDSyn="Synthetic", np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",

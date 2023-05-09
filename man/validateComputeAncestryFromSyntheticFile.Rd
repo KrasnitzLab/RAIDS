@@ -3,11 +3,12 @@
 \encoding{UTF-8}
 \name{validateComputeAncestryFromSyntheticFile}
 \alias{validateComputeAncestryFromSyntheticFile}
-\title{Validate input parameters for createStudy2GDS1KG() function}
+\title{Validate input parameters for computeAncestryFromSyntheticFile()
+function}
 \usage{
 validateComputeAncestryFromSyntheticFile(
   gdsReference,
-  gdsSample,
+  gdsProfile,
   listFiles,
   sample.ana.id,
   spRef,
@@ -24,11 +25,11 @@ validateComputeAncestryFromSyntheticFile(
 )
 }
 \arguments{
-\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-1KG GDS file.}
+\item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS
+file), the opened 1KG GDS file.}
 
-\item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the GDS Sample file.}
+\item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
+(a GDS file), the opened Profile GDS file.}
 
 \item{listFiles}{TODO.}
 
@@ -76,7 +77,7 @@ The function returns \code{0L} when successful.
 }
 \description{
 This function validates the input parameters for the
-\code{\link{createStudy2GDS1KG}} function.
+\code{\link{computeAncestryFromSyntheticFile}} function.
 }
 \examples{
 
@@ -94,7 +95,7 @@ listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 
 ## The validatiion should be successful
 RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
-    gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
+    gdsProfile=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)

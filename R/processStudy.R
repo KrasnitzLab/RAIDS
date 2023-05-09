@@ -2076,10 +2076,10 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @description TODO
 #'
 #' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
-#' file), the 1KG GDS file.
+#' file), the opened 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param listFiles TODO.
 #'
@@ -2151,7 +2151,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
-computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
+computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                             listFiles,
                             sample.ana.id,
                             spRef,
@@ -2176,7 +2176,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
 
     ## Validate input parameters
     validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference,
-        gdsSample=gdsSample, listFiles=listFiles, sample.ana.id=sample.ana.id,
+        gdsProfile=gdsProfile, listFiles=listFiles, sample.ana.id=sample.ana.id,
         spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
         fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
         pcaList=pcaList, algorithm=algorithm, eigenCount=eigenCount,
@@ -2196,13 +2196,13 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
     ## Extract the sample super-population information from the 1KG GDS file
     ## for profiles associated to the specified study in the GDS Sample file
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
-        gdsSample=gdsSample, studyID=studyIDSyn, popName=fieldPopIn1KG)
+        gdsSample=gdsProfile, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
     listParaSample <- selParaPCAUpQuartile(matKNN.All=resultsKNN,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample=gdsSample,
+    listPCASample <- computePCARefSample(gdsSample=gdsProfile,
         name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
         algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
 
@@ -2500,7 +2500,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
         resCall <- computeAncestryFromSyntheticFile(gdsReference=gds1KG,
-                        gdsSample=gdsProfile, listFiles=listFiles,
+                        gdsProfile=gdsProfile, listFiles=listFiles,
                         sample.ana.id=listProfiles[i], spRef=spRef,
                         studyIDSyn=studyDF.syn$study.id, np=1L)
 

@@ -928,7 +928,7 @@ for(i in seq_len(length(listSamples))){
     gdsProfile <- snpgdsOpen(fileProfile)
 
     resCall <- computeAncestryFromSyntheticFile(gdsReference=gds, 
-                                    gdsSample=gdsProfile,
+                                    gdsProfile=gdsProfile,
                                     listFiles=listFiles,
                                     sample.ana.id=listSamples[i],
                                     spRef=refKnownSuperPop,

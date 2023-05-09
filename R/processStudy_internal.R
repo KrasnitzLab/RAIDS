@@ -586,16 +586,17 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 }
 
 
-#' @title Validate input parameters for createStudy2GDS1KG() function
+#' @title Validate input parameters for computeAncestryFromSyntheticFile()
+#' function
 #'
 #' @description This function validates the input parameters for the
-#' \code{\link{createStudy2GDS1KG}} function.
+#' \code{\link{computeAncestryFromSyntheticFile}} function.
 #'
-#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1KG GDS file.
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
+#' file), the opened 1KG GDS file.
 #'
-#' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the GDS Sample file.
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the opened Profile GDS file.
 #'
 #' @param listFiles TODO.
 #'
@@ -663,7 +664,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
-#'     gdsSample=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
+#'     gdsProfile=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
 #'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
 #'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
@@ -676,14 +677,14 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsSample,
+validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                 listFiles, sample.ana.id, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
                 algorithm, eigenCount, missingRate) {
 
-    ## The gdsReference and gdsSample must be objects of class "gds.class"
+    ## The gdsReference and gdsProfile must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
-    validateGDSClass(gdsSample, "gdsSample")
+    validateGDSClass(gdsProfile, "gdsProfile")
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {

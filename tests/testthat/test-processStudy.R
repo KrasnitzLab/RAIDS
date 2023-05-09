@@ -1752,7 +1752,7 @@ test_that("computeAncestryFromSyntheticFile() must return error when gdsReferenc
     error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference="test.gds",
-        gdsSample=fileGDS, listFiles, sample.ana.id, spRef, studyIDSyn, np=1L,
+        gdsProfile=fileGDS, listFiles, sample.ana.id, spRef, studyIDSyn, np=1L,
         listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1760,16 +1760,16 @@ test_that("computeAncestryFromSyntheticFile() must return error when gdsReferenc
 })
 
 
-test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsSample is character string"), {
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsProfile is character string"), {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
     gdsF <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gdsF), envir=parent.frame())
 
-    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'"
+    error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF,
-        gdsSample="sample.gds", listFiles, sample.ana.id, spRef, studyIDSyn,
+        gdsProfile="sample.gds", listFiles, sample.ana.id, spRef, studyIDSyn,
         np=1L,  listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1785,7 +1785,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when stud
 
     error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1802,7 +1802,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when algo
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1819,7 +1819,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when np i
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1837,7 +1837,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when list
     error_message <- paste0("The \'listCatPop\' parameter must be a vector of ",
                                     "character strings.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1855,7 +1855,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when miss
     error_message <- paste0("The \'missingRate\' must be a single ",
                         "numeric positive value between 0 and 1 or NaN.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1872,7 +1872,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when eige
 
     error_message <- "The \'eigenCount\' parameter must be a single integer."
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
@@ -1890,7 +1890,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
     error_message <- paste0("The \'fieldPopIn1KG\' parameter must be a ",
                                 "character string.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG=22, fieldPopInfAnc="SuperPop",
@@ -1908,7 +1908,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
     error_message <- paste0("The \'fieldPopInfAnc\' parameter must be a ",
                                     "character string.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc=c("SuperPop", "test"),
@@ -1926,7 +1926,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when kLis
     error_message <- paste0("The \'kList\' parameter must be a vector of ",
                                 "positive integers.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
@@ -1944,7 +1944,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
     error_message <- paste0("The \'pcaList\' parameter must be a vector of ",
                                 "positive integers.")
 
-    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsSample=gdsF,
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
         listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",

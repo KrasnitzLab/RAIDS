@@ -68,7 +68,7 @@ infer the ancestry of a specific sample</h1>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeAncestryFromSyntheticFile</span><span class="op">(</span></span>
 <span>  <span class="va">gdsReference</span>,</span>
-<span>  <span class="va">gdsSample</span>,</span>
+<span>  <span class="va">gdsProfile</span>,</span>
 <span>  <span class="va">listFiles</span>,</span>
 <span>  <span class="va">sample.ana.id</span>,</span>
 <span>  <span class="va">spRef</span>,</span>
@@ -89,12 +89,12 @@ infer the ancestry of a specific sample</h1>
     <h2>Arguments</h2>
     <dl><dt>gdsReference</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a> (a GDS
-file), the 1KG GDS file.</p></dd>
+file), the opened 1KG GDS file.</p></dd>
 
 
-<dt>gdsSample</dt>
+<dt>gdsProfile</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
-(a GDS file), the GDS Sample file.</p></dd>
+(a GDS file), the opened Profile GDS file.</p></dd>
 
 
 <dt>listFiles</dt>

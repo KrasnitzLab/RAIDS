@@ -2071,7 +2071,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 }
 
 #' @title Select the optimal K and D parameters using the synthetic data and
-#' infer the ancestry of a specific sample
+#' infer the ancestry of a specific profile
 #'
 #' @description TODO
 #'
@@ -2083,7 +2083,8 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #'
 #' @param listFiles TODO.
 #'
-#' @param sample.ana.id TODO
+#' @param currentProfile a \code{character} string representing the profile
+#' identifier of the current profile on which ancestry will be inferred.
 #'
 #' @param spRef TODO
 #'
@@ -2153,7 +2154,7 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @export
 computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                             listFiles,
-                            sample.ana.id,
+                            currentProfile,
                             spRef,
                             studyIDSyn,
                             np=1L,
@@ -2176,11 +2177,11 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 
     ## Validate input parameters
     validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference,
-        gdsProfile=gdsProfile, listFiles=listFiles, sample.ana.id=sample.ana.id,
-        spRef=spRef, studyIDSyn=studyIDSyn, np=np, listCatPop=listCatPop,
-        fieldPopIn1KG=fieldPopIn1KG, fieldPopInfAnc=fieldPopInfAnc, kList=kList,
-        pcaList=pcaList, algorithm=algorithm, eigenCount=eigenCount,
-        missingRate=missingRate)
+        gdsProfile=gdsProfile, listFiles=listFiles,
+        currentProfile=currentProfile, spRef=spRef, studyIDSyn=studyIDSyn,
+        np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+        fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
 
     ## Matches a character method against a table of candidate values
     algorithm <- arg_match(algorithm, multiple=FALSE)
@@ -2203,7 +2204,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         listCall=listCatPop)
 
     listPCASample <- computePCARefSample(gdsSample=gdsProfile,
-        name.id=sample.ana.id, studyIDRef="Ref.1KG", np=np,
+        name.id=currentProfile, studyIDRef="Ref.1KG", np=np,
         algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
@@ -2214,10 +2215,10 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         which(listKNNSample$matKNN$D == listParaSample$D &
                         listKNNSample$matKNN$K == listParaSample$K ) ,]
 
-    res <- list(pcaSample=listPCASample, # PCA of the sample + 1KG
+    res <- list(pcaSample=listPCASample, # PCA of the profile + 1KG
                 paraSample=listParaSample, # Result of the parameter selection
-                KNNSample=listKNNSample, # KNN for the sample
-                Ancestry=resCall) # the ancestry call fo rthe sample
+                KNNSample=listKNNSample, # KNN for the profile
+                Ancestry=resCall) # the ancestry call fo the profile
 
     return(res)
 }
@@ -2501,7 +2502,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
         resCall <- computeAncestryFromSyntheticFile(gdsReference=gds1KG,
                         gdsProfile=gdsProfile, listFiles=listFiles,
-                        sample.ana.id=listProfiles[i], spRef=spRef,
+                        currentProfile=listProfiles[i], spRef=spRef,
                         studyIDSyn=studyDF.syn$study.id, np=1L)
 
         saveRDS(resCall, file.path(pathOut,

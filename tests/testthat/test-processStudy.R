@@ -1752,7 +1752,8 @@ test_that("computeAncestryFromSyntheticFile() must return error when gdsReferenc
     error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference="test.gds",
-        gdsProfile=fileGDS, listFiles, sample.ana.id, spRef, studyIDSyn, np=1L,
+        gdsProfile=fileGDS, listFiles, currentProfile="test",
+        spRef, studyIDSyn, np=1L,
         listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1769,8 +1770,25 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when gdsP
     error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'"
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF,
-        gdsProfile="sample.gds", listFiles, sample.ana.id, spRef, studyIDSyn,
-        np=1L,  listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        gdsProfile="sample.gds", listFiles, currentProfile="test",
+        spRef, studyIDSyn, np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+        fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+        kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
+        eigenCount=32L,  missingRate=NaN), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when currentProfile is numeric"), {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The \'currentProfile\' parameter must be a character string."
+
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF,
+        gdsProfile=gdsF, listFiles, currentProfile=33,
+        spRef, studyIDSyn, np=1L, listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
         eigenCount=32L,  missingRate=NaN), error_message)
@@ -1786,7 +1804,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when stud
     error_message <- "The \'studyIDSyn\' parameter must be a character string."
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn=12L, np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1803,7 +1821,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when algo
     error_message <- "The \'algorithm\' parameter must be a character string."
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm=23,
@@ -1820,7 +1838,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when np i
     error_message <- "The \'np\' parameter must be a single positive integer."
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=-1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1838,7 +1856,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when list
                                     "character strings.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c(1, 2, 3),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1856,7 +1874,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when miss
                         "numeric positive value between 0 and 1 or NaN.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1873,7 +1891,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when eige
     error_message <- "The \'eigenCount\' parameter must be a single integer."
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1891,7 +1909,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
                                 "character string.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG=22, fieldPopInfAnc="SuperPop",
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1909,7 +1927,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
                                     "character string.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc=c("SuperPop", "test"),
         kList=seq(2, 15, 1), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1927,7 +1945,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when kLis
                                 "positive integers.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, -3, 4), pcaList=seq(2, 15, 1), algorithm="exact",
@@ -1945,7 +1963,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
                                 "positive integers.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
-        listFiles=fileGDS, sample.ana.id="sample01", spRef=c("HC01", "HC03"),
+        listFiles=fileGDS, currentProfile="sample01", spRef=c("HC01", "HC03"),
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, 3, 4), pcaList=c(2, -15, 1), algorithm="exact",

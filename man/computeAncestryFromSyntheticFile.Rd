@@ -4,13 +4,13 @@
 \name{computeAncestryFromSyntheticFile}
 \alias{computeAncestryFromSyntheticFile}
 \title{Select the optimal K and D parameters using the synthetic data and
-infer the ancestry of a specific sample}
+infer the ancestry of a specific profile}
 \usage{
 computeAncestryFromSyntheticFile(
   gdsReference,
   gdsProfile,
   listFiles,
-  sample.ana.id,
+  currentProfile,
   spRef,
   studyIDSyn,
   np = 1L,
@@ -33,7 +33,8 @@ file), the opened 1KG GDS file.}
 
 \item{listFiles}{TODO.}
 
-\item{sample.ana.id}{TODO}
+\item{currentProfile}{a \code{character} string representing the profile
+identifier of the current profile on which ancestry will be inferred.}
 
 \item{spRef}{TODO}
 

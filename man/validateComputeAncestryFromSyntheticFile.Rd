@@ -10,7 +10,7 @@ validateComputeAncestryFromSyntheticFile(
   gdsReference,
   gdsProfile,
   listFiles,
-  sample.ana.id,
+  currentProfile,
   spRef,
   studyIDSyn,
   np,
@@ -33,7 +33,8 @@ file), the opened 1KG GDS file.}
 
 \item{listFiles}{TODO.}
 
-\item{sample.ana.id}{TODO}
+\item{currentProfile}{a \code{character} string representing the profile
+identifier of the current profile on which ancestry will be inferred.}
 
 \item{spRef}{TODO}
 
@@ -95,7 +96,7 @@ listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 
 ## The validatiion should be successful
 RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
-    gdsProfile=gdsSample, listFiles=listFiles, sample.ana.id="sample01",
+    gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)

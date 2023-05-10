@@ -64,7 +64,7 @@ representing the identifiers of the synthetic profiles analysed.}
 representing the identifiers of the 1KG reference profiles used to
 generate the synthetic profiles.}
 \item{\code{sp}} {a \code{vector} of \code{character} strings representing
-the know super population ancestry of the 1KG reference profiles used
+the known super population ancestry of the 1KG reference profiles used
 to generate the synthetic profiles.}
 \item{\code{matKNN}} {a \code{data.frame} containing the super population
 inference for each synthetic profiles for different values of PCA

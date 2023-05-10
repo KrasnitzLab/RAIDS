@@ -603,7 +603,9 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
 #'
-#' @param spRef TODO
+#' @param spRef a \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier. The study identifier must be present in the GDS Sample file.
@@ -657,16 +659,17 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' ## The 1KG GDS file (opened)
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
-#' ## The GDS Sample (opened)
+#' ## The Profile GDS (opened)
 #' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 #'
-#' ## The validatiion should be successful
+#' ## The validation should be successful
 #' RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
 #'     gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
-#'     spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
+#'     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
 #'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
 #'
@@ -689,6 +692,10 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 
     if(!isSingleString(currentProfile)) {
         stop("The \'currentProfile\' parameter must be a character string.")
+    }
+
+    if(!(is.character(spRef))) {
+        stop("The \'spRef\' parameter must be a vector of character strings.")
     }
 
     ## The parameter np must be a single positive integer

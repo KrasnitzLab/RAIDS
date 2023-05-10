@@ -36,7 +36,9 @@ file), the opened 1KG GDS file.}
 \item{currentProfile}{a \code{character} string representing the profile
 identifier of the current profile on which ancestry will be inferred.}
 
-\item{spRef}{TODO}
+\item{spRef}{a \code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier. The study identifier must be present in the GDS Sample file.}
@@ -94,10 +96,11 @@ gdsSample <- openfn.gds(file.path(dataDir,
 
 listFiles <- file.path(dataDir,  "listSNPIndexes_Demo.rds")
 
-## The validatiion should be successful
+## The validation should be successful
 RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
     gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
-    spRef=NULL, studyIDSyn="Synthetic", np=1L, listCatPop=c("AFR", "EUR"),
+    spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
+    listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
 

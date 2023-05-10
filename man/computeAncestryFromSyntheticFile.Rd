@@ -36,7 +36,9 @@ file), the opened 1KG GDS file.}
 \item{currentProfile}{a \code{character} string representing the profile
 identifier of the current profile on which ancestry will be inferred.}
 
-\item{spRef}{TODO}
+\item{spRef}{a \code{vector} of \code{character} strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
 identifier. The study identifier must be present in the GDS Sample file.}

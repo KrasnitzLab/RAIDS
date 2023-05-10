@@ -1467,7 +1467,7 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
 #' representing the identifiers of the 1KG reference profiles used to
 #' generate the synthetic profiles.}
 #' \item{\code{sp}} {a \code{vector} of \code{character} strings representing
-#' the know super population ancestry of the 1KG reference profiles used
+#' the known super population ancestry of the 1KG reference profiles used
 #' to generate the synthetic profiles.}
 #' \item{\code{matKNN}} {a \code{data.frame} containing the super population
 #' inference for each synthetic profiles for different values of PCA
@@ -2086,7 +2086,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
 #'
-#' @param spRef TODO
+#' @param spRef a \code{vector} of \code{character} strings representing the
+#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
 #' identifier. The study identifier must be present in the GDS Sample file.

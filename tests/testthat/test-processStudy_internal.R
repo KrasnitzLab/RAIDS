@@ -119,7 +119,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
 
     result1 <- RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gdsF,
                     gdsProfile=gdsF, listFiles, currentProfile="test",
-                    spRef, studyIDSyn="Synthetic", np=1L,
+                    spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
                     kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",

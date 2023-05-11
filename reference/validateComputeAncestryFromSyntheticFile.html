@@ -109,7 +109,9 @@ identifier of the current profile on which ancestry will be inferred.</p></dd>
 
 
 <dt>spRef</dt>
-<dd><p>TODO</p></dd>
+<dd><p>a <code>vector</code> of <code>character</code> strings representing the
+known super population ancestry for the 1KG profiles. The 1KG profile
+identifiers are used as names for the <code>vector</code>.</p></dd>
 
 
 <dt>studyIDSyn</dt>
@@ -200,10 +202,11 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">listFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,  <span class="st">"listSNPIndexes_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
+<span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputeAncestryFromSyntheticFile</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
 <span class="r-in"><span>    gdsProfile<span class="op">=</span><span class="va">gdsSample</span>, listFiles<span class="op">=</span><span class="va">listFiles</span>, currentProfile<span class="op">=</span><span class="st">"sample01"</span>,</span></span>
-<span class="r-in"><span>    spRef<span class="op">=</span><span class="cn">NULL</span>, studyIDSyn<span class="op">=</span><span class="st">"Synthetic"</span>, np<span class="op">=</span><span class="fl">1L</span>, listCatPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AFR"</span>, <span class="st">"EUR"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    spRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EUR"</span>, <span class="st">"AFR"</span><span class="op">)</span>, studyIDSyn<span class="op">=</span><span class="st">"Synthetic"</span>, np<span class="op">=</span><span class="fl">1L</span>,</span></span>
+<span class="r-in"><span>    listCatPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EAS"</span>, <span class="st">"EUR"</span>, <span class="st">"AFR"</span>, <span class="st">"AMR"</span>, <span class="st">"SAS"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    fieldPopIn1KG<span class="op">=</span><span class="st">"superpop"</span>, fieldPopInfAnc<span class="op">=</span><span class="st">"Superpop"</span>, kList<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    pcaList<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, algorithm<span class="op">=</span><span class="st">"exact"</span>, eigenCount<span class="op">=</span><span class="fl">32L</span>, missingRate<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

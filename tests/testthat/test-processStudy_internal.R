@@ -123,7 +123,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                     fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
                     kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",
-                    eigenCount=32L, missingRate=0.02)
+                    eigenCount=32L, missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)
 })
@@ -146,7 +146,7 @@ test_that("validateComputePCARefSample() must return expected results when all i
 
     result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
                 name.id="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
-                eigen.cnt=32L, missingRate=0.02)
+                eigen.cnt=32L, missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)
 })

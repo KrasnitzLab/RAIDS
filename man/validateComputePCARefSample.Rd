@@ -12,7 +12,8 @@ validateComputePCARefSample(
   np,
   algorithm,
   eigen.cnt,
-  missingRate
+  missingRate,
+  verbose
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 \item{missingRate}{a \code{numeric} value representing the threshold
 missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 threshold.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -58,7 +62,7 @@ gdsSample <- openfn.gds(file.path(dataDir,
 ## The validatiion should be successful
 RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-    missingRate=0.02)
+    missingRate=0.02, verbose=FALSE)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gdsSample)

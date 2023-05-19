@@ -21,7 +21,8 @@ validateComputeAncestryFromSyntheticFile(
   pcaList,
   algorithm,
   eigenCount,
-  missingRate
+  missingRate,
+  verbose
 )
 }
 \arguments{
@@ -74,6 +75,9 @@ function; if 'eigenCount' <= 0, then all eigenvectors are returned.}
 missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA}
 with "<= missingRate" only; if \code{NaN}, no missing threshold.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function.}
 }
 \value{
 The function returns \code{0L} when successful.
@@ -90,7 +94,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 ## The 1KG GDS file (opened)
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
-## The GDS Sample (opened)
+## The Profile GDS (opened)
 gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
@@ -102,7 +106,8 @@ RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
-    pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
+    pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2,
+    verbose=FALSE)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gds1KG)

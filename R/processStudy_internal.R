@@ -642,6 +642,9 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' \link[SNPRelate]{snpgdsPCA}
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
 #' @return The function returns \code{0L} when successful.
 #'
 #' @references
@@ -671,7 +674,8 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #'     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
 #'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
-#'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2)
+#'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2,
+#'     verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gds1KG)
@@ -684,7 +688,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                 listFiles, currentProfile, spRef, studyIDSyn, np, listCatPop,
                 fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
-                algorithm, eigenCount, missingRate) {
+                algorithm, eigenCount, missingRate, verbose) {
 
     ## The gdsReference and gdsProfile must be objects of class "gds.class"
     validateGDSClass(gdsReference, "gdsReference")
@@ -736,6 +740,8 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         }
     }
 
+    validateLogical(verbose, "verbose")
+
     return(0L)
 }
 
@@ -768,6 +774,9 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' missing rate at with the SNVs are discarded; if \code{NaN}, no missing
 #' threshold.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function.
+#'
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
@@ -782,7 +791,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' ## The validatiion should be successful
 #' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
 #'     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-#'     missingRate=0.02)
+#'     missingRate=0.02, verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gdsSample)
@@ -792,8 +801,8 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @encoding UTF-8
 #' @keywords internal
 validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
-                                            np, algorithm,
-                                            eigen.cnt, missingRate) {
+                                            np, algorithm, eigen.cnt,
+                                            missingRate, verbose) {
 
     ## The gdsSample must be object of class "gds.class"
     validateGDSClass(gdsSample, "gdsSample")
@@ -831,6 +840,8 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
                     "value between 0 and 1 or NaN.")
         }
     }
+
+    validateLogical(verbose, "verbose")
 
     return(0L)
 }

@@ -21,7 +21,8 @@ computeAncestryFromSyntheticFile(
   pcaList = seq(2, 15, 1),
   algorithm = c("exact", "randomized"),
   eigenCount = 32L,
-  missingRate = NaN
+  missingRate = NaN,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -83,6 +84,9 @@ missing rate at with the SNVs are discarded; the SNVs are retained in the
 \link[SNPRelate]{snpgdsPCA}
 with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{NaN}.}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 a \code{list} containing 4 entries:

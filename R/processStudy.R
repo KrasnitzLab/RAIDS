@@ -2140,6 +2140,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{NaN}.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
+#'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
 #' \item{pcaSample}{}
@@ -2202,7 +2205,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                             pcaList=seq(2, 15, 1),
                             algorithm=c("exact", "randomized"),
                             eigenCount=32L,
-                            missingRate=NaN) {
+                            missingRate=NaN, verbose=FALSE) {
 
     if(is.null(pcaList)) {
         pcaList <- seq(2, 15, 1)
@@ -2218,7 +2221,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         currentProfile=currentProfile, spRef=spRef, studyIDSyn=studyIDSyn,
         np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
         fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
-        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
     ## Matches a character method against a table of candidate values
     algorithm <- arg_match(algorithm, multiple=FALSE)

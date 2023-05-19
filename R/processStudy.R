@@ -2181,8 +2181,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 #'
 #' ## Open the Profile GDS file
-#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#' ##gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 #'
+#' ## TODO
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match

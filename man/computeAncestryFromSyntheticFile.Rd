@@ -124,8 +124,9 @@ names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
 refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 
 ## Open the Profile GDS file
-gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+##gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 
+## TODO
 
 }
 \references{

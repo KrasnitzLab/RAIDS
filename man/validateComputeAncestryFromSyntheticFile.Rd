@@ -90,7 +90,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 ## The 1KG GDS file (opened)
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
-## The GDS Sample (opened)
+## The Profile GDS (opened)
 gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 

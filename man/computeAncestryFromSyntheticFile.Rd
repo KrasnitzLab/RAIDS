@@ -85,16 +85,47 @@ with "<= missingRate" only; if \code{NaN}, no missing threshold.
 Default: \code{NaN}.}
 }
 \value{
-a \code{list} TODO with the sample.id and eigenvectors
-and a table with KNN callfor different K and pca dimension.
+a \code{list} containing 4 entries:
+\itemize{
+\item{pcaSample}{}
+\item{paraSample}{}
+\item{KNNSample}{}
+\item{Ancestry}{ TODO the infered ancestry for the current profile.}
+}
 }
 \description{
-TODO
+The function select the optimal K and D parameters for a
+specific profile. The results on the synthetic data are used for the
+parameter selection. Once the optimal parameters are selected, the
+ancestry is inferred for the specific profile.
 }
 \examples{
 
-# TODO
-listEigenvector <- "TOTO"
+
+## Required library
+library(gdsfmt)
+
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+
+# The name of the synthetic study
+studyID <- "MYDATA.Synthetic"
+
+samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+    "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+    "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+    "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+    "NA19731", "NA20528", "NA20908")
+names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+    "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+    "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+
+## The known ancestry for the 1KG reference profiles
+refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+
+## Open the Profile GDS file
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+
 
 }
 \references{

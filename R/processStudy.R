@@ -1340,6 +1340,9 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{NaN}.
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
+#'
 #' @references
 #'
 #' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
@@ -1366,12 +1369,12 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' @export
 computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
-                            eigen.cnt=32L, missingRate=NaN) {
+                            eigen.cnt=32L, missingRate=NaN, verbose=FALSE) {
 
     ## Validate parameters
     validateComputePCARefSample(gdsSample=gdsSample, name.id=name.id,
         studyIDRef=studyIDRef, np=np, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missingRate=missingRate)
+        eigen.cnt=eigen.cnt, missingRate=missingRate, verbose=verbose)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
@@ -1393,15 +1396,15 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
     listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample, sample.id=sample.Unrel,
                                 snp.id=listPCA[["pruned"]], num.thread=np,
                                 algorithm=algorithm, eigen.cnt=eigen.cnt,
-                                missing.rate=missingRate, verbose=TRUE)
+                                missing.rate=missingRate, verbose=verbose)
 
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                                gdsobj=gdsSample, num.thread=np, verbose=TRUE)
+                            gdsobj=gdsSample, num.thread=np, verbose=verbose)
 
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
                                 gdsobj=gdsSample,
                                 sample.id=sample.id[sample.pos],
-                                num.thread=np, verbose=TRUE)
+                                num.thread=np, verbose=verbose)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
                                         listPCA[["pca.unrel"]]$sample.id
@@ -2073,7 +2076,10 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @title Select the optimal K and D parameters using the synthetic data and
 #' infer the ancestry of a specific profile
 #'
-#' @description TODO
+#' @description The function select the optimal K and D parameters for a
+#' specific profile. The results on the synthetic data are used for the
+#' parameter selection. Once the optimal parameters are selected, the
+#' ancestry is inferred for the specific profile.
 #'
 #' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
 #' file), the opened 1KG GDS file.
@@ -2134,8 +2140,13 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' with "<= missingRate" only; if \code{NaN}, no missing threshold.
 #' Default: \code{NaN}.
 #'
-#' @return a \code{list} TODO with the sample.id and eigenvectors
-#' and a table with KNN callfor different K and pca dimension.
+#' @return a \code{list} containing 4 entries:
+#' \itemize{
+#' \item{pcaSample}{}
+#' \item{paraSample}{}
+#' \item{KNNSample}{}
+#' \item{Ancestry}{ TODO the infered ancestry for the current profile.}
+#' }
 #'
 #'
 #' @references
@@ -2147,8 +2158,31 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #'
 #' @examples
 #'
-#' # TODO
-#' listEigenvector <- "TOTO"
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+#'     "NA19731", "NA20528", "NA20908")
+#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+#'
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match
@@ -2191,8 +2225,11 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     ## Merge results from PCA run on synthetic data present in RDS files
     KNN.list <- list()
     for(j in seq_len(length(listFiles))) {
-        # We have to test if the file exist and format is OK
-        KNN.list[[j]] <- readRDS(listFiles[j])
+        if (file.exists(listFiles[j])) {
+            KNN.list[[j]] <- readRDS(listFiles[j])
+        } else {
+            stop("The file \'", listFiles[j] ,"\' does not exist.")
+        }
     }
     resultsKNN <- do.call(rbind, KNN.list)
 

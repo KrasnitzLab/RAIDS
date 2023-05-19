@@ -887,14 +887,14 @@ library(RAIDS)
 library(gdsfmt)   
 
 ####################################################################
-## The 1KG GDS file is required
+## The reference 1KG GDS file is required
 ####################################################################
 
 ## Open the 1KG GDS file 
-gds <- openfn.gds(file1KG)
+gdsReference <- openfn.gds(file1KG)
     
-## A directory for the results, where a sub-directory 
-## will be set up for each input profile 
+## A directory where result files are going to be saved, 
+## where a sub-directory will be set up for each input profile 
 pathOut <- file.path(pathProfileGDS)
 
 if(! file.exists(pathOut)) {
@@ -908,26 +908,28 @@ if(! file.exists(pathOut)) {
 ## correspond to the known ancestry of the reference sample used to 
 ## synthesize it.
 ####################################################################
-refKnownSuperPop <- getRef1KGPop(gds, "superPop")
+refKnownSuperPop <- getRef1KGPop(gdsReference, "superPop")
     
-## Loop on each sample 
+## Loop on each profile 
 ## Can also be run in parallel or on different clusters...
 for(i in seq_len(length(listSamples))){
     
-    ## Extract the GDS file name and path for the current sample      
+    ## Extract the GDS file name and path for the current profile      
     fileProfile <- file.path(pathProfileGDS, paste0(listSamples[i], ".gds"))
     
-    ## Directory where the KNN results have been saved      
+    ## Directory where the KNN results of the synthetic profiles have been saved      
     pathKNN <- file.path(pathOut, listSamples[i])
     listFilesName <- dir(file.path(pathKNN), ".rds")
 
-    ## List of the KNN result files from PCA on synthetic data
+    ## List of the KNN result files from PCA run on synthetic data
     listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
-    ## Open the Sample GDS file
+    ## Open the Profile GDS file
     gdsProfile <- snpgdsOpen(fileProfile)
 
-    resCall <- computeAncestryFromSyntheticFile(gdsReference=gds, 
+    ## Select the optimal K and D parameters from the synthetic data results
+    ## Use those parameter to infer the ancestry of the specific profile
+    resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsReference, 
                                     gdsProfile=gdsProfile,
                                     listFiles=listFiles,
                                     currentProfile=listSamples[i],
@@ -942,12 +944,12 @@ for(i in seq_len(length(listSamples))){
             file.path(pathOut, paste0(listSamples[i], ".Ancestry",".csv")),
             quote=FALSE, row.names=FALSE)
     
-    ## Close the Sample GDS file (important)
+    ## Close the Profile GDS file (important)
     closefn.gds(gdsProfile)
 }
 
 ## Close the 1KG GDS file (important)
-closefn.gds(gds)
+closefn.gds(gdsReference)
 
 ####################################################################
 ## Show the ancestry inference (SuperPop) and 

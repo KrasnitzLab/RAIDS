@@ -927,6 +927,22 @@ test_that("computePCARefSample() must return error when algorithm is not in the 
 })
 
 
+test_that("computePCARefSample() must return error when verbose is number", {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+
+    error_message <- paste0("The \'verbose\' parameter must be a ",
+                                "logical (TRUE or FALSE).")
+
+    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
+            missingRate=0.02, verbose=33), error_message, fixed=TRUE)
+})
+
+
 #############################################################################
 ### Tests addStudy1Kg() results
 #############################################################################
@@ -1985,6 +2001,23 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when pcaL
         studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
         fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
         kList=c(1, 2, 3, 4), pcaList=c(2, -15, 1), algorithm="exact",
+        eigenCount=32L,  missingRate=0.2), error_message)
+})
+
+
+test_that(paste0("computeAncestryFromSyntheticFile() must return error when file does not exist"), {
+
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    gdsF <- openfn.gds(fileGDS)
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    error_message <- "The file \'toto\' does not exist."
+
+    expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,
+        listFiles=c("toto"), currentProfile="sample01", spRef=c("EUR", "AFR"),
+        studyIDSyn="Synthetic", np=1L, listCatPop=c("EAS", "EUR", "AFR"),
+        fieldPopIn1KG="test", fieldPopInfAnc="SuperPop",
+        kList=c(1, 2, 3, 4), pcaList=c(2, 15, 1), algorithm="exact",
         eigenCount=32L,  missingRate=0.2), error_message)
 })
 

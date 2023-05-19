@@ -72,7 +72,8 @@ computePCARefSample function."><!-- mathjax --><script src="https://cdnjs.cloudf
 <span>  <span class="va">np</span>,</span>
 <span>  <span class="va">algorithm</span>,</span>
 <span>  <span class="va">eigen.cnt</span>,</span>
-<span>  <span class="va">missingRate</span></span>
+<span>  <span class="va">missingRate</span>,</span>
+<span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,6 +115,11 @@ function; if 'eigen.cnt' &lt;= 0, then all eigenvectors are returned.</p></dd>
 missing rate at with the SNVs are discarded; if <code>NaN</code>, no missing
 threshold.</p></dd>
 
+
+<dt>verbose</dt>
+<dd><p>a <code>logical</code> indicating if messages should be printed
+to show how the different steps in the function.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -139,7 +145,7 @@ threshold.</p></dd>
 <span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePCARefSample</span><span class="op">(</span>gdsSample<span class="op">=</span><span class="va">gdsSample</span>, name.id<span class="op">=</span><span class="st">"HCC01"</span>,</span></span>
 <span class="r-in"><span>    studyIDRef<span class="op">=</span><span class="st">"1KG"</span>, np<span class="op">=</span><span class="fl">1L</span>, algorithm<span class="op">=</span><span class="st">"exact"</span>, eigen.cnt<span class="op">=</span><span class="fl">32L</span>,</span></span>
-<span class="r-in"><span>    missingRate<span class="op">=</span><span class="fl">0.02</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    missingRate<span class="op">=</span><span class="fl">0.02</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>

@@ -50,9 +50,8 @@ https://doi.org/10.1158/0008-5472.CAN-22-0682
     that are genetically related in the 1KG GDS file. }
     \item \code{\link{addRef2GDS1KG}} { This function adds the information
     about the unrelated patients to the 1KG GDS file. }
-    \item \code{\link{add1KG2SampleGDS}} { TODO }
-    \item \code{\link{addBlockFromPlink2GDS}} { TODO }
-    \item \code{\link{addPhase1KG2SampleGDSFromGDS}} { TODO }
+    \item \code{\link{add1KG2SampleGDS}} { This function adds the genotype
+    information for the list of pruned SNVs into the Profile GDS file }
     \item \code{\link{appendStudy2GDS1KG}} { This function creates the
     Sample GDS file(s) for one or multiple specific samples
     using the information from a Sample RDS description file and the 1KG
@@ -62,6 +61,9 @@ https://doi.org/10.1158/0008-5472.CAN-22-0682
     the allelic fraction of the pruned SNVs for a specific sample and add
     the information to the associated GDS Sample file. The allelic fraction
     estimation method is adapted to the type of study (DNA or RNA). }
+    \item \code{\link{computeSyntheticROC}} { This function calculate the
+    AUROC of the inferences for specific values of D and K using the
+    inferred ancestry results from the synthetic profiles.}
 }
 }
 \author{

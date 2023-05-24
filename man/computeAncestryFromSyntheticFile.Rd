@@ -32,7 +32,10 @@ file), the opened 1KG GDS file.}
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
 
-\item{listFiles}{TODO.}
+\item{listFiles}{a \code{vector} of \code{character} strings representing
+the name of files that contain the results of ancestry inference done on
+the synthetic profiles for multiple values of _D_ and _K_. The files must
+exist.}
 
 \item{currentProfile}{a \code{character} string representing the profile
 identifier of the current profile on which ancestry will be inferred.}
@@ -248,7 +251,6 @@ studyID <- "MYDATA.Synthetic"
 ## The known ancestry for the 1KG reference profiles
 dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
-
 
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")

@@ -2087,7 +2087,10 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
-#' @param listFiles TODO.
+#' @param listFiles a \code{vector} of \code{character} strings representing
+#' the name of files that contain the results of ancestry inference done on
+#' the synthetic profiles for multiple values of _D_ and _K_. The files must
+#' exist.
 #'
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
@@ -2305,7 +2308,6 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #' refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
 #'
-#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
@@ -2380,12 +2382,12 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     }
     resultsKNN <- do.call(rbind, KNN.list)
 
-    ## Extract the sample super-population information from the 1KG GDS file
-    ## for profiles associated to the specified study in the Profile GDS file
+    ## Extract the super-population information from the 1KG GDS file
+    ## for profiles associated to the synthetic study
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
         gdsSample=gdsProfile, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
-    listParaSample <- selParaPCAUpQuartile(matKNN.All=resultsKNN,
+    listParaSample <- selParaPCAUpQuartile(matKNN=resultsKNN,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 

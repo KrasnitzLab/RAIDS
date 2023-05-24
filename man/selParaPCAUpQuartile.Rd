@@ -3,10 +3,12 @@
 \encoding{UTF-8}
 \name{selParaPCAUpQuartile}
 \alias{selParaPCAUpQuartile}
-\title{TODO}
+\title{Compile all the inferred ancestry results done on the
+synthetic profiles for different D and K values in the objective of
+selecting the optimal D and K values for a specific profile}
 \usage{
 selParaPCAUpQuartile(
-  matKNN.All,
+  matKNN,
   pedCall,
   refCall,
   predCall,
@@ -16,18 +18,27 @@ selParaPCAUpQuartile(
 )
 }
 \arguments{
-\item{matKNN.All}{TODO see it is rbind matKNN of the
-computeKNNSuperPoprSynthetic return from group synthetic data}
+\item{matKNN}{a \code{data.frame} containing the inferred ancestry for the
+synthetic profiles for different _K_ and _D_ values. The \code{data.frame}
+must contained those columns: "sample.id", "D", "K" and the fourth column
+name must correspond to the \code{predCall} argument.}
 
-\item{pedCall}{TODO see return of prepPedSynthetic1KG}
+\item{pedCall}{a \code{data.frame} containing the information about
+the super-population information from the 1KG GDS file
+for profiles used to generate the synthetic profiles. The \code{data.frame}
+must contained a column named as the \code{refCall} argument.}
 
-\item{refCall}{TODO column name in pedCall with the call}
+\item{refCall}{a \code{character} string representing the name of the
+column that contains the known ancestry for the reference profiles in
+the Reference GDS file.}
 
 \item{predCall}{a \code{character} string representing the name of
-the column that will contain the inferred ancestry for the specified
-dataset.}
+the column that contains the inferred ancestry for the specified
+profiles. The column must be present in the \code{matKNN} \code{data.frame}
+argument.}
 
-\item{listCall}{TODO array of the possible call}
+\item{listCall}{a \code{vector} of \code{character} strings representing
+the list of possible ancestry assignations.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -42,20 +53,83 @@ Default: \code{seq(2,15,1)}.}
 \value{
 a \code{list} containing 5 entries:
 \itemize{
-\item{dfPCA} {TODO}
-\item{dfPop} {TODO}
-\item{D} {TODO}
-\item{K} {TODO}
-\item{listD} {TODO}
+\item{\code{dfPCA}} { a \code{data.frame} containing statistical results
+on all combined synthetic results done with a fixed value of \code{D} (the
+number of dimensions). The \code{data.frame} contains those columns:
+\itemize{
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions).}
+\item{\code{median}}{ a \code{numeric} representing the median of the
+minimum AUROC obtained (within super populations) for all combination of
+the fixed \code{D} value and all tested \code{K} values. }
+\item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+AUROC obtained (within super populations) for all combination of the fixed
+\code{D} value and all tested \code{K} values. }
+\item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+of the minimum AUROC obtained (within super populations) for all
+combination of the fixed \code{D} value and all tested \code{K} values. }
+\item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+(the number of neighbors) for a fixed \code{D} value. }
+}
+}
+\item{\code{dfPop}} { a \code{data.frame} containing statistical results on
+all combined synthetic results done with different values of \code{D} (the
+number of dimensions) and \code{K} (the number of neighbors).
+The \code{data.frame} contains those columns:
+\itemize{
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions).}
+\item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+number of neighbors).}
+\item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+obtained by grouping all the synthetic results by super-populations, for
+the specified values of \code{D} and \code{K}.}
+\item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+by grouping all the synthetic results for the specified values of \code{D}
+and \code{K}.}
+\item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+of the confusion matrix obtained by grouping all the synthetic results for
+the specified values of \code{D} and \code{K}.}
+}
+}
+\item{\code{D}} { a \code{numeric} representing the optimal \code{D} value
+(the number of dimensions) for the specific profile.}
+\item{\code{K}} { a \code{numeric} representing the optimal \code{K} value
+(the number of neighbors) for the specific profile.}
+\item{\code{listD}} { a \code{numeric} representing the optimal \code{D}
+values (the number of dimensions) for the specific profile. More than one
+\code{D} is possible.}
 }
 }
 \description{
-TODO
+The function calculates the accuracy of the inferred ancestry
+called done on the synthetic profiles for different D and K values. The
+accuracy is also calculated for each super-population used to generate
+the synthetic profiles. The known ancestry from the reference profiles
+used to generate the synthetic profiles is required to calculate the
+accuracy.
 }
 \examples{
 
-# TODO
-listEigenvector <- "TOTO"
+dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+
+## The inferred ancestry results for the synthetic data using different
+## values of D and K
+matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+
+## The known ancestry from the reference profiles used to generate the
+## synthetic profiles
+syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+
+## Compile all the results for ancestry inference done on the
+## synthetic profiles for different D and K values
+## Select the optimal D and K values
+results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
+    pedCall=syntheticInfo, refCall="superPop", predCall="SuperPop",
+    listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,15,1),
+    pcaList=seq(2,15,1))
+results$D
+results$K
 
 }
 \author{

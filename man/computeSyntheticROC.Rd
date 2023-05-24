@@ -3,36 +3,84 @@
 \encoding{UTF-8}
 \name{computeSyntheticROC}
 \alias{computeSyntheticROC}
-\title{TODO}
+\title{Calculate the AUROC of the inferences for specific
+values of D and K using the inferred ancestry results from the synthetic
+profiles.}
 \usage{
-computeSyntheticROC(matKNN, pedCall, refCall, predCall, listCall)
+computeSyntheticROC(
+  matKNN,
+  matKNNAncestryColumn,
+  pedCall,
+  pedCallAncestryColumn,
+  listCall = c("EAS", "EUR", "AFR", "AMR", "SAS")
+)
 }
 \arguments{
-\item{matKNN}{TODO}
+\item{matKNN}{a \code{data.frame} containing the inferred ancestry results
+for fixed values of _D_ and _K_. On of the column names of the
+\code{data.frame} must correspond to the \code{matKNNAncestryColumn}
+argument.}
 
-\item{pedCall}{TODO see return of prepPedSynthetic1KG}
+\item{matKNNAncestryColumn}{a \code{character} string
+representing the
+name of the column that contains the inferred ancestry for the specified
+synthetic profiles. The column must be present in the \code{matKNN}
+argument.}
 
-\item{refCall}{TODO column name in pedCall with the call}
+\item{pedCall}{a \code{data.frame} containing the information about
+the super-population information from the 1KG GDS file
+for profiles used to generate the synthetic profiles. The \code{data.frame}
+must contained a column named as the \code{pedCallAncestryColumn} argument.}
 
-\item{predCall}{TODO column name in matKNN with the call}
+\item{pedCallAncestryColumn}{a \code{character} string representing the
+name of the column that contains the known ancestry for the reference
+profiles in the Reference GDS file. The column must be present in
+the \code{pedCall} argument.}
 
-\item{listCall}{TODO array of the possible call}
+\item{listCall}{a \code{vector} of \code{character} strings representing
+the list of all possible ancestry assignations.
+Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 }
 \value{
 \code{list} containing 3 entries:
 \itemize{
-\item{matAUROC.All}{ TODO }
-\item{matAUROC.Call}{ TODO }
-\item{listROC.Call}{a \code{list} TODO}
+\item{\code{matAUROC.All}}{ a \code{data.frame} containing the AUROC for all
+the ancestry results.  }
+\item{\code{matAUROC.Call}}{ a \code{data.frame} containing the AUROC
+information for each super-population.}
+\item{\code{listROC.Call}}{a \code{list} containing the output from the
+\code{roc} function for each super-population.}
 }
 }
 \description{
-TODO
+The function calculates the AUROC of the inferences for specific
+values of D and K using the inferred ancestry results from the synthetic
+profiles. The calculations are done on each super-population separately as
+well as on all the results together.
 }
 \examples{
 
-## TODO
-gds <- "TODO"
+dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+
+## The inferred ancestry results for the synthetic data using
+## values of D=6 and K=5
+matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+## The known ancestry from the reference profiles used to generate the
+## synthetic profiles
+syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+
+## Compile statistics from the
+## synthetic profiles for fixed values of D and K
+results <- RAIDS:::computeSyntheticROC(matKNN=matKNN,
+    matKNNAncestryColumn="SuperPop",
+    pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+    listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
+
+results$matAUROC.All
+results$matAUROC.Call
+results$listROC.Call
 
 }
 \author{

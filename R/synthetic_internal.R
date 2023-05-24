@@ -233,7 +233,7 @@ validatePepSynthetic <- function(fileProfileGDS,
 
 
 #' @title Extract the sample information from the 1KG GDS file for a list
-#' of profiles associated to a specific study in the GDS Sample file
+#' of profiles associated to a specific study in the Profile GDS file
 #'
 #' @description The function extracts the information for the profiles
 #' associated to a specific study in the GDS Sample file. The information is
@@ -251,7 +251,7 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.
 #'
 #' @param gdsSample an object of class
-#' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
+#' \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened Profile GDS
 #' file.
 #'
 #' @param studyID a \code{character} string representing the name of the
@@ -272,7 +272,7 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' @details
 #'
 #' As example, this function can extract the synthetic profiles
-#' for a GDS Sample and the super-population of the 1KG samples used to
+#' for a Profile GDS and the super-population of the 1KG samples used to
 #' generate each synthetic profile would be added
 #' as an extra column to the final 'data.frame'. In that situation, the
 #' 'popName' parameter would correspond to the super-population column and the
@@ -280,6 +280,9 @@ validatePepSynthetic <- function(fileProfileGDS,
 #'
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## The open 1KG GDS file is required (this is a demo file)
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -290,7 +293,7 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' gdsSample <- openfn.gds(fileSampleGDS)
 #'
 #' ## Extract the study information for "TCGA.Synthetic" study present in the
-#' ## GDS Sample file and merge column "superPop" from 1KG GDS to the
+#' ## Profile GDS file and merge column "superPop" from 1KG GDS to the
 #' ## returned data.frame
 #' ## This function enables to extract the super-population associated to the
 #' ## 1KG samples that has been used to create the synthetic profiles
@@ -308,12 +311,12 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' @keywords internal
 prepPedSynthetic1KG <- function(gdsReference, gdsSample, studyID, popName) {
 
-    ## Extract study information from the GDS Sample file
-    study.annot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    ## Extract study information from the Profile GDS file
+    studyAnnot <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
 
     ## Retain the information associated to the current study
-    studyCur <- study.annot[which(study.annot$study.id == studyID),]
-    rm(study.annot)
+    studyCur <- studyAnnot[which(studyAnnot$study.id == studyID),]
+    rm(studyAnnot)
 
     ## Get the information from 1KG GDS file
     dataRef <- read.gdsn(index.gdsn(node=gdsReference, "sample.annot"))
@@ -332,54 +335,88 @@ prepPedSynthetic1KG <- function(gdsReference, gdsSample, studyID, popName) {
 }
 
 
-#' @title TODO
+#' @title Calculate the confusion matrix of the inferences for specific
+#' values of D and K using the inferred ancestry results from the synthetic
+#' profiles.
 #'
-#' @description TODO
+#' @description The function calculates the confusion matrix of the inferences
+#' for fixed values of _D_ and _K_ using the inferred ancestry results done
+#' on the synthetic profiles.
 #'
-#' @param matKNN TODO
+#' @param matKNN a \code{data.frame} containing the inferred ancestry results
+#' for fixed values of _D_ and _K_. The \code{data.frame} must contained
+#' those columns: "sample.id", "D", "K" and the fourth column name must
+#' correspond to the \code{matKNNAncestryColumn} argument.
 #'
-#' @param pedCall TODO see return of prepPedSynthetic1KG
+#' @param matKNNAncestryColumn a \code{character} string representing the
+#' name of the column that contains the inferred ancestry for the specified
+#' synthetic profiles. The column must be present in the \code{matKNN}
+#' argument.
 #'
-#' @param refCall TODO column name in pedCall with the call
+#' @param pedCall a \code{data.frame} containing the information about
+#' the super-population information from the 1KG GDS file
+#' for profiles used to generate the synthetic profiles. The \code{data.frame}
+#' must contained a column named as the \code{pedCallAncestryColumn} argument.
 #'
-#' @param predCall a \code{character} string representing the name of
-#' the column that will contain the inferred ancestry for the specified
-#' dataset.
+#' @param pedCallAncestryColumn a \code{character} string representing the
+#' name of the column that contains the known ancestry for the reference
+#' profiles in the Reference GDS file. The column must be present in
+#' the \code{pedCall} argument.
 #'
-#' @param listCall TODO array of the possible call
+#' @param listCall a \code{vector} of \code{character} strings representing
+#' the list of possible ancestry assignations.
 #'
 #' @return \code{list} containing 2 entries:
 #' \itemize{
-#' \item{confMat} { TODO }
-#' \item{matAccuracy} { a \code{data.frame} TODO}
+#' \item{confMat} { a \code{matrix} representing the confusion matrix }
+#' \item{matAccuracy} { a \code{data.frame} containing the statistics
+#' associated to the confusion matrix}
 #' }
 #'
 #' @examples
 #'
-#' ## TODO
-#' gds <- "TODO"
+#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using
+#' ## values of D=6 and K=5
+#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+#'
+#' ## The known ancestry from the reference profiles used to generate the
+#' ## synthetic profiles
+#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#'
+#' ## Compile the confusion matrix using the
+#' ## synthetic profiles for fixed values of  D and K values
+#' results <- RAIDS:::computeSyntheticConfMat(matKNN=matKNN,
+#'     matKNNAncestryColumn="SuperPop",
+#'     pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
+#'
+#' results$confMat
+#' results$matAccuracy
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-computeSyntheticConfMat <- function(matKNN, pedCall, refCall, predCall,
-                                            listCall) {
+computeSyntheticConfMat <- function(matKNN, matKNNAncestryColumn,
+                                pedCall, pedCallAncestryColumn, listCall) {
 
     matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
-                        Accu.CM=numeric(1), CM.CI=numeric(1), N=nrow(matKNN),
-                        NBNA=length(which(is.na(matKNN[[predCall]]))))
+                    Accu.CM=numeric(1), CM.CI=numeric(1), N=nrow(matKNN),
+                    NBNA=length(which(is.na(matKNN[[matKNNAncestryColumn]]))))
     i <- 1
     if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1){
         stop("Compute synthetic accuracy with different pca dimension or K\n")
     }
 
-    #matCur <- matKNN[which(matKNN$D == pcaD & matKNN$K == k),]
-    listKeep <- which(!(is.na(matKNN[[predCall]])) )
+    listKeep <- which(!(is.na(matKNN[[matKNNAncestryColumn]])) )
 
-    fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
+    fCall <- factor(pedCall[matKNN$sample.id[listKeep], pedCallAncestryColumn],
                             levels=listCall, labels=listCall)
 
-    fP <- factor(matKNN[[predCall]][listKeep],
+    fP <- factor(matKNN[[matKNNAncestryColumn]][listKeep],
                             levels = listCall, labels = listCall)
 
     cm <- table(fCall, fP)

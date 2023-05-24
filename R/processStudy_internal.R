@@ -2315,22 +2315,38 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 }
 
 
-#' @title TODO
+#' @title Compile all the inferred ancestry results done on the
+#' synthetic profiles for different D and K values in the objective of
+#' selecting the optimal D and K values for a specific profile
 #'
-#' @description TODO
+#' @description The function calculates the accuracy of the inferred ancestry
+#' called done on the synthetic profiles for different D and K values. The
+#' accuracy is also calculated for each super-population used to generate
+#' the synthetic profiles. The known ancestry from the reference profiles
+#' used to generate the synthetic profiles is required to calculate the
+#' accuracy.
 #'
-#' @param matKNN.All TODO see it is rbind matKNN of the
-#' computeKNNSuperPoprSynthetic return from group synthetic data
+#' @param matKNN a \code{data.frame} containing the inferred ancestry for the
+#' synthetic profiles for different _K_ and _D_ values. The \code{data.frame}
+#' must contained those columns: "sample.id", "D", "K" and the fourth column
+#' name must correspond to the \code{predCall} argument.
 #'
-#' @param pedCall TODO see return of prepPedSynthetic1KG
+#' @param pedCall a \code{data.frame} containing the information about
+#' the super-population information from the 1KG GDS file
+#' for profiles used to generate the synthetic profiles. The \code{data.frame}
+#' must contained a column named as the \code{refCall} argument.
 #'
-#' @param refCall TODO column name in pedCall with the call
+#' @param refCall a \code{character} string representing the name of the
+#' column that contains the known ancestry for the reference profiles in
+#' the Reference GDS file.
 #'
 #' @param predCall a \code{character} string representing the name of
-#' the column that will contain the inferred ancestry for the specified
-#' dataset.
+#' the column that contains the inferred ancestry for the specified
+#' profiles. The column must be present in the \code{matKNN} \code{data.frame}
+#' argument.
 #'
-#' @param listCall TODO array of the possible call
+#' @param listCall a \code{vector} of \code{character} strings representing
+#' the list of possible ancestry assignations.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -2344,23 +2360,81 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #'
 #' @return a \code{list} containing 5 entries:
 #' \itemize{
-#' \item{dfPCA} {TODO}
-#' \item{dfPop} {TODO}
-#' \item{D} {TODO}
-#' \item{K} {TODO}
-#' \item{listD} {TODO}
+#' \item{\code{dfPCA}} { a \code{data.frame} containing statistical results
+#' on all combined synthetic results done with a fixed value of \code{D} (the
+#' number of dimensions). The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{median}}{ a \code{numeric} representing the median of the
+#' minimum AUROC obtained (within super populations) for all combination of
+#' the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+#' AUROC obtained (within super populations) for all combination of the fixed
+#' \code{D} value and all tested \code{K} values. }
+#' \item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+#' of the minimum AUROC obtained (within super populations) for all
+#' combination of the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for a fixed \code{D} value. }
+#' }
+#' }
+#' \item{\code{dfPop}} { a \code{data.frame} containing statistical results on
+#' all combined synthetic results done with different values of \code{D} (the
+#' number of dimensions) and \code{K} (the number of neighbors).
+#' The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+#' obtained by grouping all the synthetic results by super-populations, for
+#' the specified values of \code{D} and \code{K}.}
+#' \item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+#' by grouping all the synthetic results for the specified values of \code{D}
+#' and \code{K}.}
+#' \item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+#' of the confusion matrix obtained by grouping all the synthetic results for
+#' the specified values of \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{D}} { a \code{numeric} representing the optimal \code{D} value
+#' (the number of dimensions) for the specific profile.}
+#' \item{\code{K}} { a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for the specific profile.}
+#' \item{\code{listD}} { a \code{numeric} representing the optimal \code{D}
+#' values (the number of dimensions) for the specific profile. More than one
+#' \code{D} is possible.}
 #' }
 #'
 #' @examples
 #'
-#' # TODO
-#' listEigenvector <- "TOTO"
+#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using different
+#' ## values of D and K
+#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#'
+#' ## The known ancestry from the reference profiles used to generate the
+#' ## synthetic profiles
+#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#'
+#' ## Compile all the results for ancestry inference done on the
+#' ## synthetic profiles for different D and K values
+#' ## Select the optimal D and K values
+#' results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
+#'     pedCall=syntheticInfo, refCall="superPop", predCall="SuperPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,15,1),
+#'     pcaList=seq(2,15,1))
+#' results$D
+#' results$K
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom stats mad median quantile
 #' @encoding UTF-8
 #' @keywords internal
-selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
+selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
                                     predCall, listCall, kList=seq(3,15,1),
                                     pcaList=seq(2,15,1)) {
 
@@ -2375,17 +2449,20 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
 
     ## Loop on all PCA dimension values
     for (D in pcaList) {
-        matKNNCurD <- matKNN.All[which(matKNN.All$D == D), ]
+        matKNNCurD <- matKNN[which(matKNN$D == D), ]
         listTMP <- list()
         listTMP.AUROC <- list()
         j <- 1
         ## Loop on all k neighbor values
         for (K in kList) {
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
-            res <- computeSyntheticConfMat(matKNN=matKNNCur, pedCall=pedCall,
-                        refCall=refCall, predCall=predCall, listCall=listCall)
-            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
-                                            predCall, listCall)
+            ## Calculate accuracy for fixed D and K values
+            res <- computeSyntheticConfMat(matKNN=matKNNCur,
+                    matKNNAncestryColumn=predCall, pedCall=pedCall,
+                    pedCallAncestryColumn=refCall, listCall=listCall)
+            resROC <- computeSyntheticROC(matKNN=matKNNCur,
+                    matKNNAncestryColumn=predCall, pedCall=pedCall,
+                    pedCallAncestryColumn=refCall, listCall=listCall)
 
             df <- data.frame(D=D, K=K, AUROC.min=min(resROC$matAUROC.Call$AUC),
                                 AUROC=resROC$matAUROC.All$ROC.AUC,
@@ -2403,11 +2480,9 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3, "K"]
         kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
         dfPCA <- data.frame(D=D,
-                            median=median(df[df$K %in% kList, "AUROC.min"]),
-                            mad=mad(df[df$K %in% kList, "AUROC.min"]),
-                            upQuartile=quantile(df[df$K %in% kList,
-                                                        "AUROC.min"], 0.75),
-                            K=kV)
+            median=median(df[df$K %in% kList, "AUROC.min"]),
+            mad=mad(df[df$K %in% kList, "AUROC.min"]),
+            upQuartile=quantile(df[df$K %in% kList, "AUROC.min"], 0.75), K=kV)
         tableSyn[[i]] <- dfPCA
         i <- i + 1
     }

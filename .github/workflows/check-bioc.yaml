@@ -117,8 +117,6 @@ jobs:
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
         run: |
-        Rscript -e 'remotes::system_requirements("ubuntu", "20.04")'
-
           sysreqs=$(Rscript -e 'remotes::system_requirements("ubuntu", "20.04"')
           echo $sysreqs
           sudo -s eval "$sysreqs"

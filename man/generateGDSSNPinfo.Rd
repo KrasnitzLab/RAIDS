@@ -40,8 +40,8 @@ filenewGDS <- createfn.gds(file1KG)
 fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Add SNV information to Reference GDS
-RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS, fileFREQ=fileFilerterSNVs,
-    verbose=TRUE)
+RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
+    fileFREQ=fileFilerterSNVs, verbose=TRUE)
 
 ## Close GDS file (important)
 closefn.gds(filenewGDS)

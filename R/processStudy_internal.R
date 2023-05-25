@@ -1733,7 +1733,7 @@ validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 
     if(!(is.character(listCatPop) && is.vector(listCatPop))) {
         stop("The \'listCatPop\' parameter must be a vector of ",
-             "character strings.")
+                "character strings.")
     }
 
     ## The studyIDSyn must be a character string
@@ -1827,8 +1827,8 @@ validateComputeKNNRefSample <- function(listEigenvector, listCatPop, spRef,
                                     fieldPopInfAnc, kList, pcaList) {
 
     if(!(is.list(listEigenvector) &&
-         all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
-                names(listEigenvector)))) {
+            all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                    names(listEigenvector)))) {
         stop("The \'listEigenvector\' parameter must be a list with 3 ",
             "entries: \'sample.id\', \'eigenvector.ref\' and \'eigenvector\'.")
     }

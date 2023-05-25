@@ -177,9 +177,9 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG a \code{character} string TODO.
-#'
-#' @param fieldPopInfAnc a \code{character} string TODO.
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -598,7 +598,10 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
-#' @param listFiles TODO.
+#' @param listFiles a \code{vector} of \code{character} strings representing
+#' the name of files that contain the results of ancestry inference done on
+#' the synthetic profiles for multiple values of _D_ and _K_. The files must
+#' exist.
 #'
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
@@ -616,7 +619,9 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG a \code{character} string representing the name of TODO
+#' @param fieldPopIn1KG a \code{character} string representing the name of the
+#' column that contains the known ancestry for the reference profiles in
+#' the Reference GDS file.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified

@@ -32,7 +32,10 @@ file), the opened 1KG GDS file.}
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
 
-\item{listFiles}{TODO.}
+\item{listFiles}{a \code{vector} of \code{character} strings representing
+the name of files that contain the results of ancestry inference done on
+the synthetic profiles for multiple values of _D_ and _K_. The files must
+exist.}
 
 \item{currentProfile}{a \code{character} string representing the profile
 identifier of the current profile on which ancestry will be inferred.}
@@ -50,7 +53,9 @@ threads.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}
 
-\item{fieldPopIn1KG}{a \code{character} string representing the name of TODO}
+\item{fieldPopIn1KG}{a \code{character} string representing the name of the
+column that contains the known ancestry for the reference profiles in
+the Reference GDS file.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified

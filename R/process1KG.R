@@ -772,7 +772,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #' @param blockDesc TODO
 #'
 #' @param verbose a \code{logical} indicating if message information should be
-#' printed. Default: \code{TRUE}.
+#' printed. Default: \code{FALSE}.
 #'
 #' @return \code{OL} when the function is successful.
 #'
@@ -796,14 +796,10 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
                                     blockDesc, verbose=FALSE) {
 
     ## The gds must be an object of class "gds.class"
-    if (!inherits(gds, "gds.class")) {
-        stop("The \'gds\' must be an object of class \'gds.class\'")
-    }
+    validateGDSClass(gds=gds, name="gds")
 
     ## The verbose must be a logical
-    if (!(is.logical(verbose) && length(verbose) == 1)) {
-        stop("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
-    }
+    validateLogical(verbose, "verbose")
 
     ## Extract the SNP chromosomes and positions
     snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))

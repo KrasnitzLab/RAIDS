@@ -99,8 +99,9 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
         }
     }
 
-    snpset <- runLDPruning(gds=gdsReference, method=method, listSamples=listSamples,
-                    listKeep=listKeep, slideWindowMaxBP=slideWindowMaxBP,
+    snpset <- runLDPruning(gds=gdsReference, method=method,
+                    listSamples=listSamples, listKeep=listKeep,
+                    slideWindowMaxBP=slideWindowMaxBP,
                     thresholdLD=thresholdLD, np=np, verbose=verbose)
 
     pruned <- unlist(snpset, use.names=FALSE)
@@ -203,10 +204,11 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
     dfExonReduce <- toSAF(exonReduce)
     listMat <- list()
 
-    matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gdsReference, "snp.chromosome")),
-                        pos=read.gdsn(index.gdsn(gdsReference, "snp.position")),
-                        snp.allele=read.gdsn(index.gdsn(gdsReference, "snp.allele")),
-                        stringsAsFactors=FALSE)
+    matFreqAll <- data.frame(chr=read.gdsn(index.gdsn(gdsReference,
+                                                        "snp.chromosome")),
+                pos=read.gdsn(index.gdsn(gdsReference, "snp.position")),
+                snp.allele=read.gdsn(index.gdsn(gdsReference, "snp.allele")),
+                stringsAsFactors=FALSE)
     offsetGene <- 0
     offsetGeneS <- 0
     offsetGene.O <- 0

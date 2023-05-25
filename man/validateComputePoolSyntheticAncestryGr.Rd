@@ -45,7 +45,9 @@ threads.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}
 
-\item{fieldPopInfAnc}{a \code{character} string TODO.}
+\item{fieldPopInfAnc}{a \code{character} string representing the name of
+the column that will contain the inferred ancestry for the specified
+dataset.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -71,8 +73,6 @@ with "<= missingRate" only; if \code{NaN}, no missing threshold.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
 printed.}
-
-\item{fieldPopIn1KG}{a \code{character} string TODO.}
 }
 \value{
 The function returns \code{0L} when successful.

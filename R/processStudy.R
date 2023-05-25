@@ -2387,6 +2387,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
         gdsSample=gdsProfile, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
+    ## Compile all the inferred ancestry results for different values of
+    ## D and K to select the optimal parameters
     listParaSample <- selParaPCAUpQuartile(matKNN=resultsKNN,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)

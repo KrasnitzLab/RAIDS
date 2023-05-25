@@ -791,8 +791,8 @@ computeSyntheticROC <- function(matKNN, matKNNAncestryColumn, pedCall,
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
         if (length(which(fCur == 1))>0) {
-            listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
-                                                            ci=TRUE))
+            listROC[[listCall[j]]] <- invisible(roc(fCur ~ predMat[,j],
+                                                        ci=TRUE, quiet=TRUE))
             pos <- which(df$Call == listCall[j])
             for (r in seq_len(3)) {
                 df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])

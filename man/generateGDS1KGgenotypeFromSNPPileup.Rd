@@ -50,7 +50,8 @@ Default: \code{0.999}.}
 \item{seqError}{a single positive \code{numeric} between 0 and 1
 representing the sequencing error rate. Default: \code{0.001}.}
 
-\item{dfPedProfile}{a \code{data.frame} with the information about the sample(s).
+\item{dfPedProfile}{a \code{data.frame} with the information about
+the sample(s).
 Those are mandatory columns: "Name.ID",
 "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 \code{character} strings. The \code{data.frame}

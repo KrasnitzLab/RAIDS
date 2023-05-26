@@ -9,8 +9,8 @@ Profile GDS file}
 addGDSStudyPruning(gdsProfile, pruned)
 }
 \arguments{
-\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-opened Profile GDS file.}
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS file),
+the opened Profile GDS file.}
 
 \item{pruned}{a \code{vector} of \code{character} string representing the
 name of the SNVs.}

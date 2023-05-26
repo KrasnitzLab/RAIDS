@@ -1307,16 +1307,17 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 }
 
 
-#' @title Compute Principal Component Analysis (PCA) on SNV genotype for
-#' data from a sample
+#' @title Project specified profile onto PCA axes generated using known
+#' reference profiles
 #'
-#' @description TODO
+#' @description This function generates a PCA using the know reference
+#' profiles. Them, it projects the specified profile onto the PCA axes.
 #'
-#' @param gdsSample an object of class \link[gdsfmt]{gds.class},
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class},
 #' an opened Profile GDS file.
 #'
-#' @param name.id a single \code{character} string representing the sample
-#' identifier.
+#' @param currentProfile a single \code{character} string representing
+#' the profile identifier.
 #'
 #' @param studyIDRef a single \code{character} string representing the
 #' study identifier.
@@ -1329,7 +1330,7 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
@@ -1352,58 +1353,82 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
-#' \item{sample.id} { TODO }
-#' \item{eigenvector.ref} { TODO }
-#' \item{eigenvector} { TODO }
+#' \item{sample.id} { a \code{character} string representing the unique
+#' identifier of the analyzed profile.}
+#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} representing
+#' the eigenvectors of the reference profiles. }
+#' \item{eigenvector} { a \code{matrix} of \code{numeric} representing
+#' the eigenvectors of the analyzed profile. }
 #' }
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "TOTO"
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Project a profile onto a PCA generated using reference profiles
+#' ## The reference profiles come from 1KG
+#' resPCA <- computePCARefSample(gdsProfile=gdsProfile,
+#'     currentProfile=c("ex1"), studyIDRef="Ref.1KG", np=1L, verbose=FALSE)
+#' resPCA$sample.id
+#' resPCA$eigenvector
+#'
+#' ## Close the GDS files (important)
+#' closefn.gds(gdsProfile)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading snpgdsPCASampLoading
 #' @encoding UTF-8
 #' @export
-computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
+computePCARefSample <- function(gdsProfile, currentProfile,
+                            studyIDRef="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
-                            eigen.cnt=32L, missingRate=NaN, verbose=FALSE) {
+                            eigenCount=32L, missingRate=NaN, verbose=FALSE) {
 
     ## Validate parameters
-    validateComputePCARefSample(gdsSample=gdsSample, name.id=name.id,
-        studyIDRef=studyIDRef, np=np, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missingRate=missingRate, verbose=verbose)
+    validateComputePCARefSample(gdsProfile=gdsProfile,
+        currentProfile=currentProfile, studyIDRef=studyIDRef, np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
 
-    sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
+    sample.id <- read.gdsn(index.gdsn(gdsProfile, "sample.id"))
 
-    sample.pos <- which(sample.id == name.id)
+    sample.pos <- which(sample.id == currentProfile)
 
-    studyAnnotAll <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    studyAnnotAll <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
 
     sample.Unrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
                                                 studyIDRef), "data.id"]
 
     listPCA <- list()
 
-    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
+    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
 
-    ## Calculate the eigenvectors and eigenvalues for PCA
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample, sample.id=sample.Unrel,
-                                snp.id=listPCA[["pruned"]], num.thread=np,
-                                algorithm=algorithm, eigen.cnt=eigen.cnt,
-                                missing.rate=missingRate, verbose=verbose)
+    ## Calculate the eigenvectors and eigenvalues for PCA done with the
+    ## reference profiles
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsProfile,
+            sample.id=sample.Unrel, snp.id=listPCA[["pruned"]], num.thread=np,
+            algorithm=algorithm, eigen.cnt=eigenCount,
+            missing.rate=missingRate, verbose=verbose)
 
+    ## calculate the SNP loadings in PCA
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                            gdsobj=gdsSample, num.thread=np, verbose=verbose)
+            gdsobj=gdsProfile, num.thread=np, verbose=verbose)
 
+    ## Project specified profile onto the PCA axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                gdsobj=gdsSample,
-                                sample.id=sample.id[sample.pos],
+            gdsobj=gdsProfile, sample.id=sample.id[sample.pos],
                                 num.thread=np, verbose=verbose)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
@@ -2063,9 +2088,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
     listParaSample <- selParaPCAUpQuartile(resultsKNN, pedSyn,
                             fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample=gdsSample,
-        name.id=profileID, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
+    listPCASample <- computePCARefSample(gdsProfile=gdsSample,
+        currentProfile=profileID, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
                                                 profileID, spRef)
@@ -2393,9 +2418,10 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample=gdsProfile,
-        name.id=currentProfile, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
+    listPCASample <- computePCARefSample(gdsProfile=gdsProfile,
+        currentProfile=currentProfile, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
         listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,

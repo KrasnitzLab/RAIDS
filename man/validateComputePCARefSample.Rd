@@ -6,22 +6,22 @@
 \title{Validate input parameters for computePCARefSample() function}
 \usage{
 validateComputePCARefSample(
-  gdsSample,
-  name.id,
+  gdsProfile,
+  currentProfile,
   studyIDRef,
   np,
   algorithm,
-  eigen.cnt,
+  eigenCount,
   missingRate,
   verbose
 )
 }
 \arguments{
-\item{gdsSample}{an object of class \link[gdsfmt]{gds.class},
-a GDS Sample file.}
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class},
+an opened Profile GDS file.}
 
-\item{name.id}{a single \code{character} string representing the sample
-identifier.}
+\item{currentProfile}{a single \code{character} string representing the
+profile identifier.}
 
 \item{studyIDRef}{a single \code{character} string representing the
 study identifier.}
@@ -32,7 +32,7 @@ that will be used.}
 \item{algorithm}{a \code{character} string representing the algorithm used
 to calculate the PCA.}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.}
 
@@ -59,10 +59,10 @@ dataDir <- system.file("extdata", package="RAIDS")
 gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
-## The validatiion should be successful
-RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
-    studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-    missingRate=0.02, verbose=FALSE)
+## The validation should be successful
+RAIDS:::validateComputePCARefSample(gdsProfile=gdsSample,
+    currentProfile="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
+    eigenCount=32L, missingRate=0.02, verbose=FALSE)
 
 ## All GDS file must be closed
 closefn.gds(gdsfile=gdsSample)

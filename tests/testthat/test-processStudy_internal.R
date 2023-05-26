@@ -144,13 +144,12 @@ test_that("validateComputePCARefSample() must return expected results when all i
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
-                name.id="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
-                eigen.cnt=32L, missingRate=0.02, verbose=FALSE)
+    result1 <- RAIDS:::validateComputePCARefSample(gdsProfile=gdsF,
+        currentProfile="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
+        eigenCount=32L, missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)
 })
-
 
 
 #############################################################################

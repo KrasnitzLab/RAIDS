@@ -3,26 +3,26 @@
 \encoding{UTF-8}
 \name{computePCARefSample}
 \alias{computePCARefSample}
-\title{Compute Principal Component Analysis (PCA) on SNV genotype for
-data from a sample}
+\title{Project specified profile onto PCA axes generated using known
+reference profiles}
 \usage{
 computePCARefSample(
-  gdsSample,
-  name.id,
+  gdsProfile,
+  currentProfile,
   studyIDRef = "Ref.1KG",
   np = 1L,
   algorithm = c("exact", "randomized"),
-  eigen.cnt = 32L,
+  eigenCount = 32L,
   missingRate = NaN,
   verbose = FALSE
 )
 }
 \arguments{
-\item{gdsSample}{an object of class \link[gdsfmt]{gds.class},
+\item{gdsProfile}{an object of class \link[gdsfmt]{gds.class},
 an opened Profile GDS file.}
 
-\item{name.id}{a single \code{character} string representing the sample
-identifier.}
+\item{currentProfile}{a single \code{character} string representing
+the profile identifier.}
 
 \item{studyIDRef}{a single \code{character} string representing the
 study identifier.}
@@ -35,7 +35,7 @@ to calculate the PCA. The 2 choices are "exact" (traditional exact
 calculation) and "randomized" (fast PCA with randomized algorithm
 introduced in Galinsky et al. 2016). Default: \code{"exact"}.}
 
-\item{eigen.cnt}{a single \code{integer} indicating the number of
+\item{eigenCount}{a single \code{integer} indicating the number of
 eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 Default: \code{32L}.}
@@ -52,18 +52,39 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 \value{
 a \code{list} containing 3 entries:
 \itemize{
-\item{sample.id} { TODO }
-\item{eigenvector.ref} { TODO }
-\item{eigenvector} { TODO }
+\item{sample.id} { a \code{character} string representing the unique
+identifier of the analyzed profile.}
+\item{eigenvector.ref} { a \code{matrix} of \code{numeric} representing
+the eigenvectors of the reference profiles. }
+\item{eigenvector} { a \code{matrix} of \code{numeric} representing
+the eigenvectors of the analyzed profile. }
 }
 }
 \description{
-TODO
+This function generates a PCA using the know reference
+profiles. Them, it projects the specified profile onto the PCA axes.
 }
 \examples{
 
-# TODO
-gds <- "TOTO"
+## Required library
+library(gdsfmt)
+
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
+
+## Open the Profile GDS file
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+
+## Project a profile onto a PCA generated using reference profiles
+## The reference profiles come from 1KG
+resPCA <- computePCARefSample(gdsProfile=gdsProfile,
+    currentProfile=c("ex1"), studyIDRef="Ref.1KG", np=1L, verbose=FALSE)
+resPCA$sample.id
+resPCA$eigenvector
+
+## Close the GDS files (important)
+closefn.gds(gdsProfile)
+
 
 }
 \references{

@@ -264,14 +264,10 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
     }
 
     ## The parameter studyIDSyn must be a character string
-    if(!(is.character(studyIDSyn))) {
-        stop("The \'studyIDSyn\' parameter must be a character string.")
-    }
+    validateCharacterString(studyIDSyn, "studyIDSyn")
 
     ## The parameter fieldPopInfAnc must be a character string
-    if(!(is.character(fieldPopInfAnc))) {
-        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
-    }
+    validateCharacterString(fieldPopInfAnc, "fieldPopInfAnc")
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
@@ -756,11 +752,11 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @description This function validates the input parameters for the
 #' \code{\link{computePCARefSample}} function.
 #'
-#' @param gdsSample an object of class \link[gdsfmt]{gds.class},
-#' a GDS Sample file.
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class},
+#' an opened Profile GDS file.
 #'
-#' @param name.id a single \code{character} string representing the sample
-#' identifier.
+#' @param currentProfile a single \code{character} string representing the
+#' profile identifier.
 #'
 #' @param studyIDRef a single \code{character} string representing the
 #' study identifier.
@@ -771,7 +767,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #'
@@ -793,10 +789,10 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
-#' ## The validatiion should be successful
-#' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
-#'     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-#'     missingRate=0.02, verbose=FALSE)
+#' ## The validation should be successful
+#' RAIDS:::validateComputePCARefSample(gdsProfile=gdsSample,
+#'     currentProfile="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
+#'     eigenCount=32L, missingRate=0.02, verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gdsSample)
@@ -805,22 +801,18 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
-                                            np, algorithm, eigen.cnt,
+validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
+                                            np, algorithm, eigenCount,
                                             missingRate, verbose) {
 
-    ## The gdsSample must be object of class "gds.class"
-    validateGDSClass(gdsSample, "gdsSample")
+    ## The gdsProfile must be object of class "gds.class"
+    validateGDSClass(gdsProfile, "gdsProfile")
 
-    ## Validate that name.id is a string
-    if(!(is.character(name.id) && length(name.id) == 1)) {
-        stop("The \'name.id\' parameter must be a single character string.")
-    }
+    ## Validate that currentProfile is a string
+    validateCharacterString(currentProfile, "currentProfile")
 
     ## Validate that studyIDRef is a string
-    if(!(is.character(studyIDRef) && length(name.id) == 1)) {
-        stop("The \'studyIDRef\' parameter must be a character string.")
-    }
+    validateCharacterString(studyIDRef, "studyIDRef")
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
@@ -832,9 +824,9 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The parameter eigen.cnt must be a single integer
-    if(!(isSingleNumber(eigen.cnt))) {
-        stop("The \'eigen.cnt\' parameter must be a single integer.")
+    ## The parameter eigenCount must be a single integer
+    if(!(isSingleNumber(eigenCount))) {
+        stop("The \'eigenCount\' parameter must be a single integer.")
     }
 
     ## The missing.rate must be a positive numeric between zero and one or NaN

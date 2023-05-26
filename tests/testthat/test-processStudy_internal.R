@@ -499,16 +499,19 @@ test_that("selParaPCAUpQuartile() must return expected results when all input ar
     expect_true(is.data.frame(result$dfPCA))
     expect_identical(colnames(result$dfPCA),
                         c("D", "median", "mad", "upQuartile", "K"))
+    expect_identical(nrow(result$dfPCA), 6L)
     expect_equal(result$dfPCA, sampleDFPCA)
 
     expect_true(is.data.frame(result$dfAUROC))
     expect_identical(colnames(result$dfAUROC),
                      c("pcaD", "K", "Call", "L", "AUC", "H"))
+    expect_identical(nrow(result$dfAUROC), 90L)
     expect_equal(result$dfAUROC[c(5, 19, 22, 33, 58),], sampleDFAUROC)
 
     expect_true(is.data.frame(result$dfPop))
     expect_identical(colnames(result$dfPop),
                         c("D", "K", "AUROC.min", "AUROC", "Accu.CM"))
+    expect_identical(nrow(result$dfPop), 18L)
     expect_equal(result$dfPop[c(5, 9, 12, 13, 18),], sampleDFPop)
 
     expect_identical(result$D, 15)

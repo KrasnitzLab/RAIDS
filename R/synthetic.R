@@ -754,14 +754,14 @@ computeSyntheticROC <- function(matKNN, matKNNAncestryColumn, pedCall,
                         pedCallAncestryColumn,
                         listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")) {
 
+    validateComputeSyntheticRoc(matKNN=matKNN,
+        matKNNAncestryColumn=matKNNAncestryColumn, pedCall=pedCall,
+        pedCallAncestryColumn=pedCallAncestryColumn, listCall=listCall)
+
     matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
             ROC.AUC=numeric(1), ROC.CI=numeric(1), N=nrow(matKNN),
             NBNA=length(which(is.na(matKNN[[matKNNAncestryColumn]]))))
     i <- 1
-
-    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1) {
-        stop("Compute synthetic accuracy with different PCA dimensions or K\n")
-    }
 
     listKeep <- which(!(is.na(matKNN[[matKNNAncestryColumn]])))
 

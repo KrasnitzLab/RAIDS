@@ -232,6 +232,114 @@ validatePepSynthetic <- function(fileProfileGDS,
 }
 
 
+#' @title Validate input parameters for computeSyntheticROC() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{computeSyntheticROC}} function.
+#'
+#'
+#' @param matKNN a \code{data.frame} containing the inferred ancestry results
+#' for fixed values of _D_ and _K_. On of the column names of the
+#' \code{data.frame} must correspond to the \code{matKNNAncestryColumn}
+#' argument.
+#'
+#' @param matKNNAncestryColumn  a \code{character} string
+#' representing the
+#' name of the column that contains the inferred ancestry for the specified
+#' synthetic profiles. The column must be present in the \code{matKNN}
+#' argument.
+#'
+#' @param pedCall a \code{data.frame} containing the information about
+#' the super-population information from the 1KG GDS file
+#' for profiles used to generate the synthetic profiles. The \code{data.frame}
+#' must contained a column named as the \code{pedCallAncestryColumn} argument.
+#'
+#' @param pedCallAncestryColumn a \code{character} string representing the
+#' name of the column that contains the known ancestry for the reference
+#' profiles in the Reference GDS file. The column must be present in
+#' the \code{pedCall} argument.
+#'
+#' @param listCall a \code{vector} of \code{character} strings representing
+#' the list of all possible ancestry assignations.
+#'
+#' @return \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Directory where demo GDS files are located
+#' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using
+#' ## values of D=6 and K=5
+#' matKNN <- readRDS(file.path(dataDir, "matKNN.RDS"))
+#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+#'
+#' ## The known ancestry from the reference profiles used to generate the
+#' ## synthetic profiles
+#' syntheticData <- readRDS(file.path(dataDir, "pedSyn.RDS"))
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateComputeSyntheticRoc(matKNN=matKNN,
+#'     matKNNAncestryColumn="SuperPop",
+#'     pedCall=syntheticData, pedCallAncestryColumn="superPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateComputeSyntheticRoc <- function(matKNN, matKNNAncestryColumn, pedCall,
+                                    pedCallAncestryColumn, listCall) {
+
+    ## The matKNN must be a data.frame
+    if(!is.data.frame(matKNN)) {
+        stop("The \'matKNN\' must be a data frame.")
+    }
+
+    ## The matKNNAncestryColumn must be a single character String
+    if (!(is.character(matKNNAncestryColumn) &&
+                length(matKNNAncestryColumn) == 1)) {
+        stop("The \'matKNNAncestryColumn\' must be a single character string.")
+    }
+
+    ## The matKNNAncestryColumn must be a column in the matKNN data frame
+    if (!(matKNNAncestryColumn %in% colnames(matKNN))) {
+        stop("The \'matKNNAncestryColumn\' must be a column in the \'matKNN\'",
+                        " data frame.")
+    }
+
+    ## The pedCall must be a data.frame
+    if(!is.data.frame(pedCall)) {
+        stop("The \'pedCall\' must be a data frame.")
+    }
+
+    ## The pedCallAncestryColumn must be a single character String
+    if (!(is.character(pedCallAncestryColumn) &&
+                length(pedCallAncestryColumn) == 1)) {
+        stop("The \'pedCallAncestryColumn\' must be a single character string.")
+    }
+
+    ## The pedCallAncestryColumn must be a column in the pedCall data frame
+    if (!(pedCallAncestryColumn %in% colnames(pedCall))) {
+        stop("The \'pedCallAncestryColumn\' must be a column in the ",
+             "\'pedCall\' data frame.")
+    }
+
+    ## The listCall must be character string
+    if (!is.character(listCall)) {
+        stop("The \'listCall\' must be a vector of character strings.")
+    }
+
+    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1) {
+        stop("The synthetic accuracy can only be caculated for one fixed value",
+            " of D and K. The 2 data frames must be filterd to retain only",
+            " one value.")
+    }
+
+    return(0L)
+}
+
+
 #' @title Extract the sample information from the 1KG GDS file for a list
 #' of profiles associated to a specific study in the Profile GDS file
 #'

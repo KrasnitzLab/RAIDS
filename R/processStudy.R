@@ -1353,11 +1353,11 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
-#' \item{sample.id} { a \code{character} string representing the unique
+#' \item{\code{sample.id}} { a \code{character} string representing the unique
 #' identifier of the analyzed profile.}
-#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} representing
-#' the eigenvectors of the reference profiles. }
-#' \item{eigenvector} { a \code{matrix} of \code{numeric} representing
+#' \item{\code{eigenvector.ref}} { a \code{matrix} of \code{numeric}
+#' representing the eigenvectors of the reference profiles. }
+#' \item{\code{eigenvector}} { a \code{matrix} of \code{numeric} representing
 #' the eigenvectors of the analyzed profile. }
 #' }
 #'
@@ -1402,13 +1402,13 @@ computePCARefSample <- function(gdsProfile, currentProfile,
     ## Set algorithm
     algorithm <- match.arg(algorithm)
 
-    sample.id <- read.gdsn(index.gdsn(gdsProfile, "sample.id"))
+    sampleID <- read.gdsn(index.gdsn(gdsProfile, "sample.id"))
 
-    sample.pos <- which(sample.id == currentProfile)
+    samplePos <- which(sampleID == currentProfile)
 
     studyAnnotAll <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
 
-    sample.Unrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
+    sampleUnrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
                                                 studyIDRef), "data.id"]
 
     listPCA <- list()
@@ -1418,7 +1418,7 @@ computePCARefSample <- function(gdsProfile, currentProfile,
     ## Calculate the eigenvectors and eigenvalues for PCA done with the
     ## reference profiles
     listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsProfile,
-            sample.id=sample.Unrel, snp.id=listPCA[["pruned"]], num.thread=np,
+            sample.id=sampleUnrel, snp.id=listPCA[["pruned"]], num.thread=np,
             algorithm=algorithm, eigen.cnt=eigenCount,
             missing.rate=missingRate, verbose=verbose)
 
@@ -1428,7 +1428,7 @@ computePCARefSample <- function(gdsProfile, currentProfile,
 
     ## Project specified profile onto the PCA axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-            gdsobj=gdsProfile, sample.id=sample.id[sample.pos],
+            gdsobj=gdsProfile, sample.id=sampleID[samplePos],
                                 num.thread=np, verbose=verbose)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
@@ -1436,7 +1436,7 @@ computePCARefSample <- function(gdsProfile, currentProfile,
     rownames(listPCA[["samp.load"]]$eigenvect) <-
                                         listPCA[["samp.load"]]$sample.id
 
-    listRes <- list(sample.id=sample.id[sample.pos],
+    listRes <- list(sample.id=sampleID[samplePos],
                         eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
                         eigenvector=listPCA[["samp.load"]]$eigenvect)
 
@@ -2418,12 +2418,13 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 
-    listPCASample <- computePCARefSample(gdsProfile=gdsProfile,
+    ## Project profile on the PCA created with the reference profiles
+    listPCAProfile <- computePCARefSample(gdsProfile=gdsProfile,
         currentProfile=currentProfile, studyIDRef="Ref.1KG", np=np,
         algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
         verbose=verbose)
 
-    listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
+    listKNNSample <- computeKNNRefSample(listEigenvector=listPCAProfile,
         listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList)
 
@@ -2431,7 +2432,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         which(listKNNSample$matKNN$D == listParaSample$D &
                         listKNNSample$matKNN$K == listParaSample$K ) ,]
 
-    res <- list(pcaSample=listPCASample, # PCA of the profile + 1KG
+    res <- list(pcaSample=listPCAProfile, # PCA of the profile + 1KG
                 paraSample=listParaSample, # Result of the parameter selection
                 KNNSample=listKNNSample, # KNN for the profile
                 Ancestry=resCall) # the ancestry call fo the profile

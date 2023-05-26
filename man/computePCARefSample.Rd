@@ -52,11 +52,11 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 \value{
 a \code{list} containing 3 entries:
 \itemize{
-\item{sample.id} { a \code{character} string representing the unique
+\item{\code{sample.id}} { a \code{character} string representing the unique
 identifier of the analyzed profile.}
-\item{eigenvector.ref} { a \code{matrix} of \code{numeric} representing
-the eigenvectors of the reference profiles. }
-\item{eigenvector} { a \code{matrix} of \code{numeric} representing
+\item{\code{eigenvector.ref}} { a \code{matrix} of \code{numeric}
+representing the eigenvectors of the reference profiles. }
+\item{\code{eigenvector}} { a \code{matrix} of \code{numeric} representing
 the eigenvectors of the analyzed profile. }
 }
 }

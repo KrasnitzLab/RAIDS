@@ -2079,6 +2079,87 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when verb
 })
 
 
+test_that(paste0("computeAncestryFromSyntheticFile() must return expected results"), {
+
+    fileGDS <- test_path("fixtures/sampleGDSforAncestryByFile/gdsRef")
+    gdsRef <- openfn.gds(file.path(fileGDS, "ex1kg.gds"))
+    withr::defer(closefn.gds(gdsRef), envir=parent.frame())
+
+    fileGDS <- test_path("fixtures/sampleGDSforAncestryByFile")
+    gdsF <- snpgdsOpen(file.path(fileGDS, "ex1.gds"))
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    ## List of the KNN result files from PCA run on synthetic data
+    fileKNN <- test_path("fixtures/sampleGDSforAncestryByFile/filesKNN")
+    listFilesName <- dir(file.path(fileKNN), ".rds")
+    listFiles <- file.path(file.path(fileKNN) , listFilesName)
+
+    # The name of the synthetic study
+    studyID <- "MYDATA.Synthetic"
+
+    ## The known ancestry for the 1KG reference profiles
+    filePop <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    refKnownSuperPop <- readRDS(file.path(filePop, "knownSuperPop1KG.RDS"))
+
+    set.seed(111)
+
+    ## Run the ancestry inference on one profile called 'ex1'
+    ## The values of K and D used for the inference are selected using the
+    ## synthetic results
+    res <- computeAncestryFromSyntheticFile(gdsReference=gdsRef, gdsProfile=gdsF,
+            listFiles=listFiles, currentProfile="ex1", spRef=refKnownSuperPop,
+            studyIDSyn=studyID, np=1L,
+            listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+            fieldPopIn1KG="superPop",
+            fieldPopInfAnc="SuperPop",kList=NULL,
+            pcaList=NULL, algorithm="exact",
+            eigenCount=32L,  missingRate=NaN, verbose=FALSE)
+
+    expect_true(is.list(res))
+    expect_true(all(c("pcaSample", "paraSample", "KNNSample", "Ancestry") %in%
+                                names(res)))
+
+    expect_true(is.vector(res$pcaSample))
+    expect_true(all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                        names(res$pcaSample)))
+    expect_equal(res$pcaSample$sample.id, "ex1")
+    expect_equal(res$pcaSample$eigenvector[, c(3, 22, 26, 30)],
+        c(-0.186164267684954, -0.214690314074977, 0.409505274265608,
+                        -0.323542785477152))
+    expect_equal(res$pcaSample$eigenvector.ref[4, c(3, 22, 26, 30)],
+        c(-0.018272328822580, -0.034625002667539, -0.021132042058256,
+                        -0.018541974308472))
+
+    expect_true(is.vector(res$KNNSample))
+    expect_true(all(c("sample.id", "matKNN") %in%
+                        names(res$KNNSample)))
+    expect_equal(res$KNNSample$sample.id, "ex1")
+    expect_true(is.data.frame(res$KNNSample$matKNN))
+    expect_true(all(c("sample.id", "D", "K", "SuperPop") %in%
+                        names(res$KNNSample$matKNN)))
+    expect_equal(res$KNNSample$matKNN[c(3, 55, 132, 188), 1],
+                    c("ex1", "ex1", "ex1", "ex1"))
+    expect_equal(res$KNNSample$matKNN[c(13, 25, 135, 168), 2], c(2, 3, 11, 13))
+    expect_equal(res$KNNSample$matKNN[c(6, 21, 132, 161), 3], c(7, 8, 7, 8))
+    expect_equal(res$KNNSample$matKNN[c(16, 27, 112, 171), 4],
+                        c("SAS", "EAS", "SAS", "SAS"))
+
+    expect_true(is.vector(res$paraSample))
+    expect_true(all(c("dfPCA", "dfPop", "dfAUROC", "D", "K", "listD") %in%
+                        names(res$paraSample)))
+    expect_equal(res$paraSample$D, 7)
+    expect_equal(res$paraSample$K, 8)
+    expect_equal(res$paraSample$listD, 7)
+
+    expect_true(is.data.frame(res$Ancestry))
+    expect_equal(res$Ancestry$sample.id, "ex1")
+    expect_equal(res$Ancestry$SuperPop, "EAS")
+    expect_equal(res$Ancestry$D, 7)
+    expect_equal(res$Ancestry$K, 8)
+})
+
+
+
 #############################################################################
 ### Tests computePoolSyntheticAncestry() results
 #############################################################################
@@ -2969,7 +3050,7 @@ test_that("computeKNNRefSample() must return error when pcaList is vector of str
 })
 
 
-test_that("computeKNNRefSample() must return error expected results", {
+test_that("computeKNNRefSample() must return expected results", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 

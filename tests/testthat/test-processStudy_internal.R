@@ -518,3 +518,5 @@ test_that("selParaPCAUpQuartile() must return expected results when all input ar
     expect_identical(result$listD, 15)
 })
 
+
+

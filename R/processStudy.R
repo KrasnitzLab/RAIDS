@@ -1663,9 +1663,9 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{\code{sample.id}} {a \code{vector} of \code{character} strings
+#' \item{\code{sample.id}} { a \code{vector} of \code{character} strings
 #' representing the identifier of the profile analysed.}
-#' \item{\code{matKNN}} {a \code{data.frame} containing the super population
+#' \item{\code{matKNN}} { a \code{data.frame} containing the super population
 #' inference for the profile for different values of PCA
 #' dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 #' corresponds to the \code{fieldPopInfAnc} parameter.
@@ -1673,11 +1673,11 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #' \itemize{
 #' \item{\code{sample.id}} {a \code{character} string representing
 #' the identifier of the profile analysed.}
-#' \item{\code{D}} {a \code{numeric} strings representing
+#' \item{\code{D}} { a \code{numeric} strings representing
 #' the value of the PCA dimension used to infer the ancestry.}
-#' \item{\code{K}} {a \code{numeric} strings representing
+#' \item{\code{K}} { a \code{numeric} strings representing
 #' the value of the k-neighbors used to infer the ancestry..}
-#' \item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+#' \item{\code{fieldPopInfAnc}} { a \code{character} string representing
 #' the inferred ancestry.}
 #' }
 #' }
@@ -2424,13 +2424,15 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
         verbose=verbose)
 
+    ## Run a k-nearest neighbors analysis on one specific profile
     listKNNSample <- computeKNNRefSample(listEigenvector=listPCAProfile,
         listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList)
 
+    ## The ancestry call for the current profile
     resCall <- listKNNSample$matKNN[
         which(listKNNSample$matKNN$D == listParaSample$D &
-                        listKNNSample$matKNN$K == listParaSample$K ) ,]
+                        listKNNSample$matKNN$K == listParaSample$K ),]
 
     res <- list(pcaSample=listPCAProfile, # PCA of the profile + 1KG
                 paraSample=listParaSample, # Result of the parameter selection

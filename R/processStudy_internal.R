@@ -783,7 +783,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @examples
 #'
 #' ## Required library
-#' library(gdsmft)
+#' library(gdsfmt)
 #'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -845,6 +845,7 @@ validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
 
     return(0L)
 }
+
 
 #' @title Validate input parameters for appendStudy2GDS1KG() function
 #'

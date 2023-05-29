@@ -12,7 +12,8 @@ generateGDSRefSample(gdsReference, dfPedReference, listSamples = NULL)
 \item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{dfPedReference}{a \code{data.frame} containing the information related to the
+\item{dfPedReference}{a \code{data.frame} containing the information
+related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
 "pop.group", "superPop" and "batch". All columns, except "sex" and batch",
 are \code{character} strings. The "batch" and "sex" columns are
@@ -60,8 +61,8 @@ pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
 rownames(pedInformation) <- pedInformation$Name.ID
 
 ## Add information about 2 samples to the GDS file
-RAIDS:::generateGDSRefSample(gdsReference=tmpGDS, dfPedReference=pedInformation,
-    listSamples=NULL)
+RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
+    dfPedReference=pedInformation, listSamples=NULL)
 
 ## Read sample identifier list
 read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))

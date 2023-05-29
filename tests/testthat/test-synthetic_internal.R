@@ -83,3 +83,28 @@ test_that(paste0("prepPedSynthetic1KG() must return expected results"), {
     expect_equal(result1, expected1)
 })
 
+
+#############################################################################
+### Tests validateComputeSyntheticROC() results
+#############################################################################
+
+context("validateComputeSyntheticRoc() results")
+
+test_that(paste0("validateComputeSyntheticRoc() must return expected result"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    ## The known ancestry from the reference profiles used to generate the
+    ## synthetic profiles
+    syntheticData <- readRDS(file.path(dataDirSample, "pedSyn.RDS"))
+
+    expect_equal(RAIDS:::validateComputeSyntheticRoc(matKNN=matKNN,
+        matKNNAncestryColumn="SuperPop", pedCall=syntheticData,
+        pedCallAncestryColumn="superPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), 0L)
+})

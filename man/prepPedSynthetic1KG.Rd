@@ -4,7 +4,7 @@
 \name{prepPedSynthetic1KG}
 \alias{prepPedSynthetic1KG}
 \title{Extract the sample information from the 1KG GDS file for a list
-of profiles associated to a specific study in the GDS Sample file}
+of profiles associated to a specific study in the Profile GDS file}
 \usage{
 prepPedSynthetic1KG(gdsReference, gdsSample, studyID, popName)
 }
@@ -13,7 +13,7 @@ prepPedSynthetic1KG(gdsReference, gdsSample, studyID, popName)
 \code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened 1 KG GDS file.}
 
 \item{gdsSample}{an object of class
-\code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened GDS Sample
+\code{\link[gdsfmt:gds.class]{gdsfmt::gds.class}}, the opened Profile GDS
 file.}
 
 \item{studyID}{a \code{character} string representing the name of the
@@ -45,13 +45,16 @@ as an extra column to the final 'data.frame'.
 }
 \details{
 As example, this function can extract the synthetic profiles
-for a GDS Sample and the super-population of the 1KG samples used to
+for a Profile GDS and the super-population of the 1KG samples used to
 generate each synthetic profile would be added
 as an extra column to the final 'data.frame'. In that situation, the
 'popName' parameter would correspond to the super-population column and the
 'studyID' parameter would be the name given to the synthetic dataset.
 }
 \examples{
+
+## Required library
+library(gdsfmt)
 
 ## The open 1KG GDS file is required (this is a demo file)
 dataDir <- system.file("extdata", package="RAIDS")
@@ -62,7 +65,7 @@ fileSampleGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
 gdsSample <- openfn.gds(fileSampleGDS)
 
 ## Extract the study information for "TCGA.Synthetic" study present in the
-## GDS Sample file and merge column "superPop" from 1KG GDS to the
+## Profile GDS file and merge column "superPop" from 1KG GDS to the
 ## returned data.frame
 ## This function enables to extract the super-population associated to the
 ## 1KG samples that has been used to create the synthetic profiles

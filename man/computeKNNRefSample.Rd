@@ -48,9 +48,9 @@ Default: \code{seq(2, 15, 1)}.}
 \value{
 a \code{list} containing 4 entries:
 \itemize{
-\item{\code{sample.id}} {a \code{vector} of \code{character} strings
+\item{\code{sample.id}} { a \code{vector} of \code{character} strings
 representing the identifier of the profile analysed.}
-\item{\code{matKNN}} {a \code{data.frame} containing the super population
+\item{\code{matKNN}} { a \code{data.frame} containing the super population
 inference for the profile for different values of PCA
 dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 corresponds to the \code{fieldPopInfAnc} parameter.
@@ -58,11 +58,11 @@ The \code{data.frame} contains 4 columns:
 \itemize{
 \item{\code{sample.id}} {a \code{character} string representing
 the identifier of the profile analysed.}
-\item{\code{D}} {a \code{numeric} strings representing
+\item{\code{D}} { a \code{numeric} strings representing
 the value of the PCA dimension used to infer the ancestry.}
-\item{\code{K}} {a \code{numeric} strings representing
+\item{\code{K}} { a \code{numeric} strings representing
 the value of the k-neighbors used to infer the ancestry..}
-\item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+\item{\code{fieldPopInfAnc}} { a \code{character} string representing
 the inferred ancestry.}
 }
 }

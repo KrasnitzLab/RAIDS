@@ -32,7 +32,10 @@ file), the opened 1KG GDS file.}
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
 
-\item{listFiles}{TODO.}
+\item{listFiles}{a \code{vector} of \code{character} strings representing
+the name of files that contain the results of ancestry inference done on
+the synthetic profiles for multiple values of _D_ and _K_. The files must
+exist.}
 
 \item{currentProfile}{a \code{character} string representing the profile
 identifier of the current profile on which ancestry will be inferred.}
@@ -51,11 +54,13 @@ threads. Default: \code{1L}.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{fieldPopIn1KG}{a \code{character} string representing the name of TODO}
+\item{fieldPopIn1KG}{a \code{character} string representing the name of the
+column that contains the known ancestry for the reference profiles in
+the Reference GDS file.}
 
 \item{fieldPopInfAnc}{a \code{character} string representing the name of
 the column that will contain the inferred ancestry for the specified
-dataset. Default: \code{"SuperPop"}.}
+profiles. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
 values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -91,10 +96,129 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 \value{
 a \code{list} containing 4 entries:
 \itemize{
-\item{pcaSample}{}
-\item{paraSample}{}
-\item{KNNSample}{}
-\item{Ancestry}{ TODO the infered ancestry for the current profile.}
+\item{\code{pcaSample}}{ a \code{list} containing the information related
+to the eigenvectors. The \code{list} contains those 3 entries:
+\itemize{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
+identifier of the current profile.}
+\item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric} containing
+the eigenvectors for the reference profiles.}
+\item{\code{eigenvector}}{ a \code{matrix} of \code{numeric} containing the
+eigenvectors for the current profile projected on the PCA from the
+reference profiles.}
+}
+}
+
+\item{\code{paraSample}}{ a \code{list} containing the results with
+different \code{D} and \code{K} values that lead to optimal parameter
+selection. The \code{list} contains those entries:
+\itemize{
+\item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
+on all combined synthetic results done with a fixed value of \code{D} (the
+number of dimensions). The \code{data.frame} contains those columns:
+\itemize{
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions).}
+\item{\code{median}}{ a \code{numeric} representing the median of the
+minimum AUROC obtained (within super populations) for all combination of
+the fixed \code{D} value and all tested \code{K} values. }
+\item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+AUROC obtained (within super populations) for all combination of the fixed
+\code{D} value and all tested \code{K} values. }
+\item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+of the minimum AUROC obtained (within super populations) for all
+combination of the fixed \code{D} value and all tested \code{K} values. }
+\item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+(the number of neighbors) for a fixed \code{D} value. }
+}
+}
+\item{\code{dfPop}}{ a \code{data.frame} containing statistical results on
+all combined synthetic results done with different values of \code{D} (the
+number of dimensions) and \code{K} (the number of neighbors).
+The \code{data.frame} contains those columns:
+\itemize{
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions).}
+\item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+number of neighbors).}
+\item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+obtained by grouping all the synthetic results by super-populations, for
+the specified values of \code{D} and \code{K}.}
+\item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+by grouping all the synthetic results for the specified values of \code{D}
+and \code{K}.}
+\item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+of the confusion matrix obtained by grouping all the synthetic results for
+the specified values of \code{D} and \code{K}.}
+}
+}
+\item{\code{dfAUROC}}{ a \code{data.frame} the summary of the results by
+super-population. The \code{data.frame} contains
+those columns:
+\itemize{
+\item{\code{pcaD}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions).}
+\item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+number of neighbors).}
+\item{\code{Call}}{ a \code{character} string representing the
+super-population.}
+\item{\code{L}}{ a \code{numeric} representing the lower value of the 95%
+confidence interval for the AUROC obtained for the fixed values of
+super-population, \code{D} and \code{K}.}
+\item{\code{AUR}}{ a \code{numeric} representing  the AUROC obtained for the
+fixed values of super-population, \code{D} and \code{K}.}
+\item{\code{H}}{ a \code{numeric} representing the higher value of the 95%
+confidence interval for the AUROC obtained for the fixed values of
+super-population, \code{D} and \code{K}.}
+}
+}
+\item{\code{D}}{ a \code{numeric} representing the optimal \code{D} value
+(the number of dimensions) for the specific profile.}
+\item{\code{K}}{ a \code{numeric} representing the optimal \code{K} value
+(the number of neighbors) for the specific profile.}
+\item{\code{listD}}{ a \code{numeric} representing the optimal \code{D}
+values (the number of dimensions) for the specific profile. More than one
+\code{D} is possible.}
+}
+}
+
+\item{\code{KNNSample}}{ a \code{list} containing the inferred ancestry
+using different \code{D} and \code{K} values. The \code{list} contains
+those entries:
+\itemize{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
+identifier of the current profile.}
+\item{\code{matKNN}}{ a \code{data.frame} containing the inferred ancestry
+for different values of \code{K} and \code{D}. The \code{data.frame}
+contains those columns:
+\itemize{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
+identifier of the current profile.}
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions) used to infer the ancestry. }
+\item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+number of neighbors) used to infer the ancestry. }
+\item{\code{SuperPop}}{ a \code{character} string representing the inferred
+ancestry for the specified \code{D} and \code{K} values.}
+}
+}
+}
+}
+
+\item{\code{Ancestry}}{ a \code{data.frame} containing the inferred
+ancestry for the current profile. The \code{data.frame} contains those
+columns:
+\itemize{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
+identifier of the current profile.}
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+number of dimensions) used to infer the ancestry.}
+\item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+number of neighbors) used to infer the ancestry.}
+\item{\code{SuperPop}}{ a \code{character} string representing the inferred
+ancestry.}
+}
+}
 }
 }
 \description{
@@ -109,28 +233,48 @@ ancestry is inferred for the specific profile.
 ## Required library
 library(gdsfmt)
 
-## Path to the demo Profile GDS file is located in this package
-dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+## The Reference GDS file
+path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
+
+## Open the Reference GDS file
+gdsRef <- snpgdsOpen(file.path(path1KG, "ex1kg.gds"))
+
+## Path to the demo synthetic results files
+## List of the KNN result files from PCA run on synthetic data
+dataDirRes <- system.file("extdata/demoAncestryCall/ex1", package="RAIDS")
+listFilesName <- dir(file.path(dataDirRes), ".rds")
+listFiles <- file.path(file.path(dataDirRes) , listFilesName)
 
 # The name of the synthetic study
 studyID <- "MYDATA.Synthetic"
 
-samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
-    "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
-    "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
-    "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
-    "NA19731", "NA20528", "NA20908")
-names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
-    "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
-    "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
-
 ## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
+
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 
 ## Open the Profile GDS file
-##gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 
-## TODO
+## Run the ancestry inference on one profile called 'ex1'
+## The values of K and D used for the inference are selected using the
+## synthetic results
+resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsRef,
+                            gdsProfile=gdsProfile,
+                            listFiles=listFiles,
+                            currentProfile=c("ex1"),
+                            spRef=refKnownSuperPop,
+                            studyIDSyn=studyID, np=1L)
+
+## The ancestry called with the optimal D and K values
+resCall$Ancestry
+
+## Close the GDS files (important)
+closefn.gds(gdsProfile)
+closefn.gds(gdsRef)
+
 
 }
 \references{

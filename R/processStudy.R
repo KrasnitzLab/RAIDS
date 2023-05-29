@@ -1307,16 +1307,17 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 }
 
 
-#' @title Compute Principal Component Analysis (PCA) on SNV genotype for
-#' data from a sample
+#' @title Project specified profile onto PCA axes generated using known
+#' reference profiles
 #'
-#' @description TODO
+#' @description This function generates a PCA using the know reference
+#' profiles. Them, it projects the specified profile onto the PCA axes.
 #'
-#' @param gdsSample an object of class \link[gdsfmt]{gds.class},
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class},
 #' an opened Profile GDS file.
 #'
-#' @param name.id a single \code{character} string representing the sample
-#' identifier.
+#' @param currentProfile a single \code{character} string representing
+#' the profile identifier.
 #'
 #' @param studyIDRef a single \code{character} string representing the
 #' study identifier.
@@ -1329,7 +1330,7 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' calculation) and "randomized" (fast PCA with randomized algorithm
 #' introduced in Galinsky et al. 2016). Default: \code{"exact"}.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #' Default: \code{32L}.
@@ -1352,58 +1353,82 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #'
 #' @return a \code{list} containing 3 entries:
 #' \itemize{
-#' \item{sample.id} { TODO }
-#' \item{eigenvector.ref} { TODO }
-#' \item{eigenvector} { TODO }
+#' \item{\code{sample.id}} { a \code{character} string representing the unique
+#' identifier of the analyzed profile.}
+#' \item{\code{eigenvector.ref}} { a \code{matrix} of \code{numeric}
+#' representing the eigenvectors of the reference profiles. }
+#' \item{\code{eigenvector}} { a \code{matrix} of \code{numeric} representing
+#' the eigenvectors of the analyzed profile. }
 #' }
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "TOTO"
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Project a profile onto a PCA generated using reference profiles
+#' ## The reference profiles come from 1KG
+#' resPCA <- computePCARefSample(gdsProfile=gdsProfile,
+#'     currentProfile=c("ex1"), studyIDRef="Ref.1KG", np=1L, verbose=FALSE)
+#' resPCA$sample.id
+#' resPCA$eigenvector
+#'
+#' ## Close the GDS files (important)
+#' closefn.gds(gdsProfile)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
 #' @importFrom SNPRelate snpgdsPCA snpgdsPCASNPLoading snpgdsPCASampLoading
 #' @encoding UTF-8
 #' @export
-computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
+computePCARefSample <- function(gdsProfile, currentProfile,
+                            studyIDRef="Ref.1KG",
                             np=1L, algorithm=c("exact","randomized"),
-                            eigen.cnt=32L, missingRate=NaN, verbose=FALSE) {
+                            eigenCount=32L, missingRate=NaN, verbose=FALSE) {
 
     ## Validate parameters
-    validateComputePCARefSample(gdsSample=gdsSample, name.id=name.id,
-        studyIDRef=studyIDRef, np=np, algorithm=algorithm,
-        eigen.cnt=eigen.cnt, missingRate=missingRate, verbose=verbose)
+    validateComputePCARefSample(gdsProfile=gdsProfile,
+        currentProfile=currentProfile, studyIDRef=studyIDRef, np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
     ## Set algorithm
     algorithm <- match.arg(algorithm)
 
-    sample.id <- read.gdsn(index.gdsn(gdsSample, "sample.id"))
+    sampleID <- read.gdsn(index.gdsn(gdsProfile, "sample.id"))
 
-    sample.pos <- which(sample.id == name.id)
+    samplePos <- which(sampleID == currentProfile)
 
-    studyAnnotAll <- read.gdsn(index.gdsn(gdsSample, "study.annot"))
+    studyAnnotAll <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
 
-    sample.Unrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
+    sampleUnrel <- studyAnnotAll[which(studyAnnotAll$study.id ==
                                                 studyIDRef), "data.id"]
 
     listPCA <- list()
 
-    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))
+    listPCA[["pruned"]] <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
 
-    ## Calculate the eigenvectors and eigenvalues for PCA
-    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsSample, sample.id=sample.Unrel,
-                                snp.id=listPCA[["pruned"]], num.thread=np,
-                                algorithm=algorithm, eigen.cnt=eigen.cnt,
-                                missing.rate=missingRate, verbose=verbose)
+    ## Calculate the eigenvectors and eigenvalues for PCA done with the
+    ## reference profiles
+    listPCA[["pca.unrel"]] <- snpgdsPCA(gdsobj=gdsProfile,
+            sample.id=sampleUnrel, snp.id=listPCA[["pruned"]], num.thread=np,
+            algorithm=algorithm, eigen.cnt=eigenCount,
+            missing.rate=missingRate, verbose=verbose)
 
+    ## calculate the SNP loadings in PCA
     listPCA[["snp.load"]] <- snpgdsPCASNPLoading(listPCA[["pca.unrel"]],
-                            gdsobj=gdsSample, num.thread=np, verbose=verbose)
+            gdsobj=gdsProfile, num.thread=np, verbose=verbose)
 
+    ## Project specified profile onto the PCA axes
     listPCA[["samp.load"]] <- snpgdsPCASampLoading(listPCA[["snp.load"]],
-                                gdsobj=gdsSample,
-                                sample.id=sample.id[sample.pos],
+            gdsobj=gdsProfile, sample.id=sampleID[samplePos],
                                 num.thread=np, verbose=verbose)
 
     rownames(listPCA[["pca.unrel"]]$eigenvect) <-
@@ -1411,7 +1436,7 @@ computePCARefSample <- function(gdsSample, name.id, studyIDRef="Ref.1KG",
     rownames(listPCA[["samp.load"]]$eigenvect) <-
                                         listPCA[["samp.load"]]$sample.id
 
-    listRes <- list(sample.id=sample.id[sample.pos],
+    listRes <- list(sample.id=sampleID[samplePos],
                         eigenvector.ref=listPCA[["pca.unrel"]]$eigenvect,
                         eigenvector=listPCA[["samp.load"]]$eigenvect)
 
@@ -1638,9 +1663,9 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{\code{sample.id}} {a \code{vector} of \code{character} strings
+#' \item{\code{sample.id}} { a \code{vector} of \code{character} strings
 #' representing the identifier of the profile analysed.}
-#' \item{\code{matKNN}} {a \code{data.frame} containing the super population
+#' \item{\code{matKNN}} { a \code{data.frame} containing the super population
 #' inference for the profile for different values of PCA
 #' dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 #' corresponds to the \code{fieldPopInfAnc} parameter.
@@ -1648,11 +1673,11 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #' \itemize{
 #' \item{\code{sample.id}} {a \code{character} string representing
 #' the identifier of the profile analysed.}
-#' \item{\code{D}} {a \code{numeric} strings representing
+#' \item{\code{D}} { a \code{numeric} strings representing
 #' the value of the PCA dimension used to infer the ancestry.}
-#' \item{\code{K}} {a \code{numeric} strings representing
+#' \item{\code{K}} { a \code{numeric} strings representing
 #' the value of the k-neighbors used to infer the ancestry..}
-#' \item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+#' \item{\code{fieldPopInfAnc}} { a \code{character} string representing
 #' the inferred ancestry.}
 #' }
 #' }
@@ -2063,9 +2088,9 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
     listParaSample <- selParaPCAUpQuartile(resultsKNN, pedSyn,
                             fieldPopIn1KG, fieldPopInfAnc, listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample=gdsSample,
-        name.id=profileID, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
+    listPCASample <- computePCARefSample(gdsProfile=gdsSample,
+        currentProfile=profileID, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate)
 
     listKNNSample <- computeKNNSuperPopSample(gdsSample=gdsSample,
                                                 profileID, spRef)
@@ -2087,7 +2112,10 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
-#' @param listFiles TODO.
+#' @param listFiles a \code{vector} of \code{character} strings representing
+#' the name of files that contain the results of ancestry inference done on
+#' the synthetic profiles for multiple values of _D_ and _K_. The files must
+#' exist.
 #'
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
@@ -2106,11 +2134,13 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param fieldPopIn1KG a \code{character} string representing the name of TODO
+#' @param fieldPopIn1KG a \code{character} string representing the name of the
+#' column that contains the known ancestry for the reference profiles in
+#' the Reference GDS file.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
-#' dataset. Default: \code{"SuperPop"}.
+#' profiles. Default: \code{"SuperPop"}.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -2145,10 +2175,129 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #'
 #' @return a \code{list} containing 4 entries:
 #' \itemize{
-#' \item{pcaSample}{}
-#' \item{paraSample}{}
-#' \item{KNNSample}{}
-#' \item{Ancestry}{ TODO the infered ancestry for the current profile.}
+#' \item{\code{pcaSample}}{ a \code{list} containing the information related
+#' to the eigenvectors. The \code{list} contains those 3 entries:
+#' \itemize{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric} containing
+#' the eigenvectors for the reference profiles.}
+#' \item{\code{eigenvector}}{ a \code{matrix} of \code{numeric} containing the
+#' eigenvectors for the current profile projected on the PCA from the
+#' reference profiles.}
+#' }
+#' }
+#'
+#' \item{\code{paraSample}}{ a \code{list} containing the results with
+#' different \code{D} and \code{K} values that lead to optimal parameter
+#' selection. The \code{list} contains those entries:
+#' \itemize{
+#' \item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
+#' on all combined synthetic results done with a fixed value of \code{D} (the
+#' number of dimensions). The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{median}}{ a \code{numeric} representing the median of the
+#' minimum AUROC obtained (within super populations) for all combination of
+#' the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+#' AUROC obtained (within super populations) for all combination of the fixed
+#' \code{D} value and all tested \code{K} values. }
+#' \item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+#' of the minimum AUROC obtained (within super populations) for all
+#' combination of the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for a fixed \code{D} value. }
+#' }
+#' }
+#' \item{\code{dfPop}}{ a \code{data.frame} containing statistical results on
+#' all combined synthetic results done with different values of \code{D} (the
+#' number of dimensions) and \code{K} (the number of neighbors).
+#' The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+#' obtained by grouping all the synthetic results by super-populations, for
+#' the specified values of \code{D} and \code{K}.}
+#' \item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+#' by grouping all the synthetic results for the specified values of \code{D}
+#' and \code{K}.}
+#' \item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+#' of the confusion matrix obtained by grouping all the synthetic results for
+#' the specified values of \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{dfAUROC}}{ a \code{data.frame} the summary of the results by
+#' super-population. The \code{data.frame} contains
+#' those columns:
+#' \itemize{
+#' \item{\code{pcaD}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{Call}}{ a \code{character} string representing the
+#' super-population.}
+#' \item{\code{L}}{ a \code{numeric} representing the lower value of the 95%
+#' confidence interval for the AUROC obtained for the fixed values of
+#' super-population, \code{D} and \code{K}.}
+#' \item{\code{AUR}}{ a \code{numeric} representing  the AUROC obtained for the
+#' fixed values of super-population, \code{D} and \code{K}.}
+#' \item{\code{H}}{ a \code{numeric} representing the higher value of the 95%
+#' confidence interval for the AUROC obtained for the fixed values of
+#' super-population, \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{D}}{ a \code{numeric} representing the optimal \code{D} value
+#' (the number of dimensions) for the specific profile.}
+#' \item{\code{K}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for the specific profile.}
+#' \item{\code{listD}}{ a \code{numeric} representing the optimal \code{D}
+#' values (the number of dimensions) for the specific profile. More than one
+#' \code{D} is possible.}
+#' }
+#' }
+#'
+#' \item{\code{KNNSample}}{ a \code{list} containing the inferred ancestry
+#' using different \code{D} and \code{K} values. The \code{list} contains
+#' those entries:
+#' \itemize{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{matKNN}}{ a \code{data.frame} containing the inferred ancestry
+#' for different values of \code{K} and \code{D}. The \code{data.frame}
+#' contains those columns:
+#' \itemize{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions) used to infer the ancestry. }
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors) used to infer the ancestry. }
+#' \item{\code{SuperPop}}{ a \code{character} string representing the inferred
+#' ancestry for the specified \code{D} and \code{K} values.}
+#' }
+#' }
+#' }
+#' }
+#'
+#' \item{\code{Ancestry}}{ a \code{data.frame} containing the inferred
+#' ancestry for the current profile. The \code{data.frame} contains those
+#' columns:
+#' \itemize{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions) used to infer the ancestry.}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors) used to infer the ancestry.}
+#' \item{\code{SuperPop}}{ a \code{character} string representing the inferred
+#' ancestry.}
+#' }
+#' }
 #' }
 #'
 #'
@@ -2165,28 +2314,48 @@ computePoolSyntheticAncestry <- function(gdsReference, gdsSample, profileID,
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Path to the demo Profile GDS file is located in this package
-#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' ## The Reference GDS file
+#' path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
+#'
+#' ## Open the Reference GDS file
+#' gdsRef <- snpgdsOpen(file.path(path1KG, "ex1kg.gds"))
+#'
+#' ## Path to the demo synthetic results files
+#' ## List of the KNN result files from PCA run on synthetic data
+#' dataDirRes <- system.file("extdata/demoAncestryCall/ex1", package="RAIDS")
+#' listFilesName <- dir(file.path(dataDirRes), ".rds")
+#' listFiles <- file.path(file.path(dataDirRes) , listFilesName)
 #'
 #' # The name of the synthetic study
 #' studyID <- "MYDATA.Synthetic"
 #'
-#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
-#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
-#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
-#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
-#'     "NA19731", "NA20528", "NA20908")
-#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
-#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
-#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
-#'
 #' ## The known ancestry for the 1KG reference profiles
-#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#' dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
 #' ## Open the Profile GDS file
-#' ##gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 #'
-#' ## TODO
+#' ## Run the ancestry inference on one profile called 'ex1'
+#' ## The values of K and D used for the inference are selected using the
+#' ## synthetic results
+#' resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsRef,
+#'                             gdsProfile=gdsProfile,
+#'                             listFiles=listFiles,
+#'                             currentProfile=c("ex1"),
+#'                             spRef=refKnownSuperPop,
+#'                             studyIDSyn=studyID, np=1L)
+#'
+#' ## The ancestry called with the optimal D and K values
+#' resCall$Ancestry
+#'
+#' ## Close the GDS files (important)
+#' closefn.gds(gdsProfile)
+#' closefn.gds(gdsRef)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match
@@ -2238,28 +2407,34 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     }
     resultsKNN <- do.call(rbind, KNN.list)
 
-    ## Extract the sample super-population information from the 1KG GDS file
-    ## for profiles associated to the specified study in the GDS Sample file
+    ## Extract the super-population information from the 1KG GDS file
+    ## for profiles associated to the synthetic study
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
         gdsSample=gdsProfile, studyID=studyIDSyn, popName=fieldPopIn1KG)
 
-    listParaSample <- selParaPCAUpQuartile(matKNN.All=resultsKNN,
+    ## Compile all the inferred ancestry results for different values of
+    ## D and K to select the optimal parameters
+    listParaSample <- selParaPCAUpQuartile(matKNN=resultsKNN,
         pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
         listCall=listCatPop)
 
-    listPCASample <- computePCARefSample(gdsSample=gdsProfile,
-        name.id=currentProfile, studyIDRef="Ref.1KG", np=np,
-        algorithm=algorithm, eigen.cnt=eigenCount, missingRate=missingRate)
+    ## Project profile on the PCA created with the reference profiles
+    listPCAProfile <- computePCARefSample(gdsProfile=gdsProfile,
+        currentProfile=currentProfile, studyIDRef="Ref.1KG", np=np,
+        algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
+        verbose=verbose)
 
-    listKNNSample <- computeKNNRefSample(listEigenvector=listPCASample,
+    ## Run a k-nearest neighbors analysis on one specific profile
+    listKNNSample <- computeKNNRefSample(listEigenvector=listPCAProfile,
         listCatPop=listCatPop, spRef=spRef, fieldPopInfAnc=fieldPopInfAnc,
         kList=kList, pcaList=pcaList)
 
+    ## The ancestry call for the current profile
     resCall <- listKNNSample$matKNN[
         which(listKNNSample$matKNN$D == listParaSample$D &
-                        listKNNSample$matKNN$K == listParaSample$K ) ,]
+                        listKNNSample$matKNN$K == listParaSample$K ),]
 
-    res <- list(pcaSample=listPCASample, # PCA of the profile + 1KG
+    res <- list(pcaSample=listPCAProfile, # PCA of the profile + 1KG
                 paraSample=listParaSample, # Result of the parameter selection
                 KNNSample=listKNNSample, # KNN for the profile
                 Ancestry=resCall) # the ancestry call fo the profile

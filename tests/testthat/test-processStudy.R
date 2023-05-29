@@ -782,28 +782,28 @@ test_that("add1KG2SampleGDS() must return expect result", {
 context("computePCARefSample() results")
 
 
-test_that("computePCARefSample() must return error when gdsSample isnumeric value", {
+test_that("computePCARefSample() must return error when gdsProfile isnumeric value", {
 
-    error_message <- "The \'gdsSample\' must be an object of class \'gds.class\'."
+    error_message <- "The \'gdsProfile\' must be an object of class \'gds.class\'."
 
-    expect_error(computePCARefSample(gdsSample="test.gds", name.id="test",
+    expect_error(computePCARefSample(gdsProfile="test.gds", currentProfile="test",
                             studyIDRef="Ref.1KG", np=1L, algorithm="exact",
-                            eigen.cnt=32L), error_message, fixed=TRUE)
+                            eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
-test_that("computePCARefSample() must return error when name.id is numeric value", {
+test_that("computePCARefSample() must return error when currentProfile is numeric value", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- "The \'name.id\' parameter must be a single character string."
+    error_message <- "The \'currentProfile\' parameter must be a character string."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id=22,
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile=22,
                             studyIDRef="Ref.1KG", np=1L, algorithm="exact",
-                            eigen.cnt=32L), error_message, fixed=TRUE)
+                            eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
@@ -816,9 +816,9 @@ test_that("computePCARefSample() must return error when studyIDRef is numeric va
 
     error_message <- "The \'studyIDRef\' parameter must be a character string."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="Synthetic",
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="Synthetic",
                             studyIDRef=33, np=1L, algorithm="exact",
-                            eigen.cnt=32L), error_message, fixed=TRUE)
+                            eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
@@ -831,10 +831,9 @@ test_that("computePCARefSample() must return error when np is a character string
 
     error_message <- "The \'np\' parameter must be a single positive integer."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-                        studyIDRef="Ref.1KG",
-                        np="1", algorithm="exact",
-                        eigen.cnt=32L), error_message, fixed=TRUE)
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+                        studyIDRef="Ref.1KG", np="1", algorithm="exact",
+                        eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
@@ -847,9 +846,9 @@ test_that("computePCARefSample() must return error when np is a numeric value", 
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
                                 studyIDRef="Ref.1KG", np=1L, algorithm=33,
-                                eigen.cnt=32L), error_message, fixed=TRUE)
+                                eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
@@ -862,9 +861,9 @@ test_that("computePCARefSample() must return error when algorithm is a numeric v
 
     error_message <- "The \'algorithm\' parameter must be a character string."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
             studyIDRef="Ref.1KG", np=1L, algorithm=33,
-            eigen.cnt=32L), error_message, fixed=TRUE)
+            eigenCount=32L), error_message, fixed=TRUE)
 })
 
 
@@ -875,22 +874,22 @@ test_that("computePCARefSample() must return error when algorithm is not a valid
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L))
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigenCount=32L))
 })
 
 
-test_that("computePCARefSample() must return error when eigen.cnt is a string", {
+test_that("computePCARefSample() must return error when eigenCount is a string", {
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    error_message <- "The \'eigen.cnt\' parameter must be a single integer."
+    error_message <- "The \'eigenCount\' parameter must be a single integer."
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt="32L"),
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigenCount="32L"),
         error_message, fixed=TRUE)
 })
 
@@ -905,8 +904,8 @@ test_that("computePCARefSample() must return error when missingRate is negative 
     error_message <- paste0("The \'missingRate\' must be a single numeric ",
                                 "positive value between 0 and 1 or NaN.")
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+        studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigenCount=32L,
         missingRate=-0.02), error_message, fixed=TRUE)
 })
 
@@ -921,8 +920,8 @@ test_that("computePCARefSample() must return error when algorithm is not in the 
     error_message <- paste0("\'arg\' should be one of \"exact\", ",
                                         "\"randomized\"")
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-        studyIDRef="Ref.1KG", np=1L, algorithm="TITI", eigen.cnt=32L,
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+        studyIDRef="Ref.1KG", np=1L, algorithm="TITI", eigenCount=32L,
         missingRate=0.02), error_message, fixed=TRUE)
 })
 
@@ -932,14 +931,55 @@ test_that("computePCARefSample() must return error when verbose is number", {
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
-    withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
+    withr::defer((closefn.gds(gdsF)), envir=parent.frame())
 
     error_message <- paste0("The \'verbose\' parameter must be a ",
                                 "logical (TRUE or FALSE).")
 
-    expect_error(computePCARefSample(gdsSample=gdsF, name.id="TCGA",
-            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigen.cnt=32L,
+    expect_error(computePCARefSample(gdsProfile=gdsF, currentProfile="TCGA",
+            studyIDRef="Ref.1KG", np=1L, algorithm="sun", eigenCount=32L,
             missingRate=0.02, verbose=33), error_message, fixed=TRUE)
+})
+
+
+test_that("computePCARefSample() must return expected results", {
+
+    pathFile <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    gdsF <- snpgdsOpen(file.path(pathFile, "ex1.gds"))
+    withr::defer((closefn.gds(gdsF)), envir=parent.frame())
+
+    set.seed(121)
+
+    resPCA <- computePCARefSample(gdsProfile=gdsF,
+        currentProfile=c("ex1"), studyIDRef="Ref.1KG", np=1L, verbose=FALSE)
+
+    expect_true(is.list(resPCA))
+    expect_equal(length(resPCA), 3)
+    expect_equal(names(resPCA), c("sample.id", "eigenvector.ref",
+                                    "eigenvector"))
+    expect_equal(resPCA$sample.id, "ex1")
+
+    expect_true(is.matrix(resPCA$eigenvector.ref))
+    expect_equal(rownames(resPCA$eigenvector.ref)[c(1, 5, 8, 22, 44,
+        54, 76, 77, 90, 123, 144)], c("HG00243", "HG00138", "HG00275",
+        "HG01171", "HG02299", "HG02661", "HG02974", "HG03367", "HG03081",
+        "NA18986","NA19663"))
+    expect_null(colnames(resPCA$eigenvector.ref))
+    expect_equal(resPCA$eigenvector.ref[6, c(1, 3, 4, 6, 7)],
+                 c(-0.039769078873965, -0.011391586850322, 0.002447759571484,
+                    -0.024845048933754, -0.025926328506198))
+    expect_equal(resPCA$eigenvector.ref[44, c(1, 3, 5, 6, 9)],
+                 c(-0.020546066486524, 0.010608436969775, -0.019062812032447,
+                    -0.028429871761276, 0.005059217676424))
+
+    expect_true(is.matrix(resPCA$eigenvector))
+    expect_equal(rownames(resPCA$eigenvector), "ex1")
+    expect_null(colnames(resPCA$eigenvector))
+    expect_equal(resPCA$eigenvector[1, c(1, 3, 4, 6, 7, 22, 25, 32)],
+        c(-0.039179255703460, -0.186164267684954, -0.057606409172989,
+            -0.082740705154894, 0.077792400461185, -0.214690314074977,
+            -0.280651868285924, -0.329149757549027))
 })
 
 
@@ -2039,6 +2079,87 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when verb
 })
 
 
+test_that(paste0("computeAncestryFromSyntheticFile() must return expected results"), {
+
+    fileGDS <- test_path("fixtures/sampleGDSforAncestryByFile/gdsRef")
+    gdsRef <- openfn.gds(file.path(fileGDS, "ex1kg.gds"))
+    withr::defer(closefn.gds(gdsRef), envir=parent.frame())
+
+    fileGDS <- test_path("fixtures/sampleGDSforAncestryByFile")
+    gdsF <- snpgdsOpen(file.path(fileGDS, "ex1.gds"))
+    withr::defer(closefn.gds(gdsF), envir=parent.frame())
+
+    ## List of the KNN result files from PCA run on synthetic data
+    fileKNN <- test_path("fixtures/sampleGDSforAncestryByFile/filesKNN")
+    listFilesName <- dir(file.path(fileKNN), ".rds")
+    listFiles <- file.path(file.path(fileKNN) , listFilesName)
+
+    # The name of the synthetic study
+    studyID <- "MYDATA.Synthetic"
+
+    ## The known ancestry for the 1KG reference profiles
+    filePop <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
+    refKnownSuperPop <- readRDS(file.path(filePop, "knownSuperPop1KG.RDS"))
+
+    set.seed(111)
+
+    ## Run the ancestry inference on one profile called 'ex1'
+    ## The values of K and D used for the inference are selected using the
+    ## synthetic results
+    res <- computeAncestryFromSyntheticFile(gdsReference=gdsRef, gdsProfile=gdsF,
+            listFiles=listFiles, currentProfile="ex1", spRef=refKnownSuperPop,
+            studyIDSyn=studyID, np=1L,
+            listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
+            fieldPopIn1KG="superPop",
+            fieldPopInfAnc="SuperPop",kList=NULL,
+            pcaList=NULL, algorithm="exact",
+            eigenCount=32L,  missingRate=NaN, verbose=FALSE)
+
+    expect_true(is.list(res))
+    expect_true(all(c("pcaSample", "paraSample", "KNNSample", "Ancestry") %in%
+                                names(res)))
+
+    expect_true(is.vector(res$pcaSample))
+    expect_true(all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                        names(res$pcaSample)))
+    expect_equal(res$pcaSample$sample.id, "ex1")
+    expect_equal(res$pcaSample$eigenvector[, c(3, 22, 26, 30)],
+        c(-0.186164267684954, -0.214690314074977, 0.409505274265608,
+                        -0.323542785477152))
+    expect_equal(res$pcaSample$eigenvector.ref[4, c(3, 22, 26, 30)],
+        c(-0.018272328822580, -0.034625002667539, -0.021132042058256,
+                        -0.018541974308472))
+
+    expect_true(is.vector(res$KNNSample))
+    expect_true(all(c("sample.id", "matKNN") %in%
+                        names(res$KNNSample)))
+    expect_equal(res$KNNSample$sample.id, "ex1")
+    expect_true(is.data.frame(res$KNNSample$matKNN))
+    expect_true(all(c("sample.id", "D", "K", "SuperPop") %in%
+                        names(res$KNNSample$matKNN)))
+    expect_equal(res$KNNSample$matKNN[c(3, 55, 132, 188), 1],
+                    c("ex1", "ex1", "ex1", "ex1"))
+    expect_equal(res$KNNSample$matKNN[c(13, 25, 135, 168), 2], c(2, 3, 11, 13))
+    expect_equal(res$KNNSample$matKNN[c(6, 21, 132, 161), 3], c(7, 8, 7, 8))
+    expect_equal(res$KNNSample$matKNN[c(16, 27, 112, 171), 4],
+                        c("SAS", "EAS", "SAS", "SAS"))
+
+    expect_true(is.vector(res$paraSample))
+    expect_true(all(c("dfPCA", "dfPop", "dfAUROC", "D", "K", "listD") %in%
+                        names(res$paraSample)))
+    expect_equal(res$paraSample$D, 7)
+    expect_equal(res$paraSample$K, 8)
+    expect_equal(res$paraSample$listD, 7)
+
+    expect_true(is.data.frame(res$Ancestry))
+    expect_equal(res$Ancestry$sample.id, "ex1")
+    expect_equal(res$Ancestry$SuperPop, "EAS")
+    expect_equal(res$Ancestry$D, 7)
+    expect_equal(res$Ancestry$K, 8)
+})
+
+
+
 #############################################################################
 ### Tests computePoolSyntheticAncestry() results
 #############################################################################
@@ -2929,7 +3050,7 @@ test_that("computeKNNRefSample() must return error when pcaList is vector of str
 })
 
 
-test_that("computeKNNRefSample() must return error expected results", {
+test_that("computeKNNRefSample() must return expected results", {
 
     pathFile <- test_path("fixtures/sampleGDSforPoolSyntheticAncestry")
 

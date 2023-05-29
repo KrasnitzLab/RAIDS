@@ -144,13 +144,12 @@ test_that("validateComputePCARefSample() must return expected results when all i
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir = parent.frame())
 
-    result1 <- RAIDS:::validateComputePCARefSample(gdsSample=gdsF,
-                name.id="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
-                eigen.cnt=32L, missingRate=0.02, verbose=FALSE)
+    result1 <- RAIDS:::validateComputePCARefSample(gdsProfile=gdsF,
+        currentProfile="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
+        eigenCount=32L, missingRate=0.02, verbose=FALSE)
 
     expect_identical(result1, 0L)
 })
-
 
 
 #############################################################################
@@ -437,3 +436,87 @@ test_that("validateComputeKNNRefSample() must return expected results when all i
 
     expect_identical(result, 0L)
 })
+
+
+#############################################################################
+### Tests selParaPCAUpQuartile() results
+#############################################################################
+
+context("selParaPCAUpQuartile() results")
+
+
+test_that("selParaPCAUpQuartile() must return expected results when all input are valid", {
+
+    pathFile <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    pca <- readRDS(file.path(pathFile, "listPCASample.RDS"))
+
+    matKNN <- readRDS(file.path(pathFile, "matKNN.RDS"))
+
+    pedSynt <- readRDS(file.path(pathFile, "pedSyn.RDS"))
+
+    result <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
+        pedCall=pedSynt, refCall="superPop", predCall="SuperPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,5,1),
+        pcaList=seq(10,15,1))
+
+    sampleDFPop <- data.frame(D=c(11, 12, 13, 14, 15),
+                K=c(4, 5, 5, 3, 5),
+                AUROC.min=c(0.539772727272727, 0.528409090909091,
+                    0.517045454545455, 0.528409090909091, 0.602272727272727),
+                AUROC=c(0.685267857142857, 0.710267857142857,
+                    0.722767857142857, 0.726339285714286, 0.738392857142857),
+                Accu.CM=c(0.538461538461538, 0.576923076923077,
+                    0.596153846153846, 0.596153846153846, 0.615384615384615),
+                stringsAsFactors=FALSE)
+    rownames(sampleDFPop) <- c(5L, 9L, 12L, 13L, 18L)
+
+    sampleDFPCA <- data.frame(D=c(10, 11, 12, 13, 14, 15),
+        median=c(0.539772727272727, 0.539772727272727, 0.528409090909091,
+                0.528409090909091, 0.539772727272727, 0.602272727272727),
+        mad=c(0.016847727272727, 0.016847727272727, 0.075814772727273,
+                0.016847727272727, 0.016847727272727, 0.000000000000000),
+        upQuartile=c(0.545454545454545, 0.559659090909091, 0.559659090909091,
+                0.559659090909091, 0.559659090909091, 0.602272727272727),
+        K=c(4, 5, 4, 4, 4, 4), stringsAsFactors=FALSE)
+    rownames(sampleDFPCA) <- c("75%",  "75%1", "75%2", "75%3", "75%4", "75%5")
+
+    sampleDFAUROC <- data.frame(pcaD=c(10, 11, 11, 12, 13),
+        K=c(3, 3, 4, 3, 5),
+        Call=c("SAS", "AMR", "EUR", "AFR", "AFR"),
+        L=c(0.520945878038968, 0.400250400882566, 0.472946268504436,
+                    0.718231321124318, 0.784535852000281),
+        AUC=c(0.692857142857143, 0.528409090909091, 0.640476190476190,
+                    0.840225563909774, 0.889097744360902),
+        H=c(0.864768407675317, 0.656567780935616, 0.808006112447945,
+                    0.962219806695231, 0.993659636721523),
+        stringsAsFactors=FALSE)
+    rownames(sampleDFAUROC) <- c(5L, 19L, 22L, 33L, 58L)
+
+    expect_true(is.list(result))
+
+    expect_true(is.data.frame(result$dfPCA))
+    expect_identical(colnames(result$dfPCA),
+                        c("D", "median", "mad", "upQuartile", "K"))
+    expect_identical(nrow(result$dfPCA), 6L)
+    expect_equal(result$dfPCA, sampleDFPCA)
+
+    expect_true(is.data.frame(result$dfAUROC))
+    expect_identical(colnames(result$dfAUROC),
+                     c("pcaD", "K", "Call", "L", "AUC", "H"))
+    expect_identical(nrow(result$dfAUROC), 90L)
+    expect_equal(result$dfAUROC[c(5, 19, 22, 33, 58),], sampleDFAUROC)
+
+    expect_true(is.data.frame(result$dfPop))
+    expect_identical(colnames(result$dfPop),
+                        c("D", "K", "AUROC.min", "AUROC", "Accu.CM"))
+    expect_identical(nrow(result$dfPop), 18L)
+    expect_equal(result$dfPop[c(5, 9, 12, 13, 18),], sampleDFPop)
+
+    expect_identical(result$D, 15)
+    expect_identical(result$K, 4)
+    expect_identical(result$listD, 15)
+})
+
+
+

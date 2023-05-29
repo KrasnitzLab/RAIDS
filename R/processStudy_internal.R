@@ -177,9 +177,9 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG a \code{character} string TODO.
-#'
-#' @param fieldPopInfAnc a \code{character} string TODO.
+#' @param fieldPopInfAnc a \code{character} string representing the name of
+#' the column that will contain the inferred ancestry for the specified
+#' dataset.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -264,14 +264,10 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
     }
 
     ## The parameter studyIDSyn must be a character string
-    if(!(is.character(studyIDSyn))) {
-        stop("The \'studyIDSyn\' parameter must be a character string.")
-    }
+    validateCharacterString(studyIDSyn, "studyIDSyn")
 
     ## The parameter fieldPopInfAnc must be a character string
-    if(!(is.character(fieldPopInfAnc))) {
-        stop("The \'fieldPopInfAnc\' parameter must be a character string.")
-    }
+    validateCharacterString(fieldPopInfAnc, "fieldPopInfAnc")
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
@@ -598,7 +594,10 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
-#' @param listFiles TODO.
+#' @param listFiles a \code{vector} of \code{character} strings representing
+#' the name of files that contain the results of ancestry inference done on
+#' the synthetic profiles for multiple values of _D_ and _K_. The files must
+#' exist.
 #'
 #' @param currentProfile a \code{character} string representing the profile
 #' identifier of the current profile on which ancestry will be inferred.
@@ -616,7 +615,9 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG a \code{character} string representing the name of TODO
+#' @param fieldPopIn1KG a \code{character} string representing the name of the
+#' column that contains the known ancestry for the reference profiles in
+#' the Reference GDS file.
 #'
 #' @param fieldPopInfAnc a \code{character} string representing the name of
 #' the column that will contain the inferred ancestry for the specified
@@ -751,11 +752,11 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @description This function validates the input parameters for the
 #' \code{\link{computePCARefSample}} function.
 #'
-#' @param gdsSample an object of class \link[gdsfmt]{gds.class},
-#' a GDS Sample file.
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class},
+#' an opened Profile GDS file.
 #'
-#' @param name.id a single \code{character} string representing the sample
-#' identifier.
+#' @param currentProfile a single \code{character} string representing the
+#' profile identifier.
 #'
 #' @param studyIDRef a single \code{character} string representing the
 #' study identifier.
@@ -766,7 +767,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @param algorithm a \code{character} string representing the algorithm used
 #' to calculate the PCA.
 #'
-#' @param eigen.cnt a single \code{integer} indicating the number of
+#' @param eigenCount a single \code{integer} indicating the number of
 #' eigenvectors that will be in the output of the \link[SNPRelate]{snpgdsPCA}
 #' function; if 'eigen.cnt' <= 0, then all eigenvectors are returned.
 #'
@@ -781,6 +782,9 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -788,10 +792,10 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
-#' ## The validatiion should be successful
-#' RAIDS:::validateComputePCARefSample(gdsSample=gdsSample, name.id="HCC01",
-#'     studyIDRef="1KG", np=1L, algorithm="exact", eigen.cnt=32L,
-#'     missingRate=0.02, verbose=FALSE)
+#' ## The validation should be successful
+#' RAIDS:::validateComputePCARefSample(gdsProfile=gdsSample,
+#'     currentProfile="HCC01", studyIDRef="1KG", np=1L, algorithm="exact",
+#'     eigenCount=32L, missingRate=0.02, verbose=FALSE)
 #'
 #' ## All GDS file must be closed
 #' closefn.gds(gdsfile=gdsSample)
@@ -800,22 +804,18 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
-                                            np, algorithm, eigen.cnt,
+validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
+                                            np, algorithm, eigenCount,
                                             missingRate, verbose) {
 
-    ## The gdsSample must be object of class "gds.class"
-    validateGDSClass(gdsSample, "gdsSample")
+    ## The gdsProfile must be object of class "gds.class"
+    validateGDSClass(gdsProfile, "gdsProfile")
 
-    ## Validate that name.id is a string
-    if(!(is.character(name.id) && length(name.id) == 1)) {
-        stop("The \'name.id\' parameter must be a single character string.")
-    }
+    ## Validate that currentProfile is a string
+    validateCharacterString(currentProfile, "currentProfile")
 
     ## Validate that studyIDRef is a string
-    if(!(is.character(studyIDRef) && length(name.id) == 1)) {
-        stop("The \'studyIDRef\' parameter must be a character string.")
-    }
+    validateCharacterString(studyIDRef, "studyIDRef")
 
     ## The parameter np must be a single positive integer
     if(!(isSingleNumber(np) && (np > 0))) {
@@ -827,9 +827,9 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
         stop("The \'algorithm\' parameter must be a character string.")
     }
 
-    ## The parameter eigen.cnt must be a single integer
-    if(!(isSingleNumber(eigen.cnt))) {
-        stop("The \'eigen.cnt\' parameter must be a single integer.")
+    ## The parameter eigenCount must be a single integer
+    if(!(isSingleNumber(eigenCount))) {
+        stop("The \'eigenCount\' parameter must be a single integer.")
     }
 
     ## The missing.rate must be a positive numeric between zero and one or NaN
@@ -845,6 +845,7 @@ validateComputePCARefSample <- function(gdsSample, name.id, studyIDRef,
 
     return(0L)
 }
+
 
 #' @title Validate input parameters for appendStudy2GDS1KG() function
 #'
@@ -1728,7 +1729,7 @@ validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 
     if(!(is.character(listCatPop) && is.vector(listCatPop))) {
         stop("The \'listCatPop\' parameter must be a vector of ",
-             "character strings.")
+                "character strings.")
     }
 
     ## The studyIDSyn must be a character string
@@ -1822,8 +1823,8 @@ validateComputeKNNRefSample <- function(listEigenvector, listCatPop, spRef,
                                     fieldPopInfAnc, kList, pcaList) {
 
     if(!(is.list(listEigenvector) &&
-         all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
-                names(listEigenvector)))) {
+            all(c("sample.id", "eigenvector.ref", "eigenvector") %in%
+                    names(listEigenvector)))) {
         stop("The \'listEigenvector\' parameter must be a list with 3 ",
             "entries: \'sample.id\', \'eigenvector.ref\' and \'eigenvector\'.")
     }
@@ -2315,22 +2316,38 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 }
 
 
-#' @title TODO
+#' @title Compile all the inferred ancestry results done on the
+#' synthetic profiles for different D and K values in the objective of
+#' selecting the optimal D and K values for a specific profile
 #'
-#' @description TODO
+#' @description The function calculates the accuracy of the inferred ancestry
+#' called done on the synthetic profiles for different D and K values. The
+#' accuracy is also calculated for each super-population used to generate
+#' the synthetic profiles. The known ancestry from the reference profiles
+#' used to generate the synthetic profiles is required to calculate the
+#' accuracy.
 #'
-#' @param matKNN.All TODO see it is rbind matKNN of the
-#' computeKNNSuperPoprSynthetic return from group synthetic data
+#' @param matKNN a \code{data.frame} containing the inferred ancestry for the
+#' synthetic profiles for different _K_ and _D_ values. The \code{data.frame}
+#' must contained those columns: "sample.id", "D", "K" and the fourth column
+#' name must correspond to the \code{predCall} argument.
 #'
-#' @param pedCall TODO see return of prepPedSynthetic1KG
+#' @param pedCall a \code{data.frame} containing the information about
+#' the super-population information from the 1KG GDS file
+#' for profiles used to generate the synthetic profiles. The \code{data.frame}
+#' must contained a column named as the \code{refCall} argument.
 #'
-#' @param refCall TODO column name in pedCall with the call
+#' @param refCall a \code{character} string representing the name of the
+#' column that contains the known ancestry for the reference profiles in
+#' the Reference GDS file.
 #'
 #' @param predCall a \code{character} string representing the name of
-#' the column that will contain the inferred ancestry for the specified
-#' dataset.
+#' the column that contains the inferred ancestry for the specified
+#' profiles. The column must be present in the \code{matKNN} \code{data.frame}
+#' argument.
 #'
-#' @param listCall TODO array of the possible call
+#' @param listCall a \code{vector} of \code{character} strings representing
+#' the list of possible ancestry assignations.
 #'
 #' @param kList a \code{vector} of \code{integer} representing  the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
@@ -2344,23 +2361,81 @@ computePCAsynthetic <- function(gdsSample, pruned, sample.id,
 #'
 #' @return a \code{list} containing 5 entries:
 #' \itemize{
-#' \item{dfPCA} {TODO}
-#' \item{dfPop} {TODO}
-#' \item{D} {TODO}
-#' \item{K} {TODO}
-#' \item{listD} {TODO}
+#' \item{\code{dfPCA}} { a \code{data.frame} containing statistical results
+#' on all combined synthetic results done with a fixed value of \code{D} (the
+#' number of dimensions). The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{median}}{ a \code{numeric} representing the median of the
+#' minimum AUROC obtained (within super populations) for all combination of
+#' the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+#' AUROC obtained (within super populations) for all combination of the fixed
+#' \code{D} value and all tested \code{K} values. }
+#' \item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+#' of the minimum AUROC obtained (within super populations) for all
+#' combination of the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for a fixed \code{D} value. }
+#' }
+#' }
+#' \item{\code{dfPop}} { a \code{data.frame} containing statistical results on
+#' all combined synthetic results done with different values of \code{D} (the
+#' number of dimensions) and \code{K} (the number of neighbors).
+#' The \code{data.frame} contains those columns:
+#' \itemize{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+#' obtained by grouping all the synthetic results by super-populations, for
+#' the specified values of \code{D} and \code{K}.}
+#' \item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+#' by grouping all the synthetic results for the specified values of \code{D}
+#' and \code{K}.}
+#' \item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+#' of the confusion matrix obtained by grouping all the synthetic results for
+#' the specified values of \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{D}} { a \code{numeric} representing the optimal \code{D} value
+#' (the number of dimensions) for the specific profile.}
+#' \item{\code{K}} { a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for the specific profile.}
+#' \item{\code{listD}} { a \code{numeric} representing the optimal \code{D}
+#' values (the number of dimensions) for the specific profile. More than one
+#' \code{D} is possible.}
 #' }
 #'
 #' @examples
 #'
-#' # TODO
-#' listEigenvector <- "TOTO"
+#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using different
+#' ## values of D and K
+#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#'
+#' ## The known ancestry from the reference profiles used to generate the
+#' ## synthetic profiles
+#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#'
+#' ## Compile all the results for ancestry inference done on the
+#' ## synthetic profiles for different D and K values
+#' ## Select the optimal D and K values
+#' results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
+#'     pedCall=syntheticInfo, refCall="superPop", predCall="SuperPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,15,1),
+#'     pcaList=seq(2,15,1))
+#' results$D
+#' results$K
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom stats mad median quantile
 #' @encoding UTF-8
 #' @keywords internal
-selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
+selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
                                     predCall, listCall, kList=seq(3,15,1),
                                     pcaList=seq(2,15,1)) {
 
@@ -2375,17 +2450,20 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
 
     ## Loop on all PCA dimension values
     for (D in pcaList) {
-        matKNNCurD <- matKNN.All[which(matKNN.All$D == D), ]
+        matKNNCurD <- matKNN[which(matKNN$D == D), ]
         listTMP <- list()
         listTMP.AUROC <- list()
         j <- 1
         ## Loop on all k neighbor values
         for (K in kList) {
             matKNNCur <- matKNNCurD[which(matKNNCurD$K == K), ]
-            res <- computeSyntheticConfMat(matKNN=matKNNCur, pedCall=pedCall,
-                        refCall=refCall, predCall=predCall, listCall=listCall)
-            resROC <- computeSyntheticROC(matKNNCur, pedCall, refCall,
-                                            predCall, listCall)
+            ## Calculate accuracy for fixed D and K values
+            res <- computeSyntheticConfMat(matKNN=matKNNCur,
+                    matKNNAncestryColumn=predCall, pedCall=pedCall,
+                    pedCallAncestryColumn=refCall, listCall=listCall)
+            resROC <- computeSyntheticROC(matKNN=matKNNCur,
+                    matKNNAncestryColumn=predCall, pedCall=pedCall,
+                    pedCallAncestryColumn=refCall, listCall=listCall)
 
             df <- data.frame(D=D, K=K, AUROC.min=min(resROC$matAUROC.Call$AUC),
                                 AUROC=resROC$matAUROC.All$ROC.AUC,
@@ -2403,11 +2481,9 @@ selParaPCAUpQuartile <- function(matKNN.All, pedCall, refCall,
         kMax <- df[df$K %in% kList & abs(df$AUROC.min-maxAUROC) < 1e-3, "K"]
         kV <- kMax[(length(kMax) + length(kMax)%%2)/2]
         dfPCA <- data.frame(D=D,
-                            median=median(df[df$K %in% kList, "AUROC.min"]),
-                            mad=mad(df[df$K %in% kList, "AUROC.min"]),
-                            upQuartile=quantile(df[df$K %in% kList,
-                                                        "AUROC.min"], 0.75),
-                            K=kV)
+            median=median(df[df$K %in% kList, "AUROC.min"]),
+            mad=mad(df[df$K %in% kList, "AUROC.min"]),
+            upQuartile=quantile(df[df$K %in% kList, "AUROC.min"], 0.75), K=kV)
         tableSyn[[i]] <- dfPCA
         i <- i + 1
     }

@@ -9,7 +9,8 @@
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param dfPedReference a \code{data.frame} containing the information related to the
+#' @param dfPedReference a \code{data.frame} containing the information
+#' related to the
 #' samples. It must have those columns: "sample.id", "Name.ID", "sex",
 #' "pop.group", "superPop" and "batch". All columns, except "sex" and batch",
 #' are \code{character} strings. The "batch" and "sex" columns are
@@ -50,8 +51,8 @@
 #' rownames(pedInformation) <- pedInformation$Name.ID
 #'
 #' ## Add information about 2 samples to the GDS file
-#' RAIDS:::generateGDSRefSample(gdsReference=tmpGDS, dfPedReference=pedInformation,
-#'     listSamples=NULL)
+#' RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
+#'     dfPedReference=pedInformation, listSamples=NULL)
 #'
 #' ## Read sample identifier list
 #' read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
@@ -69,17 +70,20 @@
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSRefSample <- function(gdsReference, dfPedReference, listSamples=NULL) {
+generateGDSRefSample <- function(gdsReference, dfPedReference,
+                                        listSamples=NULL) {
 
     if(!(is.null(listSamples))){
         dfPedReference <- dfPedReference[listSamples,]
     }
 
-    add.gdsn(node=gdsReference, name="sample.id", val=dfPedReference[, "Name.ID"])
+    add.gdsn(node=gdsReference, name="sample.id",
+                    val=dfPedReference[, "Name.ID"])
 
     ## Create a data.frame containing the information form the samples
     samp.annot <- data.frame(sex=dfPedReference[, "sex"],
-        pop.group=dfPedReference[, "pop.group"], superPop=dfPedReference[, "superPop"],
+        pop.group=dfPedReference[, "pop.group"],
+        superPop=dfPedReference[, "superPop"],
         batch=dfPedReference[, "batch"],  stringsAsFactors=FALSE)
 
     ## Add the data.frame to the GDS object
@@ -269,7 +273,8 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param seqError a single positive \code{numeric} between 0 and 1
 #' representing the sequencing error rate. Default: \code{0.001}.
 #'
-#' @param dfPedProfile a \code{data.frame} with the information about the sample(s).
+#' @param dfPedProfile a \code{data.frame} with the information about
+#' the sample(s).
 #' Those are mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
 #' \code{character} strings. The \code{data.frame}
@@ -866,7 +871,8 @@ runLDPruning <- function(gds, method,
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param dfPedReference a \code{data.frame} with the information about the sample(s).
+#' @param dfPedReference a \code{data.frame} with the information about
+#' the sample(s).
 #' The \code{data.frame} must have the columns: "sample.id", "Name.ID", "sex",
 #' "pop.group" and "superPop". The unique identifier for the sample(s) is
 #' the "Name.ID" column and the row names of the \code{data.frame} must
@@ -920,8 +926,8 @@ runLDPruning <- function(gds, method,
 #' rownames(sample_info) <- sample_info$Name.ID
 #'
 #' ## Add information about 2 samples to the GDS file
-#' RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, dfPedReference=sample_info, batch=2,
-#'     listSamples=c("sample_04", "sample_06"), verbose=FALSE)
+#' RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, dfPedReference=sample_info,
+#'     batch=2, listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 #'
 #' ## Read sample identifier list
 #' ## Only "sample_04" and "sample_06" should have been added
@@ -941,8 +947,8 @@ runLDPruning <- function(gds, method,
 #' @importFrom gdsfmt index.gdsn append.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-appendGDSRefSample <- function(gdsReference, dfPedReference, batch=1, listSamples=NULL,
-                                verbose=TRUE) {
+appendGDSRefSample <- function(gdsReference, dfPedReference, batch=1,
+                                listSamples=NULL, verbose=TRUE) {
 
     ## Only keep selected samples
     if(!(is.null(listSamples))){
@@ -986,8 +992,8 @@ appendGDSRefSample <- function(gdsReference, dfPedReference, batch=1, listSample
 #' Sample file. If a "pruned.study" entry is already present, the entry is
 #' deleted and a new entry is created.
 #'
-#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' opened Profile GDS file.
+#' @param gdsProfile an object of class \link[gdsfmt]{gds.class} (a GDS file),
+#' the opened Profile GDS file.
 #'
 #' @param pruned a \code{vector} of \code{character} string representing the
 #' name of the SNVs.

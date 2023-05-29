@@ -678,59 +678,102 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 }
 
 
-#' @title TODO
+#' @title Calculate the AUROC of the inferences for specific
+#' values of D and K using the inferred ancestry results from the synthetic
+#' profiles.
 #'
-#' @description TODO
+#' @description The function calculates the AUROC of the inferences for specific
+#' values of D and K using the inferred ancestry results from the synthetic
+#' profiles. The calculations are done on each super-population separately as
+#' well as on all the results together.
 #'
-#' @param matKNN TODO
+#' @param matKNN a \code{data.frame} containing the inferred ancestry results
+#' for fixed values of _D_ and _K_. On of the column names of the
+#' \code{data.frame} must correspond to the \code{matKNNAncestryColumn}
+#' argument.
 #'
-#' @param pedCall TODO see return of prepPedSynthetic1KG
+#' @param matKNNAncestryColumn  a \code{character} string
+#' representing the
+#' name of the column that contains the inferred ancestry for the specified
+#' synthetic profiles. The column must be present in the \code{matKNN}
+#' argument.
 #'
-#' @param refCall TODO column name in pedCall with the call
+#' @param pedCall a \code{data.frame} containing the information about
+#' the super-population information from the 1KG GDS file
+#' for profiles used to generate the synthetic profiles. The \code{data.frame}
+#' must contained a column named as the \code{pedCallAncestryColumn} argument.
 #'
-#' @param predCall TODO column name in matKNN with the call
+#' @param pedCallAncestryColumn a \code{character} string representing the
+#' name of the column that contains the known ancestry for the reference
+#' profiles in the Reference GDS file. The column must be present in
+#' the \code{pedCall} argument.
 #'
-#' @param listCall TODO array of the possible call
+#' @param listCall a \code{vector} of \code{character} strings representing
+#' the list of all possible ancestry assignations.
+#' Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @return \code{list} containing 3 entries:
 #' \itemize{
-#' \item{matAUROC.All}{ TODO }
-#' \item{matAUROC.Call}{ TODO }
-#' \item{listROC.Call}{a \code{list} TODO}
+#' \item{\code{matAUROC.All}}{ a \code{data.frame} containing the AUROC for all
+#' the ancestry results.  }
+#' \item{\code{matAUROC.Call}}{ a \code{data.frame} containing the AUROC
+#' information for each super-population.}
+#' \item{\code{listROC.Call}}{a \code{list} containing the output from the
+#' \code{roc} function for each super-population.}
 #' }
 #'
 #' @examples
 #'
-#' ## TODO
-#' gds <- "TODO"
+#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using
+#' ## values of D=6 and K=5
+#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+#'
+#' ## The known ancestry from the reference profiles used to generate the
+#' ## synthetic profiles
+#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#'
+#' ## Compile statistics from the
+#' ## synthetic profiles for fixed values of D and K
+#' results <- RAIDS:::computeSyntheticROC(matKNN=matKNN,
+#'     matKNNAncestryColumn="SuperPop",
+#'     pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
+#'
+#' results$matAUROC.All
+#' results$matAUROC.Call
+#' results$listROC.Call
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom pROC multiclass.roc roc
 #' @encoding UTF-8
 #' @export
-computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
+computeSyntheticROC <- function(matKNN, matKNNAncestryColumn, pedCall,
+                        pedCallAncestryColumn,
+                        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")) {
+
+    validateComputeSyntheticRoc(matKNN=matKNN,
+        matKNNAncestryColumn=matKNNAncestryColumn, pedCall=pedCall,
+        pedCallAncestryColumn=pedCallAncestryColumn, listCall=listCall)
 
     matAccuracy <- data.frame(pcaD=matKNN$D[1], K=matKNN$K[1],
-                        ROC.AUC=numeric(1), ROC.CI=numeric(1), N=nrow(matKNN),
-                        NBNA=length(which(is.na(matKNN[[predCall]]))))
+            ROC.AUC=numeric(1), ROC.CI=numeric(1), N=nrow(matKNN),
+            NBNA=length(which(is.na(matKNN[[matKNNAncestryColumn]]))))
     i <- 1
 
-    if(length(unique(matKNN$D)) != 1 | length(unique(matKNN$K)) != 1) {
-        stop("Compute synthetic accuracy with different PCA dimensions or K\n")
-    }
+    listKeep <- which(!(is.na(matKNN[[matKNNAncestryColumn]])))
 
-    listKeep <- which(!(is.na(matKNN[[predCall]])) )
-
-    fCall <- factor(pedCall[matKNN$sample.id[listKeep], refCall],
+    fCall <- factor(pedCall[matKNN$sample.id[listKeep], pedCallAncestryColumn],
                         levels=listCall, labels=listCall)
 
-    predMat <- t(vapply(matKNN[[predCall]][listKeep], FUN=function(x, listCall){
-        p <- numeric(length(listCall))
-        p[which(listCall == x)] <- 1
-        return(p)
-    },
-    FUN.VALUE=numeric(length(listCall)),
-    listCall = listCall))
+    predMat <- t(vapply(matKNN[[matKNNAncestryColumn]][listKeep],
+        FUN=function(x, listCall){
+            p <- numeric(length(listCall))
+            p[which(listCall == x)] <- 1
+            return(p)
+        }, FUN.VALUE=numeric(length(listCall)), listCall = listCall))
     colnames(predMat) <- listCall
 
     listAccuPop <- list()
@@ -742,15 +785,14 @@ computeSyntheticROC <- function(matKNN, pedCall, refCall, predCall, listCall) {
     matAccuracy[i, 3] <- as.numeric(resROC$auc)
     matAccuracy[i, 4] <- 0
 
-    # matAccuracy[i, 6] <- ciBS(fCall[listKeep], predMat, 1,100)
     listROC <- list()
     for (j in seq_len(length(listCall))) {
         fCur <- rep(0, length(listKeep))
         fCur[fCall[listKeep] == listCall[j]] <- 1
 
         if (length(which(fCur == 1))>0) {
-            listROC[[listCall[j]]] <- suppressWarnings(roc(fCur ~ predMat[,j],
-                                                            ci=TRUE))
+            listROC[[listCall[j]]] <- invisible(roc(fCur ~ predMat[,j],
+                                                        ci=TRUE, quiet=TRUE))
             pos <- which(df$Call == listCall[j])
             for (r in seq_len(3)) {
                 df[pos, r + 3] <- as.numeric(listROC[[j]]$ci[r])

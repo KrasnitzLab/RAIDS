@@ -624,3 +624,160 @@ test_that(paste0("prepSynthetic() must return error when prefix already used"), 
         studyDF=synthStudyDF, nbSim=1L, prefix="test", verbose=FALSE),
         error_message, fixed=TRUE)
 })
+
+
+#############################################################################
+### Tests computeSyntheticROC() results
+#############################################################################
+
+context("computeSyntheticROC() results")
+
+test_that(paste0("computeSyntheticROC() must return error when matKNN is a numeric value"), {
+
+    error_message <- "The \'matKNN\' must be a data frame."
+
+    expect_error(computeSyntheticROC(matKNN=33, matKNNAncestryColumn="SuperPop",
+        pedCall=data.frame(), pedCallAncestryColumn=="superPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when matKNNAncestryColumn is a numeric value"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    error_message <- paste0("The \'matKNNAncestryColumn\' must be a single ",
+                                "character string.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn=332,
+        pedCall=data.frame(), pedCallAncestryColumn=="superPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when matKNNAncestryColumn is not in matKNN"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    error_message <- paste0("The \'matKNNAncestryColumn\' must be a ",
+                                "column in the \'matKNN\' data frame.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="test",
+        pedCall=data.frame(), pedCallAncestryColumn=="superPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when pedCall is a numeric"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    error_message <- "The \'pedCall\' must be a data frame."
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="SuperPop",
+        pedCall=33, pedCallAncestryColumn="superPop",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when pedCallAncestryColumn is a numeric"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    ## The known ancestry from the reference profiles used to generate the
+    ## synthetic profiles
+    syntheticData <- readRDS(file.path(dataDirSample, "pedSyn.RDS"))
+
+    error_message <- paste0("The \'pedCallAncestryColumn\' must be a single",
+                                " character string.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="SuperPop",
+        pedCall=syntheticData, pedCallAncestryColumn=33,
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when pedCallAncestryColumn is not in pedCall"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    ## The known ancestry from the reference profiles used to generate the
+    ## synthetic profiles
+    syntheticData <- readRDS(file.path(dataDirSample, "pedSyn.RDS"))
+
+    error_message <- paste0("The \'pedCallAncestryColumn\' must be a column ",
+                                "in the \'pedCall\' data frame.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="SuperPop",
+        pedCall=syntheticData, pedCallAncestryColumn="top",
+        listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when listCall is a numeric"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+    matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+
+    ## The known ancestry from the reference profiles used to generate the
+    ## synthetic profiles
+    syntheticData <- readRDS(file.path(dataDirSample, "pedSyn.RDS"))
+
+    error_message <- paste0("The \'listCall\' must be a vector of ",
+                                "character strings.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="SuperPop",
+        pedCall=syntheticData, pedCallAncestryColumn="superPop",
+        listCall=33), error_message)
+})
+
+
+test_that(paste0("computeSyntheticROC() must return error when matKNN have multiple K and D"), {
+
+    dataDirSample <- test_path("fixtures/sampleGDSforAncestryByFile")
+
+    ## The inferred ancestry results for the synthetic data using
+    ## values of D=6 and K=5
+    matKNN <- readRDS(file.path(dataDirSample, "matKNN.RDS"))
+
+    ## The known ancestry from the reference profiles used to generate the
+    ## synthetic profiles
+    syntheticData <- readRDS(file.path(dataDirSample, "pedSyn.RDS"))
+
+    error_message <- paste0("The synthetic accuracy can only be caculated for ",
+        "one fixed value of D and K. The 2 data frames must be filterd to ",
+        "retain only one value.")
+
+    expect_error(computeSyntheticROC(matKNN=matKNN, matKNNAncestryColumn="SuperPop",
+        pedCall=syntheticData, pedCallAncestryColumn="superPop",
+            listCall=c("EAS", "EUR", "AFR", "AMR", "SAS")), error_message)
+})

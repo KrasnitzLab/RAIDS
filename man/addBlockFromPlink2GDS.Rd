@@ -30,7 +30,7 @@ addBlockFromPlink2GDS(
 \item{blockDesc}{TODO}
 
 \item{verbose}{a \code{logical} indicating if message information should be
-printed. Default: \code{TRUE}.}
+printed. Default: \code{FALSE}.}
 }
 \value{
 \code{OL} when the function is successful.

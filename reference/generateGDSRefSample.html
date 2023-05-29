@@ -83,7 +83,8 @@ the <code>data.frame</code> passed to the function. The nodes "sample.id" and
 
 
 <dt>dfPedReference</dt>
-<dd><p>a <code>data.frame</code> containing the information related to the
+<dd><p>a <code>data.frame</code> containing the information
+related to the
 samples. It must have those columns: "sample.id", "Name.ID", "sex",
 "pop.group", "superPop" and "batch". All columns, except "sex" and batch",
 are <code>character</code> strings. The "batch" and "sex" columns are
@@ -137,8 +138,8 @@ the profiles saved in the GDS file.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedInformation</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedInformation</span><span class="op">$</span><span class="va">Name.ID</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add information about 2 samples to the GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSRefSample</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">tmpGDS</span>, dfPedReference<span class="op">=</span><span class="va">pedInformation</span>,</span></span>
-<span class="r-in"><span>    listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSRefSample</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">tmpGDS</span>,</span></span>
+<span class="r-in"><span>    dfPedReference<span class="op">=</span><span class="va">pedInformation</span>, listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sample_01" "sample_02"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read sample identifier list</span></span></span>

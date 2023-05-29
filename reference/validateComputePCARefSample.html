@@ -66,12 +66,12 @@ computePCARefSample function."><!-- mathjax --><script src="https://cdnjs.cloudf
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateComputePCARefSample</span><span class="op">(</span></span>
-<span>  <span class="va">gdsSample</span>,</span>
-<span>  <span class="va">name.id</span>,</span>
+<span>  <span class="va">gdsProfile</span>,</span>
+<span>  <span class="va">currentProfile</span>,</span>
 <span>  <span class="va">studyIDRef</span>,</span>
 <span>  <span class="va">np</span>,</span>
 <span>  <span class="va">algorithm</span>,</span>
-<span>  <span class="va">eigen.cnt</span>,</span>
+<span>  <span class="va">eigenCount</span>,</span>
 <span>  <span class="va">missingRate</span>,</span>
 <span>  <span class="va">verbose</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -79,14 +79,14 @@ computePCARefSample function."><!-- mathjax --><script src="https://cdnjs.cloudf
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>gdsSample</dt>
+    <dl><dt>gdsProfile</dt>
 <dd><p>an object of class <a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a>,
-a GDS Sample file.</p></dd>
+an opened Profile GDS file.</p></dd>
 
 
-<dt>name.id</dt>
-<dd><p>a single <code>character</code> string representing the sample
-identifier.</p></dd>
+<dt>currentProfile</dt>
+<dd><p>a single <code>character</code> string representing the
+profile identifier.</p></dd>
 
 
 <dt>studyIDRef</dt>
@@ -104,7 +104,7 @@ that will be used.</p></dd>
 to calculate the PCA.</p></dd>
 
 
-<dt>eigen.cnt</dt>
+<dt>eigenCount</dt>
 <dd><p>a single <code>integer</code> indicating the number of
 eigenvectors that will be in the output of the <a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsPCA.html" class="external-link">snpgdsPCA</a>
 function; if 'eigen.cnt' &lt;= 0, then all eigenvectors are returned.</p></dd>
@@ -135,6 +135,9 @@ to show how the different steps in the function.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Required library</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Directory where demo GDS files are located</span></span></span>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -142,10 +145,10 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">"GDS_Sample_with_study_demo.gds"</span><span class="op">)</span>, readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The validatiion should be successful</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePCARefSample</span><span class="op">(</span>gdsSample<span class="op">=</span><span class="va">gdsSample</span>, name.id<span class="op">=</span><span class="st">"HCC01"</span>,</span></span>
-<span class="r-in"><span>    studyIDRef<span class="op">=</span><span class="st">"1KG"</span>, np<span class="op">=</span><span class="fl">1L</span>, algorithm<span class="op">=</span><span class="st">"exact"</span>, eigen.cnt<span class="op">=</span><span class="fl">32L</span>,</span></span>
-<span class="r-in"><span>    missingRate<span class="op">=</span><span class="fl">0.02</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## The validation should be successful</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputePCARefSample</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">gdsSample</span>,</span></span>
+<span class="r-in"><span>    currentProfile<span class="op">=</span><span class="st">"HCC01"</span>, studyIDRef<span class="op">=</span><span class="st">"1KG"</span>, np<span class="op">=</span><span class="fl">1L</span>, algorithm<span class="op">=</span><span class="st">"exact"</span>,</span></span>
+<span class="r-in"><span>    eigenCount<span class="op">=</span><span class="fl">32L</span>, missingRate<span class="op">=</span><span class="fl">0.02</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All GDS file must be closed</span></span></span>

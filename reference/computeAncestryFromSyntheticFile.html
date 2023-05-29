@@ -105,7 +105,10 @@ file), the opened 1KG GDS file.</p></dd>
 
 
 <dt>listFiles</dt>
-<dd><p>TODO.</p></dd>
+<dd><p>a <code>vector</code> of <code>character</code> strings representing
+the name of files that contain the results of ancestry inference done on
+the synthetic profiles for multiple values of _D_ and _K_. The files must
+exist.</p></dd>
 
 
 <dt>currentProfile</dt>
@@ -136,13 +139,15 @@ representing the list of possible ancestry assignations. Default:
 
 
 <dt>fieldPopIn1KG</dt>
-<dd><p>a <code>character</code> string representing the name of TODO</p></dd>
+<dd><p>a <code>character</code> string representing the name of the
+column that contains the known ancestry for the reference profiles in
+the Reference GDS file.</p></dd>
 
 
 <dt>fieldPopInfAnc</dt>
 <dd><p>a <code>character</code> string representing the name of
 the column that will contain the inferred ancestry for the specified
-dataset. Default: <code>"SuperPop"</code>.</p></dd>
+profiles. Default: <code>"SuperPop"</code>.</p></dd>
 
 
 <dt>kList</dt>
@@ -192,10 +197,110 @@ to show how the different steps in the function. Default: <code>FALSE</code>.</p
     <h2>Value</h2>
     
 
-<p>a <code>list</code> containing 4 entries:</p><ul><li><p>pcaSample</p></li>
-<li><p>paraSample</p></li>
-<li><p>KNNSample</p></li>
-<li><p>Ancestry TODO the infered ancestry for the current profile.</p></li>
+<p>a <code>list</code> containing 4 entries:</p><ul><li><p><code>pcaSample</code> a <code>list</code> containing the information related
+to the eigenvectors. The <code>list</code> contains those 3 entries:
+</p><ul><li><p><code>sample.id</code> a <code>character</code> string representing the unique
+identifier of the current profile.</p></li>
+<li><p><code>eigenvector.ref</code> a <code>matrix</code> of <code>numeric</code> containing
+the eigenvectors for the reference profiles.</p></li>
+<li><p><code>eigenvector</code> a <code>matrix</code> of <code>numeric</code> containing the
+eigenvectors for the current profile projected on the PCA from the
+reference profiles.</p></li>
+</ul></li>
+<li><p><code>paraSample</code> a <code>list</code> containing the results with
+different <code>D</code> and <code>K</code> values that lead to optimal parameter
+selection. The <code>list</code> contains those entries:
+</p><ul><li><p><code>dfPCA</code> a <code>data.frame</code> containing statistical results
+on all combined synthetic results done with a fixed value of <code>D</code> (the
+number of dimensions). The <code>data.frame</code> contains those columns:
+</p><ul><li><p><code>D</code> a <code>numeric</code> representing the value of <code>D</code> (the
+number of dimensions).</p></li>
+<li><p><code>median</code> a <code>numeric</code> representing the median of the
+minimum AUROC obtained (within super populations) for all combination of
+the fixed <code>D</code> value and all tested <code>K</code> values.</p></li>
+<li><p><code>mad</code> a <code>numeric</code> representing the MAD of the minimum
+AUROC obtained (within super populations) for all combination of the fixed
+<code>D</code> value and all tested <code>K</code> values.</p></li>
+<li><p><code>upQuartile</code> a <code>numeric</code> representing the upper quartile
+of the minimum AUROC obtained (within super populations) for all
+combination of the fixed <code>D</code> value and all tested <code>K</code> values.</p></li>
+<li><p><code>k</code> a <code>numeric</code> representing the optimal <code>K</code> value
+(the number of neighbors) for a fixed <code>D</code> value.</p></li>
+</ul></li>
+<li><p><code>dfPop</code> a <code>data.frame</code> containing statistical results on
+all combined synthetic results done with different values of <code>D</code> (the
+number of dimensions) and <code>K</code> (the number of neighbors).
+The <code>data.frame</code> contains those columns:
+</p><ul><li><p><code>D</code> a <code>numeric</code> representing the value of <code>D</code> (the
+number of dimensions).</p></li>
+<li><p><code>K</code> a <code>numeric</code> representing the value of <code>K</code> (the
+number of neighbors).</p></li>
+<li><p><code>AUROC.min</code> a <code>numeric</code> representing the minimum accuracy
+obtained by grouping all the synthetic results by super-populations, for
+the specified values of <code>D</code> and <code>K</code>.</p></li>
+<li><p><code>AUROC</code> a <code>numeric</code> representing the accuracy obtained
+by grouping all the synthetic results for the specified values of <code>D</code>
+and <code>K</code>.</p></li>
+<li><p><code>Accu.CM</code> a <code>numeric</code> representing the value of accuracy
+of the confusion matrix obtained by grouping all the synthetic results for
+the specified values of <code>D</code> and <code>K</code>.</p></li>
+</ul></li>
+<li><p><code>dfAUROC</code> a <code>data.frame</code> the summary of the results by
+super-population. The <code>data.frame</code> contains
+those columns:
+</p><ul><li><p><code>pcaD</code> a <code>numeric</code> representing the value of <code>D</code> (the
+number of dimensions).</p></li>
+<li><p><code>K</code> a <code>numeric</code> representing the value of <code>K</code> (the
+number of neighbors).</p></li>
+<li><p><code>Call</code> a <code>character</code> string representing the
+super-population.</p></li>
+<li><p><code>L</code> a <code>numeric</code> representing the lower value of the 95<!-- % -->
+confidence interval for the AUROC obtained for the fixed values of
+super-population, <code>D</code> and <code>K</code>.</p></li>
+<li><p><code>AUR</code> a <code>numeric</code> representing  the AUROC obtained for the
+fixed values of super-population, <code>D</code> and <code>K</code>.</p></li>
+<li><p><code>H</code> a <code>numeric</code> representing the higher value of the 95<!-- % -->
+confidence interval for the AUROC obtained for the fixed values of
+super-population, <code>D</code> and <code>K</code>.</p></li>
+</ul></li>
+<li><p><code>D</code> a <code>numeric</code> representing the optimal <code>D</code> value
+(the number of dimensions) for the specific profile.</p></li>
+<li><p><code>K</code> a <code>numeric</code> representing the optimal <code>K</code> value
+(the number of neighbors) for the specific profile.</p></li>
+<li><p><code>listD</code> a <code>numeric</code> representing the optimal <code>D</code>
+values (the number of dimensions) for the specific profile. More than one
+<code>D</code> is possible.</p></li>
+</ul></li>
+<li><p><code>KNNSample</code> a <code>list</code> containing the inferred ancestry
+using different <code>D</code> and <code>K</code> values. The <code>list</code> contains
+those entries:
+</p><ul><li><p><code>sample.id</code> a <code>character</code> string representing the unique
+identifier of the current profile.</p></li>
+<li><p><code>matKNN</code> a <code>data.frame</code> containing the inferred ancestry
+for different values of <code>K</code> and <code>D</code>. The <code>data.frame</code>
+contains those columns:
+</p><ul><li><p><code>sample.id</code> a <code>character</code> string representing the unique
+identifier of the current profile.</p></li>
+<li><p><code>D</code> a <code>numeric</code> representing the value of <code>D</code> (the
+number of dimensions) used to infer the ancestry.</p></li>
+<li><p><code>K</code> a <code>numeric</code> representing the value of <code>K</code> (the
+number of neighbors) used to infer the ancestry.</p></li>
+<li><p><code>SuperPop</code> a <code>character</code> string representing the inferred
+ancestry for the specified <code>D</code> and <code>K</code> values.</p></li>
+</ul></li>
+</ul></li>
+<li><p><code>Ancestry</code> a <code>data.frame</code> containing the inferred
+ancestry for the current profile. The <code>data.frame</code> contains those
+columns:
+</p><ul><li><p><code>sample.id</code> a <code>character</code> string representing the unique
+identifier of the current profile.</p></li>
+<li><p><code>D</code> a <code>numeric</code> representing the value of <code>D</code> (the
+number of dimensions) used to infer the ancestry.</p></li>
+<li><p><code>K</code> a <code>numeric</code> representing the value of <code>K</code> (the
+number of neighbors) used to infer the ancestry.</p></li>
+<li><p><code>SuperPop</code> a <code>character</code> string representing the inferred
+ancestry.</p></li>
+</ul></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
@@ -216,28 +321,50 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">## Required library</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Path to the demo Profile GDS file is located in this package</span></span></span>
-<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoKNNSynthetic"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## The Reference GDS file</span></span></span>
+<span class="r-in"><span><span class="va">path1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/gdsRef"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Open the Reference GDS file</span></span></span>
+<span class="r-in"><span><span class="va">gdsRef</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Path to the demo synthetic results files</span></span></span>
+<span class="r-in"><span><span class="co">## List of the KNN result files from PCA run on synthetic data</span></span></span>
+<span class="r-in"><span><span class="va">dataDirRes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoAncestryCall/ex1"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">listFilesName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirRes</span><span class="op">)</span>, <span class="st">".rds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">listFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirRes</span><span class="op">)</span> , <span class="va">listFilesName</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The name of the synthetic study</span></span></span>
 <span class="r-in"><span><span class="va">studyID</span> <span class="op">&lt;-</span> <span class="st">"MYDATA.Synthetic"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">samplesRM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00246"</span>, <span class="st">"HG00325"</span>, <span class="st">"HG00611"</span>, <span class="st">"HG01173"</span>, <span class="st">"HG02165"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"HG01112"</span>, <span class="st">"HG01615"</span>, <span class="st">"HG01968"</span>, <span class="st">"HG02658"</span>, <span class="st">"HG01850"</span>, <span class="st">"HG02013"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"HG02465"</span>, <span class="st">"HG02974"</span>, <span class="st">"HG03814"</span>, <span class="st">"HG03445"</span>, <span class="st">"HG03689"</span>, <span class="st">"HG03789"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"NA12751"</span>, <span class="st">"NA19107"</span>, <span class="st">"NA18548"</span>, <span class="st">"NA19075"</span>, <span class="st">"NA19475"</span>, <span class="st">"NA19712"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"NA19731"</span>, <span class="st">"NA20528"</span>, <span class="st">"NA20908"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">samplesRM</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GBR"</span>, <span class="st">"FIN"</span>, <span class="st">"CHS"</span>,<span class="st">"PUR"</span>, <span class="st">"CDX"</span>, <span class="st">"CLM"</span>, <span class="st">"IBS"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"PEL"</span>, <span class="st">"PJL"</span>, <span class="st">"KHV"</span>, <span class="st">"ACB"</span>, <span class="st">"GWD"</span>, <span class="st">"ESN"</span>, <span class="st">"BEB"</span>, <span class="st">"MSL"</span>, <span class="st">"STU"</span>, <span class="st">"ITU"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"CEU"</span>, <span class="st">"YRI"</span>, <span class="st">"CHB"</span>, <span class="st">"JPT"</span>, <span class="st">"LWK"</span>, <span class="st">"ASW"</span>, <span class="st">"MXL"</span>, <span class="st">"TSI"</span>, <span class="st">"GIH"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The known ancestry for the 1KG reference profiles</span></span></span>
-<span class="r-in"><span><span class="va">refKnownSuperPop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"knownSuperPop1KG.RDS"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dataDir1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoKNNSynthetic"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">refKnownSuperPop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir1KG</span>, <span class="st">"knownSuperPop1KG.RDS"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Path to the demo Profile GDS file is located in this package</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoAncestryCall"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open the Profile GDS file</span></span></span>
-<span class="r-in"><span><span class="co">##gdsProfile &lt;- snpgdsOpen(file.path(dataDir, "ex1.gds"))</span></span></span>
+<span class="r-in"><span><span class="va">gdsProfile</span> <span class="op">&lt;-</span> <span class="fu">snpgdsOpen</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## TODO</span></span></span>
+<span class="r-in"><span><span class="co">## Run the ancestry inference on one profile called 'ex1'</span></span></span>
+<span class="r-in"><span><span class="co">## The values of K and D used for the inference are selected using the</span></span></span>
+<span class="r-in"><span><span class="co">## synthetic results</span></span></span>
+<span class="r-in"><span><span class="va">resCall</span> <span class="op">&lt;-</span> <span class="fu">computeAncestryFromSyntheticFile</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gdsRef</span>,</span></span>
+<span class="r-in"><span>                            gdsProfile<span class="op">=</span><span class="va">gdsProfile</span>,</span></span>
+<span class="r-in"><span>                            listFiles<span class="op">=</span><span class="va">listFiles</span>,</span></span>
+<span class="r-in"><span>                            currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                            spRef<span class="op">=</span><span class="va">refKnownSuperPop</span>,</span></span>
+<span class="r-in"><span>                            studyIDSyn<span class="op">=</span><span class="va">studyID</span>, np<span class="op">=</span><span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The ancestry called with the optimal D and K values</span></span></span>
+<span class="r-in"><span><span class="va">resCall</span><span class="op">$</span><span class="va">Ancestry</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample.id D K SuperPop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77       ex1 7 8      EAS</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Close the GDS files (important)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsProfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRef</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

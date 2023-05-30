@@ -1082,6 +1082,9 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' super-population assigned to the sample. }
 #' }
 #'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
+#'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
@@ -1125,14 +1128,15 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
 #'     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
 #'     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-#'     chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
+#'     chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup",
+#'     verbose=FALSE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
 validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-    chrInfo, syntheticRefDF, genoSource) {
+    chrInfo, syntheticRefDF, genoSource, verbose) {
 
     ## The PED study must have the mandatory columns
     validatePEDStudyParameter(pedStudy=pedStudy)
@@ -1166,17 +1170,18 @@ validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 "The file must exist.")
     }
 
-
     ## The chrInfo must be a vector of integer
     validatePositiveIntegerVector(chrInfo, "chrInfo")
 
-    ## The syntheticRefDF must have the madatory columns
+    ## The syntheticRefDF must have the mandatory columns
     validateDataRefSynParameter(syntheticRefDF=syntheticRefDF)
 
     ## The genoSource must be a character string
     if(!(is.character(genoSource))) {
         stop("The \'genoSource\' parameter must be a character string.")
     }
+
+    validateLogical(verbose, "verbose")
 
     return(0L)
 }
@@ -1259,9 +1264,10 @@ validateDataRefSynParameter <- function(syntheticRefDF) {
     if (!(is.data.frame(syntheticRefDF) &&
                 all(c("sample.id", "pop.group", "superPop")
                     %in% colnames(syntheticRefDF)))) {
-        stop("The reference profile data frame \'syntheticRefDF\' is incomplete. ",
-                "One or more mandatory columns are missing. The mandatory ",
-                "columns are: \'sample.id\', \'pop.group\', \'superPop\'.")
+        stop("The reference profile data frame \'syntheticRefDF\' is ",
+                "incomplete. One or more mandatory columns are missing. The ",
+                "mandatory columns are: \'sample.id\', \'pop.group\', ",
+                "\'superPop\'.")
     }
 
     return(0L)

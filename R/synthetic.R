@@ -718,7 +718,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' the ancestry results.  }
 #' \item{\code{matAUROC.Call}}{ a \code{data.frame} containing the AUROC
 #' information for each super-population.}
-#' \item{\code{listROC.Call}}{a \code{list} containing the output from the
+#' \item{\code{listROC.Call}}{ a \code{list} containing the output from the
 #' \code{roc} function for each super-population.}
 #' }
 #'

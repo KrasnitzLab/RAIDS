@@ -244,8 +244,8 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
-#' @param fileSNVSelected a \code{character} string representing the path and file
-#' name of the RDS file that contains the filtered SNP information. The
+#' @param fileSNVSelected a \code{character} string representing the path and
+#' file name of the RDS file that contains the filtered SNP information. The
 #' file must exist. The file must be a RDS file.
 #'
 #' @param fileNameGDS a \code{character} string representing the path and file
@@ -308,28 +308,9 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
                             fileSNVSelected, fileNameGDS,
                             listSamples=NULL, verbose=FALSE) {
 
-    ## Validate that the pedigree file exists
-    if (! file.exists(filePedRDS)) {
-        stop("The file \'", filePedRDS, "\' does not exist." )
-    }
-
-    ## Validate that the path for the genotyping files exists
-    if (! file.exists(pathGeno)) {
-        stop("The path \'", pathGeno, "\' does not exist." )
-    }
-
-    ## Validate that the SNP indexes file exists
-    if (! file.exists(fileSNVIndex)) {
-        stop("The file \'", fileSNVIndex, "\' does not exist." )
-    }
-
-    ## Validate that the SNP information file exists
-    if (! file.exists(fileSNVSelected)) {
-        stop("The file \'", fileSNVSelected, "\' does not exist." )
-    }
-
-    ## The verbose parameter must be a logical
-    validateLogical(logical=verbose, "verbose")
+    validateGenerateGDS1KG(pathGeno=pathGeno, filePedRDS=filePedRDS,
+        fileSNVIndex=fileSNVIndex, fileSNVSelected=fileSNVSelected,
+        fileNameGDS=fileNameGDS, listSamples=listSamples, verbose=verbose)
 
     ## Read the pedigree file
     ped1KG <- readRDS(filePedRDS)
@@ -343,11 +324,12 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 
     if(verbose) { message("Start ", Sys.time()) }
 
-    listSampleGDS <- generateGDSRefSample(gdsReference=newGDS, dfPedReference=ped1KG,
-                                            listSamples=listSamples)
+    listSampleGDS <- generateGDSRefSample(gdsReference=newGDS,
+        dfPedReference=ped1KG, listSamples=listSamples)
     if(verbose) { message("Sample info DONE ", Sys.time()) }
 
-    generateGDSSNPinfo(gdsReference=newGDS, fileFREQ=fileSNVSelected, verbose=verbose)
+    generateGDSSNPinfo(gdsReference=newGDS, fileFREQ=fileSNVSelected,
+                        verbose=verbose)
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 
     generateGDSgenotype(gds=newGDS, pathGeno=pathGeno, fileSNPsRDS=fileSNVIndex,

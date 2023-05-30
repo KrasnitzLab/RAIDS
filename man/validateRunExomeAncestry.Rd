@@ -15,7 +15,8 @@ validateRunExomeAncestry(
   fileReferenceAnnotGDS,
   chrInfo,
   syntheticRefDF,
-  genoSource
+  genoSource,
+  verbose
 )
 }
 \arguments{
@@ -63,6 +64,9 @@ subcontinental population assigned to the sample. }
 \item{superPop} { a \code{character} string representing the
 super-population assigned to the sample. }
 }}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 The integer \code{0L} when successful.
@@ -113,7 +117,8 @@ syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
 RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-    chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
+    chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup",
+    verbose=FALSE)
 
 }
 \author{

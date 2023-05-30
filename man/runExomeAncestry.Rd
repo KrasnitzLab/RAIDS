@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{runExomeAncestry}
 \alias{runExomeAncestry}
-\title{TODO}
+\title{Run most steps leading to the ancestry inference call on a specific
+profile}
 \usage{
 runExomeAncestry(
   pedStudy,
@@ -15,7 +16,8 @@ runExomeAncestry(
   fileReferenceAnnotGDS,
   chrInfo,
   syntheticRefDF,
-  genoSource = c("snp-pileup", "generic")
+  genoSource = c("snp-pileup", "generic"),
+  verbose = FALSE
 )
 }
 \arguments{
@@ -73,13 +75,19 @@ Chromosome,Position,Ref,Alt,Count,File1R,File1A
 where Count is the deep at the position,
 FileR is the deep of the reference allele, and
 File1A is the deep of the specific alternative allele}
+
+\item{verbose}{a \code{logical} indicating if messages should be printed
+to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 The integer \code{0L} when successful. See details section for
 more information about the generated output files.
 }
 \description{
-TODO
+This function runs most steps leading to the ancestry inference
+call on a specific profile. First, the function creates the Profile GDS file
+for the specific profile using the information from a RDS Sample
+description file and the 1KG reference GDS file.
 }
 \details{
 The runExomeAncestry() function generates 3 types of files

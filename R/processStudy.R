@@ -2443,9 +2443,13 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 }
 
 
-#' @title TODO
+#' @title Run most steps leading to the ancestry inference call on a specific
+#' profile
 #'
-#' @description TODO
+#' @description This function runs most steps leading to the ancestry inference
+#' call on a specific profile. First, the function creates the Profile GDS file
+#' for the specific profile using the information from a RDS Sample
+#' description file and the 1KG reference GDS file.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
@@ -2501,6 +2505,9 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' where Count is the deep at the position,
 #' FileR is the deep of the reference allele, and
 #' File1A is the deep of the specific alternative allele
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
 #'
 #' @return The integer \code{0L} when successful. See details section for
 #' more information about the generated output files.
@@ -2622,27 +2629,29 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv
+#' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
 runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                     chrInfo, syntheticRefDF,
-                    genoSource=c("snp-pileup", "generic")) {
+                    genoSource=c("snp-pileup", "generic"), verbose=FALSE) {
 
     ## Validate parameters
-    validateRunExomeAncestry(pedStudy, studyDF, pathProfileGDS,
-        pathGeno=pathGeno, pathOut=pathOut, fileReferenceGDS=fileReferenceGDS,
+    validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
+        pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
+        fileReferenceGDS=fileReferenceGDS,
         fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
-        syntheticRefDF=syntheticRefDF, genoSource=genoSource)
+        syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
 
-    genoSource <- match.arg(genoSource)
+    genoSource <- arg_match(genoSource)
 
     listProfiles <- pedStudy[, "Name.ID"]
 
     createStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
-                fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
-                studyDF=studyDF, pathProfileGDS=pathProfileGDS,
-                genoSource=genoSource, verbose=FALSE)
+        fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
+        studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
+        verbose=verbose)
 
     ## Open the 1KG GDS file (demo version)
     gds1KG <- snpgdsOpen(fileReferenceGDS)
@@ -2667,13 +2676,14 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         gdsProfile <- openfn.gds(file.GDSProfile, readonly=FALSE)
 
         estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=gdsProfile,
-                                    currentProfile=listProfiles[i],
-                                    studyID=studyDF$study.id, chrInfo=chrInfo)
+            currentProfile=listProfiles[i], studyID=studyDF$study.id,
+            chrInfo=chrInfo, verbose=verbose)
         closefn.gds(gdsProfile)
 
+        ## Add information related to the synthetic profiles in Profile GDS file
         prepSynthetic(fileProfileGDS=file.GDSProfile,
             listSampleRef=listProfileRef,  profileID=listProfiles[i],
-            studyDF=studyDF.syn, prefix="1")
+            studyDF=studyDF.syn, prefix="1", verbose=verbose)
 
         resG <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsAnnot1KG,
             fileProfileGDS=file.GDSProfile, profileID=listProfiles[i],
@@ -2694,7 +2704,6 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         gdsProfile <- snpgdsOpen(file.GDSProfile)
 
         ## This variable will contain the results from the PCA analyses
-        ##KNN.list <- list()
         ## For each row of the sampleRM matrix
         for(j in seq_len(nrow(sampleRM))) {
             ## Run a PCA analysis using 1 synthetic profile from each
@@ -2720,23 +2729,26 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
         resCall <- computeAncestryFromSyntheticFile(gdsReference=gds1KG,
-                        gdsProfile=gdsProfile, listFiles=listFiles,
-                        currentProfile=listProfiles[i], spRef=spRef,
-                        studyIDSyn=studyDF.syn$study.id, np=1L)
+            gdsProfile=gdsProfile, listFiles=listFiles,
+            currentProfile=listProfiles[i], spRef=spRef,
+            studyIDSyn=studyDF.syn$study.id, np=1L)
 
         saveRDS(resCall, file.path(pathOut,
                             paste0(listProfiles[i], ".infoCall", ".rds")))
 
-        write.csv(resCall$Ancestry,
-            file.path(pathOut, paste0(listProfiles[i], ".Ancestry",".csv")),
-            quote=FALSE, row.names=FALSE)
+        write.csv(x=resCall$Ancestry, file=file.path(pathOut,
+            paste0(listProfiles[i], ".Ancestry",".csv")), quote=FALSE,
+            row.names=FALSE)
 
         ## Close Profile GDS file (important)
         closefn.gds(gdsProfile)
     }
+
+    ## Close all GDS files
     closefn.gds(gds1KG)
     closefn.gds(gdsAnnot1KG)
-    # Successful
+
+    ## Successful
     return(0L)
 }
 

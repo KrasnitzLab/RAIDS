@@ -90,8 +90,8 @@ test_that("validateCreateStudy2GDS1KG() must return expected results when all in
             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
     studyInfo <- data.frame(study.id="Pancreatic.WES",
-                        study.desc="Pancreatic study",
-                        study.platform="WES", stringsAsFactors=FALSE)
+        study.desc="Pancreatic study", study.platform="WES",
+        stringsAsFactors=FALSE)
 
     result1 <- RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir,
             pedStudy=ped, fileNameGDS=fileGDS, batch=12, studyDF=studyInfo,
@@ -240,7 +240,8 @@ test_that("validateRunExomeAncestry() must return expected results when all inpu
     result <- RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=studyInfo,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
         fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
-        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup")
+        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
+        genoSource="snp-pileup", verbose=TRUE)
 
     expect_identical(result, 0L)
 })

@@ -2618,6 +2618,39 @@ test_that("runExomeAncestry() must return error when pathGeno does not exist", {
 })
 
 
+
+
+test_that("runExomeAncestry() must return error when verbose is a numeric", {
+
+    pathOut <- test_path("fixtures")
+    fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
+    gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                    study.platform="PLATFORM", stringsAsFactors=FALSE)
+
+    ## Pedigree Study data frame
+    ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+                         Case.ID=c("TCGA-H01", "TCGA-H02"),
+                        Sample.Type=c("DNA", "DNA"),
+                        Diagnosis=c("Cancer", "Cancer"),
+                        Source=c("TCGA", "TCGA"), stringsAsFactors=FALSE)
+
+    ## Profiles used for synthetic data set
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+        "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+        superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+    error_message <- "The 'verbose' parameter must be a logical (TRUE or FALSE)."
+
+    expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+        pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
+        fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=gdsFileAnnot,
+        chrInfo=c(100L, 200L), syntheticRefDF=syntheticRefDF,
+        genoSource="snp-pileup", verbose=33), error_message, fixed=TRUE)
+})
+
+
 #############################################################################
 ### Tests computePCAMultiSynthetic() results
 #############################################################################

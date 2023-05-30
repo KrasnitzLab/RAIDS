@@ -14,26 +14,26 @@ context("prepPed1KG() results")
 
 test_that("prepPed1KG() must return error when batch is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     error_message <- "The batch must be an integer."
 
-    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=data.dir,
+    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir,
                                 batch="SAVE"), error_message)
 })
 
 
 test_that("prepPed1KG() must return error when batch is a vector of float", {
 
-    ddata.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
     error_message <- "The batch must be an integer."
 
-    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=data.dir,
+    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir,
                                 batch=c(0.111, 2)), error_message)
 })
 
@@ -41,11 +41,11 @@ test_that("prepPed1KG() must return error when batch is a vector of float", {
 
 test_that("prepPed1KG() must return error when pathGeno is not existing", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    notExisting <- paste0(data.dir, "/totoTest")
+    notExisting <- paste0(dataDir, "/totoTest")
 
     error_message <- paste0("The 'pathGeno' parameter must be a character",
         " string representing an existing directory.")
@@ -57,20 +57,20 @@ test_that("prepPed1KG() must return error when pathGeno is not existing", {
 
 test_that("prepPed1KG() must return error when pedigree file is not existing", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
     error_message <- paste0("The file \'", pedDemoFile, "\' does not exist.")
 
-    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=data.dir,
+    expect_error(prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir,
                                 batch=0L), error_message)
 })
 
 
 test_that("prepPed1KG() must return the expected output", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
@@ -84,7 +84,7 @@ test_that("prepPed1KG() must return the expected output", {
         stringsAsFactors=FALSE)
     row.names(expected) <- expected$sample.id
 
-    expect_equal(prepPed1KG(filePed=pedDemoFile, pathGeno=data.dir,
+    expect_equal(prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir,
                                 batch=0L), expected)
 })
 
@@ -97,7 +97,7 @@ context("generateMapSnvSel() results")
 
 test_that("generateMapSnvSel() must return error when SNP file is not existing", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     snpFile <- test_path("fixtures", "SNP_TOTO.txt")
 
@@ -114,7 +114,7 @@ test_that("generateMapSnvSel() must return error when SNP file is not existing",
 
 test_that("generateMapSnvSel() must return error when cutOff file is a character string", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     snpFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
@@ -131,7 +131,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a character
 
 test_that("generateMapSnvSel() must return error when cutOff file is a array of numbers", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     snpFile <- test_path("fixtures", "PedigreeDemoTOTO.ped")
 
@@ -149,7 +149,7 @@ test_that("generateMapSnvSel() must return error when cutOff file is a array of 
 
 test_that("generateMapSnvSel() must generate expected output", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     snvFile <- test_path("fixtures", "matFreqSNV_Demo.txt.bz2")
 
@@ -200,7 +200,7 @@ context("generateGDS1KG() results")
 
 test_that("generateGDS1KG() must return error when pedigree file does not exist", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     fileNot <- test_path("fixtures", "TOTO_Not_Present.rds")
 
@@ -210,68 +210,84 @@ test_that("generateGDS1KG() must return error when pedigree file does not exist"
 
     error_message <- paste0("The file \'", fileNot, "\' does not exist.")
 
-    expect_error(generateGDS1KG(pathGeno=data.dir,
-                                filePedRDS=fileNot,
-                                fileSNVIndex=pedDemoFile,
-                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
-                                listSamples=NULL), error_message)
+    expect_error(generateGDS1KG(pathGeno=dataDir,
+        filePedRDS=fileNot, fileSNVIndex=pedDemoFile,
+        fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
+        listSamples=NULL), error_message)
 })
 
 test_that("generateGDS1KG() must return error when pathGeno is not existing", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    notExisting <- paste0(data.dir, "/totoTest")
+    notExisting <- paste0(dataDir, "/totoTest")
 
     error_message <- paste0("The path \'", notExisting, "\' does not exist.")
 
     expect_error(generateGDS1KG(pathGeno=notExisting,
-                                filePedRDS=pedDemoFile,
-                                fileSNVIndex=pedDemoFile,
-                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
-                                listSamples=NULL), error_message)
+        filePedRDS=pedDemoFile, fileSNVIndex=pedDemoFile,
+        fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
+        listSamples=NULL), error_message)
 })
 
 test_that("generateGDS1KG() must return error when SNP indexes file does not exist", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    notExisting <- paste0(data.dir, "/totoTest")
+    notExisting <- paste0(dataDir, "/totoTest")
 
     error_message <- paste0("The file \'", notExisting, "\' does not exist.")
 
-    expect_error(generateGDS1KG(pathGeno=data.dir,
-                                filePedRDS=pedDemoFile,
-                                fileSNVIndex=notExisting,
-                                fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
-                                listSamples=NULL), error_message)
+    expect_error(generateGDS1KG(pathGeno=dataDir, filePedRDS=pedDemoFile,
+        fileSNVIndex=notExisting,
+        fileSNVSelected=pedDemoFile, fileNameGDS=outFile1,
+        listSamples=NULL), error_message)
 })
 
 test_that("generateGDS1KG() must return error when SNP information file does not exist", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedDemoFile <- test_path("fixtures", "PedigreeDemo.ped")
 
-    notExisting <- paste0(data.dir, "/totoTest")
+    notExisting <- paste0(dataDir, "/totoTest")
 
     error_message <- paste0("The file \'", notExisting, "\' does not exist.")
 
-    expect_error(generateGDS1KG(pathGeno=data.dir,
-                            filePedRDS=pedDemoFile,
-                            fileSNVIndex=pedDemoFile,
-                            fileSNVSelected=notExisting, fileNameGDS=outFile1,
-                            listSamples=NULL), error_message)
+    expect_error(generateGDS1KG(pathGeno=dataDir,
+        filePedRDS=pedDemoFile, fileSNVIndex=pedDemoFile,
+        fileSNVSelected=notExisting, fileNameGDS=outFile1,
+        listSamples=NULL), error_message)
+})
+
+
+test_that("generateGDS1KG() must return error when verbose is numeric", {
+
+    dataDir <- test_path("fixtures")
+
+    pedigreeFile <- test_path("fixtures", "PedigreeDemo.rds")
+
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
+
+    filterSNVFile <- test_path("fixtures",  "mapSNVSelected_Demo.rds")
+
+    error_message <- paste0("The \'verbose\' parameter must be a logical (TRUE or FALSE).")
+
+    expect_error(generateGDS1KG(pathGeno=dataDir,
+        filePedRDS=pedigreeFile, fileSNVIndex=snpIndexFile,
+        fileSNVSelected=filterSNVFile,
+        fileNameGDS=test_path("fixtures", "1KG_TOTO.gds"),
+        listSamples=NULL, verbose=33), error_message, fixed=TRUE)
 })
 
 
 test_that("generateGDS1KG() must create a GDS file", {
 
-    data.dir <- test_path("fixtures")
+    dataDir <- test_path("fixtures")
 
     pedigreeFile <- test_path("fixtures", "PedigreeDemo.rds")
 
@@ -282,10 +298,10 @@ test_that("generateGDS1KG() must create a GDS file", {
     ## Temporary GDS file containing 1KG information
     GDS_file <- local_file(test_path("fixtures", "1KG_TOTO.gds"))
 
-    generateGDS1KG(pathGeno=data.dir, filePedRDS=pedigreeFile,
-                            fileSNVIndex=snpIndexFile,
-                            fileSNVSelected=filterSNVFile, fileNameGDS=GDS_file,
-                            listSamples=NULL)
+    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+        fileSNVIndex=snpIndexFile,
+        fileSNVSelected=filterSNVFile, fileNameGDS=GDS_file,
+        listSamples=NULL)
 
     expect_true(file.exists(GDS_file))
 })
@@ -476,8 +492,6 @@ test_that("getRef1KGPop() must return error when gds is a character string", {
 
 test_that("getRef1KGPop() must return error when popName is a numeric", {
 
-    data.dir <- test_path("fixtures")
-
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -490,8 +504,6 @@ test_that("getRef1KGPop() must return error when popName is a numeric", {
 
 
 test_that("getRef1KGPop() must return error when popName is a numeric", {
-
-    data.dir <- test_path("fixtures")
 
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 

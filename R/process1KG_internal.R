@@ -465,3 +465,112 @@ validatePrepPed1KG <- function(filePed, pathGeno, batch) {
 }
 
 
+#' @title Validate input parameters for generateGDS1KG() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{generateGDS1KG}} function.
+#'
+#' @param pathGeno a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#'
+#' @param filePedRDS a \code{character} string representing the path and file
+#' name of the RDS file that contains the pedigree information. The file must
+#' exist. The file must be a RDS file.
+#'
+#' @param fileSNVIndex a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
+#'
+#' @param fileSNVSelected a \code{character} string representing the path and
+#' file name of the RDS file that contains the filtered SNP information. The
+#' file must exist. The file must be a RDS file.
+#'
+#' @param fileNameGDS a \code{character} string representing the path and file
+#' name of the GDS file that will be created. The GDS file will contain the
+#' SNP information, the genotyping information and the pedigree information
+#' from 1000 Genomes.
+#' The extension of the file must be '.gds'.
+#'
+#' @param listSamples a \code{vector} of \code{character} string corresponding
+#' to samples (must be the sample.ids) that will be retained and added to the
+#' GDS file. When \code{NULL}, all the samples are retained.
+#'
+#' @param verbose a \code{logical} indicating if the function must print
+#' messages when running.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The RDS file containing the pedigree information
+#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#'
+#' ## The RDS file containing the indexes of the retained SNPs
+#' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Temporary GDS file containing 1KG information
+#' gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateGenerateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'     fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'     fileNameGDS=gdsFile, listSamples=NULL, verbose=FALSE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+validateGenerateGDS1KG <-  function(pathGeno, filePedRDS, fileSNVIndex,
+                                        fileSNVSelected, fileNameGDS,
+                                        listSamples, verbose) {
+
+    validateCharacterString(pathGeno, "pathGeno")
+
+    ## Validate that the path for the genotyping files exists
+    if (! file.exists(pathGeno)) {
+        stop("The path \'", pathGeno, "\' does not exist." )
+    }
+
+    validateCharacterString(filePedRDS, "filePedRDS")
+
+    ## Validate that the pedigree file exists
+    if (! file.exists(filePedRDS)) {
+        stop("The file \'", filePedRDS, "\' does not exist." )
+    }
+
+    validateCharacterString(fileSNVIndex, "fileSNVIndex")
+
+    ## Validate that the SNP indexes file exists
+    if (! file.exists(fileSNVIndex)) {
+        stop("The file \'", fileSNVIndex, "\' does not exist." )
+    }
+
+    validateCharacterString(fileSNVSelected, "fileSNVSelected")
+
+    ## Validate that the SNP information file exists
+    if (! file.exists(fileSNVSelected)) {
+        stop("The file \'", fileSNVSelected, "\' does not exist." )
+    }
+
+    validateCharacterString(fileNameGDS, "fileNameGDS")
+
+    ## Validate that the listSamples is null or character string
+    if (!(is.null(listSamples) || is.character(listSamples))) {
+        stop("The \'listSamples\' must be NULL or a vector of character ",
+                    "strings." )
+    }
+
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, "verbose")
+
+    return(0L)
+}
+
+

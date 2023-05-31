@@ -31,8 +31,8 @@ exist. The file must be a RDS file.}
 name of the RDS file that contains the indexes of the retained SNPs. The
 file must exist. The file must be a RDS file.}
 
-\item{fileSNVSelected}{a \code{character} string representing the path and file
-name of the RDS file that contains the filtered SNP information. The
+\item{fileSNVSelected}{a \code{character} string representing the path and
+file name of the RDS file that contains the filtered SNP information. The
 file must exist. The file must be a RDS file.}
 
 \item{fileNameGDS}{a \code{character} string representing the path and file

@@ -122,7 +122,8 @@ The main steps are:
 
 These main steps are described in detail in the following.
 
-You can also run the steps from 5.2.4 to the end, with the default parameters,
+You can also run the steps from Step 2 Sub-step 4 to the end, with the 
+default parameters,
 in one command with the [wrapper](#wrapper) function.
 
 <br>
@@ -981,7 +982,7 @@ also created.
 
 # Wrapper function to run ancestry inference in one command
 
-The Steps 5.1 to 5.2.3 ( [Main Step](#mains) ) are required before 
+The Steps 1 to Step 2 Sub-step 3 ( [Main Step](#mains) ) are required before 
 this section.
 
 The wrapper function requires 4 files as input:

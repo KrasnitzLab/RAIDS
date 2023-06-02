@@ -106,16 +106,7 @@
     <loc>/reference/computeKNNRefSynthetic.html</loc>
   </url>
   <url>
-    <loc>/reference/computeKNNSuperPopSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeKNNSuperPoprSynthetic.html</loc>
-  </url>
-  <url>
     <loc>/reference/computeLOHBlocksDNAChr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePCAForSamples.html</loc>
   </url>
   <url>
     <loc>/reference/computePCAMultiSynthetic.html</loc>
@@ -125,12 +116,6 @@
   </url>
   <url>
     <loc>/reference/computePCARefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePCAsynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePoolSyntheticAncestry.html</loc>
   </url>
   <url>
     <loc>/reference/computePoolSyntheticAncestryGr.html</loc>
@@ -290,9 +275,6 @@
   </url>
   <url>
     <loc>/reference/validateComputePCARefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputePoolSyntheticAncestry.html</loc>
   </url>
   <url>
     <loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc>

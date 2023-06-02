@@ -1,3 +1,13 @@
+CHANGES IN VERSION 0.99.4
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o More parameter names have been changed to follow the camelCase style.
+    o The function documentation has been improved.
+    o A wrapper function runExomeAncestry() is now available.
+    
+
 CHANGES IN VERSION 0.99.3
 ------------------------
 

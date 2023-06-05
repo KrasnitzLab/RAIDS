@@ -114,10 +114,10 @@ An overview of the genetic ancestry inference process.
 <li>Optimize ancestry inference parameters</li>
 <li>Infer ancestry for the subjects of the external study</li>
 </ol>
-<p>All steps included from Step 2, sub-step 4, to Step 4 can be run
-through a wrapper (as described in <a href="RAIDS.html">Main
-vignette</a> or can be run separately. Running those steps separately
-has the advantage of allowing finer parameter selection.</p>
+<p>All steps from Step 2, sub-step 4, to Step 4 can be run through a
+wrapper (as described in <a href="RAIDS.html">Main vignette</a>. Those
+steps can also be run separately; this has the advantage of allowing
+finer parameter selection.</p>
 <p>This vignette describes, in details, the process done by the wrapper
 from Step 2, sub-step 4, to Step 4.</p>
 <p><br><br></p>
@@ -129,9 +129,10 @@ from Step 2, sub-step 4, to Step 4.</p>
 Step 1 - Formatting the information from 1000 Genomes (optional)
 </p>
 </div>
-<p>The available pre-processed files are described in the <a href="RAIDS.html">main vignette</a>.</p>
-<p>The detail execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
+<p>The detail execution of this step is presented in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
 Genomes (optional)</a> vignette.</p>
+<p>In addition, the available pre-processed files are described in the
+<a href="RAIDS.html">Main vignette</a>.</p>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -160,8 +161,6 @@ Step 2 - Formatting the information from an external study
 <div class="section level4">
 <h4 id="sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile">Sub-Step 2.4 Create a profile GDS file (1 GDS file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile"></a>
 </h4>
-<p>From here, you can run directly the <a href="#wrapper">wrapper</a>
-function or you can run each step separately as explained here.</p>
 <p>This step requires 3 files as input:</p>
 <ul>
 <li>The <strong>1KG GDS file</strong>
@@ -186,8 +185,8 @@ RNA-seq).</li>
 </ul>
 <p>Using all those inputs, the <em>createStudy2GDS1KG()</em> function
 will generate a <strong>Profile GDS file</strong>. One <strong>Profile
-GDS file</strong> is created for each sample passed to the
-<em>listSamples</em> argument.</p>
+GDS file</strong> is created for each profile passed to the
+<em>listProfiles</em> argument.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
@@ -195,8 +194,7 @@ GDS file</strong> is created for each sample passed to the
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file </span></span>
-<span><span class="co">## need to be located in the same directory</span></span>
+<span><span class="co">## The 1KG GDS file location</span></span>
 <span><span class="co">## Note that the 1KG GDS file used for this example is a  </span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
 <span><span class="co">#################################################################</span></span>
@@ -206,7 +204,7 @@ GDS file</strong> is created for each sample passed to the
 <span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#################################################################</span></span>
-<span><span class="co">## The Profile SNP pileup files (one per sample) need  </span></span>
+<span><span class="co">## The Profile SNP pileup files (one per profile) need  </span></span>
 <span><span class="co">## to be located in the same directory.</span></span>
 <span><span class="co">#################################################################</span></span>
 <span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
@@ -280,16 +278,16 @@ file</strong>.</p>
 <strong>Profile GDS file(s)</strong>.</p>
 <p>Note that this step can require large disk space.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##############################################################</span></span>
+<code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">#############################################################################</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span></span>
 <span>    </span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The 1KG GDS file is required (demo version)</span></span>
 <span><span class="co">## Note that the 1KG GDS file used for this example is a  </span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analyses</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">#############################################################################</span></span>
 <span><span class="va">path1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
@@ -297,16 +295,15 @@ file</strong>.</p>
 <span><span class="co">## Open the 1KG GDS file (demo version)</span></span>
 <span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The pruning function is called with one profile as input at the time</span></span>
-<span><span class="co">##############################################################</span></span>
+<span><span class="co">#############################################################################</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSamples</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co">## Compute the SNV pruned subset</span></span>
-<span>    <span class="co">## studyID: Study identifier as defined in the preceding sub-step 4. </span></span>
+<span>    <span class="co">## studyID: Study identifier as defined in the preceding sub-step. </span></span>
 <span>    <span class="co">##           The study identifier must be the same that the one present in</span></span>
 <span>    <span class="co">##           Profile GDS file.</span></span>
-<span>    <span class="co">## pathProfileGDS: All Profile GDS files must be in the same directory </span></span>
-<span>    <span class="co">##           sub-step 4. </span></span>
+<span>    <span class="co">## pathProfileGDS: All Profile GDS files must be in the same directory. </span></span>
 <span>    <span class="fu"><a href="../reference/pruningSample.html">pruningSample</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span>
 <span>                    currentProfile<span class="op">=</span><span class="va">listSamples</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>                    studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span>,</span>
@@ -332,12 +329,17 @@ file</strong>.</p>
 <span><span class="co">## Close the 1KG GDS file (it is important to always close the GDS files)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
+<p>The nodes, with the genotype information for the pruned SNVs, are
+created in<br>
+the <strong>Profile GDS file</strong>: ‘sample.id’, ‘snp.id’,
+‘snp.chromosome’, ‘snp.position’, ‘snp.index’, ‘genotype’ and ‘lap’.</p>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="sub-step-2-6-estimate-the-allelic-fraction-for-the-pruned-snvs">Sub-Step 2.6 Estimate the allelic fraction for the pruned SNVs<a class="anchor" aria-label="anchor" href="#sub-step-2-6-estimate-the-allelic-fraction-for-the-pruned-snvs"></a>
 </h4>
 <p>The <strong>estimateAllelicFraction()</strong> estimates the allele
-fraction for all SNVs present in the pruned SNV dataset. Note that the
+fraction for all SNVs present in the pruned SNV list. Note that the
 function requires different inputs for DNA and RNA profiles.</p>
 <p>For the DNA samples, these 2 files are required:</p>
 <ol style="list-style-type: decimal">
@@ -355,7 +357,7 @@ function requires different inputs for DNA and RNA profiles.</p>
 <li>The <strong>1KG SNV Annotation GDS file</strong>
 </li>
 </ol>
-<p>In both cases, the other required input is:</p>
+<p>In both cases, the other required inputs are:</p>
 <ol style="list-style-type: decimal">
 <li>The information about the length of the chromosomes</li>
 <li>The profile identifier (it corresponds to the Profile GDS file
@@ -819,8 +821,8 @@ also created.</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> in the enviroment in
-which this document was compiled:</p>
+<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> in the environment
+in which this document was compiled:</p>
 <pre><code><span><span class="co">## R version 4.2.3 (2023-03-15)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
@@ -913,10 +915,6 @@ which this document was compiled:</p>
 <span><span class="co">## [115] pROC_1.18.0                 Biobase_2.58.0             </span></span>
 <span><span class="co">## [117] restfulr_0.0.15</span></span></code></pre>
 <p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
 </div>
   </div>
 

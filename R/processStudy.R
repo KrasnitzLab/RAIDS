@@ -580,7 +580,9 @@ pruningSample <- function(gdsReference,
 #'
 #' @description The function extracts the information about the pruned SNVs
 #' from the 1KG GDS file and adds entries related to the pruned SNVs in
-#' the Profile GDS file.
+#' the Profile GDS file. The nodes are added to the Profile GDS file:
+#' 'sample.id', 'snp.id', 'snp.chromosome', 'snp.position', 'snp.index',
+#' 'genotype' and 'lap'.
 #'
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
@@ -600,6 +602,7 @@ pruningSample <- function(gdsReference,
 #'
 #' ## Required library for GDS
 #' library(gdsfmt)
+#' library(SNPRelate)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -663,7 +666,7 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
     gdsSample <- openfn.gds(fileProfileGDS, readonly=FALSE)
 
     ## Extract needed information from 1KG GDS file
-    snp.id <- read.gdsn(index.gdsn(gdsReference,"snp.id"))
+    snp.id <- read.gdsn(index.gdsn(gdsReference, "snp.id"))
 
     ## Extract list of pruned SNVs from the GDS Sample file
     pruned <- read.gdsn(index.gdsn(gdsSample, "pruned.study"))

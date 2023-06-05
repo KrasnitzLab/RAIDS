@@ -27,12 +27,15 @@ The function returns \code{0L} when successful.
 \description{
 The function extracts the information about the pruned SNVs
 from the 1KG GDS file and adds entries related to the pruned SNVs in
-the Profile GDS file.
+the Profile GDS file. The nodes are added to the Profile GDS file:
+'sample.id', 'snp.id', 'snp.chromosome', 'snp.position', 'snp.index',
+'genotype' and 'lap'.
 }
 \examples{
 
 ## Required library for GDS
 library(gdsfmt)
+library(SNPRelate)
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")

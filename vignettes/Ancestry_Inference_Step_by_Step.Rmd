@@ -3,10 +3,10 @@ title: "Genetic Ancestry Inference Step by Step (optional)"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
     BiocStyle::html_document:
-        number_sections: yes
+        number_sections: no
         toc: true
     pkgdown:
-        number_sections: yes
+        number_sections: no
         as_is: true
 urlcolor: darkred
 linkcolor: darkred
@@ -52,9 +52,9 @@ The main steps are:
 3. Optimize ancestry inference parameters
 4. Infer ancestry for the subjects of the external study
 
-All steps included from Step 2, sub-step 4, to Step 4 can be run through a 
-wrapper (as described in [Main vignette](RAIDS.html) or can be run separately. 
-Running those steps separately has the advantage of allowing finer parameter 
+All steps from Step 2, sub-step 4, to Step 4 can be run through a 
+wrapper (as described in [Main vignette](RAIDS.html). Those steps can also be 
+run separately; this has the advantage of allowing finer parameter 
 selection.
 
 This vignette describes, in details, the process done by the wrapper from 
@@ -71,12 +71,13 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 ```
 
 
-The available pre-processed files are described in 
-the [main vignette](RAIDS.html).
-
-The detail execution of this step is explained in 
+The detail execution of this step is presented in 
 the [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) 
 vignette.
+
+In addition, the available pre-processed files are described in 
+the [Main vignette](RAIDS.html).
+
 
 <br>
 
@@ -105,9 +106,6 @@ The first steps, from Sub-step 1 to Sub-step 3,  are described in the
 
 ### Sub-Step 2.4 Create a profile GDS file (1 GDS file per profile) 
 
-From here, you can run directly the [wrapper](#wrapper) function 
-or you can run each step separately as explained here.
-
 This step requires 3 files as input:
 
 - The **1KG GDS file**
@@ -123,7 +121,7 @@ also required. The *data.frame* must contain those 3 columns:
 
 Using all those inputs, the *createStudy2GDS1KG()* function will 
 generate a **Profile GDS file**. One **Profile GDS file** is created for each 
-sample passed to the *listSamples* argument.
+profile passed to the *listProfiles* argument.
 
 ```{r appendStudy2GDS1KG, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 #################################################################
@@ -132,8 +130,7 @@ sample passed to the *listSamples* argument.
 library(RAIDS)
     
 #################################################################
-## The 1KG GDS file and the 1KG SNV Annotation GDS file 
-## need to be located in the same directory
+## The 1KG GDS file location
 ## Note that the 1KG GDS file used for this example is a  
 ## simplified version and CANNOT be used for any real analysis
 #################################################################
@@ -143,7 +140,7 @@ path1KG <- file.path(dataDir, "example", "gdsRef")
 gds1KG <- file.path(path1KG, "ex1kg.gds")
 
 #################################################################
-## The Profile SNP pileup files (one per sample) need  
+## The Profile SNP pileup files (one per profile) need  
 ## to be located in the same directory.
 #################################################################
 pathGeno <- file.path(dataDir, "example", "snpPileup")
@@ -214,16 +211,16 @@ also requires the path to the **Profile GDS file(s)**.
 Note that this step can require large disk space.
 
 ```{r pruningSample, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE}
-##############################################################
+#############################################################################
 ## Load required package
-##############################################################
+#############################################################################
 library(RAIDS)
     
-##############################################################
+#############################################################################
 ## The 1KG GDS file is required (demo version)
 ## Note that the 1KG GDS file used for this example is a  
 ## simplified version and CANNOT be used for any real analyses
-##############################################################
+#############################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
     
 fileGDS <- file.path(path1KG, "ex1kg.gds")
@@ -231,16 +228,15 @@ fileGDS <- file.path(path1KG, "ex1kg.gds")
 ## Open the 1KG GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
 
-##############################################################
+#############################################################################
 ## The pruning function is called with one profile as input at the time
-##############################################################
+#############################################################################
 for(i in seq_len(length(listSamples))) {
     ## Compute the SNV pruned subset
-    ## studyID: Study identifier as defined in the preceding sub-step 4. 
+    ## studyID: Study identifier as defined in the preceding sub-step. 
     ##           The study identifier must be the same that the one present in
     ##           Profile GDS file.
-    ## pathProfileGDS: All Profile GDS files must be in the same directory 
-    ##           sub-step 4. 
+    ## pathProfileGDS: All Profile GDS files must be in the same directory. 
     pruningSample(gdsReference=gds1KG,
                     currentProfile=listSamples[i],
                     studyID=studyDF$study.id,
@@ -269,10 +265,16 @@ closefn.gds(gds1KG)
 
 <br>
 
+The nodes, with the genotype information for the pruned SNVs, are created in  
+the **Profile GDS file**: 'sample.id', 'snp.id', 'snp.chromosome', 
+'snp.position', 'snp.index', 'genotype' and 'lap'.
+
+<br>
+
 ### Sub-Step 2.6 Estimate the allelic fraction for the pruned SNVs
 
 The __estimateAllelicFraction()__ estimates the allele fraction for all 
-SNVs present in the pruned SNV dataset. Note that the function requires 
+SNVs present in the pruned SNV list. Note that the function requires 
 different inputs for DNA and RNA profiles.
 
 For the DNA samples, these 2 files are required:
@@ -286,7 +288,7 @@ For the RNA samples, these 3 files are required:
 2. The **1KG GDS file**
 3. The **1KG SNV Annotation GDS file**
 
-In both cases, the other required input is:
+In both cases, the other required inputs are:
 
 1. The information about the length of the chromosomes
 2. The profile identifier (it corresponds to the Profile GDS file name)
@@ -749,8 +751,8 @@ also created.
 
 # Session info
 
-Here is the output of `sessionInfo()` in the enviroment in which this document was 
-compiled:
+Here is the output of `sessionInfo()` in the environment in which this 
+document was compiled:
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
@@ -759,6 +761,4 @@ sessionInfo()
 <br>
 <br>
 
-
-# References
 

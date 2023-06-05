@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accurate Inference of Genetic Ancestry from Cancer-derived Sequences • RAIDS</title>
+<title>Genetic Ancestry Inference Step by Step (optional) • RAIDS</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Accurate Inference of Genetic Ancestry from Cancer-derived Sequences">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Genetic Ancestry Inference Step by Step (optional)">
 <meta property="og:description" content="RAIDS">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -81,14 +81,14 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Accurate Inference of Genetic Ancestry from
-Cancer-derived Sequences</h1>
+      <h1 data-toc-skip>Genetic Ancestry Inference Step by Step
+(optional)</h1>
                         <h4 data-toc-skip class="author">Pascal Belleau,
 Astrid Deschênes and Alexander Krasnitz</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/vignettes/RAIDS.Rmd" class="external-link"><code>vignettes/RAIDS.Rmd</code></a></small>
-      <div class="hidden name"><code>RAIDS.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/HEAD/vignettes/Ancestry_Inference_Step_by_Step.Rmd" class="external-link"><code>vignettes/Ancestry_Inference_Step_by_Step.Rmd</code></a></small>
+      <div class="hidden name"><code>Ancestry_Inference_Step_by_Step.Rmd</code></div>
 
     </div>
 
@@ -98,70 +98,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
 Krasnitz [aut]<br><strong>Version</strong>: 0.99.4<br><strong>Compiled date</strong>: 2023-06-05<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
-<h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
-</h2>
-<p>The <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em>
-package and the underlying <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> code are
-distributed under<br>
-the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link uri">https://opensource.org/licenses/Apache-2.0</a> license. You
-are free to use and redistribute this software.</p>
-<p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
-</h2>
-<p>If you use the <strong>RAIDS</strong> package for a publication, we
-would ask you to cite the following:</p>
-<blockquote>
-<p>Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
-Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
-Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1
-January 2023; 83 (1): 49–58. <a href="https://doi.org/10.1158/0008-5472.CAN-22-0682" class="external-link uri">https://doi.org/10.1158/0008-5472.CAN-22-0682</a> <br><br></p>
-</blockquote>
-</div>
-<div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>Multiple methods have been implemented to infer ancestry from
-germline DNA sequence <span class="citation">(Price et al. 2006;
-Pritchard, Stephens, and Donnelly 2000; Alexander, Novembre, and Lange
-2009)</span>. However, genotyping of DNA from matched normal specimens
-is not part of standard clinical practice and is not performed routinely
-outside academic clinical centers. In sum, matched germline DNA sequence
-is often missing for cancer-derived molecular data. In such cases,
-having the possibility to infer ancestry from tumor-derived data would
-be beneficial.</p>
-<p>The <strong>RAIDS</strong> package implements an inference procedure
-that has been specifically developed to accurately infer genetic
-ancestry from cancer-derived sequences. The current version can handle
-cancer-derived sequences of:</p>
-<ul>
-<li>tumor exomes</li>
-<li>targeted gene panels</li>
-<li>RNA</li>
-</ul>
-<p>The <strong>RAIDS</strong> package implements a data synthesis method
-that, for any given cancer-derived sequence profile, enables on the one
-hand, profile-specific inference parameter optimization and on the other
-hand, a profile-specific inference accuracy estimate.</p>
-<p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>To install the latest version from the <a href="https://github.com/KrasnitzLab/RAIDS" title="RAIDS Github Site" class="external-link">RAIDS Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em>
-package is required.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load required package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Install the latest version of RAIDS</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'KrasnitzLab/RAIDS'</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-<p><a name="mains"></a></p>
-</div>
-<div class="section level2">
-<h2 id="main-steps">Main Steps<a class="anchor" aria-label="anchor" href="#main-steps"></a>
 </h2>
 <p>This is an overview of genetic ancestry inference from cancer-derived
 molecular data:</p>
@@ -177,9 +114,12 @@ An overview of the genetic ancestry inference process.
 <li>Optimize ancestry inference parameters</li>
 <li>Infer ancestry for the subjects of the external study</li>
 </ol>
-<p>These main steps are described in detail in the following.</p>
-<p>You can also run the steps from Step 2 Sub-step 4 to the end, with
-the default parameters, in one command with the <a href="#wrapper">wrapper</a> function.</p>
+<p>All steps included from Step 2, sub-step 4, to Step 4 can be run
+through a wrapper (as described in <a href="RAIDS.html">Main
+vignette</a> or can be run separately. Running those steps separately
+has the advantage of allowing finer parameter selection.</p>
+<p>This vignette describes, in details, the process done by the wrapper
+from Step 2, sub-step 4, to Step 4.</p>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="step-1---format-reference-data-from-the-1000-genomes-optional">Step 1 - Format reference data from the 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-reference-data-from-the-1000-genomes-optional"></a>
@@ -189,25 +129,8 @@ the default parameters, in one command with the <a href="#wrapper">wrapper</a> f
 Step 1 - Formatting the information from 1000 Genomes (optional)
 </p>
 </div>
-<hr>
-<p>At this step three important reference files are created:</p>
-<ul>
-<li>The 1KG GDS File</li>
-<li>The 1KG SNV Annotation GDS file</li>
-<li>The 1KG SNV Retained VCF file</li>
-</ul>
-<p><span style="color:darkred;font-weight:bold">Note that these
-pre-processed files are available at:</span></p>
-<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
-</span></p>
-<p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
-file is 15GB.</span></p>
-<p><span style="color:darkred;font-weight:bold">The 1KG GDS file is
-mapped on hg38 <span class="citation">(Lowy-Gallego et al.
-2019)</span>.</span></p>
-<p><span style="color:darkred;font-weight:bold">This section can be
-skipped if you choose to use the pre-processed files.</span></p>
-<p>The execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
+<p>The available pre-processed files are described in the <a href="RAIDS.html">main vignette</a>.</p>
+<p>The detail execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
 Genomes (optional)</a> vignette.</p>
 <p><br></p>
 </div>
@@ -232,144 +155,10 @@ Step 2 - Formatting the information from an external study
 (SNVs)</li>
 <li>Estimate the allelic frequency for the pruned SNVs</li>
 </ol>
-<p>Note that a mapped BAM file is needed for each sample (step 2). The
-reference genome used for the mapping must be the same as the one used
-to generate the 1KG GDS file. The 1KG GDS file available for download
-(<span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
-</span>) is based on the hg38 genome build.</p>
-<p><br></p>
+<p>The first steps, from Sub-step 1 to Sub-step 3, are described in the
+<a href="RAIDS.html">Main vigette</a>.</p>
 <div class="section level4">
-<h4 id="sub-step-1--create-a-directory-containing-the-3-required-reference-files">Sub-Step 1. Create a directory containing the 3 required reference
-files<a class="anchor" aria-label="anchor" href="#sub-step-1--create-a-directory-containing-the-3-required-reference-files"></a>
-</h4>
-<p>The 3 required reference files may be downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG GDS file</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Annotation GDS file</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Retained VCF file</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz</span></code></pre></div>
-<p>The 3 files should be stored in the same directory. In the example
-below, this directory is referred to as <strong>path1KG</strong>.</p>
-<p>For more information on creating your own reference files, see the
-vignette <a href="Create_1KG_GDS_file.html">Formatting the information
-from 1000 Genomes (optional)</a>.</p>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="sub-step-2--generate-a-snp-pileup-file-1-file-per-profile">Sub-Step 2. Generate a SNP pileup file (1 file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2--generate-a-snp-pileup-file-1-file-per-profile"></a>
-</h4>
-<p>This step requires installation of the external code <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
-which is associated to the facets package <span class="citation">(Shen
-and Seshan 2016)</span>. Given a VCF file containing SNP locations, <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
-application outputs, for each location, the read counts for the
-reference and alternative nucleotides from the BAM input.</p>
-<p>At this point, <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>
-is used to create,for each cancer-derived profile, a <strong>Profile SNP
-pileup file</strong> containing the read counts for the reference and
-alternative nucleotides at each SNP position in the reference 1KG GDS
-file. The <strong>1KG SNV Retained VCF file</strong>, which contains the
-list of retained 1KG SNVs, is required.</p>
-<div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png" alt="Generate a Sample SNP pileup file (1 file per sample)" width="100%"><p class="caption">
-Generate a Sample SNP pileup file (1 file per sample)
-</p>
-</div>
-<p>Note that the name assigned to the <strong>Profile SNP pileup
-file</strong> will correspond to the profile identifier (Name.ID) in the
-following analysis. For example, a SNP pileup file called
-“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
-<p>This is the command line to run <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Description of the parameters</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">## -g : Compresses the output file with BGZF</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">## -d5000 : Sets the maximum depth to 5000</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">##     positions of all retained 1KG SNPs</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">##     compressed by the application</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-pileup</span> <span class="at">-g</span> <span class="at">-d5000</span> <span class="at">-q15</span> <span class="at">-Q20</span>  <span class="at">-r0</span> path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam</span></code></pre></div>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="sub-step-3--create-a-profile-ped-rds-file-containing-the-information-about-the-profiles">Sub-Step 3. Create a profile PED RDS file containing the information
-about the profiles<a class="anchor" aria-label="anchor" href="#sub-step-3--create-a-profile-ped-rds-file-containing-the-information-about-the-profiles"></a>
-</h4>
-<p>An RDS file describing all the profiles to be analyzed is
-required.</p>
-<p>The PED RDS file must contain a <em>data.frame</em> with these 5
-columns:</p>
-<ul>
-<li>
-<strong>Name.ID</strong>: The unique sample identifier. The profile
-VCF file<br>
-should be called “Name.ID.txt.gz”.</li>
-<li>
-<strong>Case.ID</strong>: The patient identifier associated to the
-sample.</li>
-<li>
-<strong>Sample.Type</strong>: The information about the profile
-tissue source (primary tumor, metastatic tumor, normal, etc..).</li>
-<li>
-<strong>Diagnosis</strong>: The donor’s diagnosis.</li>
-<li>
-<strong>Source</strong>: The source of the profile sequence data
-(example: dbGAP_XYZ).</li>
-</ul>
-<p>Important: The row names of the <em>data.frame</em> must be the
-profiles’ <strong>Name.ID</strong>.</p>
-<p>This file is referred to as the <strong>Profile PED RDS file</strong>
-(PED for pedigree). Alternatively, the PED information can be saved in
-another type of file (CVS, etc..) as long as the <em>data.frame</em>
-information can be regenerated in R (with <em>read.csv()</em> or
-else).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##############################################################</span></span>
-<span><span class="co">## Location of the Profile PED RDS file to be created</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
-<span><span class="va">demoPEDFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"Demo_PED.RDS"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## Create a data frame with the mandatory columns</span></span>
-<span><span class="co">## All columns are in character string format (no factor)</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="va">pedDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Name.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span>, <span class="st">"Sample_03"</span><span class="op">)</span>,</span>
-<span>                    Case.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Patient_h11"</span>, <span class="st">"Patient_h12"</span>, <span class="st">"Patient_h18"</span><span class="op">)</span>, </span>
-<span>                    Sample.Type<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Primary Tumor"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    Diagnosis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Cancer"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    Source<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## The row names must correspond to the name of the profiles</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedDF</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedDF</span><span class="op">$</span><span class="va">Name.ID</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## Save the data frame into a RDS file</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">pedDF</span>, file<span class="op">=</span><span class="va">demoPEDFile</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Remove RDS file (created for demo purpose)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">demoPEDFile</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="sub-step-4-create-a-profile-gds-file-1-gds-file-per-profile">Sub-Step 4 Create a profile GDS file (1 GDS file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-4-create-a-profile-gds-file-1-gds-file-per-profile"></a>
+<h4 id="sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile">Sub-Step 2.4 Create a profile GDS file (1 GDS file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile"></a>
 </h4>
 <p>From here, you can run directly the <a href="#wrapper">wrapper</a>
 function or you can run each step separately as explained here.</p>
@@ -399,7 +188,7 @@ RNA-seq).</li>
 will generate a <strong>Profile GDS file</strong>. One <strong>Profile
 GDS file</strong> is created for each sample passed to the
 <em>listSamples</em> argument.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#################################################################</span></span>
 <span><span class="co">## Load required package</span></span>
 <span><span class="co">#################################################################</span></span>
@@ -479,8 +268,8 @@ GDS file</strong> is created for each sample passed to the
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-5--generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs">Sub-Step 5. Generate a pruned subset of the single nucleotide
-variants (SNVs)<a class="anchor" aria-label="anchor" href="#sub-step-5--generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs"></a>
+<h4 id="sub-step-2-5-generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs">Sub-Step 2.5 Generate a pruned subset of the single nucleotide
+variants (SNVs)<a class="anchor" aria-label="anchor" href="#sub-step-2-5-generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs"></a>
 </h4>
 <p>The initial list of 1KG SNVs is pruned, using linkage disequilibrium
 analysis, and a profile-specific subset of SNVs is retained for each
@@ -490,7 +279,7 @@ file</strong>.</p>
 <strong>1KG GDS file</strong> as input. It also requires the path to the
 <strong>Profile GDS file(s)</strong>.</p>
 <p>Note that this step can require large disk space.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##############################################################</span></span>
 <span><span class="co">## Load required package</span></span>
 <span><span class="co">##############################################################</span></span>
@@ -545,7 +334,7 @@ file</strong>.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-6--estimate-the-allelic-fraction-for-the-pruned-snvs">Sub-Step 6. Estimate the allelic fraction for the pruned SNVs<a class="anchor" aria-label="anchor" href="#sub-step-6--estimate-the-allelic-fraction-for-the-pruned-snvs"></a>
+<h4 id="sub-step-2-6-estimate-the-allelic-fraction-for-the-pruned-snvs">Sub-Step 2.6 Estimate the allelic fraction for the pruned SNVs<a class="anchor" aria-label="anchor" href="#sub-step-2-6-estimate-the-allelic-fraction-for-the-pruned-snvs"></a>
 </h4>
 <p>The <strong>estimateAllelicFraction()</strong> estimates the allele
 fraction for all SNVs present in the pruned SNV dataset. Note that the
@@ -578,7 +367,7 @@ previously)</li>
 into a <em>vector</em> object. This is an example on how to retrieve the
 information. There are alternative ways to retrieve this information,
 e.g.,</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">###################################################################</span></span>
 <span><span class="co">## Load required library</span></span>
 <span><span class="co">###################################################################</span></span>
@@ -605,7 +394,7 @@ e.g.,</p>
 <p><br><br></p>
 <p>The <strong>estimateAllelicFraction()</strong> function processes one
 profile at the time, as shown in this example.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#####################################################################</span></span>
 <span><span class="co">## Load the required packages</span></span>
 <span><span class="co">#####################################################################</span></span>
@@ -697,7 +486,7 @@ values are tuned to maximize accuracy.</p>
 </ol>
 <p><br></p>
 <div class="section level4">
-<h4 id="sub-step-1--generate-the-synthetic-dataset">Sub-Step 1. Generate the synthetic dataset<a class="anchor" aria-label="anchor" href="#sub-step-1--generate-the-synthetic-dataset"></a>
+<h4 id="sub-step-3-1-generate-the-synthetic-dataset">Sub-Step 3.1 Generate the synthetic dataset<a class="anchor" aria-label="anchor" href="#sub-step-3-1-generate-the-synthetic-dataset"></a>
 </h4>
 <p>A synthetic profile is generated through the merging of one cancer
 profile with one 1KG sample of known ancestry. Multiple 1KG samples of
@@ -724,7 +513,7 @@ synthesis.</p>
 <li>The <strong>1KG Annotation GDS file</strong>
 </li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">####################################################################</span></span>
@@ -808,14 +597,14 @@ synthesis.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-2--perform-the-pca-knn-ancestry-call-for-each-synthetic-profile">Sub-Step 2. Perform the PCA-KNN ancestry call for each synthetic
-profile<a class="anchor" aria-label="anchor" href="#sub-step-2--perform-the-pca-knn-ancestry-call-for-each-synthetic-profile"></a>
+<h4 id="sub-step-3-2-perform-the-pca-knn-ancestry-call-for-each-synthetic-profile">Sub-Step 3.2 Perform the PCA-KNN ancestry call for each synthetic
+profile<a class="anchor" aria-label="anchor" href="#sub-step-3-2-perform-the-pca-knn-ancestry-call-for-each-synthetic-profile"></a>
 </h4>
 <p>The ancestry is inferred for each synthetic profile. As the ancestry
 of origin of the 1KG profile used to generate the synthetic profile is
 known, the accuracy of the calls will be assessed for different
 parameters.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#####################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#####################################################################</span></span>
@@ -929,7 +718,7 @@ optimal <em>K</em> and <em>D</em> parameters.</p>
 <p>Note: The formal selection of <em>K</em> and <em>D</em> parameters is
 done at this step but all the synthetic data are prepared in the step
 3.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">####################################################################</span></span>
@@ -1025,177 +814,7 @@ types of files in the <em>OUTPUT</em> directory.</p>
 </ul>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
-<p><a name="wrapper"></a></p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="wrapper-function-to-run-ancestry-inference-in-one-command">Wrapper function to run ancestry inference in one command<a class="anchor" aria-label="anchor" href="#wrapper-function-to-run-ancestry-inference-in-one-command"></a>
-</h2>
-<p>The Steps 1 to Step 2 Sub-step 3 ( <a href="#mains">Main Step</a> )
-are required before this section.</p>
-<p>The wrapper function requires 4 files as input:</p>
-<ul>
-<li>The <strong>1KG GDS file</strong>
-</li>
-<li>The <strong>1KG SNV Annotation GDS file</strong>
-</li>
-<li>The <strong>Sample SNP pileup file</strong> (one per sample present
-in the study)</li>
-<li>The <strong>Sample PED RDS file</strong> (one file with information
-for all samples in the study)</li>
-</ul>
-<p>A <em>data.frame</em> containing the general information about the
-study is also required. The <em>data.frame</em> must contain those 3
-columns:</p>
-<ul>
-<li>
-<strong>study.id</strong>: The study identifier (example:
-TCGA-BRCA).</li>
-<li>
-<strong>study.desc</strong>: The description of the study.</li>
-<li>
-<strong>study.platform</strong>: The type of sequencing (example:
-RNA-seq).</li>
-</ul>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">####################################################################</span></span>
-<span><span class="co">## Load required packages</span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span>    </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Path to the demo 1KG GDS file is located in this package</span></span>
-<span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="co">## The path and file name for the PED RDS file</span></span>
-<span><span class="co">## will the information about the analyzed samples</span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"pedEx.rds"</span><span class="op">)</span></span>
-<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
-<span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
-<span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span>
-<span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file</span></span>
-<span><span class="co">## need to be located in the same directory</span></span>
-<span><span class="co">## Note that the 1KG GDS file used for this example is a</span></span>
-<span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="va">path1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
-<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span>
-<span><span class="co">## to be located in the same directory.</span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
-<span><span class="co">## will be created need to be specified.</span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="co">## A data frame containing general information about the study</span></span>
-<span><span class="co">## is also required. The data frame must have</span></span>
-<span><span class="co">## those 3 columns: "study.id", "study.desc", "study.platform"</span></span>
-<span><span class="co">#################################################################</span></span>
-<span><span class="va">studyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id<span class="op">=</span><span class="st">"MYDATA"</span>,</span>
-<span>                   study.desc<span class="op">=</span><span class="st">"Description"</span>,</span>
-<span>                   study.platform<span class="op">=</span><span class="st">"PLATFORM"</span>,</span>
-<span>                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="co">## Fix RNG seed to ensure reproducible results</span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="co">## Select the profiles from 1KG for the synthetic data.</span></span>
-<span><span class="co">## Here we select 2 profiles from 1KG for each subcontinental-level</span></span>
-<span><span class="co">## Normally, we use 30 profiles from 1KG for each </span></span>
-<span><span class="co">## subcontinental-level but it is too big for the example.</span></span>
-<span><span class="co">## The 1KG files in this example only have 6 profiles for each </span></span>
-<span><span class="co">## subcontinental-level (for demo purpose only)</span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span>
-<span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Chromosome length information</span></span>
-<span><span class="co">## chrInfo[23] is chrX, chrInfo[24] is chrY and chrM is chrInfo[25]</span></span>
-<span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span>
-<span> <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span>
-<span> <span class="fl">135086622L</span>, <span class="fl">133275309L</span>, <span class="fl">114364328L</span>, <span class="fl">107043718L</span>, <span class="fl">101991189L</span>, <span class="fl">90338345L</span>,</span>
-<span> <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span>
-<span> <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## A formal way to get the chormosome length information</span></span>
-<span><span class="co">## library(BSgenome.Hsapiens.UCSC.hg38)</span></span>
-<span><span class="co">## chrInfo &lt;- integer(25L)</span></span>
-<span><span class="co">## for(i in seq_len(22L)){ chrInfo[i] &lt;-</span></span>
-<span><span class="co">##                          length(Hsapiens[[paste0("chr", i)]])}</span></span>
-<span><span class="co">## chrInfo[23] &lt;- length(Hsapiens[["chrX"]])</span></span>
-<span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span>
-<span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
-<span>                 pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
-<span>                 pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span>
-<span>                 pathOut<span class="op">=</span><span class="va">pathOut</span>,</span>
-<span>                 fileReferenceGDS<span class="op">=</span><span class="va">fileGDS</span>,</span>
-<span>                 fileReferenceAnnotGDS<span class="op">=</span><span class="va">fileAnnotGDS</span>,</span>
-<span>                 chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span>
-<span>                 syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
-<span>                 genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
-<span><span class="co">## [1] "ex1"              "ex1.Ancestry.csv" "ex1.infoCall.rds"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## [1] "KNN.synt.ex1.1.rds" "KNN.synt.ex1.2.rds"</span></span>
-<span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="co">## Show the ancestry inference (SuperPop) and </span></span>
-<span><span class="co">## optimal number of PCA component D</span></span>
-<span><span class="co">## optimal number neighbour K</span></span>
-<span><span class="co">####################################################################</span></span>
-<span><span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
-<span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">resAncestry</span></span>
-<span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 13      EAS</span></span>
-<span></span>
-<span><span class="co">## Remove temporary files created for this demo</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-<p>The <em>runExomeAncestry()</em> function generates 3 types of files
-in the <em>OUTPUT</em> directory.</p>
-<ul>
-<li>The ancestry inference CSV file (“.Ancestry.csv” file)</li>
-<li>The inference information RDS file (“.infoCall.rds” file)</li>
-<li>The parameter information RDS files from the synthetic inference
-(“KNN.synt.*.rds” files in a sub-directory)</li>
-</ul>
-<p>In addition, a sub-directory (named using the <em>profile ID</em>) is
-also created.</p>
-<p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="pre-processed-files-are-available">Pre-processed files are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-are-available"></a>
-</h2>
-<p>Pre-processed files, such as the 1KG GDS file, are available at this
-address:</p>
-<p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
-<p>Beware that some of these files are large.</p>
-<p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -1296,39 +915,8 @@ which this document was compiled:</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Alexander2009" class="csl-entry">
-Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
-Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
-<em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
-</div>
-<div id="ref-Lowy-Gallego2019a" class="csl-entry">
-Lowy-Gallego, Ernesto, Susan Fairley, Xiangqun Zheng-Bradley, Magali
-Ruffier, Laura Clarke, and Paul Flicek. 2019. <span>“<span class="nocase">Variant calling on the grch38 assembly with the data from
-phase three of the 1000 genomes project [version 2; peer review: 1
-approved, 1 not approved]</span>.”</span> <em>Wellcome Open
-Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126.1" class="external-link">https://doi.org/10.12688/wellcomeopenres.15126.1</a>.
-</div>
-<div id="ref-Price2006" class="csl-entry">
-Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.
-Shadick, and D. Reich. 2006. <span>“Principal Components Analysis
-Corrects for Stratification in Genome-Wide Association Studies.”</span>
-<em>Nat Genet</em> 38 (8): 904–9. <a href="https://doi.org/10.1038/ng1847" class="external-link">https://doi.org/10.1038/ng1847</a>.
-</div>
-<div id="ref-Pritchard2000" class="csl-entry">
-Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference
-of Population Structure Using Multilocus Genotype Data.”</span>
-<em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
-</div>
-<div id="ref-Shen2016" class="csl-entry">
-Shen, R, and V E Seshan. 2016. <span>“<span class="nocase">FACETS:
-allele-specific copy number and clonal heterogeneity analysis tool for
-high-throughput DNA sequencing</span>.”</span> <em>Nucleic Acids
-Res</em> 44 (16): e131. <a href="https://doi.org/10.1093/nar/gkw520" class="external-link">https://doi.org/10.1093/nar/gkw520</a>.
-</div>
-</div>
 </div>
   </div>
 

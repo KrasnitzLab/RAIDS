@@ -87,7 +87,7 @@ The integer \code{0L} when successful.
 }
 \description{
 The function estimates the allelic fraction of the
-SNVs for a specific prfile and add the information to the associated
+SNVs for a specific profile and add the information to the associated
 Profile GDS file. The allelic fraction estimation method is adapted to
 the type of study (DNA or RNA).
 }

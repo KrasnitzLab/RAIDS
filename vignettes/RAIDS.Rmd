@@ -177,14 +177,11 @@ knitr::include_graphics("MainSteps_Step2_v01.png")
 
 <br>
 
-These are:
+These sub-steps are:
 
 1. Create a directory containing the 3 reference files from 1KG
-2. Make a SNP pileup file for the profile
-3. Create an RDS file containing information about the samples
-4. Create a Sample GDS file (1 GDS file per sample)
-5. Generate a pruned subset of the single nucleotide variants (SNVs) 
-6. Estimate the allelic frequency for the pruned SNVs
+2. Make a SNP pileup file for each profile
+3. Create an RDS file containing information about the profiles
 
 Note that a mapped BAM file is needed for each sample (step 2). 
 The reference 
@@ -475,9 +472,9 @@ list.files(pathOut)
 list.files(file.path(pathOut, ped$Name.ID[1]))
 
 ####################################################################
-## Show the ancestry inference (SuperPop) and 
-## optimal number of PCA component D
-## optimal number of neighbours K
+## The file containing the ancestry inference (SuperPop column) and 
+## optimal number of PCA component (D column)
+## optimal number of neighbours (K column)
 ####################################################################
 resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
@@ -506,7 +503,7 @@ also created.
 <br>
 
 
-# Pre-processed files are available
+# Pre-processed reference files are available
 
 Pre-processed files, such as the 1KG GDS file, are available at this address:
 

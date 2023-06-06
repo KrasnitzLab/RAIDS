@@ -222,15 +222,11 @@ Step 2 - Formatting the information from an external study
 </p>
 </div>
 <p><br></p>
-<p>These are:</p>
+<p>These sub-steps are:</p>
 <ol style="list-style-type: decimal">
 <li>Create a directory containing the 3 reference files from 1KG</li>
-<li>Make a SNP pileup file for the profile</li>
-<li>Create an RDS file containing information about the samples</li>
-<li>Create a Sample GDS file (1 GDS file per sample)</li>
-<li>Generate a pruned subset of the single nucleotide variants
-(SNVs)</li>
-<li>Estimate the allelic frequency for the pruned SNVs</li>
+<li>Make a SNP pileup file for each profile</li>
+<li>Create an RDS file containing information about the profiles</li>
 </ol>
 <p>Note that a mapped BAM file is needed for each sample (step 2). The
 reference genome used for the mapping must be the same as the one used
@@ -526,9 +522,9 @@ RNA-seq).</li>
 <span><span class="co">## [1] "KNN.synt.ex1.1.rds" "KNN.synt.ex1.2.rds"</span></span>
 <span></span>
 <span><span class="co">####################################################################</span></span>
-<span><span class="co">## Show the ancestry inference (SuperPop) and </span></span>
-<span><span class="co">## optimal number of PCA component D</span></span>
-<span><span class="co">## optimal number of neighbours K</span></span>
+<span><span class="co">## The file containing the ancestry inference (SuperPop column) and </span></span>
+<span><span class="co">## optimal number of PCA component (D column)</span></span>
+<span><span class="co">## optimal number of neighbours (K column)</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -554,7 +550,7 @@ also created.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="pre-processed-files-are-available">Pre-processed files are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-are-available"></a>
+<h2 id="pre-processed-reference-files-are-available">Pre-processed reference files are available<a class="anchor" aria-label="anchor" href="#pre-processed-reference-files-are-available"></a>
 </h2>
 <p>Pre-processed files, such as the 1KG GDS file, are available at this
 address:</p>

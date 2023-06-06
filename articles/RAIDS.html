@@ -384,6 +384,9 @@ workflow.
 <p>As a complement, the companion vignette <a href="Ancestry_Inference_Step_by_Step.html">Ancestry Inference Step by
 Step (optional)</a> describes all steps covered by the wrapper
 function.</p>
+<p>In summary, the wrapper function generates the synthetic dataset and
+uses it to selected the optimal parameters before calling the genetic
+ancestry on the current profiles.</p>
 <p><br></p>
 <p>The wrapper function, called <em>runExomeAncestry()</em>, requires 4
 files as input:</p>
@@ -499,6 +502,14 @@ RNA-seq).</li>
 <span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span>
 <span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span>
 <span></span>
+<span></span>
+<span><span class="co">####################################################################</span></span>
+<span><span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
+<span><span class="co">## to selected the optimal parameters before calling the genetic </span></span>
+<span><span class="co">## ancestry on the current profiles.</span></span>
+<span><span class="co">## All important information, for each step, are saved in </span></span>
+<span><span class="co">## multiple output files.</span></span>
+<span><span class="co">####################################################################</span></span>
 <span><span class="fu"><a href="../reference/runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
 <span>                 pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
 <span>                 pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span>
@@ -530,7 +541,7 @@ RNA-seq).</li>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
-in the <em>OUTPUT</em> directory.</p>
+in the <em>pathOut</em> directory.</p>
 <ul>
 <li>The ancestry inference CSV file (“.Ancestry.csv” file)</li>
 <li>The inference information RDS file (“.infoCall.rds” file)</li>

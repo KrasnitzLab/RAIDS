@@ -151,7 +151,7 @@ Step 2 - Formatting the information from an external study
 <li>Create a directory containing the 3 reference files from 1KG</li>
 <li>Make a SNP pileup file for the profile</li>
 <li>Create an RDS file containing information about the samples</li>
-<li>Create a Sample GDS file (1 GDS file per sample)</li>
+<li>Create a Profile GDS file (one GDS file per profile)</li>
 <li>Generate a pruned subset of the single nucleotide variants
 (SNVs)</li>
 <li>Estimate the allelic frequency for the pruned SNVs</li>
@@ -159,7 +159,8 @@ Step 2 - Formatting the information from an external study
 <p>The first steps, from Sub-step 1 to Sub-step 3, are described in the
 <a href="RAIDS.html">Main vigette</a>.</p>
 <div class="section level4">
-<h4 id="sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile">Sub-Step 2.4 Create a profile GDS file (1 GDS file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-4-create-a-profile-gds-file-1-gds-file-per-profile"></a>
+<h4 id="sub-step-2-4-create-a-profile-gds-file-one-gds-file-per-profile">Sub-Step 2.4 Create a Profile GDS file (one GDS file per
+profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-4-create-a-profile-gds-file-one-gds-file-per-profile"></a>
 </h4>
 <p>This step requires 3 files as input:</p>
 <ul>
@@ -264,6 +265,15 @@ GDS file</strong> is created for each profile passed to the
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path<span class="op">=</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span><span class="co">## [1] "ex1.gds"</span></span></code></pre></div>
 <p><br></p>
+<p>A <strong>Profile GDS file</strong> is created for each profile. The
+GDS file contains those nodes:</p>
+<div class="figure" style="text-align: left">
+<img src="ProfileGDSdemo_when_created.png" alt="Step 2.4 - The nodes present in the newly created Profile GDS file (one GDS file per profile)." width="100%"><p class="caption">
+Step 2.4 - The nodes present in the newly created Profile GDS file (one
+GDS file per profile).
+</p>
+</div>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="sub-step-2-5-generate-a-pruned-subset-of-the-single-nucleotide-variants-snvs">Sub-Step 2.5 Generate a pruned subset of the single nucleotide
@@ -330,9 +340,13 @@ file</strong>.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
 <p>The nodes, with the genotype information for the pruned SNVs, are
-created in<br>
-the <strong>Profile GDS file</strong>: ‘sample.id’, ‘snp.id’,
-‘snp.chromosome’, ‘snp.position’, ‘snp.index’, ‘genotype’ and ‘lap’.</p>
+added into<br>
+the <strong>Profile GDS file</strong>:</p>
+<div class="figure" style="text-align: left">
+<img src="ProfileGDSdemo_after_add1KG2SampleGDS.png" alt="Step 2.5 - The nodes added to the Profile GDS file are in light blue." width="100%"><p class="caption">
+Step 2.5 - The nodes added to the Profile GDS file are in light blue.
+</p>
+</div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -341,14 +355,14 @@ the <strong>Profile GDS file</strong>: ‘sample.id’, ‘snp.id’,
 <p>The <strong>estimateAllelicFraction()</strong> estimates the allele
 fraction for all SNVs present in the pruned SNV list. Note that the
 function requires different inputs for DNA and RNA profiles.</p>
-<p>For the DNA samples, these 2 files are required:</p>
+<p>For the DNA profiles, these 2 files are required:</p>
 <ol style="list-style-type: decimal">
 <li>The <strong>Profile GDS file</strong>
 </li>
 <li>The <strong>1KG GDS file</strong>
 </li>
 </ol>
-<p>For the RNA samples, these 3 files are required:</p>
+<p>For the RNA profiles, these 3 files are required:</p>
 <ol style="list-style-type: decimal">
 <li>The <strong>Profile GDS file</strong>
 </li>
@@ -444,7 +458,7 @@ profile at the time, as shown in this example.</p>
 <span><span class="co">## The current example is for a DNA sample</span></span>
 <span><span class="co">## In the case of RNA sample, the function needs different inputs</span></span>
 <span><span class="co">## such as the 1KG Annotation GDS file and</span></span>
-<span><span class="co">## The 'blockID' should be as listed in the 1KG Annotation GDS file </span></span>
+<span><span class="co">## the 'blockID' should be as listed in the 1KG Annotation GDS file </span></span>
 <span><span class="co">## for the gene annotation of the SNVs</span></span>
 <span><span class="fu"><a href="../reference/estimateAllelicFraction.html">estimateAllelicFraction</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds</span>, gdsProfile<span class="op">=</span><span class="va">gdsProfile</span>,</span>
 <span>                                        currentProfile<span class="op">=</span><span class="va">profileName</span>,</span>
@@ -455,7 +469,14 @@ profile at the time, as shown in this example.</p>
 <span><span class="co">## Close both GDS files (important)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsProfile</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
 <p>This step must be executed for each profile present in the study.</p>
+<p>The information is added into the ‘lap’ and ‘segment’ nodes:</p>
+<div class="figure" style="text-align: left">
+<img src="ProfileGDSdemo_after_estimateAllelicFraction.png" alt="Step 2.6 - The information is added into the nodes in light blue." width="100%"><p class="caption">
+Step 2.6 - The information is added into the nodes in light blue.
+</p>
+</div>
 <p><br></p>
 </div>
 </div>
@@ -477,7 +498,7 @@ Step 3 - Find the optimized parameters for the ancestry inference
 <em>D</em>: the number of PCA components retained</li>
 </ul>
 <p>The accuracy is evaluated using a synthetic data set created from
-merging one cancer profile with multiple 1KG samples of known ancestry.
+merging one cancer profile with multiple 1KG profiles of known ancestry.
 Using the synthetic profiles, a range of <em>K</em> and <em>D</em>
 values are tested. Through that process, the <em>K</em> and <em>D</em>
 values are tuned to maximize accuracy.</p>
@@ -491,21 +512,21 @@ values are tuned to maximize accuracy.</p>
 <h4 id="sub-step-3-1-generate-the-synthetic-dataset">Sub-Step 3.1 Generate the synthetic dataset<a class="anchor" aria-label="anchor" href="#sub-step-3-1-generate-the-synthetic-dataset"></a>
 </h4>
 <p>A synthetic profile is generated through the merging of one cancer
-profile with one 1KG sample of known ancestry. Multiple 1KG samples of
+profile with one 1KG profile of known ancestry. Multiple 1KG profiles of
 different ancestry are required to create a synthetic data set that will
 be able to show the specific accuracy for each super-population. All the
 synthetic profiles are saved in the <strong>Profile GDS file</strong>
-corresponding to the cancer profile used to generate the synthetic data
-set.</p>
-<p>In summary, a fixed number of profiles for each super-population is
-extracted from the 1KG study. The information is saved in the
+corresponding to the cancer profile used to generate the synthetic
+dataset.</p>
+<p>In summary, a fixed number of profiles for each super-population are
+extracted from the 1KG study. The information is saved into the
 <strong>Profile GDS file</strong> associated to the selected cancer
 profile. A synthetic profile is created for each combination of one 1KG
-sample and cancer profile. All synthetic profiles are then saved in the
-<strong>Profile GDS file</strong>.</p>
+profile and cancer profile. All synthetic profiles are then saved into
+the <strong>Profile GDS file</strong>.</p>
 <p>The three functions <em>select1KGPop()</em>, <em>prepSynthetic()</em>
-and <em>syntheticGeno()</em> are used for the synthetic data
-synthesis.</p>
+and <em>syntheticGeno()</em> are required to process the synthetic data
+synthesis step.</p>
 <p>These 3 files are required:</p>
 <ol style="list-style-type: decimal">
 <li>The <strong>Profile GDS file</strong>
@@ -718,8 +739,8 @@ Step 4 - Run the ancestry inference on the external study
 <p>The PCA of the sample and KNN sample and Call the ancestry with the
 optimal <em>K</em> and <em>D</em> parameters.</p>
 <p>Note: The formal selection of <em>K</em> and <em>D</em> parameters is
-done at this step but all the synthetic data are prepared in the step
-3.</p>
+done at this step but all the synthetic data are prepared in the
+previous step.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">####################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>

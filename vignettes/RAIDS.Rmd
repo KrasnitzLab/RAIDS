@@ -333,12 +333,22 @@ rm(demoPEDFile)
 
 <br>
 
-# Wrapper function to run ancestry inference in one command
+## Final Step - Wrapper function to run ancestry inference in one command
 
-The Steps 1 to Step 2 Sub-step 3 ( [Main Step](#mains) ) are required before 
-this section.
+The final step can be run with a wrapper function
+that encapsulates multiple steps of the workflow.
 
-The wrapper function requires 4 files as input:
+```{r graphWrapper, echo=FALSE, fig.align="center", fig.cap="Final step - The wrapper function encapsulates multiple steps of the workflow.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("MainSteps_Wrapper_v01.png")
+```
+
+As a complement, the companion vignette 
+[Ancestry Inference Step by Step (optional)](Ancestry_Inference_Step_by_Step.html) 
+describes all steps covered by the wrapper function. 
+
+<br>
+
+The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 
 - The **1KG GDS file**
 - The **1KG SNV Annotation GDS file**
@@ -455,7 +465,7 @@ list.files(file.path(pathOut, ped$Name.ID[1]))
 ####################################################################
 ## Show the ancestry inference (SuperPop) and 
 ## optimal number of PCA component D
-## optimal number neighbour K
+## optimal number of neighbours K
 ####################################################################
 resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))

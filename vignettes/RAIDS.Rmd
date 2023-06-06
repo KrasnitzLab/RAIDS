@@ -346,6 +346,10 @@ As a complement, the companion vignette
 [Ancestry Inference Step by Step (optional)](Ancestry_Inference_Step_by_Step.html) 
 describes all steps covered by the wrapper function. 
 
+In summary, the wrapper function generates the synthetic dataset and uses it 
+to selected the optimal parameters before calling the genetic ancestry on 
+the current profiles.
+
 <br>
 
 The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
@@ -450,6 +454,14 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[24] <- length(Hsapiens[["chrY"]])
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 
+
+####################################################################
+## The wrapper function generates the synthetic dataset and uses it 
+## to selected the optimal parameters before calling the genetic 
+## ancestry on the current profiles.
+## All important information, for each step, are saved in 
+## multiple output files.
+####################################################################
 runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
@@ -480,7 +492,7 @@ unlink(pathOut, recursive=TRUE, force=TRUE)
 <br>
 
 The *runExomeAncestry()* function generates 3 types of files 
-in the *OUTPUT* directory.
+in the *pathOut* directory.
 
 * The ancestry inference CSV file (".Ancestry.csv" file) 
 * The inference information RDS file (".infoCall.rds" file)

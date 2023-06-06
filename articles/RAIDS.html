@@ -369,13 +369,24 @@ else).</p>
 <p><br></p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="final-step---wrapper-function-to-run-ancestry-inference-in-one-command">Final Step - Wrapper function to run ancestry inference in one
+command<a class="anchor" aria-label="anchor" href="#final-step---wrapper-function-to-run-ancestry-inference-in-one-command"></a>
+</h3>
+<p>The final step can be run with a wrapper function that encapsulates
+multiple steps of the workflow.</p>
+<div class="figure" style="text-align: center">
+<img src="MainSteps_Wrapper_v01.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
+Final step - The wrapper function encapsulates multiple steps of the
+workflow.
+</p>
 </div>
-<div class="section level2">
-<h2 id="wrapper-function-to-run-ancestry-inference-in-one-command">Wrapper function to run ancestry inference in one command<a class="anchor" aria-label="anchor" href="#wrapper-function-to-run-ancestry-inference-in-one-command"></a>
-</h2>
-<p>The Steps 1 to Step 2 Sub-step 3 ( <a href="#mains">Main Step</a> )
-are required before this section.</p>
-<p>The wrapper function requires 4 files as input:</p>
+<p>As a complement, the companion vignette <a href="Ancestry_Inference_Step_by_Step.html">Ancestry Inference Step by
+Step (optional)</a> describes all steps covered by the wrapper
+function.</p>
+<p><br></p>
+<p>The wrapper function, called <em>runExomeAncestry()</em>, requires 4
+files as input:</p>
 <ul>
 <li>The <strong>1KG GDS file</strong>
 </li>
@@ -506,7 +517,7 @@ RNA-seq).</li>
 <span><span class="co">####################################################################</span></span>
 <span><span class="co">## Show the ancestry inference (SuperPop) and </span></span>
 <span><span class="co">## optimal number of PCA component D</span></span>
-<span><span class="co">## optimal number neighbour K</span></span>
+<span><span class="co">## optimal number of neighbours K</span></span>
 <span><span class="co">####################################################################</span></span>
 <span><span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -529,6 +540,7 @@ in the <em>OUTPUT</em> directory.</p>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
 <p><br><br></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="pre-processed-files-are-available">Pre-processed files are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-are-available"></a>

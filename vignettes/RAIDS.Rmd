@@ -224,52 +224,41 @@ see the vignette
 
 ### Sub-Step 2.2 Generate a SNP pileup file (1 file per profile)
 
-This step requires installation of the external code 
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) which 
-is associated to the facets package [@Shen2016]. Given a VCF file 
-containing SNP locations, 
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) 
-application outputs, for each location, 
-the read counts for the reference and alternative nucleotides from the BAM input.
-
-At this point, 
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode) is used 
-to create,for each cancer-derived profile,
-a **Profile SNP pileup file** containing the read counts for the reference and 
-alternative nucleotides at each SNP position in the 
-reference 1KG GDS file.
-The **1KG SNV Retained VCF file**, which contains the list of 
-retained 1KG SNVs, is required. 
+A file containing the read counts for the reference and alternative 
+nucleotides at each SNP position present in the 
+reference **1KG GDS file** must be created for each profile. This file is 
+refereed as a **SNP pileup file**.
 
 
-```{r graphStep2_SubStep2, echo=FALSE, fig.align="center", fig.cap="Generate a Sample SNP pileup file (1 file per sample)", out.width='100%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v01.mod.png")
+```{r graphStep2SubStep2, echo=FALSE, fig.align="center", fig.cap="Generate a Profile SNP pileup file (1 file per profile)", out.width='100%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v02.png")
 ```
 
-Note that the name assigned to the **Profile SNP pileup file** will correspond 
-to the profile identifier (Name.ID) in the following analysis. For example, a 
-SNP pileup file called "Sample.01.txt.gz" would be associated to the 
-"Sample.01" profile. 
 
-This is the command line to run 
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode):
+The read counts can be extracted using different software such as Bioconductor 
+[RSamtools](https://bioconductor.org/packages/release/bioc/html/Rsamtools.html) 
+package [@Morgan2023] and  [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode), 
+which is associated to the facets package [@Shen2016]
 
-```bash
-#####################################################################
-## Description of the parameters
-## -g : Compresses the output file with BGZF
-## -d5000 : Sets the maximum depth to 5000
-## -q15 : Sets the minimum threshold for mapping quality to 15
-## -Q20 : Sets the minimum threshold for base quality to 20
-## -r0 : Sets the minimum read counts for a position to be output to 0
-## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the 
-##     positions of all retained 1KG SNPs
-## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be
-##     compressed by the application
-## FILEBAM.bam : The aligned reads from the sample used as input
-#####################################################################
-snp-pileup -g -d5000 -q15 -Q20  -r0 path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam
-```
+
+The generic **SNP pileup file** format is coma separated and the 
+mandatory columns are:
+
+* _Chromosome_: The name of the chromosome
+* _Position_: The position on the chromosome
+* _Ref_: The reference nucleotide
+* _Alt_: The aternative nucleotide
+* _Count_: The total count
+* _File1R_: The count for the reference nucleotide
+* _File1A_: The count for the alternative nucleotide
+
+Beware that the starting position in the **1KG GDS file** is zero (like BED 
+files). The **SNP pileup file** should also start at position zero.
+
+Note that the name assigned to the **Profile SNP pileup file** has to 
+correspond to the profile identifier (Name.ID) in the following analysis. 
+For example, a SNP pileup file called "Sample.01.txt.gz" would be 
+associated to the "Sample.01" profile. 
 
 <br>
 
@@ -280,13 +269,13 @@ is required.
 
 The PED RDS file must contain a *data.frame* with these 5 columns: 
 
-- **Name.ID**: The unique sample identifier. The profile VCF file  
+- _Name.ID_: The unique sample identifier. The profile VCF file  
 should be called "Name.ID.txt.gz". 
-- **Case.ID**: The patient identifier associated to the sample.
-- **Sample.Type**: The information about the profile tissue source 
+- _Case.ID_: The patient identifier associated to the sample.
+- _Sample.Type_: The information about the profile tissue source 
 (primary tumor, metastatic tumor, normal, etc..). 
-- **Diagnosis**: The donor's diagnosis.
-- **Source**: The source of the profile sequence data (example: dbGAP_XYZ).
+- _Diagnosis_: The donor's diagnosis.
+- _Source_: The source of the profile sequence data (example: dbGAP_XYZ).
 
 Important: The row names of the *data.frame* must be the profiles' **Name.ID**.
 
@@ -365,71 +354,71 @@ also required. The *data.frame* must contain those 3 columns:
 
 
 ```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
-####################################################################
+#########################################################################
 ## Load required packages
-####################################################################
+#########################################################################
 library(RAIDS)    
 library(gdsfmt)
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-#################################################################
+#########################################################################
 ## The path and file name for the PED RDS file
 ## will the information about the analyzed samples
-#################################################################
+#########################################################################
 filePED <- file.path(dataDir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 head(ped)
 
-#################################################################
+#########################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file
 ## need to be located in the same directory
 ## Note that the 1KG GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
-#################################################################
+#########################################################################
 path1KG <- file.path(dataDir, "example", "gdsRef")
 
 fileGDS <- file.path(path1KG, "ex1kg.gds")
 fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
 
-#################################################################
+#########################################################################
 ## The Sample SNP pileup files (one per sample) need
 ## to be located in the same directory.
-#################################################################
+#########################################################################
 pathGeno <- file.path(dataDir, "example", "snpPileup")
 
-#################################################################
+#########################################################################
 ## The path where the Sample GDS files (one per sample)
 ## will be created need to be specified.
-#################################################################
+#########################################################################
 pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
 
 pathOut <- file.path(dataDir, "example", "res.out")
 
-#################################################################
+#########################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
 ## those 3 columns: "study.id", "study.desc", "study.platform"
-#################################################################
+#########################################################################
 studyDF <- data.frame(study.id="MYDATA",
                    study.desc="Description",
                    study.platform="PLATFORM",
                    stringsAsFactors=FALSE)
 
-####################################################################
+#########################################################################
 ## Fix RNG seed to ensure reproducible results
-####################################################################
+#########################################################################
 set.seed(3043)
 
-####################################################################
+#########################################################################
 ## Select the profiles from 1KG for the synthetic data.
 ## Here we select 2 profiles from 1KG for each subcontinental-level
 ## Normally, we use 30 profiles from 1KG for each 
 ## subcontinental-level but it is too big for the example.
 ## The 1KG files in this example only have 6 profiles for each 
 ## subcontinental-level (for demo purpose only)
-####################################################################
+#########################################################################
 gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
@@ -452,13 +441,16 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo[25] <- length(Hsapiens[["chrM"]])
 
 
-####################################################################
+#########################################################################
 ## The wrapper function generates the synthetic dataset and uses it 
 ## to selected the optimal parameters before calling the genetic 
 ## ancestry on the current profiles.
 ## All important information, for each step, are saved in 
 ## multiple output files.
-####################################################################
+## The 'genoSource' parameter has 2 options depending on how the 
+##   SNP pileup files have been generated: 
+##      "snp-pileup" (snp-pileup software) or "generic" (other software)
+#########################################################################
 runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
@@ -471,11 +463,11 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
 list.files(pathOut)
 list.files(file.path(pathOut, ped$Name.ID[1]))
 
-####################################################################
+#########################################################################
 ## The file containing the ancestry inference (SuperPop column) and 
 ## optimal number of PCA component (D column)
 ## optimal number of neighbours (K column)
-####################################################################
+#########################################################################
 resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
 resAncestry
@@ -514,10 +506,39 @@ Beware that some of these files are large.
 <br>
 <br>
 
+
+# Frequently asked questions
+
+## How to generate a SNP pileup file with snp-pileup?
+
+This is an example of the command line to run with 
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode):
+
+```bash
+#####################################################################
+## Description of the parameters
+## -g : Compresses the output file with BGZF
+## -d5000 : Sets the maximum depth to 5000
+## -q15 : Sets the minimum threshold for mapping quality to 15
+## -Q20 : Sets the minimum threshold for base quality to 20
+## -r0 : Sets the minimum read counts for a position to be output to 0
+## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the 
+##     positions of all retained 1KG SNPs
+## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be
+##     compressed by the application
+## FILEBAM.bam : The aligned reads from the sample used as input
+#####################################################################
+snp-pileup -g -d5000 -q15 -Q20  -r0 path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam
+```
+
+<br>
+<br>
+
+
 # Session info
 
-Here is the output of `sessionInfo()` in the enviroment in which this document was 
-compiled:
+Here is the output of `sessionInfo()` in the environment in which this 
+document was compiled:
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()

@@ -322,7 +322,7 @@ validateComputeSyntheticRoc <- function(matKNN, matKNNAncestryColumn, pedCall,
     ## The pedCallAncestryColumn must be a column in the pedCall data frame
     if (!(pedCallAncestryColumn %in% colnames(pedCall))) {
         stop("The \'pedCallAncestryColumn\' must be a column in the ",
-             "\'pedCall\' data frame.")
+                "\'pedCall\' data frame.")
     }
 
     ## The listCall must be character string

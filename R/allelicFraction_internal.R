@@ -1056,11 +1056,11 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 
         ## Always use the small count as input
         vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-                        matCov$cnt.alt[i], matCov$cnt.ref[i])
+                            matCov$cnt.alt[i], matCov$cnt.ref[i])
 
         ## Calculate the probability with assumption 0f 0.5 ratio
         pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
-                       prob=vMean)
+                            prob=vMean)
 
         ## Ensure value is not below 0.01
         pCurO <- max(1 - max(2 * pCur, 0.01), 0.01)

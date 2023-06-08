@@ -348,9 +348,9 @@ The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 A *data.frame* containing the general information about the study is 
 also required. The *data.frame* must contain those 3 columns:
 
-- **study.id**: The study identifier (example: TCGA-BRCA).
-- **study.desc**: The description of the study.
-- **study.platform**: The type of sequencing (example: RNA-seq).
+- _study.id_: The study identifier (example: TCGA-BRCA).
+- _study.desc_: The description of the study.
+- _study.platform_: The type of sequencing (example: RNA-seq).
 
 
 ```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}

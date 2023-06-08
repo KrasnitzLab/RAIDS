@@ -49,7 +49,7 @@ represents the frequency of phase switching in the synthetic profiles,
 Default: \code{0.01}.}
 
 \item{minProb}{a single positive \code{numeric} between 0 and 1 that
-represents the probability that the genotype is correct. TODO.
+represents the probability that the genotype is correct.
 Default: \code{0.999}.}
 
 \item{seqError}{a single positive \code{numeric} between 0 and 1

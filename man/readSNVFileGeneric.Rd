@@ -3,38 +3,55 @@
 \encoding{UTF-8}
 \name{readSNVFileGeneric}
 \alias{readSNVFileGeneric}
-\title{TODO}
+\title{Read a generic SNP pileup file}
 \usage{
 readSNVFileGeneric(fileName, offset = 0L)
 }
 \arguments{
-\item{fileName}{File name with the path to a
-csv with at least the columns:
-Chromosome,Position,Ref,Alt,Count,File1R,File1A
-where Count is the deep at the position,
-FileR is the deep of the reference allele, and
-File1A is the deep of the specific alternative allele}
+\item{fileName}{a \code{character} string representing the name, including
+the path, of a text file containing the SNV read counts. The text file must
+be comma separated. The text file must
+contain those columns: Chromosome, Position, Ref, Alt, Count,
+File1R and File1A.}
 
-\item{offset}{TODO}
+\item{offset}{a \code{integer} representing the offset to be added to the
+position of the SNVs. The value of offset
+is added to the position present in the file. Default: \code{0L}.}
 }
 \value{
 a \code{data.frame} containing at least:
 \itemize{
-\item{Chromosome} {TODO}
-\item{Position} {TODO}
-\item{Ref}
-\item{Alt}
-\item{File1R} {deep of the reference allele}
-\item{File1A} {deep of the alternative allele}
-\item{count} {Total deep at the position}
+\item{Chromosome}{ a \code{numeric} representing the name of
+the chromosome}
+\item{Position}{ a \code{numeric} representing the position on the
+chromosome}
+\item{Ref}{ a \code{character} string representing the reference nucleotide}
+\item{Alt}{ a \code{character} string representing the alternative
+nucleotide}
+\item{File1R} { a \code{numeric} representing the count for
+the reference nucleotide}
+\item{File1A} { a \code{numeric} representing the count for the
+alternative nucleotide}
+\item{count} { a \code{numeric} representing the total count}
 }
 }
 \description{
-TODO
+The function reads a generic SNP pileup file and
+returns a data frame
+containing the information about the read counts for the SNVs present in
+the file.
 }
 \examples{
 
-# TODO
+
+## Directory where demo SNP-pileup file
+dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
+
+## The SNP-pileup file
+snpPileupFile <- file.path(dataDir, "ex1.generic.txt.gz")
+
+info <- RAIDS:::readSNVFileGeneric(fileName=snpPileupFile)
+head(info)
 
 }
 \author{

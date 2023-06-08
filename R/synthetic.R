@@ -370,7 +370,7 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
 #' Default: \code{0.01}.
 #'
 #' @param minProb a single positive \code{numeric} between 0 and 1 that
-#' represents the probability that the genotype is correct. TODO.
+#' represents the probability that the genotype is correct.
 #' Default: \code{0.999}.
 #'
 #' @param seqError a single positive \code{numeric} between 0 and 1

@@ -333,7 +333,8 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #' @param minCov a single positive \code{integer} representing the minimum
 #' required coverage.
 #'
-#' @param minProb a single \code{numeric} between 0 and 1 representing TODO.
+#' @param minProb  a single positive \code{numeric} between 0 and 1 that
+#' represents the probability that the genotype is correct.
 #'
 #' @param eProb a single \code{numeric} between 0 and 1 representing the
 #' probability of sequencing error.

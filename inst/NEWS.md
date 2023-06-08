@@ -1,3 +1,12 @@
+CHANGES IN VERSION 0.99.5
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The function documentation has been improved.
+    o New vignette has been created. The vignette covers the steps done by the runExomeAncestry() function.
+    
+
 CHANGES IN VERSION 0.99.4
 ------------------------
 

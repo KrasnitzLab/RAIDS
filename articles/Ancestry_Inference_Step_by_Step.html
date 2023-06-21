@@ -103,7 +103,7 @@ Krasnitz [aut]<br><strong>Version</strong>: 0.99.5<br><strong>Compiled date</str
 <p>This is an overview of genetic ancestry inference from cancer-derived
 molecular data:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v01.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
+<img src="MainSteps_v02.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
 An overview of the genetic ancestry inference process.
 </p>
 </div>
@@ -125,8 +125,9 @@ from Step 2, sub-step 4, to Step 4.</p>
 <h3 id="step-1---format-reference-data-from-the-1000-genomes-optional">Step 1 - Format reference data from the 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-reference-data-from-the-1000-genomes-optional"></a>
 </h3>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step1_v01.png" alt="Step 1 - Formatting the information from 1000 Genomes (optional)" width="120%"><p class="caption">
-Step 1 - Formatting the information from 1000 Genomes (optional)
+<img src="MainSteps_Step1_v02.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
+Step 1 - Formatting the information from the population reference
+dataset (optional)
 </p>
 </div>
 <p>The detail execution of this step is presented in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
@@ -141,7 +142,7 @@ Genomes (optional)</a> vignette.</p>
 <p>Molecular profiles in a cancer-derived data set must be formatted
 following a series of sub-steps.</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_v01.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
+<img src="MainSteps_Step2_v02.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
 Step 2 - Formatting the information from an external study
 </p>
 </div>
@@ -475,7 +476,7 @@ Step 2.6 - The information is added into the nodes in light blue.
 <p>At this step, optimization of the parameters is required to maximize
 the the ancestry inference accuracy (next step).</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step3_v01.png" alt="Step 3 - Find the optimized parameters for the ancestry inference" width="120%"><p class="caption">
+<img src="MainSteps_Step3_v02.png" alt="Step 3 - Find the optimized parameters for the ancestry inference" width="120%"><p class="caption">
 Step 3 - Find the optimized parameters for the ancestry inference
 </p>
 </div>
@@ -487,10 +488,10 @@ Step 3 - Find the optimized parameters for the ancestry inference
 <em>D</em>: the number of PCA components retained</li>
 </ul>
 <p>The accuracy is evaluated using a synthetic data set created from
-merging one cancer profile with multiple 1KG profiles of known ancestry.
-Using the synthetic profiles, a range of <em>K</em> and <em>D</em>
-values are tested. Through that process, the <em>K</em> and <em>D</em>
-values are tuned to maximize accuracy.</p>
+merging one cancer profile with multiple population referecne profiles
+of known ancestry. Using the synthetic profiles, a range of <em>K</em>
+and <em>D</em> values are tested. Through that process, the <em>K</em>
+and <em>D</em> values are tuned to maximize accuracy.</p>
 <p>This step consists of two sub-steps:</p>
 <ol style="list-style-type: decimal">
 <li>Generate the synthetic dataset</li>

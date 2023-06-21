@@ -166,13 +166,14 @@ package is required.</p>
 <p>This is an overview of genetic ancestry inference from cancer-derived
 molecular data:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v01.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
+<img src="MainSteps_v02.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
 An overview of the genetic ancestry inference process.
 </p>
 </div>
 <p>The main steps are:</p>
 <ol style="list-style-type: decimal">
-<li>Format reference data from the 1000 Genomes (1KG) (optional)</li>
+<li>Format reference data from the population reference dataset
+(optional)</li>
 <li>Format cancer-derived data set starting from BAM files</li>
 <li>Optimize ancestry inference parameters</li>
 <li>Infer ancestry for the subjects of the external study</li>
@@ -182,22 +183,24 @@ An overview of the genetic ancestry inference process.
 the default parameters, in one command with the <a href="#wrapper">wrapper</a> function.</p>
 <p><br><br></p>
 <div class="section level3">
-<h3 id="step-1---format-reference-data-from-the-1000-genomes-optional">Step 1 - Format reference data from the 1000 Genomes (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-reference-data-from-the-1000-genomes-optional"></a>
+<h3 id="step-1---format-population-reference-dataset-optional">Step 1 - Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-population-reference-dataset-optional"></a>
 </h3>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step1_v01.png" alt="Step 1 - Formatting the information from 1000 Genomes (optional)" width="120%"><p class="caption">
-Step 1 - Formatting the information from 1000 Genomes (optional)
+<img src="MainSteps_Step1_v02.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
+Step 1 - Formatting the information from the population reference
+dataset (optional)
 </p>
 </div>
 <hr>
 <p>At this step three important reference files are created:</p>
 <ul>
-<li>The 1KG GDS File</li>
-<li>The 1KG SNV Annotation GDS file</li>
-<li>The 1KG SNV Retained VCF file</li>
+<li>The population reference GDS File</li>
+<li>The population reference SNV Annotation GDS file</li>
+<li>The population reference SNV Retained VCF file</li>
 </ul>
 <p><span style="color:darkred;font-weight:bold">Note that these
-pre-processed files are available at:</span></p>
+pre-processed files are available for 1000 Genomes (1KG), in hg38,
+at:</span></p>
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
@@ -207,8 +210,8 @@ mapped on hg38 <span class="citation">(Lowy-Gallego et al.
 2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
-<p>The execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from 1000
-Genomes (optional)</a> vignette.</p>
+<p>The execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from the
+population reference dataset (optional)</a> vignette.</p>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -217,22 +220,21 @@ Genomes (optional)</a> vignette.</p>
 <p>Molecular profiles in a cancer-derived data set must be formatted
 following a series of sub-steps.</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_v01.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
+<img src="MainSteps_Step2_v02.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
 Step 2 - Formatting the information from an external study
 </p>
 </div>
 <p><br></p>
 <p>These sub-steps are:</p>
 <ol style="list-style-type: decimal">
-<li>Create a directory containing the 3 reference files from 1KG</li>
+<li>Create a directory containing the 3 reference files from the
+population reference</li>
 <li>Make a SNP pileup file for each profile</li>
 <li>Create an RDS file containing information about the profiles</li>
 </ol>
 <p>Note that a mapped BAM file is needed for each sample (step 2). The
 reference genome used for the mapping must be the same as the one used
-to generate the 1KG GDS file. The 1KG GDS file available for download
-(<span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
-</span>) is based on the hg38 genome build.</p>
+to generate the population reference GDS file.</p>
 <p><br></p>
 <div class="section level4">
 <h4 id="sub-step-2-1-create-a-directory-containing-the-3-required-reference-files">Sub-Step 2.1 Create a directory containing the 3 required reference
@@ -240,21 +242,21 @@ files<a class="anchor" aria-label="anchor" href="#sub-step-2-1-create-a-director
 </h4>
 <p>The 3 required reference files should be stored in the same
 directory. In the example below, this directory is referred to as
-<strong>path1KG</strong>.</p>
+<strong>pathReference</strong>.</p>
 <p>For more information on creating your own reference files, see the
 vignette <a href="Create_1KG_GDS_file.html">Formatting the information
-from 1000 Genomes (optional)</a>.</p>
+from the population reference dataset (optional)</a>.</p>
 <p><br></p>
 </div>
 <div class="section level4">
 <h4 id="sub-step-2-2-generate-a-snp-pileup-file-1-file-per-profile">Sub-Step 2.2 Generate a SNP pileup file (1 file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-2-generate-a-snp-pileup-file-1-file-per-profile"></a>
 </h4>
 <p>A file containing the read counts for the reference and alternative
-nucleotides at each SNP position present in the reference <strong>1KG
-GDS file</strong> must be created for each profile. This file is
-refereed as a <strong>SNP pileup file</strong>.</p>
+nucleotides at each SNP position present in the <strong>population
+reference GDS File </strong> must be created for each profile. This file
+is refereed as a <strong>Profile SNP pileup file</strong>.</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_SubStep2_SNP-Pileup_v02.png" alt="Generate a Profile SNP pileup file (1 file per profile)" width="100%"><p class="caption">
+<img src="MainSteps_Step2_SubStep2_SNP-Pileup_v03.png" alt="Generate a Profile SNP pileup file (1 file per profile)" width="100%"><p class="caption">
 Generate a Profile SNP pileup file (1 file per profile)
 </p>
 </div>
@@ -263,8 +265,8 @@ Bioconductor <a href="https://bioconductor.org/packages/release/bioc/html/Rsamto
 package <span class="citation">(Morgan et al. 2023)</span> and <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>,
 which is associated to the facets package <span class="citation">(Shen
 and Seshan 2016)</span></p>
-<p>The generic <strong>SNP pileup file</strong> format is coma separated
-and the mandatory columns are:</p>
+<p>The generic <strong>Profile SNP pileup file</strong> format is coma
+separated and the mandatory columns are:</p>
 <ul>
 <li>
 <em>Chromosome</em>: The name of the chromosome</li>
@@ -281,9 +283,9 @@ and the mandatory columns are:</p>
 <li>
 <em>File1A</em>: The count for the alternative nucleotide</li>
 </ul>
-<p>Beware that the starting position in the <strong>1KG GDS
-file</strong> is zero (like BED files). The <strong>SNP pileup
-file</strong> should also start at position zero.</p>
+<p>Beware that the starting position in the <strong>population reference
+GDS File</strong> is zero (like BED files). The <strong>Profile SNP
+pileup file</strong> should also start at position zero.</p>
 <p>Note that the name assigned to the <strong>Profile SNP pileup
 file</strong> has to correspond to the profile identifier (Name.ID) in
 the following analysis. For example, a SNP pileup file called
@@ -291,7 +293,7 @@ the following analysis. For example, a SNP pileup file called
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sub-step-2-3-create-a-profile-ped-rds-file-containing-the-information-about-the-profiles">Sub-Step 2.3 Create a profile PED RDS file containing the
+<h4 id="sub-step-2-3-create-a-profile-ped-rds-file-containing-the-information-about-the-profiles">Sub-Step 2.3 Create a Profile PED RDS file containing the
 information about the profiles<a class="anchor" aria-label="anchor" href="#sub-step-2-3-create-a-profile-ped-rds-file-containing-the-information-about-the-profiles"></a>
 </h4>
 <p>An RDS file describing all the profiles to be analyzed is
@@ -362,7 +364,7 @@ command<a class="anchor" aria-label="anchor" href="#final-step---wrapper-functio
 <p>The final step can be run with a wrapper function that encapsulates
 multiple steps of the workflow.</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Wrapper_v01.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
+<img src="MainSteps_Wrapper_v02.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
 Final step - The wrapper function encapsulates multiple steps of the
 workflow.
 </p>
@@ -377,14 +379,15 @@ ancestry on the current profiles.</p>
 <p>The wrapper function, called <em>runExomeAncestry()</em>, requires 4
 files as input:</p>
 <ul>
-<li>The <strong>1KG GDS file</strong>
+<li>The <strong>population reference GDS file</strong>
 </li>
-<li>The <strong>1KG SNV Annotation GDS file</strong>
+<li>The <strong>population reference SNV Annotation GDS
+file</strong>
 </li>
-<li>The <strong>Sample SNP pileup file</strong> (one per sample present
+<li>The <strong>Profile SNP pileup file</strong> (one per sample present
 in the study)</li>
-<li>The <strong>Sample PED RDS file</strong> (one file with information
-for all samples in the study)</li>
+<li>The <strong>Profile PED RDS file</strong> (one file with information
+for all profiles in the study)</li>
 </ul>
 <p>A <em>data.frame</em> containing the general information about the
 study is also required. The <em>data.frame</em> must contain those 3
@@ -419,15 +422,15 @@ RNA-seq).</li>
 <span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
-<span><span class="co">## The 1KG GDS file and the 1KG SNV Annotation GDS file</span></span>
-<span><span class="co">## need to be located in the same directory</span></span>
-<span><span class="co">## Note that the 1KG GDS file used for this example is a</span></span>
+<span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
+<span><span class="co">## need to be located in the same directory.</span></span>
+<span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
 <span><span class="co">#########################################################################</span></span>
-<span><span class="va">path1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
+<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
-<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path1KG</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span>
@@ -459,12 +462,14 @@ RNA-seq).</li>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
-<span><span class="co">## Select the profiles from 1KG for the synthetic data.</span></span>
-<span><span class="co">## Here we select 2 profiles from 1KG for each subcontinental-level</span></span>
-<span><span class="co">## Normally, we use 30 profiles from 1KG for each </span></span>
+<span><span class="co">## Select the profiles from the population reference GDS file for </span></span>
+<span><span class="co">## the synthetic data.</span></span>
+<span><span class="co">## Here we select 2 profiles from the simplified 1KG GDS for each </span></span>
+<span><span class="co">## subcontinental-level.</span></span>
+<span><span class="co">## Normally, we use 30 profile for each </span></span>
 <span><span class="co">## subcontinental-level but it is too big for the example.</span></span>
 <span><span class="co">## The 1KG files in this example only have 6 profiles for each </span></span>
-<span><span class="co">## subcontinental-level (for demo purpose only)</span></span>
+<span><span class="co">## subcontinental-level (for demo purpose only).</span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span>
@@ -538,7 +543,8 @@ also created.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="pre-processed-reference-files-are-available">Pre-processed reference files are available<a class="anchor" aria-label="anchor" href="#pre-processed-reference-files-are-available"></a>
+<h2 id="pre-processed-reference-files-are-available-for-1000-genomes-1kg-in-hg38">Pre-processed reference files are available for 1000 Genomes (1KG)
+in hg38<a class="anchor" aria-label="anchor" href="#pre-processed-reference-files-are-available-for-1000-genomes-1kg-in-hg38"></a>
 </h2>
 <p>Pre-processed files, such as the 1KG GDS file, are available at this
 address:</p>

@@ -53,7 +53,7 @@ from cancer-derived molecular data:
 
 
 ```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
-knitr::include_graphics("MainSteps_Step1_v01.png")
+knitr::include_graphics("MainSteps_Step1_v02.png")
 ```
 
 

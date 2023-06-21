@@ -110,12 +110,12 @@ This is an overview of genetic ancestry inference from cancer-derived
 molecular data:
 
 ```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_v01.png")
+knitr::include_graphics("MainSteps_v02.png")
 ```
 
 The main steps are:
 
-1. Format reference data from the 1000 Genomes (1KG) (optional)
+1. Format reference data from the population reference dataset (optional)
 2. Format cancer-derived data set starting from BAM files
 3. Optimize ancestry inference parameters
 4. Infer ancestry for the subjects of the external study
@@ -129,11 +129,11 @@ in one command with the [wrapper](#wrapper) function.
 <br>
 <br>
 
-## Step 1 - Format reference data from the 1000 Genomes (optional)
+## Step 1 - Format population reference dataset (optional)
 
 
-```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step1_v01.png")
+```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("MainSteps_Step1_v02.png")
 ```
 
 
@@ -141,12 +141,12 @@ knitr::include_graphics("MainSteps_Step1_v01.png")
 
 At this step three important reference files are created:
 
-- The 1KG GDS File
-- The 1KG SNV Annotation GDS file
-- The 1KG SNV Retained VCF file
+- The population reference GDS File
+- The population reference SNV Annotation GDS file
+- The population reference SNV Retained VCF file
 
 <span style="color:darkred;font-weight:bold">Note that these pre-processed 
-files are available at:</span>
+files are available for 1000 Genomes (1KG), in hg38, at:</span>
 
 <span style="color:red">
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
@@ -161,7 +161,7 @@ hg38 [@Lowy-Gallego2019a].</span>
 <span style="color:darkred;font-weight:bold">This section can be skipped if 
 you choose to use the pre-processed files.</span>
 
-The execution of this step is explained in the [Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html) 
+The execution of this step is explained in the [Formatting the information from the population reference dataset (optional)](Create_1KG_GDS_file.html) 
 vignette.
 
 <br>
@@ -172,34 +172,32 @@ Molecular profiles in a cancer-derived data set must be formatted
 following a series of sub-steps.
 
 ```{r graphStep2, echo=FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step2_v01.png")
+knitr::include_graphics("MainSteps_Step2_v02.png")
 ```
 
 <br>
 
 These sub-steps are:
 
-1. Create a directory containing the 3 reference files from 1KG
+1. Create a directory containing the 3 reference files from the population reference
 2. Make a SNP pileup file for each profile
 3. Create an RDS file containing information about the profiles
 
 Note that a mapped BAM file is needed for each sample (step 2). 
 The reference 
 genome used for the mapping must be the same as the one used to generate the
-1KG GDS file. The 1KG GDS file available for download (<span style="color:red">
-[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
-</span>) is based on the hg38 genome build.
+population reference GDS file. 
 
 <br>
 
 ### Sub-Step 2.1 Create a directory containing the 3 required reference files
 
 The 3 required reference files should be stored in the same directory. In the 
-example below, this directory is referred to as **path1KG**.
+example below, this directory is referred to as **pathReference**.
 
 For more information on creating your own reference files, 
 see the vignette 
-[Formatting the information from 1000 Genomes (optional)](Create_1KG_GDS_file.html).
+[Formatting the information from the population reference dataset (optional)](Create_1KG_GDS_file.html).
 
 <br>
 
@@ -207,22 +205,23 @@ see the vignette
 
 A file containing the read counts for the reference and alternative 
 nucleotides at each SNP position present in the 
-reference **1KG GDS file** must be created for each profile. This file is 
-refereed as a **SNP pileup file**.
+**population reference GDS File ** must be created for each profile. 
+This file is refereed as a **Profile SNP pileup file**.
 
 
 ```{r graphStep2SubStep2, echo=FALSE, fig.align="center", fig.cap="Generate a Profile SNP pileup file (1 file per profile)", out.width='100%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v02.png")
+knitr::include_graphics("MainSteps_Step2_SubStep2_SNP-Pileup_v03.png")
 ```
 
 
 The read counts can be extracted using different software such as Bioconductor 
 [RSamtools](https://bioconductor.org/packages/release/bioc/html/Rsamtools.html) 
-package [@Morgan2023] and  [snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode), 
+package [@Morgan2023] and 
+[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode), 
 which is associated to the facets package [@Shen2016]
 
 
-The generic **SNP pileup file** format is coma separated and the 
+The generic **Profile SNP pileup file** format is coma separated and the 
 mandatory columns are:
 
 * _Chromosome_: The name of the chromosome
@@ -233,8 +232,9 @@ mandatory columns are:
 * _File1R_: The count for the reference nucleotide
 * _File1A_: The count for the alternative nucleotide
 
-Beware that the starting position in the **1KG GDS file** is zero (like BED 
-files). The **SNP pileup file** should also start at position zero.
+Beware that the starting position in the **population reference GDS File** is 
+zero (like BED files). The **Profile SNP pileup file** should also start 
+at position zero.
 
 Note that the name assigned to the **Profile SNP pileup file** has to 
 correspond to the profile identifier (Name.ID) in the following analysis. 
@@ -243,7 +243,7 @@ associated to the "Sample.01" profile.
 
 <br>
 
-### Sub-Step 2.3 Create a profile PED RDS file containing the information about the profiles
+### Sub-Step 2.3 Create a Profile PED RDS file containing the information about the profiles
 
 An RDS file describing all the profiles to be analyzed 
 is required.
@@ -306,7 +306,7 @@ The final step can be run with a wrapper function
 that encapsulates multiple steps of the workflow.
 
 ```{r graphWrapper, echo=FALSE, fig.align="center", fig.cap="Final step - The wrapper function encapsulates multiple steps of the workflow.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Wrapper_v01.png")
+knitr::include_graphics("MainSteps_Wrapper_v02.png")
 ```
 
 As a complement, the companion vignette 
@@ -321,10 +321,10 @@ the current profiles.
 
 The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 
-- The **1KG GDS file**
-- The **1KG SNV Annotation GDS file**
-- The **Sample SNP pileup file** (one per sample present in the study)
-- The **Sample PED RDS file** (one file with information for all samples in the study)
+- The **population reference GDS file**
+- The **population reference SNV Annotation GDS file**
+- The **Profile SNP pileup file** (one per sample present in the study)
+- The **Profile PED RDS file** (one file with information for all profiles in the study)
 
 A *data.frame* containing the general information about the study is 
 also required. The *data.frame* must contain those 3 columns:
@@ -353,15 +353,15 @@ ped <- readRDS(filePED)
 head(ped)
 
 #########################################################################
-## The 1KG GDS file and the 1KG SNV Annotation GDS file
-## need to be located in the same directory
-## Note that the 1KG GDS file used for this example is a
+## The population reference GDS file and SNV Annotation GDS file
+## need to be located in the same directory.
+## Note that the population reference GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #########################################################################
-path1KG <- file.path(dataDir, "example", "gdsRef")
+pathReference <- file.path(dataDir, "example", "gdsRef")
 
-fileGDS <- file.path(path1KG, "ex1kg.gds")
-fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+fileGDS <- file.path(pathReference, "ex1kg.gds")
+fileAnnotGDS <- file.path(pathReference, "exAnnot1kg.gds")
 
 #########################################################################
 ## The Sample SNP pileup files (one per sample) need
@@ -393,12 +393,14 @@ studyDF <- data.frame(study.id="MYDATA",
 set.seed(3043)
 
 #########################################################################
-## Select the profiles from 1KG for the synthetic data.
-## Here we select 2 profiles from 1KG for each subcontinental-level
-## Normally, we use 30 profiles from 1KG for each 
+## Select the profiles from the population reference GDS file for 
+## the synthetic data.
+## Here we select 2 profiles from the simplified 1KG GDS for each 
+## subcontinental-level.
+## Normally, we use 30 profile for each 
 ## subcontinental-level but it is too big for the example.
 ## The 1KG files in this example only have 6 profiles for each 
-## subcontinental-level (for demo purpose only)
+## subcontinental-level (for demo purpose only).
 #########################################################################
 gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
@@ -472,7 +474,7 @@ also created.
 <br>
 
 
-# Pre-processed reference files are available
+# Pre-processed reference files are available for 1000 Genomes (1KG) in hg38
 
 Pre-processed files, such as the 1KG GDS file, are available at this address:
 

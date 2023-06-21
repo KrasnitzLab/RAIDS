@@ -42,6 +42,7 @@ Suggests: testthat,
     rmarkdown,
     BiocStyle,
     withr,
+    GenomeInfoDb,
     BSgenome.Hsapiens.UCSC.hg38
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/

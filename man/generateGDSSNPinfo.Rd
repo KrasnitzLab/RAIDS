@@ -27,27 +27,30 @@ GDS file.
 \examples{
 
 ## Required package
-library(withr)
+library(gdsfmt)
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
+## Only execute code if withr package is available
+if (requireNamespace("withr", quietly = TRUE)) {
+    ## Path to the demo pedigree file is located in this package
+    dataDir <- system.file("extdata", package="RAIDS")
 
-## Temporary Reference GDS file
-file1KG <- local_file(file.path(dataDir, "1KG_TEMP_002.gds"))
-filenewGDS <- createfn.gds(file1KG)
+    ## Temporary Reference GDS file
+    file1KG <- withr::local_file("1KG_TEMP_002.gds")
+    filenewGDS <- createfn.gds(file1KG)
 
-## The RDS file containing the filtered SNP information
-fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+    ## The RDS file containing the filtered SNP information
+    fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
-## Add SNV information to Reference GDS
-RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-    fileFREQ=fileFilerterSNVs, verbose=TRUE)
+    ## Add SNV information to Reference GDS
+    RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
+        fileFREQ=fileFilerterSNVs, verbose=TRUE)
 
-## Close GDS file (important)
-closefn.gds(filenewGDS)
+    ## Close GDS file (important)
+    closefn.gds(filenewGDS)
 
-## Remove temporary files
-deferred_run()
+    ## Remove temporary 1KG_TEMP_002.gds file
+    withr::deferred_run()
+}
 
 }
 \author{

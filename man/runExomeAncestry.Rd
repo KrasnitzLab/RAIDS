@@ -164,7 +164,7 @@ gds1KG <- snpgdsOpen(fileReferenceGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
 
-## Chromosome length information
+## Chromosome length information for hg38
 ## chr23 is chrX, chr24 is chrY and chrM is 25
 chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
@@ -172,14 +172,10 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
     156040895L, 57227415L,  16569L)
 
-## A formal way to get the chormosome length information
+## A formal way to get the chromosome length information for hg38
+## library(GenomeInfoDb)
 ## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- integer(25L)
-## for(i in seq_len(22L)){ chrInfo[i] <-
-##                          length(Hsapiens[[paste0("chr", i)]])}
-## chrInfo[23] <- length(Hsapiens[["chrX"]])
-## chrInfo[24] <- length(Hsapiens[["chrY"]])
-## chrInfo[25] <- length(Hsapiens[["chrM"]])
+## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 \dontrun{
 runExomeAncestry(pedStudy=ped, studyDF=studyDF,

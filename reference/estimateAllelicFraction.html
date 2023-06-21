@@ -195,16 +195,13 @@ message when running. Default: <code>FALSE</code>.</p></dd>
     <h2>Details</h2>
     <p>The `chrInfo` parameter contains the length of the chromosomes. The
 length of the chromosomes can be obtain through the
-<code><a href="https://rdrr.io/pkg/BSgenome/man/BSgenome-class.html" class="external-link">BSgenome-class</a></code>
+<code><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlengths</a></code>
 library.</p>
-<p>As example:</p>
+<p>As example, for hg38 genome:</p>
 <p>```</p>
-<p>library(BSgenome.Hsapiens.UCSC.hg38)</p>
-<p>chrInfo &lt;- integer(25L)</p>
-<p>for(i in seq_len(22L)) chrInfo[i] &lt;- length(Hsapiens[[paste0("chr", i)]])</p>
-<p>chrInfo[23] &lt;- length(Hsapiens[["chrX"]])
-chrInfo[24] &lt;- length(Hsapiens[["chrY"]])
-chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</p>
+<p>if (requireNamespace("GenomeInfoDb", quietly = TRUE) &amp;&amp;
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)) 
+     chrInfo &lt;- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]</p>
 <p>```</p>
     </div>
     <div id="author">
@@ -248,13 +245,9 @@ chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</p>
 <span class="r-in"><span>    <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## A formal way to get the chormosome length information</span></span></span>
+<span class="r-in"><span><span class="co">## library(GenomeInfoDb)</span></span></span>
 <span class="r-in"><span><span class="co">## library(BSgenome.Hsapiens.UCSC.hg38)</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo &lt;- integer(25L)</span></span></span>
-<span class="r-in"><span><span class="co">## for(i in seq_len(22L)){ chrInfo[i] &lt;-</span></span></span>
-<span class="r-in"><span><span class="co">##                          length(Hsapiens[[paste0("chr", i)]])}</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[23] &lt;- length(Hsapiens[["chrX"]])</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo &lt;- GenomeInfoDb::seqlengths(Hsapiens)[1:25]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Estimate the allelic fraction of the pruned SNVs</span></span></span>
 <span class="r-in"><span><span class="fu">estimateAllelicFraction</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>, gdsProfile<span class="op">=</span><span class="va">profileGDS</span>,</span></span>

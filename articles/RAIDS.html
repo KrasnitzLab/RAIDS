@@ -96,7 +96,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.5<br><strong>Compiled date</strong>: 2023-06-08<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.5<br><strong>Compiled date</strong>: 2023-06-21<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -238,23 +238,9 @@ to generate the 1KG GDS file. The 1KG GDS file available for download
 <h4 id="sub-step-2-1-create-a-directory-containing-the-3-required-reference-files">Sub-Step 2.1 Create a directory containing the 3 required reference
 files<a class="anchor" aria-label="anchor" href="#sub-step-2-1-create-a-directory-containing-the-3-required-reference-files"></a>
 </h4>
-<p>The 3 required reference files may be downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG GDS file</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Annotation GDS file</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">## The 1KG SNV Retained VCF file</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">####################################</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz</span></code></pre></div>
-<p>The 3 files should be stored in the same directory. In the example
-below, this directory is referred to as <strong>path1KG</strong>.</p>
+<p>The 3 required reference files should be stored in the same
+directory. In the example below, this directory is referred to as
+<strong>path1KG</strong>.</p>
 <p>For more information on creating your own reference files, see the
 vignette <a href="Create_1KG_GDS_file.html">Formatting the information
 from 1000 Genomes (optional)</a>.</p>
@@ -336,7 +322,7 @@ profiles’ <strong>Name.ID</strong>.</p>
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
 else).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##############################################################</span></span>
 <span><span class="co">## Location of the Profile PED RDS file to be created</span></span>
 <span><span class="co">##############################################################</span></span>
@@ -357,7 +343,7 @@ else).</p>
 <span><span class="co">##############################################################</span></span>
 <span><span class="co">## The row names must correspond to the name of the profiles</span></span>
 <span><span class="co">##############################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedDF</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedDF</span><span class="op">$</span><span class="va">Name.ID</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedDF</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedDF</span><span class="op">$</span><span class="va">Name.ID</span></span>
 <span></span>
 <span><span class="co">##############################################################</span></span>
 <span><span class="co">## Save the data frame into a RDS file</span></span>
@@ -412,7 +398,7 @@ columns:</p>
 <em>study.platform</em>: The type of sequencing (example:
 RNA-seq).</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#########################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#########################################################################</span></span>
@@ -484,7 +470,7 @@ RNA-seq).</li>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Chromosome length information</span></span>
+<span><span class="co">## Chromosome length information for hg38</span></span>
 <span><span class="co">## chrInfo[23] is chrX, chrInfo[24] is chrY and chrM is chrInfo[25]</span></span>
 <span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span>
 <span> <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span>
@@ -492,14 +478,10 @@ RNA-seq).</li>
 <span> <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span>
 <span> <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## A formal way to get the chormosome length information</span></span>
+<span><span class="co">## A formal way to get the chormosome length information for hg38</span></span>
+<span><span class="co">## library(GenomeInfoDb)</span></span>
 <span><span class="co">## library(BSgenome.Hsapiens.UCSC.hg38)</span></span>
-<span><span class="co">## chrInfo &lt;- integer(25L)</span></span>
-<span><span class="co">## for(i in seq_len(22L)){ chrInfo[i] &lt;-</span></span>
-<span><span class="co">##                          length(Hsapiens[[paste0("chr", i)]])}</span></span>
-<span><span class="co">## chrInfo[23] &lt;- length(Hsapiens[["chrX"]])</span></span>
-<span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span>
-<span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span>
+<span><span class="co">## chrInfo &lt;- GenomeInfoDb::seqlengths(Hsapiens)[1:25]</span></span>
 <span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
@@ -536,7 +518,7 @@ RNA-seq).</li>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resAncestry</span></span>
 <span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 13      EAS</span></span>
+<span><span class="co">## 1       ex1 6 14      AMR</span></span>
 <span></span>
 <span><span class="co">## Remove temporary files created for this demo</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -563,30 +545,6 @@ address:</p>
 <p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
 <p>Beware that some of these files are large.</p>
 <p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="frequently-asked-questions">Frequently asked questions<a class="anchor" aria-label="anchor" href="#frequently-asked-questions"></a>
-</h2>
-<div class="section level3">
-<h3 id="how-to-generate-a-snp-pileup-file-with-snp-pileup">How to generate a SNP pileup file with snp-pileup?<a class="anchor" aria-label="anchor" href="#how-to-generate-a-snp-pileup-file-with-snp-pileup"></a>
-</h3>
-<p>This is an example of the command line to run with <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Description of the parameters</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">## -g : Compresses the output file with BGZF</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">## -d5000 : Sets the maximum depth to 5000</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">## -q15 : Sets the minimum threshold for mapping quality to 15</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">## -Q20 : Sets the minimum threshold for base quality to 20</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">## -r0 : Sets the minimum read counts for a position to be output to 0</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the </span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">##     positions of all retained 1KG SNPs</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">##     compressed by the application</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">## FILEBAM.bam : The aligned reads from the sample used as input</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#####################################################################</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-pileup</span> <span class="at">-g</span> <span class="at">-d5000</span> <span class="at">-q15</span> <span class="at">-Q20</span>  <span class="at">-r0</span> path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam</span></code></pre></div>
-<p><br><br></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>

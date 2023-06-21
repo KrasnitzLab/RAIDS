@@ -264,7 +264,7 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Chromosome length information</span></span></span>
+<span class="r-in"><span><span class="co">## Chromosome length information for hg38</span></span></span>
 <span class="r-in"><span><span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span></span>
 <span class="r-in"><span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span></span>
 <span class="r-in"><span>    <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span></span>
@@ -272,14 +272,10 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span>    <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span></span>
 <span class="r-in"><span>    <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## A formal way to get the chormosome length information</span></span></span>
+<span class="r-in"><span><span class="co">## A formal way to get the chromosome length information for hg38</span></span></span>
+<span class="r-in"><span><span class="co">## library(GenomeInfoDb)</span></span></span>
 <span class="r-in"><span><span class="co">## library(BSgenome.Hsapiens.UCSC.hg38)</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo &lt;- integer(25L)</span></span></span>
-<span class="r-in"><span><span class="co">## for(i in seq_len(22L)){ chrInfo[i] &lt;-</span></span></span>
-<span class="r-in"><span><span class="co">##                          length(Hsapiens[[paste0("chr", i)]])}</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[23] &lt;- length(Hsapiens[["chrX"]])</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[24] &lt;- length(Hsapiens[["chrY"]])</span></span></span>
-<span class="r-in"><span><span class="co">## chrInfo[25] &lt;- length(Hsapiens[["chrM"]])</span></span></span>
+<span class="r-in"><span><span class="co">## chrInfo &lt;- GenomeInfoDb::seqlengths(Hsapiens)[1:25]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">runExomeAncestry</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>

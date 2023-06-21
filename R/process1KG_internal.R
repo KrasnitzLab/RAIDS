@@ -257,7 +257,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
                                             length(startIndex)))
                     # List of SNV in the gene
                     listP <- which(matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] >= dfGenneAllChr$start[genePos] &
-                                matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
+                        matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
 
                     # if SNV in the gene
                     if (length(listP) > 0) {

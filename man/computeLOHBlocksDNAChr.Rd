@@ -87,7 +87,7 @@ fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 ## Open the reference GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
 
-## Chromosome length information
+## Chromosome length information for hg38
 ## chr23 is chrX, chr24 is chrY and chrM is 25
 chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,

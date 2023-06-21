@@ -94,22 +94,17 @@ the type of study (DNA or RNA).
 \details{
 The `chrInfo` parameter contains the length of the chromosomes. The
 length of the chromosomes can be obtain through the
-\code{\link[BSgenome]{BSgenome-class}}
+\code{\link[GenomeInfoDb]{seqlengths}}
 library.
 
-As example:
+As example, for hg38 genome:
 
 ```
 
-library(BSgenome.Hsapiens.UCSC.hg38)
-
-chrInfo <- integer(25L)
-
-for(i in seq_len(22L)){ chrInfo[i] <- length(Hsapiens[[paste0("chr", i)]])}
-
-chrInfo[23] <- length(Hsapiens[["chrX"]])
-chrInfo[24] <- length(Hsapiens[["chrY"]])
-chrInfo[25] <- length(Hsapiens[["chrM"]])
+if (requireNamespace("GenomeInfoDb", quietly = TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)) {
+     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+}
 
 ```
 }
@@ -147,13 +142,9 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
     156040895L, 57227415L,  16569L)
 
 ## A formal way to get the chormosome length information
+## library(GenomeInfoDb)
 ## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- integer(25L)
-## for(i in seq_len(22L)){ chrInfo[i] <-
-##                          length(Hsapiens[[paste0("chr", i)]])}
-## chrInfo[23] <- length(Hsapiens[["chrX"]])
-## chrInfo[24] <- length(Hsapiens[["chrY"]])
-## chrInfo[25] <- length(Hsapiens[["chrM"]])
+## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 ## Estimate the allelic fraction of the pruned SNVs
 estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,

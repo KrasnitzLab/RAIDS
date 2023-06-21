@@ -194,27 +194,8 @@ genome used for the mapping must be the same as the one used to generate the
 
 ### Sub-Step 2.1 Create a directory containing the 3 required reference files
 
-The 3 required reference files may be downloaded:
-
-```bash
-####################################
-## The 1KG GDS file
-####################################
-wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
-
-####################################
-## The 1KG SNV Annotation GDS file
-####################################
-wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
-
-####################################
-## The 1KG SNV Retained VCF file
-####################################
-wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/snvSel0.01.vcf.gz
-```
-
-The 3 files should be stored in the same directory. In the example below, 
-this directory is referred to as **path1KG**.
+The 3 required reference files should be stored in the same directory. In the 
+example below, this directory is referred to as **path1KG**.
 
 For more information on creating your own reference files, 
 see the vignette 
@@ -423,7 +404,7 @@ gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
 
-## Chromosome length information
+## Chromosome length information for hg38
 ## chrInfo[23] is chrX, chrInfo[24] is chrY and chrM is chrInfo[25]
 chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
  181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
@@ -431,14 +412,10 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
  83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
  156040895L, 57227415L,  16569L)
 
-## A formal way to get the chormosome length information
+## A formal way to get the chormosome length information for hg38
+## library(GenomeInfoDb)
 ## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- integer(25L)
-## for(i in seq_len(22L)){ chrInfo[i] <-
-##                          length(Hsapiens[[paste0("chr", i)]])}
-## chrInfo[23] <- length(Hsapiens[["chrX"]])
-## chrInfo[24] <- length(Hsapiens[["chrY"]])
-## chrInfo[25] <- length(Hsapiens[["chrM"]])
+## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 
 #########################################################################
@@ -506,33 +483,6 @@ Beware that some of these files are large.
 <br>
 <br>
 
-
-# Frequently asked questions
-
-## How to generate a SNP pileup file with snp-pileup?
-
-This is an example of the command line to run with 
-[snp-pileup](https://github.com/mskcc/facets/tree/master/inst/extcode):
-
-```bash
-#####################################################################
-## Description of the parameters
-## -g : Compresses the output file with BGZF
-## -d5000 : Sets the maximum depth to 5000
-## -q15 : Sets the minimum threshold for mapping quality to 15
-## -Q20 : Sets the minimum threshold for base quality to 20
-## -r0 : Sets the minimum read counts for a position to be output to 0
-## path1KG/snvSel0.01.vcf.gz : The SNP Retained VCF file containing the 
-##     positions of all retained 1KG SNPs
-## pathOut/Name.ID.txt : The name of the output Sample VCF file that will be
-##     compressed by the application
-## FILEBAM.bam : The aligned reads from the sample used as input
-#####################################################################
-snp-pileup -g -d5000 -q15 -Q20  -r0 path1KG/snvSel0.01.vcf.gz pathOut/Name.ID.txt FILEBAM.bam
-```
-
-<br>
-<br>
 
 
 # Session info

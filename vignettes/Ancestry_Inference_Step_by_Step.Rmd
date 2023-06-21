@@ -42,7 +42,7 @@ This is an overview of genetic ancestry inference from cancer-derived
 molecular data:
 
 ```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_v01.png")
+knitr::include_graphics("MainSteps_v02.png")
 ```
 
 The main steps are:
@@ -66,8 +66,8 @@ Step 2, sub-step 4, to Step 4.
 ## Step 1 - Format reference data from the 1000 Genomes (optional)
 
 
-```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step1_v01.png")
+```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("MainSteps_Step1_v02.png")
 ```
 
 
@@ -87,7 +87,7 @@ Molecular profiles in a cancer-derived data set must be formatted
 following a series of sub-steps.
 
 ```{r graphStep2, echo=FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step2_v01.png")
+knitr::include_graphics("MainSteps_Step2_v02.png")
 ```
 
 <br>
@@ -411,7 +411,7 @@ At this step, optimization of the parameters is required to maximize the
 the ancestry inference accuracy (next step).
 
 ```{r graphStep3, echo=FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step3_v01.png")
+knitr::include_graphics("MainSteps_Step3_v02.png")
 ```
 
 Two inference parameters to be optimized:
@@ -420,7 +420,7 @@ Two inference parameters to be optimized:
 - _D_: the number of PCA components retained
 
 The accuracy is evaluated using a synthetic data set created from merging one 
-cancer profile with multiple 1KG profiles of known ancestry. Using the 
+cancer profile with multiple population referecne profiles of known ancestry. Using the 
 synthetic profiles, a range of _K_ and _D_ values are tested. Through that 
 process, the _K_ and _D_ values are tuned to maximize accuracy.
 

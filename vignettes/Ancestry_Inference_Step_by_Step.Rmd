@@ -653,7 +653,7 @@ number of neighbors used for the classification.
 
 
 ```{r graphStep4, echo=FALSE, fig.align="center", fig.cap="Step 4 - Run the ancestry inference on the external study", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step4_v01.png")
+knitr::include_graphics("MainSteps_Step4_v02.png")
 ```
 
 <br>

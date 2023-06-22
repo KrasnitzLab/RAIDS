@@ -67,7 +67,7 @@ Step 2, sub-step 4, to Step 4.
 
 
 ```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step1_v02.png")
+knitr::include_graphics("MainSteps_Step1_v03.png")
 ```
 
 
@@ -87,7 +87,7 @@ Molecular profiles in a cancer-derived data set must be formatted
 following a series of sub-steps.
 
 ```{r graphStep2, echo=FALSE, fig.align="center", fig.cap="Step 2 - Formatting the information from an external study", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step2_v02.png")
+knitr::include_graphics("MainSteps_Step2_v03.png")
 ```
 
 <br>

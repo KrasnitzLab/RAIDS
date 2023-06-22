@@ -1,5 +1,5 @@
 ---
-title: "Formatting the information from 1000 Genomes (optional)"
+title: "Formatting the information from the population reference dataset (optional)"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
     BiocStyle::html_document:
@@ -12,7 +12,7 @@ urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-    %\VignetteIndexEntry{Formatting the information from 1000 Genomes (optional)}
+    %\VignetteIndexEntry{Formatting the information from the population reference dataset (optional)}
     %\VignettePackage{RAIDS}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
@@ -40,7 +40,7 @@ set.seed(121444)
 <br>
 <br>
 
-# Step 1 - Formatting the information from 1000 Genomes (optional)
+# Step 1 - Formatting the information from the population reference dataset (optional)
 
 
 This is an overview of the main steps to infer the genetic ancestry  
@@ -53,7 +53,7 @@ from cancer-derived molecular data:
 
 
 ```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from 1000 Genomes (optional)", out.width = '120%', results='asis'}
-knitr::include_graphics("MainSteps_Step1_v02.png")
+knitr::include_graphics("MainSteps_Step1_v03.png")
 ```
 
 

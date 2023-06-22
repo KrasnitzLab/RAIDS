@@ -110,7 +110,7 @@ This is an overview of genetic ancestry inference from cancer-derived
 molecular data:
 
 ```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_v02.png")
+knitr::include_graphics("MainSteps_v03.png")
 ```
 
 The main steps are:

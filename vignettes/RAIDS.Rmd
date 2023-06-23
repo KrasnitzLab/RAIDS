@@ -306,7 +306,7 @@ The final step can be run with a wrapper function
 that encapsulates multiple steps of the workflow.
 
 ```{r graphWrapper, echo=FALSE, fig.align="center", fig.cap="Final step - The wrapper function encapsulates multiple steps of the workflow.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Wrapper_v02.png")
+knitr::include_graphics("MainSteps_Wrapper_v03.png")
 ```
 
 As a complement, the companion vignette 

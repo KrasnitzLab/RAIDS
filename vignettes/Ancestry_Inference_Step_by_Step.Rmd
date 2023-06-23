@@ -411,7 +411,7 @@ At this step, optimization of the parameters is required to maximize the
 the ancestry inference accuracy (next step).
 
 ```{r graphStep3, echo=FALSE, fig.align="center", fig.cap="Step 3 - Find the optimized parameters for the ancestry inference", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step3_v02.png")
+knitr::include_graphics("MainSteps_Step3_v03.png")
 ```
 
 Two inference parameters to be optimized:
@@ -653,7 +653,7 @@ number of neighbors used for the classification.
 
 
 ```{r graphStep4, echo=FALSE, fig.align="center", fig.cap="Step 4 - Run the ancestry inference on the external study", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step4_v01.png")
+knitr::include_graphics("MainSteps_Step4_v02.png")
 ```
 
 <br>

@@ -155,7 +155,7 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' ## Differnt code depending of the withr package availability
+#' ## Different code depending of the withr package availability
 #' if (requireNamespace("withr", quietly = TRUE)) {
 #'     ## Path to the demo pedigree file is located in this package
 #'     dataDir <- system.file("extdata", package="RAIDS")

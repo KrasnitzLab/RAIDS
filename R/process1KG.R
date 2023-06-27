@@ -295,9 +295,6 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #'
 #' @examples
 #'
-#' ## Required package
-#' library(withr)
-#'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -310,16 +307,34 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' ## The RDS file containing the filtered SNP information
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
-#' ## Temporary GDS file containing 1KG information
-#' gdsFile <- local_file(file.path(dataDir, "1KG_TEMP.gds"))
+#' ## Different code depending of the withr package availability
+#' if (requireNamespace("withr", quietly = TRUE)) {
 #'
-#' ## Create a temporary GDS file containing information from 1KG
-#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'     fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'     fileNameGDS=gdsFile, listSamples=NULL)
+#'     ## Temporary GDS file containing 1KG information
+#'     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
 #'
-#' ## Remove temporary files
-#' deferred_run()
+#'     ## Create a temporary GDS file containing information from 1KG
+#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'
+#'     ## Remove temporary files
+#'     withr::deferred_run()
+#'
+#' } else {
+#'
+#'     ## Temporary GDS file containing 1KG information
+#'     gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+#'
+#'     ## Create a temporary GDS file containing information from 1KG
+#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'
+#'     ## Remove temporary files
+#'     unlink(gdsFile)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'

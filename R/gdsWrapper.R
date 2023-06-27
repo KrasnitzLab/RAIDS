@@ -77,17 +77,18 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' ## Required package
 #' library(gdsfmt)
 #'
-#' ## Only execute code if withr package is available
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Different code depending of the withr package availability
 #' if (requireNamespace("withr", quietly = TRUE)) {
-#'     ## Path to the demo pedigree file is located in this package
-#'     dataDir <- system.file("extdata", package="RAIDS")
 #'
 #'     ## Temporary Reference GDS file
 #'     file1KG <- withr::local_file("1KG_TEMP_002.gds")
 #'     filenewGDS <- createfn.gds(file1KG)
-#'
-#'     ## The RDS file containing the filtered SNP information
-#'     fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #'     ## Add SNV information to Reference GDS
 #'     RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
@@ -98,6 +99,23 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #'
 #'     ## Remove temporary 1KG_TEMP_002.gds file
 #'     withr::deferred_run()
+#'
+#' } else {
+#'
+#'     ## Temporary Reference GDS file
+#'     file1KG <- file.path("1KG_TEMP_002.gds")
+#'     filenewGDS <- createfn.gds(file1KG)
+#'
+#'     ## Add SNV information to Reference GDS
+#'     RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
+#'         fileFREQ=fileFilerterSNVs, verbose=TRUE)
+#'
+#'     ## Close GDS file (important)
+#'     closefn.gds(filenewGDS)
+#'
+#'     ## Remove temporary 1KG_TEMP_002.gds file
+#'     unlink(file1KG)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

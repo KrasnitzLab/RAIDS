@@ -155,28 +155,49 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'
 #' @examples
 #'
-#' ## Needed package
-#' library(withr)
+#' ## Only execute code if withr package is available
+#' if (requireNamespace("withr", quietly = TRUE)) {
+#'     ## Path to the demo pedigree file is located in this package
+#'     dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
+#'     ## Demo SNV information file used as input
+#'     snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 #'
-#' ## Demo SNV information file used as input
-#' snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
+#'     ## Temporary output files
+#'     ## The first file contains the indexes of the retained SNPs
+#'     ## The second file contains the filtered SNP information
+#'     snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
+#'     filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
 #'
-#' ## Temporary output files
-#' ## The first file contains the indexes of the retained SNPs
-#' ## The second file contains the filtered SNP information
-#' snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
-#' filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
+#'     ## Create a data.frame containing the information of the retained
+#'     ## samples (samples with existing genotyping files)
+#'     generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+#'         fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
 #'
-#' ## Create a data.frame containing the information of the retained
-#' ## samples (samples with existing genotyping files)
-#' generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
-#'     fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
+#'     ## Remove temporary files
+#'     deferred_run()
+#' } else {
+#'     ## Path to the demo pedigree file is located in this package
+#'     dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## Remove temporary files
-#' deferred_run()
+#'     ## Demo SNV information file used as input
+#'     snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
+#'
+#'     ## Temporary output files
+#'     ## The first file contains the indexes of the retained SNPs
+#'     ## The second file contains the filtered SNP information
+#'     snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
+#'     filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
+#'
+#'     ## Create a data.frame containing the information of the retained
+#'     ## samples (samples with existing genotyping files)
+#'     generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+#'         fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
+#'
+#'     ## Remove temporary files
+#'     unlink(snpIndexFile, force=TRUE)
+#'     unlink(filterSNVFile, force=TRUE)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber

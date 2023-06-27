@@ -105,17 +105,18 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span><span class="co">## Required package</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Only execute code if withr package is available</span></span></span>
+<span class="r-in"><span><span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The RDS file containing the filtered SNP information</span></span></span>
+<span class="r-in"><span><span class="va">fileFilerterSNVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Different code depending of the withr package availability</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"withr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
-<span class="r-in"><span>    <span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Temporary Reference GDS file</span></span></span>
 <span class="r-in"><span>    <span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## The RDS file containing the filtered SNP information</span></span></span>
-<span class="r-in"><span>    <span class="va">fileFilerterSNVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Add SNV information to Reference GDS</span></span></span>
 <span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>,</span></span>
@@ -126,13 +127,30 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Remove temporary 1KG_TEMP_002.gds file</span></span></span>
 <span class="r-in"><span>    <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Temporary Reference GDS file</span></span></span>
+<span class="r-in"><span>    <span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Add SNV information to Reference GDS</span></span></span>
+<span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>,</span></span>
+<span class="r-in"><span>        fileFREQ<span class="op">=</span><span class="va">fileFilerterSNVs</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Close GDS file (important)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Remove temporary 1KG_TEMP_002.gds file</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-06-27 22:51:32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-06-27 22:51:32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-06-27 22:51:32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-06-27 22:51:32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-06-27 22:51:32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-06-27 22:51:32</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-06-27 23:20:29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-06-27 23:20:29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-06-27 23:20:29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-06-27 23:20:29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-06-27 23:20:29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-06-27 23:20:29</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

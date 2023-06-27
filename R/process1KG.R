@@ -166,8 +166,10 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'     ## Temporary output files
 #'     ## The first file contains the indexes of the retained SNPs
 #'     ## The second file contains the filtered SNP information
-#'     snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
-#'     filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
+#'     snpIndexFile <- withr::local_file(file.path(dataDir,
+#'                                         "listSNP_TEMP.rds"))
+#'     filterSNVFile <- withr::local_file(file.path(dataDir,
+#'                                         "mapSNVSel_TEMP.rds"))
 #'
 #'     ## Create a data.frame containing the information of the retained
 #'     ## samples (samples with existing genotyping files)
@@ -175,7 +177,7 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'         fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
 #'
 #'     ## Remove temporary files
-#'     deferred_run()
+#'     withr::deferred_run()
 #' } else {
 #'     ## Path to the demo pedigree file is located in this package
 #'     dataDir <- system.file("extdata", package="RAIDS")
@@ -186,8 +188,8 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'     ## Temporary output files
 #'     ## The first file contains the indexes of the retained SNPs
 #'     ## The second file contains the filtered SNP information
-#'     snpIndexFile <- local_file(file.path(dataDir, "listSNP_TEMP.rds"))
-#'     filterSNVFile <- local_file(file.path(dataDir, "mapSNVSel_TEMP.rds"))
+#'     snpIndexFile <- file.path(dataDir, "listSNP_TEMP.rds")
+#'     filterSNVFile <- file.path(dataDir, "mapSNVSel_TEMP.rds")
 #'
 #'     ## Create a data.frame containing the information of the retained
 #'     ## samples (samples with existing genotyping files)

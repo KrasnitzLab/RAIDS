@@ -57,13 +57,14 @@ of the SAS super population.}
 }
 \examples{
 
+## Path to the demo pedigree file is located in this package
+dataDir <- system.file("extdata", package="RAIDS")
+
+## Demo SNV information file used as input
+snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
+
 ## Different code depending of the withr package availability
 if (requireNamespace("withr", quietly = TRUE)) {
-    ## Path to the demo pedigree file is located in this package
-    dataDir <- system.file("extdata", package="RAIDS")
-
-    ## Demo SNV information file used as input
-    snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 
     ## Temporary output files
     ## The first file contains the indexes of the retained SNPs
@@ -80,12 +81,8 @@ if (requireNamespace("withr", quietly = TRUE)) {
 
     ## Remove temporary files
     withr::deferred_run()
-} else {
-    ## Path to the demo pedigree file is located in this package
-    dataDir <- system.file("extdata", package="RAIDS")
 
-    ## Demo SNV information file used as input
-    snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
+} else {
 
     ## Temporary output files
     ## The first file contains the indexes of the retained SNPs

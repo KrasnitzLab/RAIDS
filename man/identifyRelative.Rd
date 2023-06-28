@@ -43,8 +43,7 @@ between the patients.
 }
 \examples{
 
-## Needed packages
-library(withr)
+## Required package
 library(gdsfmt)
 
 ## Path to the demo pedigree file is located in this package

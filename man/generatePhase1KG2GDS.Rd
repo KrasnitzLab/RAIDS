@@ -45,7 +45,7 @@ GDS file and is added into a Reference Phase GDS file. An entry called
 \examples{
 
 ## Required package
-library(withr)
+library(gdsfmt)
 
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
@@ -60,7 +60,7 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Temporary Reference GDS file containing 1KG information
-fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
+fileReferenceGDS <- "1KG_TEMP_02.gds"
 
 ## Create a temporary Reference GDS file containing information from 1KG
 generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
@@ -68,7 +68,7 @@ generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
     fileNameGDS=fileReferenceGDS, listSamples=NULL)
 
 ## Temporary Phase GDS file that will contain the 1KG Phase information
-fileRefPhaseGDS <- local_file(file.path(dataDir, "1KG_TEMP_Phase_02.gds"))
+fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
 
 ## Create Reference Phase GDS file
 gdsPhase <- createfn.gds(fileRefPhaseGDS)
@@ -76,11 +76,9 @@ gdsPhase <- createfn.gds(fileRefPhaseGDS)
 ## Open Reference GDS file
 gdsRef <- openfn.gds(fileReferenceGDS)
 
-\dontrun{
 ## Fill temporary Reference Phase GDS file
 generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
     pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
-}
 
 ## Close 1KG Phase information file
 closefn.gds(gdsPhase)
@@ -89,7 +87,9 @@ closefn.gds(gdsPhase)
 closefn.gds(gdsRef)
 
 ## Remove temporary files
-deferred_run()
+unlink(fileReferenceGDS, force=TRUE)
+unlink(fileRefPhaseGDS, force=TRUE)
+
 
 }
 \author{

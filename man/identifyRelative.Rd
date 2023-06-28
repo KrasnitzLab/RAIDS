@@ -57,20 +57,42 @@ tmpGDS <- snpgdsOpen(fileGDS)
 ## Temporary output files
 ## The first RDS file will contain the list of unrelated patients
 ## The second RDS file will contain the kinship information between patients
-patientTmpFile <- local_file(file.path(dataDir,
-    "unrelatedPatients_TEMP.rds"))
-ibdTmpFile <- local_file(file.path(dataDir,"ibd_TEMP.rds"))
+patientTmpFile <-  "unrelatedPatients_TEMP.rds"
+ibdTmpFile <- "ibd_TEMP.rds"
 
-## Identify unrelated patients in 1KG GDS file
-identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
-    fileIBD=ibdTmpFile, filePart=patientTmpFile)
+## Different code depending of the withr package availability
+if (requireNamespace("withr", quietly = TRUE)) {
 
-## Close 1K GDS file
-closefn.gds(tmpGDS)
+    ## Temporary output files
+    ## The first RDS file will contain the list of unrelated patients
+    ## The second RDS file will contain the kinship information
+    ## between patients
+    patientTmpFileLocal <- withr::local_file(patientTmpFile)
+    ibdTmpFileLocal <- withr::local_file(ibdTmpFile)
 
-## Remove temporary files
-deferred_run()
+    ## Identify unrelated patients in 1KG GDS file
+    identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
+        fileIBD=ibdTmpFileLocal, filePart=patientTmpFileLocal)
 
+    ## Close 1K GDS file
+    closefn.gds(tmpGDS)
+
+    ## Remove temporary files
+    withr::deferred_run()
+
+} else {
+
+    ## Identify unrelated patients in 1KG GDS file
+    identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
+        fileIBD=ibdTmpFile, filePart=patientTmpFile)
+
+    ## Close 1K GDS file
+    closefn.gds(tmpGDS)
+
+    ## Remove temporary files
+    unlink(patientTmpFile, force=TRUE)
+    unlink(ibdTmpFile, force=TRUE)
+}
 
 }
 \author{

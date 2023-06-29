@@ -406,7 +406,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @examples
 #'
 #' ## Required package
-#' library(withr)
+#' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -421,7 +421,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary Reference GDS file containing 1KG information
-#' fileReferenceGDS <- local_file(file.path(dataDir, "1KG_TEMP_02.gds"))
+#' fileReferenceGDS <- "1KG_TEMP_02.gds"
 #'
 #' ## Create a temporary Reference GDS file containing information from 1KG
 #' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
@@ -429,7 +429,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'     fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
 #' ## Temporary Phase GDS file that will contain the 1KG Phase information
-#' fileRefPhaseGDS <- local_file(file.path(dataDir, "1KG_TEMP_Phase_02.gds"))
+#' fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
 #'
 #' ## Create Reference Phase GDS file
 #' gdsPhase <- createfn.gds(fileRefPhaseGDS)
@@ -437,10 +437,10 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## Open Reference GDS file
 #' gdsRef <- openfn.gds(fileReferenceGDS)
 #'
-#' \dontrun{
 #' ## Fill temporary Reference Phase GDS file
-#' generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'     pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
+#' if (FALSE) {
+#'     generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
+#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)}
 #' }
 #'
 #' ## Close 1KG Phase information file
@@ -450,7 +450,9 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' closefn.gds(gdsRef)
 #'
 #' ## Remove temporary files
-#' deferred_run()
+#' unlink(fileReferenceGDS, force=TRUE)
+#' unlink(fileRefPhaseGDS, force=TRUE)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
@@ -532,8 +534,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #'
 #' @examples
 #'
-#' ## Needed packages
-#' library(withr)
+#' ## Required package
 #' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
@@ -546,20 +547,42 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' ## Temporary output files
 #' ## The first RDS file will contain the list of unrelated patients
 #' ## The second RDS file will contain the kinship information between patients
-#' patientTmpFile <- local_file(file.path(dataDir,
-#'     "unrelatedPatients_TEMP.rds"))
-#' ibdTmpFile <- local_file(file.path(dataDir,"ibd_TEMP.rds"))
+#' patientTmpFile <-  "unrelatedPatients_TEMP.rds"
+#' ibdTmpFile <- "ibd_TEMP.rds"
 #'
-#' ## Identify unrelated patients in 1KG GDS file
-#' identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
-#'     fileIBD=ibdTmpFile, filePart=patientTmpFile)
+#' ## Different code depending of the withr package availability
+#' if (requireNamespace("withr", quietly = TRUE)) {
 #'
-#' ## Close 1K GDS file
-#' closefn.gds(tmpGDS)
+#'     ## Temporary output files
+#'     ## The first RDS file will contain the list of unrelated patients
+#'     ## The second RDS file will contain the kinship information
+#'     ## between patients
+#'     patientTmpFileLocal <- withr::local_file(patientTmpFile)
+#'     ibdTmpFileLocal <- withr::local_file(ibdTmpFile)
 #'
-#' ## Remove temporary files
-#' deferred_run()
+#'     ## Identify unrelated patients in 1KG GDS file
+#'     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
+#'         fileIBD=ibdTmpFileLocal, filePart=patientTmpFileLocal)
 #'
+#'     ## Close 1K GDS file
+#'     closefn.gds(tmpGDS)
+#'
+#'     ## Remove temporary files
+#'     withr::deferred_run()
+#'
+#' } else {
+#'
+#'     ## Identify unrelated patients in 1KG GDS file
+#'     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
+#'         fileIBD=ibdTmpFile, filePart=patientTmpFile)
+#'
+#'     ## Close 1K GDS file
+#'     closefn.gds(tmpGDS)
+#'
+#'     ## Remove temporary files
+#'     unlink(patientTmpFile, force=TRUE)
+#'     unlink(ibdTmpFile, force=TRUE)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'

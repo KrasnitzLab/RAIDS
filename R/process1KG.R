@@ -438,8 +438,10 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' gdsRef <- openfn.gds(fileReferenceGDS)
 #'
 #' ## Fill temporary Reference Phase GDS file
-#' generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'     pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
+#' if (FALSE) {
+#'     generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
+#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)}
+#' }
 #'
 #' ## Close 1KG Phase information file
 #' closefn.gds(gdsPhase)

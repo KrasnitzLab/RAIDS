@@ -125,8 +125,7 @@ The extension of the file must be '.rds'.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Needed packages</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://withr.r-lib.org" class="external-link">withr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Required package</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
@@ -139,25 +138,47 @@ The extension of the file must be '.rds'.</p></dd>
 <span class="r-in"><span><span class="co">## Temporary output files</span></span></span>
 <span class="r-in"><span><span class="co">## The first RDS file will contain the list of unrelated patients</span></span></span>
 <span class="r-in"><span><span class="co">## The second RDS file will contain the kinship information between patients</span></span></span>
-<span class="r-in"><span><span class="va">patientTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"unrelatedPatients_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ibdTmpFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,<span class="st">"ibd_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">patientTmpFile</span> <span class="op">&lt;-</span>  <span class="st">"unrelatedPatients_TEMP.rds"</span></span></span>
+<span class="r-in"><span><span class="va">ibdTmpFile</span> <span class="op">&lt;-</span> <span class="st">"ibd_TEMP.rds"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Identify unrelated patients in 1KG GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">identifyRelative</span><span class="op">(</span>gds<span class="op">=</span><span class="va">tmpGDS</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    fileIBD<span class="op">=</span><span class="va">ibdTmpFile</span>, filePart<span class="op">=</span><span class="va">patientTmpFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Different code depending of the withr package availability</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"withr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Temporary output files</span></span></span>
+<span class="r-in"><span>    <span class="co">## The first RDS file will contain the list of unrelated patients</span></span></span>
+<span class="r-in"><span>    <span class="co">## The second RDS file will contain the kinship information</span></span></span>
+<span class="r-in"><span>    <span class="co">## between patients</span></span></span>
+<span class="r-in"><span>    <span class="va">patientTmpFileLocal</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="va">patientTmpFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">ibdTmpFileLocal</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="va">ibdTmpFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Identify unrelated patients in 1KG GDS file</span></span></span>
+<span class="r-in"><span>    <span class="fu">identifyRelative</span><span class="op">(</span>gds<span class="op">=</span><span class="va">tmpGDS</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        fileIBD<span class="op">=</span><span class="va">ibdTmpFileLocal</span>, filePart<span class="op">=</span><span class="va">patientTmpFileLocal</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Close 1K GDS file</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Remove temporary files</span></span></span>
+<span class="r-in"><span>    <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Identify unrelated patients in 1KG GDS file</span></span></span>
+<span class="r-in"><span>    <span class="fu">identifyRelative</span><span class="op">(</span>gds<span class="op">=</span><span class="va">tmpGDS</span>, maf<span class="op">=</span><span class="fl">0.05</span>, thresh<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">11</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        fileIBD<span class="op">=</span><span class="va">ibdTmpFile</span>, filePart<span class="op">=</span><span class="va">patientTmpFile</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Close 1K GDS file</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Remove temporary files</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">patientTmpFile</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">ibdTmpFile</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using kinobj and divobj to partition samples into unrelated and related sets</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Working with 10 samples</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Identifying relatives for each sample using kinship threshold 0.0220970869120796</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Identifying pairs of divergent samples using divergence threshold -0.0220970869120796</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Partitioning samples into unrelated and related sets...</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Close 1K GDS file</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">tmpGDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

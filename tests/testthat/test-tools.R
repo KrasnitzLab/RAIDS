@@ -43,7 +43,7 @@ test_that("snvListVCF() must return error when offset is a character string", {
 
     error_message <- "The \'offset\' must be a single integer."
 
-    expect_error(snvListVCF(gdsReference=gds, fileOUT, offset="HELLO",
+    expect_error(snvListVCF(gdsReference=gds, fileOut, offset="HELLO",
                 freqCutoff=NULL), error_message)
 
     closefn.gds(gds)
@@ -56,11 +56,11 @@ test_that("snvListVCF() must return error when gds is a character string", {
 
     data.dir <- system.file("extdata", package="RAIDS")
 
-    fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
+    fileOut <- file.path(data.dir, "VCF_TEMP.vcf")
 
     error_message <- "The \'gdsReference\' must be an object of class \'gds.class\'."
 
-    expect_error(snvListVCF(gdsReference="welcome.txt", fileOUT=fileOUT, offset=0L,
+    expect_error(snvListVCF(gdsReference="welcome.txt", fileOut=fileOut, offset=0L,
                             freqCutoff=NULL), error_message)
 })
 
@@ -94,11 +94,11 @@ test_that("snvListVCF() must return error when freqCutoff is a character string"
     gds <- snpgdsOpen(fileGDS)
     withr::defer(closefn.gds(gds), envir = parent.frame())
 
-    fileOUT <- file.path(data.dir, "VCF_TEMP.vcf")
+    fileOut <- file.path(data.dir, "VCF_TEMP.vcf")
 
     error_message <- "The \'freqCutoff\' must be a single numeric or NULL."
 
-    expect_error(snvListVCF(gdsReference=gds, fileOUT=fileOUT, offset=0L,
+    expect_error(snvListVCF(gdsReference=gds, fileOut=fileOut, offset=0L,
                                 freqCutoff="BED"), error_message)
 })
 
@@ -112,16 +112,16 @@ test_that("snvListVCF() must return expected results when freqCutoff is NULL", {
     gds <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds), envir=parent.frame())
 
-    fileOUT <- file.path(data.dir, "VCF_TEMP_01.vcf")
-    withr::defer(unlink(fileOUT, force=TRUE), envir=parent.frame())
+    fileOut <- file.path(data.dir, "VCF_TEMP_01.vcf")
+    withr::defer(unlink(fileOut, force=TRUE), envir=parent.frame())
 
-    result1 <- suppressWarnings(snvListVCF(gdsReference=gds, fileOUT=fileOUT, offset=0L,
-                                    freqCutoff=NULL))
+    result1 <- suppressWarnings(snvListVCF(gdsReference=gds, fileOut=fileOut,
+                        offset=0L, freqCutoff=NULL))
 
     ## Read two times the vcf file,
     ## First for the columns names, second for the data
-    tmp_vcf <- readLines(fileOUT)
-    tmp_vcf_data <- read.table(fileOUT, stringsAsFactors=FALSE)
+    tmp_vcf <- readLines(fileOut)
+    tmp_vcf_data <- read.table(fileOut, stringsAsFactors=FALSE)
 
     # filter for the columns names
     tmp_vcf <- tmp_vcf[-(grep("#CHROM", tmp_vcf)+1):-(length(tmp_vcf))]
@@ -130,7 +130,7 @@ test_that("snvListVCF() must return expected results when freqCutoff is NULL", {
 
 
     expect_equal(result1, 0L)
-    expect_true(file.exists(fileOUT))
+    expect_true(file.exists(fileOut))
     expect_equal(nrow(tmp_vcf_data), 7)
     expect_equal(ncol(tmp_vcf_data), 8)
 })
@@ -145,16 +145,16 @@ test_that("snvListVCF() must return expected results when freqCutoff is 0.3", {
     gds <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gds), envir=parent.frame())
 
-    fileOUT <- file.path(data.dir, "VCF_TEMP_02.vcf")
-    withr::defer(unlink(fileOUT, force=TRUE), envir=parent.frame())
+    fileOut <- file.path(data.dir, "VCF_TEMP_02.vcf")
+    withr::defer(unlink(fileOut, force=TRUE), envir=parent.frame())
 
-    result1 <- suppressWarnings(snvListVCF(gdsReference=gds, fileOUT=fileOUT, offset=0L,
+    result1 <- suppressWarnings(snvListVCF(gdsReference=gds, fileOut=fileOut, offset=0L,
                                            freqCutoff=0.3))
 
     ## Read two times the vcf file,
     ## First for the columns names, second for the data
-    tmp_vcf <- readLines(fileOUT)
-    tmp_vcf_data <- read.table(fileOUT, stringsAsFactors=FALSE)
+    tmp_vcf <- readLines(fileOut)
+    tmp_vcf_data <- read.table(fileOut, stringsAsFactors=FALSE)
 
     # filter for the columns names
     tmp_vcf <- tmp_vcf[-(grep("#CHROM",tmp_vcf)+1):-(length(tmp_vcf))]
@@ -163,7 +163,7 @@ test_that("snvListVCF() must return expected results when freqCutoff is 0.3", {
 
 
     expect_equal(result1, 0L)
-    expect_true(file.exists(fileOUT))
+    expect_true(file.exists(fileOut))
     expect_equal(nrow(tmp_vcf_data), 2)
     expect_equal(ncol(tmp_vcf_data), 8)
 })

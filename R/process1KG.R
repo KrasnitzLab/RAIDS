@@ -401,7 +401,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @param verbose a \code{logicial} indicating if the function should
 #' print messages when running. Default: \code{FALSE}.
 #'
-#' @return The function returns \code{0L} when succesful.
+#' @return The function returns \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -440,7 +440,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## Fill temporary Reference Phase GDS file
 #' if (FALSE) {
 #'     generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)}
+#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
 #' }
 #'
 #' ## Close 1KG Phase information file
@@ -801,7 +801,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), TODO
 #'
-#' @param gdsOut an object of class \code{gds} in writing
+#' @param gdsOut an object of class \code{gds} opened in writing mode.
 #'
 #' @param PATHBLOCK TODO
 #'

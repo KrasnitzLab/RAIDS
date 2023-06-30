@@ -5,17 +5,21 @@
 \alias{groupChrPruning}
 \title{Merge the pruning files by chromosome in one file}
 \usage{
-groupChrPruning(pathPrunedGDS, filePref, fileOUT)
+groupChrPruning(pathPrunedGDS, filePref, fileOut)
 }
 \arguments{
-\item{pathPrunedGDS}{TODO}
+\item{pathPrunedGDS}{a \code{character} string representing the path where
+the pruned files for each chromosome are located.
+The path must exists.}
 
 \item{filePref}{TODO}
 
-\item{fileOUT}{TODO}
+\item{fileOut}{a \code{character} string representing name of the output
+file that will be created. THe file will contain the information for all
+pruned chromosome. The file must have a ".rds" extension.}
 }
 \value{
-TODO a \code{vector} of \code{numeric}
+The integer \code{0L} when successful.
 }
 \description{
 TODO

@@ -8,7 +8,7 @@
 addGDS1KGLDBlock(gds, listBlock, blockName, blockDesc)
 }
 \arguments{
-\item{gds}{an object of class \code{gds} opened for the sample}
+\item{gds}{an object of class \code{gds} opened in writing mode.}
 
 \item{listBlock}{TODO}
 

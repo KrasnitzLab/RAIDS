@@ -19,7 +19,7 @@ addBlockFromPlink2GDS(
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), TODO}
 
-\item{gdsOut}{an object of class \code{gds} in writing}
+\item{gdsOut}{an object of class \code{gds} opened in writing mode.}
 
 \item{PATHBLOCK}{TODO}
 

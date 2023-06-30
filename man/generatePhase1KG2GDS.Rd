@@ -34,13 +34,65 @@ file must exist. The file must be a RDS file.}
 print messages when running. Default: \code{FALSE}.}
 }
 \value{
-The function returns \code{0L} when succesful.
+The function returns \code{0L} when successful.
 }
 \description{
 The function is adding the phase information into the
 Reference Phase GDS file. The phase information is extracted from a Reference
 GDS file and is added into a Reference Phase GDS file. An entry called
 'phase' is added to the Reference Phase GDS file.
+}
+\examples{
+
+## Required package
+library(gdsfmt)
+
+## Path to the demo pedigree file is located in this package
+dataDir <- system.file("extdata", package="RAIDS")
+
+## The RDS file containing the pedigree information
+pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+
+## The RDS file containing the indexes of the retained SNPs
+snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+
+## The RDS file containing the filtered SNP information
+filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+
+## Temporary Reference GDS file containing 1KG information
+fileReferenceGDS <- "1KG_TEMP_02.gds"
+
+## Create a temporary Reference GDS file containing information from 1KG
+generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+    fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+    fileNameGDS=fileReferenceGDS, listSamples=NULL)
+
+## Temporary Phase GDS file that will contain the 1KG Phase information
+fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
+
+## Create Reference Phase GDS file
+gdsPhase <- createfn.gds(fileRefPhaseGDS)
+
+## Open Reference GDS file
+gdsRef <- openfn.gds(fileReferenceGDS)
+
+## Fill temporary Reference Phase GDS file
+if (FALSE) {
+    generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
+        pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
+}
+
+## Close 1KG Phase information file
+closefn.gds(gdsPhase)
+
+## Close Reference information file
+closefn.gds(gdsRef)
+
+## Remove temporary files
+unlink(fileReferenceGDS, force=TRUE)
+unlink(fileRefPhaseGDS, force=TRUE)
+
+
 }
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

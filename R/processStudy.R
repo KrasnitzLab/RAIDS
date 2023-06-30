@@ -618,37 +618,45 @@ pruningSample <- function(gdsReference,
 #'
 #' ## Copy the Profile GDS file demo that has been pruned
 #' ## into a test directory (deleted after the example has been run)
-#' dataDirGenotyping <- file.path(system.file("extdata", package="RAIDS"),
-#'                  "demoAddGenotype")
-#' dir.create(dataDirGenotyping, showWarnings=FALSE,
-#'                  recursive=FALSE, mode="0777")
-#' file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
-#'                  file.path(dataDirGenotyping, "ex1.gds"))
+#' dataDirGenotypingTmp <- file.path("demoAddGenotypeTmp")
 #'
-#' ## Open 1KG file
-#' gds1KG <- snpgdsOpen(fileGDS)
+#' ## Only run example if the directory containing the genotype can be created
+#' if (!dir.exists(dataDirGenotypingTmp))  {
+#'     if (dir.create(dataDirGenotypingTmp, showWarnings=FALSE,
+#'                         recursive=FALSE, mode="0777")) {
 #'
-#' ## Compute the list of pruned SNVs for a specific profile 'ex1'
-#' ## and save it in the Profile GDS file 'ex1.gds'
-#' add1KG2SampleGDS(gdsReference=gds1KG,
-#'          fileProfileGDS=file.path(dataDirGenotyping, "ex1.gds"),
-#'          currentProfile=c("ex1"),
-#'          studyID=studyDF$study.id)
+#'         ## Copy required file
+#'         file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
+#'                  file.path(dataDirGenotypingTmp, "ex1.gds"))
 #'
-#' ## Close the 1KG GDS file (it is important to always close the GDS files)
-#' closefn.gds(gds1KG)
+#'         ## Open 1KG file
+#'         gds1KG <- snpgdsOpen(fileGDS)
 #'
-#' ## Check content of Profile GDS file
-#' ## The 'pruned.study' entry should be present
-#' content <- openfn.gds(file.path(dataDirGenotyping, "ex1.gds"))
-#' content
+#'         ## Compute the list of pruned SNVs for a specific profile 'ex1'
+#'         ## and save it in the Profile GDS file 'ex1.gds'
+#'         add1KG2SampleGDS(gdsReference=gds1KG,
+#'             fileProfileGDS=file.path(dataDirGenotypingTmp, "ex1.gds"),
+#'              currentProfile=c("ex1"),
+#'              studyID=studyDF$study.id)
 #'
-#' ## Close the Profile GDS file (it is important to always close the GDS files)
-#' closefn.gds(content)
+#'         ## Close the 1KG GDS file (important)
+#'         closefn.gds(gds1KG)
 #'
-#' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(dataDirGenotyping, "ex1.gds"))
-#' unlink(dataDirGenotyping)
+#'         ## Check content of Profile GDS file
+#'         ## The 'pruned.study' entry should be present
+#'         content <- openfn.gds(file.path(dataDirGenotypingTmp, "ex1.gds"))
+#'         content
+#'
+#'         ## Close the Profile GDS file (important)
+#'         closefn.gds(content)
+#'
+#'         ## Unlink Profile GDS file (created for demo purpose)
+#'         unlink(file.path(dataDirGenotypingTmp, "ex1.gds"), force=TRUE)
+#'         unlink(dataDirGenotypingTmp, force=TRUE)
+#'
+#'     }
+#' }
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn objdesp.gdsn

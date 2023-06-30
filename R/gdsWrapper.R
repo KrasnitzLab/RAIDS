@@ -484,7 +484,7 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' @description TODO
 #'
-#' @param gds an object of class \code{gds} opened for the sample
+#' @param gds an object of class \code{gds} opened in writing mode.
 #'
 #' @param listBlock TODO
 #'

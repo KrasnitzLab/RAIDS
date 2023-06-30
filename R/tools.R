@@ -9,7 +9,7 @@
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
 #'
-#' @param fileOUT a \code{character} string representing the path and file
+#' @param fileOut a \code{character} string representing the path and file
 #' name of the VCF file that will be created wit the retained SNP information.
 #'
 #' @param offset a single \code{integer} that is added to the SNP position to
@@ -19,7 +19,7 @@
 #' @param freqCutoff a single positive \code{numeric} specifying the cut-off to
 #' keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.
 #'
-#' @return The integer \code{0} when successful.
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -34,7 +34,7 @@
 #'
 #' ## Create a VCF file with the SNV dataset present in the GDS file
 #' ## No cutoff on frequency, so all SNVs are saved
-#' snvListVCF(gdsReference=fileGDS, fileOUT=vcfFile, offset=0L, freqCutoff=NULL)
+#' snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L, freqCutoff=NULL)
 #'
 #' ## Close GDS file (IMPORTANT)
 #' closefn.gds(fileGDS)
@@ -48,7 +48,7 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-snvListVCF <- function(gdsReference, fileOUT, offset=0L, freqCutoff=NULL) {
+snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 
     ## Validate that gdsReference is an object of class gds.class
     if (!inherits(gdsReference, "gds.class")) {
@@ -112,15 +112,15 @@ snvListVCF <- function(gdsReference, fileOUT, offset=0L, freqCutoff=NULL) {
     ##                            in the range (0,1)">
     #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
 
-    cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOUT)
+    cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOut)
     cat(paste0('##FILTER=<ID=PASS,Description="All filters passed">',
-                "\n"), file = fileOUT, append=TRUE)
+                "\n"), file = fileOut, append=TRUE)
     cat(paste0('##INFO=<ID=AF,Number=A,Type=Float,',
                 'Description="Estimated allele frequency in the range (0,1)">',
-                "\n"), file = fileOUT, append=TRUE)
-    cat('#', file = fileOUT, append=TRUE)
+                "\n"), file = fileOut, append=TRUE)
+    cat('#', file = fileOut, append=TRUE)
 
-    write.table(df, file=fileOUT, sep="\t", append=TRUE, row.names=FALSE,
+    write.table(df, file=fileOut, sep="\t", append=TRUE, row.names=FALSE,
                     col.names=TRUE, quote=FALSE)
 
     ## Successful
@@ -131,13 +131,17 @@ snvListVCF <- function(gdsReference, fileOUT, offset=0L, freqCutoff=NULL) {
 #'
 #' @description TODO
 #'
-#' @param pathPrunedGDS TODO
+#' @param pathPrunedGDS a \code{character} string representing the path where
+#' the pruned files for each chromosome are located.
+#' The path must exists.
 #'
 #' @param filePref TODO
 #'
-#' @param fileOUT TODO
+#' @param fileOut a \code{character} string representing name of the output
+#' file that will be created. THe file will contain the information for all
+#' pruned chromosome. The file must have a ".rds" extension.
 #'
-#' @return TODO a \code{vector} of \code{numeric}
+#' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
@@ -149,7 +153,7 @@ snvListVCF <- function(gdsReference, fileOUT, offset=0L, freqCutoff=NULL) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
+groupChrPruning <- function(pathPrunedGDS, filePref, fileOut) {
 
     prunedList <- list()
 
@@ -168,7 +172,10 @@ groupChrPruning <- function(pathPrunedGDS, filePref, fileOUT) {
     pruned <- do.call(c, prunedList)
 
     ## Save all the information into one file
-    saveRDS(pruned, fileChr <- file.path(pathPrunedGDS, fileOUT))
+    saveRDS(pruned, fileChr <- file.path(pathPrunedGDS, fileOut))
+
+    ## Successfull
+    return(0L)
 }
 
 

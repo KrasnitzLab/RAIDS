@@ -75,7 +75,7 @@ a VCF file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">snvListVCF</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">fileOUT</span>, offset <span class="op">=</span> <span class="fl">0L</span>, freqCutoff <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">snvListVCF</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">fileOut</span>, offset <span class="op">=</span> <span class="fl">0L</span>, freqCutoff <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,7 +85,7 @@ a VCF file.</p>
 (a GDS file), the 1KG GDS file.</p></dd>
 
 
-<dt>fileOUT</dt>
+<dt>fileOut</dt>
 <dd><p>a <code>character</code> string representing the path and file
 name of the VCF file that will be created wit the retained SNP information.</p></dd>
 
@@ -105,7 +105,7 @@ keep a SNP. If <code>NULL</code>, all SNPs are retained. Default: <code>NULL</co
     <h2>Value</h2>
     
 
-<p>The integer <code>0</code> when successful.</p>
+<p>The integer <code>0L</code> when successful.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -126,7 +126,7 @@ keep a SNP. If <code>NULL</code>, all SNPs are retained. Default: <code>NULL</co
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a VCF file with the SNV dataset present in the GDS file</span></span></span>
 <span class="r-in"><span><span class="co">## No cutoff on frequency, so all SNVs are saved</span></span></span>
-<span class="r-in"><span><span class="fu">snvListVCF</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">fileGDS</span>, fileOUT<span class="op">=</span><span class="va">vcfFile</span>, offset<span class="op">=</span><span class="fl">0L</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">snvListVCF</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">fileGDS</span>, fileOut<span class="op">=</span><span class="va">vcfFile</span>, offset<span class="op">=</span><span class="fl">0L</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>appending column names to file</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>

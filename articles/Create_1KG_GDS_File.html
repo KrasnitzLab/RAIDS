@@ -96,7 +96,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.5<br><strong>Compiled date</strong>: 2023-06-29<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.5<br><strong>Compiled date</strong>: 2023-06-30<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <div class="section level2">
 <h2 id="step-1---formatting-the-information-from-the-population-reference-dataset-optional">Step 1 - Formatting the information from the population reference
@@ -459,10 +459,10 @@ file:</p>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS1kg</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The VCF file that will be created</span></span>
-<span><span class="va">fileOUT</span> <span class="op">&lt;-</span> <span class="st">"SNPretained.VCF"</span></span>
+<span><span class="va">fileOut</span> <span class="op">&lt;-</span> <span class="st">"SNPretained.VCF"</span></span>
 <span></span>
 <span><span class="co">## Generate the VCF with the retained SNP position</span></span>
-<span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds</span>, fileOUT<span class="op">=</span><span class="va">fileOUT</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/snvListVCF.html">snvListVCF</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds</span>, fileOut<span class="op">=</span><span class="va">fileOut</span>, offset<span class="op">=</span><span class="fl">1</span>, freqCutoff<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Close the 1KG GDS file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds</span><span class="op">)</span></span></code></pre></div>
@@ -472,12 +472,12 @@ so, you need to install <a href="http://www.htslib.org/download/" class="externa
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## This in not a R script</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">## This script is in bash</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Compress the new VCF file (fileOUT parameter)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> fileOUT</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Compress the new VCF file (fileOut parameter)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> fileOut</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Index the new VCF file</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">## HTSlib software is needed</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf fileOUT.gz</span></code></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf fileOut.gz</span></code></pre></div>
 <p><br><br></p>
 </div>
 </div>

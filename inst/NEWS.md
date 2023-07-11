@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.99.6
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The vignette now referes to the generic formatted reference GDS rather than 1KG GDS file to showcase that the software is not dependant of the 1KG GDS file. Any refence dataset can be used as long as the dataset is formatted into a GDS file.
+    
+
 CHANGES IN VERSION 0.99.5
 ------------------------
 

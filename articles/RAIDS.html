@@ -96,7 +96,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-07-11<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-08-08<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -166,27 +166,23 @@ package is required.</p>
 <p>This is an overview of genetic ancestry inference from cancer-derived
 molecular data:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v03.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
+<img src="MainSteps_v04.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
 An overview of the genetic ancestry inference process.
 </p>
 </div>
 <p>The main steps are:</p>
-<ol style="list-style-type: decimal">
-<li>Format reference data from the population reference dataset
-(optional)</li>
-<li>Format cancer-derived data set starting from BAM files</li>
-<li>Optimize ancestry inference parameters</li>
-<li>Infer ancestry for the subjects of the external study</li>
-</ol>
-<p>These main steps are described in detail in the following.</p>
-<p>You can also run the steps from Step 2 Sub-step 4 to the end, with
-the default parameters, in one command with the <a href="#wrapper">wrapper</a> function.</p>
+<p><strong>Step 1.</strong> Format reference data from the population
+reference dataset (optional)</p>
+<p><strong>Step 2.1</strong> Optimize ancestry inference parameters</p>
+<p><strong>Step 2.2</strong> Infer ancestry for the subjects of the
+external study</p>
+<p>These steps are described in detail in the following.</p>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="step-1---format-population-reference-dataset-optional">Step 1 - Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-population-reference-dataset-optional"></a>
 </h3>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Step1_v03.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
+<img src="MainSteps_Step1_v04.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
 Step 1 - Formatting the information from the population reference
 dataset (optional)
 </p>
@@ -198,9 +194,10 @@ dataset (optional)
 <li>The population reference SNV Annotation GDS file</li>
 <li>The population reference SNV Retained VCF file</li>
 </ul>
-<p><span style="color:darkred;font-weight:bold">Note that these
-pre-processed files are available for 1000 Genomes (1KG), in hg38,
-at:</span></p>
+<p><span style="color:darkred;font-weight:bold">The reference files
+associated to the Cancer Research associated paper are available. Note
+that these pre-processed files are for 1000 Genomes (1KG), in hg38. The
+files are available here:/span&gt;</span></p>
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
@@ -215,163 +212,17 @@ population reference dataset (optional)</a> vignette.</p>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-2---prepare-cancer-derived-data-for-ancestry-inference">Step 2 - Prepare cancer-derived data for ancestry inference<a class="anchor" aria-label="anchor" href="#step-2---prepare-cancer-derived-data-for-ancestry-inference"></a>
-</h3>
-<p>Molecular profiles in a cancer-derived data set must be formatted
-following a series of sub-steps.</p>
-<div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_v03.png" alt="Step 2 - Formatting the information from an external study" width="120%"><p class="caption">
-Step 2 - Formatting the information from an external study
-</p>
-</div>
-<p><br></p>
-<p>These sub-steps are:</p>
-<ol style="list-style-type: decimal">
-<li>Create a directory containing the 3 reference files from the
-population reference</li>
-<li>Make a SNP pileup file for each profile</li>
-<li>Create an RDS file containing information about the profiles</li>
-</ol>
-<p>Note that a mapped BAM file is needed for each sample (step 2). The
-reference genome used for the mapping must be the same as the one used
-to generate the population reference GDS file.</p>
-<p><br></p>
-<div class="section level4">
-<h4 id="sub-step-2-1-create-a-directory-containing-the-3-required-reference-files">Sub-Step 2.1 Create a directory containing the 3 required reference
-files<a class="anchor" aria-label="anchor" href="#sub-step-2-1-create-a-directory-containing-the-3-required-reference-files"></a>
-</h4>
-<p>The 3 required reference files should be stored in the same
-directory. In the example below, this directory is referred to as
-<strong>pathReference</strong>.</p>
-<p>For more information on creating your own reference files, see the
-vignette <a href="Create_1KG_GDS_file.html">Formatting the information
-from the population reference dataset (optional)</a>.</p>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="sub-step-2-2-generate-a-snp-pileup-file-1-file-per-profile">Sub-Step 2.2 Generate a SNP pileup file (1 file per profile)<a class="anchor" aria-label="anchor" href="#sub-step-2-2-generate-a-snp-pileup-file-1-file-per-profile"></a>
-</h4>
-<p>A file containing the read counts for the reference and alternative
-nucleotides at each SNP position present in the <strong>population
-reference GDS File </strong> must be created for each profile. This file
-is refereed as a <strong>Profile SNP pileup file</strong>.</p>
-<div class="figure" style="text-align: center">
-<img src="MainSteps_Step2_SubStep2_SNP-Pileup_v03.png" alt="Generate a Profile SNP pileup file (1 file per profile)" width="100%"><p class="caption">
-Generate a Profile SNP pileup file (1 file per profile)
-</p>
-</div>
-<p>The read counts can be extracted using different software such as
-Bioconductor <a href="https://bioconductor.org/packages/release/bioc/html/Rsamtools.html" class="external-link">RSamtools</a>
-package <span class="citation">(Morgan et al. 2023)</span> and <a href="https://github.com/mskcc/facets/tree/master/inst/extcode" class="external-link">snp-pileup</a>,
-which is associated to the facets package <span class="citation">(Shen
-and Seshan 2016)</span></p>
-<p>The generic <strong>Profile SNP pileup file</strong> format is coma
-separated and the mandatory columns are:</p>
-<ul>
-<li>
-<em>Chromosome</em>: The name of the chromosome</li>
-<li>
-<em>Position</em>: The position on the chromosome</li>
-<li>
-<em>Ref</em>: The reference nucleotide</li>
-<li>
-<em>Alt</em>: The aternative nucleotide</li>
-<li>
-<em>Count</em>: The total count</li>
-<li>
-<em>File1R</em>: The count for the reference nucleotide</li>
-<li>
-<em>File1A</em>: The count for the alternative nucleotide</li>
-</ul>
-<p>Beware that the starting position in the <strong>population reference
-GDS File</strong> is zero (like BED files). The <strong>Profile SNP
-pileup file</strong> should also start at position zero.</p>
-<p>Note that the name assigned to the <strong>Profile SNP pileup
-file</strong> has to correspond to the profile identifier (Name.ID) in
-the following analysis. For example, a SNP pileup file called
-“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="sub-step-2-3-create-a-profile-ped-rds-file-containing-the-information-about-the-profiles">Sub-Step 2.3 Create a Profile PED RDS file containing the
-information about the profiles<a class="anchor" aria-label="anchor" href="#sub-step-2-3-create-a-profile-ped-rds-file-containing-the-information-about-the-profiles"></a>
-</h4>
-<p>An RDS file describing all the profiles to be analyzed is
-required.</p>
-<p>The PED RDS file must contain a <em>data.frame</em> with these 5
-columns:</p>
-<ul>
-<li>
-<em>Name.ID</em>: The unique sample identifier. The profile VCF
-file<br>
-should be called “Name.ID.txt.gz”.</li>
-<li>
-<em>Case.ID</em>: The patient identifier associated to the
-sample.</li>
-<li>
-<em>Sample.Type</em>: The information about the profile tissue
-source (primary tumor, metastatic tumor, normal, etc..).</li>
-<li>
-<em>Diagnosis</em>: The donor’s diagnosis.</li>
-<li>
-<em>Source</em>: The source of the profile sequence data (example:
-dbGAP_XYZ).</li>
-</ul>
-<p>Important: The row names of the <em>data.frame</em> must be the
-profiles’ <strong>Name.ID</strong>.</p>
-<p>This file is referred to as the <strong>Profile PED RDS file</strong>
-(PED for pedigree). Alternatively, the PED information can be saved in
-another type of file (CVS, etc..) as long as the <em>data.frame</em>
-information can be regenerated in R (with <em>read.csv()</em> or
-else).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##############################################################</span></span>
-<span><span class="co">## Location of the Profile PED RDS file to be created</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
-<span><span class="va">demoPEDFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"Demo_PED.RDS"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## Create a data frame with the mandatory columns</span></span>
-<span><span class="co">## All columns are in character string format (no factor)</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="va">pedDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Name.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sample_01"</span>, <span class="st">"Sample_02"</span>, <span class="st">"Sample_03"</span><span class="op">)</span>,</span>
-<span>                    Case.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Patient_h11"</span>, <span class="st">"Patient_h12"</span>, <span class="st">"Patient_h18"</span><span class="op">)</span>, </span>
-<span>                    Sample.Type<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Primary Tumor"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    Diagnosis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Cancer"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    Source<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>                    stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## The row names must correspond to the name of the profiles</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pedDF</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pedDF</span><span class="op">$</span><span class="va">Name.ID</span></span>
-<span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="co">## Save the data frame into a RDS file</span></span>
-<span><span class="co">##############################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">pedDF</span>, file<span class="op">=</span><span class="va">demoPEDFile</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Remove RDS file (created for demo purpose)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">demoPEDFile</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="final-step---wrapper-function-to-run-ancestry-inference-in-one-command">Final Step - Wrapper function to run ancestry inference in one
-command<a class="anchor" aria-label="anchor" href="#final-step---wrapper-function-to-run-ancestry-inference-in-one-command"></a>
+<h3 id="step-2---wrapper-function-to-run-ancestry-inference-in-one-command">Step 2 - Wrapper function to run ancestry inference in one
+command<a class="anchor" aria-label="anchor" href="#step-2---wrapper-function-to-run-ancestry-inference-in-one-command"></a>
 </h3>
 <p>The final step can be run with a wrapper function that encapsulates
 multiple steps of the workflow.</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_Wrapper_v03.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
+<img src="MainSteps_Wrapper_v04.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
 Final step - The wrapper function encapsulates multiple steps of the
 workflow.
 </p>
 </div>
-<p>As a complement, the companion vignette <a href="Ancestry_Inference_Step_by_Step.html">Ancestry Inference Step by
-Step (optional)</a> describes all steps covered by the wrapper
-function.</p>
 <p>In summary, the wrapper function generates the synthetic dataset and
 uses it to selected the optimal parameters before calling the genetic
 ancestry on the current profiles.</p>
@@ -401,7 +252,63 @@ columns:</p>
 <em>study.platform</em>: The type of sequencing (example:
 RNA-seq).</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>The required <strong>population reference GDS file</strong> and
+<strong>population reference SNV Annotation GDS file</strong> should be
+stored in the same directory. In the example below, this directory is
+referred to as <strong>pathReference</strong>.</p>
+<p>The generic <strong>Profile SNP pileup file</strong> format is coma
+separated and the mandatory columns are:</p>
+<ul>
+<li>
+<em>Chromosome</em>: The name of the chromosome</li>
+<li>
+<em>Position</em>: The position on the chromosome</li>
+<li>
+<em>Ref</em>: The reference nucleotide</li>
+<li>
+<em>Alt</em>: The aternative nucleotide</li>
+<li>
+<em>Count</em>: The total count</li>
+<li>
+<em>File1R</em>: The count for the reference nucleotide</li>
+<li>
+<em>File1A</em>: The count for the alternative nucleotide</li>
+</ul>
+<p>Beware that the starting position in the <strong>population reference
+GDS File</strong> is zero (like BED files). The <strong>Profile SNP
+pileup file</strong> should also start at position zero.</p>
+<p>Note that the name assigned to the <strong>Profile SNP pileup
+file</strong> has to correspond to the profile identifier (Name.ID) in
+the following analysis. For example, a SNP pileup file called
+“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+<p>The <strong>Profile PED RDS file</strong> must contain a
+<em>data.frame</em> describing all the profiles to be analyzed. These 5
+mandatory columns:</p>
+<ul>
+<li>
+<em>Name.ID</em>: The unique sample identifier. The profile VCF
+file<br>
+should be called “Name.ID.txt.gz”.</li>
+<li>
+<em>Case.ID</em>: The patient identifier associated to the
+sample.</li>
+<li>
+<em>Sample.Type</em>: The information about the profile tissue
+source (primary tumor, metastatic tumor, normal, etc..).</li>
+<li>
+<em>Diagnosis</em>: The donor’s diagnosis.</li>
+<li>
+<em>Source</em>: The source of the profile sequence data (example:
+dbGAP_XYZ).</li>
+</ul>
+<p>Important: The row names of the <em>data.frame</em> must be the
+profiles’ <strong>Name.ID</strong>.</p>
+<p>This file is referred to as the <strong>Profile PED RDS file</strong>
+(PED for pedigree). Alternatively, the PED information can be saved in
+another type of file (CVS, etc..) as long as the <em>data.frame</em>
+information can be regenerated in R (with <em>read.csv()</em> or
+else).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#########################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#########################################################################</span></span>
@@ -434,16 +341,21 @@ RNA-seq).</li>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span>
-<span><span class="co">## to be located in the same directory.</span></span>
+<span><span class="co">## to be all located in the same directory.</span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
-<span><span class="co">## will be created need to be specified.</span></span>
+<span><span class="co">## will be created needs to be specified.</span></span>
 <span><span class="co">#########################################################################</span></span>
 <span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
 <span></span>
+<span></span>
+<span><span class="co">#########################################################################</span></span>
+<span><span class="co">## The path where the result files will be created needs to </span></span>
+<span><span class="co">## be specified</span></span>
+<span><span class="co">#########################################################################</span></span>
 <span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#########################################################################</span></span>
@@ -523,7 +435,7 @@ RNA-seq).</li>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resAncestry</span></span>
 <span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span>
 <span></span>
 <span><span class="co">## Remove temporary files created for this demo</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -663,11 +575,6 @@ phase three of the 1000 genomes project [version 2; peer review: 1
 approved, 1 not approved]</span>.”</span> <em>Wellcome Open
 Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126.1" class="external-link">https://doi.org/10.12688/wellcomeopenres.15126.1</a>.
 </div>
-<div id="ref-Morgan2023" class="csl-entry">
-Morgan, M, Pagès H, Obenchain V, and Hayden N. 2023. <span>“<span class="nocase">Rsamtools: Binary alignment (BAM), FASTA, variant call
-(BCF), and tabix file import. R package version 2.16.0</span>.”</span>
-<em>Bioconductor</em>. <a href="https://doi.org/10.18129/B9.bioc.Rsamtools" class="external-link">https://doi.org/10.18129/B9.bioc.Rsamtools</a>.
-</div>
 <div id="ref-Price2006" class="csl-entry">
 Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.
 Shadick, and D. Reich. 2006. <span>“Principal Components Analysis
@@ -678,12 +585,6 @@ Corrects for Stratification in Genome-Wide Association Studies.”</span>
 Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference
 of Population Structure Using Multilocus Genotype Data.”</span>
 <em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
-</div>
-<div id="ref-Shen2016" class="csl-entry">
-Shen, R, and V E Seshan. 2016. <span>“<span class="nocase">FACETS:
-allele-specific copy number and clonal heterogeneity analysis tool for
-high-throughput DNA sequencing</span>.”</span> <em>Nucleic Acids
-Res</em> 44 (16): e131. <a href="https://doi.org/10.1093/nar/gkw520" class="external-link">https://doi.org/10.1093/nar/gkw520</a>.
 </div>
 </div>
 </div>

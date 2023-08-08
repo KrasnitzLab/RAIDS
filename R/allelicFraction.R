@@ -234,8 +234,8 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #'
 #' ```
 #'
-#' if (requireNamespace("GenomeInfoDb", quietly = TRUE) &&
-#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)) {
+#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'      chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #' }
 #'
@@ -246,57 +246,55 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #' ## Required library for GDS
 #' library(gdsfmt)
 #'
-#' ## Path to the demo 1KG GDS file is located in this package
+#' ## Path to the demo 1KG GDS file located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
-#' ## Copy the Profile GDS file demo that has been pruned and annotated
-#' ## into a test directory (deleted after the example has been run)
-#' dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
-#'                  "demoAllelicFraction")
-#' dir.create(dataDirAllelicFraction, showWarnings=FALSE,
-#'                  recursive=FALSE, mode="0777")
-#' file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                  file.path(dataDirAllelicFraction, "ex1.gds"))
+#' ## Example can only be run if the current directory is in writing mode
+#' if (file.access(getwd()) == 0) {
+#'     ## Copy the Profile GDS file demo that has been pruned and annotated
+#'     ## into  current directory
+#'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+#'                         "ex1.gds")
 #'
-#' ## Open the reference GDS file (demo version)
-#' gds1KG <- snpgdsOpen(fileGDS)
+#'     ## Open the reference GDS file (demo version)
+#'     gds1KG <- snpgdsOpen(fileGDS)
 #'
-#' ## Profile GDS file for one profile
-#' fileProfile <- file.path(dataDirAllelicFraction, "ex1.gds")
-#' profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
+#'     ## Profile GDS file for one profile
+#'     fileProfile <- file.path("ex1.gds")
+#'     profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 #'
-#' ## Chromosome length information
-#' ## chr23 is chrX, chr24 is chrY and chrM is 25
-#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-#'     156040895L, 57227415L,  16569L)
+#'     ## Chromosome length information
+#'     ## chr23 is chrX, chr24 is chrY and chrM is 25
+#'     chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+#'         181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
+#'         133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
+#'         101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
+#'         64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
 #'
-#' ## A formal way to get the chormosome length information
-#' ## library(GenomeInfoDb)
-#' ## library(BSgenome.Hsapiens.UCSC.hg38)
-#' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+#'     ## A formal way to get the chormosome length information
+#'     ## library(GenomeInfoDb)
+#'     ## library(BSgenome.Hsapiens.UCSC.hg38)
+#'     ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
-#' ## Estimate the allelic fraction of the pruned SNVs
-#' estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,
-#'     currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo,
-#'     studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
-#'     cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
-#'     gdsRefAnnot=NULL, blockID=NULL)
+#'     ## Estimate the allelic fraction of the pruned SNVs
+#'     estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,
+#'         currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo,
+#'         studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
+#'         cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
+#'         gdsRefAnnot=NULL, blockID=NULL)
 #'
-#' ## The allelic fraction is saved in the 'lap' node of the Profile GDS file
-#' ## The 'lap' entry should be present
-#' profileGDS
+#'     ## The allelic fraction is saved in the 'lap' node of Profile GDS file
+#'     ## The 'lap' entry should be present
+#'     profileGDS
 #'
-#' ## Close both GDS files (important)
-#' closefn.gds(profileGDS)
-#' closefn.gds(gds1KG)
+#'     ## Close both GDS files (important)
+#'     closefn.gds(profileGDS)
+#'     closefn.gds(gds1KG)
 #'
-#' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
-#' unlink(dataDirAllelicFraction)
+#'     ## Unlink Profile GDS file (created for demo purpose)
+#'     unlink("ex1.gds", force=TRUE)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match

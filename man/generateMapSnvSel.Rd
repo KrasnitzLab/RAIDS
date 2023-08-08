@@ -64,7 +64,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 
 ## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly = TRUE)) {
+if (requireNamespace("withr", quietly=TRUE)) {
 
     ## Temporary output files
     ## The first file contains the indexes of the retained SNPs

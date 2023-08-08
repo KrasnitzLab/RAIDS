@@ -77,7 +77,7 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly = TRUE)) {
+if (requireNamespace("withr", quietly=TRUE)) {
 
     ## Temporary GDS file containing 1KG information
     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))

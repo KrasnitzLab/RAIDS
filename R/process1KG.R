@@ -162,7 +162,7 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #' snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 #'
 #' ## Different code depending of the withr package availability
-#' if (requireNamespace("withr", quietly = TRUE)) {
+#' if (requireNamespace("withr", quietly=TRUE)) {
 #'
 #'     ## Temporary output files
 #'     ## The first file contains the indexes of the retained SNPs
@@ -305,7 +305,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Different code depending of the withr package availability
-#' if (requireNamespace("withr", quietly = TRUE)) {
+#' if (requireNamespace("withr", quietly=TRUE)) {
 #'
 #'     ## Temporary GDS file containing 1KG information
 #'     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
@@ -551,7 +551,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' ibdTmpFile <- "ibd_TEMP.rds"
 #'
 #' ## Different code depending of the withr package availability
-#' if (requireNamespace("withr", quietly = TRUE)) {
+#' if (requireNamespace("withr", quietly=TRUE)) {
 #'
 #'     ## Temporary output files
 #'     ## The first RDS file will contain the list of unrelated patients

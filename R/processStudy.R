@@ -2255,7 +2255,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
         verbose=verbose)
 
     ## Matches a character method against a table of candidate values
-    algorithm <- arg_match(algorithm, multiple=FALSE)
+    algorithm <- arg_match(algorithm)
 
     ## Merge results from PCA run on synthetic data present in RDS files
     KNN.list <- list()

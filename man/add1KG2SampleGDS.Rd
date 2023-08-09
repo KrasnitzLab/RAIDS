@@ -49,45 +49,36 @@ studyDF <- data.frame(study.id="MYDATA",
                         study.platform="PLATFORM",
                         stringsAsFactors=FALSE)
 
-## Copy the Profile GDS file demo that has been pruned
-## into a test directory (deleted after the example has been run)
-dataDirGenotypingTmp <- file.path("demoAddGenotypeTmp")
-
 ## Only run example if the directory containing the genotype can be created
-if (!dir.exists(dataDirGenotypingTmp))  {
-    if (dir.create(dataDirGenotypingTmp, showWarnings=FALSE,
-                        recursive=FALSE, mode="0777")) {
+if (file.access(getwd()) == 0)  {
 
-        ## Copy required file
-        file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
-                 file.path(dataDirGenotypingTmp, "ex1.gds"))
+    ## Copy required file
+    file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
+        file.path(getwd(), "ex2.gds"))
 
-        ## Open 1KG file
-        gds1KG <- snpgdsOpen(fileGDS)
+    ## Open 1KG file
+    gds1KG <- snpgdsOpen(fileGDS)
 
-        ## Compute the list of pruned SNVs for a specific profile 'ex1'
-        ## and save it in the Profile GDS file 'ex1.gds'
-        add1KG2SampleGDS(gdsReference=gds1KG,
-            fileProfileGDS=file.path(dataDirGenotypingTmp, "ex1.gds"),
-             currentProfile=c("ex1"),
-             studyID=studyDF$study.id)
+    ## Compute the list of pruned SNVs for a specific profile 'ex1'
+    ## and save it in the Profile GDS file 'ex2.gds'
+    add1KG2SampleGDS(gdsReference=gds1KG,
+        fileProfileGDS=file.path(getwd(), "ex2.gds"),
+        currentProfile=c("ex1"),
+        studyID=studyDF$study.id)
 
-        ## Close the 1KG GDS file (important)
-        closefn.gds(gds1KG)
+     ## Close the 1KG GDS file (important)
+     closefn.gds(gds1KG)
 
-        ## Check content of Profile GDS file
-        ## The 'pruned.study' entry should be present
-        content <- openfn.gds(file.path(dataDirGenotypingTmp, "ex1.gds"))
-        content
+     ## Check content of Profile GDS file
+     ## The 'pruned.study' entry should be present
+     content <- openfn.gds(file.path(getwd(), "ex2.gds"))
+     content
 
-        ## Close the Profile GDS file (important)
-        closefn.gds(content)
+     ## Close the Profile GDS file (important)
+     closefn.gds(content)
 
-        ## Unlink Profile GDS file (created for demo purpose)
-        unlink(file.path(dataDirGenotypingTmp, "ex1.gds"), force=TRUE)
-        unlink(dataDirGenotypingTmp, force=TRUE)
-
-    }
+     ## Remove Profile GDS file (created for demo purpose)
+     unlink(file.path(getwd(), "ex2.gds"), force=TRUE)
 }
 
 

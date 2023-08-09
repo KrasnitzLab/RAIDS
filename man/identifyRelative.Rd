@@ -60,7 +60,7 @@ patientTmpFile <-  "unrelatedPatients_TEMP.rds"
 ibdTmpFile <- "ibd_TEMP.rds"
 
 ## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly = TRUE)) {
+if (requireNamespace("withr", quietly=TRUE)) {
 
     ## Temporary output files
     ## The first RDS file will contain the list of unrelated patients

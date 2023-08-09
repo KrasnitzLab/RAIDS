@@ -99,45 +99,44 @@ allelic fraction for the pruned SNV dataset specific to a DNA-seq profile
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
-## Copy the Profile GDS file demo that has been pruned and annotated
-## into a test directory (deleted after the example has been run)
-dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
-                 "demoAllelicFraction")
-dir.create(dataDirAllelicFraction, showWarnings=FALSE,
-                 recursive=FALSE, mode="0777")
-file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-                 file.path(dataDirAllelicFraction, "ex1.gds"))
+## Example can only be run if the current directory is in writing mode
+if (file.access(getwd()) == 0) {
 
-## Open the reference GDS file (demo version)
-gds1KG <- snpgdsOpen(fileGDS)
+    ## Copy the Profile GDS file demo that has been pruned and annotated
+    file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+                 file.path(getwd(), "ex1.gds"))
 
-## Profile GDS file for one profile
-fileProfile <- file.path(dataDirAllelicFraction, "ex1.gds")
-profileGDS <- openfn.gds(fileProfile)
+    ## Open the reference GDS file (demo version)
+    gds1KG <- snpgdsOpen(fileGDS)
 
-## Chromosome length information
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-    156040895L, 57227415L,  16569L)
+    ## Profile GDS file for one profile
+    fileProfile <- file.path(getwd(), "ex1.gds")
+    profileGDS <- openfn.gds(fileProfile)
 
-## The function returns a data frame containing the allelic fraction info
-result <- RAIDS:::computeAllelicFractionDNA(gdsReference=gds1KG,
-    gdsSample=profileGDS,
-    currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo, minCov=10L,
-    minProb=0.999, eProb=0.001, cutOffLOH=-5,
-    cutOffHomoScore=-3, wAR=9L, verbose=FALSE)
-head(result)
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+        181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
+        133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
+        101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
+        64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
 
-## Close both GDS files (important)
-closefn.gds(profileGDS)
-closefn.gds(gds1KG)
+    ## The function returns a data frame containing the allelic fraction info
+    result <- RAIDS:::computeAllelicFractionDNA(gdsReference=gds1KG,
+        gdsSample=profileGDS,
+        currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo, minCov=10L,
+        minProb=0.999, eProb=0.001, cutOffLOH=-5,
+        cutOffHomoScore=-3, wAR=9L, verbose=FALSE)
+    head(result)
 
-## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
-unlink(dataDirAllelicFraction)
+    ## Close both GDS files (important)
+    closefn.gds(profileGDS)
+    closefn.gds(gds1KG)
+
+    ## Remove Profile GDS file (created for demo purpose)
+    unlink(fileProfile, force=TRUE)
+
+}
 
 }
 \author{

@@ -131,37 +131,36 @@ samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
-## Copy the Profile GDS file demo that has not been pruned yet
-## into a test directory (deleted after the example has been run)
-dataDirPruning <- file.path(system.file("extdata", package="RAIDS"),
-                 "demoPruning")
-dir.create(dataDirPruning, showWarnings=FALSE,
-                 recursive=FALSE, mode="0777")
-file.copy(file.path(dataDir, "ex1_demo.gds"),
-                 file.path(dataDirPruning, "ex1.gds"))
+## Example can only be run if the current directory is in writing mode
+if (file.access(getwd()) == 0) {
 
-## Open 1KG file
-gds1KG <- snpgdsOpen(fileGDS)
+    ## Copy the Profile GDS file demo that has not been pruned yet
+    file.copy(file.path(dataDir, "ex1_demo.gds"),
+                 file.path(getwd(), "ex1.gds"))
 
-## Compute the list of pruned SNVs for a specific profile 'ex1'
-## and save it in the Profile GDS file 'ex1.gds'
-pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
-              studyID = studyDF$study.id, pathProfileGDS=dataDirPruning)
+    ## Open 1KG file
+    gds1KG <- snpgdsOpen(fileGDS)
 
-## Close the 1KG GDS file (it is important to always close the GDS files)
-closefn.gds(gds1KG)
+    ## Compute the list of pruned SNVs for a specific profile 'ex1'
+    ## and save it in the Profile GDS file 'ex1.gds'
+    pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
+              studyID = studyDF$study.id, pathProfileGDS=getwd())
 
-## Check content of Profile GDS file
-## The 'pruned.study' entry should be present
-content <- openfn.gds(file.path(dataDirPruning, "ex1.gds"))
-content
+    ## Close the 1KG GDS file (it is important to always close the GDS files)
+    closefn.gds(gds1KG)
 
-## Close the Profile GDS file (it is important to always close the GDS files)
-closefn.gds(content)
+    ## Check content of Profile GDS file
+    ## The 'pruned.study' entry should be present
+    content <- openfn.gds(file.path(getwd(), "ex1.gds"))
+    content
 
-## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(dataDirPruning, "ex1.gds"))
-unlink(dataDirPruning)
+    ## Close the Profile GDS file (important)
+    closefn.gds(content)
+
+    ## Remove Profile GDS file (created for demo purpose)
+    unlink(file.path(getwd(), "ex1.gds"), force=TRUE)
+
+}
 
 }
 \author{

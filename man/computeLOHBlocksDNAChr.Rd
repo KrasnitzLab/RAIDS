@@ -10,7 +10,7 @@ computeLOHBlocksDNAChr(gdsReference, chrInfo, snp.pos, chr, genoN = 1e-04)
 \arguments{
 \item{gdsReference}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
-opened 1KG GDS file.}
+opened Reference GDS file.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} representing the length of
 the chromosomes. As an example, the information ca be obtained from

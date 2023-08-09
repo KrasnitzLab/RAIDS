@@ -49,12 +49,15 @@ studyDF <- data.frame(study.id="MYDATA",
                         study.platform="PLATFORM",
                         stringsAsFactors=FALSE)
 
-## Only run example if the directory containing the genotype can be created
-if (file.access(getwd()) == 0)  {
+## Temporary Profile file
+fileProfile <- file.path(getwd(), "ex2.gds")
+
+## Only run example if the directory is writable
+if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
 
     ## Copy required file
     file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
-        file.path(getwd(), "ex2.gds"))
+        fileProfile)
 
     ## Open 1KG file
     gds1KG <- snpgdsOpen(fileGDS)
@@ -62,7 +65,7 @@ if (file.access(getwd()) == 0)  {
     ## Compute the list of pruned SNVs for a specific profile 'ex1'
     ## and save it in the Profile GDS file 'ex2.gds'
     add1KG2SampleGDS(gdsReference=gds1KG,
-        fileProfileGDS=file.path(getwd(), "ex2.gds"),
+        fileProfileGDS=fileProfile,
         currentProfile=c("ex1"),
         studyID=studyDF$study.id)
 
@@ -71,14 +74,14 @@ if (file.access(getwd()) == 0)  {
 
      ## Check content of Profile GDS file
      ## The 'pruned.study' entry should be present
-     content <- openfn.gds(file.path(getwd(), "ex2.gds"))
+     content <- openfn.gds(fileProfile)
      content
 
      ## Close the Profile GDS file (important)
      closefn.gds(content)
 
      ## Remove Profile GDS file (created for demo purpose)
-     unlink(file.path(getwd(), "ex2.gds"), force=TRUE)
+     unlink(fileProfile, force=TRUE)
 }
 
 

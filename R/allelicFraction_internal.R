@@ -1,10 +1,10 @@
 #' @title Extract the genotype information for a SNV dataset using
-#' the Profile GDS file and the 1KG GDS file
+#' the Profile GDS file and the Reference GDS file
 #'
 #' @description The function generates a \code{data.frame} containing the
 #' genotype information from a initial list of SNVs associated to a specific
-#' profile. The function uses the information present in the 1KG GDS file
-#' (reference) and the Profile GDS file.
+#' profile. The function uses the information present in the Reference GDS file
+#' and the Profile GDS file.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a
 #' GDS file), the opened 1KG GDS file.
@@ -47,7 +47,7 @@
 #' the normal genotype is unknown.}
 #' \item{pruned} { a \code{logical}}
 #' \item{snp.index} {a \code{vector} of \code{integer} representing the
-#' position of the SNVs in the 1KG GDS file.}
+#' position of the SNVs in the Reference GDS file.}
 #' \item{keep} {a \code{logical} }
 #' \item{hetero} {a \code{logical} }
 #' \item{homo} {a \code{logical} }
@@ -69,7 +69,7 @@
 #' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                  file.path(getwd(), "ex1.gds"))
+#'                  fileProfile)
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
@@ -233,7 +233,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'
 #' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
-#' opened 1KG GDS file.
+#' opened Reference GDS file.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} representing the length of
 #' the chromosomes. As an example, the information ca be obtained from
@@ -525,7 +525,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                  file.path(getwd(), "ex1.gds"))
+#'                  fileProfile)
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
@@ -655,7 +655,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' (a GDS file), the opened Profile GDS file.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opeoned 1KG SNV Annotation GDS file.
+#' (a GDS file), the opened Reference SNV Annotation GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.

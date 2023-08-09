@@ -27,7 +27,7 @@ estimateAllelicFraction(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened 1KG GDS file.}
+(a GDS file), the opened Reference GDS file.}
 
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
@@ -71,7 +71,7 @@ log score, that the SNVs in a gene are allelic fraction different 0.5
 Default: \code{3}.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG Annotation GDS file.
+(a GDS file), the opened Reference SNV Annotation GDS file.
 This parameter is RNA specific.
 Default: \code{NULL}.}
 

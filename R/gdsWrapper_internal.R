@@ -119,7 +119,7 @@ generateGDSRefSample <- function(gdsReference, dfPedReference,
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Locate RDS with unrelated/related status for 1KG samples
+#' ## Locate RDS with unrelated/related status for Reference samples
 #' dataDir <- system.file("extdata", package="RAIDS")
 #' rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 #'

@@ -107,7 +107,7 @@ if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 
     ## Copy the Profile GDS file demo that has been pruned and annotated
     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-                 file.path(getwd(), "ex1.gds"))
+                 fileProfile)
 
     ## Open the reference GDS file (demo version)
     gds1KG <- snpgdsOpen(fileGDS)

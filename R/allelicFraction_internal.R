@@ -62,8 +62,11 @@
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
+#' ## Temporary Profile GDS file for one profile
+#' fileProfile <- file.path(getwd(), "ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
 #'                  file.path(getwd(), "ex1.gds"))
@@ -71,8 +74,7 @@
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Profile GDS file for one profile
-#'     fileProfile <- file.path(getwd(), "ex1.gds")
+#'     ## Open Profile GDS file for one profile
 #'     profileGDS <- openfn.gds(fileProfile)
 #'
 #'     ## The function returns a data frame containing the SNVs information
@@ -515,8 +517,11 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
+#' ## Temporary Profile GDS file for one profile
+#' fileProfile <- file.path(getwd(), "ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 #'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
@@ -525,8 +530,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Profile GDS file for one profile
-#'     fileProfile <- file.path(getwd(), "ex1.gds")
+#'     ## Open Profile GDS file for one profile
 #'     profileGDS <- openfn.gds(fileProfile)
 #'
 #'     ## Chromosome length information

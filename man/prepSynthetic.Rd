@@ -73,11 +73,11 @@ library(gdsfmt)
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 
-## Only run example if the directory containing the genotype can be created
-if (file.access(getwd()) == 0)  {
+## Temporary Profile GDS file
+fileNameGDS <- file.path(getwd(), "ex1.gds")
 
-    ## Profile GDS file
-    fileNameGDS <- file.path(getwd(), "ex1.gds")
+## Only run example if the directory is writable
+if (file.access(getwd()) == 0 && !file.exists(fileNameGDS))  {
 
     ## Copy the Profile GDS file demo that has been pruned and annotated
     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),

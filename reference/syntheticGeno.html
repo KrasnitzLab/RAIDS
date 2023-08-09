@@ -176,62 +176,54 @@ representing the sequencing error rate. Default: <code>0.001</code>.</p></dd>
 <span class="r-in"><span><span class="co">## Path to the demo 1KG GDS file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Copy the Profile GDS file demo that has been pruned and annotated</span></span></span>
-<span class="r-in"><span><span class="co">## into a test directory (deleted after the example has been run)</span></span></span>
-<span class="r-in"><span><span class="va">dataDirAllelicFraction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 <span class="st">"demoAllelicFraction"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span>, showWarnings<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>                 recursive<span class="op">=</span><span class="cn">FALSE</span>, mode<span class="op">=</span><span class="st">"0777"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Profile GDS file</span></span></span>
-<span class="r-in"><span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span>, <span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fileNameGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo_with_pruning_and_1KG_annot.gds"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="co">## Only run example if the directory is writable</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">fileNameGDS</span><span class="op">)</span><span class="op">)</span>  <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Copy the Profile GDS file demo that has been pruned and annotated</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo_with_pruning_and_1KG_annot.gds"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                 <span class="va">fileNameGDS</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Information about the synthetic data set</span></span></span>
-<span class="r-in"><span><span class="va">syntheticStudyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id<span class="op">=</span><span class="st">"MYDATA.Synthetic"</span>,</span></span>
-<span class="r-in"><span>    study.desc<span class="op">=</span><span class="st">"MYDATA synthetic data"</span>, study.platform<span class="op">=</span><span class="st">"PLATFORM"</span>,</span></span>
-<span class="r-in"><span>    stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Information about the synthetic data set</span></span></span>
+<span class="r-in"><span>    <span class="va">syntheticStudyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id<span class="op">=</span><span class="st">"MYDATA.Synthetic"</span>,</span></span>
+<span class="r-in"><span>        study.desc<span class="op">=</span><span class="st">"MYDATA synthetic data"</span>, study.platform<span class="op">=</span><span class="st">"PLATFORM"</span>,</span></span>
+<span class="r-in"><span>        stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Add information related to the synthetic profiles into the Profile GDS</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="prepSynthetic.html">prepSynthetic</a></span><span class="op">(</span>fileProfileGDS<span class="op">=</span><span class="va">fileNameGDS</span>,</span></span>
-<span class="r-in"><span>    listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00243"</span>, <span class="st">"HG00150"</span><span class="op">)</span>, profileID<span class="op">=</span><span class="st">"ex1"</span>,</span></span>
-<span class="r-in"><span>    studyDF<span class="op">=</span><span class="va">syntheticStudyDF</span>, nbSim<span class="op">=</span><span class="fl">1L</span>, prefix<span class="op">=</span><span class="st">"synthTest"</span>,</span></span>
-<span class="r-in"><span>    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-in"><span>    <span class="co">## Add information related to the synthetic profiles into the Profile GDS</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="prepSynthetic.html">prepSynthetic</a></span><span class="op">(</span>fileProfileGDS<span class="op">=</span><span class="va">fileNameGDS</span>,</span></span>
+<span class="r-in"><span>        listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00243"</span>, <span class="st">"HG00150"</span><span class="op">)</span>, profileID<span class="op">=</span><span class="st">"ex1"</span>,</span></span>
+<span class="r-in"><span>        studyDF<span class="op">=</span><span class="va">syntheticStudyDF</span>, nbSim<span class="op">=</span><span class="fl">1L</span>, prefix<span class="op">=</span><span class="st">"synthTest"</span>,</span></span>
+<span class="r-in"><span>        verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The 1KG files</span></span></span>
-<span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span>    <span class="co">## The 1KG files</span></span></span>
+<span class="r-in"><span>    <span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>                            <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">gds1KGAnnot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span>    <span class="va">gds1KGAnnot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>                            <span class="st">"ex1_good_small_1KG_Annot_GDS.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Generate the synthetic profiles and add them into the Profile GDS</span></span></span>
-<span class="r-in"><span><span class="fu">syntheticGeno</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>, gdsRefAnnot<span class="op">=</span><span class="va">gds1KGAnnot</span>,</span></span>
-<span class="r-in"><span>    fileProfileGDS<span class="op">=</span><span class="va">fileNameGDS</span>, profileID<span class="op">=</span><span class="st">"ex1"</span>,</span></span>
-<span class="r-in"><span>    listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00243"</span>, <span class="st">"HG00150"</span><span class="op">)</span>, nbSim<span class="op">=</span><span class="fl">1</span>,</span></span>
-<span class="r-in"><span>    prefix<span class="op">=</span><span class="st">"synthTest"</span>,</span></span>
-<span class="r-in"><span>    pRecomb<span class="op">=</span><span class="fl">0.01</span>, minProb<span class="op">=</span><span class="fl">0.999</span>, seqError<span class="op">=</span><span class="fl">0.001</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-in"><span>    <span class="co">## Generate the synthetic profiles and add them into the Profile GDS</span></span></span>
+<span class="r-in"><span>    <span class="fu">syntheticGeno</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>, gdsRefAnnot<span class="op">=</span><span class="va">gds1KGAnnot</span>,</span></span>
+<span class="r-in"><span>        fileProfileGDS<span class="op">=</span><span class="va">fileNameGDS</span>, profileID<span class="op">=</span><span class="st">"ex1"</span>,</span></span>
+<span class="r-in"><span>        listSampleRef<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00243"</span>, <span class="st">"HG00150"</span><span class="op">)</span>, nbSim<span class="op">=</span><span class="fl">1</span>,</span></span>
+<span class="r-in"><span>        prefix<span class="op">=</span><span class="st">"synthTest"</span>,</span></span>
+<span class="r-in"><span>        pRecomb<span class="op">=</span><span class="fl">0.01</span>, minProb<span class="op">=</span><span class="fl">0.999</span>, seqError<span class="op">=</span><span class="fl">0.001</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Open Profile GDS file</span></span></span>
-<span class="r-in"><span><span class="va">profileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileNameGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Open Profile GDS file</span></span></span>
+<span class="r-in"><span>    <span class="va">profileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileNameGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">profileGDS</span>, <span class="st">"sample.id"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NA20872"                 "NA20906"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "NA20875"                 "ex1"                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "synthTest.ex1.HG00243.1" "synthTest.ex1.HG00150.1"</span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">profileGDS</span>, <span class="st">"sample.id"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Close GDS files (important)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">profileGDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KGAnnot</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Close GDS files (important)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">profileGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KGAnnot</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dataDirAllelicFraction</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Remove Profile GDS file (created for demo purpose)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fileNameGDS</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

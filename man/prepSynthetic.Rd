@@ -73,44 +73,44 @@ library(gdsfmt)
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 
-## Copy the Profile GDS file demo that has been pruned and annotated
-## into a test directory (deleted after the example has been run)
-dataDirAllelicFraction <- file.path(system.file("extdata", package="RAIDS"),
-                 "demoAllelicFraction")
-dir.create(dataDirAllelicFraction, showWarnings=FALSE,
-                 recursive=FALSE, mode="0777")
+## Only run example if the directory containing the genotype can be created
+if (file.access(getwd()) == 0)  {
 
-## Profile GDS file
-fileNameGDS <- file.path(dataDirAllelicFraction, "ex1.gds")
+    ## Profile GDS file
+    fileNameGDS <- file.path(getwd(), "ex1.gds")
 
-file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+    ## Copy the Profile GDS file demo that has been pruned and annotated
+    file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
                  fileNameGDS)
 
-## Information about the synthetic data set
-syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
-    study.desc="MYDATA synthetic data", study.platform="PLATFORM",
-    stringsAsFactors=FALSE)
+    ## Information about the synthetic data set
+    syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+        study.desc="MYDATA synthetic data", study.platform="PLATFORM",
+        stringsAsFactors=FALSE)
 
-## Add information related to the synthetic profiles into the Profile GDS
-prepSynthetic(fileProfileGDS=fileNameGDS,
-    listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
-    studyDF=syntheticStudyDF, nbSim=1L, prefix="synthetic", verbose=FALSE)
+    ## Add information related to the synthetic profiles into the Profile GDS
+    prepSynthetic(fileProfileGDS=fileNameGDS,
+        listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
+        studyDF=syntheticStudyDF, nbSim=1L, prefix="synthetic",
+        verbose=FALSE)
 
-## Open Profile GDS file
-profileGDS <- openfn.gds(fileNameGDS)
+    ## Open Profile GDS file
+    profileGDS <- openfn.gds(fileNameGDS)
 
-## The synthetic profiles should be added in the 'study.annot' entry
-tail(read.gdsn(index.gdsn(profileGDS, "study.annot")))
+    ## The synthetic profiles should be added in the 'study.annot' entry
+    tail(read.gdsn(index.gdsn(profileGDS, "study.annot")))
 
-## The synthetic study information should be added to the 'study.list' entry
-tail(read.gdsn(index.gdsn(profileGDS, "study.list")))
+    ## The synthetic study information should be added to
+    ## the 'study.list' entry
+    tail(read.gdsn(index.gdsn(profileGDS, "study.list")))
 
-## Close GDS file (important)
-closefn.gds(profileGDS)
+    ## Close GDS file (important)
+    closefn.gds(profileGDS)
 
-## Unlink Profile GDS file (created for demo purpose)
-unlink(file.path(dataDirAllelicFraction, "ex1.gds"))
-unlink(dataDirAllelicFraction)
+    ## Remove Profile GDS file (created for demo purpose)
+    unlink(fileNameGDS, force=TRUE)
+
+}
 
 }
 \author{

@@ -10,10 +10,10 @@ getRef1KGPop(gdsReference, popName = "superPop")
 }
 \arguments{
 \item{gdsReference}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
 \item{popName}{a \code{character} string representing the name of the column
-that will be fetched in the \code{data.frame} present in the 1KG GDS
+that will be fetched in the \code{data.frame} present in the Reference GDS
 "sample.ref" node. The column must be present in the \code{data.frame}.
  Default: \code{"superPop"}.}
 }
@@ -25,7 +25,7 @@ identifiers are used as names for the \code{vector}.
 }
 \description{
 The function extract the specified column for the 'sample.ref'
-node present in the 1KG GDS file. The column must be present in the
+node present in the Reference GDS file. The column must be present in the
 \code{data.frame} saved in the 'sample.ref' node. Only the information for
 the reference profiles is returned. The values
 represent the known ancestry assignation.
@@ -35,7 +35,7 @@ represent the known ancestry assignation.
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-## Open existing 1K GDS file with "sample.ref" node
+## Open existing demo 1K GDS file with "sample.ref" node
 nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
 fileGDS <- snpgdsOpen(nameFileGDS)
 

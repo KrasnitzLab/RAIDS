@@ -45,7 +45,7 @@ must contain the information for all the samples passed in the
 can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
-the 1KG GDS file. The file must exist.}
+the Reference GDS file. The file must exist.}
 
 \item{batch}{a single positive \code{integer} representing the current
 identifier for the batch. Beware, this field is not stored anymore.
@@ -83,10 +83,10 @@ printed. Default: \code{FALSE}.}
 The function returns \code{0L} when successful.
 }
 \description{
-The function uses the information for the 1KG GDS file and the
-RDS Sample Description file to create the Profile GDS file. One Profile GDS
-file is created per profile. One Profile GDS file will be created for each
-entry present in the \code{listProfiles} parameter.
+The function uses the information for the Reference GDS file
+and the RDS Sample Description file to create the Profile GDS file. One
+Profile GDS file is created per profile. One Profile GDS file will be
+created for each entry present in the \code{listProfiles} parameter.
 }
 \examples{
 

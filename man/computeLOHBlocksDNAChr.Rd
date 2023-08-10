@@ -35,7 +35,7 @@ the normal genotype is unknown.}
 \item{pruned} {a \code{logical} indicating if the SNV is retained after
 pruning}
 \item{snp.index} {a \code{integer} representing the index position of the
-SNV in the 1KG GDS file that contains all SNVs}
+SNV in the Reference GDS file that contains all SNVs}
 \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}

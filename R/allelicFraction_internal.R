@@ -7,7 +7,7 @@
 #' and the Profile GDS file.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a
-#' GDS file), the opened 1KG GDS file.
+#' GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -258,7 +258,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -446,7 +446,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' allelic fraction for the pruned SNV dataset specific to a DNA-seq profile
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG GDS file.
+#' (a GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -499,7 +499,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -569,7 +569,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                                 wAR=9L, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
-    ## the Profile GDS file and the 1KG GDS file
+    ## the Profile GDS file and the Reference GDS file
     snp.pos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
         currentProfile=currentProfile, studyID=studyID, minCov=minCov,
         minProb=minProb, eProb=eProb, verbose=verbose)
@@ -649,7 +649,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' TODO
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG GDS file.
+#' (a GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -712,7 +712,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
                     cutOffAR=3, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
-    ## the GDS Sample file and the 1KG GDS file
+    ## the GDS Sample file and the Reference GDS file
     snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
                                 minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
@@ -796,7 +796,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}

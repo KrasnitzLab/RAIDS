@@ -24,7 +24,7 @@ computeAllelicFractionRNA(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened 1KG GDS file.}
+(a GDS file), the opened Reference GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}

@@ -4,7 +4,8 @@
 \name{pruningSample}
 \alias{pruningSample}
 \title{Compute the list of pruned SNVs for a specific profile using the
-information from the 1KG GDS file and a linkage disequilibrium analysis}
+information from the Reference GDS file and a linkage disequilibrium
+analysis}
 \usage{
 pruningSample(
   gdsReference,
@@ -110,7 +111,7 @@ function can be specified by the user.
 ## Required library for GDS
 library(gdsfmt)
 
-## Path to the demo 1KG GDS file is located in this package
+## Path to the demo Reference GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
@@ -148,7 +149,7 @@ if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
     pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
               studyID = studyDF$study.id, pathProfileGDS=getwd())
 
-    ## Close the 1KG GDS file (it is important to always close the GDS files)
+    ## Close the Reference GDS file (important)
     closefn.gds(gds1KG)
 
     ## Check content of Profile GDS file

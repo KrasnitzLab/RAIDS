@@ -23,7 +23,7 @@ computeAllelicFractionDNA(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened 1KG GDS file.}
+(a GDS file), the opened Reference GDS file.}
 
 \item{gdsSample}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
@@ -77,7 +77,7 @@ contains those columns:
 \item{pruned} {a \code{logical} indicating if the SNV is retained after
 pruning}
 \item{snp.index} {a \code{integer} representing the index position of the
-SNV in the 1KG GDS file that contains all SNVs}
+SNV in the Reference GDS file that contains all SNVs}
 \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -99,18 +99,20 @@ allelic fraction for the pruned SNV dataset specific to a DNA-seq profile
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
+## Temporary Profile GDS file for one profile
+fileProfile <- file.path(getwd(), "ex1.gds")
+
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0) {
+if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 
     ## Copy the Profile GDS file demo that has been pruned and annotated
     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-                 file.path(getwd(), "ex1.gds"))
+                 fileProfile)
 
     ## Open the reference GDS file (demo version)
     gds1KG <- snpgdsOpen(fileGDS)
 
-    ## Profile GDS file for one profile
-    fileProfile <- file.path(getwd(), "ex1.gds")
+    ## Open Profile GDS file for one profile
     profileGDS <- openfn.gds(fileProfile)
 
     ## Chromosome length information

@@ -10,7 +10,7 @@ computeLOHBlocksDNAChr(gdsReference, chrInfo, snp.pos, chr, genoN = 1e-04)
 \arguments{
 \item{gdsReference}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
-opened 1KG GDS file.}
+opened Reference GDS file.}
 
 \item{chrInfo}{a \code{vector} of \code{integer} representing the length of
 the chromosomes. As an example, the information ca be obtained from
@@ -35,7 +35,7 @@ the normal genotype is unknown.}
 \item{pruned} {a \code{logical} indicating if the SNV is retained after
 pruning}
 \item{snp.index} {a \code{integer} representing the index position of the
-SNV in the 1KG GDS file that contains all SNVs}
+SNV in the Reference GDS file that contains all SNVs}
 \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -80,11 +80,11 @@ chromosome using the homozygote SNVs present on the chromosome.
 ## Required library for GDS
 library(gdsfmt)
 
-## Path to the demo 1KG GDS file is located in this package
+## Path to the demo Reference GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
-## Open the reference GDS file (demo version)
+## Open the Reference GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
 
 ## Chromosome length information for hg38
@@ -116,7 +116,7 @@ result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
 head(result)
 
-## Close GDS file (important)
+## Close Reference GDS file (important)
 closefn.gds(gds1KG)
 
 }

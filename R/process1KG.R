@@ -1,6 +1,6 @@
-#' @title Prepare the pedigree file using pedigree information from 1KG
+#' @title Prepare the pedigree file using pedigree information from Reference
 #'
-#' @description Using the pedigree file from 1KG, this function extracts
+#' @description Using the pedigree file from Reference, this function extracts
 #' needed information and formats it into a \code{data.frame} so in can
 #' be used in following steps of the ancestry inference process. The
 #' function also requires that the genotyping files associated to each
@@ -8,22 +8,23 @@
 #'
 #' @param filePed a \code{character} string representing the path and
 #' file name of the pedigree file (PED file) that contains the information
-#' related to the profiles present in the 1KG GDS file. The PED file must
+#' related to the profiles present in the Reference GDS file. The PED file must
 #' exist.
 #'
 #' @param pathGeno a \code{character} string representing the path where
-#' the 1KG genotyping files for each profile are located. Only the profiles
-#' with associated genotyping files are retained in the creation of the final
-#' \code{data.frame}. The name of the genotyping files must correspond to
-#' the individual identification (Individual.ID) in the pedigree file
-#' (PED file).
+#' the Reference genotyping files for each profile are located. Only the
+#' profiles with associated genotyping files are retained in the creation of
+#' the final \code{data.frame}. The name of the genotyping files must
+#' correspond to the individual identification (Individual.ID) in the
+#' pedigree file (PED file).
 #' Default: \code{"./data/sampleGeno"}.
 #'
 #' @param batch a\code{integer} that uniquely identifies the source of the
-#' pedigree information. The 1KG is usually \code{0L}. Default: \code{0L}.
+#' pedigree information. The Reference is usually \code{0L}.
+#' Default: \code{0L}.
 #'
 #' @return a \code{data.frame} containing the needed pedigree information
-#' from 1KG. The \code{data.frame} contains those columns:
+#' from Reference. The \code{data.frame} contains those columns:
 #' \itemize{
 #' \item{sample.id}{a \code{character} string representing the profile unique
 #' ID.}
@@ -59,7 +60,7 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
     ## Validate parameters
     validatePrepPed1KG(filePed=filePed, pathGeno=pathGeno, batch=batch)
 
-    ## Read the pedigree file from 1KG
+    ## Read the pedigree file from Reference
     ped1KG <- read.delim(filePed)
 
     ## Create a data.frame containing the needed information
@@ -71,8 +72,8 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
                 stringsAsFactors=FALSE)
 
     ## Create a list with all populations associated to each super-population
-    ## TODO The population versus super.population is hard-coded
-    ## TODO change to parameters
+    ## NOTE The population versus super.population is hard-coded
+    ## NOTE change to parameters
     listSuperPop1000G <- list()
     listSuperPop1000G[['EAS']] <- c("CHB", "JPT", "CHS", "CDX", "KHV")
     listSuperPop1000G[['EUR']] <- c("CEU", "TSI", "FIN", "GBR", "IBS")
@@ -117,8 +118,8 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #' for the frequency in at least one super population. Default: \code{0.01}.
 #'
 #' @param fileSNV  a \code{character} string representing the path and
-#' file name of the bulk SNP information file from 1KG. The file must be in
-#' text format. The file must exist.
+#' file name of the bulk SNP information file from Reference. The file must
+#' be in text format. The file must exist.
 #'
 #' @param fileSNPsRDS a \code{character} string representing the path and
 #' file name of the RDS file that will contain the indexes of the retained
@@ -243,12 +244,12 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 }
 
 
-#' @title Generate the GDS file that will contain the information from 1KG
-#' data set (reference data set)
+#' @title Generate the GDS file that will contain the information from
+#' Reference data set (reference data set)
 #'
 #' @description This function generates the GDS file that will contain the
-#' information from 1KG. The function also add the samples information, the
-#' SNP information and the genotyping information into the GDS file.
+#' information from Reference. The function also add the samples information,
+#' the SNP information and the genotyping information into the GDS file.
 #'
 #' @param pathGeno a \code{character} string representing the path where
 #' the 1K genotyping files for each sample are located. The name of the
@@ -304,33 +305,38 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' ## The RDS file containing the filtered SNP information
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
-#' ## Different code depending of the withr package availability
-#' if (requireNamespace("withr", quietly=TRUE)) {
+#' ## Temporary Reference GDS file
+#' tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
 #'
-#'     ## Temporary GDS file containing 1KG information
-#'     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
 #'
-#'     ## Create a temporary GDS file containing information from 1KG
-#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'     ## Different code depending of the withr package availability
+#'     if (requireNamespace("withr", quietly=TRUE)) {
 #'
-#'     ## Remove temporary files
-#'     withr::deferred_run()
+#'         ## Temporary Reference GDS file
+#'         gdsFile <- withr::local_file(tempRefGDS)
 #'
-#' } else {
+#'         ## Create a temporary Reference GDS file containing
+#'         ## information from reference file
+#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'             fileNameGDS=gdsFile, listSamples=NULL)
 #'
-#'     ## Temporary GDS file containing 1KG information
-#'     gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+#'         ## Remove temporary files
+#'         withr::deferred_run()
 #'
-#'     ## Create a temporary GDS file containing information from 1KG
-#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'     } else {
 #'
-#'     ## Remove temporary files
-#'     unlink(gdsFile)
+#'         ## Create a temporary Reference GDS file
+#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'             fileNameGDS=tempRefGDS, listSamples=NULL)
 #'
+#'         ## Remove temporary files
+#'         unlink(tempRefGDS, force=TRUE)
+#'
+#'     }
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -420,39 +426,45 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## The RDS file containing the filtered SNP information
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
-#' ## Temporary Reference GDS file containing 1KG information
+#' ## Temporary Reference GDS file containing reference information
 #' fileReferenceGDS <- "1KG_TEMP_02.gds"
 #'
-#' ## Create a temporary Reference GDS file containing information from 1KG
-#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'     fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'     fileNameGDS=fileReferenceGDS, listSamples=NULL)
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(fileReferenceGDS)) {
 #'
-#' ## Temporary Phase GDS file that will contain the 1KG Phase information
-#' fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
+#'     ## Create a temporary Reference GDS file containing information from 1KG
+#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
-#' ## Create Reference Phase GDS file
-#' gdsPhase <- createfn.gds(fileRefPhaseGDS)
+#'     ## Temporary Phase GDS file that will contain the 1KG Phase information
+#'     fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
 #'
-#' ## Open Reference GDS file
-#' gdsRef <- openfn.gds(fileReferenceGDS)
+#'     ## Create Reference Phase GDS file
+#'     gdsPhase <- createfn.gds(fileRefPhaseGDS)
 #'
-#' ## Fill temporary Reference Phase GDS file
-#' if (FALSE) {
-#'     generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
+#'     ## Open Reference GDS file
+#'     gdsRef <- openfn.gds(fileReferenceGDS)
+#'
+#'     ## Fill temporary Reference Phase GDS file
+#'     if (FALSE) {
+#'         generatePhase1KG2GDS(gdsReference=gdsRef,
+#'             gdsReferencePhase=gdsPhase,
+#'             pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
+#'             verbose=FALSE)
+#'     }
+#'
+#'     ## Close Reference Phase information file
+#'     closefn.gds(gdsPhase)
+#'
+#'     ## Close Reference information file
+#'     closefn.gds(gdsRef)
+#'
+#'     ## Remove temporary files
+#'     unlink(fileReferenceGDS, force=TRUE)
+#'     unlink(fileRefPhaseGDS, force=TRUE)
+#'
 #' }
-#'
-#' ## Close 1KG Phase information file
-#' closefn.gds(gdsPhase)
-#'
-#' ## Close Reference information file
-#' closefn.gds(gdsRef)
-#'
-#' ## Remove temporary files
-#' unlink(fileReferenceGDS, force=TRUE)
-#' unlink(fileRefPhaseGDS, force=TRUE)
-#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
@@ -499,16 +511,16 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
     return(0L)
 }
 
-#' @title Identify genetically unrelated patients in GDS 1KG file
+#' @title Identify genetically unrelated patients in GDS Reference file
 #'
 #' @description The function identify patients that are genetically related in
-#' the 1KG file. It generates a first RDS file with the list of unrelated
+#' the Reference file. It generates a first RDS file with the list of unrelated
 #' patient. It also generates a second RDS file with the kinship coefficient
 #' between the patients.
 #'
 #' @param gds an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-#' 1KG GDS file.
+#' Reference GDS file.
 #'
 #' @param maf a single \code{numeric} representing the threshold for the minor
 #' allele frequency. Only the SNPs with ">= maf" will be used.
@@ -525,7 +537,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #'
 #' @param filePart a \code{character} string representing the path and file
 #' name of the RDS file that will be created. The RDS file will contain the
-#' information about the 1KG patients that are unrelated. The file will
+#' information about the Reference patients that are unrelated. The file will
 #' contains two lists: the \code{list} of related samples, called \code{rels}
 #' and the list of unrelated samples, called \code{unrels}.
 #' The extension of the file must be '.rds'.
@@ -540,7 +552,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## Open existing 1K GDS file
+#' ## Open existing demo Reference GDS file
 #' fileGDS <- file.path(dataDir, "1KG_Demo.gds")
 #' tmpGDS <- snpgdsOpen(fileGDS)
 #'
@@ -560,11 +572,11 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #'     patientTmpFileLocal <- withr::local_file(patientTmpFile)
 #'     ibdTmpFileLocal <- withr::local_file(ibdTmpFile)
 #'
-#'     ## Identify unrelated patients in 1KG GDS file
+#'     ## Identify unrelated patients in demo Reference GDS file
 #'     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
 #'         fileIBD=ibdTmpFileLocal, filePart=patientTmpFileLocal)
 #'
-#'     ## Close 1K GDS file
+#'     ## Close demo Reference GDS file
 #'     closefn.gds(tmpGDS)
 #'
 #'     ## Remove temporary files
@@ -572,11 +584,11 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #'
 #' } else {
 #'
-#'     ## Identify unrelated patients in 1KG GDS file
+#'     ## Identify unrelated patients in demo Reference GDS file
 #'     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
 #'         fileIBD=ibdTmpFile, filePart=patientTmpFile)
 #'
-#'     ## Close 1K GDS file
+#'     ## Close demo Reference GDS file
 #'     closefn.gds(tmpGDS)
 #'
 #'     ## Remove temporary files
@@ -624,24 +636,25 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 }
 
 
-#' @title Add the information about the unrelated patients to the 1KG GDS file
+#' @title Add the information about the unrelated patients to the Reference
+#' GDS file
 #'
 #' @description This function adds the information about the unrelated patients
-#' to the 1KG GDS file. More specifically, it creates the field
+#' to the Reference GDS file. More specifically, it creates the field
 #' \code{sample.ref} which as the value \code{1} when the sample
 #' is unrelated and the value \code{0} otherwise.
 #' The \code{sample.ref} is filled based on the information present in the
 #' input RDS file.
 #'
 #' @param fileNameGDS a \code{character} string representing the path and file
-#' name of the GDS file that contains the 1KG information. The 1KG GDS file
-#' must contain the SNP information, the genotyping information and
-#' the pedigree information from 1000 Genomes.
+#' name of the GDS file that contains the Reference information. The
+#' Reference GDS file must contain the SNP information, the genotyping
+#' information and the pedigree information from Reference dataset.
 #' The extension of the file must be '.gds'.
 #'
 #' @param filePart a \code{character} string representing the path and file
 #' name of the RDS file that contains the
-#' information about the 1KG patients that are unrelated.
+#' information about the Reference patients that are unrelated.
 #' The extension of the file must be '.rds'. The file must exists.
 #'
 #' @return The integer \code{0L} when successful.
@@ -880,16 +893,16 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' for the reference profiles (real ancestry assignation)
 #'
 #' @description The function extract the specified column for the 'sample.ref'
-#' node present in the 1KG GDS file. The column must be present in the
+#' node present in the Reference GDS file. The column must be present in the
 #' \code{data.frame} saved in the 'sample.ref' node. Only the information for
 #' the reference profiles is returned. The values
 #' represent the known ancestry assignation.
 #'
 #' @param gdsReference an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
 #' @param popName a \code{character} string representing the name of the column
-#' that will be fetched in the \code{data.frame} present in the 1KG GDS
+#' that will be fetched in the \code{data.frame} present in the Reference GDS
 #' "sample.ref" node. The column must be present in the \code{data.frame}.
 #'  Default: \code{"superPop"}.
 #'
@@ -903,7 +916,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## Open existing 1K GDS file with "sample.ref" node
+#' ## Open existing demo 1K GDS file with "sample.ref" node
 #' nameFileGDS <- file.path(dataDir, "1KG_Demo_with_sampleREF.gds")
 #' fileGDS <- snpgdsOpen(nameFileGDS)
 #'
@@ -952,9 +965,9 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #' @description TODO
 #'
 #' @param gdsReference an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
-#' @param file.gdsRefAnnot the filename corresponding the 1KG SNV
+#' @param file.gdsRefAnnot the filename corresponding the Reference SNV
 #' Annotation GDS file. The function will
 #' open it in write mode and close it after. The file must exist.
 #'
@@ -1002,7 +1015,7 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
     ## Generate two indexes based on gene annotation for gdsAnnot1KG block
     dfGeneBlock <- generateGeneBlock(gdsReference, winSize, EnsDb)
 
-    ## Opne GDS 1KG Annotation file in writting mode
+    ## Open GDS Reference Annotation file in writting mode
     gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
 
     blockName <- paste0("Gene.", suffixe.blockName)
@@ -1013,7 +1026,7 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
     blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
     addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
 
-    ## Close GDS 1KG annotation file
+    ## Close GDS Reference annotation file
     closefn.gds(gdsRefAnnot)
 
     ## Success

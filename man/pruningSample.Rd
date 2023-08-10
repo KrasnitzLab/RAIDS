@@ -4,7 +4,8 @@
 \name{pruningSample}
 \alias{pruningSample}
 \title{Compute the list of pruned SNVs for a specific profile using the
-information from the 1KG GDS file and a linkage disequilibrium analysis}
+information from the Reference GDS file and a linkage disequilibrium
+analysis}
 \usage{
 pruningSample(
   gdsReference,
@@ -110,7 +111,7 @@ function can be specified by the user.
 ## Required library for GDS
 library(gdsfmt)
 
-## Path to the demo 1KG GDS file is located in this package
+## Path to the demo Reference GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
@@ -131,12 +132,14 @@ samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
+## Temporary Profile GDS file
+profileFile <- file.path(getwd(), "ex1.gds")
+
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0) {
+if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
 
     ## Copy the Profile GDS file demo that has not been pruned yet
-    file.copy(file.path(dataDir, "ex1_demo.gds"),
-                 file.path(getwd(), "ex1.gds"))
+    file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
 
     ## Open 1KG file
     gds1KG <- snpgdsOpen(fileGDS)
@@ -146,19 +149,19 @@ if (file.access(getwd()) == 0) {
     pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
               studyID = studyDF$study.id, pathProfileGDS=getwd())
 
-    ## Close the 1KG GDS file (it is important to always close the GDS files)
+    ## Close the Reference GDS file (important)
     closefn.gds(gds1KG)
 
     ## Check content of Profile GDS file
     ## The 'pruned.study' entry should be present
-    content <- openfn.gds(file.path(getwd(), "ex1.gds"))
+    content <- openfn.gds(profileFile)
     content
 
     ## Close the Profile GDS file (important)
     closefn.gds(content)
 
     ## Remove Profile GDS file (created for demo purpose)
-    unlink(file.path(getwd(), "ex1.gds"), force=TRUE)
+    unlink(profileFile, force=TRUE)
 
 }
 

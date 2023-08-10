@@ -1,13 +1,13 @@
 #' @title Extract the genotype information for a SNV dataset using
-#' the Profile GDS file and the 1KG GDS file
+#' the Profile GDS file and the Reference GDS file
 #'
 #' @description The function generates a \code{data.frame} containing the
 #' genotype information from a initial list of SNVs associated to a specific
-#' profile. The function uses the information present in the 1KG GDS file
-#' (reference) and the Profile GDS file.
+#' profile. The function uses the information present in the Reference GDS file
+#' and the Profile GDS file.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}} (a
-#' GDS file), the opened 1KG GDS file.
+#' GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -47,7 +47,7 @@
 #' the normal genotype is unknown.}
 #' \item{pruned} { a \code{logical}}
 #' \item{snp.index} {a \code{vector} of \code{integer} representing the
-#' position of the SNVs in the 1KG GDS file.}
+#' position of the SNVs in the Reference GDS file.}
 #' \item{keep} {a \code{logical} }
 #' \item{hetero} {a \code{logical} }
 #' \item{homo} {a \code{logical} }
@@ -62,17 +62,20 @@
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
+#' ## Temporary Profile GDS file for one profile
+#' fileProfile <- file.path(getwd(), "ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
+#'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                  file.path(getwd(), "ex1.gds"))
+#'                  fileProfile)
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Profile GDS file for one profile
-#'     fileProfile <- file.path(getwd(), "ex1.gds")
+#'     ## Open Profile GDS file for one profile
 #'     profileGDS <- openfn.gds(fileProfile)
 #'
 #'     ## The function returns a data frame containing the SNVs information
@@ -87,6 +90,7 @@
 #'
 #'     ## Remove Profile GDS file (created for demo purpose)
 #'     unlink(fileProfile, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -231,7 +235,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'
 #' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
-#' opened 1KG GDS file.
+#' opened Reference GDS file.
 #'
 #' @param chrInfo a \code{vector} of \code{integer} representing the length of
 #' the chromosomes. As an example, the information ca be obtained from
@@ -256,7 +260,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -296,11 +300,11 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' ## Required library for GDS
 #' library(gdsfmt)
 #'
-#' ## Path to the demo 1KG GDS file is located in this package
+#' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
-#' ## Open the reference GDS file (demo version)
+#' ## Open the Reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)
 #'
 #' ## Chromosome length information for hg38
@@ -332,7 +336,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
 #' head(result)
 #'
-#' ## Close GDS file (important)
+#' ## Close Reference GDS file (important)
 #' closefn.gds(gds1KG)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -444,7 +448,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' allelic fraction for the pruned SNV dataset specific to a DNA-seq profile
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG GDS file.
+#' (a GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -497,7 +501,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
@@ -515,18 +519,20 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
+#' ## Temporary Profile GDS file for one profile
+#' fileProfile <- file.path(getwd(), "ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
 #'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                  file.path(getwd(), "ex1.gds"))
+#'                  fileProfile)
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Profile GDS file for one profile
-#'     fileProfile <- file.path(getwd(), "ex1.gds")
+#'     ## Open Profile GDS file for one profile
 #'     profileGDS <- openfn.gds(fileProfile)
 #'
 #'     ## Chromosome length information
@@ -565,7 +571,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                                 wAR=9L, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
-    ## the Profile GDS file and the 1KG GDS file
+    ## the Profile GDS file and the Reference GDS file
     snp.pos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
         currentProfile=currentProfile, studyID=studyID, minCov=minCov,
         minProb=minProb, eProb=eProb, verbose=verbose)
@@ -645,13 +651,13 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' TODO
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG GDS file.
+#' (a GDS file), the opened Reference GDS file.
 #'
 #' @param gdsSample an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opeoned 1KG SNV Annotation GDS file.
+#' (a GDS file), the opened Reference SNV Annotation GDS file.
 #'
 #' @param currentProfile a \code{character} string corresponding to
 #' the sample identifier as used in \code{\link{pruningSample}} function.
@@ -708,7 +714,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
                     cutOffAR=3, verbose) {
 
     ## Extract the genotype information for a SNV dataset using
-    ## the GDS Sample file and the 1KG GDS file
+    ## the GDS Sample file and the Reference GDS file
     snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
                                 minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
@@ -833,7 +839,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' \item{pruned} {a \code{logical} indicating if the SNV is retained after
 #' pruning}
 #' \item{snp.index} {a \code{integer} representing the index position of the
-#' SNV in the 1KG GDS file that contains all SNVs}
+#' SNV in the Reference GDS file that contains all SNVs}
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}

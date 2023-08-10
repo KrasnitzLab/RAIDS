@@ -166,7 +166,7 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #' the type of study (DNA or RNA).
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG GDS file.
+#' (a GDS file), the opened Reference GDS file.
 #'
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -210,7 +210,7 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #' Default: \code{3}.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG Annotation GDS file.
+#' (a GDS file), the opened Reference SNV Annotation GDS file.
 #' This parameter is RNA specific.
 #' Default: \code{NULL}.
 #'
@@ -250,18 +250,21 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
+#' ## Profile GDS file for one profile
+#' fileProfile <- file.path("ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
+#'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
-#'     ## into  current directory
+#'     ## into current directory
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
-#'                         "ex1.gds")
+#'                             fileProfile)
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileGDS)
 #'
 #'     ## Profile GDS file for one profile
-#'     fileProfile <- file.path("ex1.gds")
 #'     profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 #'
 #'     ## Chromosome length information
@@ -292,8 +295,9 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #'     closefn.gds(profileGDS)
 #'     closefn.gds(gds1KG)
 #'
-#'     ## Unlink Profile GDS file (created for demo purpose)
-#'     unlink("ex1.gds", force=TRUE)
+#'     ## Remove Profile GDS file (created for demo purpose)
+#'     unlink(fileProfile, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -332,14 +336,25 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
             cutOffLOH=cutOffLOH, cutOffAR=cutOffAR, verbose=verbose)
     }
 
+    ## FOR_LOOP modification to be validated by Pascal
+    ## Remove commented code and this text after validation
+
+    ## Calculate the cumulative sum for each chromosome
+    cumSumResult <- lapply(unique(snp.pos$snp.chr), function(i) {
+        snpChr <- snp.pos[snp.pos$snp.chr == i, ]
+        tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
+                    snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+        return(cumsum(tmp))
+    })
+
+    # Find segment with same lap
     snp.pos$seg <- rep(0, nrow(snp.pos))
     k <- 1
-    # Find segment with same lap
-    for(chr in seq_len(22)) {
-        snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
-        tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
-                        snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
-        snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
+    for(chr in unique(snp.pos$snp.chr)) {
+        ##snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
+        ##tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
+        ##                snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+        snp.pos$seg[snp.pos$snp.chr == chr] <- cumSumResult[[chr]] + k
         k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
     }
 

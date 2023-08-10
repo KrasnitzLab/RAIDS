@@ -12,8 +12,8 @@ generateMapSnvSel(cutOff = 0.01, fileSNV, fileSNPsRDS, fileFREQ)
 for the frequency in at least one super population. Default: \code{0.01}.}
 
 \item{fileSNV}{a \code{character} string representing the path and
-file name of the bulk SNP information file from 1KG. The file must be in
-text format. The file must exist.}
+file name of the bulk SNP information file from Reference. The file must
+be in text format. The file must exist.}
 
 \item{fileSNPsRDS}{a \code{character} string representing the path and
 file name of the RDS file that will contain the indexes of the retained

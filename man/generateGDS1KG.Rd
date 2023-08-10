@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{generateGDS1KG}
 \alias{generateGDS1KG}
-\title{Generate the GDS file that will contain the information from 1KG
-data set (reference data set)}
+\title{Generate the GDS file that will contain the information from
+Reference data set (reference data set)}
 \usage{
 generateGDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
@@ -54,8 +54,8 @@ The integer \code{0L} when successful.
 }
 \description{
 This function generates the GDS file that will contain the
-information from 1KG. The function also add the samples information, the
-SNP information and the genotyping information into the GDS file.
+information from Reference. The function also add the samples information,
+the SNP information and the genotyping information into the GDS file.
 }
 \details{
 More information about GDS file format can be found at the Bioconductor
@@ -76,33 +76,38 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 ## The RDS file containing the filtered SNP information
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
-## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly=TRUE)) {
+## Temporary Reference GDS file
+tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
 
-    ## Temporary GDS file containing 1KG information
-    gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
+## Only run example if the directory is writable
+if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
 
-    ## Create a temporary GDS file containing information from 1KG
-    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-        fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-        fileNameGDS=gdsFile, listSamples=NULL)
+    ## Different code depending of the withr package availability
+    if (requireNamespace("withr", quietly=TRUE)) {
 
-    ## Remove temporary files
-    withr::deferred_run()
+        ## Temporary Reference GDS file
+        gdsFile <- withr::local_file(tempRefGDS)
 
-} else {
+        ## Create a temporary Reference GDS file containing
+        ## information from reference file
+        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+            fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+            fileNameGDS=gdsFile, listSamples=NULL)
 
-    ## Temporary GDS file containing 1KG information
-    gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+        ## Remove temporary files
+        withr::deferred_run()
 
-    ## Create a temporary GDS file containing information from 1KG
-    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-        fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-        fileNameGDS=gdsFile, listSamples=NULL)
+    } else {
 
-    ## Remove temporary files
-    unlink(gdsFile)
+        ## Create a temporary Reference GDS file
+        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+            fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+            fileNameGDS=tempRefGDS, listSamples=NULL)
 
+        ## Remove temporary files
+        unlink(tempRefGDS, force=TRUE)
+
+    }
 }
 
 }

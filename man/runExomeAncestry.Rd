@@ -47,10 +47,10 @@ associated SNP-pileup file called "Name.ID.txt.gz".}
 the directory where the output files are created.}
 
 \item{fileReferenceGDS}{a \code{character} string representing the file
-name of the 1KG GDS file. The file must exist.}
+name of the Reference GDS file. The file must exist.}
 
 \item{fileReferenceAnnotGDS}{a \code{character} string representing the
-file name of the 1KG GDS annotation file. The file must exist.}
+file name of the Reference GDS Annotation file. The file must exist.}
 
 \item{chrInfo}{a \code{vector} of positive \code{integer} values
 representing the length of the chromosomes. See 'details' section.}

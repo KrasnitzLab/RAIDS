@@ -9,7 +9,7 @@ getGeneBlock(gdsRefAnnot, snp.index, blockID)
 }
 \arguments{
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened 1KG SNV Annotation GDS file. RNA specific
+(a GDS file), the opened Reference SNV Annotation GDS file. RNA specific
 Default: \code{NULL}.}
 
 \item{snp.index}{TODO}

@@ -224,8 +224,9 @@ library.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example can only be run if the current directory is in writing mode</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span><span class="op">)</span>  <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Copy the Profile GDS file demo that has been pruned and annotated</span></span></span>
-<span class="r-in"><span>    <span class="co">## into  current directory</span></span></span>
+<span class="r-in"><span>    <span class="co">## into current directory</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo_with_pruning_and_1KG_annot.gds"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        <span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -265,6 +266,7 @@ library.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"ex1.gds"</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

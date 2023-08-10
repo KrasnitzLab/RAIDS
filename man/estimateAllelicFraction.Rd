@@ -122,8 +122,9 @@ fileProfile <- file.path("ex1.gds")
 
 ## Example can only be run if the current directory is in writing mode
 if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
+
     ## Copy the Profile GDS file demo that has been pruned and annotated
-    ## into  current directory
+    ## into current directory
     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
                         "ex1.gds")
 
@@ -163,6 +164,7 @@ if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
 
     ## Unlink Profile GDS file (created for demo purpose)
     unlink("ex1.gds", force=TRUE)
+
 }
 
 }

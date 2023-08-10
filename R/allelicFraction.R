@@ -255,8 +255,9 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #'
 #' ## Example can only be run if the current directory is in writing mode
 #' if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
+#'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
-#'     ## into  current directory
+#'     ## into current directory
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
 #'                         "ex1.gds")
 #'
@@ -296,6 +297,7 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
 #'
 #'     ## Unlink Profile GDS file (created for demo purpose)
 #'     unlink("ex1.gds", force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

@@ -361,7 +361,7 @@ test_that(paste0("syntheticGeno() must return error when minProb is a ",
 })
 
 
-test_that(paste0("syntheticGeno() must return error expected results"), {
+test_that(paste0("syntheticGeno() must return expected results"), {
 
     set.seed(121)
 
@@ -414,6 +414,79 @@ test_that(paste0("syntheticGeno() must return error expected results"), {
     expect_equal(genotype[,158], c(3, rep(0, 15), 2, 3, 0, 1,  rep(0, 13), 3,
         rep(0, 27)))
 })
+
+
+
+test_that(paste0("syntheticGeno() must return expected results when nbSim=3"), {
+
+    set.seed(121)
+
+    dataDirSample <- test_path("fixtures/sampleGDSforEstimAlleFraction")
+    file.copy(file.path(dataDirSample, "ex1_demoForEstimAllFrac.gds"),
+              file.path(dataDirSample, "ex1.gds"))
+    withr::defer((unlink(file.path(dataDirSample, "ex1.gds"))),
+                 envir=parent.frame())
+
+    dataDirRef <- test_path("fixtures")
+
+    ## Open  1KG Annotation GDS file
+    fileRefAnnot <- file.path(dataDirRef, "ex1_good_small_1KG_Annot_GDS.gds")
+    gdsRefAnnot <- openfn.gds(fileRefAnnot)
+    withr::defer((closefn.gds(gdsRefAnnot)), envir=parent.frame())
+
+    ## Open 1KG GDS file
+    gds1KG <- snpgdsOpen(file.path(dataDirRef, "ex1_good_small_1KG_GDS.gds"))
+    withr::defer((closefn.gds(gds1KG)), envir=parent.frame())
+
+    synthStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+                               study.desc="MYDATA synthetic data",
+                               study.platform="PLATFORM",
+                               stringsAsFactors=FALSE)
+
+    result1 <- prepSynthetic(fileProfileGDS=file.path(dataDirSample, "ex1.gds"),
+                             listSampleRef=c("HG00243", "HG00149"), profileID="ex1",
+                             studyDF=synthStudyDF, nbSim=3L, prefix="test2", verbose=FALSE)
+
+    result2 <- syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gdsRefAnnot,
+                             fileProfileGDS=file.path(dataDirSample, "ex1.gds"), profileID="ex1",
+                             listSampleRef=c("HG00243", "HG00149"), nbSim=3, prefix="test2",
+                             pRecomb=0.01, minProb=0.999, seqError=0.001)
+
+    expect_equal(result2, 0L)
+
+    profileGDS <- openfn.gds(file.path(dataDirSample, "ex1.gds"))
+    withr::defer((closefn.gds(profileGDS)), envir=parent.frame())
+
+    sampleList <- read.gdsn(index.gdsn(profileGDS, "sample.id"))
+
+    expect_equal(sampleList[158:163],
+        c("test2.ex1.HG00243.1", "test2.ex1.HG00243.2", "test2.ex1.HG00243.3",
+          "test2.ex1.HG00149.1", "test2.ex1.HG00149.2", "test2.ex1.HG00149.3"))
+
+    genotype <- read.gdsn(index.gdsn(profileGDS, "genotype"))
+
+    expect_equal(genotype[,158], c(rep(0, 16), 2, 0, 0, 1,  rep(0, 13), 2,
+                                    rep(0, 27)))
+
+    expect_equal(genotype[,159], c(rep(0, 16), 2, 0, 0, 1, rep(0, 13),
+                                    2, rep(0, 16), 3,  rep(0, 9), 3))
+
+    expect_equal(genotype[,160], c(rep(0, 8), 3, 0, 3, rep(0, 5), 2, 0, 0, 1,
+                                    3, rep(0, 12), 2, rep(0, 27)))
+
+    expect_equal(genotype[,161], c(3, rep(0, 6), 3, 0, 2, rep(0, 5), 1, 2,
+                                    rep(0, 13), 1, 0, 0, 2,
+                                    rep(0, 13), 1, rep(0, 13)))
+
+    expect_equal(genotype[,162], c(rep(0, 8), 3, 2, rep(0, 5), 1, 2,
+                                    rep(0, 13), 1, 0, 0, 2,
+                                    rep(0, 4), 3, rep(0, 8), 1, rep(0, 13)))
+
+    expect_equal(genotype[,163], c(rep(0, 9),  2, rep(0, 5), 1, 2,
+                                    rep(0, 13), 1,
+                                    rep(0, 2), 2, rep(0, 13), 1, rep(0, 13)))
+})
+
 
 #############################################################################
 ### Tests prepSynthetic() results

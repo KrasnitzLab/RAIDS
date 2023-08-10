@@ -323,7 +323,6 @@ pathProfileGDS <- file.path(getwd(), "example", "out.tmp")
 #############################################################################
 pathOut <- file.path(getwd(), "example", "res.out")
 
-print(file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example")))
 ## Example can only be run if the current directory is in writing mode
 if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example"))) {
 

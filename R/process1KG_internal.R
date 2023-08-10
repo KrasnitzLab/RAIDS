@@ -415,14 +415,14 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
 #' exist.
 #'
 #' @param pathGeno a \code{character} string representing the path where
-#' the 1KG genotyping files for each profile are located. Only the profiles
-#' with associated genotyping files are retained in the creation of the final
-#' \code{data.frame}. The name of the genotyping files must correspond to
-#' the individual identification (Individual.ID) in the pedigree file
-#' (PED file).
+#' the Reference genotyping files for each profile are located. Only the
+#' profiles with associated genotyping files are retained in the creation of
+#' the final \code{data.frame}. The name of the genotyping files must
+#' correspond to the individual identification (Individual.ID) in the
+#' pedigree file (PED file).
 #'
 #' @param batch a\code{integer} that uniquely identifies the source of the
-#' pedigree information. The 1KG is usually \code{0L}.
+#' pedigree information. The Reference is usually \code{0L}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'

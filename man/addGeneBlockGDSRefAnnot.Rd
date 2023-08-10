@@ -17,9 +17,9 @@ addGeneBlockGDSRefAnnot(
 }
 \arguments{
 \item{gdsReference}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
-\item{file.gdsRefAnnot}{the filename corresponding the 1KG SNV
+\item{file.gdsRefAnnot}{the filename corresponding the Reference SNV
 Annotation GDS file. The function will
 open it in write mode and close it after. The file must exist.}
 

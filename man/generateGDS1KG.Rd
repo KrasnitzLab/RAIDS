@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{generateGDS1KG}
 \alias{generateGDS1KG}
-\title{Generate the GDS file that will contain the information from 1KG
-data set (reference data set)}
+\title{Generate the GDS file that will contain the information from
+Reference data set (reference data set)}
 \usage{
 generateGDS1KG(
   pathGeno = file.path("data", "sampleGeno"),
@@ -54,8 +54,8 @@ The integer \code{0L} when successful.
 }
 \description{
 This function generates the GDS file that will contain the
-information from 1KG. The function also add the samples information, the
-SNP information and the genotyping information into the GDS file.
+information from Reference. The function also add the samples information,
+the SNP information and the genotyping information into the GDS file.
 }
 \details{
 More information about GDS file format can be found at the Bioconductor
@@ -79,7 +79,7 @@ filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 ## Different code depending of the withr package availability
 if (requireNamespace("withr", quietly=TRUE)) {
 
-    ## Temporary GDS file containing 1KG information
+    ## Temporary GDS file containing Reference information
     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
 
     ## Create a temporary GDS file containing information from 1KG
@@ -92,7 +92,7 @@ if (requireNamespace("withr", quietly=TRUE)) {
 
 } else {
 
-    ## Temporary GDS file containing 1KG information
+    ## Temporary GDS file containing Reference information
     gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
 
     ## Create a temporary GDS file containing information from 1KG

@@ -3,20 +3,21 @@
 \encoding{UTF-8}
 \name{addRef2GDS1KG}
 \alias{addRef2GDS1KG}
-\title{Add the information about the unrelated patients to the 1KG GDS file}
+\title{Add the information about the unrelated patients to the Reference
+GDS file}
 \usage{
 addRef2GDS1KG(fileNameGDS, filePart)
 }
 \arguments{
 \item{fileNameGDS}{a \code{character} string representing the path and file
-name of the GDS file that contains the 1KG information. The 1KG GDS file
-must contain the SNP information, the genotyping information and
-the pedigree information from 1000 Genomes.
+name of the GDS file that contains the Reference information. The
+Reference GDS file must contain the SNP information, the genotyping
+information and the pedigree information from Reference dataset.
 The extension of the file must be '.gds'.}
 
 \item{filePart}{a \code{character} string representing the path and file
 name of the RDS file that contains the
-information about the 1KG patients that are unrelated.
+information about the Reference patients that are unrelated.
 The extension of the file must be '.rds'. The file must exists.}
 }
 \value{
@@ -24,7 +25,7 @@ The integer \code{0L} when successful.
 }
 \description{
 This function adds the information about the unrelated patients
-to the 1KG GDS file. More specifically, it creates the field
+to the Reference GDS file. More specifically, it creates the field
 \code{sample.ref} which as the value \code{1} when the sample
 is unrelated and the value \code{0} otherwise.
 The \code{sample.ref} is filled based on the information present in the

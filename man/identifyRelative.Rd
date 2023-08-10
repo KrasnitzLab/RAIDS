@@ -3,14 +3,14 @@
 \encoding{UTF-8}
 \name{identifyRelative}
 \alias{identifyRelative}
-\title{Identify genetically unrelated patients in GDS 1KG file}
+\title{Identify genetically unrelated patients in GDS Reference file}
 \usage{
 identifyRelative(gds, maf = 0.05, thresh = 2^(-11/2), fileIBD, filePart)
 }
 \arguments{
 \item{gds}{an object of class
 \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, the
-1KG GDS file.}
+Reference GDS file.}
 
 \item{maf}{a single \code{numeric} representing the threshold for the minor
 allele frequency. Only the SNPs with ">= maf" will be used.
@@ -27,7 +27,7 @@ The extension of the file must be '.rds'.}
 
 \item{filePart}{a \code{character} string representing the path and file
 name of the RDS file that will be created. The RDS file will contain the
-information about the 1KG patients that are unrelated. The file will
+information about the Reference patients that are unrelated. The file will
 contains two lists: the \code{list} of related samples, called \code{rels}
 and the list of unrelated samples, called \code{unrels}.
 The extension of the file must be '.rds'.}
@@ -37,7 +37,7 @@ The extension of the file must be '.rds'.}
 }
 \description{
 The function identify patients that are genetically related in
-the 1KG file. It generates a first RDS file with the list of unrelated
+the Reference file. It generates a first RDS file with the list of unrelated
 patient. It also generates a second RDS file with the kinship coefficient
 between the patients.
 }
@@ -49,7 +49,7 @@ library(gdsfmt)
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-## Open existing 1K GDS file
+## Open existing demo Reference GDS file
 fileGDS <- file.path(dataDir, "1KG_Demo.gds")
 tmpGDS <- snpgdsOpen(fileGDS)
 
@@ -69,11 +69,11 @@ if (requireNamespace("withr", quietly=TRUE)) {
     patientTmpFileLocal <- withr::local_file(patientTmpFile)
     ibdTmpFileLocal <- withr::local_file(ibdTmpFile)
 
-    ## Identify unrelated patients in 1KG GDS file
+    ## Identify unrelated patients in demo Reference GDS file
     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
         fileIBD=ibdTmpFileLocal, filePart=patientTmpFileLocal)
 
-    ## Close 1K GDS file
+    ## Close demo Reference GDS file
     closefn.gds(tmpGDS)
 
     ## Remove temporary files
@@ -81,11 +81,11 @@ if (requireNamespace("withr", quietly=TRUE)) {
 
 } else {
 
-    ## Identify unrelated patients in 1KG GDS file
+    ## Identify unrelated patients in demo Reference GDS file
     identifyRelative(gds=tmpGDS, maf=0.05, thresh=2^(-11/2),
         fileIBD=ibdTmpFile, filePart=patientTmpFile)
 
-    ## Close 1K GDS file
+    ## Close demo Reference GDS file
     closefn.gds(tmpGDS)
 
     ## Remove temporary files

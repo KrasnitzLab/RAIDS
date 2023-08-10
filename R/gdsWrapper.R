@@ -611,7 +611,7 @@ addUpdateSegment <- function(gdsProfile, snp.seg) {
 #' @description TODO
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened 1KG SNV Annotation GDS file. RNA specific
+#' (a GDS file), the opened Reference SNV Annotation GDS file. RNA specific
 #' Default: \code{NULL}.
 #'
 #' @param snp.index TODO

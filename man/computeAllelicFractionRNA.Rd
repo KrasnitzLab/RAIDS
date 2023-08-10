@@ -30,7 +30,7 @@ computeAllelicFractionRNA(
 (a GDS file), the opened Profile GDS file.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opeoned 1KG SNV Annotation GDS file.}
+(a GDS file), the opened Reference SNV Annotation GDS file.}
 
 \item{currentProfile}{a \code{character} string corresponding to
 the sample identifier as used in \code{\link{pruningSample}} function.}

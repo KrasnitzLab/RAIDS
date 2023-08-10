@@ -27,7 +27,7 @@ estimateAllelicFraction(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened 1KG GDS file.}
+(a GDS file), the opened Reference GDS file.}
 
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
@@ -71,7 +71,7 @@ log score, that the SNVs in a gene are allelic fraction different 0.5
 Default: \code{3}.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG Annotation GDS file.
+(a GDS file), the opened Reference SNV Annotation GDS file.
 This parameter is RNA specific.
 Default: \code{NULL}.}
 
@@ -117,8 +117,11 @@ library(gdsfmt)
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
+## Profile GDS file for one profile
+fileProfile <- file.path("ex1.gds")
+
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0) {
+if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
     ## Copy the Profile GDS file demo that has been pruned and annotated
     ## into  current directory
     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
@@ -128,7 +131,6 @@ if (file.access(getwd()) == 0) {
     gds1KG <- snpgdsOpen(fileGDS)
 
     ## Profile GDS file for one profile
-    fileProfile <- file.path("ex1.gds")
     profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 
     ## Chromosome length information

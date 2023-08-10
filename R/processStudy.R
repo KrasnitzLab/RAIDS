@@ -421,12 +421,14 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
+#' ## Temporary Profile GDS file
+#' profileFile <- file.path(getwd(), "ex1.gds")
+#'
 #' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0) {
+#' if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
 #'
 #'     ## Copy the Profile GDS file demo that has not been pruned yet
-#'     file.copy(file.path(dataDir, "ex1_demo.gds"),
-#'                  file.path(getwd(), "ex1.gds"))
+#'     file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
 #'
 #'     ## Open 1KG file
 #'     gds1KG <- snpgdsOpen(fileGDS)
@@ -441,14 +443,14 @@ appendStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #'     ## Check content of Profile GDS file
 #'     ## The 'pruned.study' entry should be present
-#'     content <- openfn.gds(file.path(getwd(), "ex1.gds"))
+#'     content <- openfn.gds(profileFile)
 #'     content
 #'
 #'     ## Close the Profile GDS file (important)
 #'     closefn.gds(content)
 #'
 #'     ## Remove Profile GDS file (created for demo purpose)
-#'     unlink(file.path(getwd(), "ex1.gds"), force=TRUE)
+#'     unlink(profileFile, force=TRUE)
 #'
 #' }
 #'
@@ -615,12 +617,15 @@ pruningSample <- function(gdsReference,
 #'                         study.platform="PLATFORM",
 #'                         stringsAsFactors=FALSE)
 #'
-#' ## Only run example if the directory containing the genotype can be created
-#' if (file.access(getwd()) == 0)  {
+#' ## Temporary Profile file
+#' fileProfile <- file.path(getwd(), "ex2.gds")
+#'
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
 #'
 #'     ## Copy required file
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
-#'         file.path(getwd(), "ex2.gds"))
+#'         fileProfile)
 #'
 #'     ## Open 1KG file
 #'     gds1KG <- snpgdsOpen(fileGDS)
@@ -628,7 +633,7 @@ pruningSample <- function(gdsReference,
 #'     ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #'     ## and save it in the Profile GDS file 'ex2.gds'
 #'     add1KG2SampleGDS(gdsReference=gds1KG,
-#'         fileProfileGDS=file.path(getwd(), "ex2.gds"),
+#'         fileProfileGDS=fileProfile,
 #'         currentProfile=c("ex1"),
 #'         studyID=studyDF$study.id)
 #'
@@ -637,14 +642,14 @@ pruningSample <- function(gdsReference,
 #'
 #'      ## Check content of Profile GDS file
 #'      ## The 'pruned.study' entry should be present
-#'      content <- openfn.gds(file.path(getwd(), "ex2.gds"))
+#'      content <- openfn.gds(fileProfile)
 #'      content
 #'
 #'      ## Close the Profile GDS file (important)
 #'      closefn.gds(content)
 #'
 #'      ## Remove Profile GDS file (created for demo purpose)
-#'      unlink(file.path(getwd(), "ex2.gds"), force=TRUE)
+#'      unlink(fileProfile, force=TRUE)
 #' }
 #'
 #'
@@ -2338,10 +2343,10 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' the directory where the output files are created.
 #'
 #' @param fileReferenceGDS  a \code{character} string representing the file
-#' name of the 1KG GDS file. The file must exist.
+#' name of the Reference GDS file. The file must exist.
 #'
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
-#' file name of the 1KG GDS annotation file. The file must exist.
+#' file name of the Reference GDS Annotation file. The file must exist.
 #'
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.

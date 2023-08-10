@@ -131,12 +131,14 @@ samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 rownames(samplePED) <- samplePED$Name.ID
 
+## Temporary Profile GDS file
+profileFile <- file.path(getwd(), "ex1.gds")
+
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0) {
+if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
 
     ## Copy the Profile GDS file demo that has not been pruned yet
-    file.copy(file.path(dataDir, "ex1_demo.gds"),
-                 file.path(getwd(), "ex1.gds"))
+    file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
 
     ## Open 1KG file
     gds1KG <- snpgdsOpen(fileGDS)
@@ -151,14 +153,14 @@ if (file.access(getwd()) == 0) {
 
     ## Check content of Profile GDS file
     ## The 'pruned.study' entry should be present
-    content <- openfn.gds(file.path(getwd(), "ex1.gds"))
+    content <- openfn.gds(profileFile)
     content
 
     ## Close the Profile GDS file (important)
     closefn.gds(content)
 
     ## Remove Profile GDS file (created for demo purpose)
-    unlink(file.path(getwd(), "ex1.gds"), force=TRUE)
+    unlink(profileFile, force=TRUE)
 
 }
 

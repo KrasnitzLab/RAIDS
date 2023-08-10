@@ -336,14 +336,25 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
             cutOffLOH=cutOffLOH, cutOffAR=cutOffAR, verbose=verbose)
     }
 
+    ## FOR_LOOP modification to be validated by Pascal
+    ## Remove commented code and this text after validation
+
+    ## Calculate the cumulative sum for each chromosome
+    cumSumResult <- lapply(unique(snp.pos$snp.chr), function(i) {
+        snpChr <- snp.pos[snp.pos$snp.chr == i, ]
+        tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
+                    snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+        return(cumsum(tmp))
+    })
+
+    # Find segment with same lap
     snp.pos$seg <- rep(0, nrow(snp.pos))
     k <- 1
-    # Find segment with same lap
-    for(chr in seq_len(22)) {
-        snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
-        tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
-                        snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
-        snp.pos$seg[snp.pos$snp.chr == chr] <- cumsum(tmp) + k
+    for(chr in unique(snp.pos$snp.chr)) {
+        ##snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
+        ##tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
+        ##                snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
+        snp.pos$seg[snp.pos$snp.chr == chr] <- cumSumResult[[chr]] + k
         k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
     }
 

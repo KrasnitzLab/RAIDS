@@ -600,24 +600,47 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 
         rownames(blockZone) <- listB
 
-        # We have to manage multipple simulation which mean
-        # different number of zone for the different simulation
+
+        ## FOR_LOOP modification to be validated by Pascal
+        ## Remove commented code and this text after validation
+
+        # We have to manage multiple simulation which means
+        # different number of zone for the different simulations
         LAPparent <- matrix(nrow = nbSNV, ncol = nbSim)
-        for(i in seq_len(nbSim)){
+        # for(i in seq_len(nbSim)){
+        #     # list of zone with the same phase relatively to 1KG
+        #     listZone <- unique(blockZone[,i])
+        #
+        #     ## matrix if the lap is the first entry in the phase or
+        #     ## the second for each zone
+        #     lapPos <- matrix(sample(x=c(0,1), size=1 *(length(listZone)),
+        #                                 replace=TRUE), ncol=1)
+        #
+        #     rownames(lapPos) <- listZone
+        #
+        #     LAPparent[, i] <-
+        #                 lapPos[as.character(blockZone[as.character(blockDF[,
+        #                                                         curSP]),i]),]
+        # }
+
+
+        # We have to manage multiple simulations which means
+        # different number of zones for the different simulations
+        lapValues <- vapply(seq_len(nbSim), function(i) {
             # list of zone with the same phase relatively to 1KG
             listZone <- unique(blockZone[,i])
 
             ## matrix if the lap is the first entry in the phase or
             ## the second for each zone
             lapPos <- matrix(sample(x=c(0,1), size=1 *(length(listZone)),
-                                        replace=TRUE), ncol=1)
+                                    replace=TRUE), ncol=1)
 
             rownames(lapPos) <- listZone
 
-            LAPparent[, i] <-
-                        lapPos[as.character(blockZone[as.character(blockDF[,
-                                                                curSP]),i]),]
-        }
+            return(lapPos[as.character(blockZone[as.character(blockDF[,
+                                            curSP]),i]),])
+        }, double(nbSNV))
+        LAPparent[, seq_len(nbSim)] <- lapValues
 
         phaseVal <- read.gdsn(index.gdsn(gdsRefAnnot, "phase"),
             start=c(1,listPosRef.1kg[r]), count=c(-1,1))[list1KG]

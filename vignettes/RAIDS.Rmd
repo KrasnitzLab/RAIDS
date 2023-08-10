@@ -24,6 +24,7 @@ BiocStyle::markdown()
 suppressPackageStartupMessages({
     library(knitr)
     library(RAIDS)
+    library(gdsfmt)
 })
 
 set.seed(121444)
@@ -145,7 +146,7 @@ At this step three important reference files are created:
 <span style="color:darkred;font-weight:bold">The reference files associated to 
 the Cancer Research associated paper are available. Note that these 
 pre-processed files are for 1000 Genomes (1KG), in hg38. The files are 
-available here:/span>
+available here:</span>
 
 <span style="color:red">
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
@@ -239,69 +240,56 @@ file (CVS, etc..) as long as the *data.frame* information can be regenerated
 in R (with _read.csv()_ or else). 
 
 ```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
-#########################################################################
+#############################################################################
 ## Load required packages
-#########################################################################
+#############################################################################
 library(RAIDS)    
 library(gdsfmt)
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-#########################################################################
+#############################################################################
 ## The path and file name for the PED RDS file
 ## will the information about the analyzed samples
-#########################################################################
+#############################################################################
 filePED <- file.path(dataDir, "example", "pedEx.rds")
 ped <- readRDS(filePED)
 head(ped)
 
-#########################################################################
+#############################################################################
 ## The population reference GDS file and SNV Annotation GDS file
 ## need to be located in the same directory.
 ## Note that the population reference GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
-#########################################################################
+#############################################################################
 pathReference <- file.path(dataDir, "example", "gdsRef")
 
 fileGDS <- file.path(pathReference, "ex1kg.gds")
 fileAnnotGDS <- file.path(pathReference, "exAnnot1kg.gds")
 
-#########################################################################
-## The Sample SNP pileup files (one per sample) need
-## to be all located in the same directory.
-#########################################################################
-pathGeno <- file.path(dataDir, "example", "snpPileup")
-
-#########################################################################
-## The path where the Sample GDS files (one per sample)
-## will be created needs to be specified.
-#########################################################################
-pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
-
-
-#########################################################################
-## The path where the result files will be created needs to 
-## be specified
-#########################################################################
-pathOut <- file.path(dataDir, "example", "res.out")
-
-#########################################################################
+#############################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
 ## those 3 columns: "study.id", "study.desc", "study.platform"
-#########################################################################
+#############################################################################
 studyDF <- data.frame(study.id="MYDATA",
                    study.desc="Description",
                    study.platform="PLATFORM",
                    stringsAsFactors=FALSE)
 
-#########################################################################
+#############################################################################
+## The Sample SNP pileup files (one per sample) need
+## to be all located in the same directory.
+#############################################################################
+pathGeno <- file.path(dataDir, "example", "snpPileup")
+
+#############################################################################
 ## Fix RNG seed to ensure reproducible results
-#########################################################################
+#############################################################################
 set.seed(3043)
 
-#########################################################################
+#############################################################################
 ## Select the profiles from the population reference GDS file for 
 ## the synthetic data.
 ## Here we select 2 profiles from the simplified 1KG GDS for each 
@@ -310,7 +298,7 @@ set.seed(3043)
 ## subcontinental-level but it is too big for the example.
 ## The 1KG files in this example only have 6 profiles for each 
 ## subcontinental-level (for demo purpose only).
-#########################################################################
+#############################################################################
 gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
@@ -323,23 +311,37 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
  83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
  156040895L, 57227415L,  16569L)
 
-## A formal way to get the chormosome length information for hg38
-## library(GenomeInfoDb)
-## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+#############################################################################
+## The path where the Sample GDS files (one per sample)
+## will be created needs to be specified.
+#############################################################################
+pathProfileGDS <- file.path(getwd(), "example", "out.tmp")
 
+#############################################################################
+## The path where the result files will be created needs to 
+## be specified
+#############################################################################
+pathOut <- file.path(getwd(), "example", "res.out")
 
-#########################################################################
-## The wrapper function generates the synthetic dataset and uses it 
-## to selected the optimal parameters before calling the genetic 
-## ancestry on the current profiles.
-## All important information, for each step, are saved in 
-## multiple output files.
-## The 'genoSource' parameter has 2 options depending on how the 
-##   SNP pileup files have been generated: 
-##      "snp-pileup" (snp-pileup software) or "generic" (other software)
-#########################################################################
-runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+print(file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example")))
+## Example can only be run if the current directory is in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example"))) {
+
+    dir.create(file.path(getwd(), "example"))
+    dir.create(pathProfileGDS)
+    dir.create(pathOut)
+    
+    #########################################################################
+    ## The wrapper function generates the synthetic dataset and uses it 
+    ## to selected the optimal parameters before calling the genetic 
+    ## ancestry on the current profiles.
+    ## All important information, for each step, are saved in 
+    ## multiple output files.
+    ## The 'genoSource' parameter has 2 options depending on how the 
+    ##   SNP pileup files have been generated: 
+    ##      "snp-pileup" (snp-pileup software) or "generic" (other software)
+    #########################################################################
+    runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
                  pathOut=pathOut,
@@ -348,21 +350,24 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                  chrInfo=chrInfo,
                  syntheticRefDF=dataRef,
                  genoSource="snp-pileup")
-list.files(pathOut)
-list.files(file.path(pathOut, ped$Name.ID[1]))
+    list.files(pathOut)
+    list.files(file.path(pathOut, ped$Name.ID[1]))
 
-#########################################################################
-## The file containing the ancestry inference (SuperPop column) and 
-## optimal number of PCA component (D column)
-## optimal number of neighbours (K column)
-#########################################################################
-resAncestry <- read.csv(file.path(pathOut, 
+    #########################################################################
+    ## The file containing the ancestry inference (SuperPop column) and 
+    ## optimal number of PCA component (D column)
+    ## optimal number of neighbours (K column)
+    #########################################################################
+    resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
-resAncestry
+    resAncestry
 
-## Remove temporary files created for this demo
-unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-unlink(pathOut, recursive=TRUE, force=TRUE)
+    ## Remove temporary files created for this demo
+    unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+    unlink(pathOut, recursive=TRUE, force=TRUE)
+    unlink(file.path(getwd(), "example"), force=TRUE)
+}
+
 ```
 
 <br>
@@ -371,9 +376,9 @@ unlink(pathOut, recursive=TRUE, force=TRUE)
 The *runExomeAncestry()* function generates 3 types of files 
 in the *pathOut* directory.
 
-* The ancestry inference CSV file (".Ancestry.csv" file) 
-* The inference information RDS file (".infoCall.rds" file)
-* The parameter information RDS files from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)
+* The ancestry inference CSV file (**".Ancestry.csv"** file) 
+* The inference information RDS file (**".infoCall.rds"** file)
+* The parameter information RDS files from the synthetic inference (**"KNN.synt.*.rds"** files in a sub-directory)
 
 In addition, a sub-directory (named using the *profile ID*) is 
 also created. 

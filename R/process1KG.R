@@ -72,8 +72,8 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
                 stringsAsFactors=FALSE)
 
     ## Create a list with all populations associated to each super-population
-    ## TODO The population versus super.population is hard-coded
-    ## TODO change to parameters
+    ## NOTE The population versus super.population is hard-coded
+    ## NOTE change to parameters
     listSuperPop1000G <- list()
     listSuperPop1000G[['EAS']] <- c("CHB", "JPT", "CHS", "CDX", "KHV")
     listSuperPop1000G[['EUR']] <- c("CEU", "TSI", "FIN", "GBR", "IBS")
@@ -305,33 +305,38 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' ## The RDS file containing the filtered SNP information
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
-#' ## Different code depending of the withr package availability
-#' if (requireNamespace("withr", quietly=TRUE)) {
+#' ## Temporary Reference GDS file
+#' tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
 #'
-#'     ## Temporary GDS file containing Reference information
-#'     gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
 #'
-#'     ## Create a temporary GDS file containing information from 1KG
-#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'     ## Different code depending of the withr package availability
+#'     if (requireNamespace("withr", quietly=TRUE)) {
 #'
-#'     ## Remove temporary files
-#'     withr::deferred_run()
+#'         ## Temporary Reference GDS file
+#'         gdsFile <- withr::local_file(tempRefGDS)
 #'
-#' } else {
+#'         ## Create a temporary Reference GDS file containing
+#'         ## information from reference file
+#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'             fileNameGDS=gdsFile, listSamples=NULL)
 #'
-#'     ## Temporary GDS file containing Reference information
-#'     gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+#'         ## Remove temporary files
+#'         withr::deferred_run()
 #'
-#'     ## Create a temporary GDS file containing information from 1KG
-#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'         fileNameGDS=gdsFile, listSamples=NULL)
+#'     } else {
 #'
-#'     ## Remove temporary files
-#'     unlink(gdsFile)
+#'         ## Create a temporary Reference GDS file
+#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'             fileNameGDS=tempRefGDS, listSamples=NULL)
 #'
+#'         ## Remove temporary files
+#'         unlink(tempRefGDS, force=TRUE)
+#'
+#'     }
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -421,39 +426,45 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## The RDS file containing the filtered SNP information
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
-#' ## Temporary Reference GDS file containing 1KG information
+#' ## Temporary Reference GDS file containing reference information
 #' fileReferenceGDS <- "1KG_TEMP_02.gds"
 #'
-#' ## Create a temporary Reference GDS file containing information from 1KG
-#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'     fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'     fileNameGDS=fileReferenceGDS, listSamples=NULL)
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(fileReferenceGDS)) {
 #'
-#' ## Temporary Phase GDS file that will contain the 1KG Phase information
-#' fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
+#'     ## Create a temporary Reference GDS file containing information from 1KG
+#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
-#' ## Create Reference Phase GDS file
-#' gdsPhase <- createfn.gds(fileRefPhaseGDS)
+#'     ## Temporary Phase GDS file that will contain the 1KG Phase information
+#'     fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
 #'
-#' ## Open Reference GDS file
-#' gdsRef <- openfn.gds(fileReferenceGDS)
+#'     ## Create Reference Phase GDS file
+#'     gdsPhase <- createfn.gds(fileRefPhaseGDS)
 #'
-#' ## Fill temporary Reference Phase GDS file
-#' if (FALSE) {
-#'     generatePhase1KG2GDS(gdsReference=gdsRef, gdsReferencePhase=gdsPhase,
-#'         pathGeno=dataDir, fileSNPsRDS=filterSNVFile, verbose=FALSE)
+#'     ## Open Reference GDS file
+#'     gdsRef <- openfn.gds(fileReferenceGDS)
+#'
+#'     ## Fill temporary Reference Phase GDS file
+#'     if (FALSE) {
+#'         generatePhase1KG2GDS(gdsReference=gdsRef,
+#'             gdsReferencePhase=gdsPhase,
+#'             pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
+#'             verbose=FALSE)
+#'     }
+#'
+#'     ## Close Reference Phase information file
+#'     closefn.gds(gdsPhase)
+#'
+#'     ## Close Reference information file
+#'     closefn.gds(gdsRef)
+#'
+#'     ## Remove temporary files
+#'     unlink(fileReferenceGDS, force=TRUE)
+#'     unlink(fileRefPhaseGDS, force=TRUE)
+#'
 #' }
-#'
-#' ## Close 1KG Phase information file
-#' closefn.gds(gdsPhase)
-#'
-#' ## Close Reference information file
-#' closefn.gds(gdsRef)
-#'
-#' ## Remove temporary files
-#' unlink(fileReferenceGDS, force=TRUE)
-#' unlink(fileRefPhaseGDS, force=TRUE)
-#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn

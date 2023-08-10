@@ -67,6 +67,7 @@
 #'
 #' ## Example can only be run if the current directory is in writing mode
 #' if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
+#'
 #'     ## Copy the Profile GDS file demo that has been pruned and annotated
 #'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
 #'                  fileProfile)
@@ -89,6 +90,7 @@
 #'
 #'     ## Remove Profile GDS file (created for demo purpose)
 #'     unlink(fileProfile, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -298,11 +300,11 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' ## Required library for GDS
 #' library(gdsfmt)
 #'
-#' ## Path to the demo 1KG GDS file is located in this package
+#' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 #'
-#' ## Open the reference GDS file (demo version)
+#' ## Open the Reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)
 #'
 #' ## Chromosome length information for hg38
@@ -334,7 +336,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
 #' head(result)
 #'
-#' ## Close GDS file (important)
+#' ## Close Reference GDS file (important)
 #' closefn.gds(gds1KG)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

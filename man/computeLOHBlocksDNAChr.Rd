@@ -80,11 +80,11 @@ chromosome using the homozygote SNVs present on the chromosome.
 ## Required library for GDS
 library(gdsfmt)
 
-## Path to the demo 1KG GDS file is located in this package
+## Path to the demo Reference GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 
-## Open the reference GDS file (demo version)
+## Open the Reference GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
 
 ## Chromosome length information for hg38
@@ -116,7 +116,7 @@ result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
 head(result)
 
-## Close GDS file (important)
+## Close Reference GDS file (important)
 closefn.gds(gds1KG)
 
 }

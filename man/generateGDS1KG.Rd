@@ -76,33 +76,38 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 ## The RDS file containing the filtered SNP information
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
-## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly=TRUE)) {
+## Temporary Reference GDS file
+tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
 
-    ## Temporary GDS file containing Reference information
-    gdsFile <- withr::local_file(file.path(dataDir, "1KG_TEMP.gds"))
+## Only run example if the directory is writable
+if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
 
-    ## Create a temporary GDS file containing information from 1KG
-    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-        fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-        fileNameGDS=gdsFile, listSamples=NULL)
+    ## Different code depending of the withr package availability
+    if (requireNamespace("withr", quietly=TRUE)) {
 
-    ## Remove temporary files
-    withr::deferred_run()
+        ## Temporary Reference GDS file
+        gdsFile <- withr::local_file(tempRefGDS)
 
-} else {
+        ## Create a temporary Reference GDS file containing
+        ## information from reference file
+        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+            fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+            fileNameGDS=gdsFile, listSamples=NULL)
 
-    ## Temporary GDS file containing Reference information
-    gdsFile <- file.path(dataDir, "1KG_TEMP.gds")
+        ## Remove temporary files
+        withr::deferred_run()
 
-    ## Create a temporary GDS file containing information from 1KG
-    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-        fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-        fileNameGDS=gdsFile, listSamples=NULL)
+    } else {
 
-    ## Remove temporary files
-    unlink(gdsFile)
+        ## Create a temporary Reference GDS file
+        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+            fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+            fileNameGDS=tempRefGDS, listSamples=NULL)
 
+        ## Remove temporary files
+        unlink(tempRefGDS, force=TRUE)
+
+    }
 }
 
 }

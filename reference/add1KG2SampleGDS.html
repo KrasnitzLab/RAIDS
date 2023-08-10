@@ -132,12 +132,15 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span>                        study.platform<span class="op">=</span><span class="st">"PLATFORM"</span>,</span></span>
 <span class="r-in"><span>                        stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Only run example if the directory containing the genotype can be created</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>  <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Temporary Profile file</span></span></span>
+<span class="r-in"><span><span class="va">fileProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex2.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Only run example if the directory is writable</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span><span class="op">)</span>  <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Copy required file</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo_with_pruning.gds"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex2.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="va">fileProfile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Open 1KG file</span></span></span>
 <span class="r-in"><span>    <span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span></span>
@@ -145,7 +148,7 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span>    <span class="co">## Compute the list of pruned SNVs for a specific profile 'ex1'</span></span></span>
 <span class="r-in"><span>    <span class="co">## and save it in the Profile GDS file 'ex2.gds'</span></span></span>
 <span class="r-in"><span>    <span class="fu">add1KG2SampleGDS</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
-<span class="r-in"><span>        fileProfileGDS<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex2.gds"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        fileProfileGDS<span class="op">=</span><span class="va">fileProfile</span>,</span></span>
 <span class="r-in"><span>        currentProfile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        studyID<span class="op">=</span><span class="va">studyDF</span><span class="op">$</span><span class="va">study.id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -154,14 +157,14 @@ identifier associated to the current list of pruned SNVs.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>     <span class="co">## Check content of Profile GDS file</span></span></span>
 <span class="r-in"><span>     <span class="co">## The 'pruned.study' entry should be present</span></span></span>
-<span class="r-in"><span>     <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex2.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span></span></span>
 <span class="r-in"><span>     <span class="va">content</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>     <span class="co">## Close the Profile GDS file (important)</span></span></span>
 <span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">content</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>     <span class="co">## Remove Profile GDS file (created for demo purpose)</span></span></span>
-<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex2.gds"</span><span class="op">)</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fileProfile</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

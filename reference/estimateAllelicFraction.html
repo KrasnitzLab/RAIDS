@@ -99,7 +99,7 @@ the type of study (DNA or RNA).</p>
     <h2>Arguments</h2>
     <dl><dt>gdsReference</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
-(a GDS file), the opened 1KG GDS file.</p></dd>
+(a GDS file), the opened Reference GDS file.</p></dd>
 
 
 <dt>gdsProfile</dt>
@@ -169,7 +169,7 @@ Default: <code>3</code>.</p></dd>
 
 <dt>gdsRefAnnot</dt>
 <dd><p>an object of class <code><a href="https://rdrr.io/pkg/gdsfmt/man/gds.class.html" class="external-link">gds.class</a></code>
-(a GDS file), the1 1KG Annotation GDS file.
+(a GDS file), the opened Reference SNV Annotation GDS file.
 This parameter is RNA specific.
 Default: <code>NULL</code>.</p></dd>
 
@@ -219,8 +219,11 @@ library.</p>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_good_small_1KG_GDS.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Profile GDS file for one profile</span></span></span>
+<span class="r-in"><span><span class="va">fileProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example can only be run if the current directory is in writing mode</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">fileProfile</span><span class="op">)</span><span class="op">)</span>  <span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="co">## Copy the Profile GDS file demo that has been pruned and annotated</span></span></span>
 <span class="r-in"><span>    <span class="co">## into  current directory</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1_demo_with_pruning_and_1KG_annot.gds"</span><span class="op">)</span>,</span></span>
@@ -230,7 +233,6 @@ library.</p>
 <span class="r-in"><span>    <span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="va">fileGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Profile GDS file for one profile</span></span></span>
-<span class="r-in"><span>    <span class="va">fileProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">profileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileProfile</span>, readonly<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Chromosome length information</span></span></span>

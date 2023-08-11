@@ -479,7 +479,6 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 
     write.table(tped, pedOUT, quote=FALSE, sep="\t", row.names=FALSE,
                         col.names=FALSE)
-
 }
 
 
@@ -564,6 +563,9 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
 #' dataDir <- system.file("extdata/tests", package="RAIDS")

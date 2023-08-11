@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{tableBlockAF}
 \alias{tableBlockAF}
-\title{TODO}
+\title{TOREVIEW Compile the info about the allelic fraction for each bloc. In the case of RNA-seq
+the blaocks are gene}
 \usage{
 tableBlockAF(snp.pos)
 }
@@ -13,11 +14,29 @@ the SNV dataset with
 coverage > \code{minCov}.}
 }
 \value{
-TODO a \code{data.frame} with the information related to allelic
-fraction for each block gene
+TOREVIEW resBlock a \code{data.frame} containing only heterozygote SNVs. The
+\code{data.frame} contain those columns:
+\itemize{
+\item{block} {a single \code{integer} id of the block.}
+\item{aRF} {a single \code{numeric} allelic fraction final not compute
+here -1 for all entries.}
+\item{aFraction} {a single \code{integer}  allelic fraction possible if not LOH.}
+\item{lR} {a single \code{integer} representing the coverage for
+the alternative allele.}
+\item{nPhase} {a single \code{integer} number of SNV phase.}
+\item{sumAlleleLow} {a single \code{integer} TODO.}
+\item{sumAlleleHigh} {a single \code{integer} TODO.}
+\item{lH} {a single \code{numeric} for the homozygotes log10 of the product
+frequencies of the allele not found in the profile (not a probability).}
+\item{lM} {a single \code{numeric} log10 product frequency allele in population.}
+\item{lRhomo} {a single \code{numeric} score lH - lM.}
+#' \item{nbHomo} {a single \code{integer} score lH - lM.}
+#' \item{nbKeep} {a single \code{integer} score lH - lM.}
+#' \item{nbHetero} {a single \code{integer} score lH - lM.}
+}
 }
 \description{
-TODO
+TOREVIEW For each block evaluate score about lost of heterizygocity and allelic fration
 }
 \examples{
 

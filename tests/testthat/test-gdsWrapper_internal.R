@@ -520,3 +520,23 @@ test_that("getBlockIDs() must return the expected result", {
 })
 
 
+test_that("getBlockIDs() must return expected error", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
+    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+
+    annotFile <- openfn.gds(fileGDS)
+    defer(closefn.gds(annotFile), envir=parent.frame())
+
+    ## Vector of segment identifiers
+    indexes <- c(1, 3, 6, 8, 9)
+
+    error_message <- paste0("The following block type is not found in the ",
+                                "GDS Annotation file: \'InformationTremblay\'")
+
+    expect_error(RAIDS:::getBlockIDs(gdsRefAnnot=annotFile, snpIndex=indexes,
+                                        blockTypeID="InformationTremblay"),
+                    error_message, fixed=TRUE)
+})
+

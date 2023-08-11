@@ -276,8 +276,8 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #' @param dfPedProfile a \code{data.frame} with the information about
 #' the sample(s).
 #' Those are mandatory columns: "Name.ID",
-#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-#' \code{character} strings. The \code{data.frame}
+#' "Case.ID", "Sample.Type", "Diagnosis" and "Source". All columns must be in
+#' \code{character} strings format. The \code{data.frame}
 #' must contain the information for all the samples passed in the
 #' \code{listSamples} parameter.
 #'
@@ -1110,4 +1110,69 @@ addUpdateLap <- function(gdsProfile, snpLap) {
     sync.gds(gdsProfile)
 
     return(0L)
+}
+
+
+#' @title Extract the block identifiers for a list of SNVs
+#'
+#' @description The function uses the GDS Reference Annotation file to extract
+#' the unique block identifiers for a list of SNVs. The block type that is
+#' going to be used to extract the information has to be provided by the
+#' user.
+#'
+#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), the opened Reference SNV Annotation GDS file.
+#'
+#' @param snpIndex a \code{vectcor} of \code{integer} representing the
+#' indexes of the SNVs of interest.
+#'
+#' @param blockTypeID a \code{character} string corresponding to the block
+#' type used to extract the block identifiers. The block type must be
+#' present in the GDS Reference Annotation file.
+#'
+#' @return a \code{vector} of \code{numeric} corresponding to the
+#' block identifiers for the SNVs of interest.
+#'
+#' @examples
+#'
+#' # Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo 1KG Annotation GDS file located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' path1KG <- file.path(dataDir, "example", "gdsRef")
+#' fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+#'
+#' gdsRefAnnotation <- openfn.gds(fileAnnotGDS)
+#'
+#' ## The indexes for the SNVs of interest
+#' snpIndex <- c(1,3,5,6,9)
+#'
+#' ## Extract the block identifiers for the SNVs represented by their indexes
+#' ## for the block created using the genes from Hsapiens Ensembl v86
+#' RAIDS:::getBlockIDs(gdsRefAnnot=gdsRefAnnotation, snpIndex=snpIndex,
+#'                         blockTypeID="GeneS.Ensembl.Hsapiens.v86")
+#'
+#' closefn.gds(gdsRefAnnotation)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+getBlockIDs <- function(gdsRefAnnot, snpIndex, blockTypeID) {
+
+    block.annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
+    pos <- which(block.annot$block.id == blockTypeID)
+
+    if(length(pos) != 1) {
+        stop("The following block type is not found in the ",
+             "GDS Annotation file: \'", blockTypeID, "\'")
+    }
+
+    b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1, pos),
+                   count = c(-1, 1))[snpIndex]
+
+    return(b)
 }

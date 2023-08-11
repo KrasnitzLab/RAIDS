@@ -721,8 +721,8 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
 
     # Get the block structure base on genes from gdsRefAnnot
-    snp.pos$block.id <- getGeneBlock(gdsRefAnnot=gdsRefAnnot,
-                            snp.index=snp.pos$snp.index, blockID=blockID)
+    snp.pos$block.id <- getBlockIDs(gdsRefAnnot=gdsRefAnnot,
+                            snpIndex=snp.pos$snp.index, blockTypeID=blockID)
 
     snp.pos$phase <- rep(3, nrow(snp.pos))
     if ("phase" %in% ls.gdsn(node=gdsSample)) {

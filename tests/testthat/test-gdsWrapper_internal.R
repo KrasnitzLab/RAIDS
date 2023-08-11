@@ -494,3 +494,29 @@ test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GD
     expect_equal(results, lap)
 })
 
+
+context("getBlockIDs() results")
+
+
+test_that("getBlockIDs() must return the expected result", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
+    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+
+    annotFile <- openfn.gds(fileGDS)
+    defer(closefn.gds(annotFile), envir=parent.frame())
+
+    ## Vector of segment identifiers
+    indexes <- c(1, 3, 6, 8, 9)
+
+    ## Block identifiers for the selected SNVs
+    result <- RAIDS:::getBlockIDs(gdsRefAnnot=annotFile, snpIndex=indexes,
+                                blockTypeID="GeneS.Ensembl.Hsapiens.v86")
+
+    expected <- rep(943, 5)
+
+    expect_equal(result, expected)
+})
+
+

@@ -735,40 +735,81 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     snp.pos$freq <- read.gdsn(index.gdsn(gdsReference,
                                             "snp.AF"))[snp.pos$snp.index]
     # for each chromosome
-    listBlock <- list()
-    for(chr in unique(snp.pos$snp.chr)) {
+    # listBlock <- list()
 
-        if (verbose) {
-            message("chr ", chr)
-            message("Step 1 ", Sys.time())
-        }
+    ## FOR_LOOP modification to be validated by Pascal
+    ## Remove commented code and this text after validation
+    listBlock <- lapply(unique(snp.pos$snp.chr), FUN = function(x, snp.pos, verbose){
+            if (verbose) {
+                message("chr ", x)
+                message("Step 1 ", Sys.time())
+            }
+            listChr <- which(snp.pos$snp.chr == x)
+            blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
+            blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
+            blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
+                                                                     >= cutOffAR]
+            blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
 
-        #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
-        listChr <- which(snp.pos$snp.chr == chr)
-        # snp.pos.chr <- snp.pos[listChr,]
+            #listBlock[[x]] <- blockAF
 
-        blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
-        # LOH
-        blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
-        blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
-                                                            >= cutOffAR]
-        blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
-
-        listBlock[[chr]] <- blockAF
-
-        if (verbose) {
-            message("Step 1 done ", Sys.time())
-        }
-    }
-
+            if (verbose) {
+                message("Step 1 done ", Sys.time())
+            }
+            return(blockAF)
+        }, snp.pos=snp.pos,
+        verbose=verbose)
     blockAF <- do.call(rbind, listBlock)
     listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
+
     blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
-                                        length(listMissing), replace=TRUE)
+                                          length(listMissing), replace=TRUE)
+
 
     for(b in seq_len(nrow(blockAF))) {
         snp.pos$lap[snp.pos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
     }
+    # listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
+    # blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
+    #                                       length(listMissing), replace=TRUE)
+
+    # listBlock <- list()
+    # print(system.time(for(chr in unique(snp.pos$snp.chr)) {
+    #
+    #     if (verbose) {
+    #         message("chr ", chr)
+    #         message("Step 1 ", Sys.time())
+    #     }
+    #
+    #     #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
+    #     listChr <- which(snp.pos$snp.chr == chr)
+    #     # snp.pos.chr <- snp.pos[listChr,]
+    #
+    #     blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
+    #     # LOH
+    #     blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
+    #     blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
+    #                                                         >= cutOffAR]
+    #     blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
+    #
+    #     listBlock[[chr]] <- blockAF
+    #
+    #     if (verbose) {
+    #         message("Step 1 done ", Sys.time())
+    #     }
+    # }))
+    #
+    # blockAF1 <- do.call(rbind, listBlock)
+    #
+    # listMissing <- which(abs(blockAF1$aRF + 1) < 1e-6)
+    # set.seed(654)
+    # blockAF1[listMissing, "aRF"] <- sample(blockAF1$aRF[-1*listMissing],
+    #                                     length(listMissing), replace=TRUE)
+    #
+    #
+    # for(b in seq_len(nrow(blockAF1))) {
+    #     snp.pos$lap[snp.pos$block.id == blockAF1$block[b]] <- blockAF1$aRF[b]
+    # }
 
     return(snp.pos)
 }

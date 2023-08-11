@@ -77,20 +77,33 @@ select1KGPop <- function(gdsReference, nbProfiles) {
                                             "sample.annot"))[listKeep,]
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
-    listSel <- list()
+
+    ## FOR_LOOP modification to be validated by Pascal
+    ## Remove commented code and this text after validation
 
     ## For each subcontinental population, randomly select a fixed number of
     ## samples
-    for(i in seq_len(length(listPop))) {
-        listGroup <- which(sample.annot$pop.group == listPop[i])
-        tmp <- sample(listGroup, min(nbProfiles, length(listGroup)))
-        listSel[[i]] <- data.frame(sample.id=sample.id[tmp],
-                                    pop.group=sample.annot$pop.group[tmp],
-                                    superPop=sample.annot$superPop[tmp],
-                                    stringsAsFactors=FALSE)
-    }
+    # listSel <- list()
+    # for(i in seq_len(length(listPop))) {
+    #     listGroup <- which(sample.annot$pop.group == listPop[i])
+    #     tmp <- sample(listGroup, min(nbProfiles, length(listGroup)))
+    #     listSel[[i]] <- data.frame(sample.id=sample.id[tmp],
+    #                                 pop.group=sample.annot$pop.group[tmp],
+    #                                 superPop=sample.annot$superPop[tmp],
+    #                                 stringsAsFactors=FALSE)
+    # }
 
-    df <- do.call(rbind, listSel)
+    ## For each subcontinental population, randomly select a fixed number of
+    ## samples
+    dfAll <- lapply(seq_len(length(listPop)), function(i) {
+            listGroup <- which(sample.annot$pop.group == listPop[i])
+            tmp <- sample(listGroup, min(nbProfiles, length(listGroup)))
+            return(data.frame(sample.id=sample.id[tmp],
+                                pop.group=sample.annot$pop.group[tmp],
+                                superPop=sample.annot$superPop[tmp],
+                                stringsAsFactors=FALSE)) })
+
+    df <- do.call(rbind, dfAll)
 
     return(df)
 }

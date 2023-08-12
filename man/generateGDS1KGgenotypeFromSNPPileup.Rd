@@ -53,8 +53,8 @@ representing the sequencing error rate. Default: \code{0.001}.}
 \item{dfPedProfile}{a \code{data.frame} with the information about
 the sample(s).
 Those are mandatory columns: "Name.ID",
-"Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
-\code{character} strings. The \code{data.frame}
+"Case.ID", "Sample.Type", "Diagnosis" and "Source". All columns must be in
+\code{character} strings format. The \code{data.frame}
 must contain the information for all the samples passed in the
 \code{listSamples} parameter.}
 

@@ -864,7 +864,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     listChr <- seq_len(22)
     listBlock <- list()
     for(chr in listChr) {
-        if(verbose) { message("chr", chr, " ",Sys.time()) }
+        if(verbose) { message("chr", chr, " ", Sys.time()) }
 
         snp.keep <- snp.position[snp.chromosome == chr]
 

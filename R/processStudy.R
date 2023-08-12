@@ -783,6 +783,9 @@ addPhase1KG2SampleGDSFromFile <- function(gdsReference, pathProfileGDS,
 
     listGDSSample <- dir(pathProfileGDS, pattern = ".+.gds")
 
+    ## Each index is very big and there is a lot of overlapping between
+    ## the samples
+    ## The for loop limits the memory usage
     indexAll <- NULL
     for(fileProfileGDS in listGDSSample) {
         gdsSample <- openfn.gds(filename=file.path(pathProfileGDS,
@@ -2517,9 +2520,9 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
         verbose=verbose)
 
-    ## Open the 1KG GDS file (demo version)
+    ## Open the Reference GDS file
     gds1KG <- snpgdsOpen(fileReferenceGDS)
-    ## Open the 1KG GDS file and 1KG SNV Annotation file
+    ## Open the Reference GDS file and 1KG SNV Annotation file
     gdsAnnot1KG <- openfn.gds(fileReferenceAnnotGDS)
 
     listProfileRef <- syntheticRefDF$sample.id

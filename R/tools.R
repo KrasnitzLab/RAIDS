@@ -127,7 +127,7 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
     return(0L)
 }
 
-#' @title Merge the pruning files by chromosome in one file
+#' @title Merge the pruning files by chromosome in one RDS file
 #'
 #' @description TODO
 #'
@@ -135,11 +135,13 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #' the pruned files for each chromosome are located.
 #' The path must exists.
 #'
-#' @param filePref TODO
+#' @param filePref a \code{character} string representing the prefix used for
+#' the pruned files for each chromosome. The prefix represent the complete
+#' string that is before the chromosome number in the file names.
 #'
 #' @param fileOut a \code{character} string representing name of the output
-#' file that will be created. THe file will contain the information for all
-#' pruned chromosome. The file must have a ".rds" extension.
+#' file that will be created. The file will contain the information for all
+#' pruned chromosomes. The file must have a ".rds" extension.
 #'
 #' @return The integer \code{0L} when successful.
 #'

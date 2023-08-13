@@ -129,7 +129,10 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 
 #' @title Merge the pruning files by chromosome in one RDS file
 #'
-#' @description TODO
+#' @description The function reads the information from all chromosomes. The
+#' information is scattered in different files (one file per chromosome).
+#' Once all information is loaded,  the function merges
+#' the information and saves it into a RDS file.
 #'
 #' @param pathPrunedGDS a \code{character} string representing the path where
 #' the pruned files for each chromosome are located.

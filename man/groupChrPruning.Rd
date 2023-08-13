@@ -24,7 +24,10 @@ pruned chromosomes. The file must have a ".rds" extension.}
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+The function reads the information from all chromosomes. The
+information is scattered in different files (one file per chromosome).
+Once all information is loaded,  the function merges
+the information and saves it into a RDS file.
 }
 \examples{
 

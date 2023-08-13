@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{groupChrPruning}
 \alias{groupChrPruning}
-\title{Merge the pruning files by chromosome in one file}
+\title{Merge the pruning files by chromosome in one RDS file}
 \usage{
 groupChrPruning(pathPrunedGDS, filePref, fileOut)
 }
@@ -12,17 +12,22 @@ groupChrPruning(pathPrunedGDS, filePref, fileOut)
 the pruned files for each chromosome are located.
 The path must exists.}
 
-\item{filePref}{TODO}
+\item{filePref}{a \code{character} string representing the prefix used for
+the pruned files for each chromosome. The prefix represent the complete
+string that is before the chromosome number in the file names.}
 
 \item{fileOut}{a \code{character} string representing name of the output
-file that will be created. THe file will contain the information for all
-pruned chromosome. The file must have a ".rds" extension.}
+file that will be created. The file will contain the information for all
+pruned chromosomes. The file must have a ".rds" extension.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+The function reads the information from all chromosomes. The
+information is scattered in different files (one file per chromosome).
+Once all information is loaded,  the function merges
+the information and saves it into a RDS file.
 }
 \examples{
 

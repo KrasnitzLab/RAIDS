@@ -33,7 +33,7 @@ already be present in the GDS file.
 ## Required library
 library(gdsfmt)
 
-## Create a temporary GDS file in an test directory
+## Create a temporary GDS file
 gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
 
 ## Only run if directory is in writing mode

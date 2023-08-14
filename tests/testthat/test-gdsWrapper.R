@@ -43,7 +43,7 @@ test_that("addUpdateSegment() must copy the expected entry in \"segment\" node o
     segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L)
 
     ## Add segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
 
     ## Read segments information from GDS file
     results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
@@ -71,10 +71,10 @@ test_that("addUpdateSegment() must copy the expected entry in \"segment\" node o
     segments2 <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L, 5L, 5L)
 
     ## Add segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
 
     ## Update segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments2)
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments2)
 
     ## Read segments information from GDS file
     results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))

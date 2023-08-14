@@ -190,59 +190,58 @@ messages when running.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Path to the files in this package</span></span></span>
-<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Current directory</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The data.frame containing the information about the study</span></span></span>
-<span class="r-in"><span><span class="co">## The 3 mandatory columns: "study.id", "study.desc", "study.platform"</span></span></span>
-<span class="r-in"><span><span class="co">## The entries should be strings, not factors (stringsAsFactors=FALSE)</span></span></span>
-<span class="r-in"><span><span class="va">studyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA"</span>,</span></span>
+<span class="r-in"><span><span class="co">## Run only if directory in writing mode</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="va">dataDir</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Copy required file into current directory</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span>from<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">"ex1.txt.gz"</span><span class="op">)</span>, to<span class="op">=</span><span class="va">dataDir</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## The data.frame containing the information about the study</span></span></span>
+<span class="r-in"><span>    <span class="co">## The 3 mandatory columns: "study.id", "study.desc", "study.platform"</span></span></span>
+<span class="r-in"><span>    <span class="co">## The entries should be strings, not factors (stringsAsFactors=FALSE)</span></span></span>
+<span class="r-in"><span>    <span class="va">studyDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>study.id <span class="op">=</span> <span class="st">"MYDATA"</span>,</span></span>
 <span class="r-in"><span>                        study.desc <span class="op">=</span> <span class="st">"Description"</span>,</span></span>
 <span class="r-in"><span>                        study.platform <span class="op">=</span> <span class="st">"PLATFORM"</span>,</span></span>
 <span class="r-in"><span>                        stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The data.frame containing the information about the samples</span></span></span>
-<span class="r-in"><span><span class="co">## The entries should be strings, not factors (stringsAsFactors=FALSE)</span></span></span>
-<span class="r-in"><span><span class="va">samplePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Name.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span>, <span class="st">"ex2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="co">## The data.frame containing the information about the samples</span></span></span>
+<span class="r-in"><span>    <span class="co">## The entries should be strings, not factors (stringsAsFactors=FALSE)</span></span></span>
+<span class="r-in"><span>    <span class="va">samplePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Name.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span>, <span class="st">"ex2"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    Case.ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Patient_h11"</span>, <span class="st">"Patient_h12"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    Diagnosis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Cancer"</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    Sample.Type<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Primary Tumor"</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    Source<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">2</span><span class="op">)</span>, stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">samplePED</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">samplePED</span><span class="op">$</span><span class="va">Name.ID</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">samplePED</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">samplePED</span><span class="op">$</span><span class="va">Name.ID</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## List of SNV positions</span></span></span>
-<span class="r-in"><span><span class="va">listPositions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>snp.chromosome<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    snp.position<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3467333</span>, <span class="fl">3467428</span>, <span class="fl">3469375</span>, <span class="fl">3469387</span>, <span class="fl">3469502</span>, <span class="fl">3469527</span>,</span></span>
-<span class="r-in"><span>    <span class="fl">3469737</span>, <span class="fl">3471497</span>, <span class="fl">3471565</span>, <span class="fl">3471618</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## List of SNV positions</span></span></span>
+<span class="r-in"><span>    <span class="va">listPositions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>snp.chromosome<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        snp.position<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3467333</span>, <span class="fl">3467428</span>, <span class="fl">3469375</span>, <span class="fl">3469387</span>, <span class="fl">3469502</span>, <span class="fl">3469527</span>,</span></span>
+<span class="r-in"><span>        <span class="fl">3469737</span>, <span class="fl">3471497</span>, <span class="fl">3471565</span>, <span class="fl">3471618</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Append genotype information to the Profile GDS file</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDS1KGgenotypeFromSNPPileup</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span>    <span class="co">## Append genotype information to the Profile GDS file</span></span></span>
+<span class="r-in"><span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDS1KGgenotypeFromSNPPileup</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>            listSamples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>, listPos<span class="op">=</span><span class="va">listPositions</span>,</span></span>
 <span class="r-in"><span>            offset<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, minCov<span class="op">=</span><span class="fl">10</span>, minProb<span class="op">=</span><span class="fl">0.999</span>, seqError<span class="op">=</span><span class="fl">0.001</span>,</span></span>
 <span class="r-in"><span>            dfPedProfile<span class="op">=</span><span class="va">samplePED</span>, batch<span class="op">=</span><span class="fl">1</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>
 <span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>, genoSource<span class="op">=</span><span class="st">"snp-pileup"</span>,</span></span>
 <span class="r-in"><span>            verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The function returns OL when successful</span></span></span>
-<span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-in"><span>    <span class="co">## The function returns OL when successful</span></span></span>
+<span class="r-in"><span>    <span class="va">result</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The Profile GDS file 'ex1.gds' has been created in the</span></span></span>
-<span class="r-in"><span><span class="co">## specified directory</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">dataDir</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "1KG_Test.gds"                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "1KG_Test_02.gds"                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Sample_Info_Test.RDS"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ex1.gds"                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "ex1.txt.gz"                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "ex1_demo.gds"                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ex1_demo_with_pruning.gds"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "ex1_demo_with_pruning_and_1KG_annot.gds"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "ex1_good_small_1KG_Annot_GDS.gds"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ex1_good_small_1KG_GDS.gds"             </span>
+<span class="r-in"><span>    <span class="co">## The Profile GDS file 'ex1.gds' has been created in the</span></span></span>
+<span class="r-in"><span>    <span class="co">## specified directory</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">dataDir</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.txt.gz"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

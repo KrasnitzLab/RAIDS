@@ -497,39 +497,39 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
-    block.annot <- data.frame(block.id=blockName,
+    blockAnnot <- data.frame(block.id=blockName,
                                 block.desc=blockDesc,
                                 stringsAsFactors=FALSE)
 
     if(! ("block.annot" %in% ls.gdsn(gds))) {
         ## Create 'block.annot' node when not existing
-        var.block.annot <- add.gdsn(gds, "block.annot", block.annot)
+        varBlockAnnot <- add.gdsn(gds, "block.annot", blockAnnot)
     }else {
         ## Append content to 'block.annot' node when existing
         curAnnot <- index.gdsn(gds, "block.annot/block.id")
-        append.gdsn(curAnnot, block.annot$block.id)
+        append.gdsn(curAnnot, blockAnnot$block.id)
         curAnnot <- index.gdsn(gds, "block.annot/block.desc")
-        append.gdsn(curAnnot, block.annot$block.desc)
+        append.gdsn(curAnnot, blockAnnot$block.desc)
     }
 
-    var.block <- NULL
+    varBlock <- NULL
     if(!("block" %in% ls.gdsn(gds))) {
         ## Create 'block' node that will contain a matrix of integers
         ## stored in compressed mode
-        var.block <- add.gdsn(node=gds, name="block",
+        varBlock <- add.gdsn(node=gds, name="block",
                                 valdim=c(length(listBlock), 1),
                                 listBlock, storage="int32",
                                 compress="LZ4_RA")
-        readmode.gdsn(var.block)
+        readmode.gdsn(varBlock)
 
     } else {
-        if(is.null(var.block)) {
-            var.block <- index.gdsn(gds, "block")
-            var.block <- compression.gdsn(var.block, "")
+        if(is.null(varBlock)) {
+            varBlock <- index.gdsn(gds, "block")
+            varBlock <- compression.gdsn(varBlock, "")
         }
-        append.gdsn(var.block, listBlock)
+        append.gdsn(varBlock, listBlock)
         ## Compressed data using LZ4_RA method
-        var.block <- compression.gdsn(var.block, "LZ4_RA")
+        varBlock <- compression.gdsn(varBlock, "LZ4_RA")
     }
 
     sync.gds(gds)

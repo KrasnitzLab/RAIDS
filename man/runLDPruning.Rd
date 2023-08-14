@@ -66,6 +66,9 @@ SNPRelate package (https://bioconductor.org/packages/SNPRelate/).
 }
 \examples{
 
+## Required
+library(SNPRelate)
+
 ## Open an example dataset (HapMap)
 genoFile <- snpgdsOpen(snpgdsExampleFileName())
 

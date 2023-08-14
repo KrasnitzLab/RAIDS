@@ -53,7 +53,7 @@ The output from snp-pileup should be Name.ID.txt
     
     
 
-TODO change the path to something generic
+NOTE: change the path to something generic
 
 You add the genotype call from the SNP-pileup to
 the gds 1KG and create a GDS file for each sample. 
@@ -149,7 +149,7 @@ in the pruning process to the gds Sample
     |--+ pruned.study   { Str8 237908, 2.2M }
 
 
-TODO
+NOTE 
 Add genotype only for the snp selected in pruning to gdsSample
 
     library(RAIDS)

@@ -58,6 +58,9 @@
     <li>
       <a href="../articles/Create_1KG_GDS_File.html">Formatting the information from the population reference dataset (optional)</a>
     </li>
+    <li>
+      <a href="../articles/Create_Reference_GDS_File.html">Population reference dataset GDS files (optional)</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -176,7 +179,8 @@ reference dataset (optional)</p>
 <p><strong>Step 2.1</strong> Optimize ancestry inference parameters</p>
 <p><strong>Step 2.2</strong> Infer ancestry for the subjects of the
 external study</p>
-<p>These steps are described in detail in the following.</p>
+<p>These steps are described in detail in the following. Steps 2.1 and
+2.2 can be run together using one wrapper function.</p>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="step-1---format-population-reference-dataset-optional">Step 1 - Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-population-reference-dataset-optional"></a>
@@ -194,6 +198,8 @@ dataset (optional)
 <li>The population reference SNV Annotation GDS file</li>
 <li>The population reference SNV Retained VCF file</li>
 </ul>
+<p>The format of those files are described the <a href="Create_Reference_GDS_file.html">Population reference dataset GDS
+files (optional)</a> vignette.</p>
 <p><span style="color:darkred;font-weight:bold">The reference files
 associated to the Cancer Research associated paper are available. Note
 that these pre-processed files are for 1000 Genomes (1KG), in hg38. The
@@ -207,13 +213,11 @@ mapped on hg38 <span class="citation">(Lowy-Gallego et al.
 2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
-<p>The execution of this step is explained in the <a href="Create_1KG_GDS_file.html">Formatting the information from the
-population reference dataset (optional)</a> vignette.</p>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-2---wrapper-function-to-run-ancestry-inference-in-one-command">Step 2 - Wrapper function to run ancestry inference in one
-command<a class="anchor" aria-label="anchor" href="#step-2---wrapper-function-to-run-ancestry-inference-in-one-command"></a>
+<h3 id="step-2---wrapper-function-to-run-ancestry-inference-on-dna-data-in-one-command">Step 2 - Wrapper function to run ancestry inference on DNA data in
+one command<a class="anchor" aria-label="anchor" href="#step-2---wrapper-function-to-run-ancestry-inference-on-dna-data-in-one-command"></a>
 </h3>
 <p>The final step can be run with a wrapper function that encapsulates
 multiple steps of the workflow.</p>

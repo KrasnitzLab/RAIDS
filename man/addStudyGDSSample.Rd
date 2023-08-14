@@ -54,7 +54,7 @@ created and then, the information is added.
 ## Required library
 library(gdsfmt)
 
-## Create a temporary GDS file in an test directory
+## Create a temporary GDS file in an current directory
 gdsFilePath <- file.path(getwd(), "GDS_TEMP_11.gds")
 
 ## Run only if directory in writing mode

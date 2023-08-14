@@ -37,7 +37,7 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 
-
+## Temporary GDS file
 gdsFilePath <- file.path(getwd(), "GDS_TEMP_11.gds")
 
 ## Run only if directory in writing mode

@@ -36,35 +36,39 @@ correspond to the number of rows of the matrix present in the
 ## Required library
 library(gdsfmt)
 
-## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(dataDir, "GDS_TEMP_06.gds")
+## Create a temporary GDS file
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_06.gds")
 
-## Create and open the GDS file
-tmpGDS  <- createfn.gds(filename=gdsFilePath)
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 
-## Create a "genotype" node with initial matrix
-genoInitial <- matrix(rep(0L, 10), nrow=2)
+    ## Create and open the GDS file
+    tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-add.gdsn(node=tmpGDS, name="genotype", val=genoInitial)
-sync.gds(tmpGDS)
+    ## Create a "genotype" node with initial matrix
+    genoInitial <- matrix(rep(0L, 10), nrow=2)
 
-## New genotype information to be added
-newGenotype <- matrix(rep(1L, 6), nrow=2)
+    add.gdsn(node=tmpGDS, name="genotype", val=genoInitial)
+    sync.gds(tmpGDS)
 
-## Add segments to the GDS file
-RAIDS:::appendGDSgenotypeMat(gds=tmpGDS, matG=newGenotype)
+    ## New genotype information to be added
+    newGenotype <- matrix(rep(1L, 6), nrow=2)
 
-## Read genotype information from GDS file
-## The return matrix should be a combination of both initial matrix
-## and new matrix (column binded)
-read.gdsn(index.gdsn(node=tmpGDS, path="genotype"))
+    ## Add segments to the GDS file
+    RAIDS:::appendGDSgenotypeMat(gds=tmpGDS, matG=newGenotype)
 
-## Close GDS file
-closefn.gds(gdsfile=tmpGDS)
+    ## Read genotype information from GDS file
+    ## The return matrix should be a combination of both initial matrix
+    ## and new matrix (column binded)
+    read.gdsn(index.gdsn(node=tmpGDS, path="genotype"))
 
-## Delete the temporary GDS file
-unlink(x=gdsFilePath, force=TRUE)
+    ## Close GDS file
+    closefn.gds(gdsfile=tmpGDS)
+
+    ## Delete the temporary GDS file
+    unlink(x=gdsFilePath, force=TRUE)
+
+}
 
 }
 \author{

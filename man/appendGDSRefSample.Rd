@@ -49,54 +49,60 @@ addStudyGDSSample() must be used.
 library(gdsfmt)
 
 ## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(dataDir, "GDS_TEMP_03.gds")
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_03.gds")
 
-## Create and open the GDS file
-tmpGDS <- createfn.gds(filename=gdsFilePath)
+## Only run if directory is in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 
-## Create "sample.id" node (the node must be present)
-add.gdsn(node=tmpGDS, name="sample.id", val=c("sample_01",
-    "sample_02"))
+    ## Create and open the GDS file
+    tmpGDS <- createfn.gds(filename=gdsFilePath)
 
-## Create "sample.annot" node (the node must be present)
-add.gdsn(node=tmpGDS, name="sample.annot", val=data.frame(
-  Name.ID=c("sample_01", "sample_02"),
-    sex=c(1,1),  # 1:Male  2: Female
-    pop.group=c("ACB", "ACB"),
-    superPop=c("AFR", "AFR"),
-    batch=c(1, 1),
-    stringsAsFactors=FALSE))
+    ## Create "sample.id" node (the node must be present)
+    add.gdsn(node=tmpGDS, name="sample.id", val=c("sample_01",
+        "sample_02"))
 
-sync.gds(gdsfile=tmpGDS)
+    ## Create "sample.annot" node (the node must be present)
+    add.gdsn(node=tmpGDS, name="sample.annot", val=data.frame(
+            Name.ID=c("sample_01", "sample_02"),
+            sex=c(1,1),  # 1:Male  2: Female
+            pop.group=c("ACB", "ACB"),
+            superPop=c("AFR", "AFR"),
+            batch=c(1, 1),
+            stringsAsFactors=FALSE))
 
-## Create a data.frame with information about samples
-sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
-    sex=c(1,2,1),  # 1:Male  2: Female
-    pop.group=c("ACB", "ACB", "ACB"),
-    superPop=c("AFR", "AFR", "AFR"),
-    stringsAsFactors=FALSE)
+    sync.gds(gdsfile=tmpGDS)
 
-## The row names must be the sample identifiers
-rownames(sample_info) <- sample_info$Name.ID
+    ## Create a data.frame with information about samples
+    sample_info <- data.frame(Name.ID=c("sample_04", "sample_05",
+                                "sample_06"),
+                        sex=c(1,2,1),  # 1:Male  2: Female
+                        pop.group=c("ACB", "ACB", "ACB"),
+                        superPop=c("AFR", "AFR", "AFR"),
+                        stringsAsFactors=FALSE)
 
-## Add information about 2 samples to the GDS file
-RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, dfPedReference=sample_info,
-    batch=2, listSamples=c("sample_04", "sample_06"), verbose=FALSE)
+    ## The row names must be the sample identifiers
+    rownames(sample_info) <- sample_info$Name.ID
 
-## Read sample identifier list
-## Only "sample_04" and "sample_06" should have been added
-read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
+    ## Add information about 2 samples to the GDS file
+    RAIDS:::appendGDSRefSample(gdsReference=tmpGDS,
+        dfPedReference=sample_info,
+        batch=2, listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 
-## Read sample information from GDS file
-## Only "sample_04" and "sample_06" should have been added
-read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
+    ## Read sample identifier list
+    ## Only "sample_04" and "sample_06" should have been added
+    read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 
-## Close GDS file
-closefn.gds(gdsfile=tmpGDS)
+    ## Read sample information from GDS file
+    ## Only "sample_04" and "sample_06" should have been added
+    read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 
-## Delete the temporary GDS file
-unlink(x=gdsFilePath, force=TRUE)
+    ## Close GDS file
+    closefn.gds(gdsfile=tmpGDS)
+
+    ## Delete the temporary GDS file
+    unlink(x=gdsFilePath, force=TRUE)
+
+}
 
 }
 \author{

@@ -34,7 +34,6 @@ already be present in the GDS file.
 library(gdsfmt)
 
 ## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
 gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
 
 ## Only run if directory is in writing mode

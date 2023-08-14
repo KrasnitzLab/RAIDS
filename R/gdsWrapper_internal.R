@@ -31,7 +31,7 @@
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Temporary GDS file in urrent directory
+#' ## Temporary GDS file in current directory
 #' gdsFilePath <- file.path(getwd(), "GDS_TEMP_10.gds")
 #'
 #' ## Run only if directory in writing mode
@@ -1218,4 +1218,136 @@ getBlockIDs <- function(gdsRefAnnot, snpIndex, blockTypeID) {
                    count = c(-1, 1))[snpIndex]
 
     return(b)
+}
+
+
+#' @title Add information related to segments associated to the SNV
+#' dataset for a specific sample into a GDS file
+#'
+#' @description The function adds the information related to segments
+#' associated to the SNV dataset for a specific sample into a
+#' GDS file, more specifically, in the "segment" node. If the "segment" node
+#' already exists, the previous information is erased.
+#'
+#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
+#' (a GDS file), a GDS Sample file.
+#'
+#' @param snpSeg a \code{vector} of \code{integer} representing the segment
+#' identifiers associated to each SNV selected for the specific sample. The
+#' length of the \code{vector} should correspond to the number of SNVs
+#' present in the "snp.id" entry of the GDS sample file.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Temporary GDS file
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
+#'
+#' ## Only run if directory is in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+#'
+#'     ## Create and open the GDS file
+#'     GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#'     ## Vector of segment identifiers
+#'     segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
+#'
+#'     ## Add segments to the GDS file
+#'     RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
+#'
+#'     ## Read segments information from GDS file
+#'     read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+#'
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+addUpdateSegment <- function(gdsProfile, snpSeg) {
+
+    if("segment" %in% ls.gdsn(gdsProfile)) {
+        snpLap <- write.gdsn(index.gdsn(gdsProfile, "segment"), snpSeg)
+    } else{
+        snpLap <- add.gdsn(gdsProfile, "segment", snpSeg, storage="uint32")
+    }
+
+    sync.gds(gdsProfile)
+
+    ## Successful
+    return(0L)
+}
+
+
+#' @title Append sample names into a GDS file
+#'
+#' @description This function append the sample identifiers into the
+#' "samples.id" node of a GDS file.
+#'
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
+#'
+#' @param listSample a \code{vector} of \code{character} string representing
+#' the sample identifiers to be added to GDS file.
+#'
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Temporary GDS file in current directory
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP_04.gds")
+#'
+#' ## Run only if directory in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+#'
+#'     ## Create and open the GDS file
+#'     GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#'     ## Create "sample.id" node (the node must be present)
+#'     add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+#'         "sample_02"))
+#'
+#'     sync.gds(gdsfile=GDS_file_tmp)
+#'
+#'     ## Add information about 2 samples to the GDS file
+#'     RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
+#'         listSamples=c("sample_03", "sample_04"))
+#'
+#'     ## Read sample identifier list
+#'     ## Only "sample_03" and "sample_04" should have been added
+#'     read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+#'
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn append.gdsn
+#' @encoding UTF-8
+#' @keywords internal
+appendGDSSampleOnly <- function(gds, listSamples) {
+
+    sampleGDS <- index.gdsn(gds, "sample.id")
+
+    append.gdsn(sampleGDS, val=listSamples, check=TRUE)
+
+    return(0L)
 }

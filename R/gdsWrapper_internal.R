@@ -308,48 +308,58 @@ appendGDSgenotypeMat <- function(gds, matG) {
 #'
 #' @examples
 #'
-#' ## Path to the files in this package
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' ## Current directory
+#' dataDir <- file.path(getwd())
 #'
-#' ## The data.frame containing the information about the study
-#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
-#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-#' studyDF <- data.frame(study.id = "MYDATA",
+#' ## Run only if directory in writing mode
+#' if (file.access(dataDir) == 0) {
+#'
+#'     ## Copy required file into current directory
+#'     file.copy(from=file.path(system.file("extdata/tests", package="RAIDS"),
+#'                     "ex1.txt.gz"), to=dataDir)
+#'
+#'     ## The data.frame containing the information about the study
+#'     ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#'     ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#'     studyDF <- data.frame(study.id = "MYDATA",
 #'                         study.desc = "Description",
 #'                         study.platform = "PLATFORM",
 #'                         stringsAsFactors = FALSE)
 #'
-#' ## The data.frame containing the information about the samples
-#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
-#' samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
+#'     ## The data.frame containing the information about the samples
+#'     ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#'     samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
 #'                     Case.ID=c("Patient_h11", "Patient_h12"),
 #'                     Diagnosis=rep("Cancer", 2),
 #'                     Sample.Type=rep("Primary Tumor", 2),
 #'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
-#' rownames(samplePED) <- samplePED$Name.ID
+#'     rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## List of SNV positions
-#' listPositions <- data.frame(snp.chromosome=c(rep(1, 10)),
-#'     snp.position=c(3467333, 3467428, 3469375, 3469387, 3469502, 3469527,
-#'     3469737, 3471497, 3471565, 3471618))
+#'     ## List of SNV positions
+#'     listPositions <- data.frame(snp.chromosome=c(rep(1, 10)),
+#'         snp.position=c(3467333, 3467428, 3469375, 3469387, 3469502, 3469527,
+#'         3469737, 3471497, 3471565, 3471618))
 #'
-#' ## Append genotype information to the Profile GDS file
-#' result <- RAIDS:::generateGDS1KGgenotypeFromSNPPileup(pathGeno=dataDir,
+#'     ## Append genotype information to the Profile GDS file
+#'     result <- RAIDS:::generateGDS1KGgenotypeFromSNPPileup(pathGeno=dataDir,
 #'             listSamples=c("ex1"), listPos=listPositions,
 #'             offset=-1, minCov=10, minProb=0.999, seqError=0.001,
 #'             dfPedProfile=samplePED, batch=1, studyDF=studyDF,
 #'             pathProfileGDS=dataDir, genoSource="snp-pileup",
 #'             verbose=FALSE)
 #'
-#' ## The function returns OL when successful
-#' result
+#'     ## The function returns OL when successful
+#'     result
 #'
-#' ## The Profile GDS file 'ex1.gds' has been created in the
-#' ## specified directory
-#' list.files(dataDir)
+#'     ## The Profile GDS file 'ex1.gds' has been created in the
+#'     ## specified directory
+#'     list.files(dataDir)
 #'
-#' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(dataDir, "ex1.gds"))
+#'     ## Unlink Profile GDS file (created for demo purpose)
+#'     unlink(file.path(dataDir, "ex1.gds"))
+#'     unlink(file.path(dataDir, "ex1.txt.gz"))
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn write.gdsn openfn.gds
@@ -575,41 +585,45 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP_11.gds")
 #'
-#' ## Create and open the GDS file
-#' tmpGDS  <- createfn.gds(filename=gdsFilePath)
+#' ## Run only if directory in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 #'
-#' ## Create a PED data frame with sample information
-#' ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
-#'     Case.ID=c("1KG_sample_01", "1KG_sample_02"),
-#'     Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
-#'     Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+#'     ## Create and open the GDS file
+#'     tmpGDS  <- createfn.gds(filename=gdsFilePath)
 #'
-#' ## Create a Study data frame with information about the study
-#' ## All samples are associated to the same study
-#' studyInfo <- data.frame(study.id="Ref.1KG",
-#'     study.desc="Unrelated samples from 1000 Genomes",
-#'     study.platform="GRCh38 1000 genotypes",
-#'     stringsAsFactors=FALSE)
+#'     ## Create a PED data frame with sample information
+#'     ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
+#'         Case.ID=c("1KG_sample_01", "1KG_sample_02"),
+#'         Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
+#'         Source=rep("IGSR", 2), stringsAsFactors=FALSE)
 #'
-#' ## Add the sample information to the GDS Sample file
-#' ## The information for all samples is added (listSamples=NULL)
-#' RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
-#'     listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+#'     ## Create a Study data frame with information about the study
+#'     ## All samples are associated to the same study
+#'     studyInfo <- data.frame(study.id="Ref.1KG",
+#'         study.desc="Unrelated samples from 1000 Genomes",
+#'         study.platform="GRCh38 1000 genotypes",
+#'         stringsAsFactors=FALSE)
 #'
-#' ## Read study information from GDS Sample file
-#' read.gdsn(index.gdsn(node=tmpGDS, path="study.list"))
+#'     ## Add the sample information to the GDS Sample file
+#'     ## The information for all samples is added (listSamples=NULL)
+#'     RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
+#'         listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 #'
-#' ## Read sample information from GDS Sample file
-#' read.gdsn(index.gdsn(node=tmpGDS, path="study.annot"))
+#'     ## Read study information from GDS Sample file
+#'     read.gdsn(index.gdsn(node=tmpGDS, path="study.list"))
 #'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=tmpGDS)
+#'     ## Read sample information from GDS Sample file
+#'     read.gdsn(index.gdsn(node=tmpGDS, path="study.annot"))
 #'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=tmpGDS)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -894,54 +908,60 @@ runLDPruning <- function(gds, method,
 #' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(dataDir, "GDS_TEMP_03.gds")
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP_03.gds")
 #'
-#' ## Create and open the GDS file
-#' tmpGDS <- createfn.gds(filename=gdsFilePath)
+#' ## Only run if directory is in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 #'
-#' ## Create "sample.id" node (the node must be present)
-#' add.gdsn(node=tmpGDS, name="sample.id", val=c("sample_01",
-#'     "sample_02"))
+#'     ## Create and open the GDS file
+#'     tmpGDS <- createfn.gds(filename=gdsFilePath)
 #'
-#' ## Create "sample.annot" node (the node must be present)
-#' add.gdsn(node=tmpGDS, name="sample.annot", val=data.frame(
-#'   Name.ID=c("sample_01", "sample_02"),
-#'     sex=c(1,1),  # 1:Male  2: Female
-#'     pop.group=c("ACB", "ACB"),
-#'     superPop=c("AFR", "AFR"),
-#'     batch=c(1, 1),
-#'     stringsAsFactors=FALSE))
+#'     ## Create "sample.id" node (the node must be present)
+#'     add.gdsn(node=tmpGDS, name="sample.id", val=c("sample_01",
+#'         "sample_02"))
 #'
-#' sync.gds(gdsfile=tmpGDS)
+#'     ## Create "sample.annot" node (the node must be present)
+#'     add.gdsn(node=tmpGDS, name="sample.annot", val=data.frame(
+#'             Name.ID=c("sample_01", "sample_02"),
+#'             sex=c(1,1),  # 1:Male  2: Female
+#'             pop.group=c("ACB", "ACB"),
+#'             superPop=c("AFR", "AFR"),
+#'             batch=c(1, 1),
+#'             stringsAsFactors=FALSE))
 #'
-#' ## Create a data.frame with information about samples
-#' sample_info <- data.frame(Name.ID=c("sample_04", "sample_05", "sample_06"),
-#'     sex=c(1,2,1),  # 1:Male  2: Female
-#'     pop.group=c("ACB", "ACB", "ACB"),
-#'     superPop=c("AFR", "AFR", "AFR"),
-#'     stringsAsFactors=FALSE)
+#'     sync.gds(gdsfile=tmpGDS)
 #'
-#' ## The row names must be the sample identifiers
-#' rownames(sample_info) <- sample_info$Name.ID
+#'     ## Create a data.frame with information about samples
+#'     sample_info <- data.frame(Name.ID=c("sample_04", "sample_05",
+#'                                 "sample_06"),
+#'                         sex=c(1,2,1),  # 1:Male  2: Female
+#'                         pop.group=c("ACB", "ACB", "ACB"),
+#'                         superPop=c("AFR", "AFR", "AFR"),
+#'                         stringsAsFactors=FALSE)
 #'
-#' ## Add information about 2 samples to the GDS file
-#' RAIDS:::appendGDSRefSample(gdsReference=tmpGDS, dfPedReference=sample_info,
-#'     batch=2, listSamples=c("sample_04", "sample_06"), verbose=FALSE)
+#'     ## The row names must be the sample identifiers
+#'     rownames(sample_info) <- sample_info$Name.ID
 #'
-#' ## Read sample identifier list
-#' ## Only "sample_04" and "sample_06" should have been added
-#' read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
+#'     ## Add information about 2 samples to the GDS file
+#'     RAIDS:::appendGDSRefSample(gdsReference=tmpGDS,
+#'         dfPedReference=sample_info,
+#'         batch=2, listSamples=c("sample_04", "sample_06"), verbose=FALSE)
 #'
-#' ## Read sample information from GDS file
-#' ## Only "sample_04" and "sample_06" should have been added
-#' read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
+#'     ## Read sample identifier list
+#'     ## Only "sample_04" and "sample_06" should have been added
+#'     read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 #'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=tmpGDS)
+#'     ## Read sample information from GDS file
+#'     ## Only "sample_04" and "sample_06" should have been added
+#'     read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 #'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=tmpGDS)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn append.gdsn
@@ -1006,7 +1026,6 @@ appendGDSRefSample <- function(gdsReference, dfPedReference, batch=1,
 #' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(getwd(), "GDS_TEMP_1.gds")
 #'
 #' ## Only run if directory is in writing mode
@@ -1079,7 +1098,6 @@ addGDSStudyPruning <- function(gdsProfile, pruned) {
 #' library(gdsfmt)
 #'
 #' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
 #'
 #' ## Only run if directory is in writing mode

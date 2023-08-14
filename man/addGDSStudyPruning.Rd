@@ -30,7 +30,6 @@ deleted and a new entry is created.
 library(gdsfmt)
 
 ## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
 gdsFilePath <- file.path(getwd(), "GDS_TEMP_1.gds")
 
 ## Only run if directory is in writing mode

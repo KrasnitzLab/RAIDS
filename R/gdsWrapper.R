@@ -498,6 +498,10 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #'
 #' @examples
 #'
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' # TODO
 #' gds <- "Demo GDS TODO"
 #'
@@ -555,7 +559,7 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), a GDS Sample file.
 #'
-#' @param snp.seg a \code{vector} of \code{integer} representing the segment
+#' @param snpSeg a \code{vector} of \code{integer} representing the segment
 #' identifiers associated to each SNV selected for the specific sample. The
 #' length of the \code{vector} should correspond to the number of SNVs
 #' present in the "snp.id" entry of the GDS sample file.
@@ -567,38 +571,42 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")
+#' ## Temporary GDS file
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
 #'
-#' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#' ## Only run if directory is in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 #'
-#' ## Vector of segment identifiers
-#' segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
+#'     ## Create and open the GDS file
+#'     GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
 #'
-#' ## Add segments to the GDS file
-#' RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
+#'     ## Vector of segment identifiers
+#'     segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
 #'
-#' ## Read segments information from GDS file
-#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+#'     ## Add segments to the GDS file
+#'     RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
 #'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=GDS_file_tmp)
+#'     ## Read segments information from GDS file
+#'     read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
 #'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-addUpdateSegment <- function(gdsProfile, snp.seg) {
+addUpdateSegment <- function(gdsProfile, snpSeg) {
 
     if("segment" %in% ls.gdsn(gdsProfile)) {
-        snpLap <- write.gdsn(index.gdsn(gdsProfile, "segment"), snp.seg)
+        snpLap <- write.gdsn(index.gdsn(gdsProfile, "segment"), snpSeg)
     } else{
-        snpLap <- add.gdsn(gdsProfile, "segment", snp.seg, storage="uint32")
+        snpLap <- add.gdsn(gdsProfile, "segment", snpSeg, storage="uint32")
     }
 
     sync.gds(gdsProfile)

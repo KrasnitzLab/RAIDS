@@ -24,6 +24,10 @@ TODO
 }
 \examples{
 
+
+## Required library
+library(gdsfmt)
+
 # TODO
 gds <- "Demo GDS TODO"
 

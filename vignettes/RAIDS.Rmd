@@ -145,7 +145,7 @@ At this step three important reference files are created:
 - The population reference SNV Retained VCF file
 
 
-The format of those files are described the [Population reference dataset GDS files (optional)](Create_Reference_GDS_file.html) 
+The format of those files are described the [Population reference dataset GDS files](Create_Reference_GDS_file.html) 
 vignette.
 
 <span style="color:darkred;font-weight:bold">The reference files associated to 

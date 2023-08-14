@@ -1,5 +1,5 @@
 ---
-title: "Population reference dataset GDS files (optional)"
+title: "Population reference dataset GDS files"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
     BiocStyle::html_document:
@@ -12,7 +12,7 @@ urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-    %\VignetteIndexEntry{Population reference dataset GDS files (optional)}
+    %\VignetteIndexEntry{Population reference dataset GDS files}
     %\VignettePackage{RAIDS}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
@@ -24,6 +24,8 @@ BiocStyle::markdown()
 suppressPackageStartupMessages({
     library(knitr)
     library(RAIDS)
+    library(SNPRelate)
+    library(gdsfmt)
 })
 
 set.seed(121444)
@@ -46,7 +48,58 @@ set.seed(121444)
 This section explains in further details the format of the population reference 
 GDS files that are needed to run the ancestry inference tool. 
 
-- Remove related samples
+Three different files are generated from the reference dataset:
+
+- The population reference GDS File
+- The population reference SNV Annotation GDS file
+- The population reference SNV Retained VCF file
+
+
+# Population Reference GDS File
+
+
+All related samples must be removed.
+
+```{r runRefGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+#############################################################################
+## Load required packages
+#############################################################################
+library(RAIDS)    
+library(SNPRelate)
+
+pathReference <- system.file("extdata/example/", package="RAIDS")
+
+fileReferenceGDS <- file.path(pathReference, "gdsRef", "ex1kg.gds")
+
+gdsRef <- snpgdsOpen(fileReferenceGDS)
+
+## Show the file format
+print(gdsRef)
+
+closefn.gds(gdsRef)
+```
+
+# Population Reference Annotation GDS file
+
+
+```{r runRefAnnotGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+#############################################################################
+## Load required packages
+#############################################################################
+library(RAIDS)    
+library(SNPRelate)
+
+pathReference <- system.file("extdata/example/", package="RAIDS")
+
+fileReferenceAnnotGDS <- file.path(pathReference, "gdsRef", "exAnnot1kg.gds")
+
+gdsRefAnnot <- openfn.gds(fileReferenceAnnotGDS)
+
+## Show the file format
+print(gdsRefAnnot)
+
+closefn.gds(gdsRefAnnot)
+```
 
 
 # Pre-processed files, from 1000 Genomes in hg38, are available

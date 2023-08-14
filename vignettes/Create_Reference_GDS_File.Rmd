@@ -1,0 +1,76 @@
+---
+title: "Population reference dataset GDS files (optional)"
+author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+output:
+    BiocStyle::html_document:
+        number_sections: yes
+        toc: true
+    pkgdown:
+        number_sections: yes
+        as_is: true
+urlcolor: darkred
+linkcolor: darkred
+bibliography: aicsBiblio.bibtex
+vignette: >
+    %\VignetteIndexEntry{Population reference dataset GDS files (optional)}
+    %\VignettePackage{RAIDS}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+BiocStyle::markdown()
+
+suppressPackageStartupMessages({
+    library(knitr)
+    library(RAIDS)
+})
+
+set.seed(121444)
+```
+
+<br />
+**Package**: `r Rpackage("RAIDS")`<br />
+**Authors**: `r packageDescription("RAIDS")[["Author"]]`<br />
+**Version**: `r packageDescription("RAIDS")$Version`<br />
+**Compiled date**: `r Sys.Date()`<br />
+**License**: `r packageDescription("RAIDS")[["License"]]`<br />
+
+
+<br>
+<br>
+
+
+
+
+This section explains in further details the format of the population reference 
+GDS files that are needed to run the ancestry inference tool. 
+
+- Remove related samples
+
+
+# Pre-processed files, from 1000 Genomes in hg38, are available
+
+Pre-processed files used in the RAIDS associated publication, are 
+available at this address:
+
+
+[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
+
+Beware that some of those files are voluminous.
+
+<br>
+<br>
+
+# Session info
+
+Here is the output of `sessionInfo()` on the system on which this document was 
+compiled:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+<br>
+<br>
+

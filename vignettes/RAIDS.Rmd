@@ -122,7 +122,8 @@ The main steps are:
 
 **Step 2.2** Infer ancestry for the subjects of the external study
 
-These steps are described in detail in the following.
+These steps are described in detail in the following. Steps 2.1 and 2.2 can be 
+run together using one wrapper function.
 
 <br>
 <br>
@@ -143,6 +144,10 @@ At this step three important reference files are created:
 - The population reference SNV Annotation GDS file
 - The population reference SNV Retained VCF file
 
+
+The format of those files are described the [Population reference dataset GDS files (optional)](Create_Reference_GDS_file.html) 
+vignette.
+
 <span style="color:darkred;font-weight:bold">The reference files associated to 
 the Cancer Research associated paper are available. Note that these 
 pre-processed files are for 1000 Genomes (1KG), in hg38. The files are 
@@ -161,13 +166,10 @@ hg38 [@Lowy-Gallego2019a].</span>
 <span style="color:darkred;font-weight:bold">This section can be skipped if 
 you choose to use the pre-processed files.</span>
 
-The execution of this step is explained in the [Formatting the information from the population reference dataset (optional)](Create_1KG_GDS_file.html) 
-vignette.
-
 <br>
 
 
-## Step 2 - Wrapper function to run ancestry inference in one command
+## Step 2 - Wrapper function to run ancestry inference on DNA data in one command
 
 The final step can be run with a wrapper function
 that encapsulates multiple steps of the workflow.

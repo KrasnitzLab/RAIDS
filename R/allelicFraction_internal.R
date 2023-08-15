@@ -39,7 +39,7 @@
 #' the reference allele.}
 #' \item{cnt.alt} {a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
+#' \item{snpPos} {a single \code{integer} representing the SNV position.}
 #' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
 #' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
 #' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
@@ -116,7 +116,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
     listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
 
     ## Create the data.frame with the required information
-    snp.pos <- data.frame(cnt.tot=cnt.total[listKeep],
+    snpPos <- data.frame(cnt.tot=cnt.total[listKeep],
                     cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count"),
                         start=c(1, posCur), count=c(-1, 1))[listKeep],
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
@@ -132,7 +132,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
     snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
 
     listKeepPruned <- which(listKeep %in% snp.pruned)
-    snp.pos$pruned[listKeepPruned] <- TRUE
+    snpPos$pruned[listKeepPruned] <- TRUE
 
     rm(cnt.total, snp.pruned, listKeepPruned)
 
@@ -147,7 +147,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
         cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
         listKeep.o <- which(cnt.total >= minCov)
 
-        snp.pos.o <- data.frame(cnt.tot=cnt.total[listKeep.o],
+        snpPosO <- data.frame(cnt.tot=cnt.total[listKeep.o],
             cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count.o"))[listKeep.o],
             cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count.o"))[listKeep.o],
             snp.pos=read.gdsn(index.gdsn(gdsReference,
@@ -157,36 +157,36 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
             normal.geno=read.gdsn(index.gdsn(gdsSample,
                 "normal.geno"))[listKeep.o], pruned=rep(0, length(listKeep)),
             snp.index=rep(0, length(listKeep.o)), stringsAsFactors=FALSE)
-        listChr <- unique(snp.pos.o$snp.chr)
+        listChr <- unique(snpPosO$snp.chr)
         listUnion <- list()
 
-        # if snp.pos.o intersect snp.pos and normal.geno != 3 (we know
-        # the genotype of normal) change in snp.pos normal.geno
-        z <- cbind(c(snp.pos.o$snp.chr, snp.pos$snp.chr, snp.pos.o$snp.chr),
-                c(snp.pos.o$snp.pos, snp.pos$snp.pos, snp.pos.o$snp.pos),
-                c(seq_len(nrow(snp.pos.o)), 0, -1*seq_len(nrow(snp.pos.o))),
-                c(rep(0, nrow(snp.pos.o)), seq_len(nrow(snp.pos)),
-                        rep(0, nrow(snp.pos.o))))
+        # if snpPosO intersect snpPos and normal.geno != 3 (we know
+        # the genotype of normal) change in snpPos normal.geno
+        z <- cbind(c(snpPosO$snp.chr, snpPos$snp.chr, snpPosO$snp.chr),
+                c(snpPosO$snp.pos, snpPos$snp.pos, snpPosO$snp.pos),
+                c(seq_len(nrow(snpPosO)), 0, -1*seq_len(nrow(snpPosO))),
+                c(rep(0, nrow(snpPosO)), seq_len(nrow(snpPos)),
+                        rep(0, nrow(snpPosO))))
         z <- z[order(z[,1], z[,2], z[,3]), ]
         vCum <- cumsum(z[,3])
 
-        snp.pos[z[ vCum < 0 & z[,3] == 0, 4], "normal.geno"] <-
-            snp.pos.o[vCum[vCum < 0 & z[, 3] == 0], "normal.geno"]
+        snpPos[z[ vCum < 0 & z[,3] == 0, 4], "normal.geno"] <-
+            snpPosO[vCum[vCum < 0 & z[, 3] == 0], "normal.geno"]
         rm(z)
 
-        # Keep the snp.pos.o not in snp.pos
-        z <- cbind(c(snp.pos$snp.chr, snp.pos.o$snp.chr, snp.pos$snp.chr),
-                c(snp.pos$snp.pos, snp.pos.o$snp.pos, snp.pos$snp.pos),
-                c(seq_len(nrow(snp.pos)), 0, -1*seq_len(nrow(snp.pos))),
-                c(rep(0, nrow(snp.pos)), seq_len(nrow(snp.pos.o)),
-                                rep(0, nrow(snp.pos))))
+        # Keep the snpPosO not in snpPos
+        z <- cbind(c(snpPos$snp.chr, snpPosO$snp.chr, snpPos$snp.chr),
+                c(snpPos$snp.pos, snpPosO$snp.pos, snpPos$snp.pos),
+                c(seq_len(nrow(snpPos)), 0, -1*seq_len(nrow(snpPos))),
+                c(rep(0, nrow(snpPos)), seq_len(nrow(snpPosO)),
+                                rep(0, nrow(snpPos))))
         z <- z[order(z[,1], z[,2], z[,3]), ]
-        # merge snp.pos with snp.pos.o
-        snp.pos <- rbind(snp.pos,
-                            snp.pos.o[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
+        # merge snpPos with snpPosO
+        snpPos <- rbind(snpPos,
+                            snpPosO[z[cumsum(z[,3] == 0 & z[,3] == 0),4],])
 
     }
-    listCnt <- unique(snp.pos$cnt.tot)
+    listCnt <- unique(snpPos$cnt.tot)
     listCnt <- listCnt[order(listCnt)]
 
     cutOffA <- data.frame(count=unlist(vapply(listCnt,
@@ -199,32 +199,32 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
                         FUN.VALUE = numeric(1), minProb=minProb, eProb=eProb)))
     row.names(cutOffA) <- as.character(listCnt)
 
-    snp.pos$keep <- rowSums(snp.pos[, c("cnt.ref", "cnt.alt")]) >=
-        snp.pos$cnt.tot - cutOffA[as.character(snp.pos$cnt.tot), "count"]
+    snpPos$keep <- rowSums(snpPos[, c("cnt.ref", "cnt.alt")]) >=
+        snpPos$cnt.tot - cutOffA[as.character(snpPos$cnt.tot), "count"]
 
-    snp.pos$hetero <- snp.pos$keep == TRUE &
-        rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] >=
-            cutOffA[as.character(snp.pos$cnt.tot), "allele"]) == 2
+    snpPos$hetero <- snpPos$keep == TRUE &
+        rowSums(snpPos[, c("cnt.ref", "cnt.alt")] >=
+            cutOffA[as.character(snpPos$cnt.tot), "allele"]) == 2
 
     # We set to homo if 2th allele can be explain by error
     # can switch low allelic fraction to LOH which is less a problem
     # then reduce the allelic ratio by seq error
-    snp.pos$homo <- snp.pos$keep == TRUE &
-        rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] >=
-            cutOffA[as.character(snp.pos$cnt.tot), "allele"]) == 1
+    snpPos$homo <- snpPos$keep == TRUE &
+        rowSums(snpPos[, c("cnt.ref", "cnt.alt")] >=
+            cutOffA[as.character(snpPos$cnt.tot), "allele"]) == 1
 
     ## If we know the normal is hetero then we call hetero
     ## if the cnt.alt and cnt.ref > 0
-    listHeteroN <- which(snp.pos$homo == TRUE &
-                rowSums(snp.pos[, c("cnt.ref", "cnt.alt")] > 0) == 2 &
-                snp.pos$normal.geno == 1)
+    listHeteroN <- which(snpPos$homo == TRUE &
+                rowSums(snpPos[, c("cnt.ref", "cnt.alt")] > 0) == 2 &
+                snpPos$normal.geno == 1)
 
     if (length(listHeteroN) > 0) {
-        snp.pos$hetero[listHeteroN] <- TRUE
-        snp.pos$homo <- FALSE
+        snpPos$hetero[listHeteroN] <- TRUE
+        snpPos$homo <- FALSE
     }
 
-    return(snp.pos)
+    return(snpPos)
 }
 
 
@@ -241,7 +241,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' the chromosomes. As an example, the information ca be obtained from
 #' package 'BSgenome.Hsapiens.UCSC.hg38'.
 #'
-#' @param snp.pos a \code{data.frame} containing the SNV information for the
+#' @param snpPos a \code{data.frame} containing the SNV information for the
 #' chromosome specified by the \code{chr} argument. The \code{data.frame} must
 #' contain:
 #' \itemize{
@@ -333,7 +333,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' ## The function returns a data frame containing the information about the
 #' ## LOH regions in the specified chromosome
 #' result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
-#'     chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
+#'     chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
 #' head(result)
 #'
 #' ## Close Reference GDS file (important)
@@ -345,24 +345,24 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
+computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                                         genoN=0.0001) {
 
     genoN1 <- 1 - 2 * genoN
 
     chrEnd <- chrInfo[chr]
-    listHetero <- snp.pos[snp.pos$hetero == TRUE, "snp.pos"]
+    listHetero <- snpPos[snpPos$hetero == TRUE, "snp.pos"]
 
     homoBlock <- data.frame(chr=rep(chr, length(listHetero) + 1),
         start=c(1, listHetero + 1), end=c(listHetero, chrEnd))
 
     z <- cbind(c(homoBlock$start, homoBlock$end,
-            snp.pos$snp.pos[which(snp.pos$homo == TRUE)]),
+            snpPos$snp.pos[which(snpPos$homo == TRUE)]),
             c(seq_len(length(homoBlock$start)),
                 -1*seq_len(length(homoBlock$start)),
-                rep(0, length(which(snp.pos$homo == TRUE)))),
+                rep(0, length(which(snpPos$homo == TRUE)))),
             c(rep(0, length(homoBlock$start)), rep(0, length(homoBlock$start)),
-                seq_len(length(which(snp.pos$homo == TRUE)))))
+                seq_len(length(which(snpPos$homo == TRUE)))))
 
     z <- z[order(z[, 1]), ]
 
@@ -385,7 +385,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snp.pos, chr,
 
     for (i in seq_len(nrow(homoBlock))) {
         blcCur <- blcSNV[blcSNV$block == i, ]
-        snvH <- snp.pos[blcCur$snv, ]
+        snvH <- snpPos[blcCur$snv, ]
         lH1 <- 0
         lM1 <- 0
         logLHR <- 0
@@ -572,32 +572,29 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 
     ## Extract the genotype information for a SNV dataset using
     ## the Profile GDS file and the Reference GDS file
-    snp.pos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
+    snpPos <- getTableSNV(gdsReference=gdsReference, gdsSample=gdsSample,
         currentProfile=currentProfile, studyID=studyID, minCov=minCov,
         minProb=minProb, eProb=eProb, verbose=verbose)
 
-    snp.pos$lap <- rep(-1, nrow(snp.pos))
-    snp.pos$LOH <- rep(0, nrow(snp.pos))
-    snp.pos$imbAR <- rep(-1, nrow(snp.pos))
+    snpPos$lap <- rep(-1, nrow(snpPos))
+    snpPos$LOH <- rep(0, nrow(snpPos))
+    snpPos$imbAR <- rep(-1, nrow(snpPos))
 
-    lapply(unique(snp.pos$snp.chr), FUN=function(x, snp.pos){
-
-    })
 
     homoBlock <- list()
 
-    for(chr in unique(snp.pos$snp.chr)) {
+    for(chr in unique(snpPos$snp.chr)) {
 
         if (verbose) {
             message("chr ", chr)
             message("Step 1 ", Sys.time())
         }
 
-        listChr <- which(snp.pos$snp.chr == chr)
+        listChr <- which(snpPos$snp.chr == chr)
 
         ## Identify LOH regions
         homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference,
-                chrInfo=chrInfo, snp.pos=snp.pos[listChr,], chr=chr)
+                chrInfo=chrInfo, snpPos=snpPos[listChr,], chr=chr)
 
         if (verbose) { message("Step 2 ", Sys.time()) }
 
@@ -605,7 +602,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                     cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
 
         z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
-                            snp.pos[listChr, "snp.pos"]),
+                            snpPos[listChr, "snp.pos"]),
                     c(rep(0,  2* nrow(homoBlock[[chr]])),
                             rep(1, length(listChr))),
                     c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
@@ -615,35 +612,35 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 
         z <- z[order(z[,1], z[,2]), ]
         pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
-        snp.pos[listChr[pos], "lap"] <- 0
-        snp.pos[listChr[pos], "LOH"] <- 1
+        snpPos[listChr[pos], "lap"] <- 0
+        snpPos[listChr[pos], "LOH"] <- 1
 
         if (verbose) { message("Step 3 ", Sys.time()) }
 
         ## Identify imbalanced SNVs in specified chromosome
-        snp.pos[listChr, "imbAR"] <-
-            computeAllelicImbDNAChr(snp.pos=snp.pos[listChr, ], chr=chr,
+        snpPos[listChr, "imbAR"] <-
+            computeAllelicImbDNAChr(snpPos=snpPos[listChr, ], chr=chr,
                                         wAR=10, cutOffEmptyBox=-3)
 
         if (verbose) { message("Step 4 ", Sys.time()) }
 
         ## Compute allelic fraction for SNVs in specified chromosome
-        blockAF <- computeAlleleFraction(snp.pos=snp.pos[listChr, ],
+        blockAF <- computeAlleleFraction(snpPos=snpPos[listChr, ],
                                             w=10, cutOff=-3)
 
         if (verbose) { message("Step 5 ", Sys.time()) }
 
         if(! is.null(blockAF)) {
             for(i in seq_len(nrow(blockAF))) {
-                snp.pos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                snpPos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
                     blockAF[i, 3]
             }
         }
     }
 
-    snp.pos[which(snp.pos[, "lap"] == -1), "lap"] <- 0.5
+    snpPos[which(snpPos[, "lap"] == -1), "lap"] <- 0.5
 
-    return(snp.pos)
+    return(snpPos)
 }
 
 
@@ -719,37 +716,37 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 
     ## Extract the genotype information for a SNV dataset using
     ## the GDS Sample file and the Reference GDS file
-    snp.pos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
+    snpPos <- getTableSNV(gdsReference, gdsSample, currentProfile, studyID,
                                 minCov, minProb, eProb)
     # Keep only SNV in GDS ref because to reduce SNV artefact from RNA
-    snp.pos <- snp.pos[which(snp.pos$snp.index > 0),]
+    snpPos <- snpPos[which(snpPos$snp.index > 0),]
 
     # Get the block structure base on genes from gdsRefAnnot
-    snp.pos$block.id <- getBlockIDs(gdsRefAnnot=gdsRefAnnot,
-                            snpIndex=snp.pos$snp.index, blockTypeID=blockID)
+    snpPos$block.id <- getBlockIDs(gdsRefAnnot=gdsRefAnnot,
+                            snpIndex=snpPos$snp.index, blockTypeID=blockID)
 
-    snp.pos$phase <- rep(3, nrow(snp.pos))
+    snpPos$phase <- rep(3, nrow(snpPos))
     if ("phase" %in% ls.gdsn(node=gdsSample)) {
-        snp.pos$phase <- read.gdsn(index.gdsn(gdsSample,
-                                            "phase"))[snp.pos$snp.index]
+        snpPos$phase <- read.gdsn(index.gdsn(gdsSample,
+                                            "phase"))[snpPos$snp.index]
     }
-    snp.pos$lap <- rep(-1, nrow(snp.pos))
-    snp.pos$LOH <- rep(0, nrow(snp.pos))
-    snp.pos$imbAR <- rep(-1, nrow(snp.pos))
-    snp.pos$freq <- read.gdsn(index.gdsn(gdsReference,
-                                            "snp.AF"))[snp.pos$snp.index]
+    snpPos$lap <- rep(-1, nrow(snpPos))
+    snpPos$LOH <- rep(0, nrow(snpPos))
+    snpPos$imbAR <- rep(-1, nrow(snpPos))
+    snpPos$freq <- read.gdsn(index.gdsn(gdsReference,
+                                            "snp.AF"))[snpPos$snp.index]
     # for each chromosome
     # listBlock <- list()
 
     ## FOR_LOOP modification to be validated by Pascal
     ## Remove commented code and this text after validation
-    listBlock <- lapply(unique(snp.pos$snp.chr), FUN = function(x, snp.pos, verbose){
+    listBlock <- lapply(unique(snpPos$snp.chr), FUN = function(x, snpPos, verbose){
             if (verbose) {
                 message("chr ", x)
                 message("Step 1 ", Sys.time())
             }
-            listChr <- which(snp.pos$snp.chr == x)
-            blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
+            listChr <- which(snpPos$snp.chr == x)
+            blockAF <- tableBlockAF(snpPos=snpPos[listChr,])
             blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
             blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
                                                                      >= cutOffAR]
@@ -761,7 +758,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
                 message("Step 1 done ", Sys.time())
             }
             return(blockAF)
-        }, snp.pos=snp.pos,
+        }, snpPos=snpPos,
         verbose=verbose)
     blockAF <- do.call(rbind, listBlock)
     listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
@@ -771,7 +768,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 
 
     for(b in seq_len(nrow(blockAF))) {
-        snp.pos$lap[snp.pos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
+        snpPos$lap[snpPos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
     }
     # listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
     # blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
@@ -815,7 +812,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     #     snp.pos$lap[snp.pos$block.id == blockAF1$block[b]] <- blockAF1$aRF[b]
     # }
 
-    return(snp.pos)
+    return(snpPos)
 }
 
 
@@ -824,7 +821,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' @description The function verifies, for each SNV present in the data frame,
 #' if the SNV is in an imbalance region.
 #'
-#' @param snp.pos a \code{data.frame} containing the SNV information for the
+#' @param snpPos a \code{data.frame} containing the SNV information for the
 #' chromosome specified by the \code{chr} argument. The \code{data.frame} must
 #' contain:
 #' \itemize{
@@ -865,7 +862,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
 #' positive for imbalance in at least 1 window). The vector as an entry for
 #' each SNV present in the
-#' input \code{snp.pos}.
+#' input \code{snpPos}.
 #'
 #' @examples
 #'
@@ -905,7 +902,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #'
 #' ## The function returns a data frame containing the information about the
 #' ## LOH regions in the specified chromosome
-#' result <- RAIDS:::computeAllelicImbDNAChr(snp.pos=snpInfo, chr=1, wAR=10,
+#' result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
 #'     cutOffEmptyBox=-3)
 #' head(result)
 #'
@@ -917,37 +914,37 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAllelicImbDNAChr <- function(snp.pos, chr, wAR=10, cutOffEmptyBox=-3) {
+computeAllelicImbDNAChr <- function(snpPos, chr, wAR=10, cutOffEmptyBox=-3) {
 
     # We use wAR - 1 because
     # process the window ex: 1 to 1+wAR
     wAR <- wAR - 1
     listHetero <- NULL
-    if(length(which(snp.pos$normal.geno != 3) > 0)) {
-        listHetero <- which(snp.pos$keep == TRUE & snp.pos$normal.geno == 1)
+    if(length(which(snpPos$normal.geno != 3) > 0)) {
+        listHetero <- which(snpPos$keep == TRUE & snpPos$normal.geno == 1)
     } else{
-        listHetero <- which(snp.pos$hetero == TRUE)
+        listHetero <- which(snpPos$hetero == TRUE)
     }
 
-    heteroSNV <- snp.pos[listHetero, ]
+    heteroSNV <- snpPos[listHetero, ]
 
     if(nrow(heteroSNV) > wAR) {
         for(i in seq_len(nrow(heteroSNV)-wAR)) {
-            if(sum(snp.pos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
+            if(sum(snpPos[listHetero[i]:listHetero[(i+wAR-1)], "LOH"]) == 0 ) {
                 ## Check for imbalance regions for heterozygote SNVs
                 cur <- testEmptyBox(heteroSNV[i:(i+wAR), c
                                 ("cnt.alt", "cnt.ref")], cutOffEmptyBox)
                 if(cur$pCut == 1) {
                     # Set all snv from tmpA (include homozygotes)
                     # in the window  to 1
-                    snp.pos[listHetero[i]:listHetero[(i+wAR)], "imbAR"] <- 1
+                    snpPos[listHetero[i]:listHetero[(i+wAR)], "imbAR"] <- 1
                 }
             }
         }
     }
-    snp.pos$imbAR[which(snp.pos$LOH == 1)] <- 0
+    snpPos$imbAR[which(snpPos$LOH == 1)] <- 0
 
-    return(snp.pos$imbAR)
+    return(snpPos$imbAR)
 }
 
 
@@ -1144,7 +1141,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #'
 #' @description TODO
 #'
-#' @param snp.pos.Hetero For a specific gene (block) a \code{data.frame} with
+#' @param snpPosHetero For a specific gene (block) a \code{data.frame} with
 #' lap for the SNV heterozygote dataset with
 #' coverage > \code{minCov}. The \code{data.frame} must contain those columns:
 #' 'phase', 'cnt.ref', 'cnt.alt'. TODO
@@ -1163,25 +1160,25 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-calcAFMLRNA <- function(snp.pos.Hetero) {
+calcAFMLRNA <- function(snpPosHetero) {
 
-    listPhase <- which(snp.pos.Hetero$phase < 2)
-    m <- data.frame(aL=rep(0, nrow(snp.pos.Hetero)),
-                        aH=rep(0, nrow(snp.pos.Hetero)))
+    listPhase <- which(snpPosHetero$phase < 2)
+    m <- data.frame(aL=rep(0, nrow(snpPosHetero)),
+                        aH=rep(0, nrow(snpPosHetero)))
     if (length(listPhase) > 0) {
         mPhase <- data.frame(a1=rep(0, length(listPhase)),
                                 a2=rep(0, length(listPhase)))
-        if(length(which(snp.pos.Hetero$phase == 0)) > 0){
-            mPhase[which(snp.pos.Hetero$phase == 0), "a1"] <-
-                snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.ref"]
-            mPhase[which(snp.pos.Hetero$phase == 0), "a2"] <-
-                snp.pos.Hetero[which(snp.pos.Hetero$phase == 0),"cnt.alt"]
+        if(length(which(snpPosHetero$phase == 0)) > 0){
+            mPhase[which(snpPosHetero$phase == 0), "a1"] <-
+                snpPosHetero[which(snpPosHetero$phase == 0),"cnt.ref"]
+            mPhase[which(snpPosHetero$phase == 0), "a2"] <-
+                snpPosHetero[which(snpPosHetero$phase == 0),"cnt.alt"]
         }
-        if(length(which(snp.pos.Hetero$phase == 1)) > 0){
-            mPhase[which(snp.pos.Hetero$phase == 1), "a2"] <-
-                snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.ref"]
-            mPhase[which(snp.pos.Hetero$phase == 1), "a1"] <-
-                snp.pos.Hetero[which(snp.pos.Hetero$phase == 1),"cnt.alt"]
+        if(length(which(snpPosHetero$phase == 1)) > 0){
+            mPhase[which(snpPosHetero$phase == 1), "a2"] <-
+                snpPosHetero[which(snpPosHetero$phase == 1),"cnt.ref"]
+            mPhase[which(snpPosHetero$phase == 1), "a1"] <-
+                snpPosHetero[which(snpPosHetero$phase == 1),"cnt.alt"]
         }
 
         m1 <- sum(mPhase[,"a1"])
@@ -1191,17 +1188,17 @@ calcAFMLRNA <- function(snp.pos.Hetero) {
         m[listPhase, "aH"] <- mPhase[, (minPhase+1)%%2]
     }
 
-    listUnphase <- which(snp.pos.Hetero$phase > 1)
+    listUnphase <- which(snpPosHetero$phase > 1)
 
     if(length(listUnphase) > 0){
-        minUnphase <- apply(snp.pos.Hetero[,c("cnt.ref", "cnt.alt")], 1,
+        minUnphase <- apply(snpPosHetero[,c("cnt.ref", "cnt.alt")], 1,
                                 FUN=min)
-        maxUnphase <- apply(snp.pos.Hetero[,c("cnt.ref", "cnt.alt")], 1,
+        maxUnphase <- apply(snpPosHetero[,c("cnt.ref", "cnt.alt")], 1,
                                 FUN=max)
         m[listUnphase, "aL"] <- minUnphase
         m[listUnphase, "aH"] <- maxUnphase
     }
-    d <- sum(rowSums(snp.pos.Hetero[,c("cnt.ref", "cnt.alt")]))
+    d <- sum(rowSums(snpPosHetero[,c("cnt.ref", "cnt.alt")]))
 
     aF <- sum(m[,"aL"]) / d
     lM <- log10(aF) * sum(m[,"aL"]) + log10(1- aF) * sum(m[,"aH"])
@@ -1220,7 +1217,7 @@ calcAFMLRNA <- function(snp.pos.Hetero) {
 #' about lost of heterizygocity and allelic fration.
 #' In the case of RNA-seq the blocks are genes.
 #'
-#' @param snp.pos For a specific chromosome a \code{data.frame} with lap for
+#' @param snpPos For a specific chromosome a \code{data.frame} with lap for
 #' the SNV dataset with
 #' coverage > \code{minCov}.
 #'
@@ -1262,9 +1259,9 @@ calcAFMLRNA <- function(snp.pos.Hetero) {
 #' @importFrom S4Vectors aggregate
 #' @encoding UTF-8
 #' @keywords internal
-tableBlockAF <- function(snp.pos) {
+tableBlockAF <- function(snpPos) {
 
-    listBlocks <- unique(snp.pos$block.id)
+    listBlocks <- unique(snpPos$block.id)
 
     # resBlock <- data.frame(block = listBlocks,
     #                         aRF = rep(-1, length(listBlocks)),
@@ -1281,25 +1278,26 @@ tableBlockAF <- function(snp.pos) {
     ## Remove commented code and this text after validation
     resBlock <- data.frame(block=listBlocks)
 
+
     # Number of homozygotes per block
-    tmp <- aggregate(snp.pos[, c( "homo"), drop=FALSE],
-                        by = list(block=snp.pos$block.id), sum)
+    tmp <- aggregate(snpPos[, c( "homo"), drop=FALSE],
+                        by = list(block=snpPos$block.id), sum)
     row.names(tmp) <- as.character(tmp[, 1])
     resBlock$nbHomo <- tmp[as.character(listBlocks), 2]
 
     # Number of SNVs keep per block
-    tmp <- aggregate(snp.pos[, c( "keep"), drop=FALSE],
-                        by = list(block=snp.pos$block.id), sum)
+    tmp <- aggregate(snpPos[, c( "keep"), drop=FALSE],
+                        by = list(block=snpPos$block.id), sum)
     row.names(tmp) <- as.character(tmp[, 1])
     resBlock$nbKeep <- tmp[as.character(listBlocks), 2]
 
     # Number of heterozygotes per block
-    tmp <- aggregate(snp.pos[, c( "hetero"), drop=FALSE],
-                        by = list(block=snp.pos$block.id), sum)
+    tmp <- aggregate(snpPos[, c( "hetero"), drop=FALSE],
+                        by = list(block=snpPos$block.id), sum)
     row.names(tmp) <- as.character(tmp[, 1])
     resBlock$nbHetero <- tmp[as.character(listBlocks), 2]
 
-    resBlock <- apply(resBlock, 1, FUN=function(x, snp.pos) {
+    resBlock <- apply(resBlock, 1, FUN=function(x, snpPos) {
         resBlock <- data.frame(block=x[1],
                                nbHomo=x[2],
                                nbKeep=x[3],
@@ -1314,6 +1312,7 @@ tableBlockAF <- function(snp.pos) {
                                lM=-1,
                                lRhomo=1)
 
+
             lH <- 1
             lM <- 1
             if (resBlock[1, "nbKeep"] > 0 &
@@ -1324,32 +1323,33 @@ tableBlockAF <- function(snp.pos) {
                 # it is considered as all homozygote
                 flag <- TRUE
                 if (resBlock[1, "nbHetero"] == 1) {
-                    tmp <- min(snp.pos[snp.pos$block.id == resBlock$block[1] &
-                                    snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
-                        sum(snp.pos[snp.pos$block.id == resBlock$block[1] &
-                                    snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
+                    tmp <- min(snpPos[snpPos$block.id == resBlock$block[1] &
+                                    snpPos$hetero, c("cnt.ref" , "cnt.alt")])/
+                        sum(snpPos[snpPos$block.id == resBlock$block[1] &
+                                    snpPos$hetero, c("cnt.ref" , "cnt.alt")])
+
                     # flag is true if allelic fraction <= 0.05
                     flag <- ifelse(tmp > 0.05, FALSE, TRUE)
                 }
 
                 if(flag) {
                     # List homozygote ref
-                    listRef <- which(snp.pos$block.id == resBlock$block[1] &
-                                         snp.pos$homo &
-                                         snp.pos$cnt.ref > snp.pos$cnt.alt)
+                    listRef <- which(snpPos$block.id == resBlock$block[1] &
+                                         snpPos$homo &
+                                         snpPos$cnt.ref > snpPos$cnt.alt)
                     # list homozygote alt
-                    listAlt <- which(snp.pos$block.id == resBlock$block[1] &
-                                         snp.pos$homo &
-                                         snp.pos$cnt.ref < snp.pos$cnt.alt)
+                    listAlt <- which(snpPos$block.id == resBlock$block[1] &
+                                         snpPos$homo &
+                                         snpPos$cnt.ref < snpPos$cnt.alt)
                     # freq of the Ref allele in population of listRef
-                    tmp <- snp.pos$freq[listRef]
+                    tmp <- snpPos$freq[listRef]
                     ## min freq is 0.01
                     tmp[which(tmp < 0.01)] <- 0.01
                     ## log10 of the product of the frequency of the alternative
                     ## allele in pop for listRef
                     lH <- ifelse(length(listRef) > 0, sum(log10(1-tmp)*2), 0)
                     ## freq of the Ref allele in population of listAlt
-                    tmp <- snp.pos$freq[listAlt]
+                    tmp <- snpPos$freq[listAlt]
                     tmp[which(tmp < 0.01)] <- 0.01
                     ## log10 of the product of the frequency of the
                     ## alternative allele in pop for listRef
@@ -1358,15 +1358,15 @@ tableBlockAF <- function(snp.pos) {
                     lH <- lH + ifelse(length(listAlt) > 0,
                                         sum(log10(tmp)*2), 0)
 
-                    lM <- sum(log10(apply(snp.pos[which(snp.pos$block.id ==
-                                            resBlock$block[1] & snp.pos$homo),
+                    lM <- sum(log10(apply(snpPos[which(snpPos$block.id ==
+                                            resBlock$block[1] & snpPos$homo),
                                                   "freq", drop=FALSE], 1,
                                 FUN=function(x) {
                                     return(max(x^2, 2*(x * (1-x)), (1-x)^2))
                                           })))
                     resBlock$sumAlleleLow[1] <- 0
-                    resBlock$sumAlleleHigh[1] <- sum(snp.pos[listRef, "cnt.ref"]) +
-                        sum(snp.pos[listAlt, "cnt.alt"])
+                    resBlock$sumAlleleHigh[1] <- sum(snpPos[listRef, "cnt.ref"]) +
+                        sum(snpPos[listAlt, "cnt.alt"])
                 }
             }
 
@@ -1377,8 +1377,8 @@ tableBlockAF <- function(snp.pos) {
             ## get hetero and compute AF nbHetero > 1
             if (resBlock[1, "nbKeep"] > 0 & resBlock[1, "nbHetero"] > 1) {
 
-                resML <- calcAFMLRNA(snp.pos[which(snp.pos$block.id ==
-                                        resBlock$block[1] & snp.pos$hetero),])
+                resML <- calcAFMLRNA(snpPos[which(snpPos$block.id ==
+                                        resBlock$block[1] & snpPos$hetero),])
 
                 resBlock$aFraction[1] <- resML$aFraction
                 resBlock$lR[1] <- resML$lR
@@ -1387,7 +1387,7 @@ tableBlockAF <- function(snp.pos) {
                 resBlock$sumAlleleHigh[1] <- resML$sumAlleleHigh
             }
             return(resBlock)
-        }, snp.pos=snp.pos)
+        }, snpPos=snpPos)
     resBlock <- do.call(rbind, resBlock)
     # for (i in seq_len(length(listBlocks))) {
     #     # start with LOH

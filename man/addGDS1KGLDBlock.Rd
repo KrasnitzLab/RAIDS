@@ -3,29 +3,75 @@
 \encoding{UTF-8}
 \name{addGDS1KGLDBlock}
 \alias{addGDS1KGLDBlock}
-\title{TODO}
+\title{Add block information in a Population Reference GDS Annotation file}
 \usage{
 addGDS1KGLDBlock(gds, listBlock, blockName, blockDesc)
 }
 \arguments{
 \item{gds}{an object of class \code{gds} opened in writing mode.}
 
-\item{listBlock}{TODO}
+\item{listBlock}{a \code{array} of \code{integer} representing all the
+entries for the current block.}
 
-\item{blockName}{TODO}
+\item{blockName}{a \code{character} string representing the unique
+block name.}
 
-\item{blockDesc}{TODO}
+\item{blockDesc}{a \code{character} string representing the description of
+the current block.}
 }
 \value{
 The integer \code{0L} when successful.
 }
 \description{
-TODO
+This function appends the information for one specific type
+of blocks into a Population Reference GDS Annotation file. More
+specifically, the node 'block.annot' is created if it does not exists. This
+node contains a \code{data.frame} which will be append the description of
+the current block. The node 'block' is also created if it does not exists.
+This node is a \code{matrix} that will contain all the entries for the
+current block. All the values for a specific block type are contained in a
+single column that corresponds to the row number in the 'block.annot' node.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+
+## Required library
+library(gdsfmt)
+
+## Temporary GDS Annotation file in current directory
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_Annot_14.gds")
+
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+
+    ## Create and open the GDS file
+    GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+
+    ## One block
+    blockType <- "EAS.0.05.500k"
+
+    ## The description of the block
+    blockDescription <- "EAS population blocks based on 500k windows"
+
+    ## The values for each entry related to the block (integers)
+    blockEntries <- c(1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3)
+
+    RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=blockEntries,
+        blockName=blockType, blockDesc=blockDescription)
+
+    ## Read 'block.annot' node
+    read.gdsn(index.gdsn(GDS_file_tmp, "block.annot"))
+
+    ## Read 'block' node
+    read.gdsn(index.gdsn(GDS_file_tmp, "block"))
+
+    ## Close GDS file
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    ## Delete the temporary GDS file
+    unlink(x=gdsFilePath, force=TRUE)
+
+}
 
 }
 \author{

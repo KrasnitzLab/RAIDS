@@ -79,7 +79,7 @@ In R:
 
 ## Split the VCF by sample
 
-TODO
+NOTE: Should be implemented
 
 ## Generate the base GDS file with 1KG
 

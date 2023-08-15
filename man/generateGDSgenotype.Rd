@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{generateGDSgenotype}
 \alias{generateGDSgenotype}
-\title{Add information related to profile genotype into a Reference GDS file}
+\title{Add information related to profile genotypes into a Reference
+GDS file}
 \usage{
 generateGDSgenotype(gds, pathGeno, fileSNPsRDS, listSamples, verbose)
 }

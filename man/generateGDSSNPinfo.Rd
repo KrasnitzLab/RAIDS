@@ -5,13 +5,13 @@
 \alias{generateGDSSNPinfo}
 \title{Add information related to SNVs into a Reference GDS file}
 \usage{
-generateGDSSNPinfo(gdsReference, fileFREQ, verbose)
+generateGDSSNPinfo(gdsReference, fileFreq, verbose)
 }
 \arguments{
 \item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
-\item{fileFREQ}{a \code{character} string representing the path and file
+\item{fileFreq}{a \code{character} string representing the path and file
 name of the RDS file with the filtered SNP information.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
@@ -46,7 +46,7 @@ if (file.access(getwd()) == 0) {
 
         ## Add SNV information to Reference GDS
         RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-            fileFREQ=fileFilerterSNVs, verbose=TRUE)
+            fileFreq=fileFilerterSNVs, verbose=TRUE)
 
         ## Close GDS file (important)
         closefn.gds(filenewGDS)
@@ -62,7 +62,7 @@ if (file.access(getwd()) == 0) {
 
         ## Add SNV information to Reference GDS
         RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-            fileFREQ=fileFilerterSNVs, verbose=TRUE)
+            fileFreq=fileFilerterSNVs, verbose=TRUE)
 
         ## Close GDS file (important)
         closefn.gds(filenewGDS)

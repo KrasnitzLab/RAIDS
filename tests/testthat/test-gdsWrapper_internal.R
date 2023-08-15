@@ -494,3 +494,155 @@ test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GD
     expect_equal(results, lap)
 })
 
+
+context("getBlockIDs() results")
+
+
+test_that("getBlockIDs() must return the expected result", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
+    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+
+    annotFile <- openfn.gds(fileGDS)
+    defer(closefn.gds(annotFile), envir=parent.frame())
+
+    ## Vector of segment identifiers
+    indexes <- c(1, 3, 6, 8, 9)
+
+    ## Block identifiers for the selected SNVs
+    result <- RAIDS:::getBlockIDs(gdsRefAnnot=annotFile, snpIndex=indexes,
+                                blockTypeID="GeneS.Ensembl.Hsapiens.v86")
+
+    expected <- rep(943, 5)
+
+    expect_equal(result, expected)
+})
+
+
+test_that("getBlockIDs() must return expected error", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
+    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+
+    annotFile <- openfn.gds(fileGDS)
+    defer(closefn.gds(annotFile), envir=parent.frame())
+
+    ## Vector of segment identifiers
+    indexes <- c(1, 3, 6, 8, 9)
+
+    error_message <- paste0("The following block type is not found in the ",
+                                "GDS Annotation file: \'InformationTremblay\'")
+
+    expect_error(RAIDS:::getBlockIDs(gdsRefAnnot=annotFile, snpIndex=indexes,
+                                        blockTypeID="InformationTremblay"),
+                    error_message, fixed=TRUE)
+})
+
+
+#############################################################################
+### Tests addUpdateSegment() results
+#############################################################################
+
+context("addUpdateSegment() results")
+
+
+test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Vector of segment identifiers
+    segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L)
+
+    ## Add segments to the GDS file
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(results, segments)
+})
+
+
+test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_02.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Vector of segment identifiers
+    segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L)
+    ## Vector of segment identifiers
+    segments2 <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L, 5L, 5L)
+
+    ## Add segments to the GDS file
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
+
+    ## Update segments to the GDS file
+    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments2)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(results, segments2)
+})
+
+
+#############################################################################
+### Tests appendGDSSampleOnly() results
+#############################################################################
+
+context("appendGDSSampleOnly() results")
+
+
+test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" node of the GDS file", {
+
+    ## Create a temporary GDS file in an test directory
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileGDS <- file.path(dataDir, "GDS_TEMP_04.gds")
+
+    ## Create and open a temporary GDS file
+    GDS_file_tmp  <- local_GDS_file(fileGDS)
+
+    ## Create sample.id field
+    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+                                                            "sample_02"))
+    sync.gds(gdsfile=GDS_file_tmp)
+
+    ## Vector of SNV names
+    samples <- c('sample_05', 'sample_08', 'sample_11')
+
+    ## Add name of samples to the GDS file
+    RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp, listSamples=samples)
+
+    ## Read segments information from GDS file
+    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expected <- c("sample_01", "sample_02", samples)
+
+    expect_equal(results, expected)
+})
+
+
+

@@ -24,110 +24,6 @@ local_GDS_file <- function(path) {
 
 
 #############################################################################
-### Tests addUpdateSegment() results
-#############################################################################
-
-context("addUpdateSegment() results")
-
-
-test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
-
-    ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "GDS_TEMP_01.gds")
-
-    ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
-
-    ## Vector of segment identifiers
-    segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L)
-
-    ## Add segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
-
-    ## Read segments information from GDS file
-    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expect_equal(results, segments)
-})
-
-
-test_that("addUpdateSegment() must copy the expected entry in \"segment\" node of the GDS file", {
-
-    ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "GDS_TEMP_02.gds")
-
-    ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
-
-    ## Vector of segment identifiers
-    segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L)
-    ## Vector of segment identifiers
-    segments2 <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L, 5L, 5L)
-
-    ## Add segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
-
-    ## Update segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments2)
-
-    ## Read segments information from GDS file
-    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expect_equal(results, segments2)
-})
-
-
-#############################################################################
-### Tests appendGDSSampleOnly() results
-#############################################################################
-
-context("appendGDSSampleOnly() results")
-
-
-test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" node of the GDS file", {
-
-    ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "GDS_TEMP_04.gds")
-
-    ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
-
-    ## Create sample.id field
-    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
-        "sample_02"))
-    sync.gds(gdsfile=GDS_file_tmp)
-
-    ## Vector of SNV names
-    samples <- c('sample_05', 'sample_08', 'sample_11')
-
-    ## Add name of samples to the GDS file
-    RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp, listSamples=samples)
-
-    ## Read segments information from GDS file
-    results <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expected <- c("sample_01", "sample_02", samples)
-
-    expect_equal(results, expected)
-})
-
-
-#############################################################################
 ### Tests appendGDSgenotypeMat() results
 #############################################################################
 
@@ -264,3 +160,56 @@ test_that("addGDSRef() must return expected result", {
 })
 
 
+#############################################################################
+### Tests addGDS1KGLDBlock() results
+#############################################################################
+
+context("addGDS1KGLDBlock() results")
+
+
+test_that("addGDS1KGLDBlock() must return expected result", {
+
+    ## Create and open a temporary GDS Annotation file
+    GDS_path  <- test_path("fixtures", "GDS_addGDS1KGLDBlock_Temp_01.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
+
+    blockType <- "EAS.0.05.500k"
+    blockDescription <- "EAS population blocks based on 500k windows"
+
+    entries <- c(1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5)
+
+    ## Add block to the GDS file
+    results1 <- RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=entries,
+            blockName=blockType, blockDesc=blockDescription)
+
+
+    blockType2 <- "AFR.0.05.500k"
+    blockDescription2 <- "AFR population blocks based on 500k windows"
+
+    entries2 <- c(1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5)
+
+    ## Add block to the GDS file
+    results2 <- RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=entries2,
+            blockName=blockType2, blockDesc=blockDescription2)
+
+
+    ## Read block.annot from GDS file
+    results3 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="block.annot"))
+
+    ## Read block.annot from GDS file
+    results4 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="block"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(results1, 0L)
+    expect_equal(results2, 0L)
+    expect_equal(results3, data.frame(block.id=c(blockType, blockType2),
+                            block.desc=c(blockDescription, blockDescription2),
+                            stringsAsFactors=FALSE))
+
+    expect_equal(results4, matrix(data=c(entries, entries2), ncol=2,
+                                    byrow=FALSE))
+})

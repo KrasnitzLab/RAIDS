@@ -1,61 +1,3 @@
-#' @title Append sample names into a GDS file
-#'
-#' @description This function append the sample identifiers into the
-#' "samples.id" node of a GDS file.
-#'
-#' @param gds an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
-#'
-#' @param listSample a \code{vector} of \code{character} string representing
-#' the sample identifiers to be added to GDS file.
-#'
-#'
-#' @return The integer \code{0L} when successful.
-#'
-#' @examples
-#'
-#' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(dataDir, "GDS_TEMP_04.gds")
-#'
-#' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
-#'
-#' ## Create "sample.id" node (the node must be present)
-#' add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
-#'     "sample_02"))
-#'
-#' sync.gds(gdsfile=GDS_file_tmp)
-#'
-#' ## Add information about 2 samples to the GDS file
-#' RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
-#'     listSamples=c("sample_03", "sample_04"))
-#'
-#' ## Read sample identifier list
-#' ## Only "sample_03" and "sample_04" should have been added
-#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
-#'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=GDS_file_tmp)
-#'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
-#'
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn append.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-appendGDSSampleOnly <- function(gds, listSamples) {
-
-    sampleGDS <- index.gdsn(gds, "sample.id")
-
-    append.gdsn(sampleGDS, val=listSamples, check=TRUE)
-
-    return(0L)
-}
-
-
 #' @title Add information related to SNVs into a Reference GDS file
 #'
 #' @description the function adds the SNV information into a Reference
@@ -64,7 +6,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
-#' @param fileFREQ a \code{character} string representing the path and file
+#' @param fileFreq a \code{character} string representing the path and file
 #' name of the RDS file with the filtered SNP information.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
@@ -94,7 +36,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #'
 #'         ## Add SNV information to Reference GDS
 #'         RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-#'             fileFREQ=fileFilerterSNVs, verbose=TRUE)
+#'             fileFreq=fileFilerterSNVs, verbose=TRUE)
 #'
 #'         ## Close GDS file (important)
 #'         closefn.gds(filenewGDS)
@@ -110,7 +52,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #'
 #'         ## Add SNV information to Reference GDS
 #'         RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-#'             fileFREQ=fileFilerterSNVs, verbose=TRUE)
+#'             fileFreq=fileFilerterSNVs, verbose=TRUE)
 #'
 #'         ## Close GDS file (important)
 #'         closefn.gds(filenewGDS)
@@ -125,9 +67,9 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #' @importFrom gdsfmt add.gdsn
 #' @encoding UTF-8
 #' @keywords internal
-generateGDSSNPinfo <- function(gdsReference, fileFREQ, verbose) {
+generateGDSSNPinfo <- function(gdsReference, fileFreq, verbose) {
 
-    mapSNVSel <- readRDS(file=fileFREQ)
+    mapSNVSel <- readRDS(file=fileFreq)
 
     if(verbose) { message("Read mapSNVSel DONE ", Sys.time()) }
 
@@ -172,7 +114,8 @@ generateGDSSNPinfo <- function(gdsReference, fileFREQ, verbose) {
 }
 
 
-#' @title Add information related to profile genotype into a Reference GDS file
+#' @title Add information related to profile genotypes into a Reference
+#' GDS file
 #'
 #' @description This function adds the genotype fields with the associated
 #' information into the Reference GDS file for the selected profiles.
@@ -479,28 +422,73 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 
     write.table(tped, pedOUT, quote=FALSE, sep="\t", row.names=FALSE,
                         col.names=FALSE)
-
 }
 
 
-#' @title TODO
+#' @title Add block information in a Population Reference GDS Annotation file
 #'
-#' @description TODO
+#' @description This function appends the information for one specific type
+#' of blocks into a Population Reference GDS Annotation file. More
+#' specifically, the node 'block.annot' is created if it does not exists. This
+#' node contains a \code{data.frame} which will be append the description of
+#' the current block. The node 'block' is also created if it does not exists.
+#' This node is a \code{matrix} that will contain all the entries for the
+#' current block. All the values for a specific block type are contained in a
+#' single column that corresponds to the row number in the 'block.annot' node.
 #'
 #' @param gds an object of class \code{gds} opened in writing mode.
 #'
-#' @param listBlock TODO
+#' @param listBlock a \code{array} of \code{integer} representing all the
+#' entries for the current block.
 #'
-#' @param blockName TODO
+#' @param blockName a \code{character} string representing the unique
+#' block name.
 #'
-#' @param blockDesc TODO
+#' @param blockDesc a \code{character} string representing the description of
+#' the current block.
 #'
 #' @return The integer \code{0L} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Temporary GDS Annotation file in current directory
+#' gdsFilePath <- file.path(getwd(), "GDS_TEMP_Annot_14.gds")
+#'
+#' ## Run only if directory in writing mode
+#' if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+#'
+#'     ## Create and open the GDS file
+#'     GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+#'
+#'     ## One block
+#'     blockType <- "EAS.0.05.500k"
+#'
+#'     ## The description of the block
+#'     blockDescription <- "EAS population blocks based on 500k windows"
+#'
+#'     ## The values for each entry related to the block (integers)
+#'     blockEntries <- c(1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3)
+#'
+#'     RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=blockEntries,
+#'         blockName=blockType, blockDesc=blockDescription)
+#'
+#'     ## Read 'block.annot' node
+#'     read.gdsn(index.gdsn(GDS_file_tmp, "block.annot"))
+#'
+#'     ## Read 'block' node
+#'     read.gdsn(index.gdsn(GDS_file_tmp, "block"))
+#'
+#'     ## Close GDS file
+#'     closefn.gds(gdsfile=GDS_file_tmp)
+#'
+#'     ## Delete the temporary GDS file
+#'     unlink(x=gdsFilePath, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn
@@ -509,34 +497,39 @@ gds2tped <- function(gds, listSample, listSNP, pedOUT) {
 #' @keywords internal
 addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 
-    block.annot <- data.frame(block.id=blockName,
+    blockAnnot <- data.frame(block.id=blockName,
                                 block.desc=blockDesc,
                                 stringsAsFactors=FALSE)
 
     if(! ("block.annot" %in% ls.gdsn(gds))) {
-        var.block.annot <- add.gdsn(gds, "block.annot", block.annot)
+        ## Create 'block.annot' node when not existing
+        varBlockAnnot <- add.gdsn(gds, "block.annot", blockAnnot)
     }else {
+        ## Append content to 'block.annot' node when existing
         curAnnot <- index.gdsn(gds, "block.annot/block.id")
-        append.gdsn(curAnnot,block.annot$block.id)
+        append.gdsn(curAnnot, blockAnnot$block.id)
         curAnnot <- index.gdsn(gds, "block.annot/block.desc")
-        append.gdsn(curAnnot, block.annot$block.desc)
+        append.gdsn(curAnnot, blockAnnot$block.desc)
     }
 
-    var.block <- NULL
-    if(! ("block" %in% ls.gdsn(gds))){
-        var.block <- add.gdsn(gds, "block",
+    varBlock <- NULL
+    if(!("block" %in% ls.gdsn(gds))) {
+        ## Create 'block' node that will contain a matrix of integers
+        ## stored in compressed mode
+        varBlock <- add.gdsn(node=gds, name="block",
                                 valdim=c(length(listBlock), 1),
                                 listBlock, storage="int32",
-                                compress = "LZ4_RA")
-        readmode.gdsn(var.block)
+                                compress="LZ4_RA")
+        readmode.gdsn(varBlock)
 
-    }else {
-        if(is.null(var.block)) {
-            var.block <- index.gdsn(gds, "block")
-            var.block <- compression.gdsn(var.block, "")
+    } else {
+        if(is.null(varBlock)) {
+            varBlock <- index.gdsn(gds, "block")
+            varBlock <- compression.gdsn(varBlock, "")
         }
-        append.gdsn(var.block, listBlock)
-        var.block <- compression.gdsn(var.block, "LZ4_RA")
+        append.gdsn(varBlock, listBlock)
+        ## Compressed data using LZ4_RA method
+        varBlock <- compression.gdsn(varBlock, "LZ4_RA")
     }
 
     sync.gds(gds)
@@ -545,105 +538,5 @@ addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
 }
 
 
-#' @title Add information related to segments associated to the SNV
-#' dataset for a specific sample into a GDS file
-#'
-#' @description The function adds the information related to segments
-#' associated to the SNV dataset for a specific sample into a
-#' GDS file, more specifically, in the "segment" node. If the "segment" node
-#' already exists, the previous information is erased.
-#'
-#' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), a GDS Sample file.
-#'
-#' @param snp.seg a \code{vector} of \code{integer} representing the segment
-#' identifiers associated to each SNV selected for the specific sample. The
-#' length of the \code{vector} should correspond to the number of SNVs
-#' present in the "snp.id" entry of the GDS sample file.
-#'
-#' @return The integer \code{0L} when successful.
-#'
-#' @examples
-#'
-#' ## Create a temporary GDS file in an test directory
-#' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' gdsFilePath <- file.path(dataDir, "GDS_TEMP.gds")
-#'
-#' ## Create and open the GDS file
-#' GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
-#'
-#' ## Vector of segment identifiers
-#' segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
-#'
-#' ## Add segments to the GDS file
-#' RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snp.seg=segments)
-#'
-#' ## Read segments information from GDS file
-#' read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
-#'
-#' ## Close GDS file
-#' closefn.gds(gdsfile=GDS_file_tmp)
-#'
-#' ## Delete the temporary GDS file
-#' unlink(x=gdsFilePath, force=TRUE)
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt add.gdsn index.gdsn delete.gdsn sync.gds ls.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-addUpdateSegment <- function(gdsProfile, snp.seg) {
 
-    if("segment" %in% ls.gdsn(gdsProfile)) {
-        snpLap <- write.gdsn(index.gdsn(gdsProfile, "segment"), snp.seg)
-    } else{
-        snpLap <- add.gdsn(gdsProfile, "segment", snp.seg, storage="uint32")
-    }
-
-    sync.gds(gdsProfile)
-
-    ## Successful
-    return(0L)
-}
-
-
-#' @title Get the block number for each SNV in snp.index
-#'
-#' @description TODO
-#'
-#' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the opened Reference SNV Annotation GDS file. RNA specific
-#' Default: \code{NULL}.
-#'
-#' @param snp.index TODO
-#'
-#' @param blockID a \code{character} string corresponding to the block
-#' identifier in \code{gdsRefAnnot}.  RNA specific
-#' Default: \code{NULL}
-#'
-#' @return TODO a \code{vector} of \code{numeric} corresponding to the
-#' block identifier
-#'
-#' @examples
-#'
-#' # TODO
-#' gds <- "Demo GDS TODO"
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
-#' @encoding UTF-8
-#' @keywords internal
-getGeneBlock <- function(gdsRefAnnot, snp.index, blockID) {
-
-    block.annot <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
-    pos <- which(block.annot$block.id == blockID)
-
-    if(length(pos) != 1) {
-        stop("Try to get Gene.Block with blockID problematic ", blockID)
-    }
-
-    b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1,pos),
-                    count = c(-1,1))[snp.index]
-
-    return(b)
-}
 

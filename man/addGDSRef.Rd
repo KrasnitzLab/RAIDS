@@ -37,27 +37,31 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 rdsFilePath <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 
-## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
+## Temporary GDS file
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_11.gds")
 
-## Create and open the GDS file
-tmpGDS  <- createfn.gds(filename=gdsFilePath)
-## Create "sample.id" node (the node must be present)
-sampleIDs <- c("HG00104", "HG00109", "HG00110")
-add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 
-## Create  "sample.ref" node in GDS file using RDS information
-RAIDS:::addGDSRef(gdsReference=tmpGDS, filePart=rdsFilePath)
+    ## Create and open the GDS file
+    tmpGDS  <- createfn.gds(filename=gdsFilePath)
+     ## Create "sample.id" node (the node must be present)
+     sampleIDs <- c("HG00104", "HG00109", "HG00110")
+     add.gdsn(node=tmpGDS, name="sample.id", val=sampleIDs)
 
-## Read sample reference data.frame
-read.gdsn(index.gdsn(node=tmpGDS, path="sample.ref"))
+     ## Create "sample.ref" node in GDS file using RDS information
+     RAIDS:::addGDSRef(gdsReference=tmpGDS, filePart=rdsFilePath)
 
-## Close GDS file
-closefn.gds(gdsfile=tmpGDS)
+     ## Read sample reference data.frame
+     read.gdsn(index.gdsn(node=tmpGDS, path="sample.ref"))
 
-## Delete the temporary GDS file
-unlink(x=gdsFilePath, force=TRUE)
+     ## Close GDS file
+     closefn.gds(gdsfile=tmpGDS)
+
+     ## Delete the temporary GDS file
+     unlink(x=gdsFilePath, force=TRUE)
+
+ }
 
 }
 \author{

@@ -54,42 +54,46 @@ created and then, the information is added.
 ## Required library
 library(gdsfmt)
 
-## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(dataDir, "GDS_TEMP_11.gds")
+## Create a temporary GDS file in an current directory
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_11.gds")
 
-## Create and open the GDS file
-tmpGDS  <- createfn.gds(filename=gdsFilePath)
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 
-## Create a PED data frame with sample information
-ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
-    Case.ID=c("1KG_sample_01", "1KG_sample_02"),
-    Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
-    Source=rep("IGSR", 2), stringsAsFactors=FALSE)
+    ## Create and open the GDS file
+    tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-## Create a Study data frame with information about the study
-## All samples are associated to the same study
-studyInfo <- data.frame(study.id="Ref.1KG",
-    study.desc="Unrelated samples from 1000 Genomes",
-    study.platform="GRCh38 1000 genotypes",
-    stringsAsFactors=FALSE)
+    ## Create a PED data frame with sample information
+    ped1KG <- data.frame(Name.ID=c("1KG_sample_01", "1KG_sample_02"),
+        Case.ID=c("1KG_sample_01", "1KG_sample_02"),
+        Sample.Type=rep("Reference", 2), Diagnosis=rep("Reference", 2),
+        Source=rep("IGSR", 2), stringsAsFactors=FALSE)
 
-## Add the sample information to the GDS Sample file
-## The information for all samples is added (listSamples=NULL)
-RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
-    listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
+    ## Create a Study data frame with information about the study
+    ## All samples are associated to the same study
+    studyInfo <- data.frame(study.id="Ref.1KG",
+        study.desc="Unrelated samples from 1000 Genomes",
+        study.platform="GRCh38 1000 genotypes",
+        stringsAsFactors=FALSE)
 
-## Read study information from GDS Sample file
-read.gdsn(index.gdsn(node=tmpGDS, path="study.list"))
+    ## Add the sample information to the GDS Sample file
+    ## The information for all samples is added (listSamples=NULL)
+    RAIDS:::addStudyGDSSample(gdsProfile=tmpGDS, pedProfile=ped1KG, batch=1,
+        listSamples=NULL, studyDF=studyInfo, verbose=FALSE)
 
-## Read sample information from GDS Sample file
-read.gdsn(index.gdsn(node=tmpGDS, path="study.annot"))
+    ## Read study information from GDS Sample file
+    read.gdsn(index.gdsn(node=tmpGDS, path="study.list"))
 
-## Close GDS file
-closefn.gds(gdsfile=tmpGDS)
+    ## Read sample information from GDS Sample file
+    read.gdsn(index.gdsn(node=tmpGDS, path="study.annot"))
 
-## Delete the temporary GDS file
-unlink(x=gdsFilePath, force=TRUE)
+    ## Close GDS file
+    closefn.gds(gdsfile=tmpGDS)
+
+    ## Delete the temporary GDS file
+    unlink(x=gdsFilePath, force=TRUE)
+
+}
 
 }
 \author{

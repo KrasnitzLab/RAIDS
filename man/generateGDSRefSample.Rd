@@ -41,40 +41,44 @@ the \code{data.frame} passed to the function. The nodes "sample.id" and
 ## Required library
 library(gdsfmt)
 
-## Create a temporary GDS file in an test directory
-dataDir <- system.file("extdata/tests", package="RAIDS")
-gdsFilePath <- file.path(dataDir, "GDS_TEMP_10.gds")
+## Temporary GDS file in current directory
+gdsFilePath <- file.path(getwd(), "GDS_TEMP_10.gds")
 
-## Create and open the GDS file
-tmpGDS  <- createfn.gds(filename=gdsFilePath)
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
 
-## Create "sample.annot" node (the node must be present)
-pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
-    Name.ID=c("sample_01", "sample_02"),
-    sex=c(1,1),  # 1:Male  2: Female
-    pop.group=c("ACB", "ACB"),
-    superPop=c("AFR", "AFR"),
-    batch=c(1, 1),
-    stringsAsFactors=FALSE)
+    ## Create and open the GDS file
+    tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-## The row names must be the sample identifiers
-rownames(pedInformation) <- pedInformation$Name.ID
+    ## Create "sample.annot" node (the node must be present)
+    pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
+        Name.ID=c("sample_01", "sample_02"),
+        sex=c(1,1),  # 1:Male  2: Female
+        pop.group=c("ACB", "ACB"),
+        superPop=c("AFR", "AFR"),
+        batch=c(1, 1),
+        stringsAsFactors=FALSE)
 
-## Add information about 2 samples to the GDS file
-RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
-    dfPedReference=pedInformation, listSamples=NULL)
+    ## The row names must be the sample identifiers
+    rownames(pedInformation) <- pedInformation$Name.ID
 
-## Read sample identifier list
-read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
+    ## Add information about 2 samples to the GDS file
+    RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
+        dfPedReference=pedInformation, listSamples=NULL)
 
-## Read sample information from GDS file
-read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
+    ## Read sample identifier list
+    read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 
-## Close GDS file
-closefn.gds(gdsfile=tmpGDS)
+    ## Read sample information from GDS file
+    read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 
-## Delete the temporary GDS file
-unlink(x=gdsFilePath, force=TRUE)
+    ## Close GDS file
+    closefn.gds(gdsfile=tmpGDS)
+
+    ## Delete the temporary GDS file
+    unlink(x=gdsFilePath, force=TRUE)
+
+}
 
 }
 \author{

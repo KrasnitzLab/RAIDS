@@ -369,7 +369,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
         dfPedReference=ped1KG, listSamples=listSamples)
     if(verbose) { message("Sample info DONE ", Sys.time()) }
 
-    generateGDSSNPinfo(gdsReference=newGDS, fileFREQ=fileSNVSelected,
+    generateGDSSNPinfo(gdsReference=newGDS, fileFreq=fileSNVSelected,
                         verbose=verbose)
     if(verbose) { message("SNP info DONE ", Sys.time()) }
 

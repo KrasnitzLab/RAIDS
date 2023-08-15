@@ -41,7 +41,7 @@ the \code{data.frame} passed to the function. The nodes "sample.id" and
 ## Required library
 library(gdsfmt)
 
-## Temporary GDS file in urrent directory
+## Temporary GDS file in current directory
 gdsFilePath <- file.path(getwd(), "GDS_TEMP_10.gds")
 
 ## Run only if directory in writing mode

@@ -1213,34 +1213,44 @@ calcAFMLRNA <- function(snp.pos.Hetero) {
 }
 
 
-#' @title TOREVIEW Compile the info about the allelic fraction for each bloc. In the case of RNA-seq
-#' the blaocks are gene
+#' @title TOREVIEW Compile the information about the allelic fraction
+#' for each bloc.
 #'
-#' @description TOREVIEW For each block evaluate score about lost of heterizygocity and allelic fration
+#' @description TOREVIEW For each block, the function evaluates a score
+#' about lost of heterizygocity and allelic fration.
+#' In the case of RNA-seq the blocks are genes.
 #'
 #' @param snp.pos For a specific chromosome a \code{data.frame} with lap for
 #' the SNV dataset with
 #' coverage > \code{minCov}.
 #'
-#' @return TOREVIEW resBlock a \code{data.frame} containing only heterozygote SNVs. The
+#' @return TOREVIEW resBlock a \code{data.frame} containing only heterozygote
+#' SNV information. The
 #' \code{data.frame} contain those columns:
 #' \itemize{
-#' \item{block} {a single \code{integer} id of the block.}
-#' \item{aRF} {a single \code{numeric} allelic fraction final not compute
+#' \item{block} {a single \code{integer} representing the unique identifier
+#' of the block.}
+#' \item{aRF} {a single \code{numeric} representing the final allelic fraction not compute
 #' here -1 for all entries.}
-#' \item{aFraction} {a single \code{integer}  allelic fraction possible if not LOH.}
+#' \item{aFraction} {a single \code{integer} representing the possible allelic
+#' fraction in absence of LOH.}
 #' \item{lR} {a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{nPhase} {a single \code{integer} number of SNV phase.}
+#' \item{nPhase} {a single \code{integer} representin the number of SNV
+#' phases.}
 #' \item{sumAlleleLow} {a single \code{integer} TODO.}
 #' \item{sumAlleleHigh} {a single \code{integer} TODO.}
 #' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}
-#' \item{lM} {a single \code{numeric} log10 product frequency allele in population.}
+#' \item{lM} {a single \code{numeric} log10 product frequency allele
+#' in population.}
 #' \item{lRhomo} {a single \code{numeric} score lH - lM.}
-#' #' \item{nbHomo} {a single \code{integer} score lH - lM.}
-#' #' \item{nbKeep} {a single \code{integer} score lH - lM.}
-#' #' \item{nbHetero} {a single \code{integer} score lH - lM.}
+#' \item{nbHomo} {a single \code{integer} representing the number of
+#' homozygote SNVs per block.}
+#' \item{nbKeep} {a single \code{integer} representing the number of
+#' SNVs retained per block.}
+#' \item{nbHetero} {a single \code{integer} representing the number of
+#' heterozygote SNVs per block.}
 #' }
 #'
 #' @examples
@@ -1269,59 +1279,60 @@ tableBlockAF <- function(snp.pos) {
 
     ## FOR_LOOP modification to be validated by Pascal
     ## Remove commented code and this text after validation
-    resBlock <- data.frame(block = listBlocks)
+    resBlock <- data.frame(block=listBlocks)
 
-    # Number of homozygote by block
-    tmp <- aggregate(snp.pos[, c( "homo"), drop = FALSE],
-                        by = list(block=snp.pos$block.id) ,sum)
-    row.names(tmp) <- as.character(tmp[,1])
-    resBlock$nbHomo <- tmp[as.character(listBlocks),2]
-    # Number of snv keep by block
-    tmp <- aggregate(snp.pos[, c( "keep"), drop = FALSE],
-                        by = list(block=snp.pos$block.id) ,sum)
-    row.names(tmp) <- as.character(tmp[,1])
-    resBlock$nbKeep <- tmp[as.character(listBlocks),2]
+    # Number of homozygotes per block
+    tmp <- aggregate(snp.pos[, c( "homo"), drop=FALSE],
+                        by = list(block=snp.pos$block.id), sum)
+    row.names(tmp) <- as.character(tmp[, 1])
+    resBlock$nbHomo <- tmp[as.character(listBlocks), 2]
 
-    # Number of heterozygote by block
-    tmp <- aggregate(snp.pos[, c( "hetero"), drop = FALSE],
-                        by = list(block=snp.pos$block.id) ,sum)
-    row.names(tmp) <- as.character(tmp[,1])
-    resBlock$nbHetero <- tmp[as.character(listBlocks),2]
+    # Number of SNVs keep per block
+    tmp <- aggregate(snp.pos[, c( "keep"), drop=FALSE],
+                        by = list(block=snp.pos$block.id), sum)
+    row.names(tmp) <- as.character(tmp[, 1])
+    resBlock$nbKeep <- tmp[as.character(listBlocks), 2]
 
-    resBlock <- apply(resBlock, 1, FUN=function(x,snp.pos){
-        resBlock <- data.frame(block = x[1],
-                               nbHomo = x[2],
-                               nbKeep = x[3],
-                               nbHetero = x[4],
-                               aRF = -1,
-                               aFraction = -1,
-                               lR = -1,
-                               nPhase = -1,
-                               sumAlleleLow = -1,
-                               sumAlleleHigh = -1,
-                               lH = -1,
-                               lM = -1,
-                               lRhomo = 1)
+    # Number of heterozygotes per block
+    tmp <- aggregate(snp.pos[, c( "hetero"), drop=FALSE],
+                        by = list(block=snp.pos$block.id), sum)
+    row.names(tmp) <- as.character(tmp[, 1])
+    resBlock$nbHetero <- tmp[as.character(listBlocks), 2]
+
+    resBlock <- apply(resBlock, 1, FUN=function(x, snp.pos) {
+        resBlock <- data.frame(block=x[1],
+                               nbHomo=x[2],
+                               nbKeep=x[3],
+                               nbHetero=x[4],
+                               aRF=-1,
+                               aFraction=-1,
+                               lR=-1,
+                               nPhase=-1,
+                               sumAlleleLow=-1,
+                               sumAlleleHigh=-1,
+                               lH=-1,
+                               lM=-1,
+                               lRhomo=1)
 
             lH <- 1
             lM <- 1
             if (resBlock[1, "nbKeep"] > 0 &
                 (resBlock[1, "nbKeep"] == resBlock[1, "nbHomo"] |
-                 (resBlock[1, "nbHomo"] > 0 & resBlock[1, "nbHetero"] == 1)) ) {
+                 (resBlock[1, "nbHomo"] > 0 & resBlock[1, "nbHetero"] == 1))) {
 
                 # Check if 1 hetero with allelic fraction (<=0.05)
                 # it is considered as all homozygote
                 flag <- TRUE
                 if (resBlock[1, "nbHetero"] == 1) {
                     tmp <- min(snp.pos[snp.pos$block.id == resBlock$block[1] &
-                                           snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
+                                    snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
                         sum(snp.pos[snp.pos$block.id == resBlock$block[1] &
-                                        snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
+                                    snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
                     # flag is true if allelic fraction <= 0.05
-                    flag <- ifelse(tmp > 0.05, FALSE,TRUE)
+                    flag <- ifelse(tmp > 0.05, FALSE, TRUE)
                 }
 
-                if(flag){
+                if(flag) {
                     # List homozygote ref
                     listRef <- which(snp.pos$block.id == resBlock$block[1] &
                                          snp.pos$homo &
@@ -1332,37 +1343,42 @@ tableBlockAF <- function(snp.pos) {
                                          snp.pos$cnt.ref < snp.pos$cnt.alt)
                     # freq of the Ref allele in population of listRef
                     tmp <- snp.pos$freq[listRef]
-                    # min freq is 0.01
+                    ## min freq is 0.01
                     tmp[which(tmp < 0.01)] <- 0.01
-                    # log10 of the product of the frequency of the alternative allele in pop for listRef
+                    ## log10 of the product of the frequency of the alternative
+                    ## allele in pop for listRef
                     lH <- ifelse(length(listRef) > 0, sum(log10(1-tmp)*2), 0)
-                    # freq of the Ref allele in population of listAlt
+                    ## freq of the Ref allele in population of listAlt
                     tmp <- snp.pos$freq[listAlt]
                     tmp[which(tmp < 0.01)] <- 0.01
-                    # log10 of the product of the frequency of the alternative allele in pop for listRef
-                    # plus log10 of the product of the frequency of the reference allele in pop for listAlt
-                    lH <- lH + ifelse(length(listAlt) > 0, sum(log10(tmp)*2), 0)
+                    ## log10 of the product of the frequency of the
+                    ## alternative allele in pop for listRef
+                    ## plus log10 of the product of the frequency of
+                    ##the reference allele in pop for listAlt
+                    lH <- lH + ifelse(length(listAlt) > 0,
+                                        sum(log10(tmp)*2), 0)
 
                     lM <- sum(log10(apply(snp.pos[which(snp.pos$block.id ==
-                                                            resBlock$block[1] & snp.pos$homo),
+                                            resBlock$block[1] & snp.pos$homo),
                                                   "freq", drop=FALSE], 1,
-                                          FUN = function(x) {
-                                              return(max(x^2, 2*(x * (1-x)), (1-x)^2))
+                                FUN=function(x) {
+                                    return(max(x^2, 2*(x * (1-x)), (1-x)^2))
                                           })))
                     resBlock$sumAlleleLow[1] <- 0
                     resBlock$sumAlleleHigh[1] <- sum(snp.pos[listRef, "cnt.ref"]) +
                         sum(snp.pos[listAlt, "cnt.alt"])
                 }
             }
-            # compute the score of the homozygote on the block
-            # if heterozygote present lH = lM = 1 and lRhomo = 0
-            resBlock[1, c("lH", "lM", "lRhomo")] <- c(lH, lM, lH - lM)
 
-            # get hetero and compute AF nbHetero > 1
+            ## compute the score of the homozygote on the block
+            ## if heterozygote present lH = lM = 1 and lRhomo = 0
+            resBlock[1, c("lH", "lM", "lRhomo")] <- c(lH, lM, lH-lM)
+
+            ## get hetero and compute AF nbHetero > 1
             if (resBlock[1, "nbKeep"] > 0 & resBlock[1, "nbHetero"] > 1) {
 
                 resML <- calcAFMLRNA(snp.pos[which(snp.pos$block.id ==
-                                                       resBlock$block[1] & snp.pos$hetero),])
+                                        resBlock$block[1] & snp.pos$hetero),])
 
                 resBlock$aFraction[1] <- resML$aFraction
                 resBlock$lR[1] <- resML$lR

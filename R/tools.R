@@ -134,62 +134,6 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
     return(0L)
 }
 
-#' @title Merge the pruning files by chromosome in one RDS file
-#'
-#' @description The function reads the information from all chromosomes. The
-#' information is scattered in different files (one file per chromosome).
-#' Once all information is loaded,  the function merges
-#' the information and saves it into a RDS file.
-#'
-#' @param pathPrunedGDS a \code{character} string representing the path where
-#' the pruned files for each chromosome are located.
-#' The path must exists.
-#'
-#' @param filePref a \code{character} string representing the prefix used for
-#' the pruned files for each chromosome. The prefix represent the complete
-#' string that is before the chromosome number in the file names.
-#'
-#' @param fileOut a \code{character} string representing name of the output
-#' file that will be created. The file will contain the information for all
-#' pruned chromosomes. The file must have a ".rds" extension.
-#'
-#' @return The integer \code{0L} when successful.
-#'
-#' @examples
-#'
-#' ## Path to the demo pedigree file is located in this package
-#' dataDir <- system.file("extdata", package="RAIDS")
-#'
-#' ## TODO
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @encoding UTF-8
-#' @keywords internal
-groupChrPruning <- function(pathPrunedGDS, filePref, fileOut) {
-
-    prunedList <- list()
-
-    # Read the content of each file (one file per chromosome)
-    for(i in seq_len(22)) {
-        fileChr <- file.path(pathPrunedGDS, paste0(filePref, i, ".rds"))
-
-        if(file.exists(fileChr)) {
-            prunedList[[i]] <- readRDS(fileChr)
-        } else {
-            stop("Problem with the file: ", fileChr)
-        }
-    }
-
-    ## Merge the content of all files
-    pruned <- do.call(c, prunedList)
-
-    ## Save all the information into one file
-    saveRDS(pruned, fileChr <- file.path(pathPrunedGDS, fileOut))
-
-    ## Successful
-    return(0L)
-}
-
 
 #' @title Merge the genotyping files per chromosome into one file
 #'

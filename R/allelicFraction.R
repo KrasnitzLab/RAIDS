@@ -2,7 +2,7 @@
 #'
 #' @description TODO
 #'
-#' @param snp.pos a \code{data.frame} containing the genotype information for
+#' @param snpPos a \code{data.frame} containing the genotype information for
 #' a SNV dataset. TODO
 #'
 #' @param w a single positive \code{numeric} representing the size of the
@@ -14,9 +14,9 @@
 #' @return a \code{matrix} of \code{numeric} with 3 columns where each
 #' row represent a segment
 #' of imbalanced SNVs. The first column represents the position, in
-#' \code{snp.pos}, of the first
+#' \code{snpPos}, of the first
 #' SNV in the segment. The second column represents the position, in the
-#' \code{snp.pos}, of the last SNV in the segment. The third column represents
+#' \code{snpPos}, of the last SNV in the segment. The third column represents
 #' the lower allelic frequency of the segment and is \code{NA} when the value
 #' cannot be calculated. The value \code{NULL} is
 #' returned when none of the SNVs
@@ -40,7 +40,7 @@
 #'     stringAsFactor=FALSE)
 #'
 #' ## The function returns NULL when there is not imbalanced SNVs
-#' RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=10, cutOff=-3)
+#' RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=10, cutOff=-3)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -48,11 +48,11 @@
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @keywords internal
-computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
+computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 
     listBlockAR <- list()
     j <- 1
-    tmp <- as.integer(snp.pos$imbAR == 1)
+    tmp <- as.integer(snpPos$imbAR == 1)
     z <- cbind(c(tmp[1], tmp[-1] - tmp[seq_len(length(tmp) -1)]),
             c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
 
@@ -60,16 +60,16 @@ computeAlleleFraction <- function(snp.pos, w=10, cutOff=-3) {
     ## There must be at least one segment with imbalanced SNVs to go one
     if(length(which(z[,1] == 1)) > 0) {
         ## Find segmentsof imbalanced SNVs
-        segImb <- data.frame(start=seq_len(nrow(snp.pos))[which(z[,1] > 0)],
-                                end=seq_len(nrow(snp.pos))[which(z[,2] < 0)])
+        segImb <- data.frame(start=seq_len(nrow(snpPos))[which(z[,1] > 0)],
+                                end=seq_len(nrow(snpPos))[which(z[,2] < 0)])
 
         for(i in seq_len(nrow(segImb))) {
             # index of the segment
             listSeg <- (segImb$start[i]):(segImb$end[i])
             # index hetero segment
-            listHetero  <- listSeg[snp.pos[listSeg,"hetero"] == TRUE]
+            listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
             # SNP hetero for the segment
-            snp.hetero <- snp.pos[listHetero,]
+            snp.hetero <- snpPos[listHetero,]
 
             if(nrow(snp.hetero) >= 2 * w) {
                 lapCur <- median(apply(snp.hetero[seq_len(w),
@@ -319,17 +319,17 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     ## Set study type
     studyType <- arg_match(studyType)
 
-    snp.pos <- NULL
+    snpPos <- NULL
 
     ## The type of study affects the allelic fraction estimation
     if(studyType == "DNA") {
-        snp.pos <- computeAllelicFractionDNA(gdsReference=gdsReference,
+        snpPos <- computeAllelicFractionDNA(gdsReference=gdsReference,
             gdsSample=gdsProfile, currentProfile=currentProfile,
             studyID=studyID, chrInfo=chrInfo, minCov=minCov, minProb=minProb,
             eProb=eProb, cutOffLOH=cutOffLOH, cutOffHomoScore=cutOffHomoScore,
             wAR=wAR, verbose=verbose)
     } else if(studyType == "RNA") {
-        snp.pos <- computeAllelicFractionRNA(gdsReference=gdsReference,
+        snpPos <- computeAllelicFractionRNA(gdsReference=gdsReference,
             gdsSample=gdsProfile, gdsRefAnnot=gdsRefAnnot,
             currentProfile=currentProfile, studyID=studyID, blockID=blockID,
             chrInfo=chrInfo, minCov=minCov, minProb=minProb, eProb=eProb,
@@ -340,29 +340,29 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     ## Remove commented code and this text after validation
 
     ## Calculate the cumulative sum for each chromosome
-    cumSumResult <- lapply(unique(snp.pos$snp.chr), function(i) {
-        snpChr <- snp.pos[snp.pos$snp.chr == i, ]
+    cumSumResult <- lapply(unique(snpPos$snp.chr), function(i) {
+        snpChr <- snpPos[snpPos$snp.chr == i, ]
         tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
                     snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
         return(cumsum(tmp))
     })
 
     # Find segment with same lap
-    snp.pos$seg <- rep(0, nrow(snp.pos))
+    snpPos$seg <- rep(0, nrow(snpPos))
     k <- 1
-    for(chr in unique(snp.pos$snp.chr)) {
-        ##snpChr <- snp.pos[snp.pos$snp.chr == chr, ]
+    for(chr in unique(snpPos$snp.chr)) {
+        ##snpChr <- snpPos[snpPos$snp.chr == chr, ]
         ##tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
         ##                snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
-        snp.pos$seg[snp.pos$snp.chr == chr] <- cumSumResult[[chr]] + k
-        k <- max(snp.pos$seg[snp.pos$snp.chr == chr]) + 1
+        snpPos$seg[snpPos$snp.chr == chr] <- cumSumResult[[chr]] + k
+        k <- max(snpPos$seg[snpPos$snp.chr == chr]) + 1
     }
 
     ## Save information into the "lap" node in the Profile GDS file
     ## Save information into the "segment" node in the Profile GDS file
     ## Suppose we keep only the pruned SNVs
-    addUpdateLap(gdsProfile, snp.pos$lap[which(snp.pos$pruned == TRUE)])
-    addUpdateSegment(gdsProfile, snp.pos$seg[which(snp.pos$pruned == TRUE)])
+    addUpdateLap(gdsProfile, snpPos$lap[which(snpPos$pruned == TRUE)])
+    addUpdateSegment(gdsProfile, snpPos$seg[which(snpPos$pruned == TRUE)])
 
     return(0L)
 }

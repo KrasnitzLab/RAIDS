@@ -52,7 +52,7 @@ the SNV.}
 the reference allele.}
 \item{cnt.alt} {a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{snp.pos} {a single \code{integer} representing the SNV position.}
+\item{snpPos} {a single \code{integer} representing the SNV position.}
 \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
 \item{normal.geno} {a single \code{numeric} indicating the genotype of the
 SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}

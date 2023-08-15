@@ -5,10 +5,10 @@
 \alias{computeAlleleFraction}
 \title{TODO}
 \usage{
-computeAlleleFraction(snp.pos, w = 10, cutOff = -3)
+computeAlleleFraction(snpPos, w = 10, cutOff = -3)
 }
 \arguments{
-\item{snp.pos}{a \code{data.frame} containing the genotype information for
+\item{snpPos}{a \code{data.frame} containing the genotype information for
 a SNV dataset. TODO}
 
 \item{w}{a single positive \code{numeric} representing the size of the
@@ -21,9 +21,9 @@ Default: \code{10}.}
 a \code{matrix} of \code{numeric} with 3 columns where each
 row represent a segment
 of imbalanced SNVs. The first column represents the position, in
-\code{snp.pos}, of the first
+\code{snpPos}, of the first
 SNV in the segment. The second column represents the position, in the
-\code{snp.pos}, of the last SNV in the segment. The third column represents
+\code{snpPos}, of the last SNV in the segment. The third column represents
 the lower allelic frequency of the segment and is \code{NA} when the value
 cannot be calculated. The value \code{NULL} is
 returned when none of the SNVs
@@ -50,7 +50,7 @@ snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
     stringAsFactor=FALSE)
 
 ## The function returns NULL when there is not imbalanced SNVs
-RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=10, cutOff=-3)
+RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=10, cutOff=-3)
 
 
 }

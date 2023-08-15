@@ -5,10 +5,10 @@
 \alias{calcAFMLRNA}
 \title{TODO}
 \usage{
-calcAFMLRNA(snp.pos.Hetero)
+calcAFMLRNA(snpPosHetero)
 }
 \arguments{
-\item{snp.pos.Hetero}{For a specific gene (block) a \code{data.frame} with
+\item{snpPosHetero}{For a specific gene (block) a \code{data.frame} with
 lap for the SNV heterozygote dataset with
 coverage > \code{minCov}. The \code{data.frame} must contain those columns:
 'phase', 'cnt.ref', 'cnt.alt'. TODO}

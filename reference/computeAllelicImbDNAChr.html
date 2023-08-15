@@ -71,12 +71,12 @@ if the SNV is in an imbalance region.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeAllelicImbDNAChr</span><span class="op">(</span><span class="va">snp.pos</span>, <span class="va">chr</span>, wAR <span class="op">=</span> <span class="fl">10</span>, cutOffEmptyBox <span class="op">=</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeAllelicImbDNAChr</span><span class="op">(</span><span class="va">snpPos</span>, <span class="va">chr</span>, wAR <span class="op">=</span> <span class="fl">10</span>, cutOffEmptyBox <span class="op">=</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>snp.pos</dt>
+    <dl><dt>snpPos</dt>
 <dd><p>a <code>data.frame</code> containing the SNV information for the
 chromosome specified by the <code>chr</code> argument. The <code>data.frame</code> must
 contain:</p><ul><li><p>cnt.tot a single <code>integer</code> representing the total coverage for
@@ -127,7 +127,7 @@ and likelihood not to be imbalanced. Default: <code>-3</code>.</p></dd>
 imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
 positive for imbalance in at least 1 window). The vector as an entry for
 each SNV present in the
-input <code>snp.pos</code>.</p>
+input <code>snpPos</code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -173,7 +173,7 @@ input <code>snp.pos</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The function returns a data frame containing the information about the</span></span></span>
 <span class="r-in"><span><span class="co">## LOH regions in the specified chromosome</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computeAllelicImbDNAChr</span><span class="op">(</span>snp.pos<span class="op">=</span><span class="va">snpInfo</span>, chr<span class="op">=</span><span class="fl">1</span>, wAR<span class="op">=</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computeAllelicImbDNAChr</span><span class="op">(</span>snpPos<span class="op">=</span><span class="va">snpInfo</span>, chr<span class="op">=</span><span class="fl">1</span>, wAR<span class="op">=</span><span class="fl">10</span>,</span></span>
 <span class="r-in"><span>    cutOffEmptyBox<span class="op">=</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1 -1 -1 -1 -1 -1</span>

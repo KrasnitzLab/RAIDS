@@ -69,12 +69,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeAlleleFraction</span><span class="op">(</span><span class="va">snp.pos</span>, w <span class="op">=</span> <span class="fl">10</span>, cutOff <span class="op">=</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeAlleleFraction</span><span class="op">(</span><span class="va">snpPos</span>, w <span class="op">=</span> <span class="fl">10</span>, cutOff <span class="op">=</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>snp.pos</dt>
+    <dl><dt>snpPos</dt>
 <dd><p>a <code>data.frame</code> containing the genotype information for
 a SNV dataset. TODO</p></dd>
 
@@ -96,9 +96,9 @@ Default: <code>10</code>.</p></dd>
 <p>a <code>matrix</code> of <code>numeric</code> with 3 columns where each
 row represent a segment
 of imbalanced SNVs. The first column represents the position, in
-<code>snp.pos</code>, of the first
+<code>snpPos</code>, of the first
 SNV in the segment. The second column represents the position, in the
-<code>snp.pos</code>, of the last SNV in the segment. The third column represents
+<code>snpPos</code>, of the last SNV in the segment. The third column represents
 the lower allelic frequency of the segment and is <code>NA</code> when the value
 cannot be calculated. The value <code>NULL</code> is
 returned when none of the SNVs
@@ -128,7 +128,7 @@ tested positive for the imbalance.</p>
 <span class="r-in"><span>    stringAsFactor<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The function returns NULL when there is not imbalanced SNVs</span></span></span>
-<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computeAlleleFraction</span><span class="op">(</span>snp.pos<span class="op">=</span><span class="va">snpInfo</span>, w<span class="op">=</span><span class="fl">10</span>, cutOff<span class="op">=</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computeAlleleFraction</span><span class="op">(</span>snpPos<span class="op">=</span><span class="va">snpInfo</span>, w<span class="op">=</span><span class="fl">10</span>, cutOff<span class="op">=</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

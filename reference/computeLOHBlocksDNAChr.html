@@ -71,7 +71,7 @@ chromosome using the homozygote SNVs present on the chromosome.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeLOHBlocksDNAChr</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">chrInfo</span>, <span class="va">snp.pos</span>, <span class="va">chr</span>, genoN <span class="op">=</span> <span class="fl">1e-04</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeLOHBlocksDNAChr</span><span class="op">(</span><span class="va">gdsReference</span>, <span class="va">chrInfo</span>, <span class="va">snpPos</span>, <span class="va">chr</span>, genoN <span class="op">=</span> <span class="fl">1e-04</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,7 +88,7 @@ the chromosomes. As an example, the information ca be obtained from
 package 'BSgenome.Hsapiens.UCSC.hg38'.</p></dd>
 
 
-<dt>snp.pos</dt>
+<dt>snpPos</dt>
 <dd><p>a <code>data.frame</code> containing the SNV information for the
 chromosome specified by the <code>chr</code> argument. The <code>data.frame</code> must
 contain:</p><ul><li><p>cnt.tot a single <code>integer</code> representing the total coverage for
@@ -191,7 +191,7 @@ the box</p></li>
 <span class="r-in"><span><span class="co">## The function returns a data frame containing the information about the</span></span></span>
 <span class="r-in"><span><span class="co">## LOH regions in the specified chromosome</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computeLOHBlocksDNAChr</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">gds1KG</span>,</span></span>
-<span class="r-in"><span>    chrInfo<span class="op">=</span><span class="va">chrInfo</span>, snp.pos<span class="op">=</span><span class="va">snpInfo</span>, chr<span class="op">=</span><span class="fl">1L</span>, genoN<span class="op">=</span><span class="fl">0.0001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    chrInfo<span class="op">=</span><span class="va">chrInfo</span>, snpPos<span class="op">=</span><span class="va">snpInfo</span>, chr<span class="op">=</span><span class="fl">1L</span>, genoN<span class="op">=</span><span class="fl">0.0001</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   chr   start       end       logLHR  LH1 LM1 homoScore nbSNV nbPruned nbNorm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1       1   3869467 1.734723e-17 -100   0      -100     4        3      0</span>

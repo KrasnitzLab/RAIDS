@@ -232,6 +232,15 @@
     <loc>/reference/runLDPruning.html</loc>
   </url>
   <url>
+    <loc>/reference/runProfileAncestry.html</loc>
+  </url>
+  <url>
+    <loc>/reference/runRNAAncestry.html</loc>
+  </url>
+  <url>
+    <loc>/reference/runWrapperAncestry.html</loc>
+  </url>
+  <url>
     <loc>/reference/selParaPCAUpQuartile.html</loc>
   </url>
   <url>

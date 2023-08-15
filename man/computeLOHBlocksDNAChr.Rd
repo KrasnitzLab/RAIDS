@@ -5,7 +5,7 @@
 \alias{computeLOHBlocksDNAChr}
 \title{Identify regions of LOH on one chromosome using homozygote SNVs}
 \usage{
-computeLOHBlocksDNAChr(gdsReference, chrInfo, snp.pos, chr, genoN = 1e-04)
+computeLOHBlocksDNAChr(gdsReference, chrInfo, snpPos, chr, genoN = 1e-04)
 }
 \arguments{
 \item{gdsReference}{an object of class
@@ -16,7 +16,7 @@ opened Reference GDS file.}
 the chromosomes. As an example, the information ca be obtained from
 package 'BSgenome.Hsapiens.UCSC.hg38'.}
 
-\item{snp.pos}{a \code{data.frame} containing the SNV information for the
+\item{snpPos}{a \code{data.frame} containing the SNV information for the
 chromosome specified by the \code{chr} argument. The \code{data.frame} must
 contain:
 \itemize{
@@ -113,7 +113,7 @@ snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
 ## The function returns a data frame containing the information about the
 ## LOH regions in the specified chromosome
 result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
-    chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
+    chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
 head(result)
 
 ## Close Reference GDS file (important)

@@ -5,10 +5,10 @@
 \alias{computeAllelicImbDNAChr}
 \title{Verify if SNVs are in an imbalance region}
 \usage{
-computeAllelicImbDNAChr(snp.pos, chr, wAR = 10, cutOffEmptyBox = -3)
+computeAllelicImbDNAChr(snpPos, chr, wAR = 10, cutOffEmptyBox = -3)
 }
 \arguments{
-\item{snp.pos}{a \code{data.frame} containing the SNV information for the
+\item{snpPos}{a \code{data.frame} containing the SNV information for the
 chromosome specified by the \code{chr} argument. The \code{data.frame} must
 contain:
 \itemize{
@@ -50,7 +50,7 @@ a \code{vector} of \code{integer} indicating if the SNV is in an
 imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
 positive for imbalance in at least 1 window). The vector as an entry for
 each SNV present in the
-input \code{snp.pos}.
+input \code{snpPos}.
 }
 \description{
 The function verifies, for each SNV present in the data frame,
@@ -94,7 +94,7 @@ snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
 
 ## The function returns a data frame containing the information about the
 ## LOH regions in the specified chromosome
-result <- RAIDS:::computeAllelicImbDNAChr(snp.pos=snpInfo, chr=1, wAR=10,
+result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
     cutOffEmptyBox=-3)
 head(result)
 

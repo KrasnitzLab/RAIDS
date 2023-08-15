@@ -30,7 +30,7 @@ test_that("computeAlleleFraction() must return expected results when not imbalan
         lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
         stringAsFactor=FALSE)
 
-    result <- RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=10, cutOff=-3)
+    result <- RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=10, cutOff=-3)
     expect_equal(result, NULL)
 })
 
@@ -55,7 +55,7 @@ test_that("computeAlleleFraction() must return expected results when imbalanced 
         lap=rep(-1, 8), LOH=rep(0, 8), imbAR=c(1, 1, 1, 1, 1, 0, 1, 1),
         stringAsFactor=FALSE)
 
-    result <- RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=10, cutOff=-3)
+    result <- RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=10, cutOff=-3)
     expect_equal(result, matrix(c(1, 5, 0, 7, 8, NA), byrow=TRUE,
                                         nrow=2))
 })
@@ -82,7 +82,7 @@ test_that("computeAlleleFraction() must return expected results with small w par
                           lap=rep(-1, 12), LOH=rep(0, 12), imbAR=rep(1, 12),
                           stringAsFactor=FALSE)
 
-    result <- RAIDS:::computeAlleleFraction(snp.pos=snpInfo, w=4, cutOff=-3)
+    result <- RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=4, cutOff=-3)
     expect_equal(result, matrix(c(1, 12, 0.148714810281518), byrow=TRUE,
                                 nrow=1))
 })

@@ -6,10 +6,10 @@
 \title{TOREVIEW Compile the information about the allelic fraction
 for each bloc.}
 \usage{
-tableBlockAF(snp.pos)
+tableBlockAF(snpPos)
 }
 \arguments{
-\item{snp.pos}{For a specific chromosome a \code{data.frame} with lap for
+\item{snpPos}{For a specific chromosome a \code{data.frame} with lap for
 the SNV dataset with
 coverage > \code{minCov}.}
 }

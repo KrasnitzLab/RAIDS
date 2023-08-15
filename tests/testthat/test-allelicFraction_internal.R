@@ -73,7 +73,7 @@ test_that("computeLOHBlocksDNAChr() must return expected results", {
                 stringAsFactor=FALSE)
 
     result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
-                    chrInfo=chrInfo, snp.pos=snpInfo, chr=1L, genoN=0.0001)
+                    chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
 
     expected <- data.frame(chr=rep(1, 12),
                     start=c(1, snpInfo$snp.pos[seq_len(8)]+1, 6313146,

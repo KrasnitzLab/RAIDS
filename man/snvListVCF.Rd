@@ -13,7 +13,8 @@ snvListVCF(gdsReference, fileOut, offset = 0L, freqCutoff = NULL)
 (a GDS file), the 1KG GDS file.}
 
 \item{fileOut}{a \code{character} string representing the path and file
-name of the VCF file that will be created wit the retained SNP information.}
+name of the VCF file that will be created wit the retained SNP information.
+The file should have the ".vcf" extension.}
 
 \item{offset}{a single \code{integer} that is added to the SNP position to
 switch from 0-based to 1-based coordinate when needed (or reverse).
@@ -36,21 +37,26 @@ a VCF file.
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-## Demo 1KG GDS file
+## Demo 1KG Reference GDS file
 fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
 
 ## Output VCF file that will be created
-vcfFile <- file.path(dataDir, "Demo_TMP_01.vcf")
+vcfFile <- file.path(getwd(), "Demo_TMP_01.vcf")
 
-## Create a VCF file with the SNV dataset present in the GDS file
-## No cutoff on frequency, so all SNVs are saved
-snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L, freqCutoff=NULL)
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !dir.exists(vcfFile)) {
 
-## Close GDS file (IMPORTANT)
-closefn.gds(fileGDS)
+    ## Create a VCF file with the SNV dataset present in the GDS file
+    ## No cutoff on frequency, so all SNVs are saved
+    snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L,
+                    freqCutoff=NULL)
 
-## Remove temporary VCF file
-unlink(vcfFile, force=TRUE)
+    ## Close GDS file (IMPORTANT)
+    closefn.gds(fileGDS)
+
+    ## Remove temporary VCF file
+    unlink(vcfFile, force=TRUE)
+}
 
 }
 \author{

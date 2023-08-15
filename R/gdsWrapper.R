@@ -122,7 +122,8 @@ generateGDSSNPinfo <- function(gdsReference, fileFreq, verbose) {
 #' profiles.
 #'
 #' @param gds an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
+#' GDS file.
 #'
 #' @param pathGeno a \code{character} string representing the path where
 #' the reference genotyping files for each sample are located. The name of the
@@ -241,28 +242,90 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
     return(0L)
 }
 
-#' @title This function append the field genotype in the gds file
+#' @title Append information related to profile genotypes into a Population
+#' Reference GDS file (associated node already present in the GDS)
 #'
-#' @description TODO
+#' @description This function appends the genotype fields with the associated
+#' information into the Population Reference GDS file for the selected
+#' profiles. The associated node must already present in the GDS file.
 #'
-#' @param gds a \code{gds} object.
+#' @param gds an object of class
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
+#' GDS file.
 #'
-#' @param pathGeno TODO a PATH to a directory with the a file for each
-#' samples with the genotype.
+#' @param pathGeno a \code{character} string representing the path where
+#' the reference genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
 #'
-#' @param fileSNPsRDS TODO list of SNP to keep in the file genotype
+#' @param fileSNPsRDS a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
 #'
-#' @param listSamples  a \code{array} with the sample to keep
+#' @param listSamples a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
 #'
 #' @param verbose a \code{logical} indicating if the function must print
-#' messages when running. Default: \code{FALSE}.
+#' messages when running.
 #'
 #' @return The integer \code{0} when successful.
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## The RDS file containing the pedigree information
+#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#'
+#' ## The RDS file containing the indexes of the retained SNPs
+#' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Temporary Reference GDS file
+#' tempRefGDS <- file.path(getwd(), "Ref_TEMP02.gds")
+#'
+#' ## Only run example if the directory is writable
+#' if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
+#'
+#'     ## Create temporary Reference GDS file
+#'     newGDS <- createfn.gds(tempRefGDS)
+#'     put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
+#'
+#'     ## Read the pedigree file
+#'     ped1KG <- readRDS(pedigreeFile)
+#'
+#'     ## Add information about samples to the Reference GDS file
+#'     listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=newGDS,
+#'                 dfPedReference=ped1KG, listSamples=NULL)
+#'
+#'     ## Add SNV information to the Reference GDS
+#'     RAIDS:::generateGDSSNPinfo(gdsReference=newGDS, fileFreq=filterSNVFile,
+#'                 verbose=FALSE)
+#'
+#'     ## Add genotype information to the Reference GDS for the 3 first samples
+#'     RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#'         fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS[1:3],
+#'         verbose=FALSE)
+#'
+#'     ## Append genotype information to the Reference GDS for the other samples
+#'     RAIDS:::appendGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#'         fileSNPsRDS=snpIndexFile,
+#'         listSample=listSampleGDS[4:length(listSampleGDS)],
+#'         verbose=FALSE)
+#'
+#'     ## Close file
+#'     closefn.gds(newGDS)
+#'
+#'     ## Remove temporary files
+#'     unlink(tempRefGDS, force=TRUE)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -270,7 +333,7 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #' @encoding UTF-8
 #' @keywords internal
 appendGDSgenotype <- function(gds, listSample, pathGeno, fileSNPsRDS,
-                                verbose=FALSE) {
+                                verbose) {
 
     # File with the description of the SNP keep
     listMatRef <- dir(pathGeno, pattern = ".+.csv.bz2")
@@ -298,7 +361,7 @@ appendGDSgenotype <- function(gds, listSample, pathGeno, fileSNPsRDS,
             matSample[matSample[,1] == "1|1",1] <- 2
 
             g <- as.matrix(matSample)[,1]
-            append.gdsn(geno.var,g, check=TRUE)
+            append.gdsn(geno.var, g, check=TRUE)
 
             rm(matSample)
             if(verbose) { message(listMatRef[pos], " ", i) }

@@ -161,16 +161,16 @@ test_that("addGDSRef() must return expected result", {
 
 
 #############################################################################
-### Tests addGDS1KGLDBlock() results
+### Tests addBlockInGDSAnnot() results
 #############################################################################
 
-context("addGDS1KGLDBlock() results")
+context("addBlockInGDSAnnot() results")
 
 
-test_that("addGDS1KGLDBlock() must return expected result", {
+test_that("addBlockInGDSAnnot() must return expected result", {
 
     ## Create and open a temporary GDS Annotation file
-    GDS_path  <- test_path("fixtures", "GDS_addGDS1KGLDBlock_Temp_01.gds")
+    GDS_path  <- test_path("fixtures", "GDS_addBlockInGDSAnnot_Temp_01.gds")
     GDS_file_tmp  <- createfn.gds(filename=GDS_path)
     defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
 
@@ -180,7 +180,7 @@ test_that("addGDS1KGLDBlock() must return expected result", {
     entries <- c(1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5)
 
     ## Add block to the GDS file
-    results1 <- RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=entries,
+    results1 <- RAIDS:::addBlockInGDSAnnot(gds=GDS_file_tmp, listBlock=entries,
             blockName=blockType, blockDesc=blockDescription)
 
 
@@ -190,7 +190,7 @@ test_that("addGDS1KGLDBlock() must return expected result", {
     entries2 <- c(1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5)
 
     ## Add block to the GDS file
-    results2 <- RAIDS:::addGDS1KGLDBlock(gds=GDS_file_tmp, listBlock=entries2,
+    results2 <- RAIDS:::addBlockInGDSAnnot(gds=GDS_file_tmp, listBlock=entries2,
             blockName=blockType2, blockDesc=blockDescription2)
 
 

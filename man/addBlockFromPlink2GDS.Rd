@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{addBlockFromPlink2GDS}
 \alias{addBlockFromPlink2GDS}
-\title{TODO contain the information from 1KG}
+\title{Save the information about a specific block in a
+Population Reference GDS Annotation file}
 \usage{
 addBlockFromPlink2GDS(
   gds,
@@ -25,9 +26,11 @@ addBlockFromPlink2GDS(
 
 \item{superPop}{TODO}
 
-\item{blockName}{TODO}
+\item{blockName}{a \code{character} string representing the unique
+block name.}
 
-\item{blockDesc}{TODO}
+\item{blockDesc}{a \code{character} string representing the description of
+the current block.}
 
 \item{verbose}{a \code{logical} indicating if message information should be
 printed. Default: \code{FALSE}.}
@@ -36,7 +39,12 @@ printed. Default: \code{FALSE}.}
 \code{OL} when the function is successful.
 }
 \description{
-TODO
+This function extracts the information for all
+SNVs related to a specific block from the Population Reference GDS file. It
+uses this information and the information from the block files associated
+to a specific super-population to generate the final block information.
+The block information is then saved in a Population ReferenceG DS Annotation
+file.
 }
 \details{
 More information about GDS file format can be found at the Bioconductor

@@ -807,9 +807,15 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
     return(listPCA)
 }
 
-#' @title TODO contain the information from 1KG
+#' @title Save the information about a specific block in a
+#' Population Reference GDS Annotation file
 #'
-#' @description TODO
+#' @description This function extracts the information for all
+#' SNVs related to a specific block from the Population Reference GDS file. It
+#' uses this information and the information from the block files associated
+#' to a specific super-population to generate the final block information.
+#' The block information is then saved in a Population ReferenceG DS Annotation
+#' file.
 #'
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), TODO
@@ -820,9 +826,11 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #'
 #' @param superPop TODO
 #'
-#' @param blockName TODO
+#' @param blockName a \code{character} string representing the unique
+#' block name.
 #'
-#' @param blockDesc TODO
+#' @param blockDesc a \code{character} string representing the description of
+#' the current block.
 #'
 #' @param verbose a \code{logical} indicating if message information should be
 #' printed. Default: \code{FALSE}.
@@ -855,10 +863,10 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     validateLogical(verbose, "verbose")
 
     ## Extract the SNP chromosomes and positions
-    snp.chromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
+    snpChromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
     snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
 
-    listChr <- unique(snp.chromosome)
+    listChr <- unique(snpChromosome)
 
     listChr <- listChr[order(listChr)]
     listChr <- seq_len(22)
@@ -866,7 +874,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     for(chr in listChr) {
         if(verbose) { message("chr", chr, " ", Sys.time()) }
 
-        snp.keep <- snp.position[snp.chromosome == chr]
+        snp.keep <- snp.position[snpChromosome == chr]
 
         listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
         if(chr > 1) {
@@ -882,8 +890,9 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     }
     listBlock <- do.call(c, listBlock)
 
-    ## Save the information into the GDS file
-    addGDS1KGLDBlock(gdsOut, listBlock, blockName, blockDesc)
+    ## Save the information into the GDS Annotation file
+    addBlockInGDSAnnot(gds=gdsOut, listBlock=listBlock, blockName=blockName,
+                            blockDesc=blockDesc)
 
     ## Success
     return(0L)
@@ -1021,10 +1030,10 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
     blockName <- paste0("Gene.", suffixe.blockName)
     blockDesc <- paste0("List of blocks including overlapping genes ",
                                 suffixe.blockName)
-    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
+    addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
     blockName <- paste0("GeneS.", suffixe.blockName)
     blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
-    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
+    addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
 
     ## Close GDS Reference annotation file
     closefn.gds(gdsRefAnnot)

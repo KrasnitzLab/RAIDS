@@ -5,7 +5,7 @@
 \alias{gds2tped}
 \title{create a file tped file for plink from the gds file}
 \usage{
-gds2tped(gds, listSample, listSNP, pedOUT)
+gds2tped(gds, listSample, listSNP, pedOut)
 }
 \arguments{
 \item{gds}{a \code{gds} object.}
@@ -14,7 +14,7 @@ gds2tped(gds, listSample, listSNP, pedOUT)
 
 \item{listSNP}{a \code{array} with the snp.id to keep}
 
-\item{pedOUT}{TODO a PATH and file name to the output file}
+\item{pedOut}{TODO a PATH and file name to the output file}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

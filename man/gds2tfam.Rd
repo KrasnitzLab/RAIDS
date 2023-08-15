@@ -5,7 +5,7 @@
 \alias{gds2tfam}
 \title{create a file tfam file for plink from the gdsReference file}
 \usage{
-gds2tfam(gdsReference, listSample, pedOUT)
+gds2tfam(gdsReference, listSample, pedOut)
 }
 \arguments{
 \item{gdsReference}{an object of class
@@ -13,7 +13,7 @@ gds2tfam(gdsReference, listSample, pedOUT)
 
 \item{listSample}{a \code{array} with the sample to keep TODO}
 
-\item{pedOUT}{TODO a PATH and file name to the output file}
+\item{pedOut}{TODO a PATH and file name to the output file}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

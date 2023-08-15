@@ -5,7 +5,7 @@
 \alias{gds2tfamSample}
 \title{create a file tfam file for plink from the gdsProfile file}
 \usage{
-gds2tfamSample(gdsProfile, listSample, sampleANNO, pedOUT)
+gds2tfamSample(gdsProfile, listSample, sampleANNO, pedOut)
 }
 \arguments{
 \item{gdsProfile}{an object of class \link[gdsfmt]{gds.class} (a GDS
@@ -16,7 +16,7 @@ file), the open Profile GDS file.}
 \item{sampleANNO}{a \code{data.frame} with at least column sex and the name
 must be sample.id}
 
-\item{pedOUT}{TODO a PATH and file name to the output file}
+\item{pedOut}{TODO a PATH and file name to the output file}
 }
 \value{
 TODO a \code{vector} of \code{numeric}

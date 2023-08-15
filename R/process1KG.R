@@ -883,7 +883,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     listBlock <- do.call(c, listBlock)
 
     ## Save the information into the GDS file
-    addGDS1KGLDBlock(gdsOut, listBlock, blockName, blockDesc)
+    addBlockInGDSAnnot(gdsOut, listBlock, blockName, blockDesc)
 
     ## Success
     return(0L)
@@ -1021,10 +1021,10 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
     blockName <- paste0("Gene.", suffixe.blockName)
     blockDesc <- paste0("List of blocks including overlapping genes ",
                                 suffixe.blockName)
-    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
+    addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
     blockName <- paste0("GeneS.", suffixe.blockName)
     blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
-    addGDS1KGLDBlock(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
+    addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
 
     ## Close GDS Reference annotation file
     closefn.gds(gdsRefAnnot)

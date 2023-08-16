@@ -4,7 +4,7 @@
 \name{runRNAAncestry}
 \alias{runRNAAncestry}
 \title{Run most steps leading to the ancestry inference call on a specific
-profile}
+RNA profile}
 \usage{
 runRNAAncestry(
   pedStudy,
@@ -47,10 +47,11 @@ associated SNP-pileup file called "Name.ID.txt.gz".}
 the directory where the output files are created.}
 
 \item{fileReferenceGDS}{a \code{character} string representing the file
-name of the Reference GDS file. The file must exist.}
+name of the Population Reference GDS file. The file must exist.}
 
 \item{fileReferenceAnnotGDS}{a \code{character} string representing the
-file name of the Reference GDS Annotation file. The file must exist.}
+file name of the Population Reference GDS Annotation file. The file
+must exist.}
 
 \item{chrInfo}{a \code{vector} of positive \code{integer} values
 representing the length of the chromosomes. See 'details' section.}
@@ -85,9 +86,9 @@ more information about the generated output files.
 }
 \description{
 This function runs most steps leading to the ancestry inference
-call on a specific profile. First, the function creates the Profile GDS file
-for the specific profile using the information from a RDS Sample
-description file and the 1KG reference GDS file.
+call on a specific RNA profile. First, the function creates the
+Profile GDS file for the specific profile using the information from a
+RDS Sample description file and the Population Reference GDS file.
 }
 \details{
 The runExomeAncestry() function generates 3 types of files

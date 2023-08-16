@@ -182,6 +182,46 @@ test_that("generateGDSgenotype() must return expected result", {
 })
 
 
+test_that("generateGDSgenotype() must return expected error when sample not present", {
+
+    ## Create and open a temporary GDS Annotation file
+    GDS_path  <- test_path("fixtures", "GDS_generateGDSgenotype_Temp_02.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(closefn.gds(GDS_file_tmp), envir = parent.frame(),
+          priority = "first")
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame(),
+          priority = "last")
+
+    put.attr.gdsn(GDS_file_tmp$root, "FileFormat", "SNP_ARRAY")
+
+    pedigree <- data.frame(sample.id=c("HG00100", "HG00101", "HG00102"),
+                    Name.ID=c("HG00100", "HG00101", "HG00102"),
+                    sex=c(1,2,2), pop.group=c("ACB", "ACB", "ACB"),
+                    superPop=c("AFR", "AFR", "AFR"), batch=c(0, 0, 0),
+                    stringsAsFactors=FALSE)
+
+    rownames(pedigree) <- pedigree$sample.id
+
+    filterSNVFile <- test_path("fixtures", "mapSNVSelected_Demo.rds")
+
+    ## Add information about samples
+    listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,
+                                dfPedReference=pedigree, listSamples=NULL)
+
+    ## Add SNV information to the Reference GDS
+    RAIDS:::generateGDSSNPinfo(gdsReference=GDS_file_tmp,
+                    fileFreq=filterSNVFile, verbose=FALSE)
+
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
+
+    error_message <- "Missing samples genotype in BYEBYE"
+
+    expect_error(RAIDS:::generateGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"), fileSNPsRDS=snpIndexFile,
+        listSamples="BYEBYE", verbose=FALSE), error_message, fixed=TRUE)
+})
+
+
 #############################################################################
 ### Tests appendGDSgenotype() results
 #############################################################################
@@ -239,4 +279,54 @@ test_that("appendGDSgenotype() must return expected result", {
     expect_equal(result2, matrix(data=c(0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
                                             1), nrow=7, byrow=FALSE))
 
+})
+
+test_that("appendGDSgenotype() must return expected error when sample not present", {
+
+    ## Create and open a temporary GDS Annotation file
+    GDS_path  <- test_path("fixtures", "GDS_appendGDSgenotype_Temp_02.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(closefn.gds(GDS_file_tmp), envir = parent.frame(),
+            priority = "first")
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame(),
+            priority = "last")
+
+    put.attr.gdsn(GDS_file_tmp$root, "FileFormat", "SNP_ARRAY")
+
+    pedigree <- data.frame(sample.id=c("HG00100", "HG00101", "HG00102"),
+                        Name.ID=c("HG00100", "HG00101", "HG00102"),
+                        sex=c(1,2,2), pop.group=c("ACB", "ACB", "ACB"),
+                        superPop=c("AFR", "AFR", "AFR"), batch=c(0, 0, 0),
+                        stringsAsFactors=FALSE)
+
+    rownames(pedigree) <- pedigree$sample.id
+
+    filterSNVFile <- test_path("fixtures", "mapSNVSelected_Demo.rds")
+
+    ## Add information about samples
+    listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,
+                                dfPedReference=pedigree, listSamples=NULL)
+
+    ## Add SNV information to the Reference GDS
+    RAIDS:::generateGDSSNPinfo(gdsReference=GDS_file_tmp,
+                               fileFreq=filterSNVFile, verbose=FALSE)
+
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
+
+    ## Add genotype information to the Reference GDS
+    result1 <- RAIDS:::generateGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"),
+        fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS[1], verbose=FALSE)
+
+    ## Append genotype information to the Reference GDS
+    result1 <- RAIDS:::appendGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"),
+        fileSNPsRDS=snpIndexFile, listSample=listSampleGDS[2],
+        verbose=FALSE)
+
+    error_message <- "Missing reference samples HELLO_CANADA"
+
+    expect_error(RAIDS:::appendGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"),  fileSNPsRDS=snpIndexFile,
+        listSample="HELLO_CANADA", verbose=FALSE), error_message, fixed=TRUE)
 })

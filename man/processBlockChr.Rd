@@ -5,12 +5,12 @@
 \alias{processBlockChr}
 \title{TODO}
 \usage{
-processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
+processBlockChr(snpKeep, pathBlock, superPop, chr)
 }
 \arguments{
-\item{snp.keep}{TODO}
+\item{snpKeep}{TODO}
 
-\item{PATHBLOCK}{TODO}
+\item{pathBlock}{TODO}
 
 \item{superPop}{TODO}
 

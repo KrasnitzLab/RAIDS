@@ -2524,12 +2524,12 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 }
 
 #' @title Run most steps leading to the ancestry inference call on a specific
-#' profile
+#' RNA profile
 #'
 #' @description This function runs most steps leading to the ancestry inference
-#' call on a specific profile. First, the function creates the Profile GDS file
-#' for the specific profile using the information from a RDS Sample
-#' description file and the 1KG reference GDS file.
+#' call on a specific RNA profile. First, the function creates the
+#' Profile GDS file for the specific profile using the information from a
+#' RDS Sample description file and the Population Reference GDS file.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
@@ -2557,10 +2557,11 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' the directory where the output files are created.
 #'
 #' @param fileReferenceGDS  a \code{character} string representing the file
-#' name of the Reference GDS file. The file must exist.
+#' name of the Population Reference GDS file. The file must exist.
 #'
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
-#' file name of the Reference GDS Annotation file. The file must exist.
+#' file name of the Population Reference GDS Annotation file. The file
+#' must exist.
 #'
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.
@@ -2709,23 +2710,22 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @encoding UTF-8
 #' @export
 runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
-                             pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                             chrInfo, syntheticRefDF,
-                             genoSource=c("snp-pileup", "generic"), verbose=FALSE) {
+            pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
+            chrInfo, syntheticRefDF,
+            genoSource=c("snp-pileup", "generic"), verbose=FALSE) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
-                             pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
-                             fileReferenceGDS=fileReferenceGDS,
-                             fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
-                             syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
+        pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
+        fileReferenceGDS=fileReferenceGDS,
+        fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
+        syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
 
     genoSource <- arg_match(genoSource)
 
     r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-                            pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                            chrInfo, syntheticRefDF,
-                            genoSource, studyType="RNA", verbose)
+        pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
+        chrInfo, syntheticRefDF, genoSource, studyType="RNA", verbose)
 
     ## Successful
     return(r)

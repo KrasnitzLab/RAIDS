@@ -93,7 +93,7 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
     row.names(pedAll) <- pedAll$sample.id
 
     ## Change column format for Sex information
-    ## TODO: could be done when the data.frame is created
+    ## NOTE: could be done when the data.frame is created
     pedAll$sex <- as.character(pedAll$sex)
 
     ## Only retained samples with existing genotyping file

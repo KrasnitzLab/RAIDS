@@ -24,48 +24,6 @@ local_GDS_file <- function(path) {
 
 
 #############################################################################
-### Tests appendGDSgenotypeMat() results
-#############################################################################
-
-context("appendGDSgenotypeMat() results")
-
-
-test_that("appendGDSgenotypeMat() must copy the expected entry in \"genotype\" node of the GDS file", {
-
-    ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "GDS_TEMP_06.gds")
-
-    ## Create and open a temporary GDS file
-    GDS_file_tmp  <- local_GDS_file(fileGDS)
-
-    ## Create a "genotype" node with initial matrix
-    geno_initial <- matrix(rep(0L, 24), nrow=6)
-
-    add.gdsn(node=GDS_file_tmp, name="genotype", val=geno_initial)
-    sync.gds(GDS_file_tmp)
-
-    ## new genotype to be added
-    geno_new <- matrix(rep(1L, 12), nrow=6)
-
-    ## Add genotype to the GDS file
-    results0 <- RAIDS:::appendGDSgenotypeMat(gds=GDS_file_tmp,  matG=geno_new)
-
-    ## Read genotype names from GDS file
-    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="genotype"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expected1 <- cbind(geno_initial, geno_new)
-
-    expect_equal(results1, expected1)
-    expect_equal(results0, 0L)
-})
-
-
-#############################################################################
 ### Tests generateGDSRefSample() results
 #############################################################################
 
@@ -115,49 +73,6 @@ test_that("generateGDSRefSample() must copy the expected entry in \"sample.annot
     expect_equal(results3, expected1)
 })
 
-
-#############################################################################
-### Tests addGDSRef() results
-#############################################################################
-
-context("addGDSRef() results")
-
-
-test_that("addGDSRef() must return expected result", {
-
-    ## Create and open a temporary GDS file
-    GDS_path  <- test_path("fixtures", "GDS_addGDSRef_Temp_01.gds")
-    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
-    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
-
-    ## Create "sample.id" node (the node must be present)
-    sampleIDs <- c("HG00104", "HG00105", "HG00106", "HG00109", "HG00110")
-    add.gdsn(node=GDS_file_tmp, name="sample.id", val=sampleIDs)
-    sync.gds(GDS_file_tmp)
-
-    listD <- list(rels=c("HG00106", "HG00110"), unrels=c("HG00104",
-                            "HG00105", "HG00109"))
-
-    RDS_file_tmp <- test_path("fixtures", "RDS_addGDSRef_Temp_01.RDS")
-
-    saveRDS(listD, RDS_file_tmp)
-    defer(unlink(RDS_file_tmp), envir=parent.frame())
-
-    ## Add samples to the GDS file
-    results3 <- RAIDS:::addGDSRef(gdsReference=GDS_file_tmp,  filePart=RDS_file_tmp)
-
-    ## Read sample names from GDS file
-    results1 <- read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.ref"))
-
-    ## Close GDS file
-    ## The file will automatically be deleted
-    closefn.gds(gdsfile=GDS_file_tmp)
-
-    expected1 <- c(1, 1, 0, 1, 0)
-
-    expect_equal(results3, 0L)
-    expect_equal(results1, expected1)
-})
 
 
 #############################################################################
@@ -212,4 +127,116 @@ test_that("addBlockInGDSAnnot() must return expected result", {
 
     expect_equal(results4, matrix(data=c(entries, entries2), ncol=2,
                                     byrow=FALSE))
+})
+
+#############################################################################
+### Tests generateGDSgenotype() results
+#############################################################################
+
+context("generateGDSgenotype() results")
+
+test_that("generateGDSgenotype() must return expected result", {
+
+    ## Create and open a temporary GDS Annotation file
+    GDS_path  <- test_path("fixtures", "GDS_generateGDSgenotype_Temp_01.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
+
+    put.attr.gdsn(GDS_file_tmp$root, "FileFormat", "SNP_ARRAY")
+
+    pedigree <- data.frame(sample.id=c("HG00100", "HG00101", "HG00102"),
+                            Name.ID=c("HG00100", "HG00101", "HG00102"),
+                            sex=c(1,2,2), pop.group=c("ACB", "ACB", "ACB"),
+                            superPop=c("AFR", "AFR", "AFR"), batch=c(0, 0, 0),
+                            stringsAsFactors=FALSE)
+
+    rownames(pedigree) <- pedigree$sample.id
+
+    filterSNVFile <- test_path("fixtures", "mapSNVSelected_Demo.rds")
+
+    ## Add information about samples
+    listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,
+                dfPedReference=pedigree, listSamples=NULL)
+
+    ## Add SNV information to the Reference GDS
+    RAIDS:::generateGDSSNPinfo(gdsReference=GDS_file_tmp,
+                    fileFreq=filterSNVFile, verbose=FALSE)
+
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
+
+    ## Add genotype information to the Reference GDS
+    result1 <- RAIDS:::generateGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"),
+        fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS, verbose=FALSE)
+
+    result2 <- read.gdsn(index.gdsn(GDS_file_tmp, "genotype"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(result1, 0L)
+    expect_equal(result2, matrix(data=c(0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+                        1, 0, 0, 2, 2, 0, 2, 1), nrow=7, byrow=FALSE))
+
+})
+
+
+#############################################################################
+### Tests appendGDSgenotype() results
+#############################################################################
+
+context("appendGDSgenotype() results")
+
+test_that("appendGDSgenotype() must return expected result", {
+
+    ## Create and open a temporary GDS Annotation file
+    GDS_path  <- test_path("fixtures", "GDS_appendGDSgenotype_Temp_01.gds")
+    GDS_file_tmp  <- createfn.gds(filename=GDS_path)
+    defer(unlink(x=GDS_path, force=TRUE), envir=parent.frame())
+
+    put.attr.gdsn(GDS_file_tmp$root, "FileFormat", "SNP_ARRAY")
+
+    pedigree <- data.frame(sample.id=c("HG00100", "HG00101", "HG00102"),
+                           Name.ID=c("HG00100", "HG00101", "HG00102"),
+                           sex=c(1,2,2), pop.group=c("ACB", "ACB", "ACB"),
+                           superPop=c("AFR", "AFR", "AFR"), batch=c(0, 0, 0),
+                           stringsAsFactors=FALSE)
+
+    rownames(pedigree) <- pedigree$sample.id
+
+    filterSNVFile <- test_path("fixtures", "mapSNVSelected_Demo.rds")
+
+    ## Add information about samples
+    listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=GDS_file_tmp,
+                dfPedReference=pedigree, listSamples=NULL)
+
+    ## Add SNV information to the Reference GDS
+    RAIDS:::generateGDSSNPinfo(gdsReference=GDS_file_tmp,
+                               fileFreq=filterSNVFile, verbose=FALSE)
+
+    snpIndexFile <- test_path("fixtures", "listSNPIndexes_Demo.rds")
+
+    ## Add genotype information to the Reference GDS
+    result1 <- RAIDS:::generateGDSgenotype(gds=GDS_file_tmp,
+        pathGeno=test_path("fixtures"),
+        fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS[1], verbose=FALSE)
+
+
+    ## Append genotype information to the Reference GDS
+    result1 <- RAIDS:::appendGDSgenotype(gds=GDS_file_tmp,
+                    pathGeno=test_path("fixtures"),
+                    fileSNPsRDS=snpIndexFile, listSample=listSampleGDS[2],
+                    verbose=FALSE)
+
+    result2 <- read.gdsn(index.gdsn(GDS_file_tmp, "genotype"))
+
+    ## Close GDS file
+    ## The file will automatically be deleted
+    closefn.gds(gdsfile=GDS_file_tmp)
+
+    expect_equal(result1, 0L)
+    expect_equal(result2, matrix(data=c(0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+                                            1), nrow=7, byrow=FALSE))
+
 })

@@ -4,7 +4,7 @@
 \name{runExomeAncestry}
 \alias{runExomeAncestry}
 \title{Run most steps leading to the ancestry inference call on a specific
-profile}
+exome profile}
 \usage{
 runExomeAncestry(
   pedStudy,
@@ -50,7 +50,8 @@ the directory where the output files are created.}
 name of the Reference GDS file. The file must exist.}
 
 \item{fileReferenceAnnotGDS}{a \code{character} string representing the
-file name of the Reference GDS Annotation file. The file must exist.}
+file name of the Population Reference GDS Annotation file. The file must
+exist.}
 
 \item{chrInfo}{a \code{vector} of positive \code{integer} values
 representing the length of the chromosomes. See 'details' section.}
@@ -85,9 +86,9 @@ more information about the generated output files.
 }
 \description{
 This function runs most steps leading to the ancestry inference
-call on a specific profile. First, the function creates the Profile GDS file
-for the specific profile using the information from a RDS Sample
-description file and the 1KG reference GDS file.
+call on a specific exome profile. First, the function creates the
+Profile GDS file for the specific profile using the information from a
+RDS Sample description file and the Population reference GDS file.
 }
 \details{
 The runExomeAncestry() function generates 3 types of files

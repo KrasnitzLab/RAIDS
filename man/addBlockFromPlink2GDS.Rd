@@ -9,7 +9,7 @@ Population Reference GDS Annotation file}
 addBlockFromPlink2GDS(
   gds,
   gdsOut,
-  PATHBLOCK,
+  pathBlock,
   superPop,
   blockName,
   blockDesc,
@@ -22,7 +22,7 @@ addBlockFromPlink2GDS(
 
 \item{gdsOut}{an object of class \code{gds} opened in writing mode.}
 
-\item{PATHBLOCK}{TODO}
+\item{pathBlock}{TODO}
 
 \item{superPop}{TODO}
 

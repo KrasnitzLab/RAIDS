@@ -822,7 +822,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #'
 #' @param gdsOut an object of class \code{gds} opened in writing mode.
 #'
-#' @param PATHBLOCK TODO
+#' @param pathBlock TODO
 #'
 #' @param superPop TODO
 #'
@@ -852,7 +852,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds
 #' @encoding UTF-8
 #' @export
-addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
+addBlockFromPlink2GDS <- function(gds, gdsOut, pathBlock,
                                     superPop, blockName,
                                     blockDesc, verbose=FALSE) {
 
@@ -864,7 +864,7 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
 
     ## Extract the SNP chromosomes and positions
     snpChromosome <- read.gdsn(index.gdsn(gds, "snp.chromosome"))
-    snp.position <- read.gdsn(index.gdsn(gds, "snp.position"))
+    snpPosition <- read.gdsn(index.gdsn(gds, "snp.position"))
 
     listChr <- unique(snpChromosome)
 
@@ -874,9 +874,9 @@ addBlockFromPlink2GDS <- function(gds, gdsOut, PATHBLOCK,
     for(chr in listChr) {
         if(verbose) { message("chr", chr, " ", Sys.time()) }
 
-        snp.keep <- snp.position[snpChromosome == chr]
+        snp.keep <- snpPosition[snpChromosome == chr]
 
-        listBlock[[chr]] <- processBlockChr(snp.keep, PATHBLOCK, superPop, chr)
+        listBlock[[chr]] <- processBlockChr(snp.keep, pathBlock, superPop, chr)
         if(chr > 1) {
             vMax <- max(listBlock[[chr-1]])
             vMin <- min(listBlock[[chr-1]])

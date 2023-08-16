@@ -10,7 +10,8 @@ generateGDSgenotype(gds, pathGeno, fileSNPsRDS, listSamples, verbose)
 }
 \arguments{
 \item{gds}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
+GDS file.}
 
 \item{pathGeno}{a \code{character} string representing the path where
 the reference genotyping files for each sample are located. The name of the

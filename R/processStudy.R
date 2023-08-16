@@ -2315,12 +2315,12 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 
 
 #' @title Run most steps leading to the ancestry inference call on a specific
-#' profile
+#' exome profile
 #'
 #' @description This function runs most steps leading to the ancestry inference
-#' call on a specific profile. First, the function creates the Profile GDS file
-#' for the specific profile using the information from a RDS Sample
-#' description file and the 1KG reference GDS file.
+#' call on a specific exome profile. First, the function creates the
+#' Profile GDS file for the specific profile using the information from a
+#' RDS Sample description file and the Population reference GDS file.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
@@ -2351,7 +2351,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' name of the Reference GDS file. The file must exist.
 #'
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
-#' file name of the Reference GDS Annotation file. The file must exist.
+#' file name of the Population Reference GDS Annotation file. The file must
+#' exist.
 #'
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.
@@ -2515,9 +2516,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
 
     r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-                       pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                       chrInfo, syntheticRefDF,
-                       genoSource, studyType="DNA", verbose)
+        pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
+        chrInfo, syntheticRefDF, genoSource, studyType="DNA", verbose)
 
     ## Successful
     return(r)

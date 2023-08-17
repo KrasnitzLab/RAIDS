@@ -90,25 +90,31 @@
 #'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## Create the Profile GDS File for sample in listSamples vector
-#' ## (in this case, samples "ex1")
-#' ## The Profile GDS file is created in the pathProfileGDS directory
-#' result <- createStudy2GDS1KG(pathGeno=dataDir,
+#' ## Run only if directory in writing mode
+#' if (file.access(getwd()) == 0 &&
+#'     !file.exists(file.path(file.path(getwd(), "ex1.gds")))) {
+#'
+#'     ## Create the Profile GDS File for samples in 'listSamples' vector
+#'     ## (in this case, samples "ex1")
+#'     ## The Profile GDS file is created in the pathProfileGDS directory
+#'     result <- createStudy2GDS1KG(pathGeno=dataDir,
 #'             pedStudy=samplePED, fileNameGDS=fileGDS,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             pathProfileGDS=dataDir,
+#'             pathProfileGDS=getwd(),
 #'             genoSource="snp-pileup",
 #'             verbose=FALSE)
 #'
-#' ## The function returns OL when successful
-#' result
+#'     ## The function returns OL when successful
+#'     result
 #'
-#' ## The Profile GDS file 'ex1.gds' has been created in the
-#' ## specified directory
-#' list.files(dataDir)
+#'     ## The Profile GDS file 'ex1.gds' has been created in the
+#'     ## specified directory
+#'     list.files(getwd())
 #'
-#' ## Unlink Profile GDS file (created for demo purpose)
-#' unlink(file.path(dataDir, "ex1.gds"))
+#'     ## Remove Profile GDS file (created for demo purpose)
+#'     unlink(file.path(getwd(), "ex1.gds"))
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn

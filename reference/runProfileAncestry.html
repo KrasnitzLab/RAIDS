@@ -90,6 +90,8 @@ description file and the 1KG reference GDS file.</p>
 <span>  <span class="va">studyDFSyn</span>,</span>
 <span>  <span class="va">listProfileRef</span>,</span>
 <span>  studyType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DNA"</span>, <span class="st">"RNA"</span><span class="op">)</span>,</span>
+<span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  blockTypeID <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -165,6 +167,17 @@ generate the synthetic profiles.</p></dd>
 <dd><p>a <code>character</code> string representing the type of study.
 The possible choices are: "DNA" and "RNA". The type of study affects the
 way the estimation of the allelic fraction is done. Default: <code>"DNA"</code>.</p></dd>
+
+
+<dt>np</dt>
+<dd><p>a single positive <code>integer</code> specifying the number of
+threads to be used. Default: <code>1L</code>.</p></dd>
+
+
+<dt>blockTypeID</dt>
+<dd><p>a <code>character</code> string corresponding to the block
+type used to extract the block identifiers. The block type must be
+present in the GDS Reference Annotation file.</p></dd>
 
 
 <dt>verbose</dt>

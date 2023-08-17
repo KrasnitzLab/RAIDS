@@ -145,32 +145,15 @@ of the SAS super population.</p></li>
 <span class="r-in"><span><span class="co">## Demo SNV information file used as input</span></span></span>
 <span class="r-in"><span><span class="va">snvFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"matFreqSNV_Demo.txt.bz2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Different code depending of the withr package availability</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"withr"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Temporary output files</span></span></span>
+<span class="r-in"><span><span class="co">## The first file contains the indexes of the retained SNPs</span></span></span>
+<span class="r-in"><span><span class="co">## The second file contains the filtered SNP information</span></span></span>
+<span class="r-in"><span><span class="va">snpIndexFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"listSNP_TEMP.rds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filterSNVFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mapSNVSel_TEMP.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Temporary output files</span></span></span>
-<span class="r-in"><span>    <span class="co">## The first file contains the indexes of the retained SNPs</span></span></span>
-<span class="r-in"><span>    <span class="co">## The second file contains the filtered SNP information</span></span></span>
-<span class="r-in"><span>    <span class="va">snpIndexFile</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
-<span class="r-in"><span>                                        <span class="st">"listSNP_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">filterSNVFile</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
-<span class="r-in"><span>                                        <span class="st">"mapSNVSel_TEMP.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Create a data.frame containing the information of the retained</span></span></span>
-<span class="r-in"><span>    <span class="co">## samples (samples with existing genotyping files)</span></span></span>
-<span class="r-in"><span>    <span class="fu">generateMapSnvSel</span><span class="op">(</span>cutOff<span class="op">=</span><span class="fl">0.01</span>, fileSNV<span class="op">=</span><span class="va">snvFile</span>,</span></span>
-<span class="r-in"><span>        fileSNPsRDS<span class="op">=</span><span class="va">snpIndexFile</span>, fileFREQ<span class="op">=</span><span class="va">filterSNVFile</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Remove temporary files</span></span></span>
-<span class="r-in"><span>    <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Temporary output files</span></span></span>
-<span class="r-in"><span>    <span class="co">## The first file contains the indexes of the retained SNPs</span></span></span>
-<span class="r-in"><span>    <span class="co">## The second file contains the filtered SNP information</span></span></span>
-<span class="r-in"><span>    <span class="va">snpIndexFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"listSNP_TEMP.rds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">filterSNVFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSel_TEMP.rds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Run only if directory in writing mode</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">snpIndexFile</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
+<span class="r-in"><span>        <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">filterSNVFile</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="co">## Create a data.frame containing the information of the retained</span></span></span>
 <span class="r-in"><span>    <span class="co">## samples (samples with existing genotyping files)</span></span></span>

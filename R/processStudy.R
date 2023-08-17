@@ -2490,8 +2490,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS)
-#'         && !file.exists(pathOut)) {
+#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
+#'         !file.exists(pathOut)) {
 #'
 #'         runExomeAncestry(pedStudy=ped, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
@@ -2711,8 +2711,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS)
-#'         && !file.exists(pathOut)) {
+#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
+#'         !file.exists(pathOut)) {
 #'
 #'         runRNAAncestry(pedStudy=ped, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,

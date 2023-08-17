@@ -183,8 +183,8 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 \dontrun{
-    if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS)
-        && !file.exists(pathOut)) {
+    if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
+        !file.exists(pathOut)) {
 
         runExomeAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,

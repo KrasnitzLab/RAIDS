@@ -151,9 +151,9 @@ pathGeno <- file.path(dataDir, "example", "snpPileup")
 ## The path where the Profile GDS Files (one per sample)
 ## will be created need to be specified.
 #################################################################
-pathProfileGDS <- file.path(dataDir, "example", "out.tmp")
+pathProfileGDS <- file.path(getwd(), "out.tmp")
 
-pathOut <- file.path(dataDir, "example", "res.out")
+pathOut <- file.path(getwd(), "res.out")
 
 #################################################################
 ## A data frame containing general information about the study
@@ -188,19 +188,23 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 \dontrun{
-runRNAAncestry(pedStudy=ped, studyDF=studyDF,
-                    pathProfileGDS=pathProfileGDS,
-                    pathGeno=pathGeno,
-                    pathOut=pathOut,
-                    fileReferenceGDS=fileReferenceGDS,
-                    fileReferenceAnnotGDS=fileAnnotGDS,
-                    chrInfo=chrInfo,
-                    syntheticRefDF=dataRef,
-                    blockTypeID="GeneS.Ensembl.Hsapiens.v86",
-                    genoSource="snp-pileup")
+    if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS)
+        && !file.exists(pathOut)) {
 
-unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-unlink(pathOut, recursive=TRUE, force=TRUE)
+        runRNAAncestry(pedStudy=ped, studyDF=studyDF,
+            pathProfileGDS=pathProfileGDS,
+            pathGeno=pathGeno,
+            pathOut=pathOut,
+            fileReferenceGDS=fileReferenceGDS,
+            fileReferenceAnnotGDS=fileAnnotGDS,
+            chrInfo=chrInfo,
+            syntheticRefDF=dataRef,
+            blockTypeID="GeneS.Ensembl.Hsapiens.v86",
+            genoSource="snp-pileup")
+
+         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+         unlink(pathOut, recursive=TRUE, force=TRUE)
+     }
 }
 
 }

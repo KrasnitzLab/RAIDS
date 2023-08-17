@@ -2419,7 +2419,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @examples
 #'
 #' ## Required library for GDS
-#' library(gdsfmt)
+#' library(SNPRelate)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -2640,7 +2640,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @examples
 #'
 #' ## Required library for GDS
-#' library(gdsfmt)
+#' library(SNPRelate)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")

@@ -113,8 +113,115 @@ also created.
 \examples{
 
 ## Required library for GDS
-library(gdsfmt)
-# TODO
+library(SNPRelate)
+
+## Path to the demo 1KG GDS file is located in this package
+dataDir <- system.file("extdata", package="RAIDS")
+
+#################################################################
+## The path and file name for the PED RDS file
+## will the information about the analyzed samples
+#################################################################
+filePED <- file.path(dataDir, "example", "pedEx.rds")
+ped <- readRDS(filePED)
+head(ped)
+
+#################################################################
+## The 1KG GDS file and the 1KG SNV Annotation GDS file
+## need to be located in the same directory
+## Note that the 1KG GDS file used for this example is a
+## simplified version and CANNOT be used for any real analysis
+#################################################################
+path1KG <- file.path(dataDir, "example", "gdsRef")
+
+fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
+fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+
+#################################################################
+## The Sample SNP pileup files (one per sample) need
+## to be located in the same directory.
+#################################################################
+pathGeno <- file.path(dataDir, "example", "snpPileup")
+
+#################################################################
+## The path where the Profile GDS Files (one per sample)
+## will be created need to be specified.
+#################################################################
+
+pathProfileGDS <- file.path(getwd(), "out.tmp")
+
+pathOut <- file.path(getwd(), "res.out")
+
+#################################################################
+## A data frame containing general information about the study
+## is also required. The data frame must have
+## those 3 columns: "studyID", "study.desc", "study.platform"
+#################################################################
+studyDF <- data.frame(study.id="MYDATA",
+                        study.desc="Description",
+                        study.platform="PLATFORM",
+                        stringsAsFactors=FALSE)
+
+####################################################################
+## Fix seed to ensure reproducible results
+####################################################################
+set.seed(3043)
+
+gdsReference <- snpgdsOpen(fileReferenceGDS)
+dataRef <- select1KGPop(gdsReference, nbProfiles=2L)
+closefn.gds(gdsReference)
+
+## Chromosome length information for hg38
+## chr23 is chrX, chr24 is chrY and chrM is 25
+chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
+    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
+    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
+    156040895L, 57227415L,  16569L)
+
+## A formal way to get the chromosome length information for hg38
+## library(GenomeInfoDb)
+## library(BSgenome.Hsapiens.UCSC.hg38)
+## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+
+studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
+    study.desc=paste0(studyDF$study.id, " synthetic data"),
+    study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
+
+listProfileRef <- dataRef$sample.id
+profileFile <- file.path(pathProfileGDS, "ex1.gds")
+
+\dontrun{
+     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
+         !file.exists(pathOut)) {
+
+         dir.create(pathProfileGDS)
+         dir.create(pathOut)
+         file.copy(file.path(dataDir, "tests", "ex1_demo.gds"), profileFile)
+
+         gdsReference <- snpgdsOpen(fileReferenceGDS)
+         gdsRefAnnot <- openfn.gds(fileAnnotGDS)
+
+         RAIDS:::runProfileAncestry(gdsReference=gdsReference,
+             gdsRefAnnot=gdsRefAnnot,
+             studyDF=studyDF, currentProfile=ped[1,"Name.ID"],
+             pathProfileGDS=pathProfileGDS,
+             pathOut=pathOut,
+             chrInfo=chrInfo,
+             syntheticRefDF=dataRef,
+             studyDFSyn=studyDFSyn,
+             listProfileRef=listProfileRef,
+             studyType="DNA")
+
+         closefn.gds(gdsReference)
+         closefn.gds(gdsRefAnnot)
+
+
+         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+         unlink(pathOut, recursive=TRUE, force=TRUE)
+     }
+}
+
 
 }
 \references{

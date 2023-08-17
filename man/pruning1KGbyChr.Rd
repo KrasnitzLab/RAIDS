@@ -84,7 +84,7 @@ library(SNPRelate)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG Population Reference GDS demo file (opened)
-gds1KG <- snpgdsOpen(file.path(dataDir, "gds1KG.gds"))
+gds1KG <- snpgdsOpen(file.path(dataDir, "1KG_Demo.gds"))
 
 ## The prefix of the RDS file to be created and containing the pruned SNVs
 outPrefix <- "Pruned_Demo_Reference"

@@ -22,9 +22,11 @@ addBlockFromPlink2GDS(
 
 \item{gdsOut}{an object of class \code{gds} opened in writing mode.}
 
-\item{pathBlock}{TODO}
+\item{pathBlock}{a \code{character} string representing the path where
+the block files are located.}
 
-\item{superPop}{TODO}
+\item{superPop}{a \code{character} string representing the specific
+continental population.}
 
 \item{blockName}{a \code{character} string representing the unique
 block name.}

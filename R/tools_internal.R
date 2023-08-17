@@ -185,11 +185,13 @@ validatePositiveIntegerVector <- function(value, name) {
 #'
 #' @param snpKeep TODO
 #'
-#' @param pathBlock TODO
+#' @param pathBlock a \code{character} string representing the path to the
+#' block files.
 #'
-#' @param superPop TODO
+#' @param superPop a \code{character} string representing the current
+#' continental population (ex: EUR, AFR, etc.).
 #'
-#' @param chr TODO
+#' @param chr a \code{integer} representing the current chromosome.
 #'
 #'
 #' @return the a \code{array} with the sample from pedDF keept

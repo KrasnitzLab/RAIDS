@@ -24,6 +24,9 @@
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -52,6 +55,7 @@
 #' @importFrom gdsfmt read.gdsn
 #' @importFrom methods is
 #' @importFrom S4Vectors isSingleNumber
+#' @importFrom utils write.table
 #' @encoding UTF-8
 #' @export
 snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {

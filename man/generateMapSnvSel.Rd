@@ -70,7 +70,7 @@ snpIndexFile <- file.path(getwd(), "listSNP_TEMP.rds")
 filterSNVFile <- file.path(getwd(), "mapSNVSel_TEMP.rds")
 
 ## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !file.exists(snpIndexTmp) &&
+if (file.access(getwd()) == 0 && !file.exists(snpIndexFile) &&
         !file.exists(filterSNVFile)) {
 
     ## Create a data.frame containing the information of the retained

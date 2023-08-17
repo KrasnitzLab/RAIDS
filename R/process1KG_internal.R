@@ -1,9 +1,10 @@
-#' @title Extract the pruned SNVs in a reference data set (1KG) by chromosome
-#' and/or allelic frequency
+#' @title Extract the pruned SNVs in a population reference data set (ex:1KG)
+#' by chromosome and/or allelic frequency
 #'
-#' @description The function extracts the pruned SNVs in a reference data
-#' set (1KG) by chromosome and/or allelic frequency. The pruning is done
-#' through the linkage disequilibrium analysis.
+#' @description The function extracts the pruned SNVs in a population
+#' reference data set (ex: 1KG) by chromosome and/or allelic frequency.
+#' The pruning is done through the linkage disequilibrium analysis. The
+#' pruned SNVs are saved in a RDS file.
 #'
 #' @param gdsReference an object of class
 #' \code{\link[SNPRelate:SNPGDSFileClass]{SNPRelate::SNPGDSFileClass}}, an
@@ -45,10 +46,10 @@
 #' Default: \code{NULL}.
 #'
 #' @param outPrefix a \code{character} string that represents the prefix of the
-#' RDS files that will be generated. Default: \code{"pruned_1KG"}.
+#' RDS file(s) that will be generated. Default: \code{"pruned_1KG"}.
 #'
 #' @param keepObj a \code{logical} specifying if the function must save the
-#' the processed information into a RDS object. Default: \code{FALSE}.
+#' the processed information into a second RDS file. Default: \code{FALSE}.
 #'
 #' @return The function returns \code{0L} when successful.
 #'
@@ -72,25 +73,21 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
     fileObj <- file.path(paste0(outPrefix, "Obj.rds"))
     snpGDS <- index.gdsn(gdsReference, "snp.id")
     listKeep <- NULL
-    if(is.null(minAF)){
-        if(!is.null(chr)){
-            snpGDS <- index.gdsn(gdsReference, "snp.id")
+    if (is.null(minAF)) {
+        if (!is.null(chr)) {
             snpID <- read.gdsn(snpGDS)
 
-            chrGDS <- index.gdsn(gdsReference, "snp.chromosome")
-            snpCHR <- read.gdsn(chrGDS)
+            snpCHR <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
 
             listKeep <- snpID[which(snpCHR == chr)]
         }
-    } else{
-        snpGDS <- index.gdsn(gdsReference, "snp.id")
+    } else {
         snpID <- read.gdsn(snpGDS)
-        afGDS <- index.gdsn(gdsReference, "snp.AF")
-        snpAF <- read.gdsn(afGDS)
+        snpAF <- read.gdsn(index.gdsn(gdsReference, "snp.AF"))
 
-        if(is.null(chr)){
+        if (is.null(chr)) {
             listKeep <- snpID[which(snpAF >= minAF & snpAF <= 1-minAF)]
-        } else{
+        } else {
             chrGDS <- index.gdsn(gdsReference, "snp.chromosome")
             snpCHR <- read.gdsn(chrGDS)
 
@@ -99,6 +96,7 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
         }
     }
 
+    ## SNP pruning based on linkage disequilibrium (LD)
     snpset <- runLDPruning(gds=gdsReference, method=method,
                     listSamples=listSamples, listKeep=listKeep,
                     slideWindowMaxBP=slideWindowMaxBP,
@@ -106,7 +104,7 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 
     pruned <- unlist(snpset, use.names=FALSE)
     saveRDS(pruned, filePruned)
-    if(keepObj){
+    if (keepObj) {
         saveRDS(snpset, fileObj)
     }
 

@@ -26,7 +26,7 @@ validateEstimateAllelicFraction(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the 1KG GDS file.}
+(a GDS file), the Population Reference GDS file.}
 
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the Profile GDS file.}
@@ -67,7 +67,7 @@ the window used to compute an empty box.}
 log score, that the SNVs in a gene are allelic fraction different from 0.5.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the1 1KG SNV Annotation GDS file.
+(a GDS file), the1 Population Reference SNV Annotation GDS file.
 This parameter is RNA specific.}
 
 \item{blockID}{a \code{character} string corresponding to the block
@@ -88,7 +88,7 @@ This function validates the input parameters for the
 ## Directory where demo GDS files are located
 dataDir <- system.file("extdata", package="RAIDS")
 
-## The 1KG GDS file (opened)
+## The 1KG Population Reference GDS Demo file (opened)
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The GDS Sample (opened)

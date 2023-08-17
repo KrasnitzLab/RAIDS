@@ -33,7 +33,7 @@ must contain the information for all the samples passed in the
 can be defined.}
 
 \item{fileNameGDS}{a \code{character} string representing the file name of
-the 1KG GDS file. The file must exist.}
+the Population Reference GDS file. The file must exist.}
 
 \item{batch}{a single positive \code{integer} representing the current
 identifier for the batch. Beware, this field is not stored anymore.}
@@ -67,6 +67,7 @@ This function validates the input parameters for the
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
+## Demo 1KG Population Reference GDS file
 gds1KG <- file.path(dataDir, "gds1KG.gds")
 
 ## The data.frame containing the information about the study

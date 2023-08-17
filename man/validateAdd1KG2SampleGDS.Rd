@@ -9,7 +9,8 @@ validateAdd1KG2SampleGDS(gdsReference, gdsProfileFile, currentProfile, studyID)
 }
 \arguments{
 \item{gdsReference}{an object of class
-\link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.}
+\link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
+GDS file.}
 
 \item{gdsProfileFile}{a \code{character} string representing the path and
 file name of the Profile GDS file. The Profile GDS file must exist.}
@@ -32,7 +33,7 @@ This function validates the input parameters for the
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-## The 1KG GDS file (opened)
+## The 1KG Population Reference GDS demo file (opened)
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The validatiion should be successful

@@ -440,6 +440,164 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
     return(homoBlock)
 }
 
+#' @title TODO
+#'
+#' @description TODO
+#'
+#' @param snpPos a \code{data.frame} containing the genotype information for
+#' a SNV dataset. TODO
+#'
+#' @param w a single positive \code{numeric} representing the size of the
+#' window to compute the allelic fraction.
+#' Default: \code{10}.
+#'
+#' @param cutOff a single \code{numeric} representing TODO. Default: \code{-3}.
+#'
+#' @return a \code{matrix} of \code{numeric} with 3 columns where each
+#' row represent a segment
+#' of imbalanced SNVs. The first column represents the position, in
+#' \code{snpPos}, of the first
+#' SNV in the segment. The second column represents the position, in the
+#' \code{snpPos}, of the last SNV in the segment. The third column represents
+#' the lower allelic frequency of the segment and is \code{NA} when the value
+#' cannot be calculated. The value \code{NULL} is
+#' returned when none of the SNVs
+#' tested positive for the imbalance.
+#'
+#' @examples
+#'
+#' ## Data frame with SNV information for the specified chromosome (chr 1)
+#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'         6085318, 6213145),
+#'     snp.chr=c(rep(1, 8)),
+#'     normal.geno=c(rep(1, 8)),
+#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'     lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
+#'     stringAsFactor=FALSE)
+#'
+#' ## The function returns NULL when there is not imbalanced SNVs
+#' RAIDS:::computeAlleleFraction(snpPos=snpInfo, w=10, cutOff=-3)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom stats median
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
+
+    listBlockAR <- list()
+    j <- 1
+    tmp <- as.integer(snpPos$imbAR == 1)
+    z <- cbind(c(tmp[1], tmp[-1] - tmp[seq_len(length(tmp) -1)]),
+               c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
+
+    ## Split SNVs by segment of continuous imbalanced SNVs
+    ## There must be at least one segment with imbalanced SNVs to go one
+    if(length(which(z[,1] == 1)) > 0) {
+        ## Find segmentsof imbalanced SNVs
+        segImb <- data.frame(start=seq_len(nrow(snpPos))[which(z[,1] > 0)],
+                             end=seq_len(nrow(snpPos))[which(z[,2] < 0)])
+
+        for(i in seq_len(nrow(segImb))) {
+            # index of the segment
+            listSeg <- (segImb$start[i]):(segImb$end[i])
+            # index hetero segment
+            listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
+            # SNP hetero for the segment
+            snp.hetero <- snpPos[listHetero,]
+
+            if(nrow(snp.hetero) >= 2 * w) {
+                lapCur <- median(apply(snp.hetero[seq_len(w),
+                                                  c("cnt.ref", "cnt.alt")], 1, min) /
+                                     (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
+
+                start <- 1
+                k <- w + 1
+                while(k < nrow(snp.hetero)) {
+                    # We have (k+w-1) <= nrow(snp.hetero)
+                    # Case 1 true because (nrow(snp.hetero) >= 2 * w
+                    # Other case nrow(snp.hetero) >= w+k - 1
+                    curWin <- testAlleleFractionChange(snp.hetero[k:(k+w-1),
+                                                                  c("cnt.ref", "cnt.alt")], cutOff, lapCur)
+
+                    if(curWin$pCut1 == 1){ # new Region the allelicFraction
+                        # table of the index of the block with lapCur
+                        listBlockAR[[j]] <- c(listHetero[start],
+                                              listHetero[k], lapCur)
+
+                        lapCur <- median(apply(snp.hetero[k:(k+w-1),
+                                                          c("cnt.ref", "cnt.alt")], 1, min) /
+                                             (rowSums(snp.hetero[k:(k+w-1),
+                                                                 c("cnt.ref", "cnt.alt")])))
+
+                        start <- k
+
+                        if(nrow(snp.hetero) - start < w) { # Close the segment
+                            lapCur <-
+                                median(apply(snp.hetero[start:nrow(snp.hetero),
+                                                        c("cnt.ref", "cnt.alt")], 1, min) /
+                                           (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                                               c("cnt.ref", "cnt.alt")])))
+
+                            listBlockAR[[j]] <- c(listHetero[start],
+                                                  segImb$end[i], lapCur)
+
+                            j <- j+1
+                            k <- nrow(snp.hetero)
+                        }else{ # nrow(snp.hetero) >= w+k
+                            k<- k + 1
+                            j <- j + 1
+
+                        }
+                    }else{ # keep the same region
+                        if((nrow(snp.hetero) - k ) < w){ # close
+                            lapCur <-
+                                median(apply(snp.hetero[start:nrow(snp.hetero),
+                                                        c("cnt.ref", "cnt.alt")], 1, min) /
+                                           (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                                               c("cnt.ref", "cnt.alt")])))
+
+                            listBlockAR[[j]] <- c(listHetero[start],
+                                                  segImb$end[i], lapCur)
+
+                            j <- j + 1
+
+                            k <- nrow(snp.hetero)
+                        } else{ # continue nrow(snp.hetero) >= w+k
+                            lapCur <- median(apply(snp.hetero[start:k,
+                                                              c("cnt.ref", "cnt.alt")], 1, min) /
+                                                 (rowSums(snp.hetero[start:k,c("cnt.ref",
+                                                                               "cnt.alt")])))
+
+                            k <- k + 1
+                        }
+                    }
+                }# End while
+            }else {
+                lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
+                                       1, min) / (rowSums(snp.hetero[,c("cnt.ref",
+                                                                        "cnt.alt")])))
+
+                listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
+
+                j <- j + 1
+            }
+        }
+    }
+
+    # note NULL if length(listBlockAR) == 0
+    listBlockAR <- do.call(rbind, listBlockAR)
+
+    return(listBlockAR)
+}
+
 
 #' @title Estimate the allelic fraction of the pruned SNVs for a specific
 #' DNA-seq profile
@@ -649,7 +807,6 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #'
 #' @description The function creates a \code{data.frame} containing the
 #' allelic fraction for the pruned SNV dataset specific to a RNA-seq sample.
-#' TODO
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Reference GDS file.

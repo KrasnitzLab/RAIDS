@@ -895,8 +895,6 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     # for each chromosome
     # listBlock <- list()
 
-    ## FOR_LOOP modification to be validated by Pascal
-    ## Remove commented code and this text after validation
     listBlock <- lapply(unique(snpPos$snp.chr), FUN = function(x, snpPos, verbose){
             if (verbose) {
                 message("chr ", x)
@@ -933,47 +931,6 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     for(b in seq_len(nrow(blockAF))) {
         snpPos$lap[snpPos$block.id == blockAF$block[b]] <- blockAF$aRF[b]
     }
-    # listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
-    # blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
-    #                                       length(listMissing), replace=TRUE)
-
-    # listBlock <- list()
-    # print(system.time(for(chr in unique(snp.pos$snp.chr)) {
-    #
-    #     if (verbose) {
-    #         message("chr ", chr)
-    #         message("Step 1 ", Sys.time())
-    #     }
-    #
-    #     #listHetero <- dfHetero[dfHetero$snp.chr == chr, "snp.pos"]
-    #     listChr <- which(snp.pos$snp.chr == chr)
-    #     # snp.pos.chr <- snp.pos[listChr,]
-    #
-    #     blockAF <- tableBlockAF(snp.pos=snp.pos[listChr,])
-    #     # LOH
-    #     blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
-    #     blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
-    #                                                         >= cutOffAR]
-    #     blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
-    #
-    #     listBlock[[chr]] <- blockAF
-    #
-    #     if (verbose) {
-    #         message("Step 1 done ", Sys.time())
-    #     }
-    # }))
-    #
-    # blockAF1 <- do.call(rbind, listBlock)
-    #
-    # listMissing <- which(abs(blockAF1$aRF + 1) < 1e-6)
-    # set.seed(654)
-    # blockAF1[listMissing, "aRF"] <- sample(blockAF1$aRF[-1*listMissing],
-    #                                     length(listMissing), replace=TRUE)
-    #
-    #
-    # for(b in seq_len(nrow(blockAF1))) {
-    #     snp.pos$lap[snp.pos$block.id == blockAF1$block[b]] <- blockAF1$aRF[b]
-    # }
 
     return(snpPos)
 }
@@ -1426,19 +1383,6 @@ tableBlockAF <- function(snpPos) {
 
     listBlocks <- unique(snpPos$block.id)
 
-    # resBlock <- data.frame(block = listBlocks,
-    #                         aRF = rep(-1, length(listBlocks)),
-    #                         aFraction = rep(-1, length(listBlocks)),
-    #                         lR = rep(-1, length(listBlocks)),
-    #                         nPhase = rep(-1, length(listBlocks)),
-    #                         sumAlleleLow = rep(-1, length(listBlocks)),
-    #                         sumAlleleHigh = rep(-1, length(listBlocks)),
-    #                         lH = rep(-1, length(listBlocks)),
-    #                         lM = rep(-1, length(listBlocks)),
-    #                         lRhomo = rep(1, length(listBlocks)))
-
-    ## FOR_LOOP modification to be validated by Pascal
-    ## Remove commented code and this text after validation
     resBlock <- data.frame(block=listBlocks)
 
 
@@ -1552,79 +1496,6 @@ tableBlockAF <- function(snpPos) {
             return(resBlock)
         }, snpPos=snpPos)
     resBlock <- do.call(rbind, resBlock)
-    # for (i in seq_len(length(listBlocks))) {
-    #     # start with LOH
-    #
-    #     lH <- 1
-    #     lM <- 1
-    #     # if at least 1 homozygote variants and no more than 1 hetrozygote
-    #     # to check for LOH
-    #     if (resBlock[i, "nbKeep"] > 0 &
-    #         (resBlock[i, "nbKeep"] == resBlock[i, "nbHomo"] |
-    #          (resBlock[i, "nbHomo"] > 0 & resBlock[i, "nbHetero"] == 1)) ) {
-    #
-    #         # Check if 1 hetero with allelic fraction (<=0.05)
-    #         # it is considered as all homozygote
-    #         flag <- TRUE
-    #         if (resBlock[i, "nbHetero"] == 1) {
-    #             tmp <- min(snp.pos[snp.pos$block.id == resBlock$block[i] &
-    #                             snp.pos$hetero, c("cnt.ref" , "cnt.alt")])/
-    #                 sum(snp.pos[snp.pos$block.id == resBlock$block[i] &
-    #                             snp.pos$hetero, c("cnt.ref" , "cnt.alt")])
-    #             # flag is true if allelic fraction <= 0.05
-    #             flag <- ifelse(tmp > 0.05, FALSE,TRUE)
-    #         }
-    #
-    #         if(flag){
-    #             # List homozygote ref
-    #             listRef <- which(snp.pos$block.id == resBlock$block[i] &
-    #                                 snp.pos$homo &
-    #                                 snp.pos$cnt.ref > snp.pos$cnt.alt)
-    #             # list homozygote alt
-    #             listAlt <- which(snp.pos$block.id == resBlock$block[i] &
-    #                                 snp.pos$homo &
-    #                                 snp.pos$cnt.ref < snp.pos$cnt.alt)
-    #             # freq of the Ref allele in population of listRef
-    #             tmp <- snp.pos$freq[listRef]
-    #             # min freq is 0.01
-    #             tmp[which(tmp < 0.01)] <- 0.01
-    #             # log10 of the product of the frequency of the alternative allele in pop for listRef
-    #             lH <- ifelse(length(listRef) > 0, sum(log10(1-tmp)*2), 0)
-    #             # freq of the Ref allele in population of listAlt
-    #             tmp <- snp.pos$freq[listAlt]
-    #             tmp[which(tmp < 0.01)] <- 0.01
-    #             # log10 of the product of the frequency of the alternative allele in pop for listRef
-    #             # plus log10 of the product of the frequency of the reference allele in pop for listAlt
-    #             lH <- lH + ifelse(length(listAlt) > 0, sum(log10(tmp)*2), 0)
-    #
-    #             lM <- sum(log10(apply(snp.pos[which(snp.pos$block.id ==
-    #                         resBlock$block[i] & snp.pos$homo),
-    #                             "freq", drop=FALSE], 1,
-    #                                 FUN = function(x) {
-    #                                 return(max(x^2, 2*(x * (1-x)), (1-x)^2))
-    #                                 })))
-    #             resBlock$sumAlleleLow[i] <- 0
-    #             resBlock$sumAlleleHigh[i] <- sum(snp.pos[listRef, "cnt.ref"]) +
-    #                 sum(snp.pos[listAlt, "cnt.alt"])
-    #         }
-    #     }
-    #     # compute the score of the homozygote on the block
-    #     # if heterozygote present lH = lM = 1 and lRhomo = 0
-    #     resBlock[i, c("lH", "lM", "lRhomo")] <- c(lH, lM, lH - lM)
-    #
-    #     # get hetero and compute AF nbHetero > 1
-    #     if (resBlock[i, "nbKeep"] > 0 & resBlock[i, "nbHetero"] > 1) {
-    #
-    #         resML <- calcAFMLRNA(snp.pos[which(snp.pos$block.id ==
-    #                                 resBlock$block[i] & snp.pos$hetero),])
-    #
-    #         resBlock$aFraction[i] <- resML$aFraction
-    #         resBlock$lR[i] <- resML$lR
-    #         resBlock$nPhase[i] <- resML$nPhase
-    #         resBlock$sumAlleleLow[i] <- resML$sumAlleleLow
-    #         resBlock$sumAlleleHigh[i] <- resML$sumAlleleHigh
-    #     }
-    # }
 
     return(resBlock)
 }

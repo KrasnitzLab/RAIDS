@@ -17,6 +17,8 @@ runRNAAncestry(
   chrInfo,
   syntheticRefDF,
   genoSource = c("snp-pileup", "generic"),
+  np = 1L,
+  blockTypeID,
   verbose = FALSE
 )
 }
@@ -76,6 +78,13 @@ Chromosome,Position,Ref,Alt,Count,File1R,File1A
 where Count is the deep at the position,
 FileR is the deep of the reference allele, and
 File1A is the deep of the specific alternative allele}
+
+\item{np}{a single positive \code{integer} specifying the number of
+threads to be used. Default: \code{1L}.}
+
+\item{blockTypeID}{a \code{character} string corresponding to the block
+type used to extract the block identifiers. The block type must be
+present in the GDS Reference Annotation file.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}

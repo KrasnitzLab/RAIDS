@@ -763,9 +763,15 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     blockAF <- do.call(rbind, listBlock)
     listMissing <- which(abs(blockAF$aRF + 1) < 1e-6)
 
-    blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
-                                          length(listMissing), replace=TRUE)
+    if(length(listMissing) > 0){
+        if(length(blockAF$aRF[-1*listMissing]) == 0){
+            blockAF[listMissing, "aRF"] <- 0.5
+        }else{
+            blockAF[listMissing, "aRF"] <- sample(blockAF$aRF[-1*listMissing],
+                                length(listMissing), replace=TRUE)
+        }
 
+    }
 
     for(b in seq_len(nrow(blockAF))) {
         snpPos$lap[snpPos$block.id == blockAF$block[b]] <- blockAF$aRF[b]

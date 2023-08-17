@@ -3,8 +3,8 @@
 #' @description This function validates the input parameters for the
 #' \code{\link{pruningSample}} function.
 #'
-#' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS file), the
-#' 1 KG GDS file.
+#' @param gdsReference an object of class \link[gdsfmt]{gds.class}
+#' (a GDS file), the Population Reference GDS file.
 #'
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
@@ -160,11 +160,12 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' opened Profile GDS file.
 #'
 #' @param sampleRM a \code{vector} of \code{character} strings representing
-#' the identifiers of the 1KG reference samples that should not be used to
-#' create the reference PCA.
+#' the identifiers of the population reference samples that should not
+#' be used to create the reference PCA.
 #'
 #' @param spRef a \code{vector} of \code{character} strings representing the
-#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' known super population ancestry for the population reference profiles.
+#' The population reference profile
 #' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
@@ -224,7 +225,7 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' gdsSample <- openfn.gds(file.path(dataDir,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
-#' ## The known super population ancestry for the 1KG profiles
+#' ## The known super population ancestry for the population reference profiles
 #' spRef <- c("EUR", "SAS", "EAS", "EUR", "AFR")
 #' names(spRef) <- c("HG00100", "HG00101", "HG00102", "HG00103", "HG00104")
 #'
@@ -311,7 +312,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #' \code{\link{estimateAllelicFraction}} function.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the 1KG GDS file.
+#' (a GDS file), the Population Reference GDS file.
 #'
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the Profile GDS file.
@@ -352,7 +353,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #' log score, that the SNVs in a gene are allelic fraction different from 0.5.
 #'
 #' @param gdsRefAnnot an object of class \code{\link[gdsfmt]{gds.class}}
-#' (a GDS file), the1 1KG SNV Annotation GDS file.
+#' (a GDS file), the1 Population Reference SNV Annotation GDS file.
 #' This parameter is RNA specific.
 #'
 #' @param blockID a \code{character} string corresponding to the block
@@ -368,7 +369,7 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened)
+#' ## The 1KG Population Reference GDS Demo file (opened)
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The GDS Sample (opened)
@@ -477,7 +478,7 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' can be defined.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
-#' the 1KG GDS file. The file must exist.
+#' the Population Reference GDS file. The file must exist.
 #'
 #' @param batch a single positive \code{integer} representing the current
 #' identifier for the batch. Beware, this field is not stored anymore.
@@ -506,6 +507,7 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Demo 1KG Population Reference GDS file
 #' gds1KG <- file.path(dataDir, "gds1KG.gds")
 #'
 #' ## The data.frame containing the information about the study
@@ -548,7 +550,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
     ## The fileNameGDS must be a character string and the file must exists
     if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
         stop("The \'fileNameGDS\' must be a character string representing ",
-                "the GDS 1KG file. The file must exist.")
+                "the Population Reference GDS file. The file must exist.")
     }
 
     ## The batch must be a single numeric
@@ -590,7 +592,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' \code{\link{computeAncestryFromSyntheticFile}} function.
 #'
 #' @param gdsReference an object of class \link[gdsfmt]{gds.class} (a GDS
-#' file), the opened 1KG GDS file.
+#' file), the opened Population Reference GDS file.
 #'
 #' @param gdsProfile an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the opened Profile GDS file.
@@ -604,7 +606,8 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' identifier of the current profile on which ancestry will be inferred.
 #'
 #' @param spRef a \code{vector} of \code{character} strings representing the
-#' known super population ancestry for the 1KG profiles. The 1KG profile
+#' known super population ancestry for the 1KG profiles. The Population
+#' Reference profile
 #' identifiers are used as names for the \code{vector}.
 #'
 #' @param studyIDSyn a \code{character} string corresponding to the study
@@ -661,7 +664,7 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened)
+#' ## The 1KG Population Reference GDS demo file (opened)
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The Profile GDS (opened)
@@ -861,7 +864,7 @@ validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
 #' RDS file that contains the information about the sample to analyse.
 #'
 #' @param fileNameGDS a \code{character} string representing the file name of
-#' the 1KG GDS file. The file must exist.
+#' the Population Reference GDS file. The file must exist.
 #'
 #' @param batch a single positive \code{integer} representing the current
 #' identifier for the batch. Beware, this field is not stored anymore.
@@ -894,6 +897,7 @@ validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Demo 1KG Population reference GDS file
 #' gds1KG <- file.path(dataDir, "1KG_Demo.gds")
 #' ped <- file.path(dataDir, "unrelatedPatientsInfo_Demo.rds")
 #'
@@ -935,7 +939,7 @@ validateAppendStudy2GDS1KG <- function(pathGeno, filePedRDS, fileNameGDS,
     ## The fileNameGDS must be a character string and the file must exists
     if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
         stop("The \'fileNameGDS\' must be a character string representing ",
-                "the GDS 1KG file. The file must exist.")
+                "the Population Reference GDS file. The file must exist.")
     }
 
     ## The batch must be a single numeric
@@ -972,7 +976,8 @@ validateAppendStudy2GDS1KG <- function(pathGeno, filePedRDS, fileNameGDS,
 #' \code{\link{add1KG2SampleGDS}} function.
 #'
 #' @param gdsReference an object of class
-#' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file.
+#' \link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
+#' GDS file.
 #'
 #' @param gdsProfileFile a \code{character} string representing the path and
 #' file name of the Profile GDS file. The Profile GDS file must exist.
@@ -990,7 +995,7 @@ validateAppendStudy2GDS1KG <- function(pathGeno, filePedRDS, fileNameGDS,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' ## The 1KG GDS file (opened)
+#' ## The 1KG Population Reference GDS demo file (opened)
 #' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 #'
 #' ## The validatiion should be successful
@@ -1065,10 +1070,11 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' the directory where the output files are created.
 #'
 #' @param fileReferenceGDS  a \code{character} string representing the file
-#' name of the 1KG GDS file. The file must exist.
+#' name of the Population Reference GDS file. The file must exist.
 #'
 #' @param fileReferenceAnnotGDS a \code{character} string representing the
-#' file name of the 1KG GDS annotation file. The file must exist.
+#' file name of the Population Reference GDS annotation file.
+#' The file must exist.
 #'
 #' @param chrInfo a \code{vector} of positive \code{integer} values
 #' representing the length of the chromosomes. See 'details' section.
@@ -1102,6 +1108,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'                       study.platform = "PLATFORM",
 #'                       stringsAsFactors = FALSE)
 #'
+#' ## Population Reference GDS demo file
 #' gds1KG <- file.path(dataDir, "gds1KG.gds")
 #'
 #' gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")

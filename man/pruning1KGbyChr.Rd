@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{pruning1KGbyChr}
 \alias{pruning1KGbyChr}
-\title{Extract the pruned SNVs in a reference data set (1KG) by chromosome
-and/or allelic frequency}
+\title{Extract the pruned SNVs in a population reference data set (ex:1KG)
+by chromosome and/or allelic frequency}
 \usage{
 pruning1KGbyChr(
   gdsReference,
@@ -61,18 +61,19 @@ allelic frequency is not used as a filtering criterion.
 Default: \code{NULL}.}
 
 \item{outPrefix}{a \code{character} string that represents the prefix of the
-RDS files that will be generated. Default: \code{"pruned_1KG"}.}
+RDS file(s) that will be generated. Default: \code{"pruned_1KG"}.}
 
 \item{keepObj}{a \code{logical} specifying if the function must save the
-the processed information into a RDS object. Default: \code{FALSE}.}
+the processed information into a second RDS file. Default: \code{FALSE}.}
 }
 \value{
 The function returns \code{0L} when successful.
 }
 \description{
-The function extracts the pruned SNVs in a reference data
-set (1KG) by chromosome and/or allelic frequency. The pruning is done
-through the linkage disequilibrium analysis.
+The function extracts the pruned SNVs in a population
+reference data set (ex: 1KG) by chromosome and/or allelic frequency.
+The pruning is done through the linkage disequilibrium analysis. The
+pruned SNVs are saved in a RDS file.
 }
 \examples{
 

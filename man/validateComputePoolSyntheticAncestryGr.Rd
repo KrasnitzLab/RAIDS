@@ -28,11 +28,12 @@ validateComputePoolSyntheticAncestryGr(
 opened Profile GDS file.}
 
 \item{sampleRM}{a \code{vector} of \code{character} strings representing
-the identifiers of the 1KG reference samples that should not be used to
-create the reference PCA.}
+the identifiers of the population reference samples that should not
+be used to create the reference PCA.}
 
 \item{spRef}{a \code{vector} of \code{character} strings representing the
-known super population ancestry for the 1KG profiles. The 1KG profile
+known super population ancestry for the population reference profiles.
+The population reference profile
 identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
@@ -90,7 +91,7 @@ dataDir <- system.file("extdata", package="RAIDS")
 gdsSample <- openfn.gds(file.path(dataDir,
                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 
-## The known super population ancestry for the 1KG profiles
+## The known super population ancestry for the population reference profiles
 spRef <- c("EUR", "SAS", "EAS", "EUR", "AFR")
 names(spRef) <- c("HG00100", "HG00101", "HG00102", "HG00103", "HG00104")
 

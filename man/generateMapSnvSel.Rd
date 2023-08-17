@@ -63,32 +63,15 @@ dataDir <- system.file("extdata", package="RAIDS")
 ## Demo SNV information file used as input
 snvFile <- file.path(dataDir, "matFreqSNV_Demo.txt.bz2")
 
-## Different code depending of the withr package availability
-if (requireNamespace("withr", quietly=TRUE)) {
+## Temporary output files
+## The first file contains the indexes of the retained SNPs
+## The second file contains the filtered SNP information
+snpIndexFile <- file.path(getwd(), "listSNP_TEMP.rds")
+filterSNVFile <- file.path(getwd(), "mapSNVSel_TEMP.rds")
 
-    ## Temporary output files
-    ## The first file contains the indexes of the retained SNPs
-    ## The second file contains the filtered SNP information
-    snpIndexFile <- withr::local_file(file.path(dataDir,
-                                        "listSNP_TEMP.rds"))
-    filterSNVFile <- withr::local_file(file.path(dataDir,
-                                        "mapSNVSel_TEMP.rds"))
-
-    ## Create a data.frame containing the information of the retained
-    ## samples (samples with existing genotyping files)
-    generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
-        fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
-
-    ## Remove temporary files
-    withr::deferred_run()
-
-} else {
-
-    ## Temporary output files
-    ## The first file contains the indexes of the retained SNPs
-    ## The second file contains the filtered SNP information
-    snpIndexFile <- file.path(dataDir, "listSNP_TEMP.rds")
-    filterSNVFile <- file.path(dataDir, "mapSNVSel_TEMP.rds")
+## Run only if directory in writing mode
+if (file.access(getwd()) == 0 && !file.exists(snpIndexTmp) &&
+        !file.exists(filterSNVFile)) {
 
     ## Create a data.frame containing the information of the retained
     ## samples (samples with existing genotyping files)

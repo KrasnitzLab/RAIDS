@@ -2078,6 +2078,13 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' The possible choices are: "DNA" and "RNA". The type of study affects the
 #' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
 #'
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
+#'
+#' @param blockTypeID a \code{character} string corresponding to the block
+#' type used to extract the block identifiers. The block type must be
+#' present in the GDS Reference Annotation file.
+#'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
 #'
@@ -2120,7 +2127,9 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' @keywords @internal
 runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfile, pathProfileGDS,
                                pathOut, chrInfo, syntheticRefDF, studyDFSyn, listProfileRef,
-                               studyType=c("DNA", "RNA"), verbose=FALSE) {
+                               studyType=c("DNA", "RNA"),
+                               np=1L, blockTypeID=NULL,
+                               verbose=FALSE) {
 
     ## Validate parameters TODO
     # validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
@@ -2132,29 +2141,35 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
     studyType <- arg_match(studyType)
 
     pruningSample(gdsReference=gdsReference, currentProfile=currentProfile,
-                  studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS)
+            studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS,
+            np=np)
+
     fileGDSProfile <- file.path(pathProfileGDS,
                                  paste0(currentProfile, ".gds"))
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
-                     currentProfile=currentProfile,
-                     studyID=studyDF$study.id)
+                    currentProfile=currentProfile,
+                    studyID=studyDF$study.id)
+
     addStudy1Kg(gdsReference, fileGDSProfile)
 
     gdsProfile <- openfn.gds(fileGDSProfile, readonly=FALSE)
 
     estimateAllelicFraction(gdsReference=gdsReference, gdsProfile=gdsProfile,
-                            currentProfile=currentProfile, studyID=studyDF$study.id,
-                            chrInfo=chrInfo, studyType=studyType, gdsRefAnnot=gdsRefAnnot, verbose=verbose)
+                currentProfile=currentProfile, studyID=studyDF$study.id,
+                chrInfo=chrInfo, studyType=studyType,
+                gdsRefAnnot=gdsRefAnnot,
+                blockID=blockTypeID,
+                verbose=verbose)
     closefn.gds(gdsProfile)
 
     ## Add information related to the synthetic profiles in Profile GDS file
     prepSynthetic(fileProfileGDS=fileGDSProfile,
-                  listSampleRef=listProfileRef,  profileID=currentProfile,
-                  studyDF=studyDFSyn, prefix="1", verbose=verbose)
+            listSampleRef=listProfileRef,  profileID=currentProfile,
+            studyDF=studyDFSyn, prefix="1", verbose=verbose)
 
     resG <- syntheticGeno(gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
-                          fileProfileGDS=fileGDSProfile, profileID=currentProfile,
-                          listSampleRef=listProfileRef, prefix="1")
+                    fileProfileGDS=fileGDSProfile, profileID=currentProfile,
+                    listSampleRef=listProfileRef, prefix="1")
 
     if(! file.exists(pathOut)) {
         dir.create(pathOut)
@@ -2182,7 +2197,7 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
             synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
                                                sampleRM=sampleRM[x,],
                                                studyIDSyn=studyDFSyn$study.id,
-                                               np=1L, spRef=spRef,
+                                               np=np, spRef=spRef,
                                                eigenCount=15L,
                                                verbose=verbose)
 
@@ -2220,7 +2235,7 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
     resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsReference,
                                                 gdsProfile=gdsProfile, listFiles=listFiles,
                                                 currentProfile=currentProfile, spRef=spRef,
-                                                studyIDSyn=studyDFSyn$study.id, np=1L)
+                                                studyIDSyn=studyDFSyn$study.id, np=np)
 
     saveRDS(resCall, file.path(pathOut,
                                paste0(currentProfile, ".infoCall", ".rds")))
@@ -2302,6 +2317,13 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 #' where Count is the deep at the position,
 #' FileR is the deep of the reference allele, and
 #' File1A is the deep of the specific alternative allele
+#'
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
+#'
+#' @param blockTypeID a \code{character} string corresponding to the block
+#' type used to extract the block identifiers. The block type must be
+#' present in the GDS Reference Annotation file.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
@@ -2429,7 +2451,10 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                              pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                              chrInfo, syntheticRefDF,
-                             genoSource=c("snp-pileup", "generic"), studyType=c("DNA", "RNA"), verbose=FALSE) {
+                             genoSource=c("snp-pileup", "generic"),
+                             studyType=c("DNA", "RNA"),
+                             np=1L, blockTypeID=NULL,
+                             verbose=FALSE) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
@@ -2470,7 +2495,9 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                        pathOut, chrInfo,
                        syntheticRefDF, studyDFSyn,
                        listProfileRef,
-                       studyType, verbose)
+                       studyType,
+                       np=np, blockTypeID=blockTypeID,
+                       verbose)
         return(NULL)
     }, gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
     studyDF=studyDF, pathProfileGDS=pathProfileGDS, pathOut=pathOut,

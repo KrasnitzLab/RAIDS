@@ -17,6 +17,7 @@ runExomeAncestry(
   chrInfo,
   syntheticRefDF,
   genoSource = c("snp-pileup", "generic"),
+  np = 1L,
   verbose = FALSE
 )
 }
@@ -76,6 +77,9 @@ Chromosome,Position,Ref,Alt,Count,File1R,File1A
 where Count is the deep at the position,
 FileR is the deep of the reference allele, and
 File1A is the deep of the specific alternative allele}
+
+\item{np}{a single positive \code{integer} specifying the number of
+threads to be used. Default: \code{1L}.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}

@@ -18,6 +18,8 @@ runProfileAncestry(
   studyDFSyn,
   listProfileRef,
   studyType = c("DNA", "RNA"),
+  np = 1L,
+  blockTypeID = NULL,
   verbose = FALSE
 )
 }
@@ -72,6 +74,13 @@ generate the synthetic profiles.}
 \item{studyType}{a \code{character} string representing the type of study.
 The possible choices are: "DNA" and "RNA". The type of study affects the
 way the estimation of the allelic fraction is done. Default: \code{"DNA"}.}
+
+\item{np}{a single positive \code{integer} specifying the number of
+threads to be used. Default: \code{1L}.}
+
+\item{blockTypeID}{a \code{character} string corresponding to the block
+type used to extract the block identifiers. The block type must be
+present in the GDS Reference Annotation file.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}

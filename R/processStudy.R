@@ -2384,6 +2384,9 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' FileR is the deep of the reference allele, and
 #' File1A is the deep of the specific alternative allele
 #'
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
+#'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
 #'
@@ -2509,7 +2512,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                     chrInfo, syntheticRefDF,
-                    genoSource=c("snp-pileup", "generic"), verbose=FALSE) {
+                    genoSource=c("snp-pileup", "generic"), np=1L,
+                    verbose=FALSE) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
@@ -2523,7 +2527,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
         pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-        chrInfo, syntheticRefDF, genoSource, studyType="DNA", verbose)
+        chrInfo, syntheticRefDF, genoSource, studyType="DNA", np=np, verbose)
 
     ## Successful
     return(r)
@@ -2592,6 +2596,13 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' where Count is the deep at the position,
 #' FileR is the deep of the reference allele, and
 #' File1A is the deep of the specific alternative allele
+#'
+#' @param np a single positive \code{integer} specifying the number of
+#' threads to be used. Default: \code{1L}.
+#'
+#' @param blockTypeID a \code{character} string corresponding to the block
+#' type used to extract the block identifiers. The block type must be
+#' present in the GDS Reference Annotation file.
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
@@ -2718,7 +2729,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
             chrInfo, syntheticRefDF,
-            genoSource=c("snp-pileup", "generic"), verbose=FALSE) {
+            genoSource=c("snp-pileup", "generic"), np=1L,
+            blockTypeID, verbose=FALSE) {
 
     ## Validate parameters
     validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
@@ -2731,7 +2743,8 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
         pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-        chrInfo, syntheticRefDF, genoSource, studyType="RNA", verbose)
+        chrInfo, syntheticRefDF, genoSource, studyType="RNA", np=np,
+        blockTypeID=blockTypeID, verbose)
 
     ## Successful
     return(r)

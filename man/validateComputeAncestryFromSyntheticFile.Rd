@@ -27,7 +27,7 @@ validateComputeAncestryFromSyntheticFile(
 }
 \arguments{
 \item{gdsReference}{an object of class \link[gdsfmt]{gds.class} (a GDS
-file), the opened 1KG GDS file.}
+file), the opened Population Reference GDS file.}
 
 \item{gdsProfile}{an object of class \code{\link[gdsfmt]{gds.class}}
 (a GDS file), the opened Profile GDS file.}
@@ -41,7 +41,8 @@ exist.}
 identifier of the current profile on which ancestry will be inferred.}
 
 \item{spRef}{a \code{vector} of \code{character} strings representing the
-known super population ancestry for the 1KG profiles. The 1KG profile
+known super population ancestry for the 1KG profiles. The Population
+Reference profile
 identifiers are used as names for the \code{vector}.}
 
 \item{studyIDSyn}{a \code{character} string corresponding to the study
@@ -96,7 +97,7 @@ This function validates the input parameters for the
 ## Directory where demo GDS files are located
 dataDir <- system.file("extdata", package="RAIDS")
 
-## The 1KG GDS file (opened)
+## The 1KG Population Reference GDS demo file (opened)
 gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
 
 ## The Profile GDS (opened)

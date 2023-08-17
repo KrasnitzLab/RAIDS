@@ -132,7 +132,7 @@ test_that("appendStudy2GDS1KG() must return error when fileNameGDS is numeric", 
                     stringsAsFactors=FALSE)
 
     error_message <- paste0("The \'fileNameGDS\' must be a character string ",
-                        "representing the GDS 1KG file. The file must exist.")
+        "representing the Population Reference GDS file. The file must exist.")
 
     expect_error(appendStudy2GDS1KG(pathGeno=test_path("fixtures"),
         filePedRDS=sampleRDS, fileNameGDS=33, batch=1,
@@ -1206,8 +1206,8 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
                     Sample.Type=rep("Primary Tumor", 3),
                     Source=rep("Databank B", 3), stringsAsFactors=FALSE)
 
-    error_message <- paste0("The \'fileNameGDS\' must be a character ",
-                "string representing the GDS 1KG file. The file must exist.")
+    error_message <- paste0("The \'fileNameGDS\' must be a character string ",
+        "representing the Population Reference GDS file. The file must exist.")
 
     expect_error(createStudy2GDS1KG(pathGeno=dataDir,
                         filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=33,

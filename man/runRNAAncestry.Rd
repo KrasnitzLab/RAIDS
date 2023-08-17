@@ -188,7 +188,7 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 
 \dontrun{
-runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+runRNAAncestry(pedStudy=ped, studyDF=studyDF,
                     pathProfileGDS=pathProfileGDS,
                     pathGeno=pathGeno,
                     pathOut=pathOut,
@@ -196,6 +196,7 @@ runExomeAncestry(pedStudy=ped, studyDF=studyDF,
                     fileReferenceAnnotGDS=fileAnnotGDS,
                     chrInfo=chrInfo,
                     syntheticRefDF=dataRef,
+                    blockTypeID="GeneS.Ensembl.Hsapiens.v86",
                     genoSource="snp-pileup")
 
 unlink(pathProfileGDS, recursive=TRUE, force=TRUE)

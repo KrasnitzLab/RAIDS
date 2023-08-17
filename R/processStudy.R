@@ -2701,7 +2701,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#' runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+#' runRNAAncestry(pedStudy=ped, studyDF=studyDF,
 #'                     pathProfileGDS=pathProfileGDS,
 #'                     pathGeno=pathGeno,
 #'                     pathOut=pathOut,
@@ -2709,6 +2709,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'                     fileReferenceAnnotGDS=fileAnnotGDS,
 #'                     chrInfo=chrInfo,
 #'                     syntheticRefDF=dataRef,
+#'                     blockTypeID="GeneS.Ensembl.Hsapiens.v86",
 #'                     genoSource="snp-pileup")
 #'
 #' unlink(pathProfileGDS, recursive=TRUE, force=TRUE)

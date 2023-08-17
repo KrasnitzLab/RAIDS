@@ -210,36 +210,31 @@ printed. Default: <code>FALSE</code>.</p></dd>
 <span class="r-in"><span>                    Source<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Databank B"</span>, <span class="fl">2</span><span class="op">)</span>, stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">samplePED</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">samplePED</span><span class="op">$</span><span class="va">Name.ID</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Create the Profile GDS File for sample in listSamples vector</span></span></span>
-<span class="r-in"><span><span class="co">## (in this case, samples "ex1")</span></span></span>
-<span class="r-in"><span><span class="co">## The Profile GDS file is created in the pathProfileGDS directory</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStudy2GDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span><span class="co">## Run only if directory in writing mode</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span></span></span>
+<span class="r-in"><span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## Create the Profile GDS File for samples in 'listSamples' vector</span></span></span>
+<span class="r-in"><span>    <span class="co">## (in this case, samples "ex1")</span></span></span>
+<span class="r-in"><span>    <span class="co">## The Profile GDS file is created in the pathProfileGDS directory</span></span></span>
+<span class="r-in"><span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStudy2GDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>            pedStudy<span class="op">=</span><span class="va">samplePED</span>, fileNameGDS<span class="op">=</span><span class="va">fileGDS</span>,</span></span>
 <span class="r-in"><span>            studyDF<span class="op">=</span><span class="va">studyDF</span>, listProfiles<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ex1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            genoSource<span class="op">=</span><span class="st">"snp-pileup"</span>,</span></span>
 <span class="r-in"><span>            verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The function returns OL when successful</span></span></span>
-<span class="r-in"><span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-in"><span>    <span class="co">## The function returns OL when successful</span></span></span>
+<span class="r-in"><span>    <span class="va">result</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The Profile GDS file 'ex1.gds' has been created in the</span></span></span>
-<span class="r-in"><span><span class="co">## specified directory</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">dataDir</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "1KG_Test.gds"                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "1KG_Test_02.gds"                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Sample_Info_Test.RDS"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ex1.gds"                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "ex1.txt.gz"                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "ex1_demo.gds"                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ex1_demo_with_pruning.gds"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "ex1_demo_with_pruning_and_1KG_annot.gds"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "ex1_good_small_1KG_Annot_GDS.gds"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ex1_good_small_1KG_GDS.gds"             </span>
+<span class="r-in"><span>    <span class="co">## The Profile GDS file 'ex1.gds' has been created in the</span></span></span>
+<span class="r-in"><span>    <span class="co">## specified directory</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Unlink Profile GDS file (created for demo purpose)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## Remove Profile GDS file (created for demo purpose)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

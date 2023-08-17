@@ -99,7 +99,7 @@ RDS file that contains the information about the sample to analyse.</p></dd>
 
 <dt>fileNameGDS</dt>
 <dd><p>a <code>character</code> string representing the file name of
-the 1KG GDS file. The file must exist.</p></dd>
+the Population Reference GDS file. The file must exist.</p></dd>
 
 
 <dt>batch</dt>
@@ -155,6 +155,7 @@ printed.</p></dd>
 <span class="r-in"><span><span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Demo 1KG Population reference GDS file</span></span></span>
 <span class="r-in"><span><span class="va">gds1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"1KG_Demo.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"unrelatedPatientsInfo_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

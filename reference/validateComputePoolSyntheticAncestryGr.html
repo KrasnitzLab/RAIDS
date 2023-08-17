@@ -101,13 +101,14 @@ opened Profile GDS file.</p></dd>
 
 <dt>sampleRM</dt>
 <dd><p>a <code>vector</code> of <code>character</code> strings representing
-the identifiers of the 1KG reference samples that should not be used to
-create the reference PCA.</p></dd>
+the identifiers of the population reference samples that should not
+be used to create the reference PCA.</p></dd>
 
 
 <dt>spRef</dt>
 <dd><p>a <code>vector</code> of <code>character</code> strings representing the
-known super population ancestry for the 1KG profiles. The 1KG profile
+known super population ancestry for the population reference profiles.
+The population reference profile
 identifiers are used as names for the <code>vector</code>.</p></dd>
 
 
@@ -198,7 +199,7 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="va">gdsSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">"GDS_Sample_with_study_demo.gds"</span><span class="op">)</span>, readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The known super population ancestry for the 1KG profiles</span></span></span>
+<span class="r-in"><span><span class="co">## The known super population ancestry for the population reference profiles</span></span></span>
 <span class="r-in"><span><span class="va">spRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EUR"</span>, <span class="st">"SAS"</span>, <span class="st">"EAS"</span>, <span class="st">"EUR"</span>, <span class="st">"AFR"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">spRef</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00100"</span>, <span class="st">"HG00101"</span>, <span class="st">"HG00102"</span>, <span class="st">"HG00103"</span>, <span class="st">"HG00104"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

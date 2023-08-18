@@ -298,7 +298,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' @examples
 #'
 #' ## Required library for GDS
-#' library(gdsfmt)
+#' library(SNPRelate)
 #'
 #' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -383,69 +383,77 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
     # Include a field for LOH but will be fill elsewhere
     homoBlock$LOH <- rep(0, nrow(homoBlock))
 
-    for (i in seq_len(nrow(homoBlock))) {
-        blcCur <- blcSNV[blcSNV$block == i, ]
-        snvH <- snpPos[blcCur$snv, ]
-        lH1 <- 0
-        lM1 <- 0
-        logLHR <- 0
-        homoBlock$nbSNV[i] <- nrow(blcCur)
-        homoBlock$nbPruned[i] <- length(which(snvH$pruned))
-        if (length(which(snvH$normal.geno != 3)) > 0) {
-            listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
-            homoBlock$nbNorm[i] <- length(listCount)
+    homoBlock <- lapply(seq_len(nrow(homoBlock)),
+                    FUN=function(i, homoBlock, blcSNV,
+                                 listAF,snpPos){
+                        blcCur <- blcSNV[blcSNV$block == i, ]
+                        snvH <- snpPos[blcCur$snv, ]
+                        lH1 <- 0
+                        lM1 <- 0
+                        logLHR <- 0
+                        homoBlock$nbSNV[i] <- nrow(blcCur)
+                        homoBlock$nbPruned[i] <- length(which(snvH$pruned))
+                        if (length(which(snvH$normal.geno != 3)) > 0) {
+                            listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
+                            homoBlock$nbNorm[i] <- length(listCount)
 
-            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                    c("cnt.ref", "cnt.tot"), drop=FALSE],
-                            1, FUN=function(x){
-                                return(dbinom(x[1], x[2], 0.5))
-                                # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
-                                })))
+                            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                       c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                  1, FUN=function(x){
+                                                      return(dbinom(x[1], x[2], 0.5))
+                                                      # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
+                                                  })))
 
-            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                        c("cnt.ref", "cnt.tot"), drop=FALSE],
-                            1, FUN=function(x){
-                                return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                        #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                            })))
-            logLHR <- -100
+                            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                   1, FUN=function(x){
+                                                       return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
+                                                       #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                                                   })))
+                            logLHR <- -100
 
-        } else if (length(which(snvH$pruned)) > 2) {
-            afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
-            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
-                            FUN=function(x){max(x, 0.01)})
-            snvR <- snvH$cnt.ref[which(snvH$pruned)] >
-                        snvH$cnt.alt[which(snvH$pruned)]
+                        } else if (length(which(snvH$pruned)) > 2) {
+                            afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
+                            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
+                                           FUN=function(x){max(x, 0.01)})
+                            snvR <- snvH$cnt.ref[which(snvH$pruned)] >
+                                snvH$cnt.alt[which(snvH$pruned)]
 
-            # Check if it is unlikely the genotype are homo by error
-            lH1 <- -100
-            # Freq of the more likely geno
+                            # Check if it is unlikely the genotype are homo by error
+                            lH1 <- -100
+                            # Freq of the more likely geno
 
-            tmp <- apply(matrix(afSNV, ncol=1), 1,
-                        FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
-            # log10 (prod(FreqAllele^2) / prod(freq of more likely genotype))
-            # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
-            # (snvR = 1 homo ref
-            # and 0 if homo alt)
-            logLHR <- sum(2 * log10(snvR * 1 + (-1)^snvR * afSNV)) -
-                sum(log10(tmp))
-        }
+                            tmp <- apply(matrix(afSNV, ncol=1), 1,
+                                         FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
+                            # log10 (prod(FreqAllele^2) / prod(freq of more likely genotype))
+                            # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
+                            # (snvR = 1 homo ref
+                            # and 0 if homo alt)
+                            logLHR <- sum(2 * log10(snvR * 1 + (-1)^snvR * afSNV)) -
+                                sum(log10(tmp))
+                        }
 
-        homoBlock$logLHR[i] <- max(logLHR, -100)
-        homoBlock$LH1[i] <- lH1
-        homoBlock$LM1[i] <- lM1
-        homoBlock$homoScore[i] <- lH1 - lM1
-    } # end for each block
+                        homoBlock$logLHR[i] <- max(logLHR, -100)
+                        homoBlock$LH1[i] <- lH1
+                        homoBlock$LM1[i] <- lM1
+                        homoBlock$homoScore[i] <- lH1 - lM1
+                        return(homoBlock[i,])
+                    }, homoBlock=homoBlock,
+                    blcSNV=blcSNV, listAF=listAF,
+                    snpPos=snpPos)
+    homoBlock = do.call(rbind,homoBlock)
 
     return(homoBlock)
 }
 
-#' @title TODO
+#' @title TOREVIEW For each imbalance segments compute the allelic fraction
 #'
-#' @description TODO
+#' @description TOREVIEW Compute the allelic fraction for each segment different
+#' than 0.5. The allelic fraction of the segment can be decomposed in
+#' sub-segments.
 #'
 #' @param snpPos a \code{data.frame} containing the genotype information for
-#' a SNV dataset. TODO
+#' a SNV dataset.
 #'
 #' @param w a single positive \code{numeric} representing the size of the
 #' window to compute the allelic fraction.
@@ -493,7 +501,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
 computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 
     listBlockAR <- list()
-    j <- 1
+
     tmp <- as.integer(snpPos$imbAR == 1)
     z <- cbind(c(tmp[1], tmp[-1] - tmp[seq_len(length(tmp) -1)]),
                c(tmp[-1] - tmp[seq_len(length(tmp) -1)], tmp[length(tmp)] * -1))
@@ -505,96 +513,192 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
         segImb <- data.frame(start=seq_len(nrow(snpPos))[which(z[,1] > 0)],
                              end=seq_len(nrow(snpPos))[which(z[,2] < 0)])
 
-        for(i in seq_len(nrow(segImb))) {
-            # index of the segment
-            listSeg <- (segImb$start[i]):(segImb$end[i])
-            # index hetero segment
-            listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
-            # SNP hetero for the segment
-            snp.hetero <- snpPos[listHetero,]
+        # FORLOOP TOREVIEW Pascal
+        # after remove the comment code
+        listBlockAR <- lapply(seq_len(nrow(segImb)),
+                        FUN=function(i, segImb, snpPos, w,
+                            cutOff){
+                                listBlockAR <- list()
+                                j<-1
+                                listSeg <- (segImb$start[i]):(segImb$end[i])
+                                # index hetero segment
+                                listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
+                                # SNP hetero for the segment
+                                snp.hetero <- snpPos[listHetero,]
 
-            if(nrow(snp.hetero) >= 2 * w) {
-                lapCur <- median(apply(snp.hetero[seq_len(w),
-                                                  c("cnt.ref", "cnt.alt")], 1, min) /
-                                     (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
+                                if(nrow(snp.hetero) >= 2 * w) {
+                                    lapCur <- median(apply(snp.hetero[seq_len(w),
+                                                                      c("cnt.ref", "cnt.alt")], 1, min) /
+                                                         (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
 
-                start <- 1
-                k <- w + 1
-                while(k < nrow(snp.hetero)) {
-                    # We have (k+w-1) <= nrow(snp.hetero)
-                    # Case 1 true because (nrow(snp.hetero) >= 2 * w
-                    # Other case nrow(snp.hetero) >= w+k - 1
-                    curWin <- testAlleleFractionChange(snp.hetero[k:(k+w-1),
-                                                                  c("cnt.ref", "cnt.alt")], cutOff, lapCur)
+                                    start <- 1
+                                    k <- w + 1
+                                    while(k < nrow(snp.hetero)) {
+                                        # We have (k+w-1) <= nrow(snp.hetero)
+                                        # Case 1 true because (nrow(snp.hetero) >= 2 * w
+                                        # Other case nrow(snp.hetero) >= w+k - 1
+                                        curWin <- testAlleleFractionChange(snp.hetero[k:(k+w-1),
+                                                                                      c("cnt.ref", "cnt.alt")], cutOff, lapCur)
 
-                    if(curWin$pCut1 == 1){ # new Region the allelicFraction
-                        # table of the index of the block with lapCur
-                        listBlockAR[[j]] <- c(listHetero[start],
-                                              listHetero[k], lapCur)
+                                        if(curWin$pCut1 == 1){ # new Region the allelicFraction
+                                            # table of the index of the block with lapCur
+                                            listBlockAR[[j]] <- c(listHetero[start],
+                                                                  listHetero[k], lapCur)
 
-                        lapCur <- median(apply(snp.hetero[k:(k+w-1),
-                                                          c("cnt.ref", "cnt.alt")], 1, min) /
-                                             (rowSums(snp.hetero[k:(k+w-1),
-                                                                 c("cnt.ref", "cnt.alt")])))
+                                            lapCur <- median(apply(snp.hetero[k:(k+w-1),
+                                                                              c("cnt.ref", "cnt.alt")], 1, min) /
+                                                                 (rowSums(snp.hetero[k:(k+w-1),
+                                                                                     c("cnt.ref", "cnt.alt")])))
 
-                        start <- k
+                                            start <- k
 
-                        if(nrow(snp.hetero) - start < w) { # Close the segment
-                            lapCur <-
-                                median(apply(snp.hetero[start:nrow(snp.hetero),
-                                                        c("cnt.ref", "cnt.alt")], 1, min) /
-                                           (rowSums(snp.hetero[start:nrow(snp.hetero),
-                                                               c("cnt.ref", "cnt.alt")])))
+                                            if(nrow(snp.hetero) - start < w) { # Close the segment
+                                                lapCur <-
+                                                    median(apply(snp.hetero[start:nrow(snp.hetero),
+                                                                            c("cnt.ref", "cnt.alt")], 1, min) /
+                                                               (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                                                                   c("cnt.ref", "cnt.alt")])))
 
-                            listBlockAR[[j]] <- c(listHetero[start],
-                                                  segImb$end[i], lapCur)
+                                                listBlockAR[[j]] <- c(listHetero[start],
+                                                                      segImb$end[i], lapCur)
 
-                            j <- j+1
-                            k <- nrow(snp.hetero)
-                        }else{ # nrow(snp.hetero) >= w+k
-                            k<- k + 1
-                            j <- j + 1
+                                                j <- j+1
+                                                k <- nrow(snp.hetero)
+                                            }else{ # nrow(snp.hetero) >= w+k
+                                                k<- k + 1
+                                                j <- j + 1
 
-                        }
-                    }else{ # keep the same region
-                        if((nrow(snp.hetero) - k ) < w){ # close
-                            lapCur <-
-                                median(apply(snp.hetero[start:nrow(snp.hetero),
-                                                        c("cnt.ref", "cnt.alt")], 1, min) /
-                                           (rowSums(snp.hetero[start:nrow(snp.hetero),
-                                                               c("cnt.ref", "cnt.alt")])))
+                                            }
+                                        }else{ # keep the same region
+                                            if((nrow(snp.hetero) - k ) < w){ # close
+                                                lapCur <-
+                                                    median(apply(snp.hetero[start:nrow(snp.hetero),
+                                                                            c("cnt.ref", "cnt.alt")], 1, min) /
+                                                               (rowSums(snp.hetero[start:nrow(snp.hetero),
+                                                                                   c("cnt.ref", "cnt.alt")])))
 
-                            listBlockAR[[j]] <- c(listHetero[start],
-                                                  segImb$end[i], lapCur)
+                                                listBlockAR[[j]] <- c(listHetero[start],
+                                                                      segImb$end[i], lapCur)
 
-                            j <- j + 1
+                                                j <- j + 1
 
-                            k <- nrow(snp.hetero)
-                        } else{ # continue nrow(snp.hetero) >= w+k
-                            lapCur <- median(apply(snp.hetero[start:k,
-                                                              c("cnt.ref", "cnt.alt")], 1, min) /
-                                                 (rowSums(snp.hetero[start:k,c("cnt.ref",
-                                                                               "cnt.alt")])))
+                                                k <- nrow(snp.hetero)
+                                            } else{ # continue nrow(snp.hetero) >= w+k
+                                                lapCur <- median(apply(snp.hetero[start:k,
+                                                                                  c("cnt.ref", "cnt.alt")], 1, min) /
+                                                                     (rowSums(snp.hetero[start:k,c("cnt.ref",
+                                                                                                   "cnt.alt")])))
 
-                            k <- k + 1
-                        }
-                    }
-                }# End while
-            }else {
-                lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
-                                       1, min) / (rowSums(snp.hetero[,c("cnt.ref",
-                                                                        "cnt.alt")])))
+                                                k <- k + 1
+                                            }
+                                        }
+                                    }# End while
+                                }else {
+                                    lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
+                                                           1, min) / (rowSums(snp.hetero[,c("cnt.ref",
+                                                                                            "cnt.alt")])))
 
-                listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
+                                    listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
 
-                j <- j + 1
-            }
-        }
+                                    j <- j + 1
+                                }
+                                listBlockAR <- do.call(rbind, listBlockAR)
+                                return(listBlockAR)
+                            },
+                        segImb=segImb, snpPos=snpPos,
+                        w=w, cutOff=cutOff)
+        # listBlockAR <- do.call(rbind, listBlockAR)
+        # j <- 1
+        # for(i in seq_len(nrow(segImb))) {
+        #     # index of the segment
+        #     listSeg <- (segImb$start[i]):(segImb$end[i])
+        #     # index hetero segment
+        #     listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
+        #     # SNP hetero for the segment
+        #     snp.hetero <- snpPos[listHetero,]
+        #
+        #     if(nrow(snp.hetero) >= 2 * w) {
+        #         lapCur <- median(apply(snp.hetero[seq_len(w),
+        #                                           c("cnt.ref", "cnt.alt")], 1, min) /
+        #                              (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
+        #
+        #         start <- 1
+        #         k <- w + 1
+        #         while(k < nrow(snp.hetero)) {
+        #             # We have (k+w-1) <= nrow(snp.hetero)
+        #             # Case 1 true because (nrow(snp.hetero) >= 2 * w
+        #             # Other case nrow(snp.hetero) >= w+k - 1
+        #             curWin <- testAlleleFractionChange(snp.hetero[k:(k+w-1),
+        #                                                           c("cnt.ref", "cnt.alt")], cutOff, lapCur)
+        #
+        #             if(curWin$pCut1 == 1){ # new Region the allelicFraction
+        #                 # table of the index of the block with lapCur
+        #                 listBlockAR[[j]] <- c(listHetero[start],
+        #                                       listHetero[k], lapCur)
+        #
+        #                 lapCur <- median(apply(snp.hetero[k:(k+w-1),
+        #                                                   c("cnt.ref", "cnt.alt")], 1, min) /
+        #                                      (rowSums(snp.hetero[k:(k+w-1),
+        #                                                          c("cnt.ref", "cnt.alt")])))
+        #
+        #                 start <- k
+        #
+        #                 if(nrow(snp.hetero) - start < w) { # Close the segment
+        #                     lapCur <-
+        #                         median(apply(snp.hetero[start:nrow(snp.hetero),
+        #                                                 c("cnt.ref", "cnt.alt")], 1, min) /
+        #                                    (rowSums(snp.hetero[start:nrow(snp.hetero),
+        #                                                        c("cnt.ref", "cnt.alt")])))
+        #
+        #                     listBlockAR[[j]] <- c(listHetero[start],
+        #                                           segImb$end[i], lapCur)
+        #
+        #                     j <- j+1
+        #                     k <- nrow(snp.hetero)
+        #                 }else{ # nrow(snp.hetero) >= w+k
+        #                     k<- k + 1
+        #                     j <- j + 1
+        #
+        #                 }
+        #             }else{ # keep the same region
+        #                 if((nrow(snp.hetero) - k ) < w){ # close
+        #                     lapCur <-
+        #                         median(apply(snp.hetero[start:nrow(snp.hetero),
+        #                                                 c("cnt.ref", "cnt.alt")], 1, min) /
+        #                                    (rowSums(snp.hetero[start:nrow(snp.hetero),
+        #                                                        c("cnt.ref", "cnt.alt")])))
+        #
+        #                     listBlockAR[[j]] <- c(listHetero[start],
+        #                                           segImb$end[i], lapCur)
+        #
+        #                     j <- j + 1
+        #
+        #                     k <- nrow(snp.hetero)
+        #                 } else{ # continue nrow(snp.hetero) >= w+k
+        #                     lapCur <- median(apply(snp.hetero[start:k,
+        #                                                       c("cnt.ref", "cnt.alt")], 1, min) /
+        #                                          (rowSums(snp.hetero[start:k,c("cnt.ref",
+        #                                                                        "cnt.alt")])))
+        #
+        #                     k <- k + 1
+        #                 }
+        #             }
+        #         }# End while
+        #     }else {
+        #         lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
+        #                                1, min) / (rowSums(snp.hetero[,c("cnt.ref",
+        #                                                                 "cnt.alt")])))
+        #
+        #         listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
+        #
+        #         j <- j + 1
+        #     }
+        # }
     }
 
     # note NULL if length(listBlockAR) == 0
     listBlockAR <- do.call(rbind, listBlockAR)
-
+    # print(all.equal(listBlockAR, listBlockAR1))
     return(listBlockAR)
 }
 
@@ -742,63 +846,66 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
     snpPos$imbAR <- rep(-1, nrow(snpPos))
 
 
-    homoBlock <- list()
 
-    for(chr in unique(snpPos$snp.chr)) {
+    snpPos <- lapply(unique(snpPos$snp.chr),
+            FUN=function(chr,snpPos){
+                if (verbose) {
+                    message("chr ", chr)
+                    message("Step 1 ", Sys.time())
+                }
+                homoBlock <- list()
+                listChr <- which(snpPos$snp.chr == chr)
+                ## Identify LOH regions
+                homoBlock[[chr]] <- computeLOHBlocksDNAChr(
+                                        gdsReference=gdsReference,
+                                        chrInfo=chrInfo,
+                                        snpPos=snpPos[listChr,],
+                                        chr=chr)
 
-        if (verbose) {
-            message("chr ", chr)
-            message("Step 1 ", Sys.time())
-        }
+                if (verbose) { message("Step 2 ", Sys.time()) }
 
-        listChr <- which(snpPos$snp.chr == chr)
+                homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
+                        cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
 
-        ## Identify LOH regions
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference,
-                chrInfo=chrInfo, snpPos=snpPos[listChr,], chr=chr)
-
-        if (verbose) { message("Step 2 ", Sys.time()) }
-
-        homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
-                    cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
-
-        z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
+                z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
                             snpPos[listChr, "snp.pos"]),
-                    c(rep(0,  2* nrow(homoBlock[[chr]])),
+                        c(rep(0,  2* nrow(homoBlock[[chr]])),
                             rep(1, length(listChr))),
-                    c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
-                                rep(0, length(listChr)) ),
-                    c(rep(0, 2 * nrow(homoBlock[[chr]])),
+                        c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
+                            rep(0, length(listChr)) ),
+                        c(rep(0, 2 * nrow(homoBlock[[chr]])),
                             seq_len(length(listChr))))
 
-        z <- z[order(z[,1], z[,2]), ]
-        pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
-        snpPos[listChr[pos], "lap"] <- 0
-        snpPos[listChr[pos], "LOH"] <- 1
+                z <- z[order(z[,1], z[,2]), ]
+                pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
+                snpPos[listChr[pos], "lap"] <- 0
+                snpPos[listChr[pos], "LOH"] <- 1
 
-        if (verbose) { message("Step 3 ", Sys.time()) }
+                if (verbose) { message("Step 3 ", Sys.time()) }
 
-        ## Identify imbalanced SNVs in specified chromosome
-        snpPos[listChr, "imbAR"] <-
-            computeAllelicImbDNAChr(snpPos=snpPos[listChr, ], chr=chr,
-                                        wAR=10, cutOffEmptyBox=-3)
+                ## Identify imbalanced SNVs in specified chromosome
+                snpPos[listChr, "imbAR"] <-
+                    computeAllelicImbDNAChr(snpPos=snpPos[listChr, ], chr=chr,
+                        wAR=10, cutOffEmptyBox=-3)
 
-        if (verbose) { message("Step 4 ", Sys.time()) }
+                if (verbose) { message("Step 4 ", Sys.time()) }
 
-        ## Compute allelic fraction for SNVs in specified chromosome
-        blockAF <- computeAlleleFraction(snpPos=snpPos[listChr, ],
-                                            w=10, cutOff=-3)
+                ## Compute allelic fraction for SNVs in specified chromosome
+                blockAF <- computeAlleleFraction(snpPos=snpPos[listChr, ],
+                                                w=10, cutOff=-3)
 
-        if (verbose) { message("Step 5 ", Sys.time()) }
+                if (verbose) { message("Step 5 ", Sys.time()) }
 
-        if(! is.null(blockAF)) {
-            for(i in seq_len(nrow(blockAF))) {
-                snpPos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
-                    blockAF[i, 3]
-            }
-        }
-    }
-
+                if(! is.null(blockAF)) {
+                    for(i in seq_len(nrow(blockAF))) {
+                        snpPos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                            blockAF[i, 3]
+                    }
+                }
+                return(snpPos[listChr,])
+            },
+            snpPos=snpPos)
+    snpPos <- do.call(rbind, snpPos)
     snpPos[which(snpPos[, "lap"] == -1), "lap"] <- 0.5
 
     return(snpPos)
@@ -843,7 +950,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' @param eProb a single \code{numeric} between 0 and 1 representing the
 #' probability of sequencing error. Default: \code{0.001}.
 #'
-#' @param cutOffLOH a single log of the score to be LOH TODO.
+#' @param cutOffLOH a single \code{numeric} log of the score to be LOH.
 #' Default: \code{-5}.
 #'
 #' @param cutOffAR a single \code{numeric} representing the cutoff, in
@@ -854,8 +961,37 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' @param verbose a \code{logicial} indicating if the function should print
 #' message when running.
 #'
-#' @return a \code{data.frame} with lap for the pruned SNV dataset with
-#' coverage > \code{minCov}. TODO
+#' @return a \code{data.frame} containing the allelic information for the
+#' pruned SNV dataset with coverage > \code{minCov}. The \code{data.frame}
+#' contains those columns:
+#' \itemize{
+#' \item{cnt.tot} {a \code{integer} representing the total allele count}
+#' \item{cnt.ref} {a \code{integer} representing the reference allele count}
+#' \item{cnt.alt} {a \code{integer} representing the alternative allele count}
+#' \item{snp.pos} {a \code{integer} representing the position on the chromosome}
+#' \item{snp.chr} {a \code{integer} representing the chromosome}
+#' \item{normal.geno} {a \code{integer} representing the genotype
+#' (0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)}
+#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' pruning}
+#' \item{snp.index} {a \code{integer} representing the index position of the
+#' SNV in the Reference GDS file that contains all SNVs}
+#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
+#' \item{block.id} {TOREVIEW a \code{integer} indicating the block.id in gdsRefAnnot the
+#' vairant is in}
+#' \item{phase} {TOREVIEW a \code{integer} indicating the phase of the vairant
+#' if known, 3 if not known}
+#' \item{lap} {a \code{numeric} indicating lower allelic fraction}
+#' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' (0=not LOH, 1=in LOH)}
+#' \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
+#' region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+#' positive for imbalance in at least 1 window)}
+#' \item{freq} {a \code{numeric} indicating the frequency of the variant
+#' in the the reference}
+#' }
 #'
 #' @examples
 #'
@@ -1335,6 +1471,9 @@ calcAFMLRNA <- function(snpPosHetero) {
     listPhase <- which(snpPosHetero$phase < 2)
     m <- data.frame(aL=rep(0, nrow(snpPosHetero)),
                         aH=rep(0, nrow(snpPosHetero)))
+    # For the vairants phase
+    # sum the coverage for each haplotype
+    #
     if (length(listPhase) > 0) {
         mPhase <- data.frame(a1=rep(0, length(listPhase)),
                                 a2=rep(0, length(listPhase)))
@@ -1380,11 +1519,13 @@ calcAFMLRNA <- function(snpPosHetero) {
 }
 
 
-#' @title TOREVIEW Compile the information about the allelic fraction
+#' @title TOREVIEW Compile the information about the variants
 #' for each bloc.
 #'
 #' @description TOREVIEW For each block, the function evaluates a score
-#' about lost of heterizygocity and allelic fration.
+#' about lost of heterizygocity and allelic fration. It generates some
+#' information about the variants in the block like number of homozigte or
+#' heterozygote.
 #' In the case of RNA-seq the blocks are genes.
 #'
 #' @param snpPos For a specific chromosome a \code{data.frame} with lap for
@@ -1405,7 +1546,8 @@ calcAFMLRNA <- function(snpPosHetero) {
 #' the alternative allele.}
 #' \item{nPhase} {a single \code{integer} representin the number of SNV
 #' phases.}
-#' \item{sumAlleleLow} {a single \code{integer} TODO.}
+#' \item{sumAlleleLow} {a single \code{integer} sum of the allele with
+#' the minimum coverage.}
 #' \item{sumAlleleHigh} {a single \code{integer} TODO.}
 #' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}

@@ -3,13 +3,13 @@
 \encoding{UTF-8}
 \name{computeAlleleFraction}
 \alias{computeAlleleFraction}
-\title{TODO}
+\title{TOREVIEW For each imbalance segments compute the allelic fraction}
 \usage{
 computeAlleleFraction(snpPos, w = 10, cutOff = -3)
 }
 \arguments{
 \item{snpPos}{a \code{data.frame} containing the genotype information for
-a SNV dataset. TODO}
+a SNV dataset.}
 
 \item{w}{a single positive \code{numeric} representing the size of the
 window to compute the allelic fraction.
@@ -30,7 +30,9 @@ returned when none of the SNVs
 tested positive for the imbalance.
 }
 \description{
-TODO
+TOREVIEW Compute the allelic fraction for each segment different
+than 0.5. The allelic fraction of the segment can be decomposed in
+sub-segments.
 }
 \examples{
 

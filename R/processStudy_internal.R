@@ -1146,7 +1146,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 #'
 #' ## Returns OL when all parameters are valid
-#' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
+#' RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
 #'     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
 #'     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
 #'     chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup",
@@ -1155,7 +1155,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-validateRunExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
+validateRunExomeOrRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
     chrInfo, syntheticRefDF, genoSource, verbose) {
 
@@ -1793,6 +1793,9 @@ validateComputeKNNRefSample <- function(listEigenvector, listCatPop, spRef,
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(SNPRelate)
+#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #'
@@ -2039,8 +2042,8 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
     return(res)
 }
 
-#' @title TOREVIEW Run most steps leading to the ancestry inference call on a specific
-#' profile
+#' @title TOREVIEW Run most steps leading to the ancestry inference call on a
+#' specific profile
 #'
 #' @description This function runs most steps leading to the ancestry inference
 #' call on a specific profile. First, the function creates the Profile GDS file
@@ -2251,25 +2254,21 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' @importFrom utils write.csv
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
-#' @keywords @internal
-runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfile, pathProfileGDS,
-                               pathOut, chrInfo, syntheticRefDF, studyDFSyn, listProfileRef,
-                               studyType=c("DNA", "RNA"),
-                               np=1L, blockTypeID=NULL,
-                               verbose=FALSE) {
-
+#' @keywords internal
+runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
+    currentProfile, pathProfileGDS, pathOut, chrInfo, syntheticRefDF,
+    studyDFSyn, listProfileRef, studyType=c("DNA", "RNA"),
+    np=1L, blockTypeID=NULL, verbose=FALSE) {
 
     studyType <- arg_match(studyType)
 
     pruningSample(gdsReference=gdsReference, currentProfile=currentProfile,
-            studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS,
-            np=np)
+            studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
 
     fileGDSProfile <- file.path(pathProfileGDS,
                                  paste0(currentProfile, ".gds"))
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
-                    currentProfile=currentProfile,
-                    studyID=studyDF$study.id)
+                    currentProfile=currentProfile, studyID=studyDF$study.id)
 
     addStudy1Kg(gdsReference, fileGDSProfile)
 
@@ -2277,10 +2276,8 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 
     estimateAllelicFraction(gdsReference=gdsReference, gdsProfile=gdsProfile,
                 currentProfile=currentProfile, studyID=studyDF$study.id,
-                chrInfo=chrInfo, studyType=studyType,
-                gdsRefAnnot=gdsRefAnnot,
-                blockID=blockTypeID,
-                verbose=verbose)
+                chrInfo=chrInfo, studyType=studyType, gdsRefAnnot=gdsRefAnnot,
+                blockID=blockTypeID, verbose=verbose)
     closefn.gds(gdsProfile)
 
     ## Add information related to the synthetic profiles in Profile GDS file
@@ -2309,10 +2306,9 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 
     ## This variable will contain the results from the PCA analyses
     ## For each row of the sampleRM matrix
-    apply(t(t(seq_len(nrow(sampleRM)))), 1, FUN=function(x, sampleRM, gdsProfile,
-                                      studyDFSyn, spRef,
-                                      pathOutProfile,
-                                      currentProfile){
+    apply(t(t(seq_len(nrow(sampleRM)))), 1, FUN=function(x, sampleRM,
+                                        gdsProfile, studyDFSyn, spRef,
+                                        pathOutProfile, currentProfile) {
             synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
                                                sampleRM=sampleRM[x,],
                                                studyIDSyn=studyDFSyn$study.id,
@@ -2336,16 +2332,16 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
     listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
     resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsReference,
-                                                gdsProfile=gdsProfile, listFiles=listFiles,
-                                                currentProfile=currentProfile, spRef=spRef,
-                                                studyIDSyn=studyDFSyn$study.id, np=np)
+                        gdsProfile=gdsProfile, listFiles=listFiles,
+                        currentProfile=currentProfile, spRef=spRef,
+                        studyIDSyn=studyDFSyn$study.id, np=np)
 
     saveRDS(resCall, file.path(pathOut,
                                paste0(currentProfile, ".infoCall", ".rds")))
 
     write.csv(x=resCall$Ancestry, file=file.path(pathOut,
-                                                 paste0(currentProfile, ".Ancestry",".csv")), quote=FALSE,
-              row.names=FALSE)
+        paste0(currentProfile, ".Ancestry",".csv")), quote=FALSE,
+        row.names=FALSE)
 
     ## Close Profile GDS file (important)
     closefn.gds(gdsProfile)
@@ -2354,13 +2350,13 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 }
 
 
-#' @title TOREVIEW Run most steps leading to the ancestry inference call on a specific
-#' profile
+#' @title TOREVIEW Run most steps leading to the ancestry inference call
+#' on a specific profile (RNA or DNA)
 #'
 #' @description This function runs most steps leading to the ancestry inference
 #' call on a specific profile. First, the function creates the Profile GDS file
 #' for the specific profile using the information from a RDS Sample
-#' description file and the 1KG reference GDS file.
+#' description file and the Population reference GDS file.
 #'
 #' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
 #' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
@@ -2554,24 +2550,21 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF, currentProfil
 #' @importFrom utils write.csv
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
-#' @keywords @internal
+#' @keywords internal
 runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
-                             pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                             chrInfo, syntheticRefDF,
-                             genoSource=c("snp-pileup", "generic"),
-                             studyType=c("DNA", "RNA"),
-                             np=1L, blockTypeID=NULL,
-                             verbose=FALSE) {
-
+                pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
+                chrInfo, syntheticRefDF, genoSource=c("snp-pileup", "generic"),
+                studyType=c("DNA", "RNA"), np=1L, blockTypeID=NULL,
+                verbose=FALSE) {
 
     genoSource <- arg_match(genoSource)
 
     listProfiles <- pedStudy[, "Name.ID"]
 
     createStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
-                       fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
-                       studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
-                       verbose=verbose)
+        fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
+        studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
+        verbose=verbose)
 
     ## Open the 1KG GDS file (demo version)
     gdsReference <- snpgdsOpen(fileReferenceGDS)
@@ -2580,31 +2573,25 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     listProfileRef <- syntheticRefDF$sample.id
     studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
-                  study.desc=paste0(studyDF$study.id, " synthetic data"),
-                  study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
+        study.desc=paste0(studyDF$study.id, " synthetic data"),
+        study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
 
-    apply(pedStudy[,"Name.ID", drop=FALSE],1,FUN=function(x,gdsReference, gdsRefAnnot,
-                              studyDF,pathProfileGDS,
-                              pathOut, chrInfo, syntheticRefDF, studyDFSyn,
-                              listProfileRef,
-                              studyType, verbose){
+    apply(pedStudy[,"Name.ID", drop=FALSE],1,FUN=function(x,gdsReference,
+                        gdsRefAnnot, studyDF,pathProfileGDS,
+                        pathOut, chrInfo, syntheticRefDF, studyDFSyn,
+                        listProfileRef, studyType, verbose) {
         runProfileAncestry(gdsReference, gdsRefAnnot, studyDF,
-                       currentProfile=x, pathProfileGDS,
-                       pathOut, chrInfo,
-                       syntheticRefDF, studyDFSyn,
-                       listProfileRef,
-                       studyType,
-                       np=np, blockTypeID=blockTypeID,
+                       currentProfile=x, pathProfileGDS, pathOut, chrInfo,
+                       syntheticRefDF, studyDFSyn, listProfileRef,
+                       studyType, np=np, blockTypeID=blockTypeID,
                        verbose)
         return(NULL)
     }, gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
-    studyDF=studyDF, pathProfileGDS=pathProfileGDS, pathOut=pathOut,
-    chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
-    listProfileRef=listProfileRef,
-    studyDFSyn=studyDFSyn, studyType=studyType, verbose=verbose)
-
-
+        studyDF=studyDF, pathProfileGDS=pathProfileGDS, pathOut=pathOut,
+        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
+        listProfileRef=listProfileRef,
+        studyDFSyn=studyDFSyn, studyType=studyType, verbose=verbose)
 
     ## Close all GDS files
     closefn.gds(gdsReference)

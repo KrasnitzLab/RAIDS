@@ -208,13 +208,13 @@ test_that("validateAdd1KG2SampleGDS() must return expected results when all inpu
 
 
 #############################################################################
-### Tests validateRunExomeAncestry() results
+### Tests validateRunExomeOrRNAAncestry() results
 #############################################################################
 
-context("validateRunExomeAncestry() results")
+context("validateRunExomeOrRNAAncestry() results")
 
 
-test_that("validateRunExomeAncestry() must return expected results when all input are valid", {
+test_that("validateRunExomeOrRNAAncestry() must return expected results when all input are valid", {
 
     dataDir <- test_path("fixtures")
     gdsRefFile <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
@@ -237,7 +237,8 @@ test_that("validateRunExomeAncestry() must return expected results when all inpu
 
     chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
 
-    result <- RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=studyInfo,
+    result <- RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped,
+        studyDF=studyInfo,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
         fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
         chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,

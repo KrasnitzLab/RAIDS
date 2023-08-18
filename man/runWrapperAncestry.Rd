@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{runWrapperAncestry}
 \alias{runWrapperAncestry}
-\title{TOREVIEW Run most steps leading to the ancestry inference call on a specific
-profile}
+\title{TOREVIEW Run most steps leading to the ancestry inference call
+on a specific profile (RNA or DNA)}
 \usage{
 runWrapperAncestry(
   pedStudy,
@@ -101,7 +101,7 @@ more information about the generated output files.
 This function runs most steps leading to the ancestry inference
 call on a specific profile. First, the function creates the Profile GDS file
 for the specific profile using the information from a RDS Sample
-description file and the 1KG reference GDS file.
+description file and the Population reference GDS file.
 }
 \details{
 The runWrapperAncestry() function generates 3 types of files
@@ -221,4 +221,4 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
-\keyword{@internal}
+\keyword{internal}

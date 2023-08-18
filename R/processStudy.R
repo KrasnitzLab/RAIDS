@@ -2520,7 +2520,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                     verbose=FALSE) {
 
     ## Validate parameters
-    validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
+    validateRunExomeOrRNAAncestry(pedStudy=pedStudy, studyDF=studyDF,
         pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
         fileReferenceGDS=fileReferenceGDS,
         fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
@@ -2742,7 +2742,7 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
             blockTypeID, verbose=FALSE) {
 
     ## Validate parameters
-    validateRunExomeAncestry(pedStudy=pedStudy, studyDF=studyDF,
+    validateRunExomeOrRNAAncestry(pedStudy=pedStudy, studyDF=studyDF,
         pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
         fileReferenceGDS=fileReferenceGDS,
         fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,

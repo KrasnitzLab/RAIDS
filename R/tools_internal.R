@@ -179,11 +179,15 @@ validatePositiveIntegerVector <- function(value, name) {
 
 
 
-#' @title TODO
+#' @title Extract the block information from the block file associated to a
+#' specific population and chromosome
 #'
-#' @description TODO
+#' @description The function reads the information form the specified block
+#' file associated to a specified population and a specified chromosome. The
+#' the block information for a list of SNV positions is formatted and returned.
 #'
-#' @param snpKeep TODO
+#' @param snpKeep a \code{vector} of \code{integer} representing the
+#' positions of the retained SNVs for the current chromosome.
 #'
 #' @param pathBlock a \code{character} string representing the path to the
 #' block files.
@@ -193,7 +197,6 @@ validatePositiveIntegerVector <- function(value, name) {
 #'
 #' @param chr a \code{integer} representing the current chromosome.
 #'
-#'
 #' @return the a \code{array} with the sample from pedDF keept
 #'
 #' @examples
@@ -202,6 +205,7 @@ validatePositiveIntegerVector <- function(value, name) {
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt add.gdsn
+#' @importFrom utils read.delim
 #' @encoding UTF-8
 #' @keywords internal
 processBlockChr <- function(snpKeep, pathBlock, superPop, chr) {
@@ -227,7 +231,6 @@ processBlockChr <- function(snpKeep, pathBlock, superPop, chr) {
             if(activeBlock == 1){
                 if(snpKeep[i] - curStart >= 10000) {
                     blockState <- blockState - 1
-
                     curStart <- snpKeep[i]
                 }
             } else{

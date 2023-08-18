@@ -3,12 +3,14 @@
 \encoding{UTF-8}
 \name{processBlockChr}
 \alias{processBlockChr}
-\title{TODO}
+\title{Extract the block information from the block file associated to a
+specific population and chromosome}
 \usage{
 processBlockChr(snpKeep, pathBlock, superPop, chr)
 }
 \arguments{
-\item{snpKeep}{TODO}
+\item{snpKeep}{a \code{vector} of \code{integer} representing the
+positions of the retained SNVs for the current chromosome.}
 
 \item{pathBlock}{a \code{character} string representing the path to the
 block files.}
@@ -22,7 +24,9 @@ continental population (ex: EUR, AFR, etc.).}
 the a \code{array} with the sample from pedDF keept
 }
 \description{
-TODO
+The function reads the information form the specified block
+file associated to a specified population and a specified chromosome. The
+the block information for a list of SNV positions is formatted and returned.
 }
 \examples{
 

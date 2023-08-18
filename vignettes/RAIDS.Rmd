@@ -167,22 +167,26 @@ hg38 [@Lowy-Gallego2019a].</span>
 you choose to use the pre-processed files.</span>
 
 <br>
+<br>
 
+## Step 2 - Ancestry Inference
 
-## Step 2 - Wrapper function to run ancestry inference on DNA data in one command
-
-The final step can be run with a wrapper function
-that encapsulates multiple steps of the workflow.
+A wrapper function encapsulates multiple steps of the workflow. 
 
 ```{r graphWrapper, echo=FALSE, fig.align="center", fig.cap="Final step - The wrapper function encapsulates multiple steps of the workflow.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
 knitr::include_graphics("MainSteps_Wrapper_v04.png")
 ```
- 
-In summary, the wrapper function generates the synthetic dataset and uses it 
-to selected the optimal parameters before calling the genetic ancestry on 
-the current profiles.
+
+In summary, the wrapper function generates the synthetic dataset and uses 
+it to selected the optimal parameters before calling the genetic ancestry 
+on the current profiles.
+
+According to the type of input data (RNA or DNA), a specific wrapper function 
+is available.
 
 <br>
+
+### DNA Data - Wrapper function to run ancestry inference on DNA data
 
 The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 
@@ -388,6 +392,15 @@ also created.
 <br>
 <br>
 
+
+
+### RNA data - Wrapper function to run ancestry inference on RNA data 
+
+
+TODO
+
+<br>
+<br>
 
 # Pre-processed reference files are available for 1000 Genomes (1KG) in hg38
 

@@ -177,8 +177,7 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
             cutOffLOH=cutOffLOH, cutOffAR=cutOffAR, verbose=verbose)
     }
 
-    ## FOR_LOOP modification to be validated by Pascal
-    ## Remove commented code and this text after validation
+
 
     ## Calculate the cumulative sum for each chromosome
     cumSumResult <- lapply(unique(snpPos$snp.chr), function(i) {

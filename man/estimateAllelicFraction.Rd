@@ -49,7 +49,8 @@ way the estimation of the allelic fraction is done. Default: \code{"DNA"}.}
 \item{minCov}{a single positive \code{integer} representing the minimum
 required coverage. Default: \code{10L}.}
 
-\item{minProb}{a single \code{numeric} between 0 and 1 representing TODO.
+\item{minProb}{a single \code{numeric} between 0 and 1 representing the
+probability that the calculated genotype call is correct. TOREVIEW
 Default: \code{0.999}.}
 
 \item{eProb}{a single \code{numeric} between 0 and 1 representing the

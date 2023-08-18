@@ -45,7 +45,7 @@ This function extracts the information for all
 SNVs related to a specific block from the Population Reference GDS file. It
 uses this information and the information from the block files associated
 to a specific super-population to generate the final block information.
-The block information is then saved in a Population ReferenceG DS Annotation
+The block information is then saved in a Population Reference GDS Annotation
 file.
 }
 \details{

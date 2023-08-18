@@ -91,12 +91,12 @@ outPrefix <- "Pruned_Demo_Reference"
 
 ## Run only if directory in writing mode
 if (file.access(getwd()) == 0 &&
-    !file.exists(file.path(getwd(), outPrefix, ".rds"))) {
+    !file.exists(file.path(getwd(), paste0(outPrefix, ".rds")))) {
 
     ## Create a RDS file with the pruned SNVs
     RAIDS:::pruning1KGbyChr(gdsReference=gds1KG, outPrefix=outPrefix)
 
-    prunedSNVs <- readRDS(file.path(getwd(), outPrefix, ".rds"))
+    prunedSNVs <- readRDS(file.path(getwd(), paste0(outPrefix, ".rds")))
     prunedSNVs
 }
 

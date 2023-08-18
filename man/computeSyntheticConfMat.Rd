@@ -17,7 +17,7 @@ computeSyntheticConfMat(
 }
 \arguments{
 \item{matKNN}{a \code{data.frame} containing the inferred ancestry results
-for fixed values of _D_ and _K_. The \code{data.frame} must contained
+for fixed values of \emph{D} and \emph{K}. The \code{data.frame} must contained
 those columns: "sample.id", "D", "K" and the fourth column name must
 correspond to the \code{matKNNAncestryColumn} argument.}
 
@@ -49,7 +49,7 @@ associated to the confusion matrix}
 }
 \description{
 The function calculates the confusion matrix of the inferences
-for fixed values of _D_ and _K_ using the inferred ancestry results done
+for fixed values of \emph{D} and \emph{K} using the inferred ancestry results done
 on the synthetic profiles.
 }
 \examples{

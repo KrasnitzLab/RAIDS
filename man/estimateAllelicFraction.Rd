@@ -77,7 +77,7 @@ This parameter is RNA specific.
 Default: \code{NULL}.}
 
 \item{blockID}{a \code{character} string corresponding to the block
-identifier in \code{gdsRefAnnot}. **This parameter is RNA specific.**
+identifier in \code{gdsRefAnnot}. \strong{This parameter is RNA specific.}
 Default: \code{NULL}}
 
 \item{verbose}{a \code{logicial} indicating if the function should print
@@ -93,21 +93,20 @@ Profile GDS file. The allelic fraction estimation method is adapted to
 the type of study (DNA or RNA).
 }
 \details{
-The `chrInfo` parameter contains the length of the chromosomes. The
+The \code{chrInfo} parameter contains the length of the chromosomes. The
 length of the chromosomes can be obtain through the
 \code{\link[GenomeInfoDb]{seqlengths}}
 library.
 
 As example, for hg38 genome:
 
-```
-
+\if{html}{\out{<div class="sourceCode">}}\preformatted{
 if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
-     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) \{
      chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
-}
+\}
 
-```
+}\if{html}{\out{</div>}}
 }
 \examples{
 

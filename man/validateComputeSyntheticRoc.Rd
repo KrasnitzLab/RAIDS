@@ -15,7 +15,7 @@ validateComputeSyntheticRoc(
 }
 \arguments{
 \item{matKNN}{a \code{data.frame} containing the inferred ancestry results
-for fixed values of _D_ and _K_. On of the column names of the
+for fixed values of \emph{D} and \emph{K}. On of the column names of the
 \code{data.frame} must correspond to the \code{matKNNAncestryColumn}
 argument.}
 

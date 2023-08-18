@@ -30,17 +30,17 @@ the process in the \code{\link[SNPRelate]{snpgdsIBDKING}}() function.}
 \value{
 a \code{list} containing:
 \itemize{
-    \item{sample.id}{a \code{character} string representing the sample
-    ids used in the analysis}
-    \item{snp.id}{a \code{character} string representing the SNP ids
-    used in the analysis}
-    \item{k0}{a \code{numeric}, the IBD coefficient, the probability of
-    sharing zero IBD}
-    \item{k1}{a \code{numeric}, the IBD coefficient, the probability of
-    sharing one IBD}
-    \item{IBS0}{a \code{numeric}, the proportion of SNPs with zero IBS}
-    \item{kinship}{a \code{numeric}, the proportion of SNPs with zero IBS,
-    if the parameter kinship=TRUE}
+\item{sample.id}{a \code{character} string representing the sample
+ids used in the analysis}
+\item{snp.id}{a \code{character} string representing the SNP ids
+used in the analysis}
+\item{k0}{a \code{numeric}, the IBD coefficient, the probability of
+sharing zero IBD}
+\item{k1}{a \code{numeric}, the IBD coefficient, the probability of
+sharing one IBD}
+\item{IBS0}{a \code{numeric}, the proportion of SNPs with zero IBS}
+\item{kinship}{a \code{numeric}, the proportion of SNPs with zero IBS,
+if the parameter kinship=TRUE}
 }
 }
 \description{

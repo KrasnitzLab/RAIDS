@@ -51,11 +51,11 @@ the column that will contain the inferred ancestry for the specified
 dataset.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
+values tested for the  \emph{K} parameter. The \emph{K} parameter represents the
 number of neighbors used in the K-nearest neighbor analysis.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _D_ parameter. The _D_ parameter represents the
+values tested for the  \emph{D} parameter. The \emph{D} parameter represents the
 number of dimensions used in the PCA analysis.}
 
 \item{algorithm}{a \code{character} string representing the algorithm used

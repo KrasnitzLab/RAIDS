@@ -96,33 +96,21 @@ https://doi.org/10.1158/0008-5472.CAN-22-0682</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index">
-<ul><li><p><code><a href="prepPed1KG.html">prepPed1KG</a></code> This function extracts the
-    needed information from the 1000 Genomes pedigree file and formats it
-    into a <code>data.frame</code> so in can be used in following steps
-    of the ancestry inference process.</p></li>
-<li><p><code><a href="generateMapSnvSel.html">generateMapSnvSel</a></code> The function applies a cut-off
-    filter to the SNP information file to retain only the SNP that have a
-    frequency superior or equal to the specified cut-off in at least one
-    super population.</p></li>
-<li><p><code><a href="generateGDS1KG.html">generateGDS1KG</a></code> This function generates the GDS
-    file that will contain the information from 1KG.</p></li>
-<li><p><code><a href="identifyRelative.html">identifyRelative</a></code> The function identify patients
-    that are genetically related in the 1KG GDS file.</p></li>
-<li><p><code><a href="addRef2GDS1KG.html">addRef2GDS1KG</a></code>  This function adds the information
-    about the unrelated patients to the 1KG GDS file.</p></li>
-<li><p><code><a href="add1KG2SampleGDS.html">add1KG2SampleGDS</a></code>  This function adds the genotype
-    information for the list of pruned SNVs into the Profile GDS file</p></li>
-<li><p><code><a href="appendStudy2GDS1KG.html">appendStudy2GDS1KG</a></code>  This function creates the
-    Sample GDS file(s) for one or multiple specific samples
-    using the information from a Sample RDS description file and the 1KG
-    GDS file.</p></li>
+<ul><li><p><code><a href="runExomeAncestry.html">runExomeAncestry</a></code> This function runs most steps
+leading to the ancestry inference call on a specific exome profile.</p></li>
+<li><p><code><a href="runExomeAncestry.html">runExomeAncestry</a></code> This function runs most steps
+leading to the ancestry inference call on a specific RNA profile.</p></li>
 <li><p><code><a href="estimateAllelicFraction.html">estimateAllelicFraction</a></code>  This function estimates
-    the allelic fraction of the pruned SNVs for a specific sample and add
-    the information to the associated GDS Sample file. The allelic fraction
-    estimation method is adapted to the type of study (DNA or RNA).</p></li>
+the allelic fraction of the pruned SNVs for a specific sample and add
+the information to the associated GDS Sample file. The allelic fraction
+estimation method is adapted to the type of study (DNA or RNA).</p></li>
 <li><p><code><a href="computeSyntheticROC.html">computeSyntheticROC</a></code>  This function calculate the
-    AUROC of the inferences for specific values of D and K using the
-    inferred ancestry results from the synthetic profiles.</p></li>
+AUROC of the inferences for specific values of D and K using the
+inferred ancestry results from the synthetic profiles.</p></li>
+<li><p><code><a href="generateMapSnvSel.html">generateMapSnvSel</a></code> The function applies a cut-off
+filter to the SNV information file to retain only the SNV that have a
+frequency superior or equal to the specified cut-off in at least one
+super population.</p></li>
 </ul></div>
     </div>
     <div id="author">
@@ -130,7 +118,7 @@ https://doi.org/10.1158/0008-5472.CAN-22-0682</p>
     <p>Pascal Belleau, Astrid Deschênes and
 Alexander Krasnitz</p>
 <p>Maintainer:
-Pascal Belleau &lt;pascal_belleau@hotmail.com&gt;</p>
+Pascal Belleau <a href="mailto:pascal_belleau@hotmail.com">pascal_belleau@hotmail.com</a></p>
     </div>
 
   </div>

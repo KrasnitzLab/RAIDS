@@ -1146,7 +1146,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'     superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
 #'
 #' ## Returns OL when all parameters are valid
-#' RAIDS:::validateRunExomeAncestry(pedStudy=ped, studyDF=study,
+#' RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
 #'     pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
 #'     fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
 #'     chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup",

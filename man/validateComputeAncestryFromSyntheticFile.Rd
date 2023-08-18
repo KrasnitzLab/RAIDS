@@ -94,6 +94,9 @@ This function validates the input parameters for the
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Directory where demo GDS files are located
 dataDir <- system.file("extdata", package="RAIDS")
 

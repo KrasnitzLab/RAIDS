@@ -797,7 +797,7 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #' SNVs related to a specific block from the Population Reference GDS file. It
 #' uses this information and the information from the block files associated
 #' to a specific super-population to generate the final block information.
-#' The block information is then saved in a Population ReferenceG DS Annotation
+#' The block information is then saved in a Population Reference GDS Annotation
 #' file.
 #'
 #' @param gds an object of class
@@ -805,9 +805,11 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 #'
 #' @param gdsOut an object of class \code{gds} opened in writing mode.
 #'
-#' @param pathBlock TODO
+#' @param pathBlock a \code{character} string representing the path where
+#' the block files are located.
 #'
-#' @param superPop TODO
+#' @param superPop a \code{character} string representing the specific
+#' continental population.
 #'
 #' @param blockName a \code{character} string representing the unique
 #' block name.
@@ -838,6 +840,8 @@ basePCASample <- function(gds, listSample.Ref=NULL, listSNP=NULL, np=1L) {
 addBlockFromPlink2GDS <- function(gds, gdsOut, pathBlock,
                                     superPop, blockName,
                                     blockDesc, verbose=FALSE) {
+    ## NOTE
+    ## add validations
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gds, name="gds")

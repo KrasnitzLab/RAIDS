@@ -10,11 +10,13 @@ processBlockChr(snpKeep, pathBlock, superPop, chr)
 \arguments{
 \item{snpKeep}{TODO}
 
-\item{pathBlock}{TODO}
+\item{pathBlock}{a \code{character} string representing the path to the
+block files.}
 
-\item{superPop}{TODO}
+\item{superPop}{a \code{character} string representing the current
+continental population (ex: EUR, AFR, etc.).}
 
-\item{chr}{TODO}
+\item{chr}{a \code{integer} representing the current chromosome.}
 }
 \value{
 the a \code{array} with the sample from pedDF keept

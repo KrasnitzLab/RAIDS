@@ -68,6 +68,9 @@
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -366,6 +369,10 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #'
 #' @examples
 #'
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -660,6 +667,9 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -991,6 +1001,9 @@ validateAppendStudy2GDS1KG <- function(pathGeno, filePedRDS, fileNameGDS,
 #' @return The function returns \code{0L} when successful.
 #'
 #' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")

@@ -30,6 +30,9 @@ This function validates the input parameters for the
 }
 \examples{
 
+## Required library
+library(gdsfmt)
+
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 

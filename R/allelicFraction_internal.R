@@ -742,63 +742,66 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
     snpPos$imbAR <- rep(-1, nrow(snpPos))
 
 
-    homoBlock <- list()
 
-    for(chr in unique(snpPos$snp.chr)) {
+    snpPos <- lapply(unique(snpPos$snp.chr),
+            FUN=function(chr,snpPos){
+                if (verbose) {
+                    message("chr ", chr)
+                    message("Step 1 ", Sys.time())
+                }
+                homoBlock <- list()
+                listChr <- which(snpPos$snp.chr == chr)
+                ## Identify LOH regions
+                homoBlock[[chr]] <- computeLOHBlocksDNAChr(
+                                        gdsReference=gdsReference,
+                                        chrInfo=chrInfo,
+                                        snpPos=snpPos[listChr,],
+                                        chr=chr)
 
-        if (verbose) {
-            message("chr ", chr)
-            message("Step 1 ", Sys.time())
-        }
+                if (verbose) { message("Step 2 ", Sys.time()) }
 
-        listChr <- which(snpPos$snp.chr == chr)
+                homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
+                        cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
 
-        ## Identify LOH regions
-        homoBlock[[chr]] <- computeLOHBlocksDNAChr(gdsReference=gdsReference,
-                chrInfo=chrInfo, snpPos=snpPos[listChr,], chr=chr)
-
-        if (verbose) { message("Step 2 ", Sys.time()) }
-
-        homoBlock[[chr]]$LOH <- as.integer(homoBlock[[chr]]$logLHR <=
-                    cutOffLOH & homoBlock[[chr]]$homoScore <= cutOffHomoScore)
-
-        z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
+                z <- cbind(c(homoBlock[[chr]]$start, homoBlock[[chr]]$end,
                             snpPos[listChr, "snp.pos"]),
-                    c(rep(0,  2* nrow(homoBlock[[chr]])),
+                        c(rep(0,  2* nrow(homoBlock[[chr]])),
                             rep(1, length(listChr))),
-                    c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
-                                rep(0, length(listChr)) ),
-                    c(rep(0, 2 * nrow(homoBlock[[chr]])),
+                        c(homoBlock[[chr]]$LOH, -1 * homoBlock[[chr]]$LOH,
+                            rep(0, length(listChr)) ),
+                        c(rep(0, 2 * nrow(homoBlock[[chr]])),
                             seq_len(length(listChr))))
 
-        z <- z[order(z[,1], z[,2]), ]
-        pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
-        snpPos[listChr[pos], "lap"] <- 0
-        snpPos[listChr[pos], "LOH"] <- 1
+                z <- z[order(z[,1], z[,2]), ]
+                pos <- z[cumsum(z[,3]) > 0 & z[,4] > 0, 4]
+                snpPos[listChr[pos], "lap"] <- 0
+                snpPos[listChr[pos], "LOH"] <- 1
 
-        if (verbose) { message("Step 3 ", Sys.time()) }
+                if (verbose) { message("Step 3 ", Sys.time()) }
 
-        ## Identify imbalanced SNVs in specified chromosome
-        snpPos[listChr, "imbAR"] <-
-            computeAllelicImbDNAChr(snpPos=snpPos[listChr, ], chr=chr,
-                                        wAR=10, cutOffEmptyBox=-3)
+                ## Identify imbalanced SNVs in specified chromosome
+                snpPos[listChr, "imbAR"] <-
+                    computeAllelicImbDNAChr(snpPos=snpPos[listChr, ], chr=chr,
+                        wAR=10, cutOffEmptyBox=-3)
 
-        if (verbose) { message("Step 4 ", Sys.time()) }
+                if (verbose) { message("Step 4 ", Sys.time()) }
 
-        ## Compute allelic fraction for SNVs in specified chromosome
-        blockAF <- computeAlleleFraction(snpPos=snpPos[listChr, ],
-                                            w=10, cutOff=-3)
+                ## Compute allelic fraction for SNVs in specified chromosome
+                blockAF <- computeAlleleFraction(snpPos=snpPos[listChr, ],
+                                                w=10, cutOff=-3)
 
-        if (verbose) { message("Step 5 ", Sys.time()) }
+                if (verbose) { message("Step 5 ", Sys.time()) }
 
-        if(! is.null(blockAF)) {
-            for(i in seq_len(nrow(blockAF))) {
-                snpPos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
-                    blockAF[i, 3]
-            }
-        }
-    }
-
+                if(! is.null(blockAF)) {
+                    for(i in seq_len(nrow(blockAF))) {
+                        snpPos[listChr[blockAF[i, 1]:blockAF[i, 2]], "lap"] <-
+                            blockAF[i, 3]
+                    }
+                }
+                return(snpPos[listChr,])
+            },
+            snpPos=snpPos)
+    snpPos <- do.call(rbind, snpPos)
     snpPos[which(snpPos[, "lap"] == -1), "lap"] <- 0.5
 
     return(snpPos)

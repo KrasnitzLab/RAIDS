@@ -30,7 +30,7 @@
 #' required coverage. Default: \code{10L}.
 #'
 #' @param minProb a single \code{numeric} between 0 and 1 representing the
-#' probability that the calculated genotype call is correct. TOREVIEW
+#' probability that the calculated genotype call is correct.
 #' Default: \code{0.999}.
 #'
 #' @param eProb a single \code{numeric} between 0 and 1 representing the

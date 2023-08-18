@@ -607,7 +607,7 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                             },
                         segImb=segImb, snpPos=snpPos,
                         w=w, cutOff=cutOff)
-        listBlockAR <- do.call(rbind, listBlockAR)
+        # listBlockAR <- do.call(rbind, listBlockAR)
         # j <- 1
         # for(i in seq_len(nrow(segImb))) {
         #     # index of the segment

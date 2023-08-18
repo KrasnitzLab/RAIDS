@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{tableBlockAF}
 \alias{tableBlockAF}
-\title{TOREVIEW Compile the information about the allelic fraction
+\title{TOREVIEW Compile the information about the variants
 for each bloc.}
 \usage{
 tableBlockAF(snpPos)
@@ -28,7 +28,8 @@ fraction in absence of LOH.}
 the alternative allele.}
 \item{nPhase} {a single \code{integer} representin the number of SNV
 phases.}
-\item{sumAlleleLow} {a single \code{integer} TODO.}
+\item{sumAlleleLow} {a single \code{integer} sum of the allele with
+the minimum coverage.}
 \item{sumAlleleHigh} {a single \code{integer} TODO.}
 \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 frequencies of the allele not found in the profile (not a probability).}
@@ -45,7 +46,9 @@ heterozygote SNVs per block.}
 }
 \description{
 TOREVIEW For each block, the function evaluates a score
-about lost of heterizygocity and allelic fration.
+about lost of heterizygocity and allelic fration. It generates some
+information about the variants in the block like number of homozigte or
+heterozygote.
 In the case of RNA-seq the blocks are genes.
 }
 \examples{

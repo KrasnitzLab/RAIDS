@@ -55,7 +55,7 @@ Default: \code{0.999}.}
 \item{eProb}{a single \code{numeric} between 0 and 1 representing the
 probability of sequencing error. Default: \code{0.001}.}
 
-\item{cutOffLOH}{a single log of the score to be LOH TODO.
+\item{cutOffLOH}{a single \code{numeric} log of the score to be LOH.
 Default: \code{-5}.}
 
 \item{cutOffAR}{a single \code{numeric} representing the cutoff, in
@@ -67,8 +67,37 @@ Default: \code{3}.}
 message when running.}
 }
 \value{
-a \code{data.frame} with lap for the pruned SNV dataset with
-coverage > \code{minCov}. TODO
+a \code{data.frame} containing the allelic information for the
+pruned SNV dataset with coverage > \code{minCov}. The \code{data.frame}
+contains those columns:
+\itemize{
+\item{cnt.tot} {a \code{integer} representing the total allele count}
+\item{cnt.ref} {a \code{integer} representing the reference allele count}
+\item{cnt.alt} {a \code{integer} representing the alternative allele count}
+\item{snp.pos} {a \code{integer} representing the position on the chromosome}
+\item{snp.chr} {a \code{integer} representing the chromosome}
+\item{normal.geno} {a \code{integer} representing the genotype
+(0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)}
+\item{pruned} {a \code{logical} indicating if the SNV is retained after
+pruning}
+\item{snp.index} {a \code{integer} representing the index position of the
+SNV in the Reference GDS file that contains all SNVs}
+\item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
+\item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
+\item{homo} {a \code{logical} indicating if the SNV is homozygote}
+\item{block.id} {TOREVIEW a \code{integer} indicating the block.id in gdsRefAnnot the
+vairant is in}
+\item{phase} {TOREVIEW a \code{integer} indicating the phase of the vairant
+if known, 3 if not known}
+\item{lap} {a \code{numeric} indicating lower allelic fraction}
+\item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+(0=not LOH, 1=in LOH)}
+\item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
+region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+positive for imbalance in at least 1 window)}
+\item{freq} {a \code{numeric} indicating the frequency of the variant
+in the the reference}
+}
 }
 \description{
 The function creates a \code{data.frame} containing the

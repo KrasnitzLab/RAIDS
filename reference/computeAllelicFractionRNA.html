@@ -140,7 +140,7 @@ probability of sequencing error. Default: <code>0.001</code>.</p></dd>
 
 
 <dt>cutOffLOH</dt>
-<dd><p>a single log of the score to be LOH TODO.
+<dd><p>a single <code>numeric</code> log of the score to be LOH.
 Default: <code>-5</code>.</p></dd>
 
 
@@ -160,9 +160,37 @@ message when running.</p></dd>
     <h2>Value</h2>
     
 
-<p>a <code>data.frame</code> with lap for the pruned SNV dataset with
-coverage &gt; <code>minCov</code>. TODO</p>
-    </div>
+<p>a <code>data.frame</code> containing the allelic information for the
+pruned SNV dataset with coverage &gt; <code>minCov</code>. The <code>data.frame</code></p>
+
+
+<p>contains those columns:</p><ul><li><p>cnt.tot a <code>integer</code> representing the total allele count</p></li>
+<li><p>cnt.ref a <code>integer</code> representing the reference allele count</p></li>
+<li><p>cnt.alt a <code>integer</code> representing the alternative allele count</p></li>
+<li><p>snp.pos a <code>integer</code> representing the position on the chromosome</p></li>
+<li><p>snp.chr a <code>integer</code> representing the chromosome</p></li>
+<li><p>normal.geno a <code>integer</code> representing the genotype
+(0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)</p></li>
+<li><p>pruned a <code>logical</code> indicating if the SNV is retained after
+pruning</p></li>
+<li><p>snp.index a <code>integer</code> representing the index position of the
+SNV in the Reference GDS file that contains all SNVs</p></li>
+<li><p>keep a <code>logical</code> indicating if the genotype exists for the SNV</p></li>
+<li><p>hetero a <code>logical</code> indicating if the SNV is heterozygote</p></li>
+<li><p>homo a <code>logical</code> indicating if the SNV is homozygote</p></li>
+<li><p>block.id TOREVIEW a <code>integer</code> indicating the block.id in gdsRefAnnot the
+vairant is in</p></li>
+<li><p>phase TOREVIEW a <code>integer</code> indicating the phase of the vairant
+if known, 3 if not known</p></li>
+<li><p>lap a <code>numeric</code> indicating lower allelic fraction</p></li>
+<li><p>LOH a <code>integer</code> indicating if the SNV is in an LOH region
+(0=not LOH, 1=in LOH)</p></li>
+<li><p>imbAR a <code>integer</code> indicating if the SNV is in an imbalanced
+region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
+positive for imbalance in at least 1 window)</p></li>
+<li><p>freq a <code>numeric</code> indicating the frequency of the variant
+in the the reference</p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Pascal Belleau, Astrid Deschênes and Alexander Krasnitz</p>

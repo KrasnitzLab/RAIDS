@@ -78,7 +78,7 @@ chromosome using the homozygote SNVs present on the chromosome.
 \examples{
 
 ## Required library for GDS
-library(gdsfmt)
+library(SNPRelate)
 
 ## Path to the demo Reference GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")

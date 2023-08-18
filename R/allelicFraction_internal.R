@@ -298,7 +298,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' @examples
 #'
 #' ## Required library for GDS
-#' library(gdsfmt)
+#' library(SNPRelate)
 #'
 #' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
@@ -383,59 +383,65 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
     # Include a field for LOH but will be fill elsewhere
     homoBlock$LOH <- rep(0, nrow(homoBlock))
 
-    for (i in seq_len(nrow(homoBlock))) {
-        blcCur <- blcSNV[blcSNV$block == i, ]
-        snvH <- snpPos[blcCur$snv, ]
-        lH1 <- 0
-        lM1 <- 0
-        logLHR <- 0
-        homoBlock$nbSNV[i] <- nrow(blcCur)
-        homoBlock$nbPruned[i] <- length(which(snvH$pruned))
-        if (length(which(snvH$normal.geno != 3)) > 0) {
-            listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
-            homoBlock$nbNorm[i] <- length(listCount)
+    homoBlock <- lapply(seq_len(nrow(homoBlock)),
+                    FUN=function(i, homoBlock, blcSNV,
+                                 listAF,snpPos){
+                        blcCur <- blcSNV[blcSNV$block == i, ]
+                        snvH <- snpPos[blcCur$snv, ]
+                        lH1 <- 0
+                        lM1 <- 0
+                        logLHR <- 0
+                        homoBlock$nbSNV[i] <- nrow(blcCur)
+                        homoBlock$nbPruned[i] <- length(which(snvH$pruned))
+                        if (length(which(snvH$normal.geno != 3)) > 0) {
+                            listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
+                            homoBlock$nbNorm[i] <- length(listCount)
 
-            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                    c("cnt.ref", "cnt.tot"), drop=FALSE],
-                            1, FUN=function(x){
-                                return(dbinom(x[1], x[2], 0.5))
-                                # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
-                                })))
+                            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                       c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                  1, FUN=function(x){
+                                                      return(dbinom(x[1], x[2], 0.5))
+                                                      # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
+                                                  })))
 
-            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                        c("cnt.ref", "cnt.tot"), drop=FALSE],
-                            1, FUN=function(x){
-                                return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                        #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                            })))
-            logLHR <- -100
+                            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                   1, FUN=function(x){
+                                                       return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
+                                                       #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                                                   })))
+                            logLHR <- -100
 
-        } else if (length(which(snvH$pruned)) > 2) {
-            afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
-            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
-                            FUN=function(x){max(x, 0.01)})
-            snvR <- snvH$cnt.ref[which(snvH$pruned)] >
-                        snvH$cnt.alt[which(snvH$pruned)]
+                        } else if (length(which(snvH$pruned)) > 2) {
+                            afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
+                            afSNV <- apply(X=matrix(afSNV, ncol=1), MARGIN=1,
+                                           FUN=function(x){max(x, 0.01)})
+                            snvR <- snvH$cnt.ref[which(snvH$pruned)] >
+                                snvH$cnt.alt[which(snvH$pruned)]
 
-            # Check if it is unlikely the genotype are homo by error
-            lH1 <- -100
-            # Freq of the more likely geno
+                            # Check if it is unlikely the genotype are homo by error
+                            lH1 <- -100
+                            # Freq of the more likely geno
 
-            tmp <- apply(matrix(afSNV, ncol=1), 1,
-                        FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
-            # log10 (prod(FreqAllele^2) / prod(freq of more likely genotype))
-            # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
-            # (snvR = 1 homo ref
-            # and 0 if homo alt)
-            logLHR <- sum(2 * log10(snvR * 1 + (-1)^snvR * afSNV)) -
-                sum(log10(tmp))
-        }
+                            tmp <- apply(matrix(afSNV, ncol=1), 1,
+                                         FUN=function(x){max(max(x, 1-x)^2, 2* x *(1-x)) })
+                            # log10 (prod(FreqAllele^2) / prod(freq of more likely genotype))
+                            # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
+                            # (snvR = 1 homo ref
+                            # and 0 if homo alt)
+                            logLHR <- sum(2 * log10(snvR * 1 + (-1)^snvR * afSNV)) -
+                                sum(log10(tmp))
+                        }
 
-        homoBlock$logLHR[i] <- max(logLHR, -100)
-        homoBlock$LH1[i] <- lH1
-        homoBlock$LM1[i] <- lM1
-        homoBlock$homoScore[i] <- lH1 - lM1
-    } # end for each block
+                        homoBlock$logLHR[i] <- max(logLHR, -100)
+                        homoBlock$LH1[i] <- lH1
+                        homoBlock$LM1[i] <- lM1
+                        homoBlock$homoScore[i] <- lH1 - lM1
+                        return(homoBlock[i,])
+                    }, homoBlock=homoBlock,
+                    blcSNV=blcSNV, listAF=listAF,
+                    snpPos=snpPos)
+    homoBlock = do.call(rbind,homoBlock)
 
     return(homoBlock)
 }

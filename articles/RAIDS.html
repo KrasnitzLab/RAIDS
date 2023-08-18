@@ -213,14 +213,12 @@ mapped on hg38 <span class="citation">(Lowy-Gallego et al.
 2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
-<p><br></p>
+<p><br><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-2---wrapper-function-to-run-ancestry-inference-on-dna-data-in-one-command">Step 2 - Wrapper function to run ancestry inference on DNA data in
-one command<a class="anchor" aria-label="anchor" href="#step-2---wrapper-function-to-run-ancestry-inference-on-dna-data-in-one-command"></a>
+<h3 id="step-2---ancestry-inference">Step 2 - Ancestry Inference<a class="anchor" aria-label="anchor" href="#step-2---ancestry-inference"></a>
 </h3>
-<p>The final step can be run with a wrapper function that encapsulates
-multiple steps of the workflow.</p>
+<p>A wrapper function encapsulates multiple steps of the workflow.</p>
 <div class="figure" style="text-align: center">
 <img src="MainSteps_Wrapper_v04.png" alt="Final step - The wrapper function encapsulates multiple steps of the workflow." width="120%"><p class="caption">
 Final step - The wrapper function encapsulates multiple steps of the
@@ -230,7 +228,13 @@ workflow.
 <p>In summary, the wrapper function generates the synthetic dataset and
 uses it to selected the optimal parameters before calling the genetic
 ancestry on the current profiles.</p>
+<p>According to the type of input data (RNA or DNA), a specific wrapper
+function is available.</p>
 <p><br></p>
+<div class="section level4">
+<h4 id="dna-data---wrapper-function-to-run-ancestry-inference-on-dna-data">DNA Data - Wrapper function to run ancestry inference on DNA
+data<a class="anchor" aria-label="anchor" href="#dna-data---wrapper-function-to-run-ancestry-inference-on-dna-data"></a>
+</h4>
 <p>The wrapper function, called <em>runExomeAncestry()</em>, requires 4
 files as input:</p>
 <ul>
@@ -455,6 +459,14 @@ file)</li>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
 <p><br><br></p>
+</div>
+<div class="section level4">
+<h4 id="rna-data---wrapper-function-to-run-ancestry-inference-on-rna-data">RNA data - Wrapper function to run ancestry inference on RNA
+data<a class="anchor" aria-label="anchor" href="#rna-data---wrapper-function-to-run-ancestry-inference-on-rna-data"></a>
+</h4>
+<p>TODO</p>
+<p><br><br></p>
+</div>
 </div>
 </div>
 <div class="section level2">

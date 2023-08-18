@@ -67,6 +67,9 @@ for a list of pruned SNVs present in a Profile GDS file. The
 }
 \examples{
 
+## Required library
+library(SNPRelate)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 

@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{runProfileAncestry}
 \alias{runProfileAncestry}
-\title{TOREVIEW Run most steps leading to the ancestry inference call on a specific
-profile}
+\title{TOREVIEW Run most steps leading to the ancestry inference call on a
+specific profile}
 \usage{
 runProfileAncestry(
   gdsReference,
@@ -233,4 +233,4 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 \author{
 Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 }
-\keyword{@internal}
+\keyword{internal}

@@ -1,7 +1,7 @@
 #' @title Validate input parameters for syntheticGeno() function
 #'
 #' @description This function validates the input parameters for the
-#' \code{\link{syntheticGeno}} function.
+#' [syntheticGeno()] function.
 #'
 #' @param gdsReference an object of class \code{\link[gdsfmt]{gds.class}}
 #' (a GDS file), the 1KG GDS file.
@@ -133,7 +133,7 @@ validateSyntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS,
 #' @title Validate input parameters for prepSynthetic() function
 #'
 #' @description This function validates the input parameters for the
-#' \code{\link{prepSynthetic}} function.
+#' [prepSynthetic()] function.
 #'
 #' @param fileProfileGDS a \code{character} string representing the file name
 #' of the GDS Sample file containing the information about the sample

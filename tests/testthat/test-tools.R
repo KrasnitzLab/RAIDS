@@ -202,3 +202,52 @@ test_that("groupChr1KGSNV() must return error when pathOut does not exist", {
                                     pathOut=dirNotExisting), error_message)
 })
 
+
+test_that("groupChr1KGSNV() must return expected results", {
+
+    dataDir <- test_path("fixtures/demoGenoChr")
+
+    dirTMP <- withr::local_tempdir(tmpdir="test_groupChr1KGSNV")
+
+    result <- groupChr1KGSNV(pathGenoChr=dataDir, pathOut=dirTMP)
+
+    expect_equal(result, 0L)
+
+    result2 <- list.files(dirTMP)
+
+    expect_true(all(c("NA12003.csv.bz2", "NA12004.csv.bz2",
+                        "NA12005.csv.bz2", "NA12006.csv.bz2") %in% result2))
+
+    geno1 <- read.csv2(file.path(dirTMP, "NA12003.csv.bz2"),
+                                        sep="\t", row.names=NULL)
+
+    expect_equal(nrow(geno1), 2178L)
+    expect_equal(colnames(geno1), "NA12003")
+    expect_equal(geno1[2,], "0|0")
+    expect_equal(geno1[3,], "0|0")
+    expect_equal(geno1[444,], "0|0")
+    expect_equal(geno1[2177,], "0|1")
+    expect_equal(geno1[2082,], "1|1")
+
+    geno2 <- read.csv2(file.path(dirTMP, "NA12006.csv.bz2"),
+                                    sep="\t", row.names=NULL)
+
+    expect_equal(nrow(geno2), 2178L)
+    expect_equal(colnames(geno2), "NA12006")
+    expect_equal(geno2[2,], "0|0")
+    expect_equal(geno2[3,], "0|1")
+    expect_equal(geno2[444,], "0|0")
+    expect_equal(geno2[2177,], "0|0")
+    expect_equal(geno2[2082,], "1|1")
+
+    geno3 <- read.csv2(file.path(dirTMP, "NA12005.csv.bz2"),
+                                    sep="\t", row.names=NULL)
+
+    expect_equal(nrow(geno3), 2178L)
+    expect_equal(colnames(geno3), "NA12005")
+    expect_equal(geno3[2,], "1|0")
+    expect_equal(geno3[3,], "0|0")
+    expect_equal(geno3[444,], "0|0")
+    expect_equal(geno3[2177,], "0|0")
+    expect_equal(geno3[2082,], "1|1")
+})

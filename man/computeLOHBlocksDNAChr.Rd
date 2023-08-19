@@ -45,8 +45,8 @@ SNV in the Reference GDS file that contains all SNVs}
 \code{chrInfo} parameter must contain the value for the specified
 chromosome.}
 
-\item{genoN}{a single \code{numeric} between 0 and 1 representing TODO.
-Default: \code{0.0001}.}
+\item{genoN}{a single \code{numeric} between 0 and 1 representing the
+probability of sequencing error. Default: \code{0.0001}.}
 }
 \value{
 a \code{data.frame} with the informations about LOH on a specific
@@ -59,16 +59,24 @@ position 1.}
 \item{end} {a \code{integer} representing the end position on the
 box containing only homozygote SNVs (or not SNV). The last box ends at the
 length of the chromosome.}
-\item{logLHR} {TODO}
-\item{LH1} {TODO}
-\item{LM1} {TODO}
+\item{logLHR} {TOREVIEW Score for LOH base on frequencies in population. Sum of
+the log10 of the frequencies of the observe gegenotype minus the
+the sum of the log10 of the higher frequent genotype.
+(-100 when normal genotype are present)}
+\item{LH1} {TOREVIEW If normal genotype present and heterozygot the probability to be heterozygote
+base on the coverage of each allele}
+\item{LM1} {TOREVIEW If normal genotype present and heterozygot the max probability the max probability
+for the read coverage at the position}
 \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
 \item{nbSNV} {a \code{integer} representing th number of SNVs in
 the box}
-\item{nbPruned} {a \code{integer} representing th number of pruned SNVs in
+\item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
 the box}
-\item{nbNorm} {TODO}
-\item{LOH} {TODO}
+\item{nbNorm} {TOREVIEW a \code{integer} representing of genotype
+heterozygote for the normal in the block}
+\item{LOH} {TOREVIEW a \code{integer} representing a flag if 1 it mean
+the block is satisfy the criteria to be LOH. The value is not assign
+in this function they are all 0}
 }
 }
 \description{

@@ -28,9 +28,10 @@ fraction in absence of LOH.}
 the alternative allele.}
 \item{nPhase} {a single \code{integer} representin the number of SNV
 phases.}
-\item{sumAlleleLow} {a single \code{integer} sum of the allele with
-the minimum coverage.}
-\item{sumAlleleHigh} {a single \code{integer} TODO.}
+\item{sumAlleleLow} {a single \code{integer} TOREVIEW sum of the allele with
+the less coverage.}
+\item{sumAlleleHigh} {a single \code{integer} TOREVIEW sum of the allele
+with more coverage.}
 \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 frequencies of the allele not found in the profile (not a probability).}
 \item{lM} {a single \code{numeric} log10 product frequency allele
@@ -53,8 +54,12 @@ In the case of RNA-seq the blocks are genes.
 }
 \examples{
 
-# TODO
-gds <- "Demo GDS TODO"
+dataDir <- system.file("extdata", package="RAIDS")
+
+snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+
+result <- RAIDS:::tableBlockAF(snpPos[which(snpPos$snp.chr == 1),])
+head(result)
 
 }
 \author{

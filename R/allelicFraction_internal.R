@@ -270,8 +270,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \code{chrInfo} parameter must contain the value for the specified
 #' chromosome.
 #'
-#' @param  genoN a single \code{numeric} between 0 and 1 representing TODO.
-#' Default: \code{0.0001}.
+#' @param  genoN a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.0001}.
 #'
 #' @return a \code{data.frame} with the informations about LOH on a specific
 #' chromosome. The \code{data.frame} contains those columns:
@@ -283,16 +283,24 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{end} {a \code{integer} representing the end position on the
 #' box containing only homozygote SNVs (or not SNV). The last box ends at the
 #' length of the chromosome.}
-#' \item{logLHR} {TODO}
-#' \item{LH1} {TODO}
-#' \item{LM1} {TODO}
+#' \item{logLHR} {TOREVIEW Score for LOH base on frequencies in population. Sum of
+#' the log10 of the frequencies of the observe gegenotype minus the
+#' the sum of the log10 of the higher frequent genotype.
+#' (-100 when normal genotype are present)}
+#' \item{LH1} {TOREVIEW If normal genotype present and heterozygot the probability to be heterozygote
+#' base on the coverage of each allele}
+#' \item{LM1} {TOREVIEW If normal genotype present and heterozygot the max probability the max probability
+#' for the read coverage at the position}
 #' \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
 #' \item{nbSNV} {a \code{integer} representing th number of SNVs in
 #' the box}
-#' \item{nbPruned} {a \code{integer} representing th number of pruned SNVs in
+#' \item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
 #' the box}
-#' \item{nbNorm} {TODO}
-#' \item{LOH} {TODO}
+#' \item{nbNorm} {TOREVIEW a \code{integer} representing of genotype
+#' heterozygote for the normal in the block}
+#' \item{LOH} {TOREVIEW a \code{integer} representing a flag if 1 it mean
+#' the block is satisfy the criteria to be LOH. The value is not assign
+#' in this function they are all 0}
 #' }
 #'
 #' @examples
@@ -396,21 +404,22 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                         if (length(which(snvH$normal.geno != 3)) > 0) {
                             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
                             homoBlock$nbNorm[i] <- length(listCount)
+                            if(homoBlock$nbNorm[i] > 0){
+                                lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                           c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                      1, FUN=function(x){
+                                                          return(dbinom(x[1], x[2], 0.5))
+                                                          # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
+                                                      })))
 
-                            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                       c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                  1, FUN=function(x){
-                                                      return(dbinom(x[1], x[2], 0.5))
-                                                      # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
-                                                  })))
-
-                            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                   1, FUN=function(x){
-                                                       return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                                                       #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                                                   })))
-                            logLHR <- -100
+                                lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                            c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                       1, FUN=function(x){
+                                                           return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
+                                                           #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                                                       })))
+                                logLHR <- -100
+                            }
 
                         } else if (length(which(snvH$pruned)) > 2) {
                             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]
@@ -1225,29 +1234,32 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 
     matCov$pWin <- rep(1, nrow(matCov))
 
-    for(i in seq_len(nrow(matCov))) {
+    matTmp <- apply(matCov[, c("cnt.alt", "cnt.ref")], 1,
+                    FUN=function(x, vMean){
+                        vCur <- ifelse(x[1] <= x[2],
+                                       x[1], x[2])
 
-        vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-                            matCov$cnt.alt[i], matCov$cnt.ref[i])
+                        diff2Mean <- abs(vMean * (x[1] +
+                                                x[2]) - vCur)
+                        pCur1 <- pbinom(round(vMean * (x[1] +
+                                                    x[2]) - diff2Mean),
+                                            size=x[2] + x[1], vMean)
+                        pCur2 <- 1 - pbinom(round(vMean * (x[1] +
+                                                    x[2]) + diff2Mean),
+                                            size=x[2] + x[1], vMean)
 
-        diff2Mean <- abs(vMean * (matCov$cnt.alt[i] +
-                                            matCov$cnt.ref[i]) - vCur)
-        pCur1 <- pbinom(round(vMean * (matCov$cnt.alt[i] +
-                    matCov$cnt.ref[i]) - diff2Mean),
-                    size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
-        pCur2 <- 1 - pbinom(round(vMean * (matCov$cnt.alt[i] +
-                    matCov$cnt.ref[i]) + diff2Mean),
-                    size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
+                        pCur <- pCur1 + pCur2
 
-        pCur <- pCur1 + pCur2
+                        pCurO <- max(1 - max(pCur, 0.01), 0.01)
+                        pCurMax <- max(pCur, 0.01)
+                        return(c(pCur, pCurMax, pCurO))
+                    }, vMean=vMean)
+    matCov$pWin <- matTmp[1, ]
 
-        matCov$pWin[i] <- pCur
+    p <- sum(log10(matTmp[2,]))
+    p0 <- sum(log10(matTmp[3,]))
 
-        pCurO <- max(1 - max(pCur, 0.01), 0.01)
 
-        p <- p + log10(max(pCur, 0.01))
-        pO <- pO + log10(pCurO)
-    }
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                             matCov$pWin[1] < 0.5 &
                             (matCov$pWin[nrow(matCov)] < 0.5)  &
@@ -1350,9 +1362,13 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 ###############################################
 
 
-#' @title TODO
+#' @title TOREVIEW Compute the log likelihood ratio base on the coverage (read depth)
+#' of each allele in block (gene in the case of RNA-seq)
 #'
-#' @description TODO
+#' @description TOREVIEW For each hetero sum the log of read depth of the lowest depth
+#' divide by the total depth of the position minus of likelhood of the allelic
+#' fraction of 0.5. If the phase is known, the variant varaint in the same
+#' haplotype are group.
 #'
 #' @param snpPosHetero For a specific gene (block) a \code{data.frame} with
 #' lap for the SNV heterozygote dataset with
@@ -1453,9 +1469,10 @@ calcAFMLRNA <- function(snpPosHetero) {
 #' the alternative allele.}
 #' \item{nPhase} {a single \code{integer} representin the number of SNV
 #' phases.}
-#' \item{sumAlleleLow} {a single \code{integer} sum of the allele with
-#' the minimum coverage.}
-#' \item{sumAlleleHigh} {a single \code{integer} TODO.}
+#' \item{sumAlleleLow} {a single \code{integer} TOREVIEW sum of the allele with
+#' the less coverage.}
+#' \item{sumAlleleHigh} {a single \code{integer} TOREVIEW sum of the allele
+#' with more coverage.}
 #' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}
 #' \item{lM} {a single \code{numeric} log10 product frequency allele
@@ -1471,8 +1488,12 @@ calcAFMLRNA <- function(snpPosHetero) {
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+#'
+#' result <- RAIDS:::tableBlockAF(snpPos[which(snpPos$snp.chr == 1),])
+#' head(result)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors aggregate

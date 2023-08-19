@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{calcAFMLRNA}
 \alias{calcAFMLRNA}
-\title{TODO}
+\title{TOREVIEW Compute the log likelihood ratio base on the coverage (read depth)
+of each allele in block (gene in the case of RNA-seq)}
 \usage{
 calcAFMLRNA(snpPosHetero)
 }
@@ -21,7 +22,10 @@ sumAlleleLow number of read overlapping the allele low
 sumAlleleHigh number of read overlapping the allele high TODO
 }
 \description{
-TODO
+TOREVIEW For each hetero sum the log of read depth of the lowest depth
+divide by the total depth of the position minus of likelhood of the allelic
+fraction of 0.5. If the phase is known, the variant varaint in the same
+haplotype are group.
 }
 \examples{
 

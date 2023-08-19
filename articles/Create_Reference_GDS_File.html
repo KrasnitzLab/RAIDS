@@ -92,21 +92,32 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-08-18<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-08-19<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This section explains in further details the format of the population
-reference GDS files that are needed to run the ancestry inference
+reference files that are required to run the ancestry inference
 tool.</p>
-<p>Three different files are generated from the reference dataset:</p>
+<p>Two different files are generated from a reference dataset:</p>
 <ul>
-<li>The population reference GDS File</li>
-<li>The population reference SNV Annotation GDS file</li>
-<li>The population reference SNV Retained VCF file</li>
+<li>The Population Reference GDS File</li>
+<li>The Population Reference SNV Annotation GDS file</li>
 </ul>
+<p>The third file is only required for RNA ancestry inference.</p>
+<p><br><br></p>
 <div class="section level2">
 <h2 id="population-reference-gds-file">Population Reference GDS File<a class="anchor" aria-label="anchor" href="#population-reference-gds-file"></a>
 </h2>
-<p>All related samples must be removed.</p>
+<p>The <em>Population Reference GDS file</em> should contain the
+genome-wide SNV information related to the population data set with
+known genetic ancestry. This reference data set will be used to generate
+the simulated samples. It is also used to generate the PCA on which the
+samples of interest are going to be projected.</p>
+<p>The <em>Population Reference GDS file</em> is a GDS object of class
+<a href="https://www.bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#data-formats-used-in-snprelate" class="external-link">SNPGDSFileClass</a>
+from <a href="https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html" class="external-link">SNPRelate</a>
+package <span class="citation">(Zheng et al. 2012)</span>.</p>
+<p>Beware that only unrelated samples should be present in the GDS
+file.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -144,6 +155,63 @@ tool.</p>
 <span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">156, 20B</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRef</span><span class="op">)</span></span></code></pre></div>
+<p>This output lists all variables stored in the <em>Population
+Reference GDS file”. At the first level, it stores variables
+</em>sample.id<em>, </em>snp.id*, etc. The additional information
+displayed in the braces indicate the data type, size, compressed or not
++ compression ratio.</p>
+<p>The mandatory fields are:</p>
+<ul>
+<li>
+<em>sample.id</em>: a unique identifier for each sample.</li>
+<li>
+<em>snp.id</em>: a unique identifier for each SNV.</li>
+<li>
+<em>sample.annot</em>: a <em>data.frame</em> where each row
+correspond to a sample and containing those columns:
+<ul>
+<li>
+<em>sex</em>: a identifier of the sex of the sample</li>
+<li>
+<em>pop.Group</em>: TODO</li>
+<li>
+<em>superPop</em>: a identifier of the super-population ancestry of
+the sample</li>
+<li>
+<em>batch</em>: a unique number representing the batch of provenance
+of the sample</li>
+</ul>
+</li>
+<li>
+<em>snp.chromosome</em>: an integer or character mapping for each
+chromosome. Integer: numeric values 1-26, mapped in order from 1-22,
+23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial
+probes), and 0 for probes with unknown positions; it does not allow NA.
+Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string
+indicating unknown position.</li>
+<li>
+<em>snp.position</em>: the base position of each SNV on the
+chromosome, and 0 for unknown position; it does not allow NA.</li>
+<li>
+<em>snp.allele</em>: TODO</li>
+<li>
+<em>snp.AF</em>: TODO</li>
+<li>*snp.[Population_ID]_AF*: TODO</li>
+<li>
+<em>snp.EUR_AF</em>: TODO</li>
+<li>
+<em>snp.AFR_AF</em>: TODO</li>
+<li>
+<em>snp.AMR_AF</em>: TODO</li>
+<li>
+<em>snp.SAS_AF</em>: TODO</li>
+<li>
+<em>genotype</em>: a SNV genotypic matrix (i.e., the number of A
+alleles) in individual-major mode nsnp×nsample</li>
+<li>
+<em>sample.ref</em>: TODO</li>
+</ul>
+<p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="population-reference-annotation-gds-file">Population Reference Annotation GDS file<a class="anchor" aria-label="anchor" href="#population-reference-annotation-gds-file"></a>
@@ -172,6 +240,7 @@ tool.</p>
 <span><span class="co">## \--+ block   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000x7</span> <span style="color: #555555;">LZ4_ra(22.6%), 68.1K</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span></code></pre></div>
+<p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="pre-processed-files-from-1000-genomes-in-hg38-are-available">Pre-processed files, from 1000 Genomes in hg38, are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-from-1000-genomes-in-hg38-are-available"></a>
@@ -286,6 +355,19 @@ which this document was compiled:</p>
 <span><span class="co">## [139] crayon_1.5.2                rlang_1.1.1                </span></span>
 <span><span class="co">## [141] KEGGREST_1.40.0             mice_3.16.0</span></span></code></pre>
 <p><br><br></p>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Zheng2012" class="csl-entry">
+Zheng, Xiuwen, David Levine, Jess Shen, Stephanie M. Gogarten, Cathy
+Laurie, and Bruce S. Weir. 2012. <span>“<span class="nocase">A
+high-performance computing toolset for relatedness and principal
+component analysis of SNP data</span>.”</span> <em>Bioinformatics</em>
+28 (24): 3326–28. <a href="https://doi.org/10.1093/bioinformatics/bts606" class="external-link">https://doi.org/10.1093/bioinformatics/bts606</a>.
+</div>
+</div>
 </div>
   </div>
 

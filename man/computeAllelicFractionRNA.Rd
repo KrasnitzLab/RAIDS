@@ -87,7 +87,7 @@ SNV in the Reference GDS file that contains all SNVs}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}
 \item{block.id} {TOREVIEW a \code{integer} indicating the block.id in gdsRefAnnot the
 vairant is in}
-\item{phase} {TOREVIEW a \code{integer} indicating the phase of the vairant
+\item{phase} {TOREVIEW a \code{integer} indicating the phase of the variant
 if known, 3 if not known}
 \item{lap} {a \code{numeric} indicating lower allelic fraction}
 \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region

@@ -29,10 +29,8 @@ Reference GDS file.
 ## Required package
 library(gdsfmt)
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
-
 ## The RDS file containing the filtered SNP information
+dataDir <- system.file("extdata", package="RAIDS")
 fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Different code depending of the withr package availability

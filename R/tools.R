@@ -161,10 +161,29 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #'
 #' @examples
 #'
-#' ## Path to the demo pedigree file is located in this package
+#' ## Path to the demo vcf files in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
+#' pathGeno <- file.path(dataDir, "demoGenoChr")
 #'
-#' ## TODO
+#' ## Path where the output vcf file will be created
+#' pathOut <- getwd()
+#'
+#' ## The current directory must be writable
+#' if (file.access(pathOut) == 0 &&
+#'         !file.exists(file.path(getwd(), "NA12003.csv.bz2")) &&
+#'         !file.exists(file.path(getwd(), "NA12004.csv.bz2")) &&
+#'         !file.exists(file.path(getwd(), "NA12005.csv.bz2"))) {
+#'
+#'         ## Return 0 when successful
+#'         ## The files "NA12003.csv.bz2", "NA12004.csv.bz2" and
+#'         ## "NA12005.csv.bz2" should not be present in the current directory
+#'         groupChr1KGSNV(pathGenoChr=pathGeno, pathOut=pathOut)
+#'
+#'         ## Remove temporary VCF file
+#'         unlink(file.path(getwd(), "NA12003.csv.bz2"), force=TRUE)
+#'         unlink(file.path(getwd(), "NA12004.csv.bz2"), force=TRUE)
+#'         unlink(file.path(getwd(), "NA12005.csv.bz2"), force=TRUE)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv2 read.csv2

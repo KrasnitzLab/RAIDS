@@ -43,7 +43,7 @@ the list of all possible ancestry assignations.}
 }
 \description{
 This function validates the input parameters for the
-\code{\link{computeSyntheticROC}} function.
+\code{\link[=computeSyntheticROC]{computeSyntheticROC()}} function.
 }
 \examples{
 

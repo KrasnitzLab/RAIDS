@@ -513,8 +513,6 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
         segImb <- data.frame(start=seq_len(nrow(snpPos))[which(z[,1] > 0)],
                              end=seq_len(nrow(snpPos))[which(z[,2] < 0)])
 
-        # FORLOOP TOREVIEW Pascal
-        # after remove the comment code
         listBlockAR <- lapply(seq_len(nrow(segImb)),
                         FUN=function(i, segImb, snpPos, w,
                             cutOff){
@@ -607,93 +605,6 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                             },
                         segImb=segImb, snpPos=snpPos,
                         w=w, cutOff=cutOff)
-        # listBlockAR <- do.call(rbind, listBlockAR)
-        # j <- 1
-        # for(i in seq_len(nrow(segImb))) {
-        #     # index of the segment
-        #     listSeg <- (segImb$start[i]):(segImb$end[i])
-        #     # index hetero segment
-        #     listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
-        #     # SNP hetero for the segment
-        #     snp.hetero <- snpPos[listHetero,]
-        #
-        #     if(nrow(snp.hetero) >= 2 * w) {
-        #         lapCur <- median(apply(snp.hetero[seq_len(w),
-        #                                           c("cnt.ref", "cnt.alt")], 1, min) /
-        #                              (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
-        #
-        #         start <- 1
-        #         k <- w + 1
-        #         while(k < nrow(snp.hetero)) {
-        #             # We have (k+w-1) <= nrow(snp.hetero)
-        #             # Case 1 true because (nrow(snp.hetero) >= 2 * w
-        #             # Other case nrow(snp.hetero) >= w+k - 1
-        #             curWin <- testAlleleFractionChange(snp.hetero[k:(k+w-1),
-        #                                                           c("cnt.ref", "cnt.alt")], cutOff, lapCur)
-        #
-        #             if(curWin$pCut1 == 1){ # new Region the allelicFraction
-        #                 # table of the index of the block with lapCur
-        #                 listBlockAR[[j]] <- c(listHetero[start],
-        #                                       listHetero[k], lapCur)
-        #
-        #                 lapCur <- median(apply(snp.hetero[k:(k+w-1),
-        #                                                   c("cnt.ref", "cnt.alt")], 1, min) /
-        #                                      (rowSums(snp.hetero[k:(k+w-1),
-        #                                                          c("cnt.ref", "cnt.alt")])))
-        #
-        #                 start <- k
-        #
-        #                 if(nrow(snp.hetero) - start < w) { # Close the segment
-        #                     lapCur <-
-        #                         median(apply(snp.hetero[start:nrow(snp.hetero),
-        #                                                 c("cnt.ref", "cnt.alt")], 1, min) /
-        #                                    (rowSums(snp.hetero[start:nrow(snp.hetero),
-        #                                                        c("cnt.ref", "cnt.alt")])))
-        #
-        #                     listBlockAR[[j]] <- c(listHetero[start],
-        #                                           segImb$end[i], lapCur)
-        #
-        #                     j <- j+1
-        #                     k <- nrow(snp.hetero)
-        #                 }else{ # nrow(snp.hetero) >= w+k
-        #                     k<- k + 1
-        #                     j <- j + 1
-        #
-        #                 }
-        #             }else{ # keep the same region
-        #                 if((nrow(snp.hetero) - k ) < w){ # close
-        #                     lapCur <-
-        #                         median(apply(snp.hetero[start:nrow(snp.hetero),
-        #                                                 c("cnt.ref", "cnt.alt")], 1, min) /
-        #                                    (rowSums(snp.hetero[start:nrow(snp.hetero),
-        #                                                        c("cnt.ref", "cnt.alt")])))
-        #
-        #                     listBlockAR[[j]] <- c(listHetero[start],
-        #                                           segImb$end[i], lapCur)
-        #
-        #                     j <- j + 1
-        #
-        #                     k <- nrow(snp.hetero)
-        #                 } else{ # continue nrow(snp.hetero) >= w+k
-        #                     lapCur <- median(apply(snp.hetero[start:k,
-        #                                                       c("cnt.ref", "cnt.alt")], 1, min) /
-        #                                          (rowSums(snp.hetero[start:k,c("cnt.ref",
-        #                                                                        "cnt.alt")])))
-        #
-        #                     k <- k + 1
-        #                 }
-        #             }
-        #         }# End while
-        #     }else {
-        #         lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
-        #                                1, min) / (rowSums(snp.hetero[,c("cnt.ref",
-        #                                                                 "cnt.alt")])))
-        #
-        #         listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
-        #
-        #         j <- j + 1
-        #     }
-        # }
     }
 
     # note NULL if length(listBlockAR) == 0

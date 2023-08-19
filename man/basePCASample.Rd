@@ -41,8 +41,8 @@ function. }
 The function runs a Principal Component Analysis (PCA) on
 the SNv genotype data. The function also loads SNVs into the PCA to
 calculate the SNV eigenvectors. Those 2 steps are done with the
- \code{\link[SNPRelate]{snpgdsPCA}} and
- \code{\link[SNPRelate]{snpgdsPCASNPLoading}}
+\code{\link[SNPRelate]{snpgdsPCA}} and
+\code{\link[SNPRelate]{snpgdsPCASNPLoading}}
 functions.
 }
 \examples{

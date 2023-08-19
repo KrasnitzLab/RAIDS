@@ -19,7 +19,7 @@ selParaPCAUpQuartile(
 }
 \arguments{
 \item{matKNN}{a \code{data.frame} containing the inferred ancestry for the
-synthetic profiles for different _K_ and _D_ values. The \code{data.frame}
+synthetic profiles for different \emph{K} and \emph{D} values. The \code{data.frame}
 must contained those columns: "sample.id", "D", "K" and the fourth column
 name must correspond to the \code{predCall} argument.}
 
@@ -41,12 +41,12 @@ argument.}
 the list of possible ancestry assignations.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
+values tested for the  \emph{K} parameter. The \emph{K} parameter represents the
 number of neighbors used in the K-nearest neighbor analysis.
 Default: \code{seq(3,15,1)}.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _D_ parameter. The _D_ parameter represents the
+values tested for the  \emph{D} parameter. The \emph{D} parameter represents the
 number of dimensions used in the PCA analysis.
 Default: \code{seq(2,15,1)}.}
 }

@@ -34,7 +34,7 @@ file), the opened Population Reference GDS file.}
 
 \item{listFiles}{a \code{vector} of \code{character} strings representing
 the name of files that contain the results of ancestry inference done on
-the synthetic profiles for multiple values of _D_ and _K_. The files must
+the synthetic profiles for multiple values of \emph{D} and \emph{K}. The files must
 exist.}
 
 \item{currentProfile}{a \code{character} string representing the profile
@@ -63,11 +63,11 @@ the column that will contain the inferred ancestry for the specified
 dataset. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
+values tested for the  \emph{K} parameter. The \emph{K} parameter represents the
 number of neighbors used in the K-nearest neighbor analysis.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _D_ parameter. The _D_ parameter represents the
+values tested for the  \emph{D} parameter. The \emph{D} parameter represents the
 number of dimensions used in the PCA analysis.}
 
 \item{algorithm}{a \code{character} string representing the algorithm used

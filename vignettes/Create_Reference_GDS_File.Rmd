@@ -53,7 +53,6 @@ Two different files are generated from a reference dataset:
 - The Population Reference GDS File
 - The Population Reference SNV Annotation GDS file
 
-The third file is only required for RNA ancestry inference. 
 
 <br>
 <br>

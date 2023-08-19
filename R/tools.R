@@ -157,7 +157,7 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #' the merged genotyping files for each sample will be created.
 #' The path must exists.
 #'
-#' @return The integer \code{0L} when successful.
+#' @return The integer \code{0L} when successful or \code{FALSE} if not.
 #'
 #' @examples
 #'
@@ -205,25 +205,46 @@ groupChr1KGSNV <- function(pathGenoChr, pathOut) {
     listFiles <- dir(file.path(pathGenoChr, "chr1"), ".+\\.chr1\\.vcf\\.bz2")
     listSamples <- gsub("\\.chr1\\.vcf\\.bz2", "", listFiles)
 
+    ## TOREVIEW FOR_LOOP REMOVAL
     ## Merge files associated to each samples into one csv file
-    for(sampleId in listSamples) {
-        listGeno <- list()
-
+    # for(sampleId in listSamples) {
+    #
+    #     ## TOREVIEW FOR_LOOOP REMOVAL
         ## Read each genotyping file and append the information
-        for(chr in seq_len(22)) {
-            geno <- read.csv2(file.path(pathGenoChr, paste0("chr", chr),
-                                paste0(sampleId, ".chr", chr,".vcf.bz2")),
-                                sep="\t", row.names=NULL)
+        # listGeno <- list()
+        # for(chr in seq_len(22)) {
+        #     geno <- read.csv2(file.path(pathGenoChr, paste0("chr", chr),
+        #                           paste0(sampleId, ".chr", chr,".vcf.bz2")),
+        #                       sep="\t", row.names=NULL)
+        #
+        #     listGeno[[paste0("chr", chr)]] <- geno
+        # }
+        # genoAll <- do.call(rbind, listGeno)
+#
+#         ## Save the genotyping information into one file
+#         write.csv2(genoAll, file=bzfile(file.path(pathOut,
+#                             paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
+#     }
 
-            listGeno[[paste0("chr", chr)]] <- geno
-        }
+
+    ## Merge files associated to each samples into one csv file
+    results <- lapply(X=listSamples, FUN=function(sampleId, pathOut) {
+
+        ## For each chromosome, read genotyping file and append the information
+        listGeno <- lapply(seq_len(22), function(chr, sampleId) {
+            geno <- read.csv2(file.path(pathGenoChr, paste0("chr", chr),
+                        paste0(sampleId, ".chr", chr,".vcf.bz2")),
+                            sep="\t", row.names=NULL)
+            return(geno)}, sampleId=sampleId)
 
         genoAll <- do.call(rbind, listGeno)
 
         ## Save the genotyping information into one file
         write.csv2(genoAll, file=bzfile(file.path(pathOut,
-                            paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
-    }
+            paste0(sampleId, ".csv.bz2"))), row.names=FALSE)
 
-    return(0L)
+        return(TRUE)}, pathOut=pathOut)
+
+    ## Successful or not
+    return(ifelse(all(unlist(results)), 0L, FALSE))
 }

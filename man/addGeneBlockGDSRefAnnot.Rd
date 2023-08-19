@@ -3,23 +3,23 @@
 \encoding{UTF-8}
 \name{addGeneBlockGDSRefAnnot}
 \alias{addGeneBlockGDSRefAnnot}
-\title{Generate two indexes based on gene annotation for gdsAnnot1KG
-block and add the indexes into the
-gdsAnnot1KG}
+\title{Append information associated to blocks, as indexes, into the
+Population Reference SNV Annotation GDS file}
 \usage{
 addGeneBlockGDSRefAnnot(
   gdsReference,
-  file.gdsRefAnnot,
+  gdsRefAnnotFile,
   winSize = 10000,
-  EnsDb,
-  suffixe.blockName
+  ensDb,
+  suffixBlockName
 )
 }
 \arguments{
 \item{gdsReference}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.}
 
-\item{file.gdsRefAnnot}{the filename corresponding the Reference SNV
+\item{gdsRefAnnotFile}{a \code{character} string representing the
+file name corresponding the Reference SNV
 Annotation GDS file. The function will
 open it in write mode and close it after. The file must exist.}
 
@@ -27,16 +27,20 @@ open it in write mode and close it after. The file must exist.}
 size of the window to use to group the SNVs when the SNVs are in a
 non-coding region. Default: \code{10000L}.}
 
-\item{EnsDb}{An object with the ensembl genome annotation
+\item{ensDb}{An object with the ensembl genome annotation
 Default: \code{EnsDb.Hsapiens.v86}.}
 
-\item{suffixe.blockName}{TODO ex Ensembl.Hsapiens.v86}
+\item{suffixBlockName}{a \code{character} string that identify the source
+of the block and that will be added to the block description into
+the Reference SNV Annotation GDS file, as example: Ensembl.Hsapiens.v86.}
 }
 \value{
 The integer \code{OL} when the function is successful.
 }
 \description{
-TODO
+The function appends the information about the blocks into
+the Population Reference SNV Annotation GDS file. The information is
+extracted from the Population Reference GDS file.
 }
 \examples{
 

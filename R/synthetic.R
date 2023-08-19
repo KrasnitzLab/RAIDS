@@ -78,7 +78,7 @@ select1KGPop <- function(gdsReference, nbProfiles) {
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[listKeep]
     listPop <- unique(sample.annot$pop.group)
 
-    ## FOR_LOOP modification to be validated by Pascal
+    ## FOR_LOOP modification to be validated by Pascal TOREVIEW
     ## Remove commented code and this text after validation
 
     ## For each subcontinental population, randomly select a fixed number of

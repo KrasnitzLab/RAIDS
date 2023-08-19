@@ -954,16 +954,18 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 }
 
 
-#' @title Generate two indexes based on gene annotation for gdsAnnot1KG
-#' block and add the indexes into the
-#' gdsAnnot1KG
+#' @title Append information associated to blocks, as indexes, into the
+#' Population Reference SNV Annotation GDS file
 #'
-#' @description TODO
+#' @description The function appends the information about the blocks into
+#' the Population Reference SNV Annotation GDS file. The information is
+#' extracted from the Population Reference GDS file.
 #'
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.
 #'
-#' @param file.gdsRefAnnot the filename corresponding the Reference SNV
+#' @param gdsRefAnnotFile a \code{character} string representing the
+#' file name corresponding the Reference SNV
 #' Annotation GDS file. The function will
 #' open it in write mode and close it after. The file must exist.
 #'
@@ -971,10 +973,12 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #' size of the window to use to group the SNVs when the SNVs are in a
 #' non-coding region. Default: \code{10000L}.
 #'
-#' @param EnsDb An object with the ensembl genome annotation
+#' @param ensDb An object with the ensembl genome annotation
 #' Default: \code{EnsDb.Hsapiens.v86}.
 #'
-#' @param suffixe.blockName TODO ex Ensembl.Hsapiens.v86
+#' @param suffixBlockName a \code{character} string that identify the source
+#' of the block and that will be added to the block description into
+#' the Reference SNV Annotation GDS file, as example: Ensembl.Hsapiens.v86.
 #'
 #' @return The integer \code{OL} when the function is successful.
 #'
@@ -990,17 +994,17 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #' @importFrom S4Vectors isSingleNumber
 #' @encoding UTF-8
 #' @export
-addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
-                        winSize=10000, EnsDb, suffixe.blockName) {
+addGeneBlockGDSRefAnnot <- function(gdsReference, gdsRefAnnotFile,
+                        winSize=10000, ensDb, suffixBlockName) {
 
     ## The gdsReference must be an object of class "gds.class"
     if (!inherits(gdsReference, "gds.class")) {
         stop("The \'gdsReference\' must be an object of class \'gds.class\'")
     }
 
-    ## Validate that the file.gdsRefAnnot GDS file exists
-    if (! file.exists(file.gdsRefAnnot)) {
-        stop("The file \'", file.gdsRefAnnot, "\' does not exist.")
+    ## Validate that the Reference Annotation GDS file exists
+    if (! file.exists(gdsRefAnnotFile)) {
+        stop("The file \'", gdsRefAnnotFile, "\' does not exist.")
     }
 
     ## The winSize must be a positive single number
@@ -1008,18 +1012,20 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, file.gdsRefAnnot,
         stop("The \'winSize\' parameter must be a single numeric value." )
     }
 
-    ## Generate two indexes based on gene annotation for gdsAnnot1KG block
-    dfGeneBlock <- generateGeneBlock(gdsReference, winSize, EnsDb)
+    ## Generate two indexes based on gene annotation for
+    ## the Reference GDS Annotation block
+    dfGeneBlock <- generateGeneBlock(gdsReference=gdsReference,
+                                     winSize=winSize, EnsDb=ensDb)
 
-    ## Open GDS Reference Annotation file in writting mode
-    gdsRefAnnot <- openfn.gds(file.gdsRefAnnot, readonly=FALSE)
+    ## Open GDS Reference Annotation file in writing mode
+    gdsRefAnnot <- openfn.gds(gdsRefAnnotFile, readonly=FALSE)
 
-    blockName <- paste0("Gene.", suffixe.blockName)
+    blockName <- paste0("Gene.", suffixBlockName)
     blockDesc <- paste0("List of blocks including overlapping genes ",
-                                suffixe.blockName)
+                                suffixBlockName)
     addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$Gene, blockName, blockDesc)
-    blockName <- paste0("GeneS.", suffixe.blockName)
-    blockDesc <- paste0("List of blocks of split by genes ", suffixe.blockName)
+    blockName <- paste0("GeneS.", suffixBlockName)
+    blockDesc <- paste0("List of blocks of split by genes ", suffixBlockName)
     addBlockInGDSAnnot(gdsRefAnnot, dfGeneBlock$GeneS, blockName, blockDesc)
 
     ## Close GDS Reference annotation file

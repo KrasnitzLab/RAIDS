@@ -19,7 +19,7 @@ the merged genotyping files for each sample will be created.
 The path must exists.}
 }
 \value{
-The integer \code{0L} when successful.
+The integer \code{0L} when successful or \code{FALSE} if not.
 }
 \description{
 This function merge all the genotyping files associated to one

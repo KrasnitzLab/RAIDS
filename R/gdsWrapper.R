@@ -1,7 +1,7 @@
-#' @title Add information related to SNVs into a Reference GDS file
+#' @title Add information related to SNVs into a Population Reference GDS file
 #'
-#' @description the function adds the SNV information into a Reference
-#' GDS file.
+#' @description The function adds the SNV information into a Population
+#' Reference GDS file.
 #'
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened Reference GDS file.

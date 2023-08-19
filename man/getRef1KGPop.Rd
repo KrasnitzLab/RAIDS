@@ -15,7 +15,7 @@ getRef1KGPop(gdsReference, popName = "superPop")
 \item{popName}{a \code{character} string representing the name of the column
 that will be fetched in the \code{data.frame} present in the Reference GDS
 "sample.ref" node. The column must be present in the \code{data.frame}.
- Default: \code{"superPop"}.}
+Default: \code{"superPop"}.}
 }
 \value{
 \code{vector} of \code{character} strings representing the content

@@ -34,7 +34,7 @@ file), the opened 1KG GDS file.}
 
 \item{listFiles}{a \code{vector} of \code{character} strings representing
 the name of files that contain the results of ancestry inference done on
-the synthetic profiles for multiple values of _D_ and _K_. The files must
+the synthetic profiles for multiple values of \emph{D} and \emph{K}. The files must
 exist.}
 
 \item{currentProfile}{a \code{character} string representing the profile
@@ -63,13 +63,13 @@ the column that will contain the inferred ancestry for the specified
 profiles. Default: \code{"SuperPop"}.}
 
 \item{kList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _K_ parameter. The _K_ parameter represents the
+values tested for the  \emph{K} parameter. The \emph{K} parameter represents the
 number of neighbors used in the K-nearest neighbor analysis. If \code{NULL},
 the value \code{seq(2,15,1)} is assigned.
 Default: \code{seq(2,15,1)}.}
 
 \item{pcaList}{a \code{vector} of \code{integer} representing  the list of
-values tested for the  _D_ parameter. The _D_ parameter represents the
+values tested for the  \emph{D} parameter. The \emph{D} parameter represents the
 number of dimensions used in the PCA analysis.  If \code{NULL},
 the value \code{seq(2,15,1)} is assigned.
 Default: \code{seq(2,15,1)}.}
@@ -162,12 +162,12 @@ number of dimensions).}
 number of neighbors).}
 \item{\code{Call}}{ a \code{character} string representing the
 super-population.}
-\item{\code{L}}{ a \code{numeric} representing the lower value of the 95%
+\item{\code{L}}{ a \code{numeric} representing the lower value of the 95\%
 confidence interval for the AUROC obtained for the fixed values of
 super-population, \code{D} and \code{K}.}
 \item{\code{AUR}}{ a \code{numeric} representing  the AUROC obtained for the
 fixed values of super-population, \code{D} and \code{K}.}
-\item{\code{H}}{ a \code{numeric} representing the higher value of the 95%
+\item{\code{H}}{ a \code{numeric} representing the higher value of the 95\%
 confidence interval for the AUROC obtained for the fixed values of
 super-population, \code{D} and \code{K}.}
 }

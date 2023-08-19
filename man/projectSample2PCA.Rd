@@ -36,12 +36,12 @@ Default: \code{FALSE}.}
 \value{
 a \code{snpgdsPCAClass} object, a \code{list} that contains:
 \itemize{
-   \item{sample.id} {the sample ids used in the analysis}
-   \item{snp.id} {the SNP ids used in the analysis}
-   \item{eigenvalues} {eigenvalues}
-   \item{eigenvect} {eigenvactors, “# of samples” x “eigen.cnt”}
-   \item{TraceXTX} {the trace of the genetic covariance matrix}
-   \item{Bayesian} {whether use bayerisan normalization}
+\item{sample.id} {the sample ids used in the analysis}
+\item{snp.id} {the SNP ids used in the analysis}
+\item{eigenvalues} {eigenvalues}
+\item{eigenvect} {eigenvactors, “# of samples” x “eigen.cnt”}
+\item{TraceXTX} {the trace of the genetic covariance matrix}
+\item{Bayesian} {whether use bayerisan normalization}
 }
 }
 \description{

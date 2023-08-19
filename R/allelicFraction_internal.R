@@ -1313,27 +1313,23 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
     vMean <- 0.5
     matCov$pWin <- rep(1, nrow(matCov))
 
-    for (i in seq_len(nrow(matCov))) {
+    matTmp <- apply(matCov[, c("cnt.alt", "cnt.ref")], 1,
+                FUN=function(x){
+                    vCur1 <- ifelse(x[1] <= x[2],
+                        x[1], x[2])
 
-        ## Always use the small count as input
-        vCur1 <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-                            matCov$cnt.alt[i], matCov$cnt.ref[i])
+                    pCur <- pbinom(q=vCur1, size=x[2] + x[1],
+                        prob=vMean)
 
-        ## Calculate the probability with assumption 0f 0.5 ratio
-        pCur <- pbinom(q=vCur1, size=matCov$cnt.ref[i] + matCov$cnt.alt[i],
-                            prob=vMean)
+                    pCurO <- max(1 - max(2 * pCur, 0.01), 0.01)
 
-        ## Ensure value is not below 0.01
-        pCurO <- max(1 - max(2 * pCur, 0.01), 0.01)
+                    return(c(vCur1, pCur, pCurO))
+                })
+    matCov$pWin <- matTmp[2, ] * 2
+    tmp <- which(matTmp[2,] > 0.01)
+    p <- sum(log10(matTmp[2,tmp])) + (ncol(matTmp) - length(tmp)) * log10(0.01)
+    p0 <- sum(log10(matTmp[3,]))
 
-        ## Twice the probability (2 tails)
-        matCov$pWin[i] <- pCur * 2
-
-        ## Similar to likelihood for imbalance
-        p <- p + log10(max(pCur, 0.01))
-        ## Similar to likelihood for not imbalance ( 1- probability)
-        pO <- pO + log10(pCurO)
-    }
 
     ## Calculate a global statistic using all SNVs
     ## The region is imbalance or not

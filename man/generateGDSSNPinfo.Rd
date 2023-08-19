@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{generateGDSSNPinfo}
 \alias{generateGDSSNPinfo}
-\title{Add information related to SNVs into a Reference GDS file}
+\title{Add information related to SNVs into a Population Reference GDS file}
 \usage{
 generateGDSSNPinfo(gdsReference, fileFreq, verbose)
 }
@@ -21,8 +21,8 @@ to show how the different steps in the function.}
 The integer \code{0L} when successful.
 }
 \description{
-the function adds the SNV information into a Reference
-GDS file.
+The function adds the SNV information into a Population
+Reference GDS file.
 }
 \examples{
 

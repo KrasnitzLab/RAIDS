@@ -144,18 +144,18 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' size of the window to use to group the SNVs when the SNVs are in a
 #' non-coding region. Default: \code{10000}.
 #'
-#' @param EnsDb An object of class \code{EnsDb} with the Ensembl genome
+#' @param ensBd An object of class \code{EnsDb} with the Ensembl genome
 #' annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.
 #'
 #' @return  a \code{data.frame} with those columns:
 #' \itemize{
-#' \item{chr} {}
-#' \item{pos} {}
-#' \item{snp.allele} {}
-#' \item{Exon} {}
-#' \item{GName} {}
-#' \item{Gene} {}
-#' \item{GeneS} {}
+#' \item{chr} {TODO}
+#' \item{pos} {TODO}
+#' \item{snp.allele} {TODO}
+#' \item{Exon} {TODO}
+#' \item{GName} {TODO}
+#' \item{Gene} {TODO}
+#' \item{GeneS} {TODO}
 #' }
 #' "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 #' Example for GName and the two indexes "Gene", "GeneS"
@@ -186,9 +186,9 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' @importFrom AnnotationFilter GeneIdFilter
 #' @encoding UTF-8
 #' @keywords internal
-generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
+generateGeneBlock <- function(gdsReference, winSize=10000, ensBd) {
 
-    edb <- EnsDb
+    edb <- ensBd
     listEnsId <- unique(names(genes(edb)))
 
     cols <- c("GENEID", "SYMBOL", "GENENAME", "GENESEQSTART",
@@ -230,7 +230,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
                 stringsAsFactors=FALSE)
     offsetGene <- 0
     offsetGeneS <- 0
-    offsetGene.O <- 0
+    offsetGeneO <- 0
 
     for(chr in seq_len(22))
     {
@@ -372,7 +372,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
         matFreq$GeneS[matFreq$Gene < 0] <- 0
         listOrph <- which(matFreq$GeneS == 0)
         flag <- TRUE
-        v <- offsetGene.O - 1
+        v <- offsetGeneO - 1
         i <- 1
         curZone <- "GeneS"
         curZone1 <- "Gene"
@@ -407,7 +407,7 @@ generateGeneBlock <- function(gdsReference, winSize=10000, EnsDb) {
                 i <- which(listOrph == j) + 1
                 flag <- ifelse(i <= length(listOrph), TRUE, FALSE)
             }
-            offsetGene.O <- min(offsetGene.O, min(matFreq$Gene))
+            offsetGeneO <- min(offsetGeneO, min(matFreq$Gene))
         }
 
         listMat[[chr]] <- matFreq

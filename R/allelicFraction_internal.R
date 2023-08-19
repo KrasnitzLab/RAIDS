@@ -468,7 +468,10 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
 #' window to compute the allelic fraction.
 #' Default: \code{10}.
 #'
-#' @param cutOff a single \code{numeric} representing TODO. Default: \code{-3}.
+#' @param cutOff a \code{numeric} representing the cut-off for considering
+#' a region imbalanced when comparing likelihood to gave allelic fraction
+#' change and likelihood not to have allelic fraction change.
+#' Default: \code{-3}.
 #'
 #' @return a \code{matrix} of \code{numeric} with 3 columns where each
 #' row represent a segment

@@ -1233,8 +1233,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     pO <- 0
 
     matCov$pWin <- rep(1, nrow(matCov))
-    # FORLOOP remove to test
-    # and remove the code in comments
+
     matTmp <- apply(matCov[, c("cnt.alt", "cnt.ref")], 1,
                     FUN=function(x, vMean){
                         vCur <- ifelse(x[1] <= x[2],
@@ -1260,29 +1259,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
     p <- sum(log10(matTmp[2,]))
     p0 <- sum(log10(matTmp[3,]))
 
-    # for(i in seq_len(nrow(matCov))) {
-    #
-    #     vCur <- ifelse(matCov$cnt.alt[i] <= matCov$cnt.ref[i],
-    #                         matCov$cnt.alt[i], matCov$cnt.ref[i])
-    #
-    #     diff2Mean <- abs(vMean * (matCov$cnt.alt[i] +
-    #                                         matCov$cnt.ref[i]) - vCur)
-    #     pCur1 <- pbinom(round(vMean * (matCov$cnt.alt[i] +
-    #                 matCov$cnt.ref[i]) - diff2Mean),
-    #                 size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
-    #     pCur2 <- 1 - pbinom(round(vMean * (matCov$cnt.alt[i] +
-    #                 matCov$cnt.ref[i]) + diff2Mean),
-    #                 size=matCov$cnt.ref[i] + matCov$cnt.alt[i], vMean)
-    #
-    #     pCur <- pCur1 + pCur2
-    #
-    #     matCov$pWin[i] <- pCur
-    #
-    #     pCurO <- max(1 - max(pCur, 0.01), 0.01)
-    #
-    #     p <- p + log10(max(pCur, 0.01))
-    #     pO <- pO + log10(pCurO)
-    # }
+
     pCut1 <- as.integer((sum(matCov$pWin < 0.5) >= nrow(matCov)-1) &
                             matCov$pWin[1] < 0.5 &
                             (matCov$pWin[nrow(matCov)] < 0.5)  &

@@ -45,8 +45,8 @@ SNV in the Reference GDS file that contains all SNVs}
 \code{chrInfo} parameter must contain the value for the specified
 chromosome.}
 
-\item{genoN}{a single \code{numeric} between 0 and 1 representing TODO.
-Default: \code{0.0001}.}
+\item{genoN}{a single \code{numeric} between 0 and 1 representing the
+probability of sequencing error. Default: \code{0.0001}.}
 }
 \value{
 a \code{data.frame} with the informations about LOH on a specific
@@ -59,7 +59,7 @@ position 1.}
 \item{end} {a \code{integer} representing the end position on the
 box containing only homozygote SNVs (or not SNV). The last box ends at the
 length of the chromosome.}
-\item{logLHR} {TODO}
+\item{logLHR} {score for LOH}
 \item{LH1} {TODO}
 \item{LM1} {TODO}
 \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}

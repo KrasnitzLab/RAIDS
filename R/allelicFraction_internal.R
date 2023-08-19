@@ -270,8 +270,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \code{chrInfo} parameter must contain the value for the specified
 #' chromosome.
 #'
-#' @param  genoN a single \code{numeric} between 0 and 1 representing TODO.
-#' Default: \code{0.0001}.
+#' @param  genoN a single \code{numeric} between 0 and 1 representing the
+#' probability of sequencing error. Default: \code{0.0001}.
 #'
 #' @return a \code{data.frame} with the informations about LOH on a specific
 #' chromosome. The \code{data.frame} contains those columns:
@@ -283,7 +283,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{end} {a \code{integer} representing the end position on the
 #' box containing only homozygote SNVs (or not SNV). The last box ends at the
 #' length of the chromosome.}
-#' \item{logLHR} {TODO}
+#' \item{logLHR} {score for LOH}
 #' \item{LH1} {TODO}
 #' \item{LM1} {TODO}
 #' \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
@@ -1453,9 +1453,10 @@ calcAFMLRNA <- function(snpPosHetero) {
 #' the alternative allele.}
 #' \item{nPhase} {a single \code{integer} representin the number of SNV
 #' phases.}
-#' \item{sumAlleleLow} {a single \code{integer} sum of the allele with
-#' the minimum coverage.}
-#' \item{sumAlleleHigh} {a single \code{integer} TODO.}
+#' \item{sumAlleleLow} {a single \code{integer} TOREVIEW sum of the allele with
+#' the less coverage.}
+#' \item{sumAlleleHigh} {a single \code{integer} TOREVIEW sum of the allele
+#' with more coverage.}
 #' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}
 #' \item{lM} {a single \code{numeric} log10 product frequency allele
@@ -1471,8 +1472,12 @@ calcAFMLRNA <- function(snpPosHetero) {
 #'
 #' @examples
 #'
-#' # TODO
-#' gds <- "Demo GDS TODO"
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+#'
+#' result <- RAIDS:::tableBlockAF(snpPos[which(snpPos$snp.chr == 1),])
+#' head(result)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors aggregate

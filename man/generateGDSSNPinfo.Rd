@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{generateGDSSNPinfo}
 \alias{generateGDSSNPinfo}
-\title{Add information related to SNVs into a Reference GDS file}
+\title{Add information related to SNVs into a Population Reference GDS file}
 \usage{
 generateGDSSNPinfo(gdsReference, fileFreq, verbose)
 }
@@ -21,18 +21,16 @@ to show how the different steps in the function.}
 The integer \code{0L} when successful.
 }
 \description{
-the function adds the SNV information into a Reference
-GDS file.
+The function adds the SNV information into a Population
+Reference GDS file.
 }
 \examples{
 
 ## Required package
 library(gdsfmt)
 
-## Path to the demo pedigree file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
-
 ## The RDS file containing the filtered SNP information
+dataDir <- system.file("extdata", package="RAIDS")
 fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Different code depending of the withr package availability

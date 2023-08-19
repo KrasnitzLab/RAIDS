@@ -51,7 +51,7 @@ to show how the different steps in the function.}
 }
 \description{
 This function validates the input parameters for the
-\code{\link{prepSynthetic}} function.
+\code{\link[=prepSynthetic]{prepSynthetic()}} function.
 }
 \examples{
 

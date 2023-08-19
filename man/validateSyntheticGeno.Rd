@@ -55,7 +55,7 @@ The integer \code{0L} when the function is successful.
 }
 \description{
 This function validates the input parameters for the
-\code{\link{syntheticGeno}} function.
+\code{\link[=syntheticGeno]{syntheticGeno()}} function.
 }
 \examples{
 

@@ -235,8 +235,7 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' @title Validate input parameters for computeSyntheticROC() function
 #'
 #' @description This function validates the input parameters for the
-#' \code{\link{computeSyntheticROC}} function.
-#'
+#' [computeSyntheticROC()] function.
 #'
 #' @param matKNN a \code{data.frame} containing the inferred ancestry results
 #' for fixed values of _D_ and _K_. On of the column names of the

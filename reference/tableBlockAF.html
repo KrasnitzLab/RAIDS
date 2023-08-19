@@ -101,9 +101,10 @@ fraction in absence of LOH.</p></li>
 the alternative allele.</p></li>
 <li><p>nPhase a single <code>integer</code> representin the number of SNV
 phases.</p></li>
-<li><p>sumAlleleLow a single <code>integer</code> sum of the allele with
-the minimum coverage.</p></li>
-<li><p>sumAlleleHigh a single <code>integer</code> TODO.</p></li>
+<li><p>sumAlleleLow a single <code>integer</code> TOREVIEW sum of the allele with
+the less coverage.</p></li>
+<li><p>sumAlleleHigh a single <code>integer</code> TOREVIEW sum of the allele
+with more coverage.</p></li>
 <li><p>lH a single <code>numeric</code> for the homozygotes log10 of the product
 frequencies of the allele not found in the profile (not a probability).</p></li>
 <li><p>lM a single <code>numeric</code> log10 product frequency allele
@@ -124,8 +125,26 @@ heterozygote SNVs per block.</p></li>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># TODO</span></span></span>
-<span class="r-in"><span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="st">"Demo GDS TODO"</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">snpPos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"demoAllelicFraction"</span>, <span class="st">"demSnpPos.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">tableBlockAF</span><span class="op">(</span><span class="va">snpPos</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">snpPos</span><span class="op">$</span><span class="va">snp.chr</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        block nbHomo nbKeep nbHetero aRF  aFraction         lR nPhase</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block   3833      0      1        1  -1 -1.0000000 -1.0000000     -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block1  3834      1      1        0  -1 -1.0000000 -1.0000000     -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block2  2693      2      4        2  -1  0.4166667  0.2908852      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block3  2750     25     29        4  -1  0.3389831  4.0578619      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block4  2714      7      7        0  -1 -1.0000000 -1.0000000     -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block5  2689      8      8        0  -1 -1.0000000 -1.0000000     -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        sumAlleleLow sumAlleleHigh          lH          lM        lRhomo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block            -1            -1  1.00000000  1.00000000  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block1            0           544 -0.03545753 -0.03545753 -2.081668e-17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block2           20            28  1.00000000  1.00000000  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block3           60           117  1.00000000  1.00000000  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block4            0           112 -0.10612196 -0.05374429 -5.237766e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block5            0           136 -1.16008188 -0.53606843 -6.240135e-01</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

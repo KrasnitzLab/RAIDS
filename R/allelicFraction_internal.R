@@ -283,16 +283,24 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' \item{end} {a \code{integer} representing the end position on the
 #' box containing only homozygote SNVs (or not SNV). The last box ends at the
 #' length of the chromosome.}
-#' \item{logLHR} {score for LOH}
-#' \item{LH1} {TODO}
-#' \item{LM1} {TODO}
+#' \item{logLHR} {TOREVIEW Score for LOH base on frequencies in population. Sum of
+#' the log10 of the frequencies of the observe gegenotype minus the
+#' the sum of the log10 of the higher frequent genotype.
+#' (-100 when normal genotype are present)}
+#' \item{LH1} {TOREVIEW If normal genotype present and heterozygot the probability to be heterozygote
+#' base on the coverage of each allele}
+#' \item{LM1} {TOREVIEW If normal genotype present and heterozygot the max probability the max probability
+#' for the read coverage at the position}
 #' \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
 #' \item{nbSNV} {a \code{integer} representing th number of SNVs in
 #' the box}
-#' \item{nbPruned} {a \code{integer} representing th number of pruned SNVs in
+#' \item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
 #' the box}
-#' \item{nbNorm} {TODO}
-#' \item{LOH} {TODO}
+#' \item{nbNorm} {TOREVIEW a \code{integer} representing of genotype
+#' heterozygote for the normal in the block}
+#' \item{LOH} {TOREVIEW a \code{integer} representing a flag if 1 it mean
+#' the block is satisfy the criteria to be LOH. The value is not assign
+#' in this function they are all 0}
 #' }
 #'
 #' @examples
@@ -396,21 +404,22 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                         if (length(which(snvH$normal.geno != 3)) > 0) {
                             listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
                             homoBlock$nbNorm[i] <- length(listCount)
+                            if(homoBlock$nbNorm[i] > 0){
+                                lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                           c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                      1, FUN=function(x){
+                                                          return(dbinom(x[1], x[2], 0.5))
+                                                          # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
+                                                      })))
 
-                            lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                       c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                  1, FUN=function(x){
-                                                      return(dbinom(x[1], x[2], 0.5))
-                                                      # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
-                                                  })))
-
-                            lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                   1, FUN=function(x){
-                                                       return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                                                       #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                                                   })))
-                            logLHR <- -100
+                                lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
+                                                            c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                                       1, FUN=function(x){
+                                                           return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
+                                                           #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                                                       })))
+                                logLHR <- -100
+                            }
 
                         } else if (length(which(snvH$pruned)) > 2) {
                             afSNV <- listAF[snvH$snp.index[which(snvH$pruned)]]

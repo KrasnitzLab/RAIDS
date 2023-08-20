@@ -28,9 +28,6 @@
     <loc>/reference/add1KG2SampleGDS.html</loc>
   </url>
   <url>
-    <loc>/reference/addBlockFromPlink2GDS.html</loc>
-  </url>
-  <url>
     <loc>/reference/addBlockInGDSAnnot.html</loc>
   </url>
   <url>
@@ -173,9 +170,6 @@
   </url>
   <url>
     <loc>/reference/prepSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/processBlockChr.html</loc>
   </url>
   <url>
     <loc>/reference/pruning1KGbyChr.html</loc>

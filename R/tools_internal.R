@@ -177,7 +177,6 @@ validatePositiveIntegerVector <- function(value, name) {
     return(0L)
 }
 
-
 #' @title Read a SNP-pileup file
 #'
 #' @description The function reads a generic SNP pileup file and

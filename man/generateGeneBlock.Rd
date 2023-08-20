@@ -5,7 +5,7 @@
 \alias{generateGeneBlock}
 \title{Generate two indexes based on gene annotation for gdsAnnot1KG block}
 \usage{
-generateGeneBlock(gdsReference, winSize = 10000, ensBd)
+generateGeneBlock(gdsReference, winSize = 10000, ensDb)
 }
 \arguments{
 \item{gdsReference}{an object of class
@@ -15,7 +15,7 @@ generateGeneBlock(gdsReference, winSize = 10000, ensBd)
 size of the window to use to group the SNVs when the SNVs are in a
 non-coding region. Default: \code{10000}.}
 
-\item{ensBd}{An object of class \code{EnsDb} with the Ensembl genome
+\item{ensDb}{An object of class \code{EnsDb} with the Ensembl genome
 annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.}
 }
 \value{

@@ -15,7 +15,10 @@ a SNV dataset.}
 window to compute the allelic fraction.
 Default: \code{10}.}
 
-\item{cutOff}{a single \code{numeric} representing TODO. Default: \code{-3}.}
+\item{cutOff}{a \code{numeric} representing the cut-off for considering
+a region imbalanced when comparing likelihood to gave allelic fraction
+change and likelihood not to have allelic fraction change.
+Default: \code{-3}.}
 }
 \value{
 a \code{matrix} of \code{numeric} with 3 columns where each

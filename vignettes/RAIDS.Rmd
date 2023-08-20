@@ -397,8 +397,10 @@ also created.
 ### RNA data - Wrapper function to run ancestry inference on RNA data 
 
 
-TODO
-The wrapper function, called _runRNAAncestry()_, requires 4 files as input:
+TOREVIEW
+The process is the same as for the DNA but use the wrapper function 
+called _runRNAAncestry()_. Internally the data is process differently.
+It requires 4 files as input:
 
 - The **population reference GDS file**
 - The **population reference SNV Annotation GDS file**

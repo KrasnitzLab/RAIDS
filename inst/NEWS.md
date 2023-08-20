@@ -1,3 +1,13 @@
+CHANGES IN VERSION 0.99.7
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The new runRNAAncestry() function executes most steps leading to the ancestry inference call on a specific RNA profile.
+    o A vignette describing the content of the Reference GDS files has been created.
+    o More parameter names have been changed to follow the camelCase style.
+    
+
 CHANGES IN VERSION 0.99.6
 ------------------------
 

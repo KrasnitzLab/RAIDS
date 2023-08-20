@@ -43,12 +43,6 @@
     <loc>/reference/addGeneBlockGDSRefAnnot.html</loc>
   </url>
   <url>
-    <loc>/reference/addPhase1KG2SampleGDSFromFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addPhase1KG2SampleGDSFromGDS.html</loc>
-  </url>
-  <url>
     <loc>/reference/addRef2GDS1KG.html</loc>
   </url>
   <url>
@@ -74,9 +68,6 @@
   </url>
   <url>
     <loc>/reference/appendGDSgenotypeMat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendStudy2GDS1KG.html</loc>
   </url>
   <url>
     <loc>/reference/basePCASample.html</loc>
@@ -119,9 +110,6 @@
   </url>
   <url>
     <loc>/reference/computePoolSyntheticAncestryGr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePrunedPCARef.html</loc>
   </url>
   <url>
     <loc>/reference/computeSyntheticConfMat.html</loc>
@@ -190,9 +178,6 @@
     <loc>/reference/processBlockChr.html</loc>
   </url>
   <url>
-    <loc>/reference/projectSample2PCA.html</loc>
-  </url>
-  <url>
     <loc>/reference/pruning1KGbyChr.html</loc>
   </url>
   <url>
@@ -251,9 +236,6 @@
   </url>
   <url>
     <loc>/reference/validateAddStudy1Kg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateAppendStudy2GDS1KG.html</loc>
   </url>
   <url>
     <loc>/reference/validateCharacterString.html</loc>

@@ -76,6 +76,9 @@
 #'
 #'     prunedSNVs <- readRDS(file.path(getwd(), paste0(outPrefix, ".rds")))
 #'     prunedSNVs
+#'
+#'     ## Delete temporary file
+#'     unlink(getwd(), paste0(outPrefix, ".rds"), force=TRUE)
 #' }
 #'
 #' ## Close 1K GDS file

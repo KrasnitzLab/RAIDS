@@ -5,7 +5,7 @@
 \alias{generateGeneBlock}
 \title{Generate two indexes based on gene annotation for gdsAnnot1KG block}
 \usage{
-generateGeneBlock(gdsReference, winSize = 10000, EnsDb)
+generateGeneBlock(gdsReference, winSize = 10000, ensBd)
 }
 \arguments{
 \item{gdsReference}{an object of class
@@ -15,19 +15,19 @@ generateGeneBlock(gdsReference, winSize = 10000, EnsDb)
 size of the window to use to group the SNVs when the SNVs are in a
 non-coding region. Default: \code{10000}.}
 
-\item{EnsDb}{An object of class \code{EnsDb} with the Ensembl genome
+\item{ensBd}{An object of class \code{EnsDb} with the Ensembl genome
 annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.}
 }
 \value{
 a \code{data.frame} with those columns:
 \itemize{
-\item{chr} {}
-\item{pos} {}
-\item{snp.allele} {}
-\item{Exon} {}
-\item{GName} {}
-\item{Gene} {}
-\item{GeneS} {}
+\item{chr} {TODO}
+\item{pos} {TODO}
+\item{snp.allele} {TODO}
+\item{Exon} {TODO}
+\item{GName} {TODO}
+\item{Gene} {TODO}
+\item{GeneS} {TODO}
 }
 "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 Example for GName and the two indexes "Gene", "GeneS"

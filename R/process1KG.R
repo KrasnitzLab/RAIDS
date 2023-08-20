@@ -1015,7 +1015,7 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, gdsRefAnnotFile,
     ## Generate two indexes based on gene annotation for
     ## the Reference GDS Annotation block
     dfGeneBlock <- generateGeneBlock(gdsReference=gdsReference,
-                                     winSize=winSize, EnsDb=ensDb)
+                                     winSize=winSize, ensDb=ensDb)
 
     ## Open GDS Reference Annotation file in writing mode
     gdsRefAnnot <- openfn.gds(gdsRefAnnotFile, readonly=FALSE)

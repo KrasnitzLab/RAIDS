@@ -98,24 +98,25 @@ size, compressed or not + compression ratio.
 
 The mandatory fields are:
 
-* *sample.id*:  a unique identifier for each sample.
-* *snp.id*: a unique identifier for each SNV.
-* *sample.annot*: a *data.frame* where each row correspond to a sample and containing those columns:
-    * *sex*: a identifier of the sex of the sample
-    * *pop.Group*: TODO
-    * *superPop*: a identifier of the super-population ancestry of the sample
-    * *batch*: a unique number representing the batch of provenance of the sample 
-* *snp.chromosome*: an integer or character mapping for each chromosome. Integer: numeric values 1-26, mapped in order from 1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial probes), and 0 for probes with unknown positions; it does not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string indicating unknown position.
-* *snp.position*: the base position of each SNV on the chromosome, and 0 for unknown position; it does not allow NA.
-* *snp.allele*: TODO
-* *snp.AF*: TODO
-* *snp.[Population_ID]_AF*: TODO
-* *snp.EUR_AF*: TODO
-* *snp.AFR_AF*: TODO
-* *snp.AMR_AF*: TODO
-* *snp.SAS_AF*: TODO
-* *genotype*: a SNV genotypic matrix (i.e., the number of A alleles) in individual-major mode nsnp×nsample
-* *sample.ref*: TODO
+* **sample.id**:  a unique identifier for each sample
+* **snp.id**: a unique identifier for each SNV.
+* **sample.annot**: a *data.frame* where each row correspond to a sample and containing those columns:
+    * **sex**: a identifier of the sex of the sample
+    * **pop.Group**: a *character* string representing the sub-population ancestry of the sample (ex:GBR, etc)
+    * **superPop**: a *character* string representing the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS, AMR)
+    * **batch**: an *integer* representing the batch of provenance of the sample 
+* **snp.chromosome**: an integer or character mapping for each chromosome. Integer: numeric values 1-26, mapped in order from 1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial probes), and 0 for probes with unknown positions; it does not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string indicating unknown position
+* **snp.position**: a *integer* representing the base position of each SNV on the chromosome, and 0 for unknown position; it does not allow NA.
+* **snp.allele**: a *character* string representing the reference allele and alternative allele for each of the SNVs present in the *snp.id* field
+* **snp.AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the general population for each of the SNVs present in the *snp.id* field
+* **snp.EAS_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the East Asian population  for each of the SNVs present in the *snp.id* field
+* **snp.EUR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the European population  for each of the SNVs present in the *snp.id* field
+* **snp.AFR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the African population  for each of the SNVs present in the *snp.id* field
+* **snp.AMR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the American population  for each of the SNVs present in the *snp.id* field
+* **snp.SAS_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the South Asian population  for each of the SNVs present in the *snp.id* field
+* **genotype**: a SNV genotypic *integer* *matrix* (i.e., the number of A alleles) in SNVs-major mode (number of Samples × number of SNvs)
+* **sample.ref**: an *integer* indicating if the sample is retained to be used as reference (=1) or removed (=0) as related samples have to be discarded
+
 
 <br>
 <br>
@@ -145,6 +146,15 @@ print(gdsRefAnnot)
 closefn.gds(gdsRefAnnot)
 ```
 
+
+
+The mandatory fields are:
+
+* **phase**: TODO
+* **block.annot**: a data.frame containing those columns:
+    * **block.id**: TODO
+    * **block.desc**: TODO
+* **bloc**: TODO
 
 <br>
 <br>

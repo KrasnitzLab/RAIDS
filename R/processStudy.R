@@ -610,7 +610,6 @@ pruningSample <- function(gdsReference,
 #' @examples
 #'
 #' ## Required library for GDS
-#' library(gdsfmt)
 #' library(SNPRelate)
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
@@ -701,26 +700,33 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 
     var.geno <- NULL
 
-    j <- 1
-    for(i in listRef) {
-        g <- read.gdsn(index.gdsn(gdsReference, "genotype"), start=c(1,i),
-                            count = c(-1,1))[listSNP]
+    j <- apply(matrix(c(seq_len(length(listRef)), listRef), ncol=2), 1,
+            FUN=function(x, gdsReference,
+                gdsSample, listSNP){
+                i <- x[2]
+                j <- x[1]
 
-        if(! ("genotype" %in% ls.gdsn(gdsSample))){
-            var.geno <- add.gdsn(gdsSample, "genotype",
-                            valdim=c(length(listSNP), 1), g, storage="bit2")
+                g <- read.gdsn(index.gdsn(gdsReference, "genotype"), start=c(1,i),
+                               count = c(-1,1))[listSNP]
 
-        }else {
-            if(is.null(var.geno)) {
-                var.geno <- index.gdsn(gdsSample, "genotype")
-            }
-            append.gdsn(var.geno, g)
-        }
-        if(j %% 5 == 0) {
-            sync.gds(gdsSample)
-        }
-        j <- j + 1
-    }
+                if(! ("genotype" %in% ls.gdsn(gdsSample))){
+                    var.geno <- add.gdsn(gdsSample, "genotype",
+                                         valdim=c(length(listSNP), 1), g, storage="bit2")
+
+                }else {
+                    if(is.null(var.geno)) {
+                        var.geno <- index.gdsn(gdsSample, "genotype")
+                    }
+                    append.gdsn(var.geno, g)
+                }
+                if(j %% 5 == 0) {
+                    sync.gds(gdsSample)
+                }
+                return(NULL)
+            },
+            gdsReference=gdsReference,
+            gdsSample=gdsSample,
+            listSNP=listSNP)
 
     # add.gdsn(gdsSample, "SamplePos", objdesp.gdsn(index.gdsn(gdsSample,
     #  "genotype"))$dim[2] + 1,
@@ -729,7 +735,9 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
 
     posCur <- which(study.annot$data.id == currentProfile &
                             study.annot$study.id == studyID)
-
+    if(is.null(var.geno)) {
+        var.geno <- index.gdsn(gdsSample, "genotype")
+    }
     g <- read.gdsn(index.gdsn(gdsSample, "geno.ref"), start=c(1, posCur),
                         count=c(-1, 1))[listSNP]
     append.gdsn(var.geno, g)

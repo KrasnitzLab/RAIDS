@@ -34,7 +34,6 @@ the Profile GDS file. The nodes are added to the Profile GDS file:
 \examples{
 
 ## Required library for GDS
-library(gdsfmt)
 library(SNPRelate)
 
 ## Path to the demo 1KG GDS file is located in this package

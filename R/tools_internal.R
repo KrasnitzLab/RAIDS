@@ -197,7 +197,7 @@ validatePositiveIntegerVector <- function(value, name) {
 #'
 #' @param chr a \code{integer} representing the current chromosome.
 #'
-#' @return the a \code{array} with the sample from pedDF keept
+#' @return a \code{array} pf TODO with the sample from pedDF keept
 #'
 #' @examples
 #'

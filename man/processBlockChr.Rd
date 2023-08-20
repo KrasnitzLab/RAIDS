@@ -21,7 +21,7 @@ continental population (ex: EUR, AFR, etc.).}
 \item{chr}{a \code{integer} representing the current chromosome.}
 }
 \value{
-the a \code{array} with the sample from pedDF keept
+a \code{array} pf TODO with the sample from pedDF keept
 }
 \description{
 The function reads the information form the specified block

@@ -230,8 +230,8 @@ South Asian population for each of the SNVs present in the
 <em>snp.id</em> field</li>
 <li>
 <strong>genotype</strong>: a SNV genotypic <em>integer</em>
-<em>matrix</em> (i.e., the number of A alleles) in SNVs-major mode
-(number of Samples × number of SNvs)</li>
+<em>matrix</em> (i.e., the number of A alleles) with SNVs as rows and
+samples as columns (number of SNVs × number of Samples)</li>
 <li>
 <strong>sample.ref</strong>: an <em>integer</em> indicating if the
 sample is retained to be used as reference (=1) or removed (=0) as
@@ -273,12 +273,15 @@ TODO</p>
 <li>
 <strong>phase</strong>: TODO</li>
 <li>
-<strong>block.annot</strong>: a data.frame containing those columns:
+<strong>block.annot</strong>: a <em>data.frame</em> containing those
+columns:
 <ul>
 <li>
-<strong>block.id</strong>: TODO</li>
+<strong>block.id</strong>: a <em>character</em> string representing
+TODO</li>
 <li>
-<strong>block.desc</strong>: TODO</li>
+<strong>block.desc</strong>: a <em>character</em> string describing
+the block TODO</li>
 </ul>
 </li>
 <li>

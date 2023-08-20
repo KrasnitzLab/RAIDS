@@ -152,32 +152,6 @@ test_that("validateComputePCARefSample() must return expected results when all i
 })
 
 
-#############################################################################
-### Tests validateAppendStudy2GDS1KG() results
-#############################################################################
-
-context("validateAppendStudy2GDS1KG() results")
-
-
-test_that("validateAppendStudy2GDS1KG() must return expected results when all input are valid", {
-
-    dataDir <- test_path("fixtures")
-    fileGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
-    rdsFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
-
-    studyInfo <- data.frame(study.id="Pancreatic.WES",
-                        study.desc="Pancreatic study",  study.platform="WES",
-                        stringsAsFactors=FALSE)
-
-    result1 <- RAIDS:::validateAppendStudy2GDS1KG(pathGeno=test_path("fixtures"),
-            filePedRDS=rdsFile, fileNameGDS=fileGDS,
-            batch=1L, studyDF=studyInfo, listSamples=c("HC01", "HC02"),
-            pathProfileGDS=test_path("fixtures"), genoSource="snp-pileup",
-            verbose=TRUE)
-
-    expect_identical(result1, 0L)
-})
-
 
 #############################################################################
 ### Tests validateAdd1KG2SampleGDS() results

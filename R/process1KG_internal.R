@@ -144,7 +144,7 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' size of the window to use to group the SNVs when the SNVs are in a
 #' non-coding region. Default: \code{10000}.
 #'
-#' @param ensBd An object of class \code{EnsDb} with the Ensembl genome
+#' @param ensDb An object of class \code{EnsDb} with the Ensembl genome
 #' annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.
 #'
 #' @return  a \code{data.frame} with those columns:
@@ -186,9 +186,9 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' @importFrom AnnotationFilter GeneIdFilter
 #' @encoding UTF-8
 #' @keywords internal
-generateGeneBlock <- function(gdsReference, winSize=10000, ensBd) {
+generateGeneBlock <- function(gdsReference, winSize=10000, ensDb) {
 
-    edb <- ensBd
+    edb <- ensDb
     listEnsId <- unique(names(genes(edb)))
 
     cols <- c("GENEID", "SYMBOL", "GENENAME", "GENESEQSTART",

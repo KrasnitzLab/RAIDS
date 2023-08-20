@@ -92,7 +92,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-08-19<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.6<br><strong>Compiled date</strong>: 2023-08-20<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -162,53 +162,80 @@ displayed in the braces indicate the data type, size, compressed or not
 <p>The mandatory fields are:</p>
 <ul>
 <li>
-<em>sample.id</em>: a unique identifier for each sample.</li>
+<strong>sample.id</strong>: a unique identifier for each sample</li>
 <li>
-<em>snp.id</em>: a unique identifier for each SNV.</li>
+<strong>snp.id</strong>: a unique identifier for each SNV.</li>
 <li>
-<em>sample.annot</em>: a <em>data.frame</em> where each row
+<strong>sample.annot</strong>: a <em>data.frame</em> where each row
 correspond to a sample and containing those columns:
 <ul>
 <li>
-<em>sex</em>: a identifier of the sex of the sample</li>
+<strong>sex</strong>: a identifier of the sex of the sample</li>
 <li>
-<em>pop.Group</em>: TODO</li>
+<strong>pop.Group</strong>: a <em>character</em> string representing
+the sub-population ancestry of the sample (ex:GBR, etc)</li>
 <li>
-<em>superPop</em>: a identifier of the super-population ancestry of
-the sample</li>
+<strong>superPop</strong>: a <em>character</em> string representing
+the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS,
+AMR)</li>
 <li>
-<em>batch</em>: a unique number representing the batch of provenance
-of the sample</li>
+<strong>batch</strong>: an <em>integer</em> representing the batch
+of provenance of the sample</li>
 </ul>
 </li>
 <li>
-<em>snp.chromosome</em>: an integer or character mapping for each
-chromosome. Integer: numeric values 1-26, mapped in order from 1-22,
-23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial
-probes), and 0 for probes with unknown positions; it does not allow NA.
-Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string
-indicating unknown position.</li>
+<strong>snp.chromosome</strong>: an integer or character mapping for
+each chromosome. Integer: numeric values 1-26, mapped in order from
+1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the
+mitochondrial probes), and 0 for probes with unknown positions; it does
+not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a
+blank string indicating unknown position</li>
 <li>
-<em>snp.position</em>: the base position of each SNV on the
-chromosome, and 0 for unknown position; it does not allow NA.</li>
+<strong>snp.position</strong>: a <em>integer</em> representing the
+base position of each SNV on the chromosome, and 0 for unknown position;
+it does not allow NA.</li>
 <li>
-<em>snp.allele</em>: TODO</li>
+<strong>snp.allele</strong>: a <em>character</em> string
+representing the reference allele and alternative allele for each of the
+SNVs present in the <em>snp.id</em> field</li>
 <li>
-<em>snp.AF</em>: TODO</li>
-<li>*snp.[Population_ID]_AF*: TODO</li>
+<strong>snp.AF</strong>: a <em>numeric</em> value between 0 and 1
+representing the allelic frequency of the alternative allele in the
+general population for each of the SNVs present in the <em>snp.id</em>
+field</li>
 <li>
-<em>snp.EUR_AF</em>: TODO</li>
+<strong>snp.EAS_AF</strong>: a <em>numeric</em> value between 0 and
+1 representing the allelic frequency of the alternative allele in the
+East Asian population for each of the SNVs present in the
+<em>snp.id</em> field</li>
 <li>
-<em>snp.AFR_AF</em>: TODO</li>
+<strong>snp.EUR_AF</strong>: a <em>numeric</em> value between 0 and
+1 representing the allelic frequency of the alternative allele in the
+European population for each of the SNVs present in the <em>snp.id</em>
+field</li>
 <li>
-<em>snp.AMR_AF</em>: TODO</li>
+<strong>snp.AFR_AF</strong>: a <em>numeric</em> value between 0 and
+1 representing the allelic frequency of the alternative allele in the
+African population for each of the SNVs present in the <em>snp.id</em>
+field</li>
 <li>
-<em>snp.SAS_AF</em>: TODO</li>
+<strong>snp.AMR_AF</strong>: a <em>numeric</em> value between 0 and
+1 representing the allelic frequency of the alternative allele in the
+American population for each of the SNVs present in the <em>snp.id</em>
+field</li>
 <li>
-<em>genotype</em>: a SNV genotypic matrix (i.e., the number of A
-alleles) in individual-major mode nsnp×nsample</li>
+<strong>snp.SAS_AF</strong>: a <em>numeric</em> value between 0 and
+1 representing the allelic frequency of the alternative allele in the
+South Asian population for each of the SNVs present in the
+<em>snp.id</em> field</li>
 <li>
-<em>sample.ref</em>: TODO</li>
+<strong>genotype</strong>: a SNV genotypic <em>integer</em>
+<em>matrix</em> (i.e., the number of A alleles) in SNVs-major mode
+(number of Samples × number of SNvs)</li>
+<li>
+<strong>sample.ref</strong>: an <em>integer</em> indicating if the
+sample is retained to be used as reference (=1) or removed (=0) as
+related samples have to be discarded</li>
 </ul>
 <p><br><br></p>
 </div>
@@ -241,6 +268,22 @@ TODO</p>
 <span><span class="co">## \--+ block   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000x7</span> <span style="color: #555555;">LZ4_ra(22.6%), 68.1K</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span></code></pre></div>
+<p>The mandatory fields are:</p>
+<ul>
+<li>
+<strong>phase</strong>: TODO</li>
+<li>
+<strong>block.annot</strong>: a data.frame containing those columns:
+<ul>
+<li>
+<strong>block.id</strong>: TODO</li>
+<li>
+<strong>block.desc</strong>: TODO</li>
+</ul>
+</li>
+<li>
+<strong>bloc</strong>: TODO</li>
+</ul>
 <p><br><br></p>
 </div>
 <div class="section level2">

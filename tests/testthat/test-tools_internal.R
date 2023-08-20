@@ -28,9 +28,9 @@ test_that("validateGDSClass() must return expected results when all input are va
 
 test_that("validateGDSClass() must return error when input is not valid", {
 
-    expected <- "The \'todo_01\' must be an object of class \'gds.class\'."
+    expected <- "The \'tudo_01\' must be an object of class \'gds.class\'."
 
-    expect_error(RAIDS:::validateGDSClass(gds="toto.gds", name="todo_01"),
+    expect_error(RAIDS:::validateGDSClass(gds="toto.gds", name="tudo_01"),
                     expected, fixed=TRUE)
 })
 
@@ -136,7 +136,8 @@ context("validatePositiveIntegerVector() results")
 
 test_that("validatePositiveIntegerVector() must return expected results when all input are valid", {
 
-    result1 <- RAIDS:::validatePositiveIntegerVector(value=c(1,2,3), name="parameter_01")
+    result1 <- RAIDS:::validatePositiveIntegerVector(value=c(1,2,3),
+                                                        name="parameter_01")
 
     expect_identical(result1, 0L)
 })

@@ -560,13 +560,13 @@ if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "exampleRNA"))) 
                     pathProfileGDS=pathProfileGDS,
                     pathGeno=pathGeno,
                     pathOut=pathOut,
-                    fileReferenceGDS=fileReferenceGDS,
+                    fileReferenceGDS=fileGDS,
                     fileReferenceAnnotGDS=fileAnnotGDS,
                     chrInfo=chrInfo,
                     syntheticRefDF=dataRef,
                     blockTypeID="GeneS.Ensembl.Hsapiens.v86",
                     genoSource="snp-pileup")
-
+    
     list.files(pathOut)
     list.files(file.path(pathOut, ped$Name.ID[1]))
 

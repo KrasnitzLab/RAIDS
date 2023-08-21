@@ -92,7 +92,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.8<br><strong>Compiled date</strong>: 2023-08-20<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.8<br><strong>Compiled date</strong>: 2023-08-21<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -242,8 +242,10 @@ related samples have to be discarded</li>
 <div class="section level2">
 <h2 id="population-reference-annotation-gds-file">Population Reference Annotation GDS file<a class="anchor" aria-label="anchor" href="#population-reference-annotation-gds-file"></a>
 </h2>
-<p>The <em>Population Reference Annotation GDS file</em> should contain
-TODO</p>
+<p>TOREVIEW The <em>Population Reference Annotation GDS file</em> should
+contain phase information and block group of the variant in
+<em>gdsRef</em>. A block can be a linkage disequelibrium block relative
+to a population or gene.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -268,26 +270,22 @@ TODO</p>
 <span><span class="co">## \--+ block   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000x7</span> <span style="color: #555555;">LZ4_ra(22.6%), 68.1K</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span></code></pre></div>
-<p>The mandatory fields are:</p>
-<ul>
-<li>
-<strong>phase</strong>: TODO</li>
-<li>
+<p>The mandatory fields are: TOREVIEW * <strong>phase</strong>: A
+<em>2bit</em> representing the phase of the variant in <em>gdsRef</em>.
+If 0 means the first allele is a reference and 1 means the first allele
+is the alternative and 3 means unknown. The first allele combine with
+the genotype of the variant determine the phase for a biallelic variant.
+The variant in phase are in the same order as gdsRef *
 <strong>block.annot</strong>: a <em>data.frame</em> containing those
-columns:
-<ul>
-<li>
-<strong>block.id</strong>: a <em>character</em> string representing
-TODO</li>
-<li>
-<strong>block.desc</strong>: a <em>character</em> string describing
-the block TODO</li>
-</ul>
-</li>
-<li>
-<strong>bloc</strong>: TODO</li>
-</ul>
-<p><br><br></p>
+columns: * <strong>block.id</strong>: a <em>character</em> string
+representing an identifiant of block group. A block can be linkage
+disequilibrium block relative to a populationn or gene. *
+<strong>block.desc</strong>: a <em>character</em> string describing the
+block group. * <strong>bloc</strong>: A <em>integer</em> <em>matrix</em>
+where each row representing a variant in <em>gdsRef</em> in the same
+order. The column are a block group describe in <em>block.annot</em>.
+Each <em>integer</em> in the <em>matrix</em> representing a specific
+block. <br><br></p>
 </div>
 <div class="section level2">
 <h2 id="pre-processed-files-from-1000-genomes-in-hg38-are-available">Pre-processed files, from 1000 Genomes in hg38, are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-from-1000-genomes-in-hg38-are-available"></a>

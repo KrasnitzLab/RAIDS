@@ -1365,41 +1365,40 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 ###############################################
 
 
-#' @title TOREVIEW Compute the log likelihood ratio base on the coverage (read depth)
-#' of each allele in block (gene in the case of RNA-seq)
+#' @title Compute the log likelihood ratio based on the coverage of
+#' each allele in a specific block (gene in the case of RNA-seq)
 #'
-#' @description TOREVIEW For the block sum the log of read depth of the lowest depth
-#' divide by the total depth of the position minus of likelhood of the allelic
-#' fraction of 0.5. If the phase is known, the variant varaint in the same
-#' haplotype are group.
+#' @description  This function sums the log of read depth of the lowest depth
+#' divide by the total depth of the position minus of likelihood of the allelic
+#' fraction of 0.5 for a block. If the phase is known, the SNVs in the same
+#' haplotype are grouped together.
 #'
-#' @param snpPosHetero For a specific gene (block) a \code{data.frame}
-#' containing the SNV information.
+#' @param snpPosHetero a \code{data.frame}
+#' containing the SNV information for a specific block (gene if RNA-seq).
 #' The \code{data.frame} must contain those columns:
 #' \itemize{
 #' \item{cnt.ref} {a single \code{integer} representing the coverage for
 #' the reference allele.}
 #' \item{cnt.alt} {a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{phase} {TOREVIEW a \code{integer} indicating the phase of the variant
-#' if known, 3 if not known}
+#' \item{phase} { a single \code{integer} indicating the phase of the variant
+#' if known, \code{3} if not known}
 #' }
 #'
-#' @return TOREVIEW a \code{list}  for the block with the information of
+#' @return a \code{list} for the block with the information
 #' relative to the heterozygotes.
 #' The \code{list} contains:
 #' \itemize{
-#' \item{lR} {TOREVIEW a single \code{numeric} representing sum the log of read depth of the lowest depth
-#' divide by the total depth of the position minus of likelhood of the allelic
-#' fraction of 0.5.}
-#' \item{aFraction} {TOREVIEW a single \code{numeric} representing the allele
+#' \item{lR} { a single \code{numeric} representing the sum of the log of
+#' read depth of the lowest depth divide by the total depth of the position
+#' minus of likelihood of the allelic fraction of 0.5.}
+#' \item{aFraction} { a single \code{numeric} representing the allele
 #' fraction estimation.}
-#' \item{sumAlleleLow} {TOREVIEW a \code{integer} representing the
+#' \item{sumAlleleLow} { a \code{integer} representing the
+#' sum of the allele read depth of the lowest read allele depth}
+#' \item{sumAlleleHigh} { a \code{integer} representing the
 #' sum of the allele read depth
-#' of the lowest read alelle depth}
-#' \item{sumAlleleHigh} {TOREVIEW a \code{integer} representing the
-#' sum of the allele read depth
-#' of the highsest read alelle depth}
+#' of the highest read allele depth}
 #' }
 #'
 #' @examples
@@ -1408,10 +1407,9 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #'
 #' snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
 #'
-#' result <- RAIDS:::calcAFMLRNA(snpPos[which(
-#'                 snpPos$block.id == 2750 &
-#'                 snpPos$hetero), c("cnt.ref",
-#'                     "cnt.alt", "phase")])
+#' result <- RAIDS:::calcAFMLRNA(snpPos[which(snpPos$block.id == 2750 &
+#'                     snpPos$hetero),
+#'                         c("cnt.ref", "cnt.alt", "phase")])
 #' head(result)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1470,42 +1468,42 @@ calcAFMLRNA <- function(snpPosHetero) {
 }
 
 
-#' @title TOREVIEW Compile the information about the variants
-#' for each bloc.
+#' @title Compile the information about the SNVs
+#' for each block
 #'
-#' @description TOREVIEW For each block, the function evaluates a score
-#' about lost of heterizygocity and allelic fration. It generates some
-#' information about the variants in the block like number of homozigte or
-#' heterozygote.
-#' In the case of RNA-seq the blocks are genes.
+#' @description The function evaluates a score
+#' about loss of heterozygosity and allelic fraction for each block. It
+#' generates specific information about the variants in the block, like the
+#' number of homozygotes or heterozygotes.
+#' In the case of RNA-seq, the blocks are genes.
 #'
-#' @param snpPos For a specific chromosome a \code{data.frame} with lap for
-#' the SNV dataset with
-#' coverage > \code{minCov}.
+#' @param snpPos a \code{data.frame} with lower allelic fraction (lap) for
+#' the SNVs with coverage > \code{minCov}, for a specific chromosome.
 #'
-#' @return TOREVIEW resBlock a \code{data.frame} containing only heterozygote
+#' @return a \code{data.frame} containing only heterozygote
 #' SNV information. The
 #' \code{data.frame} contain those columns:
 #' \itemize{
 #' \item{block} {a single \code{integer} representing the unique identifier
 #' of the block.}
-#' \item{aRF} {a single \code{numeric} representing the final allelic fraction not compute
-#' here -1 for all entries.}
+#' \item{aRF} {a single \code{numeric} representing the final allelic
+#' fraction; not computed yet, \code{-1} value assigned to all entries.}
 #' \item{aFraction} {a single \code{integer} representing the possible allelic
-#' fraction in absence of LOH.}
+#' fraction in absence of loss of heterozygosity (LOH).}
 #' \item{lR} {a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{nPhase} {a single \code{integer} representin the number of SNV
+#' \item{nPhase} {a single \code{integer} representing the number of SNV
 #' phases.}
-#' \item{sumAlleleLow} {a single \code{integer} TOREVIEW sum of the allele with
-#' the less coverage.}
-#' \item{sumAlleleHigh} {a single \code{integer} TOREVIEW sum of the allele
-#' with more coverage.}
+#' \item{sumAlleleLow} {a single \code{integer} representing the sum of the
+#' alleles with the less coverage.}
+#' \item{sumAlleleHigh} {a single \code{integer} representing the sum of
+#' the alleles with more coverage.}
 #' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}
 #' \item{lM} {a single \code{numeric} log10 product frequency allele
 #' in population.}
-#' \item{lRhomo} {a single \code{numeric} score lH - lM.}
+#' \item{lRhomo} {a single \code{numeric} representing the score
+#' \code{lH} - \code{lM}.}
 #' \item{nbHomo} {a single \code{integer} representing the number of
 #' homozygote SNVs per block.}
 #' \item{nbKeep} {a single \code{integer} representing the number of
@@ -1532,7 +1530,6 @@ tableBlockAF <- function(snpPos) {
     listBlocks <- unique(snpPos$block.id)
 
     resBlock <- data.frame(block=listBlocks)
-
 
     # Number of homozygotes per block
     tmp <- aggregate(snpPos[, c( "homo"), drop=FALSE],

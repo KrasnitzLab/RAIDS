@@ -44,10 +44,46 @@ extracted from the Population Reference GDS file.
 }
 \examples{
 
+## Required library
+library(SNPRelate)
+
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-## TODO
+
+fileAnnotGDS <- file.path(getwd(), "ex1_good_small_1KG_Annot_GDS.gds")
+## Required library
+if (file.access(getwd()) == 0 && !file.exists(fileAnnotGDS)) {
+
+    if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
+
+       file.copy(file.path(dataDir, "tests", "ex1_NoBlockGene.1KG_Annot_GDS.gds"),
+                 fileAnnotGDS)
+        ## Making a "short cut" on the ensDb object
+        edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
+
+
+        ## Temporary Profile GDS file for one profile
+        fileReferenceGDS  <- file.path(dataDir, "tests",
+                "ex1_good_small_1KG_GDS.gds")
+
+        ## Open the reference GDS file (demo version)
+        gds1KG <- snpgdsOpen(fileReferenceGDS)
+
+
+        ## The function
+        addGeneBlockGDSRefAnnot(gdsReference=gds1KG,
+            gdsRefAnnotFile=fileAnnotGDS,
+            ensDb=edb,
+            suffixBlockName="EnsDb.Hsapiens.v86")
+        gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+        print(gdsAnnot1KG)
+        print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
+        closefn.gds(gds1KG)
+        closefn.gds(gdsAnnot1KG)
+        unlink(fileAnnotGDS, force=TRUE)
+    }
+}
 
 }
 \author{

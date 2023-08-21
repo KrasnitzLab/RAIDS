@@ -138,7 +138,8 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 
 #' @title Generate two indexes based on gene annotation for gdsAnnot1KG block
 #'
-#' @description TODO
+#' @description Generate two indexes based on gene annotation for
+#' gdsAnnot1KG block
 #'
 #' @param gdsReference an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened 1KG GDS file (reference).
@@ -152,13 +153,18 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #'
 #' @return  a \code{data.frame} with those columns:
 #' \itemize{
-#' \item{chr} {TODO}
-#' \item{pos} {TODO}
-#' \item{snp.allele} {TODO}
-#' \item{Exon} {TODO}
-#' \item{GName} {TODO}
-#' \item{Gene} {TODO}
-#' \item{GeneS} {TODO}
+#' \item{chr} {a single \code{integer} representing the SNV chromosome.}
+#' \item{pos} {a single \code{integer} representing the SNV position.}
+#' \item{snp.allele} {a \code{character} string representing the reference allele
+#' and alternative allele for each of the SNV}
+#' \item{Exon} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+#' one exon. If more than one GeneId they are separted by ':'}
+#' \item{GName} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+#' the gene. If more than one GeneId they are separted by ':'}
+#' \item{Gene} {A single \code{integer} specific  to the SNVs that share
+#' at least one genes}
+#' \item{GeneS} {A single \code{integer} specific  to the SNVs that share
+#' a unique combination of genes}
 #' }
 #' "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 #' Example for GName and the two indexes "Gene", "GeneS"
@@ -174,10 +180,31 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' 493                 ENSG00000230021:ENSG00000228794   17  3825
 #' @examples
 #'
+#' ## Required library
+#' library(SNPRelate)
+#'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' # TODO
+#' ## Required library
+#' if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
+#'
+#'     ## Making a "short cut" on the ensDb object
+#'     edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
+#'
+#'     path1KG <- file.path(dataDir, "example", "gdsRef")
+#'
+#'     ## Temporary Profile GDS file for one profile
+#'     fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
+#'
+#'     ## Open the reference GDS file (demo version)
+#'     gds1KG <- snpgdsOpen(fileReferenceGDS)
+#'
+#'     ## The function returns a data frame containing gene block information
+#'     matGeneBlock <- RAIDS:::generateGeneBlock(gdsReference=gds1KG, ensDb=edb)
+#'     print(head(matGeneBlock[grep("ENSG00000157152", matGeneBlock$GName),]))
+#'     closefn.gds(gds1KG)
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz
 #' @importFrom S4Vectors Rle
@@ -243,84 +270,84 @@ generateGeneBlock <- function(gdsReference, winSize=10000, ensDb) {
 
         # colnames(matFreq) <- c("chr", "pos", "ref", "alt", "af", "EAS_AF",
         #                        "EUR_AF","AFR_AF", "AMR_AF", "SAS_AF")
-        message(system.time({
-            # SNV in the GDS
-            matFreq <- matFreqAll[which(matFreqAll$chr == chr),]
-            # create two vector (one for the exon and one for the gene) of char
-            # with 1 entry for each SNV in the GDS
-            # I will keep the name of the gene and exon at this position
-            listSNVExons <- character(nrow(matFreq))
-            listSNVGenes <- character(nrow(matFreq))
 
-            listPos <- seq_len(nrow(matFreq))
-            listPos <- listPos[order(matFreq$pos)]
-            # Create an index to accelerate the process
-            startIndex <- seq(1, nrow(matFreq), 1000)
-            # Add if the last entry is not the last position
-            # is not the nb row of matFreq add the the last
-            #position
-            if(startIndex[length(startIndex)] < nrow(matFreq)){
-                startIndex <- c(startIndex, nrow(matFreq))
-            }
-            # For gene in the chr
-            # slow but acceptable
-            #    user  system elapsed
-            #    26.116   0.074  26.201
-            # see blockAnnotation.R for slower alternatives
-            for (genePos in seq_len(nrow(dfGenneAllChr))) {
-                # the gene is where SNV exists
-                if (dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
-                dfGenneAllChr$start[genePos] <= matFreq$pos[nrow(matFreq)]) {
-                    # In which partitions from the index the gene is located
-                    vStart <- max(c(which(matFreq$pos[startIndex] <=
-                                            dfGenneAllChr$start[genePos]), 1))
-                    vEnd <- min(c(which(matFreq$pos[startIndex] >=
-                                            dfGenneAllChr$end[genePos]),
-                                            length(startIndex)))
-                    # List of SNV in the gene
-                    listP <- which(matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] >= dfGenneAllChr$start[genePos] &
-                        matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
+        # SNV in the GDS
+        matFreq <- matFreqAll[which(matFreqAll$chr == chr),]
+        # create two vector (one for the exon and one for the gene) of char
+        # with 1 entry for each SNV in the GDS
+        # I will keep the name of the gene and exon at this position
+        listSNVExons <- character(nrow(matFreq))
+        listSNVGenes <- character(nrow(matFreq))
 
-                    # if SNV in the gene
-                    if (length(listP) > 0) {
-                        # listPos in the gene
-                        listP <-
-                            listPos[startIndex[vStart]:startIndex[vEnd]][listP]
+        listPos <- seq_len(nrow(matFreq))
+        listPos <- listPos[order(matFreq$pos)]
+        # Create an index to accelerate the process
+        startIndex <- seq(1, nrow(matFreq), 1000)
+        # Add if the last entry is not the last position
+        # is not the nb row of matFreq add the the last
+        #position
+        if(startIndex[length(startIndex)] < nrow(matFreq)){
+            startIndex <- c(startIndex, nrow(matFreq))
+        }
+        # For gene in the chr
+        # slow but acceptable
+        #    user  system elapsed
+        #    26.116   0.074  26.201
+        # see blockAnnotation.R for slower alternatives
+        for (genePos in seq_len(nrow(dfGenneAllChr))) {
+            # the gene is where SNV exists
+            if (dfGenneAllChr$end[genePos] >= matFreq$pos[listPos[1]] &
+            dfGenneAllChr$start[genePos] <= matFreq$pos[nrow(matFreq)]) {
+                # In which partitions from the index the gene is located
+                vStart <- max(c(which(matFreq$pos[startIndex] <=
+                                        dfGenneAllChr$start[genePos]), 1))
+                vEnd <- min(c(which(matFreq$pos[startIndex] >=
+                                        dfGenneAllChr$end[genePos]),
+                                        length(startIndex)))
+                # List of SNV in the gene
+                listP <- which(matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] >= dfGenneAllChr$start[genePos] &
+                    matFreq$pos[listPos[startIndex[vStart]:startIndex[vEnd]]] <= dfGenneAllChr$end[genePos])
 
-                        # Add the name of the gene of SNVs
-                        listSNVGenes[listP] <- paste0(listSNVGenes[listP], ":",
-                                        dfGenneAllChr$mcols.GENEID[genePos])
+                # if SNV in the gene
+                if (length(listP) > 0) {
+                    # listPos in the gene
+                    listP <-
+                        listPos[startIndex[vStart]:startIndex[vEnd]][listP]
 
-                        # Allow run on all without check if the SNV have
-                        # already gene name
-                        listSNVGenes[listP] <- gsub("^:", "",
-                                                        listSNVGenes[listP])
+                    # Add the name of the gene of SNVs
+                    listSNVGenes[listP] <- paste0(listSNVGenes[listP], ":",
+                                    dfGenneAllChr$mcols.GENEID[genePos])
 
-                        # Exon of the gene
-                        dfExon <- dfExonChr[which(dfExonChr$GeneID ==
-                                    dfGenneAllChr$mcols.GENEID[genePos]),]
-                        k <- 1
+                    # Allow run on all without check if the SNV have
+                    # already gene name
+                    listSNVGenes[listP] <- gsub("^:", "",
+                                                    listSNVGenes[listP])
 
-                        listE <- list()
-                        for (pos in listP) {
-                            if(length(which(dfExon$Start <= matFreq$pos[pos] &
-                                    dfExon$End >= matFreq$pos[pos])) > 0) {
-                                listE[[k]] <- pos
-                                k <- k + 1
-                            }
+                    # Exon of the gene
+                    dfExon <- dfExonChr[which(dfExonChr$GeneID ==
+                                dfGenneAllChr$mcols.GENEID[genePos]),]
+                    k <- 1
+
+                    listE <- list()
+                    for (pos in listP) {
+                        if(length(which(dfExon$Start <= matFreq$pos[pos] &
+                                dfExon$End >= matFreq$pos[pos])) > 0) {
+                            listE[[k]] <- pos
+                            k <- k + 1
                         }
+                    }
 
-                        if (length(listE) > 0) {
-                            listE <- do.call(c, listE)
-                            listSNVExons[listE] <- paste0(listSNVExons[listE],
-                                    ":", dfGenneAllChr$mcols.GENEID[genePos])
-                            listSNVExons[listE] <- gsub("^:", "",
-                                                    listSNVExons[listE])
-                        }
+                    if (length(listE) > 0) {
+                        listE <- do.call(c, listE)
+                        listSNVExons[listE] <- paste0(listSNVExons[listE],
+                                ":", dfGenneAllChr$mcols.GENEID[genePos])
+                        listSNVExons[listE] <- gsub("^:", "",
+                                                listSNVExons[listE])
                     }
                 }
             }
-        }))
+        }
+
 
 
         # add the column Exon with the list of gene with an exon with the SNV
@@ -419,9 +446,9 @@ generateGeneBlock <- function(gdsReference, winSize=10000, ensDb) {
         # create the space at the begining
     }
 
-    matGene.Block <- do.call(rbind, listMat)
+    matGeneBlock <- do.call(rbind, listMat)
     rm(listMat)
-    return(matGene.Block)
+    return(matGeneBlock)
 }
 
 

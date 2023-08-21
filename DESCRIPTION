@@ -43,7 +43,8 @@ Suggests: testthat,
     BiocStyle,
     withr,
     GenomeInfoDb,
-    BSgenome.Hsapiens.UCSC.hg38
+    BSgenome.Hsapiens.UCSC.hg38,
+    EnsDb.Hsapiens.v86
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome, PrincipalComponent, 

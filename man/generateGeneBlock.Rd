@@ -21,13 +21,18 @@ annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.}
 \value{
 a \code{data.frame} with those columns:
 \itemize{
-\item{chr} {TODO}
-\item{pos} {TODO}
-\item{snp.allele} {TODO}
-\item{Exon} {TODO}
-\item{GName} {TODO}
-\item{Gene} {TODO}
-\item{GeneS} {TODO}
+\item{chr} {a single \code{integer} representing the SNV chromosome.}
+\item{pos} {a single \code{integer} representing the SNV position.}
+\item{snp.allele} {a \code{character} string representing the reference allele
+and alternative allele for each of the SNV}
+\item{Exon} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+one exon. If more than one GeneId they are separted by ':'}
+\item{GName} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+the gene. If more than one GeneId they are separted by ':'}
+\item{Gene} {A single \code{integer} specific  to the SNVs that share
+at least one genes}
+\item{GeneS} {A single \code{integer} specific  to the SNVs that share
+a unique combination of genes}
 }
 "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"
 Example for GName and the two indexes "Gene", "GeneS"
@@ -43,14 +48,36 @@ GName Gene GeneS
 493                 ENSG00000230021:ENSG00000228794   17  3825
 }
 \description{
-TODO
+Generate two indexes based on gene annotation for
+gdsAnnot1KG block
 }
 \examples{
+
+## Required library
+library(SNPRelate)
 
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
-# TODO
+## Required library
+if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
+
+    ## Making a "short cut" on the ensDb object
+    edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
+
+    path1KG <- file.path(dataDir, "example", "gdsRef")
+
+    ## Temporary Profile GDS file for one profile
+    fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
+
+    ## Open the reference GDS file (demo version)
+    gds1KG <- snpgdsOpen(fileReferenceGDS)
+
+    ## The function returns a data frame containing gene block information
+    matGeneBlock <- RAIDS:::generateGeneBlock(gdsReference=gds1KG, ensDb=edb)
+    print(head(matGeneBlock[grep("ENSG00000157152", matGeneBlock$GName),]))
+    closefn.gds(gds1KG)
+}
 
 }
 \author{

@@ -3,8 +3,8 @@
 \encoding{UTF-8}
 \name{runProfileAncestry}
 \alias{runProfileAncestry}
-\title{TOREVIEW Run most steps leading to the ancestry inference call on a
-specific profile}
+\title{Run most steps leading to the ancestry inference call on a
+specific profile (RNA or DNA)}
 \usage{
 runProfileAncestry(
   gdsReference,
@@ -25,10 +25,10 @@ runProfileAncestry(
 }
 \arguments{
 \item{gdsReference}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened Reference GDS file.}
+(a GDS file), the opened Population Reference GDS file.}
 
 \item{gdsRefAnnot}{an object of class \code{\link[gdsfmt]{gds.class}}
-(a GDS file), the opened Reference SNV Annotation GDS file.
+(a GDS file), the opened Population Reference SNV Annotation GDS file.
 This parameter is RNA specific.}
 
 \item{studyDF}{a \code{data.frame} containing the information about the
@@ -93,11 +93,11 @@ more information about the generated output files.
 This function runs most steps leading to the ancestry inference
 call on a specific profile. First, the function creates the Profile GDS file
 for the specific profile using the information from a RDS Sample
-description file and the 1KG reference GDS file.
+description file and the Population reference GDS file.
 }
 \details{
 The runWrapperAncestry() function generates 3 types of files
-in the OUTPUT directory.
+in the \code{pathOut} directory:
 \itemize{
 \item{Ancestry Inference}{The ancestry inference CSV file
 (".Ancestry.csv" file)}
@@ -148,9 +148,9 @@ pathGeno <- file.path(dataDir, "example", "snpPileup")
 ## will be created need to be specified.
 #################################################################
 
-pathProfileGDS <- file.path(getwd(), "out.tmp")
+pathProfileGDS <- file.path(getwd(), "outTest.tmp")
 
-pathOut <- file.path(getwd(), "res.out")
+pathOut <- file.path(getwd(), "resTest.out")
 
 #################################################################
 ## A data frame containing general information about the study
@@ -192,7 +192,7 @@ listProfileRef <- dataRef$sample.id
 profileFile <- file.path(pathProfileGDS, "ex1.gds")
 
 \dontrun{
-     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
+    if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
          !file.exists(pathOut)) {
 
          dir.create(pathProfileGDS)
@@ -216,12 +216,10 @@ profileFile <- file.path(pathProfileGDS, "ex1.gds")
          closefn.gds(gdsReference)
          closefn.gds(gdsRefAnnot)
 
-
          unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
          unlink(pathOut, recursive=TRUE, force=TRUE)
-     }
+    }
 }
-
 
 }
 \references{

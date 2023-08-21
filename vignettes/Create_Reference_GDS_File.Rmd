@@ -66,11 +66,10 @@ also used to generate the PCA on which the samples of interest are going to
 be projected. 
 
 The *Population Reference GDS file* is a GDS object of class 
-[SNPGDSFileClass](https://www.bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#data-formats-used-in-snprelate) 
-from [SNPRelate](https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html) 
+[SNPGDSFileClass](https://www.bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#data-formats-used-in-snprelate) from [SNPRelate](https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html) 
 package [@Zheng2012].
 
-Beware that only unrelated samples should be present in the GDS file. 
+Beware that only unrelated samples should be present in the GDS files. 
 
 ```{r runRefGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 #############################################################################
@@ -91,31 +90,33 @@ print(gdsRef)
 closefn.gds(gdsRef)
 ```
 
-This output lists all variables stored in the *Population Reference GDS file". 
+<br>
+
+This output lists all variables stored in the *Population Reference GDS file*. 
 At the first level, it stores variables *sample.id*, *snp.id*, etc. 
 The additional information displayed in the braces indicate the data type, 
 size, compressed or not + compression ratio.
 
 The mandatory fields are:
 
-* **sample.id**:  a unique identifier for each sample
-* **snp.id**: a unique identifier for each SNV.
+* **sample.id**: a *character* string (saved in *Str8* format) used as unique identifier for each sample
+* **snp.id**: a a *character* string (saved in *Str8* format) used as unique identifier for each SNV
 * **sample.annot**: a *data.frame* where each row correspond to a sample and containing those columns:
-    * **sex**: a identifier of the sex of the sample
-    * **pop.Group**: a *character* string representing the sub-population ancestry of the sample (ex:GBR, etc)
-    * **superPop**: a *character* string representing the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS, AMR)
-    * **batch**: an *integer* representing the batch of provenance of the sample 
-* **snp.chromosome**: an integer or character mapping for each chromosome. Integer: numeric values 1-26, mapped in order from 1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial probes), and 0 for probes with unknown positions; it does not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string indicating unknown position
-* **snp.position**: a *integer* representing the base position of each SNV on the chromosome, and 0 for unknown position; it does not allow NA.
-* **snp.allele**: a *character* string representing the reference allele and alternative allele for each of the SNVs present in the *snp.id* field
-* **snp.AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the general population for each of the SNVs present in the *snp.id* field
-* **snp.EAS_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the East Asian population  for each of the SNVs present in the *snp.id* field
-* **snp.EUR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the European population  for each of the SNVs present in the *snp.id* field
-* **snp.AFR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the African population  for each of the SNVs present in the *snp.id* field
-* **snp.AMR_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the American population  for each of the SNVs present in the *snp.id* field
-* **snp.SAS_AF**: a *numeric* value between 0 and 1 representing the allelic frequency of the alternative allele in the South Asian population  for each of the SNVs present in the *snp.id* field
-* **genotype**: a SNV genotypic *integer* *matrix* (i.e., the number of A alleles) with SNVs as rows and samples as columns (number of SNVs × number of Samples)
-* **sample.ref**: an *integer* indicating if the sample is retained to be used as reference (=1) or removed (=0) as related samples have to be discarded
+    * **sex**: a *character* string (saved in *Str8* format) used as identifier of the sex of the sample
+    * **pop.Group**: a *character* string (saved in *Str8* format) representing the sub-population ancestry of the sample (ex:GBR, etc)
+    * **superPop**: a *character* string (saved in *Str8* format) representing the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS, AMR)
+    * **batch**: an *integer* (saved in *Float64* format) representing the batch of provenance of the sample 
+* **snp.chromosome**: an *integer* or *character* (saved in *UInt16 * format) mapping for each chromosome. Integer: numeric values 1-26, mapped in order from 1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial probes), and 0 for probes with unknown positions; it does not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string indicating unknown position
+* **snp.position**: an *integer* (saved in *Int32* format) representing the base position of each SNV on the chromosome, and 0 for unknown position; it does not allow NA.
+* **snp.allele**: a *character* string (saved as *Str8* format) representing the reference allele and alternative allele for each of the SNVs present in the *snp.id* field
+* **snp.AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the general population for each of the SNVs present in the *snp.id* field
+* **snp.EAS_AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the East Asian population  for each of the SNVs present in the *snp.id* field
+* **snp.EUR_AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the European population  for each of the SNVs present in the *snp.id* field
+* **snp.AFR_AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the African population  for each of the SNVs present in the *snp.id* field
+* **snp.AMR_AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the American population  for each of the SNVs present in the *snp.id* field
+* **snp.SAS_AF**: a *numeric* value between 0 and 1 (saved as *PackedReal24* format) representing the allelic frequency of the alternative allele in the South Asian population  for each of the SNVs present in the *snp.id* field
+* **genotype**: a SNV genotypic *matrix* of *integer* values (saved in *Bit2* format) (i.e., the number of A alleles) with SNVs as rows and samples as columns (number of SNVs × number of Samples)
+* **sample.ref**: an *integer* (saved in *Bit1* format) indicating if the sample is retained to be used as reference (=1) or removed (=0) as related samples have to be discarded
 
 
 <br>
@@ -123,10 +124,10 @@ The mandatory fields are:
 
 # Population Reference Annotation GDS file
 
-TOREVIEW
-The *Population Reference Annotation GDS file* should contain phase information
-and block group of the variant in *gdsRef*.  A block can be a linkage disequelibrium block
-relative to a population or gene.
+The *Population Reference Annotation GDS file* contains phase information
+and block group information forl all the SNVs present in 
+*Population Reference GDS file*.  A block can be a linkage disequelibrium block
+relative to a population or a gene.
 
 ```{r runRefAnnotGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 #############################################################################
@@ -147,22 +148,22 @@ print(gdsRefAnnot)
 closefn.gds(gdsRefAnnot)
 ```
 
+<br>
 
+This output lists all variables stored in 
+the *Population Reference Annotation GDS file*. 
+At the first level, it stores variables *phase*, *block.annot*, etc. 
+The additional information displayed in the braces indicate the data type, 
+size, compressed or not + compression ratio.
 
 The mandatory fields are:
-TOREVIEW
-* **phase**: A *2bit* representing the phase of the variant in *gdsRef*. If 0 means 
-the first allele is a reference and 1 means the first allele 
-is the alternative and 3 means unknown. The first allele combine with the 
-genotype of the variant determine the phase for a biallelic variant. 
-The variant in phase are in the same order as gdsRef
+
+* **phase**: a *integer* (saved in *Bit2* format) representing the phase of the SNVs in the *Population Annotation GDS file*; 0 means the first allele is a reference; 1 means the first allele is the alternative and 3 means unknown. The first allele combine with the genotype of the variant determine the phase for a biallelic variant. The SNVs in phase are in the same order as in the *Population Annotation GDS file*.
 * **block.annot**: a *data.frame* containing those columns:
-    * **block.id**: a *character* string representing an identifiant of block group.
-    A block can be linkage disequilibrium block relative to a populationn or gene.
-    * **block.desc**: a *character* string describing the block group.
-* **bloc**: A *integer* *matrix* where each row representing a variant in *gdsRef* in the same order.
-The column are a block group describe in *block.annot*. Each *integer*  in 
-the *matrix* representing a specific block.
+    * **block.id**: a *character* string (saved in *Str8* format) representing an identifier of block group. A block can be linkage disequilibrium block relative to a population or a gene.
+    * **block.desc**: a *character* string (saved in *Str8* format) describing the block group.
+* **bloc**: a *matrix* of *integer* values (saved in *Int32* format) where each row representing a SNV in the *Population Annotation GDS file* in the same order. The columns are the block groups described in *block.annot*. Each *integer*  in the *matrix* representing a specific block.
+
 <br>
 <br>
 

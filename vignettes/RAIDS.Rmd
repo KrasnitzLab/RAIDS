@@ -592,7 +592,7 @@ if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "exampleRNA"))) 
 <br>
 <br>
 
-The *runExomeAncestry()* function generates 3 types of files 
+The *runRNAAncestry()* function generates 3 types of files 
 in the *pathOut* directory.
 
 * The ancestry inference CSV file (**".Ancestry.csv"** file) 

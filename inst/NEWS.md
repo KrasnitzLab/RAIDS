@@ -1,3 +1,10 @@
+CHANGES IN VERSION 0.99.10
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Update main vignette.
+
 CHANGES IN VERSION 0.99.9
 ------------------------
 

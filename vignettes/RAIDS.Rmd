@@ -396,8 +396,6 @@ also created.
 
 ### RNA data - Wrapper function to run ancestry inference on RNA data 
 
-
-TOREVIEW
 The process is the same as for the DNA but use the wrapper function 
 called _runRNAAncestry()_. Internally the data is process differently.
 It requires 4 files as input:

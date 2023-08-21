@@ -3,7 +3,8 @@
 \encoding{UTF-8}
 \name{computeAlleleFraction}
 \alias{computeAlleleFraction}
-\title{TOREVIEW For each imbalance segments compute the allelic fraction}
+\title{Compute the allelic fraction for
+each imbalanced segment}
 \usage{
 computeAlleleFraction(snpPos, w = 10, cutOff = -3)
 }
@@ -33,8 +34,8 @@ returned when none of the SNVs
 tested positive for the imbalance.
 }
 \description{
-TOREVIEW Compute the allelic fraction for each segment different
-than 0.5. The allelic fraction of the segment can be decomposed in
+This function computes the allelic fraction for each segment
+different than 0.5. The allelic fraction of the segment can be decomposed in
 sub-segments.
 }
 \examples{

@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.99.9
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Better documentation for the runRNAAncestry() function.
+
+
 CHANGES IN VERSION 0.99.8
 ------------------------
 

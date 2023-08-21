@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.99.8
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Some examples have been updated in the documentation.
+
+
 CHANGES IN VERSION 0.99.7
 ------------------------
 

@@ -100,7 +100,7 @@ if (file.access(getwd()) == 0 &&
     prunedSNVs
 
     ## Delete temporary file
-    unlink(getwd(), paste0(outPrefix, ".rds"), force=TRUE)
+    unlink(file.path(getwd(), paste0(outPrefix, ".rds")), force=TRUE)
 }
 
 ## Close 1K GDS file

@@ -116,7 +116,7 @@ samples of interest are going to be projected.</p>
 from <a href="https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html" class="external-link">SNPRelate</a>
 package <span class="citation">(Zheng et al. 2012)</span>.</p>
 <p>Beware that only unrelated samples should be present in the GDS
-file.</p>
+files.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -154,98 +154,107 @@ file.</p>
 <span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">156, 20B</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRef</span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
 <p>This output lists all variables stored in the <em>Population
-Reference GDS file”. At the first level, it stores variables
-</em>sample.id<em>, </em>snp.id*, etc. The additional information
+Reference GDS file</em>. At the first level, it stores variables
+<em>sample.id</em>, <em>snp.id</em>, etc. The additional information
 displayed in the braces indicate the data type, size, compressed or not
 + compression ratio.</p>
 <p>The mandatory fields are:</p>
 <ul>
 <li>
-<strong>sample.id</strong>: a unique identifier for each sample</li>
+<strong>sample.id</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) used as unique identifier for each sample</li>
 <li>
-<strong>snp.id</strong>: a unique identifier for each SNV.</li>
+<strong>snp.id</strong>: a a <em>character</em> string (saved in
+<em>Str8</em> format) used as unique identifier for each SNV</li>
 <li>
 <strong>sample.annot</strong>: a <em>data.frame</em> where each row
 correspond to a sample and containing those columns:
 <ul>
 <li>
-<strong>sex</strong>: a identifier of the sex of the sample</li>
+<strong>sex</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) used as identifier of the sex of the sample</li>
 <li>
-<strong>pop.Group</strong>: a <em>character</em> string representing
-the sub-population ancestry of the sample (ex:GBR, etc)</li>
+<strong>pop.Group</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) representing the sub-population ancestry of the
+sample (ex:GBR, etc)</li>
 <li>
-<strong>superPop</strong>: a <em>character</em> string representing
-the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS,
-AMR)</li>
+<strong>superPop</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) representing the super-population ancestry of the
+sample (ex:EUR, AFR, EAS, SAS, AMR)</li>
 <li>
-<strong>batch</strong>: an <em>integer</em> representing the batch
-of provenance of the sample</li>
+<strong>batch</strong>: an <em>integer</em> (saved in
+<em>Float64</em> format) representing the batch of provenance of the
+sample</li>
 </ul>
 </li>
 <li>
-<strong>snp.chromosome</strong>: an integer or character mapping for
-each chromosome. Integer: numeric values 1-26, mapped in order from
-1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the
-mitochondrial probes), and 0 for probes with unknown positions; it does
-not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a
-blank string indicating unknown position</li>
+<strong>snp.chromosome</strong>: an <em>integer</em> or
+<em>character</em> (saved in <em>UInt16 </em> format) mapping for each
+chromosome. Integer: numeric values 1-26, mapped in order from 1-22,
+23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial
+probes), and 0 for probes with unknown positions; it does not allow NA.
+Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string
+indicating unknown position</li>
 <li>
-<strong>snp.position</strong>: a <em>integer</em> representing the
-base position of each SNV on the chromosome, and 0 for unknown position;
-it does not allow NA.</li>
+<strong>snp.position</strong>: an <em>integer</em> (saved in
+<em>Int32</em> format) representing the base position of each SNV on the
+chromosome, and 0 for unknown position; it does not allow NA.</li>
 <li>
-<strong>snp.allele</strong>: a <em>character</em> string
-representing the reference allele and alternative allele for each of the
-SNVs present in the <em>snp.id</em> field</li>
+<strong>snp.allele</strong>: a <em>character</em> string (saved as
+<em>Str8</em> format) representing the reference allele and alternative
+allele for each of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.AF</strong>: a <em>numeric</em> value between 0 and 1
-representing the allelic frequency of the alternative allele in the
-general population for each of the SNVs present in the <em>snp.id</em>
-field</li>
+(saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the general population for each
+of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.EAS_AF</strong>: a <em>numeric</em> value between 0 and
-1 representing the allelic frequency of the alternative allele in the
-East Asian population for each of the SNVs present in the
-<em>snp.id</em> field</li>
+1 (saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the East Asian population for
+each of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.EUR_AF</strong>: a <em>numeric</em> value between 0 and
-1 representing the allelic frequency of the alternative allele in the
-European population for each of the SNVs present in the <em>snp.id</em>
-field</li>
+1 (saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the European population for each
+of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.AFR_AF</strong>: a <em>numeric</em> value between 0 and
-1 representing the allelic frequency of the alternative allele in the
-African population for each of the SNVs present in the <em>snp.id</em>
-field</li>
+1 (saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the African population for each
+of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.AMR_AF</strong>: a <em>numeric</em> value between 0 and
-1 representing the allelic frequency of the alternative allele in the
-American population for each of the SNVs present in the <em>snp.id</em>
-field</li>
+1 (saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the American population for each
+of the SNVs present in the <em>snp.id</em> field</li>
 <li>
 <strong>snp.SAS_AF</strong>: a <em>numeric</em> value between 0 and
-1 representing the allelic frequency of the alternative allele in the
-South Asian population for each of the SNVs present in the
-<em>snp.id</em> field</li>
+1 (saved as <em>PackedReal24</em> format) representing the allelic
+frequency of the alternative allele in the South Asian population for
+each of the SNVs present in the <em>snp.id</em> field</li>
 <li>
-<strong>genotype</strong>: a SNV genotypic <em>integer</em>
-<em>matrix</em> (i.e., the number of A alleles) with SNVs as rows and
-samples as columns (number of SNVs × number of Samples)</li>
+<strong>genotype</strong>: a SNV genotypic <em>matrix</em> of
+<em>integer</em> values (saved in <em>Bit2</em> format) (i.e., the
+number of A alleles) with SNVs as rows and samples as columns (number of
+SNVs × number of Samples)</li>
 <li>
-<strong>sample.ref</strong>: an <em>integer</em> indicating if the
-sample is retained to be used as reference (=1) or removed (=0) as
-related samples have to be discarded</li>
+<strong>sample.ref</strong>: an <em>integer</em> (saved in
+<em>Bit1</em> format) indicating if the sample is retained to be used as
+reference (=1) or removed (=0) as related samples have to be
+discarded</li>
 </ul>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="population-reference-annotation-gds-file">Population Reference Annotation GDS file<a class="anchor" aria-label="anchor" href="#population-reference-annotation-gds-file"></a>
 </h2>
-<p>TOREVIEW The <em>Population Reference Annotation GDS file</em> should
-contain phase information and block group of the variant in
-<em>gdsRef</em>. A block can be a linkage disequelibrium block relative
-to a population or gene.</p>
+<p>The <em>Population Reference Annotation GDS file</em> contains phase
+information and block group information forl all the SNVs present in
+<em>Population Reference GDS file</em>. A block can be a linkage
+disequelibrium block relative to a population or a gene.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -270,22 +279,45 @@ to a population or gene.</p>
 <span><span class="co">## \--+ block   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000x7</span> <span style="color: #555555;">LZ4_ra(22.6%), 68.1K</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span></code></pre></div>
-<p>The mandatory fields are: TOREVIEW * <strong>phase</strong>: A
-<em>2bit</em> representing the phase of the variant in <em>gdsRef</em>.
-If 0 means the first allele is a reference and 1 means the first allele
-is the alternative and 3 means unknown. The first allele combine with
-the genotype of the variant determine the phase for a biallelic variant.
-The variant in phase are in the same order as gdsRef *
+<p><br></p>
+<p>This output lists all variables stored in the <em>Population
+Reference Annotation GDS file</em>. At the first level, it stores
+variables <em>phase</em>, <em>block.annot</em>, etc. The additional
+information displayed in the braces indicate the data type, size,
+compressed or not + compression ratio.</p>
+<p>The mandatory fields are:</p>
+<ul>
+<li>
+<strong>phase</strong>: a <em>integer</em> (saved in <em>Bit2</em>
+format) representing the phase of the SNVs in the <em>Population
+Annotation GDS file</em>; 0 means the first allele is a reference; 1
+means the first allele is the alternative and 3 means unknown. The first
+allele combine with the genotype of the variant determine the phase for
+a biallelic variant. The SNVs in phase are in the same order as in the
+<em>Population Annotation GDS file</em>.</li>
+<li>
 <strong>block.annot</strong>: a <em>data.frame</em> containing those
-columns: * <strong>block.id</strong>: a <em>character</em> string
-representing an identifiant of block group. A block can be linkage
-disequilibrium block relative to a populationn or gene. *
-<strong>block.desc</strong>: a <em>character</em> string describing the
-block group. * <strong>bloc</strong>: A <em>integer</em> <em>matrix</em>
-where each row representing a variant in <em>gdsRef</em> in the same
-order. The column are a block group describe in <em>block.annot</em>.
-Each <em>integer</em> in the <em>matrix</em> representing a specific
-block. <br><br></p>
+columns:
+<ul>
+<li>
+<strong>block.id</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) representing an identifier of block group. A block
+can be linkage disequilibrium block relative to a population or a
+gene.</li>
+<li>
+<strong>block.desc</strong>: a <em>character</em> string (saved in
+<em>Str8</em> format) describing the block group.</li>
+</ul>
+</li>
+<li>
+<strong>bloc</strong>: a <em>matrix</em> of <em>integer</em> values
+(saved in <em>Int32</em> format) where each row representing a SNV in
+the <em>Population Annotation GDS file</em> in the same order. The
+columns are the block groups described in <em>block.annot</em>. Each
+<em>integer</em> in the <em>matrix</em> representing a specific
+block.</li>
+</ul>
+<p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="pre-processed-files-from-1000-genomes-in-hg38-are-available">Pre-processed files, from 1000 Genomes in hg38, are available<a class="anchor" aria-label="anchor" href="#pre-processed-files-from-1000-genomes-in-hg38-are-available"></a>
@@ -330,7 +362,7 @@ which this document was compiled:</p>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] jsonlite_1.8.7              shape_1.4.6                </span></span>
 <span><span class="co">##   [3] magrittr_2.0.3              jomo_2.7-6                 </span></span>
-<span><span class="co">##   [5] GenomicFeatures_1.52.1      logistf_1.25.0             </span></span>
+<span><span class="co">##   [5] GenomicFeatures_1.52.1      logistf_1.26.0             </span></span>
 <span><span class="co">##   [7] nloptr_2.0.3                rmarkdown_2.24             </span></span>
 <span><span class="co">##   [9] fs_1.6.3                    BiocIO_1.10.0              </span></span>
 <span><span class="co">##  [11] zlibbioc_1.46.0             ragg_1.2.5                 </span></span>
@@ -359,7 +391,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [57] backports_1.4.1             BiocParallel_1.34.2        </span></span>
 <span><span class="co">##  [59] DBI_1.1.3                   pan_1.8                    </span></span>
 <span><span class="co">##  [61] biomaRt_2.56.1              MASS_7.3-59                </span></span>
-<span><span class="co">##  [63] quantreg_5.96               rappdirs_0.3.3             </span></span>
+<span><span class="co">##  [63] quantreg_5.97               rappdirs_0.3.3             </span></span>
 <span><span class="co">##  [65] DelayedArray_0.26.7         rjson_0.2.21               </span></span>
 <span><span class="co">##  [67] DNAcopy_1.74.1              tools_4.3.0                </span></span>
 <span><span class="co">##  [69] lmtest_0.9-40               nnet_7.3-18                </span></span>

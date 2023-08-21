@@ -126,28 +126,30 @@ probability of sequencing error. Default: <code>0.0001</code>.</p></dd>
 chromosome. The <code>data.frame</code> contains those columns:</p><ul><li><p>chr a <code>integer</code> representing the current chromosome</p></li>
 <li><p>start a <code>integer</code> representing the starting position on the
 box containing only homozygote SNVs (or not SNV). The first box starts at
-position 1.</p></li>
+position <code>1</code>.</p></li>
 <li><p>end a <code>integer</code> representing the end position on the
 box containing only homozygote SNVs (or not SNV). The last box ends at the
 length of the chromosome.</p></li>
-<li><p>logLHR TOREVIEW Score for LOH base on frequencies in population. Sum of
-the log10 of the frequencies of the observe gegenotype minus the
+<li><p>logLHR a <code>numeric</code> representing the LOH score basde on
+population frequencies. It is the sum of
+the log10 of the frequencies of the observed gegenotype minus the
 the sum of the log10 of the higher frequent genotype.
 (-100 when normal genotype are present)</p></li>
-<li><p>LH1 TOREVIEW If normal genotype present and heterozygot the probability to be heterozygote
-base on the coverage of each allele</p></li>
-<li><p>LM1 TOREVIEW If normal genotype present and heterozygot the max probability the max probability
+<li><p>LH1  a <code>numeric</code>  representing the probability to be
+heterozygote based on the coverage of each allele when normal
+genotype is present</p></li>
+<li><p>LM1 a <code>numeric</code> representing the max probability
 for the read coverage at the position</p></li>
 <li><p>homoScore a <code>numeric</code> representing <code>LH1</code> - <code>LM1</code></p></li>
 <li><p>nbSNV a <code>integer</code> representing th number of SNVs in
 the box</p></li>
 <li><p>nbPruned a <code>integer</code> representing the number of pruned SNVs in
 the box</p></li>
-<li><p>nbNorm TOREVIEW a <code>integer</code> representing of genotype
-heterozygote for the normal in the block</p></li>
-<li><p>LOH TOREVIEW a <code>integer</code> representing a flag if 1 it mean
-the block is satisfy the criteria to be LOH. The value is not assign
-in this function they are all 0</p></li>
+<li><p>nbNorm  a <code>integer</code> representing of the number of
+heterozygote genotypes for the normal SNVs in the block</p></li>
+<li><p>LOH  a <code>integer</code> representing a flag, if <code>1</code> it means
+the block is satisfying the criteria to be LOH. The value is not assigned
+in this function; the value <code>0</code> is assigned</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>

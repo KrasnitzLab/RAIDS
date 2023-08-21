@@ -55,28 +55,30 @@ chromosome. The \code{data.frame} contains those columns:
 \item{chr} {a \code{integer} representing the current chromosome}
 \item{start} {a \code{integer} representing the starting position on the
 box containing only homozygote SNVs (or not SNV). The first box starts at
-position 1.}
+position \code{1}.}
 \item{end} {a \code{integer} representing the end position on the
 box containing only homozygote SNVs (or not SNV). The last box ends at the
 length of the chromosome.}
-\item{logLHR} {TOREVIEW Score for LOH base on frequencies in population. Sum of
-the log10 of the frequencies of the observe gegenotype minus the
+\item{logLHR} {a \code{numeric} representing the LOH score basde on
+population frequencies. It is the sum of
+the log10 of the frequencies of the observed gegenotype minus the
 the sum of the log10 of the higher frequent genotype.
 (-100 when normal genotype are present)}
-\item{LH1} {TOREVIEW If normal genotype present and heterozygot the probability to be heterozygote
-base on the coverage of each allele}
-\item{LM1} {TOREVIEW If normal genotype present and heterozygot the max probability the max probability
+\item{LH1} { a \code{numeric}  representing the probability to be
+heterozygote based on the coverage of each allele when normal
+genotype is present}
+\item{LM1} {a \code{numeric} representing the max probability
 for the read coverage at the position}
 \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
 \item{nbSNV} {a \code{integer} representing th number of SNVs in
 the box}
 \item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
 the box}
-\item{nbNorm} {TOREVIEW a \code{integer} representing of genotype
-heterozygote for the normal in the block}
-\item{LOH} {TOREVIEW a \code{integer} representing a flag if 1 it mean
-the block is satisfy the criteria to be LOH. The value is not assign
-in this function they are all 0}
+\item{nbNorm} { a \code{integer} representing of the number of
+heterozygote genotypes for the normal SNVs in the block}
+\item{LOH} { a \code{integer} representing a flag, if \code{1} it means
+the block is satisfying the criteria to be LOH. The value is not assigned
+in this function; the value \code{0} is assigned}
 }
 }
 \description{

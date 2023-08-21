@@ -3,40 +3,40 @@
 \encoding{UTF-8}
 \name{tableBlockAF}
 \alias{tableBlockAF}
-\title{TOREVIEW Compile the information about the variants
-for each bloc.}
+\title{Compile the information about the SNVs
+for each block}
 \usage{
 tableBlockAF(snpPos)
 }
 \arguments{
-\item{snpPos}{For a specific chromosome a \code{data.frame} with lap for
-the SNV dataset with
-coverage > \code{minCov}.}
+\item{snpPos}{a \code{data.frame} with lower allelic fraction (lap) for
+the SNVs with coverage > \code{minCov}, for a specific chromosome.}
 }
 \value{
-TOREVIEW resBlock a \code{data.frame} containing only heterozygote
+a \code{data.frame} containing only heterozygote
 SNV information. The
 \code{data.frame} contain those columns:
 \itemize{
 \item{block} {a single \code{integer} representing the unique identifier
 of the block.}
-\item{aRF} {a single \code{numeric} representing the final allelic fraction not compute
-here -1 for all entries.}
+\item{aRF} {a single \code{numeric} representing the final allelic
+fraction; not computed yet, \code{-1} value assigned to all entries.}
 \item{aFraction} {a single \code{integer} representing the possible allelic
-fraction in absence of LOH.}
+fraction in absence of loss of heterozygosity (LOH).}
 \item{lR} {a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{nPhase} {a single \code{integer} representin the number of SNV
+\item{nPhase} {a single \code{integer} representing the number of SNV
 phases.}
-\item{sumAlleleLow} {a single \code{integer} TOREVIEW sum of the allele with
-the less coverage.}
-\item{sumAlleleHigh} {a single \code{integer} TOREVIEW sum of the allele
-with more coverage.}
+\item{sumAlleleLow} {a single \code{integer} representing the sum of the
+alleles with the less coverage.}
+\item{sumAlleleHigh} {a single \code{integer} representing the sum of
+the alleles with more coverage.}
 \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
 frequencies of the allele not found in the profile (not a probability).}
 \item{lM} {a single \code{numeric} log10 product frequency allele
 in population.}
-\item{lRhomo} {a single \code{numeric} score lH - lM.}
+\item{lRhomo} {a single \code{numeric} representing the score
+\code{lH} - \code{lM}.}
 \item{nbHomo} {a single \code{integer} representing the number of
 homozygote SNVs per block.}
 \item{nbKeep} {a single \code{integer} representing the number of
@@ -46,11 +46,11 @@ heterozygote SNVs per block.}
 }
 }
 \description{
-TOREVIEW For each block, the function evaluates a score
-about lost of heterizygocity and allelic fration. It generates some
-information about the variants in the block like number of homozigte or
-heterozygote.
-In the case of RNA-seq the blocks are genes.
+The function evaluates a score
+about loss of heterozygosity and allelic fraction for each block. It
+generates specific information about the variants in the block, like the
+number of homozygotes or heterozygotes.
+In the case of RNA-seq, the blocks are genes.
 }
 \examples{
 

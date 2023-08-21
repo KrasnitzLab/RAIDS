@@ -455,10 +455,11 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
     return(homoBlock)
 }
 
-#' @title TOREVIEW For each imbalance segments compute the allelic fraction
+#' @title Compute the allelic fraction for
+#' each imbalanced segment
 #'
-#' @description TOREVIEW Compute the allelic fraction for each segment different
-#' than 0.5. The allelic fraction of the segment can be decomposed in
+#' @description This function computes the allelic fraction for each segment
+#' different than 0.5. The allelic fraction of the segment can be decomposed in
 #' sub-segments.
 #'
 #' @param snpPos a \code{data.frame} containing the genotype information for

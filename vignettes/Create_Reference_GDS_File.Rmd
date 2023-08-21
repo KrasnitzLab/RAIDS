@@ -123,9 +123,10 @@ The mandatory fields are:
 
 # Population Reference Annotation GDS file
 
-
-The *Population Reference Annotation GDS file* should contain TODO
-
+TOREVIEW
+The *Population Reference Annotation GDS file* should contain phase information
+and block group of the variant in *gdsRef*.  A block can be a linkage disequelibrium block
+relative to a population or gene.
 
 ```{r runRefAnnotGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 #############################################################################
@@ -149,13 +150,19 @@ closefn.gds(gdsRefAnnot)
 
 
 The mandatory fields are:
-
-* **phase**: TODO
+TOREVIEW
+* **phase**: A *2bit* representing the phase of the variant in *gdsRef*. If 0 means 
+the first allele is a reference and 1 means the first allele 
+is the alternative and 3 means unknown. The first allele combine with the 
+genotype of the variant determine the phase for a biallelic variant. 
+The variant in phase are in the same order as gdsRef
 * **block.annot**: a *data.frame* containing those columns:
-    * **block.id**: a *character* string representing TODO
-    * **block.desc**: a *character* string describing the block TODO
-* **bloc**: TODO
-
+    * **block.id**: a *character* string representing an identifiant of block group.
+    A block can be linkage disequilibrium block relative to a populationn or gene.
+    * **block.desc**: a *character* string describing the block group.
+* **bloc**: A *integer* *matrix* where each row representing a variant in *gdsRef* in the same order.
+The column are a block group describe in *block.annot*. Each *integer*  in 
+the *matrix* representing a specific block.
 <br>
 <br>
 

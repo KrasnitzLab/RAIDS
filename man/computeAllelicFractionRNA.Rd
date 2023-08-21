@@ -85,10 +85,11 @@ SNV in the Reference GDS file that contains all SNVs}
 \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-\item{block.id} {TOREVIEW a \code{integer} indicating the block.id in gdsRefAnnot the
-vairant is in}
-\item{phase} {TOREVIEW a \code{integer} indicating the phase of the variant
-if known, 3 if not known}
+\item{block.id} { a \code{integer} indicating the unique identifier of the
+block in the Population Reference Annotation
+GDS file that contains the current SNV}
+\item{phase} { a \code{integer} indicating the phase of the variant
+if known, \code{3} if not known}
 \item{lap} {a \code{numeric} indicating lower allelic fraction}
 \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
 (0=not LOH, 1=in LOH)}

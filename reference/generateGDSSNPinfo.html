@@ -106,49 +106,26 @@ to show how the different steps in the function.</p></dd>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fileFilerterSNVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Different code depending of the withr package availability</span></span></span>
-<span class="r-in"><span><span class="co">## The current directory must be writable</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"withr"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Temporary Reference GDS file in temporary directory</span></span></span>
+<span class="r-in"><span><span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Temporary Reference GDS file</span></span></span>
-<span class="r-in"><span>        <span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_file.html" class="external-link">local_file</a></span><span class="op">(</span><span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Add SNV information to Reference GDS</span></span></span>
-<span class="r-in"><span>        <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>,</span></span>
+<span class="r-in"><span><span class="co">## Add SNV information to Reference GDS</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>,</span></span>
 <span class="r-in"><span>            fileFreq<span class="op">=</span><span class="va">fileFilerterSNVs</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-08-29 20:42:22.498556</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-08-29 20:42:22.498987</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-08-29 20:42:22.499305</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-08-29 20:42:22.49957</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-08-29 20:42:22.499827</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-08-29 20:42:22.500077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Close GDS file (important)</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Close GDS file (important)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Remove temporary 1KG_TEMP_002.gds file</span></span></span>
-<span class="r-in"><span>        <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Temporary Reference GDS file</span></span></span>
-<span class="r-in"><span>        <span class="va">file1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"1KG_TEMP_002.gds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">filenewGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">file1KG</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Add SNV information to Reference GDS</span></span></span>
-<span class="r-in"><span>        <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">generateGDSSNPinfo</span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">filenewGDS</span>,</span></span>
-<span class="r-in"><span>            fileFreq<span class="op">=</span><span class="va">fileFilerterSNVs</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Close GDS file (important)</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">filenewGDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="co">## Remove temporary 1KG_TEMP_002.gds file</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">file1KG</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="op">}</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read mapSNVSel DONE 2023-08-22 00:09:37.407812</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.id DONE 2023-08-22 00:09:37.408381</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.chromosome DONE 2023-08-22 00:09:37.408819</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part snp.position DONE 2023-08-22 00:09:37.409201</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part 1 DONE 2023-08-22 00:09:37.409617</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SNP part AF DONE 2023-08-22 00:09:37.409995</span>
+<span class="r-in"><span><span class="co">## Remove temporary 1KG_TEMP_002.gds file</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">file1KG</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

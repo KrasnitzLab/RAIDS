@@ -42,16 +42,13 @@ the \code{data.frame} passed to the function. The nodes "sample.id" and
 library(gdsfmt)
 
 ## Temporary GDS file in current directory
-gdsFilePath <- file.path(getwd(), "GDS_TEMP_10.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP_10.gds")
 
-## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    tmpGDS  <- createfn.gds(filename=gdsFilePath)
-
-    ## Create "sample.annot" node (the node must be present)
-    pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
+## Create "sample.annot" node (the node must be present)
+pedInformation <- data.frame(sample.id=c("sample_01", "sample_02"),
         Name.ID=c("sample_01", "sample_02"),
         sex=c(1,1),  # 1:Male  2: Female
         pop.group=c("ACB", "ACB"),
@@ -59,26 +56,25 @@ if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
         batch=c(1, 1),
         stringsAsFactors=FALSE)
 
-    ## The row names must be the sample identifiers
-    rownames(pedInformation) <- pedInformation$Name.ID
+## The row names must be the sample identifiers
+rownames(pedInformation) <- pedInformation$Name.ID
 
-    ## Add information about 2 samples to the GDS file
-    RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
+## Add information about 2 samples to the GDS file
+RAIDS:::generateGDSRefSample(gdsReference=tmpGDS,
         dfPedReference=pedInformation, listSamples=NULL)
 
-    ## Read sample identifier list
-    read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
+## Read sample identifier list
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.id"))
 
-    ## Read sample information from GDS file
-    read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
+## Read sample information from GDS file
+read.gdsn(index.gdsn(node=tmpGDS, path="sample.annot"))
 
-    ## Close GDS file
-    closefn.gds(gdsfile=tmpGDS)
+## Close GDS file
+closefn.gds(gdsfile=tmpGDS)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-}
 
 }
 \author{

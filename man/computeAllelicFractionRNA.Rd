@@ -114,49 +114,45 @@ dataDir <- system.file("extdata/tests", package="RAIDS")
 fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 fileAnnotGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
 
-## Temporary Profile GDS file for one profile
-fileProfile <- file.path(getwd(), "ex1.gds")
+## Temporary Profile GDS file for one profile in temporary directory
+fileProfile <- file.path(tempdir(), "ex1.gds")
 
-## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0 && !file.exists(fileProfile)) {
-
-    ## Copy the Profile GDS file demo that has been pruned and annotated
-    file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+## Copy the Profile GDS file demo that has been pruned and annotated
+file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
                  fileProfile)
 
-    ## Open the reference GDS file (demo version)
-    gds1KG <- snpgdsOpen(fileGDS)
-   gdsRefAnnot <- openfn.gds(fileAnnotGDS)
-    ## Open Profile GDS file for one profile
-    profileGDS <- openfn.gds(fileProfile)
+## Open the reference GDS file (demo version)
+gds1KG <- snpgdsOpen(fileGDS)
+gdsRefAnnot <- openfn.gds(fileAnnotGDS)
 
-    ## Chromosome length information
-    ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+## Open Profile GDS file for one profile
+profileGDS <- openfn.gds(fileProfile)
+
+## Chromosome length information
+## chr23 is chrX, chr24 is chrY and chrM is 25
+chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
         181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
         133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
         101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
         64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
 
-    ## The function returns a data frame containing the allelic fraction info
-    result <- RAIDS:::computeAllelicFractionRNA(gdsReference=gds1KG,
+## The function returns a data frame containing the allelic fraction info
+result <- RAIDS:::computeAllelicFractionRNA(gdsReference=gds1KG,
         gdsSample=profileGDS, gdsRefAnnot=gdsRefAnnot,
         currentProfile="ex1", studyID="MYDATA",
         blockID="GeneS.Ensembl.Hsapiens.v86",
         chrInfo=chrInfo, minCov=10L,
         minProb=0.999, eProb=0.001, cutOffLOH=-5,
         cutOffAR=3, verbose=FALSE)
-    head(result)
+head(result)
 
-    ## Close both GDS files (important)
-    closefn.gds(profileGDS)
-    closefn.gds(gds1KG)
-    closefn.gds(gdsRefAnnot)
+## Close both GDS files (important)
+closefn.gds(profileGDS)
+closefn.gds(gds1KG)
+closefn.gds(gdsRefAnnot)
 
-    ## Remove Profile GDS file (created for demo purpose)
-    unlink(fileProfile, force=TRUE)
-
-}
+## Remove Profile GDS file (created for demo purpose)
+unlink(fileProfile, force=TRUE)
 
 }
 \author{

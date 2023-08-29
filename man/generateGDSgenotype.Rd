@@ -54,37 +54,33 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 ## The RDS file containing the filtered SNP information
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
-## Temporary Reference GDS file
-tempRefGDS <- file.path(getwd(), "Ref_TEMP01.gds")
+## Temporary Reference GDS file in temporary directory
+tempRefGDS <- file.path(tempdir(), "Ref_TEMP01.gds")
 
-## Only run example if the directory is writable
-if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
+## Create temporary Reference GDS file
+newGDS <- createfn.gds(tempRefGDS)
+put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
 
-    ## Create temporary Reference GDS file
-    newGDS <- createfn.gds(tempRefGDS)
-    put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
+## Read the pedigree file
+ped1KG <- readRDS(pedigreeFile)
 
-    ## Read the pedigree file
-    ped1KG <- readRDS(pedigreeFile)
-
-    ## Add information about samples to the Reference GDS file
-    listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=newGDS,
+## Add information about samples to the Reference GDS file
+listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=newGDS,
                 dfPedReference=ped1KG, listSamples=NULL)
 
-    ## Add SNV information to the Reference GDS
-    RAIDS:::generateGDSSNPinfo(gdsReference=newGDS, fileFreq=filterSNVFile,
+## Add SNV information to the Reference GDS
+RAIDS:::generateGDSSNPinfo(gdsReference=newGDS, fileFreq=filterSNVFile,
                 verbose=FALSE)
 
-    ## Add genotype information to the Reference GDS
-    RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
+## Add genotype information to the Reference GDS
+RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
         fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS, verbose=FALSE)
 
-    ## Close file
-    closefn.gds(newGDS)
+## Close file
+closefn.gds(newGDS)
 
-    ## Remove temporary files
-    unlink(tempRefGDS, force=TRUE)
-}
+## Remove temporary files
+unlink(tempRefGDS, force=TRUE)
 
 }
 \author{

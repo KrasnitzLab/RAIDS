@@ -120,39 +120,39 @@ the current block.</p></dd>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Temporary GDS Annotation file in current directory</span></span></span>
-<span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"GDS_TEMP_Annot_14.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gdsFilePath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"GDS_TEMP_Annot_14.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Run only if directory in writing mode</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">gdsFilePath</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Create and open the GDS file</span></span></span>
+<span class="r-in"><span><span class="va">GDS_file_tmp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Create and open the GDS file</span></span></span>
-<span class="r-in"><span>    <span class="va">GDS_file_tmp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">gdsFilePath</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## One block</span></span></span>
+<span class="r-in"><span><span class="va">blockType</span> <span class="op">&lt;-</span> <span class="st">"EAS.0.05.500k"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## One block</span></span></span>
-<span class="r-in"><span>    <span class="va">blockType</span> <span class="op">&lt;-</span> <span class="st">"EAS.0.05.500k"</span></span></span>
+<span class="r-in"><span><span class="co">## The description of the block</span></span></span>
+<span class="r-in"><span><span class="va">blockDescription</span> <span class="op">&lt;-</span> <span class="st">"EAS population blocks based on 500k windows"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## The description of the block</span></span></span>
-<span class="r-in"><span>    <span class="va">blockDescription</span> <span class="op">&lt;-</span> <span class="st">"EAS population blocks based on 500k windows"</span></span></span>
+<span class="r-in"><span><span class="co">## The values for each entry related to the block (integers)</span></span></span>
+<span class="r-in"><span><span class="va">blockEntries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## The values for each entry related to the block (integers)</span></span></span>
-<span class="r-in"><span>    <span class="va">blockEntries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addBlockInGDSAnnot</span><span class="op">(</span>gds<span class="op">=</span><span class="va">GDS_file_tmp</span>, listBlock<span class="op">=</span><span class="va">blockEntries</span>,</span></span>
+<span class="r-in"><span>    blockName<span class="op">=</span><span class="va">blockType</span>, blockDesc<span class="op">=</span><span class="va">blockDescription</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">addBlockInGDSAnnot</span><span class="op">(</span>gds<span class="op">=</span><span class="va">GDS_file_tmp</span>, listBlock<span class="op">=</span><span class="va">blockEntries</span>,</span></span>
-<span class="r-in"><span>        blockName<span class="op">=</span><span class="va">blockType</span>, blockDesc<span class="op">=</span><span class="va">blockDescription</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Read 'block.annot' node</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">GDS_file_tmp</span>, <span class="st">"block.annot"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        block.id                                  block.desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 EAS.0.05.500k EAS population blocks based on 500k windows</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Read 'block.annot' node</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">GDS_file_tmp</span>, <span class="st">"block.annot"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Read 'block' node</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">GDS_file_tmp</span>, <span class="st">"block"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1 1 1 1 2 2 2 2 2 2 3 3</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Read 'block' node</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/read.gdsn.html" class="external-link">read.gdsn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/index.gdsn.html" class="external-link">index.gdsn</a></span><span class="op">(</span><span class="va">GDS_file_tmp</span>, <span class="st">"block"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Close GDS file</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">GDS_file_tmp</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Close GDS file</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span>gdsfile<span class="op">=</span><span class="va">GDS_file_tmp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Delete the temporary GDS file</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Delete the temporary GDS file</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">gdsFilePath</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

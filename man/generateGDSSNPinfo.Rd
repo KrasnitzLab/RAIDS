@@ -33,43 +33,19 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 fileFilerterSNVs <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
-## Different code depending of the withr package availability
-## The current directory must be writable
-if (file.access(getwd()) == 0) {
-    if (requireNamespace("withr", quietly=TRUE)) {
+## Temporary Reference GDS file in temporary directory
+file1KG <- file.path(tempdir(), "1KG_TEMP_002.gds")
+filenewGDS <- createfn.gds(file1KG)
 
-        ## Temporary Reference GDS file
-        file1KG <- withr::local_file("1KG_TEMP_002.gds")
-        filenewGDS <- createfn.gds(file1KG)
-
-        ## Add SNV information to Reference GDS
-        RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
+## Add SNV information to Reference GDS
+RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
             fileFreq=fileFilerterSNVs, verbose=TRUE)
 
-        ## Close GDS file (important)
-        closefn.gds(filenewGDS)
+## Close GDS file (important)
+closefn.gds(filenewGDS)
 
-        ## Remove temporary 1KG_TEMP_002.gds file
-        withr::deferred_run()
-
-    } else {
-
-        ## Temporary Reference GDS file
-        file1KG <- file.path("1KG_TEMP_002.gds")
-        filenewGDS <- createfn.gds(file1KG)
-
-        ## Add SNV information to Reference GDS
-        RAIDS:::generateGDSSNPinfo(gdsReference=filenewGDS,
-            fileFreq=fileFilerterSNVs, verbose=TRUE)
-
-        ## Close GDS file (important)
-        closefn.gds(filenewGDS)
-
-        ## Remove temporary 1KG_TEMP_002.gds file
-        unlink(file1KG, force=TRUE)
-
-    }
-}
+## Remove temporary 1KG_TEMP_002.gds file
+unlink(file1KG, force=TRUE)
 
 }
 \author{

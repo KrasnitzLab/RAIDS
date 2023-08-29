@@ -39,39 +39,35 @@ single column that corresponds to the row number in the 'block.annot' node.
 library(gdsfmt)
 
 ## Temporary GDS Annotation file in current directory
-gdsFilePath <- file.path(getwd(), "GDS_TEMP_Annot_14.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP_Annot_14.gds")
 
-## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+## One block
+blockType <- "EAS.0.05.500k"
 
-    ## One block
-    blockType <- "EAS.0.05.500k"
+## The description of the block
+blockDescription <- "EAS population blocks based on 500k windows"
 
-    ## The description of the block
-    blockDescription <- "EAS population blocks based on 500k windows"
+## The values for each entry related to the block (integers)
+blockEntries <- c(1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3)
 
-    ## The values for each entry related to the block (integers)
-    blockEntries <- c(1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3)
+RAIDS:::addBlockInGDSAnnot(gds=GDS_file_tmp, listBlock=blockEntries,
+    blockName=blockType, blockDesc=blockDescription)
 
-    RAIDS:::addBlockInGDSAnnot(gds=GDS_file_tmp, listBlock=blockEntries,
-        blockName=blockType, blockDesc=blockDescription)
+## Read 'block.annot' node
+read.gdsn(index.gdsn(GDS_file_tmp, "block.annot"))
 
-    ## Read 'block.annot' node
-    read.gdsn(index.gdsn(GDS_file_tmp, "block.annot"))
+## Read 'block' node
+read.gdsn(index.gdsn(GDS_file_tmp, "block"))
 
-    ## Read 'block' node
-    read.gdsn(index.gdsn(GDS_file_tmp, "block"))
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
 
-    ## Close GDS file
-    closefn.gds(gdsfile=GDS_file_tmp)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
-
-}
 
 }
 \author{

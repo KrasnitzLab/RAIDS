@@ -259,43 +259,39 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary Reference GDS file
-#' tempRefGDS <- file.path(getwd(), "Ref_TEMP02.gds")
+#' tempRefGDS <- file.path(tempdir(), "Ref_TEMP02.gds")
 #'
-#' ## Only run example if the directory is writable
-#' if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
+#' ## Create temporary Reference GDS file
+#' newGDS <- createfn.gds(tempRefGDS)
+#' put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
 #'
-#'     ## Create temporary Reference GDS file
-#'     newGDS <- createfn.gds(tempRefGDS)
-#'     put.attr.gdsn(newGDS$root, "FileFormat", "SNP_ARRAY")
+#' ## Read the pedigree file
+#' ped1KG <- readRDS(pedigreeFile)
 #'
-#'     ## Read the pedigree file
-#'     ped1KG <- readRDS(pedigreeFile)
-#'
-#'     ## Add information about samples to the Reference GDS file
-#'     listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=newGDS,
+#' ## Add information about samples to the Reference GDS file
+#' listSampleGDS <- RAIDS:::generateGDSRefSample(gdsReference=newGDS,
 #'                 dfPedReference=ped1KG, listSamples=NULL)
 #'
-#'     ## Add SNV information to the Reference GDS
-#'     RAIDS:::generateGDSSNPinfo(gdsReference=newGDS, fileFreq=filterSNVFile,
+#' ## Add SNV information to the Reference GDS
+#' RAIDS:::generateGDSSNPinfo(gdsReference=newGDS, fileFreq=filterSNVFile,
 #'                 verbose=FALSE)
 #'
-#'     ## Add genotype information to the Reference GDS for the 3 first samples
-#'     RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#' ## Add genotype information to the Reference GDS for the 3 first samples
+#' RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
 #'         fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS[1:3],
 #'         verbose=FALSE)
 #'
-#'     ## Append genotype information to the Reference GDS for the other samples
-#'     RAIDS:::appendGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#' ## Append genotype information to the Reference GDS for the other samples
+#' RAIDS:::appendGDSgenotype(gds=newGDS, pathGeno=dataDir,
 #'         fileSNPsRDS=snpIndexFile,
 #'         listSample=listSampleGDS[4:length(listSampleGDS)],
 #'         verbose=FALSE)
 #'
-#'     ## Close file
-#'     closefn.gds(newGDS)
+#' ## Close file
+#' closefn.gds(newGDS)
 #'
-#'     ## Remove temporary files
-#'     unlink(tempRefGDS, force=TRUE)
-#' }
+#' ## Remove temporary files
+#' unlink(tempRefGDS, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

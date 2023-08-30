@@ -74,43 +74,39 @@ library(gdsfmt)
 dataDir <- system.file("extdata/tests", package="RAIDS")
 
 ## Temporary Profile GDS file
-fileNameGDS <- file.path(getwd(), "ex1.gds")
+fileNameGDS <- file.path(tempdir(), "ex1.gds")
 
-## Only run example if the directory is writable
-if (file.access(getwd()) == 0 && !file.exists(fileNameGDS))  {
-
-    ## Copy the Profile GDS file demo that has been pruned and annotated
-    file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+## Copy the Profile GDS file demo that has been pruned and annotated
+file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
                  fileNameGDS)
 
-    ## Information about the synthetic data set
-    syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+## Information about the synthetic data set
+syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
         study.desc="MYDATA synthetic data", study.platform="PLATFORM",
         stringsAsFactors=FALSE)
 
-    ## Add information related to the synthetic profiles into the Profile GDS
-    prepSynthetic(fileProfileGDS=fileNameGDS,
+## Add information related to the synthetic profiles into the Profile GDS
+prepSynthetic(fileProfileGDS=fileNameGDS,
         listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
         studyDF=syntheticStudyDF, nbSim=1L, prefix="synthetic",
         verbose=FALSE)
 
-    ## Open Profile GDS file
-    profileGDS <- openfn.gds(fileNameGDS)
+## Open Profile GDS file
+profileGDS <- openfn.gds(fileNameGDS)
 
-    ## The synthetic profiles should be added in the 'study.annot' entry
-    tail(read.gdsn(index.gdsn(profileGDS, "study.annot")))
+## The synthetic profiles should be added in the 'study.annot' entry
+tail(read.gdsn(index.gdsn(profileGDS, "study.annot")))
 
-    ## The synthetic study information should be added to
-    ## the 'study.list' entry
-    tail(read.gdsn(index.gdsn(profileGDS, "study.list")))
+## The synthetic study information should be added to
+## the 'study.list' entry
+tail(read.gdsn(index.gdsn(profileGDS, "study.list")))
 
-    ## Close GDS file (important)
-    closefn.gds(profileGDS)
+## Close GDS file (important)
+closefn.gds(profileGDS)
 
-    ## Remove Profile GDS file (created for demo purpose)
-    unlink(fileNameGDS, force=TRUE)
+## Remove Profile GDS file (created for demo purpose)
+unlink(fileNameGDS, force=TRUE)
 
-}
 
 }
 \author{

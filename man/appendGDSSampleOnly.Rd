@@ -27,35 +27,31 @@ This function append the sample identifiers into the
 library(gdsfmt)
 
 ## Temporary GDS file in current directory
-gdsFilePath <- file.path(getwd(), "GDS_TEMP_04.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP_04.gds")
 
-## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
-
-    ## Create "sample.id" node (the node must be present)
-    add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
+## Create "sample.id" node (the node must be present)
+add.gdsn(node=GDS_file_tmp, name="sample.id", val=c("sample_01",
         "sample_02"))
 
-    sync.gds(gdsfile=GDS_file_tmp)
+sync.gds(gdsfile=GDS_file_tmp)
 
-    ## Add information about 2 samples to the GDS file
-    RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
+## Add information about 2 samples to the GDS file
+RAIDS:::appendGDSSampleOnly(gds=GDS_file_tmp,
         listSamples=c("sample_03", "sample_04"))
 
-    ## Read sample identifier list
-    ## Only "sample_03" and "sample_04" should have been added
-    read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
+## Read sample identifier list
+## Only "sample_03" and "sample_04" should have been added
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="sample.id"))
 
-    ## Close GDS file
-    closefn.gds(gdsfile=GDS_file_tmp)
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-}
 
 }
 \author{

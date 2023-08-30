@@ -30,30 +30,26 @@ deleted and a new entry is created.
 library(gdsfmt)
 
 ## Create a temporary GDS file in an test directory
-gdsFilePath <- file.path(getwd(), "GDS_TEMP_1.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP_1.gds")
 
-## Only run if directory is in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    tmpGDS  <- createfn.gds(filename=gdsFilePath)
+## Vector of low allelic fraction
+study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
 
-    ## Vector of low allelic fraction
-    study <- c("s19222", 's19588', 's19988', 's20588', 's23598')
+## Add segments to the GDS file
+RAIDS:::addGDSStudyPruning(gdsProfile=tmpGDS, pruned=study)
 
-    ## Add segments to the GDS file
-    RAIDS:::addGDSStudyPruning(gdsProfile=tmpGDS, pruned=study)
+## Read lap information from GDS file
+read.gdsn(index.gdsn(node=tmpGDS, path="pruned.study"))
 
-    ## Read lap information from GDS file
-    read.gdsn(index.gdsn(node=tmpGDS, path="pruned.study"))
+## Close GDS file
+closefn.gds(gdsfile=tmpGDS)
 
-    ## Close GDS file
-    closefn.gds(gdsfile=tmpGDS)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
-
-}
 
 }
 \author{

@@ -35,13 +35,12 @@ dataDir <- system.file("extdata", package="RAIDS")
 pathGeno <- file.path(dataDir, "demoGenoChr")
 
 ## Path where the output vcf file will be created
-pathOut <- getwd()
+pathOut <- tempdir()
 
-## The current directory must be writable
-if (file.access(pathOut) == 0 &&
-        !file.exists(file.path(getwd(), "NA12003.csv.bz2")) &&
-        !file.exists(file.path(getwd(), "NA12004.csv.bz2")) &&
-        !file.exists(file.path(getwd(), "NA12005.csv.bz2"))) {
+## The files must not exist
+if (!file.exists(file.path(tempdir(), "NA12003.csv.bz2")) &&
+        !file.exists(file.path(tempdir(), "NA12004.csv.bz2")) &&
+        !file.exists(file.path(tempdir(), "NA12005.csv.bz2"))) {
 
         ## Return 0 when successful
         ## The files "NA12003.csv.bz2", "NA12004.csv.bz2" and
@@ -49,9 +48,9 @@ if (file.access(pathOut) == 0 &&
         groupChr1KGSNV(pathGenoChr=pathGeno, pathOut=pathOut)
 
         ## Remove temporary VCF file
-        unlink(file.path(getwd(), "NA12003.csv.bz2"), force=TRUE)
-        unlink(file.path(getwd(), "NA12004.csv.bz2"), force=TRUE)
-        unlink(file.path(getwd(), "NA12005.csv.bz2"), force=TRUE)
+        unlink(file.path(tempdir(), "NA12003.csv.bz2"), force=TRUE)
+        unlink(file.path(tempdir(), "NA12004.csv.bz2"), force=TRUE)
+        unlink(file.path(tempdir(), "NA12005.csv.bz2"), force=TRUE)
 }
 
 }

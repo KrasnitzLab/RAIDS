@@ -90,31 +90,26 @@
 #'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
-#' ## Run only if directory in writing mode
-#' if (file.access(getwd()) == 0 &&
-#'     !file.exists(file.path(file.path(getwd(), "ex1.gds")))) {
-#'
-#'     ## Create the Profile GDS File for samples in 'listSamples' vector
-#'     ## (in this case, samples "ex1")
-#'     ## The Profile GDS file is created in the pathProfileGDS directory
-#'     result <- createStudy2GDS1KG(pathGeno=dataDir,
+#' ## Create the Profile GDS File for samples in 'listSamples' vector
+#' ## (in this case, samples "ex1")
+#' ## The Profile GDS file is created in the pathProfileGDS directory
+#' result <- createStudy2GDS1KG(pathGeno=dataDir,
 #'             pedStudy=samplePED, fileNameGDS=fileGDS,
 #'             studyDF=studyDF, listProfiles=c("ex1"),
-#'             pathProfileGDS=getwd(),
+#'             pathProfileGDS=tempdir(),
 #'             genoSource="snp-pileup",
 #'             verbose=FALSE)
 #'
-#'     ## The function returns OL when successful
-#'     result
+#' ## The function returns OL when successful
+#' result
 #'
-#'     ## The Profile GDS file 'ex1.gds' has been created in the
-#'     ## specified directory
-#'     list.files(getwd())
+#' ## The Profile GDS file 'ex1.gds' has been created in the
+#' ## specified directory
+#' list.files(tempdir())
 #'
-#'     ## Remove Profile GDS file (created for demo purpose)
-#'     unlink(file.path(getwd(), "ex1.gds"))
+#' ## Remove Profile GDS file (created for demo purpose)
+#' unlink(file.path(tempdir(), "ex1.gds"), force=TRUE)
 #'
-#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
@@ -296,37 +291,33 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' rownames(samplePED) <- samplePED$Name.ID
 #'
 #' ## Temporary Profile GDS file
-#' profileFile <- file.path(getwd(), "ex1.gds")
+#' profileFile <- file.path(tempdir(), "ex1.gds")
 #'
-#' ## Example can only be run if the current directory is in writing mode
-#' if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
+#' ## Copy the Profile GDS file demo that has not been pruned yet
+#' file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
 #'
-#'     ## Copy the Profile GDS file demo that has not been pruned yet
-#'     file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
+#' ## Open 1KG file
+#' gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Open 1KG file
-#'     gds1KG <- snpgdsOpen(fileGDS)
+#' ## Compute the list of pruned SNVs for a specific profile 'ex1'
+#' ## and save it in the Profile GDS file 'ex1.gds'
+#' pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
+#'               studyID = studyDF$study.id, pathProfileGDS=tempdir())
 #'
-#'     ## Compute the list of pruned SNVs for a specific profile 'ex1'
-#'     ## and save it in the Profile GDS file 'ex1.gds'
-#'     pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
-#'               studyID = studyDF$study.id, pathProfileGDS=getwd())
+#' ## Close the Reference GDS file (important)
+#' closefn.gds(gds1KG)
 #'
-#'     ## Close the Reference GDS file (important)
-#'     closefn.gds(gds1KG)
+#' ## Check content of Profile GDS file
+#' ## The 'pruned.study' entry should be present
+#' content <- openfn.gds(profileFile)
+#' content
 #'
-#'     ## Check content of Profile GDS file
-#'     ## The 'pruned.study' entry should be present
-#'     content <- openfn.gds(profileFile)
-#'     content
+#' ## Close the Profile GDS file (important)
+#' closefn.gds(content)
 #'
-#'     ## Close the Profile GDS file (important)
-#'     closefn.gds(content)
+#' ## Remove Profile GDS file (created for demo purpose)
+#' unlink(profileFile, force=TRUE)
 #'
-#'     ## Remove Profile GDS file (created for demo purpose)
-#'     unlink(profileFile, force=TRUE)
-#'
-#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -491,39 +482,35 @@ pruningSample <- function(gdsReference,
 #'                         stringsAsFactors=FALSE)
 #'
 #' ## Temporary Profile file
-#' fileProfile <- file.path(getwd(), "ex2.gds")
+#' fileProfile <- file.path(tempdir(), "ex2.gds")
 #'
-#' ## Only run example if the directory is writable
-#' if (file.access(getwd()) == 0 && !file.exists(fileProfile))  {
-#'
-#'     ## Copy required file
-#'     file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
+#' ## Copy required file
+#' file.copy(file.path(dataDir, "ex1_demo_with_pruning.gds"),
 #'         fileProfile)
 #'
-#'     ## Open 1KG file
-#'     gds1KG <- snpgdsOpen(fileGDS)
+#' ## Open 1KG file
+#' gds1KG <- snpgdsOpen(fileGDS)
 #'
-#'     ## Compute the list of pruned SNVs for a specific profile 'ex1'
-#'     ## and save it in the Profile GDS file 'ex2.gds'
-#'     add1KG2SampleGDS(gdsReference=gds1KG,
+#' ## Compute the list of pruned SNVs for a specific profile 'ex1'
+#' ## and save it in the Profile GDS file 'ex2.gds'
+#' add1KG2SampleGDS(gdsReference=gds1KG,
 #'         fileProfileGDS=fileProfile,
 #'         currentProfile=c("ex1"),
 #'         studyID=studyDF$study.id)
 #'
-#'      ## Close the 1KG GDS file (important)
-#'      closefn.gds(gds1KG)
+#' ## Close the 1KG GDS file (important)
+#' closefn.gds(gds1KG)
 #'
-#'      ## Check content of Profile GDS file
-#'      ## The 'pruned.study' entry should be present
-#'      content <- openfn.gds(fileProfile)
-#'      content
+#' ## Check content of Profile GDS file
+#' ## The 'pruned.study' entry should be present
+#' content <- openfn.gds(fileProfile)
+#' content
 #'
-#'      ## Close the Profile GDS file (important)
-#'      closefn.gds(content)
+#' ## Close the Profile GDS file (important)
+#' closefn.gds(content)
 #'
-#'      ## Remove Profile GDS file (created for demo purpose)
-#'      unlink(fileProfile, force=TRUE)
-#' }
+#' ## Remove Profile GDS file (created for demo purpose)
+#' unlink(fileProfile, force=TRUE)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

@@ -135,43 +135,42 @@ file must exist. The file must be a RDS file.</p></dd>
 <span class="r-in"><span><span class="va">filterSNVFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"mapSNVSelected_Demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Temporary Reference GDS file</span></span></span>
-<span class="r-in"><span><span class="va">tempRefGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Ref_TEMP02.gds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tempRefGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Ref_TEMP02.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Only run example if the directory is writable</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">tempRefGDS</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Create temporary Reference GDS file</span></span></span>
+<span class="r-in"><span><span class="va">newGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">tempRefGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/put.attr.gdsn.html" class="external-link">put.attr.gdsn</a></span><span class="op">(</span><span class="va">newGDS</span><span class="op">$</span><span class="va">root</span>, <span class="st">"FileFormat"</span>, <span class="st">"SNP_ARRAY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Create temporary Reference GDS file</span></span></span>
-<span class="r-in"><span>    <span class="va">newGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">tempRefGDS</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/put.attr.gdsn.html" class="external-link">put.attr.gdsn</a></span><span class="op">(</span><span class="va">newGDS</span><span class="op">$</span><span class="va">root</span>, <span class="st">"FileFormat"</span>, <span class="st">"SNP_ARRAY"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Read the pedigree file</span></span></span>
+<span class="r-in"><span><span class="va">ped1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">pedigreeFile</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Read the pedigree file</span></span></span>
-<span class="r-in"><span>    <span class="va">ped1KG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">pedigreeFile</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Add information about samples to the Reference GDS file</span></span></span>
-<span class="r-in"><span>    <span class="va">listSampleGDS</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSRefSample.html">generateGDSRefSample</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">newGDS</span>,</span></span>
+<span class="r-in"><span><span class="co">## Add information about samples to the Reference GDS file</span></span></span>
+<span class="r-in"><span><span class="va">listSampleGDS</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSRefSample.html">generateGDSRefSample</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">newGDS</span>,</span></span>
 <span class="r-in"><span>                dfPedReference<span class="op">=</span><span class="va">ped1KG</span>, listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Add SNV information to the Reference GDS</span></span></span>
-<span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSSNPinfo.html">generateGDSSNPinfo</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">newGDS</span>, fileFreq<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
+<span class="r-in"><span><span class="co">## Add SNV information to the Reference GDS</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSSNPinfo.html">generateGDSSNPinfo</a></span><span class="op">(</span>gdsReference<span class="op">=</span><span class="va">newGDS</span>, fileFreq<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
 <span class="r-in"><span>                verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Add genotype information to the Reference GDS for the 3 first samples</span></span></span>
-<span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSgenotype.html">generateGDSgenotype</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">newGDS</span>, pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span><span class="co">## Add genotype information to the Reference GDS for the 3 first samples</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu"><a href="generateGDSgenotype.html">generateGDSgenotype</a></span><span class="op">(</span>gds<span class="op">=</span><span class="va">newGDS</span>, pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>        fileSNPsRDS<span class="op">=</span><span class="va">snpIndexFile</span>, listSamples<span class="op">=</span><span class="va">listSampleGDS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>        verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Append genotype information to the Reference GDS for the other samples</span></span></span>
-<span class="r-in"><span>    <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">appendGDSgenotype</span><span class="op">(</span>gds<span class="op">=</span><span class="va">newGDS</span>, pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
+<span class="r-in"><span><span class="co">## Append genotype information to the Reference GDS for the other samples</span></span></span>
+<span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">appendGDSgenotype</span><span class="op">(</span>gds<span class="op">=</span><span class="va">newGDS</span>, pathGeno<span class="op">=</span><span class="va">dataDir</span>,</span></span>
 <span class="r-in"><span>        fileSNPsRDS<span class="op">=</span><span class="va">snpIndexFile</span>,</span></span>
 <span class="r-in"><span>        listSample<span class="op">=</span><span class="va">listSampleGDS</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">listSampleGDS</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>        verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Close file</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">newGDS</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Close file</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">newGDS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="co">## Remove temporary files</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tempRefGDS</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co">## Remove temporary files</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tempRefGDS</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

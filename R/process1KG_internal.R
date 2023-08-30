@@ -55,8 +55,9 @@
 #'
 #' @examples
 #'
-#' ## Required library
+#' ## Required libraries
 #' library(SNPRelate)
+#' library(gdsfmt)
 #'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
@@ -65,24 +66,20 @@
 #' gds1KG <- snpgdsOpen(file.path(dataDir, "1KG_Demo.gds"))
 #'
 #' ## The prefix of the RDS file to be created and containing the pruned SNVs
-#' outPrefix <- "Pruned_Demo_Reference"
+#' outPrefix <- file.path(tempdir(), "Pruned_Demo_Reference")
 #'
-#' ## Run only if directory in writing mode
-#' if (file.access(getwd()) == 0 &&
-#'     !file.exists(file.path(getwd(), paste0(outPrefix, ".rds")))) {
+#' ## Create a RDS file with the pruned SNVs
+#' RAIDS:::pruning1KGbyChr(gdsReference=gds1KG, outPrefix=outPrefix)
 #'
-#'     ## Create a RDS file with the pruned SNVs
-#'     RAIDS:::pruning1KGbyChr(gdsReference=gds1KG, outPrefix=outPrefix)
-#'
-#'     prunedSNVs <- readRDS(file.path(getwd(), paste0(outPrefix, ".rds")))
-#'     prunedSNVs
-#'
-#'     ## Delete temporary file
-#'     unlink(file.path(getwd(), paste0(outPrefix, ".rds")), force=TRUE)
-#' }
+#' prunedSNVs <- readRDS(file.path(paste0(outPrefix, ".rds")))
+#' prunedSNVs
 #'
 #' ## Close 1K GDS file
 #' closefn.gds(gds1KG)
+#'
+#' ## Delete temporary file
+#' unlink(paste0(outPrefix, ".rds"), force=TRUE)
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

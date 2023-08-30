@@ -33,23 +33,19 @@
 #' ## Demo 1KG Reference GDS file
 #' fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
 #'
-#' ## Output VCF file that will be created
-#' vcfFile <- file.path(getwd(), "Demo_TMP_01.vcf")
+#' ## Output VCF file that will be created (temporary)
+#' vcfFile <- file.path(tempdir(), "Demo_TMP_01.vcf")
 #'
-#' ## Run only if directory in writing mode
-#' if (file.access(getwd()) == 0 && !dir.exists(vcfFile)) {
-#'
-#'     ## Create a VCF file with the SNV dataset present in the GDS file
-#'     ## No cutoff on frequency, so all SNVs are saved
-#'     snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L,
+#' ## Create a VCF file with the SNV dataset present in the GDS file
+#' ## No cutoff on frequency, so all SNVs are saved
+#' snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L,
 #'                     freqCutoff=NULL)
 #'
-#'     ## Close GDS file (IMPORTANT)
-#'     closefn.gds(fileGDS)
+#' ## Close GDS file (IMPORTANT)
+#' closefn.gds(fileGDS)
 #'
-#'     ## Remove temporary VCF file
-#'     unlink(vcfFile, force=TRUE)
-#' }
+#' ## Remove temporary VCF file
+#' unlink(vcfFile, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
@@ -166,13 +162,12 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #' pathGeno <- file.path(dataDir, "demoGenoChr")
 #'
 #' ## Path where the output vcf file will be created
-#' pathOut <- getwd()
+#' pathOut <- tempdir()
 #'
-#' ## The current directory must be writable
-#' if (file.access(pathOut) == 0 &&
-#'         !file.exists(file.path(getwd(), "NA12003.csv.bz2")) &&
-#'         !file.exists(file.path(getwd(), "NA12004.csv.bz2")) &&
-#'         !file.exists(file.path(getwd(), "NA12005.csv.bz2"))) {
+#' ## The files must not exist
+#' if (!file.exists(file.path(tempdir(), "NA12003.csv.bz2")) &&
+#'         !file.exists(file.path(tempdir(), "NA12004.csv.bz2")) &&
+#'         !file.exists(file.path(tempdir(), "NA12005.csv.bz2"))) {
 #'
 #'         ## Return 0 when successful
 #'         ## The files "NA12003.csv.bz2", "NA12004.csv.bz2" and
@@ -180,9 +175,9 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #'         groupChr1KGSNV(pathGenoChr=pathGeno, pathOut=pathOut)
 #'
 #'         ## Remove temporary VCF file
-#'         unlink(file.path(getwd(), "NA12003.csv.bz2"), force=TRUE)
-#'         unlink(file.path(getwd(), "NA12004.csv.bz2"), force=TRUE)
-#'         unlink(file.path(getwd(), "NA12005.csv.bz2"), force=TRUE)
+#'         unlink(file.path(tempdir(), "NA12003.csv.bz2"), force=TRUE)
+#'         unlink(file.path(tempdir(), "NA12004.csv.bz2"), force=TRUE)
+#'         unlink(file.path(tempdir(), "NA12005.csv.bz2"), force=TRUE)
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

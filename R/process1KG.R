@@ -710,6 +710,9 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #'
 #' @examples
 #'
+#' ## Required library
+#' library(gdsfmt)
+#'
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'

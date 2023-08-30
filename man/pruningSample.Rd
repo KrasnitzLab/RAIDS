@@ -133,37 +133,33 @@ samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
 rownames(samplePED) <- samplePED$Name.ID
 
 ## Temporary Profile GDS file
-profileFile <- file.path(getwd(), "ex1.gds")
+profileFile <- file.path(tempdir(), "ex1.gds")
 
-## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0 && !file.exists(profileFile)) {
+## Copy the Profile GDS file demo that has not been pruned yet
+file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
 
-    ## Copy the Profile GDS file demo that has not been pruned yet
-    file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
+## Open 1KG file
+gds1KG <- snpgdsOpen(fileGDS)
 
-    ## Open 1KG file
-    gds1KG <- snpgdsOpen(fileGDS)
+## Compute the list of pruned SNVs for a specific profile 'ex1'
+## and save it in the Profile GDS file 'ex1.gds'
+pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
+              studyID = studyDF$study.id, pathProfileGDS=tempdir())
 
-    ## Compute the list of pruned SNVs for a specific profile 'ex1'
-    ## and save it in the Profile GDS file 'ex1.gds'
-    pruningSample(gdsReference=gds1KG, currentProfile=c("ex1"),
-              studyID = studyDF$study.id, pathProfileGDS=getwd())
+## Close the Reference GDS file (important)
+closefn.gds(gds1KG)
 
-    ## Close the Reference GDS file (important)
-    closefn.gds(gds1KG)
+## Check content of Profile GDS file
+## The 'pruned.study' entry should be present
+content <- openfn.gds(profileFile)
+content
 
-    ## Check content of Profile GDS file
-    ## The 'pruned.study' entry should be present
-    content <- openfn.gds(profileFile)
-    content
+## Close the Profile GDS file (important)
+closefn.gds(content)
 
-    ## Close the Profile GDS file (important)
-    closefn.gds(content)
+## Remove Profile GDS file (created for demo purpose)
+unlink(profileFile, force=TRUE)
 
-    ## Remove Profile GDS file (created for demo purpose)
-    unlink(profileFile, force=TRUE)
-
-}
 
 }
 \author{

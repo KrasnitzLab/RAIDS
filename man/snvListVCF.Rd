@@ -43,23 +43,19 @@ dataDir <- system.file("extdata", package="RAIDS")
 ## Demo 1KG Reference GDS file
 fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
 
-## Output VCF file that will be created
-vcfFile <- file.path(getwd(), "Demo_TMP_01.vcf")
+## Output VCF file that will be created (temporary)
+vcfFile <- file.path(tempdir(), "Demo_TMP_01.vcf")
 
-## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(vcfFile)) {
-
-    ## Create a VCF file with the SNV dataset present in the GDS file
-    ## No cutoff on frequency, so all SNVs are saved
-    snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L,
+## Create a VCF file with the SNV dataset present in the GDS file
+## No cutoff on frequency, so all SNVs are saved
+snvListVCF(gdsReference=fileGDS, fileOut=vcfFile, offset=0L,
                     freqCutoff=NULL)
 
-    ## Close GDS file (IMPORTANT)
-    closefn.gds(fileGDS)
+## Close GDS file (IMPORTANT)
+closefn.gds(fileGDS)
 
-    ## Remove temporary VCF file
-    unlink(vcfFile, force=TRUE)
-}
+## Remove temporary VCF file
+unlink(vcfFile, force=TRUE)
 
 }
 \author{

@@ -1995,9 +1995,9 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' ## The path where the Profile GDS Files (one per sample)
 #' ## will be created need to be specified.
 #' #################################################################
-#' pathProfileGDS <- file.path(getwd(), "out.tmp")
+#' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#' pathOut <- file.path(getwd(), "res.out")
+#' pathOut <- file.path(tempdir(), "res.out")
 #'
 #' #################################################################
 #' ## A data frame containing general information about the study
@@ -2032,10 +2032,8 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
-#'         !file.exists(pathOut)) {
 #'
-#'         runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+#'     runExomeAncestry(pedStudy=ped, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             pathOut=pathOut,
@@ -2045,9 +2043,9 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'             syntheticRefDF=dataRef,
 #'             genoSource="snp-pileup")
 #'
-#'          unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'          unlink(pathOut, recursive=TRUE, force=TRUE)
-#'      }
+#'      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+#'      unlink(pathOut, recursive=TRUE, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -2216,9 +2214,9 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ## The path where the Profile GDS Files (one per sample)
 #' ## will be created need to be specified.
 #' #################################################################
-#' pathProfileGDS <- file.path(getwd(), "out.tmp")
+#' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#' pathOut <- file.path(getwd(), "res.out")
+#' pathOut <- file.path(tempdir(), "res.out")
 #'
 #' #################################################################
 #' ## A data frame containing general information about the study
@@ -2253,10 +2251,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
-#'         !file.exists(pathOut)) {
 #'
-#'         runRNAAncestry(pedStudy=ped, studyDF=studyDF,
+#'     runRNAAncestry(pedStudy=ped, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             pathOut=pathOut,
@@ -2267,9 +2263,9 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'             blockTypeID="GeneS.Ensembl.Hsapiens.v86",
 #'             genoSource="snp-pileup")
 #'
-#'          unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'          unlink(pathOut, recursive=TRUE, force=TRUE)
-#'      }
+#'      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+#'      unlink(pathOut, recursive=TRUE, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

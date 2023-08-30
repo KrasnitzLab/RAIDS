@@ -245,7 +245,7 @@ Alternatively, the PED information can be saved in another type of
 file (CVS, etc..) as long as the *data.frame* information can be regenerated 
 in R (with _read.csv()_ or else). 
 
-```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=FALSE, warning=FALSE, message=FALSE}
 #############################################################################
 ## Load required packages
 #############################################################################
@@ -321,18 +321,18 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## The path where the Sample GDS files (one per sample)
 ## will be created needs to be specified.
 #############################################################################
-pathProfileGDS <- file.path(getwd(), "example", "out.tmp")
+pathProfileGDS <- file.path(tempdir(), "exampleDNA", "out.tmp")
 
 #############################################################################
 ## The path where the result files will be created needs to 
 ## be specified
 #############################################################################
-pathOut <- file.path(getwd(), "example", "res.out")
+pathOut <- file.path(tempdir(), "exampleDNA", "res.out")
 
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example"))) {
+if (!dir.exists(file.path(tempdir(), "exampleDNA"))) {
 
-    dir.create(file.path(getwd(), "example"))
+    dir.create(file.path(tempdir(), "exampleDNA"))
     dir.create(pathProfileGDS)
     dir.create(pathOut)
     
@@ -365,13 +365,14 @@ if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "example"))) {
     #########################################################################
     resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
-    resAncestry
+    print(resAncestry)
 
     ## Remove temporary files created for this demo
     unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
     unlink(pathOut, recursive=TRUE, force=TRUE)
-    unlink(file.path(getwd(), "example"), force=TRUE)
+    unlink(file.path(tempdir(), "exampleDNA"), recursive=TRUE, force=TRUE)
 }
+  
 
 ```
 
@@ -388,6 +389,13 @@ in the *pathOut* directory.
 In addition, a sub-directory (named using the *profile ID*) is 
 also created. 
 
+The inferred ancestry is stored in the ancestry inference CSV 
+file (**".Ancestry.csv"** file) which also contains those columns:
+
+* _sample.id_: The unique identifier of the sample 
+* _D_: The optimal PCA dimension value used to infer the ancestry
+* _k_: The optimal number of neighbors value used to infer the ancestry
+* _SuperPop_: The inferred ancestry
 
 <br>
 <br>
@@ -455,7 +463,7 @@ Alternatively, the PED information can be saved in another type of
 file (CVS, etc..) as long as the *data.frame* information can be regenerated 
 in R (with _read.csv()_ or else). 
 
-```{r runRNAAncestry, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+```{r runRNAAncestry, echo=TRUE, eval=TRUE, collapse=FALSE, warning=FALSE, message=FALSE}
 #############################################################################
 ## Load required packages
 #############################################################################
@@ -531,18 +539,18 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
 ## The path where the Sample GDS files (one per sample)
 ## will be created needs to be specified.
 #############################################################################
-pathProfileGDS <- file.path(getwd(), "exampleRNA", "outRNA.tmp")
+pathProfileGDS <- file.path(tempdir(), "exampleRNA", "outRNA.tmp")
 
 #############################################################################
 ## The path where the result files will be created needs to 
 ## be specified
 #############################################################################
-pathOut <- file.path(getwd(), "exampleRNA", "resRNA.out")
+pathOut <- file.path(tempdir(), "exampleRNA", "resRNA.out")
 
 ## Example can only be run if the current directory is in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "exampleRNA"))) {
+if (!dir.exists(file.path(tempdir(), "exampleRNA"))) {
 
-    dir.create(file.path(getwd(), "exampleRNA"))
+    dir.create(file.path(tempdir(), "exampleRNA"))
     dir.create(pathProfileGDS)
     dir.create(pathOut)
     
@@ -577,14 +585,14 @@ if (file.access(getwd()) == 0 && !dir.exists(file.path(getwd(), "exampleRNA"))) 
     #########################################################################
     resAncestry <- read.csv(file.path(pathOut, 
                                     paste0(ped$Name.ID[1], ".Ancestry.csv")))
-    resAncestry
+    print(resAncestry)
 
     ## Remove temporary files created for this demo
     unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
     unlink(pathOut, recursive=TRUE, force=TRUE)
-    unlink(file.path(getwd(), "example"), force=TRUE)
+    unlink(file.path(tempdir(), "example"), recursive=TRUE, force=TRUE)
 }
-
+ 
 ```
 
 <br>
@@ -599,6 +607,14 @@ in the *pathOut* directory.
 
 In addition, a sub-directory (named using the *profile ID*) is 
 also created. 
+
+The inferred ancestry is stored in the ancestry inference CSV 
+file (**".Ancestry.csv"** file) which also contains those columns:
+
+* _sample.id_: The unique identifier of the sample 
+* _D_: The optimal PCA dimension value used to infer the ancestry
+* _k_: The optimal number of neighbors value used to infer the ancestry
+* _SuperPop_: The inferred ancestry
 
 
 <br>

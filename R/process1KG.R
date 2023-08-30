@@ -165,22 +165,17 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #' ## Temporary output files
 #' ## The first file contains the indexes of the retained SNPs
 #' ## The second file contains the filtered SNP information
-#' snpIndexFile <- file.path(getwd(), "listSNP_TEMP.rds")
-#' filterSNVFile <- file.path(getwd(), "mapSNVSel_TEMP.rds")
+#' snpIndexFile <- file.path(tempdir(), "listSNP_TEMP.rds")
+#' filterSNVFile <- file.path(tempdir(), "mapSNVSel_TEMP.rds")
 #'
-#' ## Run only if directory in writing mode
-#' if (file.access(getwd()) == 0 && !file.exists(snpIndexFile) &&
-#'         !file.exists(filterSNVFile)) {
-#'
-#'     ## Create a data.frame containing the information of the retained
-#'     ## samples (samples with existing genotyping files)
-#'     generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
+#' ## Create a data.frame containing the information of the retained
+#' ## samples (samples with existing genotyping files)
+#' generateMapSnvSel(cutOff=0.01, fileSNV=snvFile,
 #'         fileSNPsRDS=snpIndexFile, fileFREQ=filterSNVFile)
 #'
-#'     ## Remove temporary files
-#'     unlink(snpIndexFile, force=TRUE)
-#'     unlink(filterSNVFile, force=TRUE)
-#' }
+#' ## Remove temporary files
+#' unlink(snpIndexFile, force=TRUE)
+#' unlink(filterSNVFile, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom S4Vectors isSingleNumber
@@ -289,38 +284,16 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary Reference GDS file
-#' tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
+#' tempRefGDS <- file.path(tempdir(), "1KG_TEMP.gds")
 #'
-#' ## Only run example if the directory is writable
-#' if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
-#'
-#'     ## Different code depending of the withr package availability
-#'     if (requireNamespace("withr", quietly=TRUE)) {
-#'
-#'         ## Temporary Reference GDS file
-#'         gdsFile <- withr::local_file(tempRefGDS)
-#'
-#'         ## Create a temporary Reference GDS file containing
-#'         ## information from reference file
-#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-#'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-#'             fileNameGDS=gdsFile, listSamples=NULL)
-#'
-#'         ## Remove temporary files
-#'         withr::deferred_run()
-#'
-#'     } else {
-#'
-#'         ## Create a temporary Reference GDS file
-#'         generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#' ## Create a temporary Reference GDS file
+#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
 #'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
 #'             fileNameGDS=tempRefGDS, listSamples=NULL)
 #'
-#'         ## Remove temporary files
-#'         unlink(tempRefGDS, force=TRUE)
+#' ## Remove temporary files
+#' unlink(tempRefGDS, force=TRUE)
 #'
-#'     }
-#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
@@ -410,44 +383,39 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 #'
 #' ## Temporary Reference GDS file containing reference information
-#' fileReferenceGDS <- "1KG_TEMP_02.gds"
+#' fileReferenceGDS <- file.path(tempdir(), "1KG_TEMP_02.gds")
 #'
-#' ## Only run example if the directory is writable
-#' if (file.access(getwd()) == 0 && !file.exists(fileReferenceGDS)) {
-#'
-#'     ## Create a temporary Reference GDS file containing information from 1KG
-#'     generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#' ## Create a temporary Reference GDS file containing information from 1KG
+#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
 #'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
 #'         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
-#'     ## Temporary Phase GDS file that will contain the 1KG Phase information
-#'     fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
+#' ## Temporary Phase GDS file that will contain the 1KG Phase information
+#' fileRefPhaseGDS <- file.path(tempdir(), "1KG_TEMP_Phase_02.gds")
 #'
-#'     ## Create Reference Phase GDS file
-#'     gdsPhase <- createfn.gds(fileRefPhaseGDS)
+#' ## Create Reference Phase GDS file
+#' gdsPhase <- createfn.gds(fileRefPhaseGDS)
 #'
-#'     ## Open Reference GDS file
-#'     gdsRef <- openfn.gds(fileReferenceGDS)
+#' ## Open Reference GDS file
+#' gdsRef <- openfn.gds(fileReferenceGDS)
 #'
-#'     ## Fill temporary Reference Phase GDS file
-#'     if (FALSE) {
-#'         generatePhase1KG2GDS(gdsReference=gdsRef,
+#' ## Fill temporary Reference Phase GDS file
+#' if (FALSE) {
+#'     generatePhase1KG2GDS(gdsReference=gdsRef,
 #'             gdsReferencePhase=gdsPhase,
 #'             pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
 #'             verbose=FALSE)
-#'     }
-#'
-#'     ## Close Reference Phase information file
-#'     closefn.gds(gdsPhase)
-#'
-#'     ## Close Reference information file
-#'     closefn.gds(gdsRef)
-#'
-#'     ## Remove temporary files
-#'     unlink(fileReferenceGDS, force=TRUE)
-#'     unlink(fileRefPhaseGDS, force=TRUE)
-#'
 #' }
+#'
+#' ## Close Reference Phase information file
+#' closefn.gds(gdsPhase)
+#'
+#' ## Close Reference information file
+#' closefn.gds(gdsRef)
+#'
+#' ## Remove temporary files
+#' unlink(fileReferenceGDS, force=TRUE)
+#' unlink(fileRefPhaseGDS, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
@@ -823,39 +791,42 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#  ## Temporary file
+#' fileAnnotGDS <- file.path(tempdir(), "ex1_good_small_1KG_Ann_GDS.gds")
 #'
-#' fileAnnotGDS <- file.path(getwd(), "ex1_good_small_1KG_Annot_GDS.gds")
 #' ## Required library
-#' if (file.access(getwd()) == 0 && !file.exists(fileAnnotGDS)) {
+#' if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
 #'
-#'     if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
+#'     file.copy(file.path(dataDir, "tests",
+#'         "ex1_NoBlockGene.1KG_Annot_GDS.gds"), fileAnnotGDS)
 #'
-#'        file.copy(file.path(dataDir, "tests", "ex1_NoBlockGene.1KG_Annot_GDS.gds"),
-#'                  fileAnnotGDS)
-#'         ## Making a "short cut" on the ensDb object
-#'         edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
+#'     ## Making a "short cut" on the ensDb object
+#'     edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
 #'
-#'
-#'         ## Temporary Profile GDS file for one profile
-#'         fileReferenceGDS  <- file.path(dataDir, "tests",
+#'     ## GDS Reference file
+#'     fileReferenceGDS  <- file.path(dataDir, "tests",
 #'                 "ex1_good_small_1KG_GDS.gds")
 #'
-#'         ## Open the reference GDS file (demo version)
-#'         gds1KG <- snpgdsOpen(fileReferenceGDS)
+#'     ## Open the reference GDS file (demo version)
+#'     gds1KG <- snpgdsOpen(fileReferenceGDS)
 #'
-#'
-#'         ## The function
-#'         addGeneBlockGDSRefAnnot(gdsReference=gds1KG,
+#'     ## Append information associated to blocks
+#'     addGeneBlockGDSRefAnnot(gdsReference=gds1KG,
 #'             gdsRefAnnotFile=fileAnnotGDS,
 #'             ensDb=edb,
 #'             suffixBlockName="EnsDb.Hsapiens.v86")
-#'         gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
-#'         print(gdsAnnot1KG)
-#'         print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
-#'         closefn.gds(gds1KG)
-#'         closefn.gds(gdsAnnot1KG)
-#'         unlink(fileAnnotGDS, force=TRUE)
-#'     }
+#'
+#'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+#'     print(gdsAnnot1KG)
+#'     print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
+#'
+#'     ## Close GDS files
+#'     closefn.gds(gds1KG)
+#'     closefn.gds(gdsAnnot1KG)
+#'
+#'     ## Remove temporary file
+#'     unlink(fileAnnotGDS, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

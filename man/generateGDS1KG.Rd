@@ -77,38 +77,16 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Temporary Reference GDS file
-tempRefGDS <- file.path(getwd(), "1KG_TEMP.gds")
+tempRefGDS <- file.path(tempdir(), "1KG_TEMP.gds")
 
-## Only run example if the directory is writable
-if (file.access(getwd()) == 0 && !file.exists(tempRefGDS)) {
-
-    ## Different code depending of the withr package availability
-    if (requireNamespace("withr", quietly=TRUE)) {
-
-        ## Temporary Reference GDS file
-        gdsFile <- withr::local_file(tempRefGDS)
-
-        ## Create a temporary Reference GDS file containing
-        ## information from reference file
-        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
-            fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
-            fileNameGDS=gdsFile, listSamples=NULL)
-
-        ## Remove temporary files
-        withr::deferred_run()
-
-    } else {
-
-        ## Create a temporary Reference GDS file
-        generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+## Create a temporary Reference GDS file
+generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
             fileNameGDS=tempRefGDS, listSamples=NULL)
 
-        ## Remove temporary files
-        unlink(tempRefGDS, force=TRUE)
+## Remove temporary files
+unlink(tempRefGDS, force=TRUE)
 
-    }
-}
 
 }
 \author{

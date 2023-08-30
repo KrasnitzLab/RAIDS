@@ -381,54 +381,50 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #'
-#' ## Profile GDS file
-#' fileNameGDS <- file.path(getwd(), "ex1.gds")
+#' ## Profile GDS file (temporary)
+#' fileNameGDS <- file.path(tempdir(), "ex1.gds")
 #'
-#' ## Only run example if the directory is writable
-#' if (file.access(getwd()) == 0 && !file.exists(fileNameGDS))  {
-#'
-#'     ## Copy the Profile GDS file demo that has been pruned and annotated
-#'     file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+#' ## Copy the Profile GDS file demo that has been pruned and annotated
+#' file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
 #'                  fileNameGDS)
 #'
-#'     ## Information about the synthetic data set
-#'     syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
+#' ## Information about the synthetic data set
+#' syntheticStudyDF <- data.frame(study.id="MYDATA.Synthetic",
 #'         study.desc="MYDATA synthetic data", study.platform="PLATFORM",
 #'         stringsAsFactors=FALSE)
 #'
-#'     ## Add information related to the synthetic profiles into the Profile GDS
-#'     prepSynthetic(fileProfileGDS=fileNameGDS,
+#' ## Add information related to the synthetic profiles into the Profile GDS
+#' prepSynthetic(fileProfileGDS=fileNameGDS,
 #'         listSampleRef=c("HG00243", "HG00150"), profileID="ex1",
 #'         studyDF=syntheticStudyDF, nbSim=1L, prefix="synthTest",
 #'         verbose=FALSE)
 #'
-#'     ## The 1KG files
-#'     gds1KG <- snpgdsOpen(file.path(dataDir,
+#' ## The 1KG files
+#' gds1KG <- snpgdsOpen(file.path(dataDir,
 #'                             "ex1_good_small_1KG_GDS.gds"))
-#'     gds1KGAnnot <- openfn.gds(file.path(dataDir,
+#' gds1KGAnnot <- openfn.gds(file.path(dataDir,
 #'                             "ex1_good_small_1KG_Annot_GDS.gds"))
 #'
-#'     ## Generate the synthetic profiles and add them into the Profile GDS
-#'     syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
+#' ## Generate the synthetic profiles and add them into the Profile GDS
+#' syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
 #'         fileProfileGDS=fileNameGDS, profileID="ex1",
 #'         listSampleRef=c("HG00243", "HG00150"), nbSim=1,
 #'         prefix="synthTest",
 #'         pRecomb=0.01, minProb=0.999, seqError=0.001)
 #'
-#'     ## Open Profile GDS file
-#'     profileGDS <- openfn.gds(fileNameGDS)
+#' ## Open Profile GDS file
+#' profileGDS <- openfn.gds(fileNameGDS)
 #'
-#'     tail(read.gdsn(index.gdsn(profileGDS, "sample.id")))
+#' tail(read.gdsn(index.gdsn(profileGDS, "sample.id")))
 #'
-#'     ## Close GDS files (important)
-#'     closefn.gds(profileGDS)
-#'     closefn.gds(gds1KG)
-#'     closefn.gds(gds1KGAnnot)
+#' ## Close GDS files (important)
+#' closefn.gds(profileGDS)
+#' closefn.gds(gds1KG)
+#' closefn.gds(gds1KGAnnot)
 #'
-#'     ## Remove Profile GDS file (created for demo purpose)
-#'     unlink(fileNameGDS, force=TRUE)
+#' ## Remove Profile GDS file (created for demo purpose)
+#' unlink(fileNameGDS, force=TRUE)
 #'
-#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

@@ -60,44 +60,39 @@ snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
 filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 
 ## Temporary Reference GDS file containing reference information
-fileReferenceGDS <- "1KG_TEMP_02.gds"
+fileReferenceGDS <- file.path(tempdir(), "1KG_TEMP_02.gds")
 
-## Only run example if the directory is writable
-if (file.access(getwd()) == 0 && !file.exists(fileReferenceGDS)) {
-
-    ## Create a temporary Reference GDS file containing information from 1KG
-    generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+## Create a temporary Reference GDS file containing information from 1KG
+generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 
-    ## Temporary Phase GDS file that will contain the 1KG Phase information
-    fileRefPhaseGDS <- "1KG_TEMP_Phase_02.gds"
+## Temporary Phase GDS file that will contain the 1KG Phase information
+fileRefPhaseGDS <- file.path(tempdir(), "1KG_TEMP_Phase_02.gds")
 
-    ## Create Reference Phase GDS file
-    gdsPhase <- createfn.gds(fileRefPhaseGDS)
+## Create Reference Phase GDS file
+gdsPhase <- createfn.gds(fileRefPhaseGDS)
 
-    ## Open Reference GDS file
-    gdsRef <- openfn.gds(fileReferenceGDS)
+## Open Reference GDS file
+gdsRef <- openfn.gds(fileReferenceGDS)
 
-    ## Fill temporary Reference Phase GDS file
-    if (FALSE) {
-        generatePhase1KG2GDS(gdsReference=gdsRef,
+## Fill temporary Reference Phase GDS file
+if (FALSE) {
+    generatePhase1KG2GDS(gdsReference=gdsRef,
             gdsReferencePhase=gdsPhase,
             pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
             verbose=FALSE)
-    }
-
-    ## Close Reference Phase information file
-    closefn.gds(gdsPhase)
-
-    ## Close Reference information file
-    closefn.gds(gdsRef)
-
-    ## Remove temporary files
-    unlink(fileReferenceGDS, force=TRUE)
-    unlink(fileRefPhaseGDS, force=TRUE)
-
 }
+
+## Close Reference Phase information file
+closefn.gds(gdsPhase)
+
+## Close Reference information file
+closefn.gds(gdsRef)
+
+## Remove temporary files
+unlink(fileReferenceGDS, force=TRUE)
+unlink(fileRefPhaseGDS, force=TRUE)
 
 }
 \author{

@@ -37,38 +37,34 @@ correspond to the number of rows of the matrix present in the
 library(gdsfmt)
 
 ## Create a temporary GDS file
-gdsFilePath <- file.path(getwd(), "GDS_TEMP_06.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP_06.gds")
 
-## Run only if directory in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+tmpGDS  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    tmpGDS  <- createfn.gds(filename=gdsFilePath)
+## Create a "genotype" node with initial matrix
+genoInitial <- matrix(rep(0L, 10), nrow=2)
 
-    ## Create a "genotype" node with initial matrix
-    genoInitial <- matrix(rep(0L, 10), nrow=2)
+add.gdsn(node=tmpGDS, name="genotype", val=genoInitial)
+sync.gds(tmpGDS)
 
-    add.gdsn(node=tmpGDS, name="genotype", val=genoInitial)
-    sync.gds(tmpGDS)
+## New genotype information to be added
+newGenotype <- matrix(rep(1L, 6), nrow=2)
 
-    ## New genotype information to be added
-    newGenotype <- matrix(rep(1L, 6), nrow=2)
+## Add segments to the GDS file
+RAIDS:::appendGDSgenotypeMat(gds=tmpGDS, matG=newGenotype)
 
-    ## Add segments to the GDS file
-    RAIDS:::appendGDSgenotypeMat(gds=tmpGDS, matG=newGenotype)
+## Read genotype information from GDS file
+## The return matrix should be a combination of both initial matrix
+## and new matrix (column binded)
+read.gdsn(index.gdsn(node=tmpGDS, path="genotype"))
 
-    ## Read genotype information from GDS file
-    ## The return matrix should be a combination of both initial matrix
-    ## and new matrix (column binded)
-    read.gdsn(index.gdsn(node=tmpGDS, path="genotype"))
+## Close GDS file
+closefn.gds(gdsfile=tmpGDS)
 
-    ## Close GDS file
-    closefn.gds(gdsfile=tmpGDS)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
-
-}
 
 }
 \author{

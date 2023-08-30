@@ -32,30 +32,26 @@ already exists, the previous information is erased.
 library(gdsfmt)
 
 ## Temporary GDS file
-gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP.gds")
 
-## Only run if directory is in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    GDS_file_tmp  <- createfn.gds(filename=gdsFilePath)
+## Vector of segment identifiers
+segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
 
-    ## Vector of segment identifiers
-    segments <- c(1L, 1L, 1L, 2L, 2L, 3L, 3L)
+## Add segments to the GDS file
+RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
 
-    ## Add segments to the GDS file
-    RAIDS:::addUpdateSegment(gdsProfile=GDS_file_tmp, snpSeg=segments)
+## Read segments information from GDS file
+read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
 
-    ## Read segments information from GDS file
-    read.gdsn(index.gdsn(node=GDS_file_tmp, path="segment"))
+## Close GDS file
+closefn.gds(gdsfile=GDS_file_tmp)
 
-    ## Close GDS file
-    closefn.gds(gdsfile=GDS_file_tmp)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
-
-}
 
 }
 \author{

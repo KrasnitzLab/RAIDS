@@ -2056,9 +2056,9 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' ## will be created need to be specified.
 #' #################################################################
 #'
-#' pathProfileGDS <- file.path(getwd(), "outTest.tmp")
+#' pathProfileGDS <- file.path(tempdir(), "outTest.tmp")
 #'
-#' pathOut <- file.path(getwd(), "resTest.out")
+#' pathOut <- file.path(tempdir(), "resTest.out")
 #'
 #' #################################################################
 #' ## A data frame containing general information about the study
@@ -2092,6 +2092,8 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' ## library(BSgenome.Hsapiens.UCSC.hg38)
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
+#'
+#'
 #' studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
 #'     study.desc=paste0(studyDF$study.id, " synthetic data"),
 #'     study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
@@ -2100,17 +2102,14 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' profileFile <- file.path(pathProfileGDS, "ex1.gds")
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
-#'          !file.exists(pathOut)) {
+#'     dir.create(pathProfileGDS)
+#'     dir.create(pathOut)
+#'     file.copy(file.path(dataDir, "tests", "ex1_demo.gds"), profileFile)
 #'
-#'          dir.create(pathProfileGDS)
-#'          dir.create(pathOut)
-#'          file.copy(file.path(dataDir, "tests", "ex1_demo.gds"), profileFile)
+#'     gdsReference <- snpgdsOpen(fileReferenceGDS)
+#'     gdsRefAnnot <- openfn.gds(fileAnnotGDS)
 #'
-#'          gdsReference <- snpgdsOpen(fileReferenceGDS)
-#'          gdsRefAnnot <- openfn.gds(fileAnnotGDS)
-#'
-#'          RAIDS:::runProfileAncestry(gdsReference=gdsReference,
+#'     RAIDS:::runProfileAncestry(gdsReference=gdsReference,
 #'              gdsRefAnnot=gdsRefAnnot,
 #'              studyDF=studyDF, currentProfile=ped[1,"Name.ID"],
 #'              pathProfileGDS=pathProfileGDS,
@@ -2121,12 +2120,12 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #'              listProfileRef=listProfileRef,
 #'              studyType="DNA")
 #'
-#'          closefn.gds(gdsReference)
-#'          closefn.gds(gdsRefAnnot)
+#'      closefn.gds(gdsReference)
+#'      closefn.gds(gdsRefAnnot)
 #'
-#'          unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'          unlink(pathOut, recursive=TRUE, force=TRUE)
-#'     }
+#'      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+#'      unlink(pathOut, recursive=TRUE, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -2369,9 +2368,9 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' ## The path where the Profile GDS Files (one per sample)
 #' ## will be created need to be specified.
 #' #################################################################
-#' pathProfileGDS <- file.path(getwd(), "out.tmp")
+#' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#' pathOut <- file.path(getwd(), "res.out")
+#' pathOut <- file.path(tempdir(), "res.out")
 #'
 #' #################################################################
 #' ## A data frame containing general information about the study
@@ -2406,10 +2405,8 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' ## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
 #'
 #' \dontrun{
-#'     if (file.access(getwd()) == 0 && !file.exists(pathProfileGDS) &&
-#'         !file.exists(pathOut)) {
 #'
-#'         RAIDS:::runWrapperAncestry(pedStudy=ped, studyDF=studyDF,
+#'     RAIDS:::runWrapperAncestry(pedStudy=ped, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             pathOut=pathOut,
@@ -2420,9 +2417,9 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #'             studyType="DNA",
 #'             genoSource="snp-pileup")
 #'
-#'          unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'          unlink(pathOut, recursive=TRUE, force=TRUE)
-#'      }
+#'      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+#'      unlink(pathOut, recursive=TRUE, force=TRUE)
+#'
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

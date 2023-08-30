@@ -34,34 +34,30 @@ already be present in the GDS file.
 library(gdsfmt)
 
 ## Create a temporary GDS file
-gdsFilePath <- file.path(getwd(), "GDS_TEMP.gds")
+gdsFilePath <- file.path(tempdir(), "GDS_TEMP.gds")
 
-## Only run if directory is in writing mode
-if (file.access(getwd()) == 0 && !dir.exists(gdsFilePath)) {
+## Create and open the GDS file
+gdsFile  <- createfn.gds(filename=gdsFilePath)
 
-    ## Create and open the GDS file
-    gdsFile  <- createfn.gds(filename=gdsFilePath)
+## Create a "lap" node
+add.gdsn(node=gdsFile, name="lap", val=rep(10L, 12))
+sync.gds(gdsFile)
 
-    ## Create a "lap" node
-    add.gdsn(node=gdsFile, name="lap", val=rep(10L, 12))
-    sync.gds(gdsFile)
+## Vector of low allelic fraction
+lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
 
-    ## Vector of low allelic fraction
-    lap <- c(0.1, 0.23, 0.34, 0.00, 0.12, 0.11, 0.33, 0.55)
+## Add segments to the GDS file
+RAIDS:::addUpdateLap(gdsProfile=gdsFile, snpLap=lap)
 
-    ## Add segments to the GDS file
-    RAIDS:::addUpdateLap(gdsProfile=gdsFile, snpLap=lap)
+## Read lap information from GDS file
+read.gdsn(index.gdsn(node=gdsFile, path="lap"))
 
-    ## Read lap information from GDS file
-    read.gdsn(index.gdsn(node=gdsFile, path="lap"))
+## Close GDS file
+closefn.gds(gdsfile=gdsFile)
 
-    ## Close GDS file
-    closefn.gds(gdsfile=gdsFile)
+## Delete the temporary GDS file
+unlink(x=gdsFilePath, force=TRUE)
 
-    ## Delete the temporary GDS file
-    unlink(x=gdsFilePath, force=TRUE)
-
-}
 
 }
 \author{

@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-08-30<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-08-31<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -326,11 +326,11 @@ else).</p>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"pedEx.rds"</span><span class="op">)</span></span>
 <span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
-<span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
-<span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span>
-<span></span>
-<span><span class="co">#############################################################################</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
+<span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
 <span><span class="co">## need to be located in the same directory.</span></span>
 <span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
@@ -388,18 +388,18 @@ else).</p>
 <span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
 <span><span class="co">## will be created needs to be specified.</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
+<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The path where the result files will be created needs to </span></span>
 <span><span class="co">## be specified</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
+<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Example can only be run if the current directory is in writing mode</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>    </span>
@@ -432,13 +432,15 @@ else).</p>
 <span>    <span class="co">#########################################################################</span></span>
 <span>    <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">resAncestry</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co">## Remove temporary files created for this demo</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+<pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
+<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
 in the <em>pathOut</em> directory.</p>
@@ -452,6 +454,21 @@ file)</li>
 </ul>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
+<p>The inferred ancestry is stored in the ancestry inference CSV file
+(<strong>“.Ancestry.csv”</strong> file) which also contains those
+columns:</p>
+<ul>
+<li>
+<em>sample.id</em>: The unique identifier of the sample</li>
+<li>
+<em>D</em>: The optimal PCA dimension value used to infer the
+ancestry</li>
+<li>
+<em>k</em>: The optimal number of neighbors value used to infer the
+ancestry</li>
+<li>
+<em>SuperPop</em>: The inferred ancestry</li>
+</ul>
 <p><br><br></p>
 </div>
 <div class="section level4">
@@ -540,7 +557,7 @@ profiles’ <strong>Name.ID</strong>.</p>
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
 else).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -556,11 +573,11 @@ else).</p>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">filePED</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"pedEx.rds"</span><span class="op">)</span></span>
 <span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">filePED</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
-<span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
-<span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span>
-<span></span>
-<span><span class="co">#############################################################################</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
+<span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
 <span><span class="co">## need to be located in the same directory.</span></span>
 <span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
@@ -618,18 +635,18 @@ else).</p>
 <span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
 <span><span class="co">## will be created needs to be specified.</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"outRNA.tmp"</span><span class="op">)</span></span>
+<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"outRNA.tmp"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The path where the result files will be created needs to </span></span>
 <span><span class="co">## be specified</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"resRNA.out"</span><span class="op">)</span></span>
+<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"resRNA.out"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Example can only be run if the current directory is in writing mode</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.access.html" class="external-link">file.access</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>    </span>
@@ -664,13 +681,15 @@ else).</p>
 <span>    <span class="co">#########################################################################</span></span>
 <span>    <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">resAncestry</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co">## Remove temporary files created for this demo</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+<pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
+<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runRNAAncestry()</em> function generates 3 types of files in
 the <em>pathOut</em> directory.</p>
@@ -684,6 +703,21 @@ file)</li>
 </ul>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
+<p>The inferred ancestry is stored in the ancestry inference CSV file
+(<strong>“.Ancestry.csv”</strong> file) which also contains those
+columns:</p>
+<ul>
+<li>
+<em>sample.id</em>: The unique identifier of the sample</li>
+<li>
+<em>D</em>: The optimal PCA dimension value used to infer the
+ancestry</li>
+<li>
+<em>k</em>: The optimal number of neighbors value used to infer the
+ancestry</li>
+<li>
+<em>SuperPop</em>: The inferred ancestry</li>
+</ul>
 <p><br><br></p>
 </div>
 </div>

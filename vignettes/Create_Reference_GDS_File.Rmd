@@ -118,6 +118,46 @@ The mandatory fields are:
 * **genotype**: a SNV genotypic *matrix* of *integer* values (saved in *Bit2* format) (i.e., the number of A alleles) with SNVs as rows and samples as columns (number of SNVs × number of Samples)
 * **sample.ref**: an *integer* (saved in *Bit1* format) indicating if the sample is retained to be used as reference (=1) or removed (=0) as related samples have to be discarded
 
+<br>
+
+This following example shows how to create a *Population GDS Reference file*.
+
+```{r createRefGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+#############################################################################
+## Load required packages
+#############################################################################
+library(RAIDS)    
+library(SNPRelate)
+library(gdsfmt)
+
+## Create a temporary GDS Reference file in the temporary directory
+fileNewReferenceGDS <- file.path(tempdir(), "reference_DEMO.gds")
+
+gdsRefNew <- createfn.gds(fileNewReferenceGDS)
+
+## The entry 'sample.id' contain the unique identifiers of 10 samples 
+## that constitute the reference dataset
+sample.id <- c("HG00243", "HG00150", "HG00149", "HG00246", "HG00138", 
+                    "HG01334", "HG00268", "HG00275", "HG00290", "HG00364")
+add.gdsn(node=gdsRefNew, name="sample.id", val=sample.id, 
+            storage="string", check=TRUE)
+
+## TODO
+
+## The entry 'sample.ref' is filled with 1 indicating that all 10 
+## samples are retained to be used as reference
+add.gdsn(node=gdsRefNew, name="sample.ref", val=rep(1L, 10), 
+            storage="bit1", check=TRUE)
+
+
+## Show the file format
+print(gdsRefNew)
+
+closefn.gds(gdsRefNew)
+
+unlink(fileNewReferenceGDS, force=TRUE)
+
+```
 
 <br>
 <br>
@@ -125,7 +165,7 @@ The mandatory fields are:
 # Population Reference Annotation GDS file
 
 The *Population Reference Annotation GDS file* contains phase information
-and block group information forl all the SNVs present in 
+and block group information for all the SNVs present in 
 *Population Reference GDS file*.  A block can be a linkage disequelibrium block
 relative to a population or a gene.
 

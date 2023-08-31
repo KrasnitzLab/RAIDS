@@ -313,37 +313,39 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' ## Open the Reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)
 #'
-#' ## Chromosome length information for hg38
-#' ## chr23 is chrX, chr24 is chrY and chrM is 25
-#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-#'     156040895L, 57227415L,  16569L)
+#' ## Required library for this example to run correctly
+#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
-#' ## Data frame with SNV information for the specified chromosome (chr 1)
-#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
-#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
-#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
-#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
-#'         6085318, 6213145),
-#'     snp.chr=c(rep(1, 8)),
-#'     normal.geno=c(rep(3, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
-#'     TRUE, TRUE),
-#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
-#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
-#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
-#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
-#'     stringAsFactor=FALSE)
+#'     ## Chromosome length information
+#'     ## chr23 is chrX, chr24 is chrY and chrM is 25
+#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
-#' ## The function returns a data frame containing the information about the
-#' ## LOH regions in the specified chromosome
-#' result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
-#'     chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
-#' head(result)
+#'     ## Data frame with SNV information for the specified chromosome (chr 1)
+#'     snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'         cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'         cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'         snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'             6085318, 6213145),
+#'         snp.chr=c(rep(1, 8)),
+#'         normal.geno=c(rep(3, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE,
+#'             TRUE, TRUE, TRUE),
+#'         pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'         snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'         keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'         homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'         stringAsFactor=FALSE)
 #'
-#' ## Close Reference GDS file (important)
-#' closefn.gds(gds1KG)
+#'     ## The function returns a data frame containing the information about the
+#'     ## LOH regions in the specified chromosome
+#'     result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
+#'         chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
+#'     head(result)
+#'
+#'     ## Close Reference GDS file (important)
+#'     closefn.gds(gds1KG)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -719,28 +721,30 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 #' ## Open Profile GDS file for one profile
 #' profileGDS <- openfn.gds(fileProfile)
 #'
-#' ## Chromosome length information
-#' ## chr23 is chrX, chr24 is chrY and chrM is 25
-#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-#'         181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
-#'         133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
-#'         101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
-#'         64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
+#' ## Required library for this example to run correctly
+#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
-#' ## The function returns a data frame containing the allelic fraction info
-#' result <- RAIDS:::computeAllelicFractionDNA(gdsReference=gds1KG,
-#'         gdsSample=profileGDS,
-#'         currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo, minCov=10L,
+#'     ## Chromosome length information
+#'     ## chr23 is chrX, chr24 is chrY and chrM is 25
+#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'
+#'     ## The function returns a data frame containing the allelic fraction info
+#'     result <- RAIDS:::computeAllelicFractionDNA(gdsReference=gds1KG,
+#'         gdsSample=profileGDS, currentProfile="ex1", studyID="MYDATA",
+#'         chrInfo=chrInfo, minCov=10L,
 #'         minProb=0.999, eProb=0.001, cutOffLOH=-5,
 #'         cutOffHomoScore=-3, wAR=9L, verbose=FALSE)
-#' head(result)
+#'     head(result)
 #'
-#' ## Close both GDS files (important)
-#' closefn.gds(profileGDS)
-#' closefn.gds(gds1KG)
+#'     ## Close both GDS files (important)
+#'     closefn.gds(profileGDS)
+#'     closefn.gds(gds1KG)
 #'
-#' ## Remove Profile GDS file (created for demo purpose)
-#' unlink(fileProfile, force=TRUE)
+#'     ## Remove Profile GDS file (created for demo purpose)
+#'     unlink(fileProfile, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -935,31 +939,32 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' ## Open Profile GDS file for one profile
 #' profileGDS <- openfn.gds(fileProfile)
 #'
-#' ## Chromosome length information
-#' ## chr23 is chrX, chr24 is chrY and chrM is 25
-#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-#'         181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
-#'         133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
-#'         101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
-#'         64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
+#' ## Required library for this example to run correctly
+#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
-#' ## The function returns a data frame containing the allelic fraction info
-#' result <- RAIDS:::computeAllelicFractionRNA(gdsReference=gds1KG,
+#'     ## Chromosome length information
+#'     ## chr23 is chrX, chr24 is chrY and chrM is 25
+#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'
+#'     ## The function returns a data frame containing the allelic fraction info
+#'     result <- RAIDS:::computeAllelicFractionRNA(gdsReference=gds1KG,
 #'         gdsSample=profileGDS, gdsRefAnnot=gdsRefAnnot,
 #'         currentProfile="ex1", studyID="MYDATA",
 #'         blockID="GeneS.Ensembl.Hsapiens.v86",
-#'         chrInfo=chrInfo, minCov=10L,
-#'         minProb=0.999, eProb=0.001, cutOffLOH=-5,
-#'         cutOffAR=3, verbose=FALSE)
-#' head(result)
+#'         chrInfo=chrInfo, minCov=10L, minProb=0.999, eProb=0.001,
+#'         cutOffLOH=-5, cutOffAR=3, verbose=FALSE)
+#'     head(result)
 #'
-#' ## Close both GDS files (important)
-#' closefn.gds(profileGDS)
-#' closefn.gds(gds1KG)
-#' closefn.gds(gdsRefAnnot)
+#'     ## Close both GDS files (important)
+#'     closefn.gds(profileGDS)
+#'     closefn.gds(gds1KG)
+#'     closefn.gds(gdsRefAnnot)
 #'
-#' ## Remove Profile GDS file (created for demo purpose)
-#' unlink(fileProfile, force=TRUE)
+#'     ## Remove Profile GDS file (created for demo purpose)
+#'     unlink(fileProfile, force=TRUE)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn ls.gdsn
@@ -1096,38 +1101,41 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' ## Open the reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)
 #'
-#' ## Chromosome length information
-#' ## chr23 is chrX, chr24 is chrY and chrM is 25
-#' chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-#'     181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-#'     135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-#'     83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-#'     156040895L, 57227415L,  16569L)
+#' ## Required library for this example to run correctly
+#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
-#' ## Data frame with SNV information for the specified chromosome (chr 1)
-#' snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
-#'     cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
-#'     cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
-#'     snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
-#'         6085318, 6213145),
-#'     snp.chr=c(rep(1, 8)),
-#'     normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
-#'     TRUE, TRUE),
-#'     pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
-#'     snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
-#'     keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
-#'     homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
-#'     lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
-#'     stringAsFactor=FALSE)
+#'     ## Chromosome length information
+#'     ## chr23 is chrX, chr24 is chrY and chrM is 25
+#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
-#' ## The function returns a data frame containing the information about the
-#' ## LOH regions in the specified chromosome
-#' result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
-#'     cutOffEmptyBox=-3)
-#' head(result)
+#'     ## Data frame with SNV information for the specified chromosome (chr 1)
+#'     snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+#'         cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+#'         cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+#'         snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+#'             6085318, 6213145),
+#'         snp.chr=c(rep(1, 8)),
+#'         normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE,
+#'             FALSE, TRUE, TRUE, TRUE),
+#'         pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+#'         snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+#'         keep=rep(TRUE, 8),
+#'         hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'         homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+#'         lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
+#'         stringAsFactor=FALSE)
 #'
-#' ## Close GDS file (important)
-#' closefn.gds(gds1KG)
+#'     ## The function returns a data frame containing the information about the
+#'     ## LOH regions in the specified chromosome
+#'     result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
+#'                 cutOffEmptyBox=-3)
+#'     head(result)
+#'
+#'     ## Close GDS file (important)
+#'     closefn.gds(gds1KG)
+#'
+#' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn

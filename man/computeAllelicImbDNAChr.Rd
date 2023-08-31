@@ -68,38 +68,41 @@ fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
 ## Open the reference GDS file (demo version)
 gds1KG <- snpgdsOpen(fileGDS)
 
-## Chromosome length information
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-    156040895L, 57227415L,  16569L)
+## Required library for this example to run correctly
+if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-## Data frame with SNV information for the specified chromosome (chr 1)
-snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
-    cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
-    cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
-    snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
-        6085318, 6213145),
-    snp.chr=c(rep(1, 8)),
-    normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE,
-    TRUE, TRUE),
-    pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
-    snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
-    keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
-    homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
-    lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
-    stringAsFactor=FALSE)
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-## The function returns a data frame containing the information about the
-## LOH regions in the specified chromosome
-result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
-    cutOffEmptyBox=-3)
-head(result)
+    ## Data frame with SNV information for the specified chromosome (chr 1)
+    snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
+        cnt.ref=c(40, 17, 27, 15, 4, 14, 16, 32),
+        cnt.alt=c(0, 0, 0, 0, 7, 23, 0, 0),
+        snp.pos=c(3722256, 3722328, 3767522, 3868160, 3869467, 4712655,
+            6085318, 6213145),
+        snp.chr=c(rep(1, 8)),
+        normal.geno=c(rep(1, 8)), pruned=c(TRUE, TRUE, FALSE, TRUE,
+            FALSE, TRUE, TRUE, TRUE),
+        pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
+        snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
+        keep=rep(TRUE, 8),
+        hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+        homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
+        lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
+        stringAsFactor=FALSE)
 
-## Close GDS file (important)
-closefn.gds(gds1KG)
+    ## The function returns a data frame containing the information about the
+    ## LOH regions in the specified chromosome
+    result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
+                cutOffEmptyBox=-3)
+    head(result)
+
+    ## Close GDS file (important)
+    closefn.gds(gds1KG)
+
+}
 
 }
 \author{

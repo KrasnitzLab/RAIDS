@@ -246,16 +246,57 @@ SNVs × number of Samples)</li>
 reference (=1) or removed (=0) as related samples have to be
 discarded</li>
 </ul>
+<p><br></p>
+<p>This following example shows how to create a <em>Population GDS
+Reference file</em>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
+<span><span class="co">## Load required packages</span></span>
+<span><span class="co">#############################################################################</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span>    </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/SNPRelate" class="external-link">SNPRelate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/gdsfmt" class="external-link">gdsfmt</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a temporary GDS Reference file in the temporary directory</span></span>
+<span><span class="va">fileNewReferenceGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"reference_DEMO.gds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">gdsRefNew</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/createfn.gds.html" class="external-link">createfn.gds</a></span><span class="op">(</span><span class="va">fileNewReferenceGDS</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The entry 'sample.id' contain the unique identifiers of 10 samples </span></span>
+<span><span class="co">## that constitute the reference dataset</span></span>
+<span><span class="va">sample.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HG00243"</span>, <span class="st">"HG00150"</span>, <span class="st">"HG00149"</span>, <span class="st">"HG00246"</span>, <span class="st">"HG00138"</span>, </span>
+<span>                    <span class="st">"HG01334"</span>, <span class="st">"HG00268"</span>, <span class="st">"HG00275"</span>, <span class="st">"HG00290"</span>, <span class="st">"HG00364"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.id"</span>, val<span class="op">=</span><span class="va">sample.id</span>, </span>
+<span>            storage<span class="op">=</span><span class="st">"string"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## TODO</span></span>
+<span></span>
+<span><span class="co">## The entry 'sample.ref' is filled with 1 indicating that all 10 </span></span>
+<span><span class="co">## samples are retained to be used as reference</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.ref"</span>, val<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10</span><span class="op">)</span>, </span>
+<span>            storage<span class="op">=</span><span class="st">"bit1"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Show the file format</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
+<span><span class="co">## File: /tmp/RtmpEc4c3e/reference_DEMO.gds <span style="color: #555555;">(218B)</span></span></span>
+<span><span class="co">## +    [  ]</span></span>
+<span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">10, 2B</span> <span style="color: #555555;">}</span></span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fileNewReferenceGDS</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="population-reference-annotation-gds-file">Population Reference Annotation GDS file<a class="anchor" aria-label="anchor" href="#population-reference-annotation-gds-file"></a>
 </h2>
 <p>The <em>Population Reference Annotation GDS file</em> contains phase
-information and block group information forl all the SNVs present in
+information and block group information for all the SNVs present in
 <em>Population Reference GDS file</em>. A block can be a linkage
 disequelibrium block relative to a population or a gene.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -369,7 +410,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [13] vctrs_0.6.3                 memoise_2.0.1              </span></span>
 <span><span class="co">##  [15] minqa_1.2.5                 Rsamtools_2.16.0           </span></span>
 <span><span class="co">##  [17] RCurl_1.98-1.12             quantsmooth_1.66.0         </span></span>
-<span><span class="co">##  [19] htmltools_0.5.6             S4Arrays_1.0.5             </span></span>
+<span><span class="co">##  [19] htmltools_0.5.6             S4Arrays_1.0.6             </span></span>
 <span><span class="co">##  [21] progress_1.2.2              curl_5.0.2                 </span></span>
 <span><span class="co">##  [23] broom_1.0.5                 pROC_1.18.4                </span></span>
 <span><span class="co">##  [25] mitml_0.4-5                 sass_0.4.7                 </span></span>

@@ -131,36 +131,33 @@ gds1KG <- snpgdsOpen(fileGDS)
 ## Profile GDS file for one profile
 profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 
-## Chromosome length information
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-        181538259L, 170805979L, 159345973L, 145138636L, 138394717L,
-        133797422L, 135086622L, 133275309L, 114364328L, 107043718L,
-        101991189L, 90338345L, 83257441L,  80373285L,  58617616L,
-        64444167L,  46709983L, 50818468L, 156040895L, 57227415L,  16569L)
+## Required library for this example to run correctly
+if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-## A formal way to get the chormosome length information
-## library(GenomeInfoDb)
-## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-## Estimate the allelic fraction of the pruned SNVs
-estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,
+    ## Estimate the allelic fraction of the pruned SNVs
+    estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,
         currentProfile="ex1", studyID="MYDATA", chrInfo=chrInfo,
         studyType="DNA", minCov=10L, minProb=0.999, eProb=0.001,
         cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
         gdsRefAnnot=NULL, blockID=NULL)
 
-## The allelic fraction is saved in the 'lap' node of Profile GDS file
-## The 'lap' entry should be present
-profileGDS
+    ## The allelic fraction is saved in the 'lap' node of Profile GDS file
+    ## The 'lap' entry should be present
+    profileGDS
 
-## Close both GDS files (important)
-closefn.gds(profileGDS)
-closefn.gds(gds1KG)
+    ## Close both GDS files (important)
+    closefn.gds(profileGDS)
+    closefn.gds(gds1KG)
 
-## Remove Profile GDS file (created for demo purpose)
-unlink(fileProfile, force=TRUE)
+    ## Remove Profile GDS file (created for demo purpose)
+    unlink(fileProfile, force=TRUE)
+
+}
 
 
 }

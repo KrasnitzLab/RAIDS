@@ -209,13 +209,13 @@ test_that("validateRunExomeOrRNAAncestry() must return expected results when all
                     "FIN", "FIN"), superPop=c("EUR", "EUR", "EUR", "EUR"),
                     stringsAsFactors=FALSE)
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+    chromosome <- c(956422L, 193529L, 295559L, 214555L)
 
     result <- RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped,
         studyDF=studyInfo,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=dataDir,
         fileReferenceGDS=gdsRefFile, fileReferenceAnnotGDS=gdsRefAnnotFile,
-        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
+        chrInfo=chromosome, syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup", verbose=TRUE)
 
     expect_identical(result, 0L)
@@ -304,11 +304,11 @@ test_that("validateEstimateAllelicFraction() must return expected results when a
     gdsSample <- openfn.gds(fileProfileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsSample)), envir = parent.frame())
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+    chromosome <- c(956422L, 193529L, 295559L, 214555L)
 
     result <- RAIDS:::validateEstimateAllelicFraction(gdsReference=gdsRef,
         gdsProfile=gdsSample, currentProfile="ex1", studyID="MYDATA",
-        chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.999,
+        chrInfo=chromosome, studyType="DNA", minCov=10L, minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
         gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE)
 

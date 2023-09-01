@@ -178,22 +178,17 @@ gds1KG <- snpgdsOpen(fileReferenceGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
 
-## Chromosome length information for hg38
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-    156040895L, 57227415L,  16569L)
+## Required library for this example to run correctly
+if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-## A formal way to get the chromosome length information for hg38
-## library(GenomeInfoDb)
-## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-\dontrun{
+    \dontrun{
 
-    RAIDS:::runWrapperAncestry(pedStudy=ped, studyDF=studyDF,
+        RAIDS:::runWrapperAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,
             pathGeno=pathGeno,
             pathOut=pathOut,
@@ -204,9 +199,10 @@ chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
             studyType="DNA",
             genoSource="snp-pileup")
 
-     unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-     unlink(pathOut, recursive=TRUE, force=TRUE)
+        unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+        unlink(pathOut, recursive=TRUE, force=TRUE)
 
+    }
 }
 
 }

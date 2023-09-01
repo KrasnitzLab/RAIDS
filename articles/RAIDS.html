@@ -376,44 +376,44 @@ else).</p>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Chromosome length information for hg38</span></span>
-<span><span class="co">## chrInfo[23] is chrX, chrInfo[24] is chrY and chrM is chrInfo[25]</span></span>
-<span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span>
-<span> <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span>
-<span> <span class="fl">135086622L</span>, <span class="fl">133275309L</span>, <span class="fl">114364328L</span>, <span class="fl">107043718L</span>, <span class="fl">101991189L</span>, <span class="fl">90338345L</span>,</span>
-<span> <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span>
-<span> <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span>
+<span><span class="co">## GenomeInfoDb and BSgenome are required libraries to run this example</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"GenomeInfoDb"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg38"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
-<span><span class="co">## will be created needs to be specified.</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
+<span>  <span class="co">## Chromosome length information</span></span>
+<span>  <span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span>
+<span>  <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu">GenomeInfoDb</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlengths</a></span><span class="op">(</span><span class="fu">BSgenome.Hsapiens.UCSC.hg38</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg38/man/package.html" class="external-link">Hsapiens</a></span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The path where the result files will be created needs to </span></span>
-<span><span class="co">## be specified</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="co">## The path where the Sample GDS files (one per sample)</span></span>
+<span>  <span class="co">## will be created needs to be specified.</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Example can only be run if the current directory is in writing mode</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="co">## The path where the result files will be created needs to </span></span>
+<span>  <span class="co">## be specified</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span>, <span class="st">"res.out"</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
+<span>  <span class="co">## Example can only be run if the current directory is in writing mode</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>    </span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
-<span>    <span class="co">## to selected the optimal parameters before calling the genetic </span></span>
-<span>    <span class="co">## ancestry on the current profiles.</span></span>
-<span>    <span class="co">## All important information, for each step, are saved in </span></span>
-<span>    <span class="co">## multiple output files.</span></span>
-<span>    <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
-<span>    <span class="co">##   SNP pileup files have been generated: </span></span>
-<span>    <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="fu"><a href="../reference/runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
+<span>      <span class="co">## to selected the optimal parameters before calling the genetic </span></span>
+<span>      <span class="co">## ancestry on the current profiles.</span></span>
+<span>      <span class="co">## All important information, for each step, are saved in </span></span>
+<span>      <span class="co">## multiple output files.</span></span>
+<span>      <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
+<span>      <span class="co">##   SNP pileup files have been generated: </span></span>
+<span>      <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="fu"><a href="../reference/runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
 <span>                 pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
 <span>                 pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span>
 <span>                 pathOut<span class="op">=</span><span class="va">pathOut</span>,</span>
@@ -422,25 +422,26 @@ else).</p>
 <span>                 chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span>
 <span>                 syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
 <span>                 genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="co">## The file containing the ancestry inference (SuperPop column) and </span></span>
-<span>    <span class="co">## optimal number of PCA component (D column)</span></span>
-<span>    <span class="co">## optimal number of neighbours (K column)</span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="co">## The file containing the ancestry inference (SuperPop column) and </span></span>
+<span>      <span class="co">## optimal number of PCA component (D column)</span></span>
+<span>      <span class="co">## optimal number of neighbours (K column)</span></span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="co">## Remove temporary files created for this demo</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="co">## Remove temporary files created for this demo</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleDNA"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
 in the <em>pathOut</em> directory.</p>
@@ -623,44 +624,44 @@ else).</p>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPop.html">select1KGPop</a></span><span class="op">(</span><span class="va">gds1KG</span>, nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gds1KG</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Chromosome length information for hg38</span></span>
-<span><span class="co">## chrInfo[23] is chrX, chrInfo[24] is chrY and chrM is chrInfo[25]</span></span>
-<span><span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">248956422L</span>, <span class="fl">242193529L</span>, <span class="fl">198295559L</span>, <span class="fl">190214555L</span>,</span>
-<span> <span class="fl">181538259L</span>, <span class="fl">170805979L</span>, <span class="fl">159345973L</span>, <span class="fl">145138636L</span>, <span class="fl">138394717L</span>, <span class="fl">133797422L</span>,</span>
-<span> <span class="fl">135086622L</span>, <span class="fl">133275309L</span>, <span class="fl">114364328L</span>, <span class="fl">107043718L</span>, <span class="fl">101991189L</span>, <span class="fl">90338345L</span>,</span>
-<span> <span class="fl">83257441L</span>,  <span class="fl">80373285L</span>,  <span class="fl">58617616L</span>,  <span class="fl">64444167L</span>,  <span class="fl">46709983L</span>, <span class="fl">50818468L</span>,</span>
-<span> <span class="fl">156040895L</span>, <span class="fl">57227415L</span>,  <span class="fl">16569L</span><span class="op">)</span></span>
+<span><span class="co">## GenomeInfoDb and BSgenome are required libraries to run this example</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"GenomeInfoDb"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg38"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The path where the Sample GDS files (one per sample)</span></span>
-<span><span class="co">## will be created needs to be specified.</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"outRNA.tmp"</span><span class="op">)</span></span>
+<span>  <span class="co">## Chromosome length information</span></span>
+<span>  <span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span>
+<span>  <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu">GenomeInfoDb</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlengths</a></span><span class="op">(</span><span class="fu">BSgenome.Hsapiens.UCSC.hg38</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg38/man/package.html" class="external-link">Hsapiens</a></span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The path where the result files will be created needs to </span></span>
-<span><span class="co">## be specified</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"resRNA.out"</span><span class="op">)</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="co">## The path where the Sample GDS files (one per sample)</span></span>
+<span>  <span class="co">## will be created needs to be specified.</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"outRNA.tmp"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Example can only be run if the current directory is in writing mode</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="co">## The path where the result files will be created needs to </span></span>
+<span>  <span class="co">## be specified</span></span>
+<span>  <span class="co">#############################################################################</span></span>
+<span>  <span class="va">pathOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span>, <span class="st">"resRNA.out"</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
+<span>  <span class="co">## Example can only be run if the current directory is in writing mode</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"exampleRNA"</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>    </span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
-<span>    <span class="co">## to selected the optimal parameters before calling the genetic </span></span>
-<span>    <span class="co">## ancestry on the current profiles.</span></span>
-<span>    <span class="co">## All important information, for each step, are saved in </span></span>
-<span>    <span class="co">## multiple output files.</span></span>
-<span>    <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
-<span>    <span class="co">##   SNP pileup files have been generated: </span></span>
-<span>    <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="fu"><a href="../reference/runRNAAncestry.html">runRNAAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
+<span>      <span class="co">## to selected the optimal parameters before calling the genetic </span></span>
+<span>      <span class="co">## ancestry on the current profiles.</span></span>
+<span>      <span class="co">## All important information, for each step, are saved in </span></span>
+<span>      <span class="co">## multiple output files.</span></span>
+<span>      <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
+<span>      <span class="co">##   SNP pileup files have been generated: </span></span>
+<span>      <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="fu"><a href="../reference/runRNAAncestry.html">runRNAAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">ped</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
 <span>                    pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
 <span>                    pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span>
 <span>                    pathOut<span class="op">=</span><span class="va">pathOut</span>,</span>
@@ -671,25 +672,26 @@ else).</p>
 <span>                    blockTypeID<span class="op">=</span><span class="st">"GeneS.Ensembl.Hsapiens.v86"</span>,</span>
 <span>                    genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span>
 <span>    </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="co">## The file containing the ancestry inference (SuperPop column) and </span></span>
-<span>    <span class="co">## optimal number of PCA component (D column)</span></span>
-<span>    <span class="co">## optimal number of neighbours (K column)</span></span>
-<span>    <span class="co">#########################################################################</span></span>
-<span>    <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="co">## The file containing the ancestry inference (SuperPop column) and </span></span>
+<span>      <span class="co">## optimal number of PCA component (D column)</span></span>
+<span>      <span class="co">## optimal number of neighbours (K column)</span></span>
+<span>      <span class="co">#########################################################################</span></span>
+<span>      <span class="va">resAncestry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, </span>
 <span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">".Ancestry.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resAncestry</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="co">## Remove temporary files created for this demo</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="co">## Remove temporary files created for this demo</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"example"</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runRNAAncestry()</em> function generates 3 types of files in
 the <em>pathOut</em> directory.</p>
@@ -764,77 +766,78 @@ in which this document was compiled:</p>
 <span><span class="co">## [5] gdsfmt_1.36.1    knitr_1.43       BiocStyle_2.28.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] jsonlite_1.8.7              shape_1.4.6                </span></span>
-<span><span class="co">##   [3] magrittr_2.0.3              jomo_2.7-6                 </span></span>
-<span><span class="co">##   [5] GenomicFeatures_1.52.2      logistf_1.26.0             </span></span>
-<span><span class="co">##   [7] nloptr_2.0.3                rmarkdown_2.24             </span></span>
-<span><span class="co">##   [9] fs_1.6.3                    BiocIO_1.10.0              </span></span>
-<span><span class="co">##  [11] zlibbioc_1.46.0             ragg_1.2.5                 </span></span>
-<span><span class="co">##  [13] vctrs_0.6.3                 memoise_2.0.1              </span></span>
-<span><span class="co">##  [15] minqa_1.2.5                 Rsamtools_2.16.0           </span></span>
-<span><span class="co">##  [17] RCurl_1.98-1.12             quantsmooth_1.66.0         </span></span>
-<span><span class="co">##  [19] htmltools_0.5.6             S4Arrays_1.0.6             </span></span>
-<span><span class="co">##  [21] progress_1.2.2              curl_5.0.2                 </span></span>
-<span><span class="co">##  [23] broom_1.0.5                 pROC_1.18.4                </span></span>
-<span><span class="co">##  [25] mitml_0.4-5                 sass_0.4.7                 </span></span>
-<span><span class="co">##  [27] bslib_0.5.1                 desc_1.4.2                 </span></span>
-<span><span class="co">##  [29] plyr_1.8.8                  sandwich_3.0-2             </span></span>
-<span><span class="co">##  [31] zoo_1.8-12                  cachem_1.0.8               </span></span>
-<span><span class="co">##  [33] GenomicAlignments_1.36.0    lifecycle_1.0.3            </span></span>
-<span><span class="co">##  [35] iterators_1.0.14            pkgconfig_2.0.3            </span></span>
-<span><span class="co">##  [37] R6_2.5.1                    fastmap_1.1.1              </span></span>
-<span><span class="co">##  [39] GenomeInfoDbData_1.2.10     MatrixGenerics_1.12.3      </span></span>
-<span><span class="co">##  [41] digest_0.6.33               GWASTools_1.46.0           </span></span>
-<span><span class="co">##  [43] AnnotationDbi_1.62.2        S4Vectors_0.38.1           </span></span>
-<span><span class="co">##  [45] rprojroot_2.0.3             textshaping_0.3.6          </span></span>
-<span><span class="co">##  [47] GenomicRanges_1.52.0        RSQLite_2.3.1              </span></span>
-<span><span class="co">##  [49] filelock_1.0.2              fansi_1.0.4                </span></span>
-<span><span class="co">##  [51] httr_1.4.7                  abind_1.4-5                </span></span>
-<span><span class="co">##  [53] mgcv_1.8-42                 compiler_4.3.0             </span></span>
-<span><span class="co">##  [55] bit64_4.0.5                 backports_1.4.1            </span></span>
-<span><span class="co">##  [57] BiocParallel_1.34.2         DBI_1.1.3                  </span></span>
-<span><span class="co">##  [59] highr_0.10                  pan_1.9                    </span></span>
-<span><span class="co">##  [61] biomaRt_2.56.1              MASS_7.3-59                </span></span>
-<span><span class="co">##  [63] quantreg_5.97               rappdirs_0.3.3             </span></span>
-<span><span class="co">##  [65] DelayedArray_0.26.7         rjson_0.2.21               </span></span>
-<span><span class="co">##  [67] DNAcopy_1.74.1              tools_4.3.0                </span></span>
-<span><span class="co">##  [69] lmtest_0.9-40               nnet_7.3-18                </span></span>
-<span><span class="co">##  [71] glue_1.6.2                  restfulr_0.0.15            </span></span>
-<span><span class="co">##  [73] nlme_3.1-162                grid_4.3.0                 </span></span>
-<span><span class="co">##  [75] generics_0.1.3              operator.tools_1.6.3       </span></span>
-<span><span class="co">##  [77] BSgenome_1.68.0             formula.tools_1.7.1        </span></span>
-<span><span class="co">##  [79] class_7.3-21                tidyr_1.3.0                </span></span>
-<span><span class="co">##  [81] ensembldb_2.24.0            hms_1.1.3                  </span></span>
-<span><span class="co">##  [83] data.table_1.14.8           xml2_1.3.5                 </span></span>
-<span><span class="co">##  [85] utf8_1.2.3                  XVector_0.40.0             </span></span>
-<span><span class="co">##  [87] BiocGenerics_0.46.0         GWASExactHW_1.01           </span></span>
-<span><span class="co">##  [89] foreach_1.5.2               pillar_1.9.0               </span></span>
-<span><span class="co">##  [91] stringr_1.5.0               splines_4.3.0              </span></span>
-<span><span class="co">##  [93] dplyr_1.1.2                 BiocFileCache_2.8.0        </span></span>
-<span><span class="co">##  [95] lattice_0.21-8              survival_3.5-5             </span></span>
-<span><span class="co">##  [97] rtracklayer_1.60.1          bit_4.0.5                  </span></span>
-<span><span class="co">##  [99] SparseM_1.81                tidyselect_1.2.0           </span></span>
-<span><span class="co">## [101] SeqVarTools_1.38.0          Biostrings_2.68.1          </span></span>
-<span><span class="co">## [103] bookdown_0.35               ProtGenerics_1.32.0        </span></span>
-<span><span class="co">## [105] IRanges_2.34.1              SummarizedExperiment_1.30.2</span></span>
-<span><span class="co">## [107] stats4_4.3.0                xfun_0.40                  </span></span>
-<span><span class="co">## [109] Biobase_2.60.0              matrixStats_1.0.0          </span></span>
-<span><span class="co">## [111] stringi_1.7.12              lazyeval_0.2.2             </span></span>
-<span><span class="co">## [113] yaml_2.3.7                  boot_1.3-28.1              </span></span>
-<span><span class="co">## [115] evaluate_0.21               codetools_0.2-19           </span></span>
-<span><span class="co">## [117] tibble_3.2.1                BiocManager_1.30.22        </span></span>
-<span><span class="co">## [119] cli_3.6.1                   rpart_4.1.19               </span></span>
-<span><span class="co">## [121] systemfonts_1.0.4           jquerylib_0.1.4            </span></span>
-<span><span class="co">## [123] Rcpp_1.0.11                 GenomeInfoDb_1.36.2        </span></span>
-<span><span class="co">## [125] dbplyr_2.3.3                png_0.1-8                  </span></span>
-<span><span class="co">## [127] XML_3.99-0.14               parallel_4.3.0             </span></span>
-<span><span class="co">## [129] MatrixModels_0.5-2          pkgdown_2.0.7              </span></span>
-<span><span class="co">## [131] blob_1.2.4                  prettyunits_1.1.1          </span></span>
-<span><span class="co">## [133] AnnotationFilter_1.24.0     bitops_1.0-7               </span></span>
-<span><span class="co">## [135] lme4_1.1-34                 glmnet_4.1-8               </span></span>
-<span><span class="co">## [137] SeqArray_1.40.1             purrr_1.0.2                </span></span>
-<span><span class="co">## [139] crayon_1.5.2                rlang_1.1.1                </span></span>
-<span><span class="co">## [141] KEGGREST_1.40.0             mice_3.16.0</span></span></code></pre>
+<span><span class="co">##   [1] jsonlite_1.8.7                    shape_1.4.6                      </span></span>
+<span><span class="co">##   [3] magrittr_2.0.3                    jomo_2.7-6                       </span></span>
+<span><span class="co">##   [5] GenomicFeatures_1.52.2            logistf_1.26.0                   </span></span>
+<span><span class="co">##   [7] nloptr_2.0.3                      rmarkdown_2.24                   </span></span>
+<span><span class="co">##   [9] fs_1.6.3                          BiocIO_1.10.0                    </span></span>
+<span><span class="co">##  [11] zlibbioc_1.46.0                   ragg_1.2.5                       </span></span>
+<span><span class="co">##  [13] vctrs_0.6.3                       memoise_2.0.1                    </span></span>
+<span><span class="co">##  [15] minqa_1.2.5                       Rsamtools_2.16.0                 </span></span>
+<span><span class="co">##  [17] RCurl_1.98-1.12                   quantsmooth_1.66.0               </span></span>
+<span><span class="co">##  [19] htmltools_0.5.6                   S4Arrays_1.0.6                   </span></span>
+<span><span class="co">##  [21] progress_1.2.2                    curl_5.0.2                       </span></span>
+<span><span class="co">##  [23] broom_1.0.5                       pROC_1.18.4                      </span></span>
+<span><span class="co">##  [25] mitml_0.4-5                       sass_0.4.7                       </span></span>
+<span><span class="co">##  [27] bslib_0.5.1                       desc_1.4.2                       </span></span>
+<span><span class="co">##  [29] plyr_1.8.8                        sandwich_3.0-2                   </span></span>
+<span><span class="co">##  [31] zoo_1.8-12                        cachem_1.0.8                     </span></span>
+<span><span class="co">##  [33] GenomicAlignments_1.36.0          lifecycle_1.0.3                  </span></span>
+<span><span class="co">##  [35] iterators_1.0.14                  pkgconfig_2.0.3                  </span></span>
+<span><span class="co">##  [37] R6_2.5.1                          fastmap_1.1.1                    </span></span>
+<span><span class="co">##  [39] GenomeInfoDbData_1.2.10           MatrixGenerics_1.12.3            </span></span>
+<span><span class="co">##  [41] digest_0.6.33                     GWASTools_1.46.0                 </span></span>
+<span><span class="co">##  [43] AnnotationDbi_1.62.2              S4Vectors_0.38.1                 </span></span>
+<span><span class="co">##  [45] rprojroot_2.0.3                   textshaping_0.3.6                </span></span>
+<span><span class="co">##  [47] GenomicRanges_1.52.0              RSQLite_2.3.1                    </span></span>
+<span><span class="co">##  [49] filelock_1.0.2                    fansi_1.0.4                      </span></span>
+<span><span class="co">##  [51] httr_1.4.7                        abind_1.4-5                      </span></span>
+<span><span class="co">##  [53] mgcv_1.8-42                       compiler_4.3.0                   </span></span>
+<span><span class="co">##  [55] bit64_4.0.5                       backports_1.4.1                  </span></span>
+<span><span class="co">##  [57] BiocParallel_1.34.2               DBI_1.1.3                        </span></span>
+<span><span class="co">##  [59] highr_0.10                        pan_1.9                          </span></span>
+<span><span class="co">##  [61] biomaRt_2.56.1                    MASS_7.3-59                      </span></span>
+<span><span class="co">##  [63] quantreg_5.97                     rappdirs_0.3.3                   </span></span>
+<span><span class="co">##  [65] DelayedArray_0.26.7               rjson_0.2.21                     </span></span>
+<span><span class="co">##  [67] DNAcopy_1.74.1                    tools_4.3.0                      </span></span>
+<span><span class="co">##  [69] lmtest_0.9-40                     nnet_7.3-18                      </span></span>
+<span><span class="co">##  [71] glue_1.6.2                        restfulr_0.0.15                  </span></span>
+<span><span class="co">##  [73] nlme_3.1-162                      grid_4.3.0                       </span></span>
+<span><span class="co">##  [75] generics_0.1.3                    operator.tools_1.6.3             </span></span>
+<span><span class="co">##  [77] BSgenome_1.68.0                   formula.tools_1.7.1              </span></span>
+<span><span class="co">##  [79] class_7.3-21                      tidyr_1.3.0                      </span></span>
+<span><span class="co">##  [81] ensembldb_2.24.0                  hms_1.1.3                        </span></span>
+<span><span class="co">##  [83] data.table_1.14.8                 xml2_1.3.5                       </span></span>
+<span><span class="co">##  [85] utf8_1.2.3                        XVector_0.40.0                   </span></span>
+<span><span class="co">##  [87] BiocGenerics_0.46.0               GWASExactHW_1.01                 </span></span>
+<span><span class="co">##  [89] foreach_1.5.2                     pillar_1.9.0                     </span></span>
+<span><span class="co">##  [91] stringr_1.5.0                     splines_4.3.0                    </span></span>
+<span><span class="co">##  [93] dplyr_1.1.2                       BiocFileCache_2.8.0              </span></span>
+<span><span class="co">##  [95] lattice_0.21-8                    survival_3.5-5                   </span></span>
+<span><span class="co">##  [97] rtracklayer_1.60.1                bit_4.0.5                        </span></span>
+<span><span class="co">##  [99] SparseM_1.81                      BSgenome.Hsapiens.UCSC.hg38_1.4.5</span></span>
+<span><span class="co">## [101] tidyselect_1.2.0                  SeqVarTools_1.38.0               </span></span>
+<span><span class="co">## [103] Biostrings_2.68.1                 bookdown_0.35                    </span></span>
+<span><span class="co">## [105] ProtGenerics_1.32.0               IRanges_2.34.1                   </span></span>
+<span><span class="co">## [107] SummarizedExperiment_1.30.2       stats4_4.3.0                     </span></span>
+<span><span class="co">## [109] xfun_0.40                         Biobase_2.60.0                   </span></span>
+<span><span class="co">## [111] matrixStats_1.0.0                 stringi_1.7.12                   </span></span>
+<span><span class="co">## [113] lazyeval_0.2.2                    yaml_2.3.7                       </span></span>
+<span><span class="co">## [115] boot_1.3-28.1                     evaluate_0.21                    </span></span>
+<span><span class="co">## [117] codetools_0.2-19                  tibble_3.2.1                     </span></span>
+<span><span class="co">## [119] BiocManager_1.30.22               cli_3.6.1                        </span></span>
+<span><span class="co">## [121] rpart_4.1.19                      systemfonts_1.0.4                </span></span>
+<span><span class="co">## [123] jquerylib_0.1.4                   Rcpp_1.0.11                      </span></span>
+<span><span class="co">## [125] GenomeInfoDb_1.36.2               dbplyr_2.3.3                     </span></span>
+<span><span class="co">## [127] png_0.1-8                         XML_3.99-0.14                    </span></span>
+<span><span class="co">## [129] parallel_4.3.0                    MatrixModels_0.5-2               </span></span>
+<span><span class="co">## [131] pkgdown_2.0.7                     blob_1.2.4                       </span></span>
+<span><span class="co">## [133] prettyunits_1.1.1                 AnnotationFilter_1.24.0          </span></span>
+<span><span class="co">## [135] bitops_1.0-7                      lme4_1.1-34                      </span></span>
+<span><span class="co">## [137] glmnet_4.1-8                      SeqArray_1.40.1                  </span></span>
+<span><span class="co">## [139] purrr_1.0.2                       crayon_1.5.2                     </span></span>
+<span><span class="co">## [141] rlang_1.1.1                       KEGGREST_1.40.0                  </span></span>
+<span><span class="co">## [143] mice_3.16.0</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">

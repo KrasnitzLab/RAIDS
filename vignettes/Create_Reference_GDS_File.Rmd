@@ -100,12 +100,12 @@ size, compressed or not + compression ratio.
 The mandatory fields are:
 
 * **sample.id**: a *character* string (saved in *Str8* format) used as unique identifier for each sample
-* **snp.id**: a a *character* string (saved in *Str8* format) used as unique identifier for each SNV
 * **sample.annot**: a *data.frame* where each row correspond to a sample and containing those columns:
     * **sex**: a *character* string (saved in *Str8* format) used as identifier of the sex of the sample
     * **pop.Group**: a *character* string (saved in *Str8* format) representing the sub-population ancestry of the sample (ex:GBR, etc)
     * **superPop**: a *character* string (saved in *Str8* format) representing the super-population ancestry of the sample (ex:EUR, AFR, EAS, SAS, AMR)
     * **batch**: an *integer* (saved in *Float64* format) representing the batch of provenance of the sample 
+* **snp.id**: a a *character* string (saved in *Str8* format) used as unique identifier for each SNV
 * **snp.chromosome**: an *integer* or *character* (saved in *UInt16 * format) mapping for each chromosome. Integer: numeric values 1-26, mapped in order from 1-22, 23=X, 24=XY (the pseudoautosomal region), 25=Y, 26=M (the mitochondrial probes), and 0 for probes with unknown positions; it does not allow NA. Character: “X”, “XY”, “Y” and “M” can be used here, and a blank string indicating unknown position
 * **snp.position**: an *integer* (saved in *Int32* format) representing the base position of each SNV on the chromosome, and 0 for unknown position; it does not allow NA.
 * **snp.allele**: a *character* string (saved as *Str8* format) representing the reference allele and alternative allele for each of the SNVs present in the *snp.id* field
@@ -142,10 +142,37 @@ sample.id <- c("HG00243", "HG00150", "HG00149", "HG00246", "HG00138",
 add.gdsn(node=gdsRefNew, name="sample.id", val=sample.id, 
             storage="string", check=TRUE)
 
-## TODO
+## A data frame containing the information about the 10 samples 
+## (in the same order than in the 'sample.id') is created and added to 
+## the 'sample.annot' entry
+## The data frame must contain those columns: 
+##     'sex': '1'=male, '2'=female
+##     'pop.group': acronym for the population (ex: GBR, CDX, MSL, ASW, etc..)
+##     'superPop': acronym for the super-population (ex: AFR, EUR, etc...)
+##     'batch': number identifying the batch of provenance 
+sampleInformation <- data.frame(sex=c("1", "2", "1", "1", "1", 
+        "1", "2", "2", "1", "2"), pop.group=c(rep("GBR", 6), rep("FIN", 4)), 
+        superPop=c(rep("EUR", 10)), batch=rep(0, 10), stringsAsFactors=FALSE)
+add.gdsn(node=gdsRefNew, name="sample.annot", val=sampleInformation, 
+             check=TRUE)
+
+## The identifier of each SNV is added in the 'snp.id' entry
+snvID <- c("s29603", "s29605", "s29633", "s29634", "s29635", "s29637", 
+            "s29638", "s29663", "s29664", "s29666", "s29667", "s29686", 
+            "s29687", "s29711", "s29741", "s29742", "s29746", "s29750", 
+            "s29751", "s29753")
+add.gdsn(node=gdsRefNew, name="snp.id", val=snvID, 
+             check=TRUE)
+
+## The chromosome of each SNV is added to the 'snp.chromosome' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvChrom <- c(rep(1, 20))
+add.gdsn(node=gdsRefNew, name="snp.chromosome", val=snvChrom, storage="uint16",
+             check=TRUE)
 
 ## The entry 'sample.ref' is filled with 1 indicating that all 10 
 ## samples are retained to be used as reference
+## The order of the samples is the same than in the 'sample.id' entry
 add.gdsn(node=gdsRefNew, name="sample.ref", val=rep(1L, 10), 
             storage="bit1", check=TRUE)
 

@@ -102,25 +102,27 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
             Sample.Type=c("DNA", "DNA"),
             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
-## Chromosome length information
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-    156040895L, 57227415L,  16569L)
+## Required library for this example to run correctly
+if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-## Profiles used for synthetic data set
-syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
-    "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
-    superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-## Returns OL when all parameters are valid
-RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
-    pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
-    fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
-    chrInfo=chrInfo, syntheticRefDF=syntheticRefDF, genoSource="snp-pileup",
-    verbose=FALSE)
+    ## Profiles used for synthetic data set
+    syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
+        "HG00275"), pop.group=c("GBR", "GBR","FIN", "FIN"),
+        superPop=c("EUR", "EUR", "EUR", "EUR"), stringsAsFactors=FALSE)
+
+    ## Returns OL when all parameters are valid
+    RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
+        pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
+        fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
+        chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
+        genoSource="snp-pileup", verbose=FALSE)
+
+}
 
 }
 \author{

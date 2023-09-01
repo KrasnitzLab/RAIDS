@@ -171,37 +171,31 @@ gdsReference <- snpgdsOpen(fileReferenceGDS)
 dataRef <- select1KGPop(gdsReference, nbProfiles=2L)
 closefn.gds(gdsReference)
 
-## Chromosome length information for hg38
-## chr23 is chrX, chr24 is chrY and chrM is 25
-chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-    181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-    135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-    83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-    156040895L, 57227415L,  16569L)
+## Required library for this example to run correctly
+if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+     requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-## A formal way to get the chromosome length information for hg38
-## library(GenomeInfoDb)
-## library(BSgenome.Hsapiens.UCSC.hg38)
-## chrInfo <- GenomeInfoDb::seqlengths(Hsapiens)[1:25]
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
+    studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
+        study.desc=paste0(studyDF$study.id, " synthetic data"),
+        study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
+    listProfileRef <- dataRef$sample.id
+    profileFile <- file.path(pathProfileGDS, "ex1.gds")
 
-studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
-    study.desc=paste0(studyDF$study.id, " synthetic data"),
-    study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
+    \dontrun{
 
-listProfileRef <- dataRef$sample.id
-profileFile <- file.path(pathProfileGDS, "ex1.gds")
+        dir.create(pathProfileGDS)
+        dir.create(pathOut)
+        file.copy(file.path(dataDir, "tests", "ex1_demo.gds"), profileFile)
 
-\dontrun{
-    dir.create(pathProfileGDS)
-    dir.create(pathOut)
-    file.copy(file.path(dataDir, "tests", "ex1_demo.gds"), profileFile)
+        gdsReference <- snpgdsOpen(fileReferenceGDS)
+        gdsRefAnnot <- openfn.gds(fileAnnotGDS)
 
-    gdsReference <- snpgdsOpen(fileReferenceGDS)
-    gdsRefAnnot <- openfn.gds(fileAnnotGDS)
-
-    RAIDS:::runProfileAncestry(gdsReference=gdsReference,
+        RAIDS:::runProfileAncestry(gdsReference=gdsReference,
              gdsRefAnnot=gdsRefAnnot,
              studyDF=studyDF, currentProfile=ped[1,"Name.ID"],
              pathProfileGDS=pathProfileGDS,
@@ -212,12 +206,13 @@ profileFile <- file.path(pathProfileGDS, "ex1.gds")
              listProfileRef=listProfileRef,
              studyType="DNA")
 
-     closefn.gds(gdsReference)
-     closefn.gds(gdsRefAnnot)
+        closefn.gds(gdsReference)
+        closefn.gds(gdsRefAnnot)
 
-     unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-     unlink(pathOut, recursive=TRUE, force=TRUE)
+        unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+        unlink(pathOut, recursive=TRUE, force=TRUE)
 
+    }
 }
 
 }

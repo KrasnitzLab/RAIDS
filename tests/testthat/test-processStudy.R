@@ -1923,7 +1923,7 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
     fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
     gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+    chromosome <- c(956422L, 193529L, 295559L, 214555L)
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                     study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -1945,7 +1945,7 @@ test_that("runExomeAncestry() must return error when pathOut is numeric", {
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut,
         pathGeno=pathOut, pathOut=33, fileReferenceGDS=fileGDS,
-        fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chrInfo,
+        fileReferenceAnnotGDS=gdsFileAnnot, chrInfo=chromosome,
         syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
@@ -1957,7 +1957,7 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
     fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
     gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+    chromosome <- c(956422L, 193529L, 295559L, 214555L)
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                         study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -1979,7 +1979,7 @@ test_that("runExomeAncestry() must return error when fileReferenceGDS is numeric
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
         pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
         fileReferenceGDS=33, fileReferenceAnnotGDS=gdsFileAnnot,
-        chrInfo=chrInfo, syntheticRefDF,
+        chrInfo=chromosome, syntheticRefDF,
         genoSource="snp-pileup"), error_message)
 })
 
@@ -1990,7 +1990,7 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
     fileGDS <- file.path(pathOut, "ex1_good_small_1KG_GDS.gds")
     gdsFileAnnot <- file.path(pathOut, "ex1_good_small_1KG_Annot_GDS.gds")
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L)
+    chromosome <- c(956422L, 193529L, 295559L, 214555L)
 
     studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
                           study.platform="PLATFORM", stringsAsFactors=FALSE)
@@ -2013,7 +2013,7 @@ test_that("runExomeAncestry() must return error when fileReferenceAnnotGDS is nu
     expect_error(runExomeAncestry(pedStudy=ped, studyDF=studyDF,
             pathProfileGDS=pathOut, pathGeno=pathOut, pathOut=pathOut,
             fileReferenceGDS=fileGDS, fileReferenceAnnotGDS=32,
-            chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
+            chrInfo=chromosome, syntheticRefDF=syntheticRefDF,
             genoSource="snp-pileup"), error_message)
 })
 

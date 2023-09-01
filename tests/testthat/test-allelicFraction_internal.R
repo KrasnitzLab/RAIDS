@@ -50,7 +50,7 @@ test_that("computeLOHBlocksDNAChr() must return expected results", {
     gds1KG <- snpgdsOpen(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gds1KG)), envir = parent.frame())
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
+    chromosome <- c(248956422L, 242193529L, 198295559L, 190214555L,
         181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
         135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
         83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
@@ -73,7 +73,7 @@ test_that("computeLOHBlocksDNAChr() must return expected results", {
                 stringAsFactor=FALSE)
 
     result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
-                    chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
+                    chrInfo=chromosome, snpPos=snpInfo, chr=1L, genoN=0.0001)
 
     expected <- data.frame(chr=rep(1, 12),
                     start=c(1, snpInfo$snp.pos[seq_len(8)]+1, 6313146,

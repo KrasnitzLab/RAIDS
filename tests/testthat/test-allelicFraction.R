@@ -494,15 +494,11 @@ test_that("estimateAllelicFraction() must return valid results", {
                                 readonly=FALSE)
     withr::defer((gdsfmt::closefn.gds(gdsProfile)), envir=parent.frame())
 
-    chrInfo <- c(248956422L, 242193529L, 198295559L, 190214555L,
-        181538259L, 170805979L, 159345973L, 145138636L, 138394717L, 133797422L,
-        135086622L, 133275309L, 114364328L, 107043718L, 101991189L, 90338345L,
-        83257441L,  80373285L,  58617616L,  64444167L,  46709983L, 50818468L,
-        156040895L, 57227415L,  16569L)
+    chromosome <- c(95642L, 93529L, 95559L)
 
     result <- estimateAllelicFraction(gdsReference=gds1KG,
         gdsProfile=gdsProfile, currentProfile="ex1", studyID="MYDATA",
-        chrInfo=chrInfo, studyType="DNA", minCov=10L, minProb=0.999,
+        chrInfo=chromosome, studyType="DNA", minCov=10L, minProb=0.999,
         eProb=0.001, cutOffLOH=-5, cutOffHomoScore=-3, wAR=9, cutOffAR=3,
         gdsRefAnnot=NULL, blockID=NULL, verbose=FALSE)
 

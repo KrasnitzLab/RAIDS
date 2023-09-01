@@ -166,9 +166,6 @@ displayed in the braces indicate the data type, size, compressed or not
 <strong>sample.id</strong>: a <em>character</em> string (saved in
 <em>Str8</em> format) used as unique identifier for each sample</li>
 <li>
-<strong>snp.id</strong>: a a <em>character</em> string (saved in
-<em>Str8</em> format) used as unique identifier for each SNV</li>
-<li>
 <strong>sample.annot</strong>: a <em>data.frame</em> where each row
 correspond to a sample and containing those columns:
 <ul>
@@ -189,6 +186,9 @@ sample (ex:EUR, AFR, EAS, SAS, AMR)</li>
 sample</li>
 </ul>
 </li>
+<li>
+<strong>snp.id</strong>: a a <em>character</em> string (saved in
+<em>Str8</em> format) used as unique identifier for each SNV</li>
 <li>
 <strong>snp.chromosome</strong>: an <em>integer</em> or
 <em>character</em> (saved in <em>UInt16 </em> format) mapping for each
@@ -269,19 +269,53 @@ Reference file</em>.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.id"</span>, val<span class="op">=</span><span class="va">sample.id</span>, </span>
 <span>            storage<span class="op">=</span><span class="st">"string"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## TODO</span></span>
+<span><span class="co">## A data frame containing the information about the 10 samples </span></span>
+<span><span class="co">## (in the same order than in the 'sample.id') is created and added to </span></span>
+<span><span class="co">## the 'sample.annot' entry</span></span>
+<span><span class="co">## The data frame must contain those columns: </span></span>
+<span><span class="co">##     'sex': '1'=male, '2'=female</span></span>
+<span><span class="co">##     'pop.group': acronym for the population (ex: GBR, CDX, MSL, ASW, etc..)</span></span>
+<span><span class="co">##     'superPop': acronym for the super-population (ex: AFR, EUR, etc...)</span></span>
+<span><span class="co">##     'batch': number identifying the batch of provenance </span></span>
+<span><span class="va">sampleInformation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"1"</span>, <span class="st">"1"</span>, <span class="st">"1"</span>, </span>
+<span>        <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"2"</span>, <span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span>, pop.group<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"GBR"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"FIN"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>        superPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"EUR"</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, batch<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.annot"</span>, val<span class="op">=</span><span class="va">sampleInformation</span>, </span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The identifier of each SNV is added in the 'snp.id' entry</span></span>
+<span><span class="va">snvID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"s29603"</span>, <span class="st">"s29605"</span>, <span class="st">"s29633"</span>, <span class="st">"s29634"</span>, <span class="st">"s29635"</span>, <span class="st">"s29637"</span>, </span>
+<span>            <span class="st">"s29638"</span>, <span class="st">"s29663"</span>, <span class="st">"s29664"</span>, <span class="st">"s29666"</span>, <span class="st">"s29667"</span>, <span class="st">"s29686"</span>, </span>
+<span>            <span class="st">"s29687"</span>, <span class="st">"s29711"</span>, <span class="st">"s29741"</span>, <span class="st">"s29742"</span>, <span class="st">"s29746"</span>, <span class="st">"s29750"</span>, </span>
+<span>            <span class="st">"s29751"</span>, <span class="st">"s29753"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.id"</span>, val<span class="op">=</span><span class="va">snvID</span>, </span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The chromosome of each SNV is added to the 'snp.chromosome' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvChrom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.chromosome"</span>, val<span class="op">=</span><span class="va">snvChrom</span>, storage<span class="op">=</span><span class="st">"uint16"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## The entry 'sample.ref' is filled with 1 indicating that all 10 </span></span>
 <span><span class="co">## samples are retained to be used as reference</span></span>
+<span><span class="co">## The order of the samples is the same than in the 'sample.id' entry</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.ref"</span>, val<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10</span><span class="op">)</span>, </span>
 <span>            storage<span class="op">=</span><span class="st">"bit1"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmpAzs4NB/reference_DEMO.gds <span style="color: #555555;">(218B)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpS2Z2n2/reference_DEMO.gds <span style="color: #555555;">(718B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
+<span><span class="co">## |  |--+ sex   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 20B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  |--+ pop.group   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 40B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  |--+ superPop   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 40B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  \--+ batch   <span style="color: #555555;">{</span> <span style="color: #555555;">Float64</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">20, 140B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.chromosome   <span style="color: #555555;">{</span> <span style="color: #555555;">UInt16</span> <span style="color: #555555;">20, 40B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">10, 2B</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>

@@ -95,7 +95,7 @@ closefn.gds(gdsRef)
 This output lists all variables stored in the *Population Reference GDS file*. 
 At the first level, it stores variables *sample.id*, *snp.id*, etc. 
 The additional information displayed in the braces indicate the data type, 
-size, compressed or not + compression ratio.
+size, compressed or not with compression ratio.
 
 The mandatory fields are:
 
@@ -120,7 +120,11 @@ The mandatory fields are:
 
 <br>
 
-This following example shows how to create a *Population GDS Reference file*.
+This following example shows how to create a *Population GDS Reference file*. 
+This example is for demonstration purpose only. A working 
+*Population GDS Reference file* would have to contain multiple samples from 
+each continental population and would also have to contain the SNVs from the 
+entire genome.
 
 ```{r createRefGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 #############################################################################
@@ -170,12 +174,85 @@ snvChrom <- c(rep(1, 20))
 add.gdsn(node=gdsRefNew, name="snp.chromosome", val=snvChrom, storage="uint16",
              check=TRUE)
 
+## The position on the chromosome of each SNV is added to 
+## the 'snp.position' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvPos <- c(3467333, 3467428, 3469375, 3469387, 3469502, 3469527, 
+                    3469737, 3471497, 3471565, 3471618)
+add.gdsn(node=gdsRefNew, name="snp.position", val=snvPos, storage="int32",
+             check=TRUE)
+
+## The allele information of each SNV is added to the 'snp.allele' entry
+## The order of the SNVs is the same than in the 'snp.allele' entry
+snvAllele <- c("A/G", "C/G", "C/T", "C/T", "T/G", "C/T", 
+                    "G/A", "A/G", "G/A", "G/A")
+add.gdsn(node=gdsRefNew, name="snp.allele", val=snvAllele, storage="string",
+             check=TRUE)
+
+## The allele frequency in the general population (between 0 and 1) of each 
+## SNV is added to the 'snp.AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.86, 0.01, 0.00, 0.00, 0.01, 0.00, 0.00, 0.00, 0.00, 0.01)
+add.gdsn(node=gdsRefNew, name="snp.AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The allele frequency in the East Asian population (between 0 and 1) of each 
+## SNV is added to the 'snp.EAS_AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.80, 0.00, 0.00, 0.01, 0.00, 0.00, 0.01, 0.00, 0.02, 0.00)
+add.gdsn(node=gdsRefNew, name="snp.EAS_AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The allele frequency in the European population (between 0 and 1) of each 
+## SNV is added to the 'snp.EUR_AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.91, 0.00, 0.01, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.03)
+add.gdsn(node=gdsRefNew, name="snp.EUR_AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The allele frequency in the African population (between 0 and 1) of each 
+## SNV is added to the 'snp.AFR_AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.85, 0.04, 0.00, 0.00, 0.00, 0.01, 0.00, 0.00, 0.00, 0.00)
+add.gdsn(node=gdsRefNew, name="snp.AFR_AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The allele frequency in the American population (between 0 and 1) of each 
+## SNV is added to the 'snp.AMR_AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.83, 0.01, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.02)
+add.gdsn(node=gdsRefNew, name="snp.AMR_AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The allele frequency in the South Asian population (between 0 and 1) of each 
+## SNV is added to the 'snp.SAS_AF' entry
+## The order of the SNVs is the same than in the 'snp.id' entry
+snvAF <- c(0.89, 0.00, 0.00, 0.00, 0.05, 0.00, 0.00, 0.01, 0.00, 0.00)
+add.gdsn(node=gdsRefNew, name="snp.SAS_AF", val=snvAF, storage="packedreal24",
+             check=TRUE)
+
+## The genotype of each SNV for each sample is added to the 'genotype' entry
+## The genotype correspond to the number of A alleles
+## The rows represent the SNVs is the same order than in 'snp.id' entry
+## The columns represent the samples is the same order than in 'sample.id' entry
+genotypeInfo <- matrix(data=c(2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0), byrow=TRUE)
+add.gdsn(node=gdsRefNew, name="genotype", val=genotypeInfo, 
+            storage="sbit2", check=TRUE)
+
 ## The entry 'sample.ref' is filled with 1 indicating that all 10 
 ## samples are retained to be used as reference
 ## The order of the samples is the same than in the 'sample.id' entry
 add.gdsn(node=gdsRefNew, name="sample.ref", val=rep(1L, 10), 
             storage="bit1", check=TRUE)
-
 
 ## Show the file format
 print(gdsRefNew)

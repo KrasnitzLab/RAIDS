@@ -92,7 +92,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-09-01<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-09-06<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -159,7 +159,7 @@ files.</p>
 Reference GDS file</em>. At the first level, it stores variables
 <em>sample.id</em>, <em>snp.id</em>, etc. The additional information
 displayed in the braces indicate the data type, size, compressed or not
-+ compression ratio.</p>
+with compression ratio.</p>
 <p>The mandatory fields are:</p>
 <ul>
 <li>
@@ -248,7 +248,10 @@ discarded</li>
 </ul>
 <p><br></p>
 <p>This following example shows how to create a <em>Population GDS
-Reference file</em>.</p>
+Reference file</em>. This example is for demonstration purpose only. A
+working <em>Population GDS Reference file</em> would have to contain
+multiple samples from each continental population and would also have to
+contain the SNVs from the entire genome.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -297,16 +300,89 @@ Reference file</em>.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.chromosome"</span>, val<span class="op">=</span><span class="va">snvChrom</span>, storage<span class="op">=</span><span class="st">"uint16"</span>,</span>
 <span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">## The position on the chromosome of each SNV is added to </span></span>
+<span><span class="co">## the 'snp.position' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvPos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3467333</span>, <span class="fl">3467428</span>, <span class="fl">3469375</span>, <span class="fl">3469387</span>, <span class="fl">3469502</span>, <span class="fl">3469527</span>, </span>
+<span>                    <span class="fl">3469737</span>, <span class="fl">3471497</span>, <span class="fl">3471565</span>, <span class="fl">3471618</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.position"</span>, val<span class="op">=</span><span class="va">snvPos</span>, storage<span class="op">=</span><span class="st">"int32"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele information of each SNV is added to the 'snp.allele' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.allele' entry</span></span>
+<span><span class="va">snvAllele</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A/G"</span>, <span class="st">"C/G"</span>, <span class="st">"C/T"</span>, <span class="st">"C/T"</span>, <span class="st">"T/G"</span>, <span class="st">"C/T"</span>, </span>
+<span>                    <span class="st">"G/A"</span>, <span class="st">"A/G"</span>, <span class="st">"G/A"</span>, <span class="st">"G/A"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.allele"</span>, val<span class="op">=</span><span class="va">snvAllele</span>, storage<span class="op">=</span><span class="st">"string"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the general population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.86</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the East Asian population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.EAS_AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.80</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.02</span>, <span class="fl">0.00</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.EAS_AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the European population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.EUR_AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.91</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.EUR_AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the African population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.AFR_AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.04</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.AFR_AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the American population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.AMR_AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.83</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.02</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.AMR_AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The allele frequency in the South Asian population (between 0 and 1) of each </span></span>
+<span><span class="co">## SNV is added to the 'snp.SAS_AF' entry</span></span>
+<span><span class="co">## The order of the SNVs is the same than in the 'snp.id' entry</span></span>
+<span><span class="va">snvAF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.05</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.00</span>, <span class="fl">0.00</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"snp.SAS_AF"</span>, val<span class="op">=</span><span class="va">snvAF</span>, storage<span class="op">=</span><span class="st">"packedreal24"</span>,</span>
+<span>             check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The genotype of each SNV for each sample is added to the 'genotype' entry</span></span>
+<span><span class="co">## The genotype correspond to the number of A alleles</span></span>
+<span><span class="co">## The rows represent the SNVs is the same order than in 'snp.id' entry</span></span>
+<span><span class="co">## The columns represent the samples is the same order than in 'sample.id' entry</span></span>
+<span><span class="va">genotypeInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, </span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, </span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
+<span>                                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"genotype"</span>, val<span class="op">=</span><span class="va">genotypeInfo</span>, </span>
+<span>            storage<span class="op">=</span><span class="st">"sbit2"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co">## The entry 'sample.ref' is filled with 1 indicating that all 10 </span></span>
 <span><span class="co">## samples are retained to be used as reference</span></span>
 <span><span class="co">## The order of the samples is the same than in the 'sample.id' entry</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/add.gdsn.html" class="external-link">add.gdsn</a></span><span class="op">(</span>node<span class="op">=</span><span class="va">gdsRefNew</span>, name<span class="op">=</span><span class="st">"sample.ref"</span>, val<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10</span><span class="op">)</span>, </span>
 <span>            storage<span class="op">=</span><span class="st">"bit1"</span>, check<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmpS2Z2n2/reference_DEMO.gds <span style="color: #555555;">(718B)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmp800ctP/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -316,6 +392,15 @@ Reference file</em>.</p>
 <span><span class="co">## |  \--+ batch   <span style="color: #555555;">{</span> <span style="color: #555555;">Float64</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ snp.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">20, 140B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ snp.chromosome   <span style="color: #555555;">{</span> <span style="color: #555555;">UInt16</span> <span style="color: #555555;">20, 40B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.position   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">10, 40B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.allele   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 40B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.EAS_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.EUR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AFR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AMR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.SAS_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">10, 30B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ genotype   <span style="color: #555555;">{</span> <span style="color: #555555;">SBit2</span> <span style="color: #555555;">100x1, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">10, 2B</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
@@ -481,7 +566,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [87] BiocGenerics_0.46.0         GWASExactHW_1.01           </span></span>
 <span><span class="co">##  [89] foreach_1.5.2               pillar_1.9.0               </span></span>
 <span><span class="co">##  [91] stringr_1.5.0               splines_4.3.0              </span></span>
-<span><span class="co">##  [93] dplyr_1.1.2                 BiocFileCache_2.8.0        </span></span>
+<span><span class="co">##  [93] dplyr_1.1.3                 BiocFileCache_2.8.0        </span></span>
 <span><span class="co">##  [95] lattice_0.21-8              survival_3.5-5             </span></span>
 <span><span class="co">##  [97] rtracklayer_1.60.1          bit_4.0.5                  </span></span>
 <span><span class="co">##  [99] SparseM_1.81                tidyselect_1.2.0           </span></span>

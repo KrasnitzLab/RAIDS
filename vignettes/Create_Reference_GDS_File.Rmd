@@ -244,9 +244,10 @@ genotypeInfo <- matrix(data=c(2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0), byrow=TRUE)
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0), nrow=10, 
+                                byrow=TRUE)
 add.gdsn(node=gdsRefNew, name="genotype", val=genotypeInfo, 
-            storage="sbit2", check=TRUE)
+            storage="bit2", check=TRUE)
 
 ## The entry 'sample.ref' is filled with 1 indicating that all 10 
 ## samples are retained to be used as reference

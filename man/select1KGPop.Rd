@@ -48,7 +48,7 @@ nbProfiles <- 5L
 ## Open 1KG GDS Demo file
 ## This file only one superpopulation (for demonstration purpose)
 dataDir <- system.file("extdata", package="RAIDS")
-fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+fileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 gdsFileOpen <- openfn.gds(fileGDS, readonly=TRUE)
 
 ## Extract a selected number of random samples

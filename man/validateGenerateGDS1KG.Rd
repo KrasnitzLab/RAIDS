@@ -59,7 +59,7 @@ This function validates the input parameters for the
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The RDS file containing the pedigree information
-pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 
 ## The RDS file containing the indexes of the retained SNPs
 snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")

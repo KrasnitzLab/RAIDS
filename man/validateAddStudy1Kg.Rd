@@ -30,7 +30,7 @@ expected, an error message is generated.
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
-fileReferenceGDS <- file.path(dataDir, "1KG_Demo.gds")
+fileReferenceGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 gds1KG <- snpgdsOpen(fileReferenceGDS)
 
 ## Path to demo Profile GDS file

@@ -92,7 +92,7 @@ study <- data.frame(study.id = "MYDATA",
                       stringsAsFactors = FALSE)
 
 ## Population Reference GDS demo file
-gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
 
 gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
 

@@ -39,7 +39,7 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## Open existing demo 1K GDS file with "sample.ref" node
-nameFileGDS <- file.path(dataDir, "1KG_Demo.gds")
+nameFileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 fileGDS <- snpgdsOpen(nameFileGDS)
 
 ## Extract super population information for the 1KG profiles

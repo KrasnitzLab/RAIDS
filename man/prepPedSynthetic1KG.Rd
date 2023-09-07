@@ -58,7 +58,7 @@ library(gdsfmt)
 
 ## The open 1KG GDS file is required (this is a demo file)
 dataDir <- system.file("extdata", package="RAIDS")
-gds_1KG_file <- file.path(dataDir, "1KG_Demo.gds")
+gds_1KG_file <- file.path(dataDir, "PopulationReferenceDemo.gds")
 gds1KG <- openfn.gds(gds_1KG_file)
 
 fileSampleGDS <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")

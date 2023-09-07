@@ -63,7 +63,7 @@
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG Population Reference GDS demo file (opened)
-#' gds1KG <- snpgdsOpen(file.path(dataDir, "1KG_Demo.gds"))
+#' gds1KG <- snpgdsOpen(file.path(dataDir, "PopulationReferenceDemo.gds"))
 #'
 #' ## The prefix of the RDS file to be created and containing the pruned SNVs
 #' outPrefix <- file.path(tempdir(), "Pruned_Demo_Reference")
@@ -554,7 +554,7 @@ validatePrepPed1KG <- function(filePed, pathGeno, batch) {
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
-#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
 #' ## The RDS file containing the indexes of the retained SNPs
 #' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")

@@ -68,7 +68,7 @@ This function validates the input parameters for the
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## Demo 1KG Population Reference GDS file
-gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"

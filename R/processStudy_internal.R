@@ -75,7 +75,8 @@
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir,
+#'             "PopulationReferenceDemo.gds"), readonly=TRUE)
 #'
 #' ## The validation should be successful
 #' RAIDS:::validatePruningSample(gdsReference=gds1KG, method="corr",
@@ -377,7 +378,8 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG Population Reference GDS Demo file (opened)
-#' gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir,
+#'                 "PopulationReferenceDemo.gds"), readonly=TRUE)
 #'
 #' ## The GDS Sample (opened)
 #' gdsSample <- openfn.gds(file.path(dataDir,
@@ -515,7 +517,7 @@ validateEstimateAllelicFraction <- function(gdsReference, gdsProfile,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo 1KG Population Reference GDS file
-#' gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+#' gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -675,7 +677,8 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG Population Reference GDS demo file (opened)
-#' gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir,
+#'             "PopulationReferenceDemo.gds"), readonly=TRUE)
 #'
 #' ## The Profile GDS (opened)
 #' gdsSample <- openfn.gds(file.path(dataDir,
@@ -890,7 +893,8 @@ validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG Population Reference GDS demo file (opened)
-#' gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir,
+#'                 "PopulationReferenceDemo.gds"), readonly=TRUE)
 #'
 #' ## The validatiion should be successful
 #' RAIDS:::validateAdd1KG2SampleGDS(gdsReference=gds1KG,
@@ -1003,7 +1007,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'                       stringsAsFactors = FALSE)
 #'
 #' ## Population Reference GDS demo file
-#' gds1KG <- file.path(dataDir, "1KG_Demo.gds")
+#' gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #'
 #' gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
 #'
@@ -1245,7 +1249,7 @@ validateStudyDataFrameParameter <- function(studyDF) {
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
-#' fileReferenceGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' fileReferenceGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #' gds1KG <- snpgdsOpen(fileReferenceGDS)
 #'
 #' ## Path to demo Profile GDS file

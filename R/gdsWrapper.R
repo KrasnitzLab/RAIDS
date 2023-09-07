@@ -126,7 +126,7 @@ generateGDSSNPinfo <- function(gdsReference, fileFreq, verbose) {
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
-#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
 #' ## The RDS file containing the indexes of the retained SNPs
 #' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
@@ -250,7 +250,7 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
-#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
 #' ## The RDS file containing the indexes of the retained SNPs
 #' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")

@@ -38,8 +38,8 @@
 #' ## Open 1KG GDS Demo file
 #' ## This file only one superpopulation (for demonstration purpose)
 #' dataDir <- system.file("extdata", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "gds1KG.gds")
-#' gdsFileOpen <- openfn.gds(fileGDS)
+#' fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' gdsFileOpen <- openfn.gds(fileGDS, readonly=TRUE)
 #'
 #' ## Extract a selected number of random samples
 #' ## for each subcontinental population

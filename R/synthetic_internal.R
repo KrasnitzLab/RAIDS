@@ -42,7 +42,7 @@
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The 1KG GDS file (opened)
-#' gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
+#' gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
 #'
 #' ## The 1KG GDS Annotation file (opened)
 #' gds1KGAnnot <- openfn.gds(file.path(dataDir, "gdsAnnot1KG.gds"),

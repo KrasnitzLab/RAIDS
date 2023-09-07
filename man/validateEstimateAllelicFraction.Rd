@@ -93,7 +93,7 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG Population Reference GDS Demo file (opened)
-gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
 
 ## The GDS Sample (opened)
 gdsSample <- openfn.gds(file.path(dataDir,

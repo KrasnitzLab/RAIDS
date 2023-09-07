@@ -102,7 +102,7 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(dataDir, "gds1KG.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
 
 ## The validation should be successful
 RAIDS:::validatePruningSample(gdsReference=gds1KG, method="corr",

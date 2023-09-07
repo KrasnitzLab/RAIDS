@@ -25,9 +25,7 @@ test_that("select1KGPop() must return error when gdsReference is a character str
 
 test_that("select1KGPop() must return error when nbProfiles is a character string", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-
-    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
@@ -42,17 +40,15 @@ test_that("select1KGPop() must return error when nbProfiles is a character strin
 
 test_that("select1KGPop() must return expected result", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-
-    fileGDS <- file.path(dataDir, "1KG_Test_02.gds")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
     withr::defer((gdsfmt::closefn.gds(gdsF)), envir=parent.frame())
 
-    expected <- data.frame(sample.id=c("HG00101", "HG00097",
-                                        "HG00096", "HG00100"),
-                            pop.group=c("GBR", "GBR", "GBR", "GBR"),
-                            superPop=rep("EUR", 4))
+    expected <- data.frame(sample.id=c("HG00109", "HG00108",
+                                        "HG00104", "HG00103"),
+                            pop.group=rep("ACB", 4),
+                            superPop=rep("AFR", 4))
 
     set.seed(1212)
     results <- select1KGPop(gdsReference=gdsF, nbProfiles=4L)
@@ -136,7 +132,7 @@ context("syntheticGeno() results")
 
 test_that("syntheticGeno() must return error when gds is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -154,7 +150,7 @@ test_that("syntheticGeno() must return error when gds is a numeric value", {
 
 test_that("syntheticGeno() must return error when gdsRefAnnot is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -172,7 +168,7 @@ test_that("syntheticGeno() must return error when gdsRefAnnot is a numeric value
 
 test_that("syntheticGeno() must return error when fileProfileGDS is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -191,7 +187,7 @@ test_that("syntheticGeno() must return error when fileProfileGDS is a numeric va
 
 test_that("syntheticGeno() must return error when profileID is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -209,7 +205,7 @@ test_that("syntheticGeno() must return error when profileID is a numeric value",
 
 test_that("syntheticGeno() must return error when listSampleRef is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -226,7 +222,7 @@ test_that("syntheticGeno() must return error when listSampleRef is a numeric val
 
 test_that("syntheticGeno() must return error when profileID is a vector of strings", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -244,7 +240,7 @@ test_that("syntheticGeno() must return error when profileID is a vector of strin
 
 test_that("syntheticGeno() must return error when nbSim is a character string", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -264,7 +260,7 @@ test_that("syntheticGeno() must return error when nbSim is a character string", 
 test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
             "of character strings"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -284,7 +280,7 @@ test_that(paste0("syntheticGeno() must return error when prefId is a vector ",
 
 test_that("syntheticGeno() must return error when prefix is a numeric value", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -304,7 +300,7 @@ test_that("syntheticGeno() must return error when prefix is a numeric value", {
 
 test_that(paste0("syntheticGeno() must return error when pRecomb is a character string"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -324,7 +320,7 @@ test_that(paste0("syntheticGeno() must return error when pRecomb is a character 
 test_that(paste0("syntheticGeno() must return error when seqError is a ",
                     "character string"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -345,7 +341,7 @@ test_that(paste0("syntheticGeno() must return error when seqError is a ",
 test_that(paste0("syntheticGeno() must return error when minProb is a ",
                     "character string"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     gdsF <- openfn.gds(fileGDS)
@@ -509,7 +505,7 @@ test_that(paste0("prepSynthetic() must return error when fileProfileGDS is",
 
 test_that(paste0("prepSynthetic() must return error when profileID is numeric"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
@@ -527,7 +523,7 @@ test_that(paste0("prepSynthetic() must return error when profileID is numeric"),
 test_that(paste0("prepSynthetic() must return error when nbSim is ",
                     "a character string"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
@@ -544,7 +540,7 @@ test_that(paste0("prepSynthetic() must return error when nbSim is ",
 
 test_that(paste0("prepSynthetic() must return error when listSampleRef is vector of numerics"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     error_message <- paste0("The \'listSampleRef\' must be a vector of ",
@@ -558,7 +554,7 @@ test_that(paste0("prepSynthetic() must return error when listSampleRef is vector
 
 test_that(paste0("prepSynthetic() must return error when studyDF is missing mandatory column"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
@@ -575,7 +571,7 @@ test_that(paste0("prepSynthetic() must return error when studyDF is missing mand
 
 test_that(paste0("prepSynthetic() must return error when prefix is numeric"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",
@@ -592,7 +588,7 @@ test_that(paste0("prepSynthetic() must return error when prefix is numeric"), {
 
 test_that(paste0("prepSynthetic() must return error when verbose is numeric"), {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- file.path(dataDir, "1KG_Test.gds")
 
     studyDF <- data.frame(study.id="Id of the study",

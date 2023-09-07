@@ -962,8 +962,8 @@ test_that("createStudy2GDS1KG() must return error when fileNameGDS is numerical 
 
 test_that("createStudy2GDS1KG() must return error when batch is character string", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+    dataDir <- test_path("fixtures")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -983,7 +983,7 @@ test_that("createStudy2GDS1KG() must return error when batch is character string
 
 test_that("createStudy2GDS1KG() must return error when batch is vector of numerics", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1029,7 +1029,7 @@ test_that("createStudy2GDS1KG() must return error when listSamples is vector of 
 
 test_that("createStudy2GDS1KG() must return error when listProfiles is numeric", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1054,7 +1054,7 @@ test_that("createStudy2GDS1KG() must return error when listProfiles is numeric",
 
 test_that("createStudy2GDS1KG() must return error when studyDF is missing column", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
+    dataDir <- test_path("fixtures")
     fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
@@ -1080,8 +1080,8 @@ test_that("createStudy2GDS1KG() must return error when studyDF is missing column
 
 test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    fileGDS <- file.path(dataDir, "1KG_Test.gds")
+    dataDir <- test_path("fixtures")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                     Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
@@ -1104,8 +1104,8 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
 
 test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric", {
 
-    dataDir <- system.file("extdata/tests", package="RAIDS")
-    gdsFile <- file.path(dataDir, "1KG_Test.gds")
+    dataDir <- test_path("fixtures")
+    gdsFile <- test_path("fixtures", "1KG_Test.gds")
 
     pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
                 Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),

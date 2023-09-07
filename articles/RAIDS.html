@@ -163,7 +163,7 @@ package is required.</p>
 <p>This is an overview of genetic ancestry inference from cancer-derived
 molecular data:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v04.png" alt="An overview of the genetic ancestry inference process." width="120%"><p class="caption">
+<img src="MainSteps_v04.png" alt="An overview of the genetic ancestry inference process." width="130%"><p class="caption">
 An overview of the genetic ancestry inference process.
 </p>
 </div>
@@ -177,40 +177,7 @@ external study</p>
 2.2 can be run together using one wrapper function.</p>
 <p><br><br></p>
 <div class="section level3">
-<h3 id="step-1---format-population-reference-dataset-optional">Step 1 - Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#step-1---format-population-reference-dataset-optional"></a>
-</h3>
-<div class="figure" style="text-align: center">
-<img src="MainSteps_Step1_v04.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
-Step 1 - Formatting the information from the population reference
-dataset (optional)
-</p>
-</div>
-<hr>
-<p>At this step three important reference files are created:</p>
-<ul>
-<li>The population reference GDS File</li>
-<li>The population reference SNV Annotation GDS file</li>
-<li>The population reference SNV Retained VCF file</li>
-</ul>
-<p>The format of those files are described the <a href="Create_Reference_GDS_File.html">Population reference dataset GDS
-files</a> vignette.</p>
-<p><span style="color:darkred;font-weight:bold">The reference files
-associated to the Cancer Research associated paper are available. Note
-that these pre-processed files are for 1000 Genomes (1KG), in hg38. The
-files are available here:</span></p>
-<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
-</span></p>
-<p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
-file is 15GB.</span></p>
-<p><span style="color:darkred;font-weight:bold">The 1KG GDS file is
-mapped on hg38 <span class="citation">(Lowy-Gallego et al.
-2019)</span>.</span></p>
-<p><span style="color:darkred;font-weight:bold">This section can be
-skipped if you choose to use the pre-processed files.</span></p>
-<p><br><br></p>
-</div>
-<div class="section level3">
-<h3 id="step-2---ancestry-inference">Step 2 - Ancestry Inference<a class="anchor" aria-label="anchor" href="#step-2---ancestry-inference"></a>
+<h3 id="main-step---ancestry-inference">Main Step - Ancestry Inference<a class="anchor" aria-label="anchor" href="#main-step---ancestry-inference"></a>
 </h3>
 <p>A wrapper function encapsulates multiple steps of the workflow.</p>
 <div class="figure" style="text-align: center">
@@ -242,9 +209,9 @@ in the study)</li>
 <li>The <strong>Profile PED RDS file</strong> (one file with information
 for all profiles in the study)</li>
 </ul>
-<p>A <em>data.frame</em> containing the general information about the
-study is also required. The <em>data.frame</em> must contain those 3
-columns:</p>
+<p>In addtions, a <em>data.frame</em> containing the general information
+about the study is also required. The <em>data.frame</em> must contain
+those 3 columns:</p>
 <ul>
 <li>
 <em>study.id</em>: The study identifier (example: TCGA-BRCA).</li>
@@ -254,10 +221,23 @@ columns:</p>
 <em>study.platform</em>: The type of sequencing (example:
 RNA-seq).</li>
 </ul>
+<div class="section level5">
+<h5 id="population-reference-files">Population reference files<a class="anchor" aria-label="anchor" href="#population-reference-files"></a>
+</h5>
+<p>For demonstration purpose, a small <strong>population reference GDS
+file</strong> (called <em>ex1kg.gds</em>) and a small <strong>population
+reference SNV Annotation GDS file</strong> (called
+<em>exAnnot1kg.gds</em>) are included in this package. Beware that those
+two files should not be used to run a real ancestry inference.The
+results obtained with those files won’t be reliable.</p>
 <p>The required <strong>population reference GDS file</strong> and
 <strong>population reference SNV Annotation GDS file</strong> should be
 stored in the same directory. In the example below, this directory is
 referred to as <strong>pathReference</strong>.</p>
+</div>
+<div class="section level5">
+<h5 id="population-snp-pileup-file">Population SNP pileup file<a class="anchor" aria-label="anchor" href="#population-snp-pileup-file"></a>
+</h5>
 <p>The generic <strong>Profile SNP pileup file</strong> format is coma
 separated and the mandatory columns are:</p>
 <ul>
@@ -283,6 +263,10 @@ pileup file</strong> should also start at position zero.</p>
 file</strong> has to correspond to the profile identifier (Name.ID) in
 the following analysis. For example, a SNP pileup file called
 “Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+</div>
+<div class="section level5">
+<h5 id="profile-ped-rds-file">Profile PED RDS file<a class="anchor" aria-label="anchor" href="#profile-ped-rds-file"></a>
+</h5>
 <p>The <strong>Profile PED RDS file</strong> must contain a
 <em>data.frame</em> describing all the profiles to be analyzed. These 5
 mandatory columns:</p>
@@ -310,6 +294,14 @@ profiles’ <strong>Name.ID</strong>.</p>
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
 else).</p>
+</div>
+<div class="section level5">
+<h5 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h5>
+<p>This example run an ancestry inference on an exome sample. Both
+population reference files are demonstration files and should not be
+used for a real ancestry inference. Beware that an ancestry inference
+done on real data will take longer to run.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -441,7 +433,7 @@ else).</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
 in the <em>pathOut</em> directory.</p>
@@ -471,6 +463,7 @@ ancestry</li>
 <em>SuperPop</em>: The inferred ancestry</li>
 </ul>
 <p><br><br></p>
+</div>
 </div>
 <div class="section level4">
 <h4 id="rna-data---wrapper-function-to-run-ancestry-inference-on-rna-data">RNA data - Wrapper function to run ancestry inference on RNA
@@ -691,7 +684,7 @@ else).</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runRNAAncestry()</em> function generates 3 types of files in
 the <em>pathOut</em> directory.</p>
@@ -723,16 +716,41 @@ ancestry</li>
 <p><br><br></p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="format-population-reference-dataset-optional">Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#format-population-reference-dataset-optional"></a>
+</h3>
+<div class="figure" style="text-align: center">
+<img src="MainSteps_Step1_v04.png" alt="Step 1 - Formatting the information from the population reference dataset (optional)" width="120%"><p class="caption">
+Step 1 - Formatting the information from the population reference
+dataset (optional)
+</p>
 </div>
-<div class="section level2">
-<h2 id="pre-processed-reference-files-are-available-for-1000-genomes-1kg-in-hg38">Pre-processed reference files are available for 1000 Genomes (1KG)
-in hg38<a class="anchor" aria-label="anchor" href="#pre-processed-reference-files-are-available-for-1000-genomes-1kg-in-hg38"></a>
-</h2>
-<p>Pre-processed files, such as the 1KG GDS file, are available at this
-address:</p>
-<p><a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a></p>
-<p>Beware that some of these files are large.</p>
+<p>A population reference dataset with known ancestry is required to
+infer ancestry. The population must be large enough to ensure ???</p>
+<p>Three important reference files, containing formatted information
+about the reference dataset, are required:</p>
+<ul>
+<li>The population reference GDS File</li>
+<li>The population reference SNV Annotation GDS file</li>
+<li>The population reference SNV Retained VCF file</li>
+</ul>
+<p>The format of those files are described the <a href="Create_Reference_GDS_File.html">Population reference dataset GDS
+files</a> vignette.</p>
+<p><span style="color:darkred;font-weight:bold">The reference files
+associated to the Cancer Research associated paper are available. Note
+that these pre-processed files are for 1000 Genomes (1KG), in hg38. The
+files are available here:</span></p>
+<p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
+</span></p>
+<p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
+file is 15GB.</span></p>
+<p><span style="color:darkred;font-weight:bold">The 1KG GDS file is
+mapped on hg38 <span class="citation">(Lowy-Gallego et al.
+2019)</span>.</span></p>
+<p><span style="color:darkred;font-weight:bold">This section can be
+skipped if you choose to use the pre-processed files.</span></p>
 <p><br><br></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>

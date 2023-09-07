@@ -374,7 +374,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## The RDS file containing the pedigree information
-#' pedigreeFile <- file.path(dataDir, "PedigreeDemo.rds")
+#' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
 #' ## The RDS file containing the indexes of the retained SNPs
 #' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
@@ -504,7 +504,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Open existing demo Reference GDS file
-#' fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' fileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #' tmpGDS <- snpgdsOpen(fileGDS)
 #'
 #' ## Temporary output files
@@ -717,7 +717,7 @@ addRef2GDS1KG <- function(fileNameGDS, filePart) {
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Open existing demo 1K GDS file with "sample.ref" node
-#' nameFileGDS <- file.path(dataDir, "1KG_Demo.gds")
+#' nameFileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #' fileGDS <- snpgdsOpen(nameFileGDS)
 #'
 #' ## Extract super population information for the 1KG profiles

@@ -78,9 +78,9 @@ Beware that only unrelated samples should be present in the GDS files.
 library(RAIDS)    
 library(SNPRelate)
 
-pathReference <- system.file("extdata/example/", package="RAIDS")
+pathRef <- system.file("extdata/", package="RAIDS")
 
-fileReferenceGDS <- file.path(pathReference, "gdsRef", "ex1kg.gds")
+fileReferenceGDS <- file.path(pathRef, "PopulationReferenceDemo.gds")
 
 gdsRef <- snpgdsOpen(fileReferenceGDS)
 

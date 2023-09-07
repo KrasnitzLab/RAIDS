@@ -37,7 +37,8 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG Population Reference GDS demo file (opened)
-gds1KG <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"), readonly=TRUE)
+gds1KG <- openfn.gds(file.path(dataDir,
+                "PopulationReferenceDemo.gds"), readonly=TRUE)
 
 ## The validatiion should be successful
 RAIDS:::validateAdd1KG2SampleGDS(gdsReference=gds1KG,

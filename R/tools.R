@@ -31,7 +31,8 @@
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' ## Demo 1KG Reference GDS file
-#' fileGDS <- openfn.gds(file.path(dataDir, "1KG_Demo.gds"))
+#' fileGDS <- openfn.gds(file.path(dataDir,
+#'                     "PopulationReferenceDemo.gds"))
 #'
 #' ## Output VCF file that will be created (temporary)
 #' vcfFile <- file.path(tempdir(), "Demo_TMP_01.vcf")

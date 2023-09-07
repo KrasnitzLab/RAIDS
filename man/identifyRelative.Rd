@@ -50,7 +50,7 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## Open existing demo Reference GDS file
-fileGDS <- file.path(dataDir, "1KG_Demo.gds")
+fileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 tmpGDS <- snpgdsOpen(fileGDS)
 
 ## Temporary output files

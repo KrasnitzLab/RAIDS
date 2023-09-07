@@ -110,7 +110,7 @@ devtools::install_github('KrasnitzLab/RAIDS')
 This is an overview of genetic ancestry inference from cancer-derived 
 molecular data:
 
-```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='130%', results='asis', warning=FALSE, message=FALSE}
 knitr::include_graphics("MainSteps_v04.png")
 ```
 
@@ -128,48 +128,8 @@ run together using one wrapper function.
 <br>
 <br>
 
-## Step 1 - Format population reference dataset (optional)
 
-
-```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step1_v04.png")
-```
-
-
-******
-
-At this step three important reference files are created:
-
-- The population reference GDS File
-- The population reference SNV Annotation GDS file
-- The population reference SNV Retained VCF file
-
-
-The format of those files are described the [Population reference dataset GDS files](Create_Reference_GDS_File.html) 
-vignette.
-
-<span style="color:darkred;font-weight:bold">The reference files associated to 
-the Cancer Research associated paper are available. Note that these 
-pre-processed files are for 1000 Genomes (1KG), in hg38. The files are 
-available here:</span>
-
-<span style="color:red">
-[https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
-</span>
-
-<span style="color:darkred;font-weight:bold">The size of the 1KG GDS file 
-is 15GB.</span>
-
-<span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on 
-hg38 [@Lowy-Gallego2019a].</span>
-
-<span style="color:darkred;font-weight:bold">This section can be skipped if 
-you choose to use the pre-processed files.</span>
-
-<br>
-<br>
-
-## Step 2 - Ancestry Inference
+## Main Step - Ancestry Inference
 
 A wrapper function encapsulates multiple steps of the workflow. 
 
@@ -195,17 +155,28 @@ The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 - The **Profile SNP pileup file** (one per sample present in the study)
 - The **Profile PED RDS file** (one file with information for all profiles in the study)
 
-A *data.frame* containing the general information about the study is 
-also required. The *data.frame* must contain those 3 columns:
+In addtions, a *data.frame* containing the general information about the 
+study is also required. The *data.frame* must contain those 3 columns:
 
 - _study.id_: The study identifier (example: TCGA-BRCA).
 - _study.desc_: The description of the study.
 - _study.platform_: The type of sequencing (example: RNA-seq).
 
+#### Population reference files
+
+For demonstration purpose, a small 
+**population reference GDS file** (called _ex1kg.gds_) and a small 
+**population reference SNV Annotation GDS file** (called _exAnnot1kg.gds_) are 
+included in this package. Beware that those two files should not be used to 
+run a real ancestry inference.The results obtained with those files won't be 
+reliable.
+
 The required **population reference GDS file** and 
 **population reference SNV Annotation GDS file** should be stored in the same
 directory. In the example below, this directory is referred to 
-as **pathReference**.
+as **pathReference**. 
+
+#### Population SNP pileup file
 
 The generic **Profile SNP pileup file** format is coma separated and the 
 mandatory columns are:
@@ -227,6 +198,8 @@ correspond to the profile identifier (Name.ID) in the following analysis.
 For example, a SNP pileup file called "Sample.01.txt.gz" would be 
 associated to the "Sample.01" profile.
 
+#### Profile PED RDS file
+
 The **Profile PED RDS file** must contain a *data.frame* describing all 
 the profiles to be analyzed. These 5 mandatory columns: 
 
@@ -244,6 +217,14 @@ This file is referred to as the **Profile PED RDS file** (PED for pedigree).
 Alternatively, the PED information can be saved in another type of 
 file (CVS, etc..) as long as the *data.frame* information can be regenerated 
 in R (with _read.csv()_ or else). 
+
+
+#### Example
+
+This example run an ancestry inference on an exome sample. Both population 
+reference files are demonstration files and should not be 
+used for a real ancestry inference. Beware that an ancestry inference done 
+on real data will take longer to run.
 
 ```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=FALSE, warning=FALSE, message=FALSE}
 #############################################################################
@@ -622,13 +603,46 @@ file (**".Ancestry.csv"** file) which also contains those columns:
 <br>
 <br>
 
-# Pre-processed reference files are available for 1000 Genomes (1KG) in hg38
 
-Pre-processed files, such as the 1KG GDS file, are available at this address:
+## Format population reference dataset (optional)
 
+
+```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("MainSteps_Step1_v04.png")
+```
+
+
+A population reference dataset with known ancestry is required to infer 
+ancestry. The population must be large enough to ensure ???
+
+Three important reference files, containing formatted information about 
+the reference dataset, are required:
+
+- The population reference GDS File
+- The population reference SNV Annotation GDS file
+- The population reference SNV Retained VCF file
+
+
+The format of those files are described the [Population reference dataset GDS files](Create_Reference_GDS_File.html) 
+vignette.
+
+<span style="color:darkred;font-weight:bold">The reference files associated to 
+the Cancer Research associated paper are available. Note that these 
+pre-processed files are for 1000 Genomes (1KG), in hg38. The files are 
+available here:</span>
+
+<span style="color:red">
 [https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper](https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper)
+</span>
 
-Beware that some of these files are large.
+<span style="color:darkred;font-weight:bold">The size of the 1KG GDS file 
+is 15GB.</span>
+
+<span style="color:darkred;font-weight:bold">The 1KG GDS file is mapped on 
+hg38 [@Lowy-Gallego2019a].</span>
+
+<span style="color:darkred;font-weight:bold">This section can be skipped if 
+you choose to use the pre-processed files.</span>
 
 <br>
 <br>

@@ -93,7 +93,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-09-07<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.10<br><strong>Compiled date</strong>: 2023-09-08<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -209,7 +209,7 @@ in the study)</li>
 <li>The <strong>Profile PED RDS file</strong> (one file with information
 for all profiles in the study)</li>
 </ul>
-<p>In addtions, a <em>data.frame</em> containing the general information
+<p>In addition, a <em>data.frame</em> containing the general information
 about the study is also required. The <em>data.frame</em> must contain
 those 3 columns:</p>
 <ul>
@@ -221,8 +221,10 @@ those 3 columns:</p>
 <em>study.platform</em>: The type of sequencing (example:
 RNA-seq).</li>
 </ul>
+<p><br></p>
 <div class="section level5">
-<h5 id="population-reference-files">Population reference files<a class="anchor" aria-label="anchor" href="#population-reference-files"></a>
+<h5 id="population-reference-files">
+<strong>Population reference files</strong><a class="anchor" aria-label="anchor" href="#population-reference-files"></a>
 </h5>
 <p>For demonstration purpose, a small <strong>population reference GDS
 file</strong> (called <em>ex1kg.gds</em>) and a small <strong>population
@@ -234,9 +236,11 @@ results obtained with those files won’t be reliable.</p>
 <strong>population reference SNV Annotation GDS file</strong> should be
 stored in the same directory. In the example below, this directory is
 referred to as <strong>pathReference</strong>.</p>
+<p><br></p>
 </div>
 <div class="section level5">
-<h5 id="population-snp-pileup-file">Population SNP pileup file<a class="anchor" aria-label="anchor" href="#population-snp-pileup-file"></a>
+<h5 id="population-snp-pileup-file">
+<strong>Population SNP pileup file</strong><a class="anchor" aria-label="anchor" href="#population-snp-pileup-file"></a>
 </h5>
 <p>The generic <strong>Profile SNP pileup file</strong> format is coma
 separated and the mandatory columns are:</p>
@@ -263,9 +267,11 @@ pileup file</strong> should also start at position zero.</p>
 file</strong> has to correspond to the profile identifier (Name.ID) in
 the following analysis. For example, a SNP pileup file called
 “Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+<p><br></p>
 </div>
 <div class="section level5">
-<h5 id="profile-ped-rds-file">Profile PED RDS file<a class="anchor" aria-label="anchor" href="#profile-ped-rds-file"></a>
+<h5 id="profile-ped-rds-file">
+<strong>Profile PED RDS file</strong><a class="anchor" aria-label="anchor" href="#profile-ped-rds-file"></a>
 </h5>
 <p>The <strong>Profile PED RDS file</strong> must contain a
 <em>data.frame</em> describing all the profiles to be analyzed. These 5
@@ -294,14 +300,16 @@ profiles’ <strong>Name.ID</strong>.</p>
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
 else).</p>
+<p><br></p>
 </div>
 <div class="section level5">
-<h5 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h5 id="example">
+<strong>Example</strong><a class="anchor" aria-label="anchor" href="#example"></a>
 </h5>
 <p>This example run an ancestry inference on an exome sample. Both
 population reference files are demonstration files and should not be
-used for a real ancestry inference. Beware that an ancestry inference
-done on real data will take longer to run.</p>
+used for a real ancestry inference. Beware that running an ancestry
+inference on real data will take longer to run.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -433,7 +441,7 @@ done on real data will take longer to run.</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
 in the <em>pathOut</em> directory.</p>
@@ -495,10 +503,27 @@ columns:</p>
 <em>study.platform</em>: The type of sequencing (example:
 RNA-seq).</li>
 </ul>
+<p><br></p>
+<div class="section level5">
+<h5 id="population-reference-files-1">
+<strong>Population reference files</strong><a class="anchor" aria-label="anchor" href="#population-reference-files-1"></a>
+</h5>
+<p>For demonstration purpose, a small <strong>population reference GDS
+file</strong> (called <em>ex1kg.gds</em>) and a small <strong>population
+reference SNV Annotation GDS file</strong> (called
+<em>exAnnot1kg.gds</em>) are included in this package. Beware that those
+two files should not be used to run a real ancestry inference.The
+results obtained with those files won’t be reliable.</p>
 <p>The required <strong>population reference GDS file</strong> and
 <strong>population reference SNV Annotation GDS file</strong> should be
 stored in the same directory. In the example below, this directory is
 referred to as <strong>pathReference</strong>.</p>
+<p><br></p>
+</div>
+<div class="section level5">
+<h5 id="profile-snp-pileup-file">
+<strong>Profile SNP pileup file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-pileup-file"></a>
+</h5>
 <p>The generic <strong>Profile SNP pileup file</strong> format is coma
 separated and the mandatory columns are:</p>
 <ul>
@@ -524,6 +549,12 @@ pileup file</strong> should also start at position zero.</p>
 file</strong> has to correspond to the profile identifier (Name.ID) in
 the following analysis. For example, a SNP pileup file called
 “Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+<p><br></p>
+</div>
+<div class="section level5">
+<h5 id="profile-ped-rds-file-1">
+<strong>Profile PED RDS file</strong><a class="anchor" aria-label="anchor" href="#profile-ped-rds-file-1"></a>
+</h5>
 <p>The <strong>Profile PED RDS file</strong> must contain a
 <em>data.frame</em> describing all the profiles to be analyzed. These 5
 mandatory columns:</p>
@@ -551,6 +582,16 @@ profiles’ <strong>Name.ID</strong>.</p>
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
 information can be regenerated in R (with <em>read.csv()</em> or
 else).</p>
+<p><br></p>
+</div>
+<div class="section level5">
+<h5 id="example-1">
+<strong>Example</strong><a class="anchor" aria-label="anchor" href="#example-1"></a>
+</h5>
+<p>This example run an ancestry inference on an RNA sample. Both
+population reference files are demonstration files and should not be
+used for a real ancestry inference. Beware that running an ancestry
+inference on real data will take longer to run.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -684,7 +725,7 @@ else).</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runRNAAncestry()</em> function generates 3 types of files in
 the <em>pathOut</em> directory.</p>
@@ -714,6 +755,7 @@ ancestry</li>
 <em>SuperPop</em>: The inferred ancestry</li>
 </ul>
 <p><br><br></p>
+</div>
 </div>
 </div>
 <div class="section level3">

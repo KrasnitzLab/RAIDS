@@ -1007,9 +1007,9 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'                       stringsAsFactors = FALSE)
 #'
 #' ## Population Reference GDS demo file
-#' gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
+#' gdsRef <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #'
-#' gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
+#' gdsAnnotRef <- file.path(dataDir, "PopulationReferenceSNVAnnotationDemo.gds")
 #'
 #' ## Pedigree Study data frame
 #' ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
@@ -1033,7 +1033,7 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfil
 #'     ## Returns OL when all parameters are valid
 #'     RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
 #'         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
-#'         fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
+#'         fileReferenceGDS=gdsRef, fileReferenceAnnotGDS=gdsAnnotRef,
 #'         chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
 #'         genoSource="snp-pileup", verbose=FALSE)
 #'

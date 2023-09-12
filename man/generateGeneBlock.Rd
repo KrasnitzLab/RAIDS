@@ -67,7 +67,7 @@ if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
 
     path1KG <- file.path(dataDir, "example", "gdsRef")
 
-    ## Temporary Profile GDS file for one profile
+    ## Reference GDS file
     fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
 
     ## Open the reference GDS file (demo version)

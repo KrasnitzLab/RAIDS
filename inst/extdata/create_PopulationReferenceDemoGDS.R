@@ -107,12 +107,13 @@ add.gdsn(node=gdsRefNew, name="snp.SAS_AF", val=snvAF, storage="packedreal24",
 ## The rows represent the SNVs is the same order than in 'snp.id' entry
 ## The columns represent the samples is the same order than in 'sample.id' entry
 genotypeInfo <- matrix(data=c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                              0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
-                              1, 1, 2, 0, 0, 0, 1, 1, 0, 0,
-                              1, 1, 2, 0, 0, 0, 1, 1, 0, 0,
-                              0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
-                              1, 1, 2, 0, 1, 1, 1, 1, 0, 0,
-                              1, 1, 1, 0, 1, 1, 1, 1, 0, 0), ncol=10, byrow=TRUE)
+                                0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
+                                1, 1, 2, 0, 0, 0, 1, 1, 0, 0,
+                                1, 1, 2, 0, 0, 0, 1, 1, 0, 0,
+                                0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
+                                1, 1, 2, 0, 1, 1, 1, 1, 0, 0,
+                                1, 1, 1, 0, 1, 1, 1, 1, 0, 0), ncol=10,
+                                byrow=TRUE)
 add.gdsn(node=gdsRefNew, name="genotype", val=genotypeInfo,
          storage="bit2", check=TRUE)
 

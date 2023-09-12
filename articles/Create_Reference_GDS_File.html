@@ -382,7 +382,7 @@ contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmpEkoDqF/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmp2xL2BV/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -453,8 +453,9 @@ format) representing the phase of the SNVs in the <em>Population
 Annotation GDS file</em>; 0 means the first allele is a reference; 1
 means the first allele is the alternative and 3 means unknown. The first
 allele combine with the genotype of the variant determine the phase for
-a biallelic variant. The SNVs in phase are in the same order as in the
-<em>Population Annotation GDS file</em>.</li>
+a biallelic variant. The SNVs (rows) and samples (columns) in phase are
+in the same order as in the <em>Population Annotation GDS
+file</em>.</li>
 <li>
 <strong>block.annot</strong>: a <em>data.frame</em> containing those
 columns:

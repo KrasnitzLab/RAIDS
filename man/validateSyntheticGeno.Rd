@@ -63,25 +63,25 @@ This function validates the input parameters for the
 dataDir <- system.file("extdata", package="RAIDS")
 
 ## The 1KG GDS file (opened)
-gds1KG <- openfn.gds(file.path(dataDir,
+gdsRef <- openfn.gds(file.path(dataDir,
                 "PopulationReferenceDemo.gds"), readonly=TRUE)
 
 ## The 1KG GDS Annotation file (opened)
-gds1KGAnnot <- openfn.gds(file.path(dataDir, "gdsAnnot1KG.gds"),
-                             readonly=TRUE)
+gdsRefAnnot <- openfn.gds(file.path(dataDir,
+    "PopulationReferenceSNVAnnotationDemo.gds"), readonly=TRUE)
 
 ## The GDS Sample file
 gdsSample <- file.path(dataDir, "GDS_Sample_with_study_demo.gds")
 
 ## The validation should be successful
-RAIDS:::validateSyntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,
+RAIDS:::validateSyntheticGeno(gdsReference=gdsRef, gdsRefAnnot=gdsRefAnnot,
      fileProfileGDS=gdsSample, profileID="A101TCGA",
      listSampleRef="A101TCGA", nbSim=1L, prefix="TCGA", pRecomb=0.02,
      minProb=0.999, seqError=0.002)
 
 ## All GDS file must be closed
-closefn.gds(gdsfile=gds1KG)
-closefn.gds(gdsfile=gds1KGAnnot)
+closefn.gds(gdsfile=gdsRef)
+closefn.gds(gdsfile=gdsRefAnnot)
 
 }
 \author{

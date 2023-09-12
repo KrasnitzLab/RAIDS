@@ -92,9 +92,9 @@ study <- data.frame(study.id = "MYDATA",
                       stringsAsFactors = FALSE)
 
 ## Population Reference GDS demo file
-gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
+gdsRef <- file.path(dataDir, "PopulationReferenceDemo.gds")
 
-gdsAnnot1KG <- file.path(dataDir, "gdsAnnot1KG.gds")
+gdsAnnotRef <- file.path(dataDir, "PopulationReferenceSNVAnnotationDemo.gds")
 
 ## Pedigree Study data frame
 ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
@@ -118,7 +118,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
     ## Returns OL when all parameters are valid
     RAIDS:::validateRunExomeOrRNAAncestry(pedStudy=ped, studyDF=study,
         pathProfileGDS=dataDir, pathGeno=dataDir, pathOut=pathOut,
-        fileReferenceGDS=gds1KG, fileReferenceAnnotGDS=gdsAnnot1KG,
+        fileReferenceGDS=gdsRef, fileReferenceAnnotGDS=gdsAnnotRef,
         chrInfo=chrInfo, syntheticRefDF=syntheticRefDF,
         genoSource="snp-pileup", verbose=FALSE)
 

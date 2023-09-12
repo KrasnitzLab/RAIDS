@@ -191,7 +191,7 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #'
 #'     path1KG <- file.path(dataDir, "example", "gdsRef")
 #'
-#'     ## Temporary Profile GDS file for one profile
+#'     ## Reference GDS file
 #'     fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
 #'
 #'     ## Open the reference GDS file (demo version)

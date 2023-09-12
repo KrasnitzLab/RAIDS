@@ -302,7 +302,7 @@ size, compressed or not + compression ratio.
 
 The mandatory fields are:
 
-* **phase**: a *integer* (saved in *Bit2* format) representing the phase of the SNVs in the *Population Annotation GDS file*; 0 means the first allele is a reference; 1 means the first allele is the alternative and 3 means unknown. The first allele combine with the genotype of the variant determine the phase for a biallelic variant. The SNVs in phase are in the same order as in the *Population Annotation GDS file*.
+* **phase**: a *integer* (saved in *Bit2* format) representing the phase of the SNVs in the *Population Annotation GDS file*; 0 means the first allele is a reference; 1 means the first allele is the alternative and 3 means unknown. The first allele combine with the genotype of the variant determine the phase for a biallelic variant. The SNVs (rows) and samples (columns) in phase are in the same order as in the *Population Annotation GDS file*. 
 * **block.annot**: a *data.frame* containing those columns:
     * **block.id**: a *character* string (saved in *Str8* format) representing an identifier of block group. A block can be linkage disequilibrium block relative to a population or a gene.
     * **block.desc**: a *character* string (saved in *Str8* format) describing the block group.

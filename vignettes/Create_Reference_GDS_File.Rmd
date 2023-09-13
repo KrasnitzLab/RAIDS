@@ -311,6 +311,88 @@ The mandatory fields are:
 <br>
 <br>
 
+This following example shows how to create a 
+*Population Reference Annotation GDS file*. 
+This example is for demonstration purpose only. A working 
+*Population Reference Annotation GDS file* would have to contain multiple 
+samples from each continental population and would also have to contain 
+the SNVs from the entire genome.
+
+```{r createRefAnnotGDS, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+#############################################################################
+## Load required packages
+#############################################################################
+library(RAIDS)    
+library(gdsfmt)
+
+## Create a temporary GDS Reference file in the temporary directory
+fileNewReferenceAnnotGDS <- 
+        file.path(tempdir(), "reference_SNV_Annotation_DEMO.gds")
+
+gdsRefAnnotNew <- createfn.gds(fileNewReferenceAnnotGDS)
+
+## The entry 'phase' contain the phase of the SNVs in the
+## Population Annotation GDS file
+## 0 means the first allele is a reference; 1 means the first allele is
+## the alternative and 3 means unknown
+## The SNVs (rows) and samples (columns) in phase are in the same order as
+## in the Population Annotation GDS file.
+phase <- matrix(data=c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                        0, 0, 0, 1, 1, 0, 0, 0, 1, 1,
+                        0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
+                        1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                        0, 1, 0, 1, 1, 0, 1, 1, 1, 1,
+                        0, 1, 0, 1, 1, 0, 1, 1, 1, 1,
+                        0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                       0, 1, 0, 1, 1, 0, 1, 1, 1, 1), ncol=10, byrow=TRUE)
+add.gdsn(node=gdsRefAnnotNew, name="phase", val=phase, storage="bit2", 
+                check=TRUE)
+
+## The entry 'blockAnnot' contain the information for each group of blocks
+## that are present in the 'block' entry.
+blockAnnot <- data.frame(block.id=c("EAS.0.05.500k", "EUR.0.05.500k",
+                    "AFR.0.05.500k", "AMR.0.05.500k", "SAS.0.05.500k"),
+                block.desc=c(
+                    "EAS populationblock base on SNP 0.05 and windows 500k",
+                    "EUR populationblock base on SNP 0.05 and windows 500k",
+                    "AFR populationblock base on SNP 0.05 and windows 500k",
+                    "AMR populationblock base on SNP 0.05 and windows 500k",
+                    "SAS populationblock base on SNP 0.05 and windows 500k"),
+                stringsAsFactors=FALSE)
+add.gdsn(node=gdsRefAnnotNew, name="block.annot", val=blockAnnot, check=TRUE)
+
+## The entry 'block' contain the block information for the SNVs in the
+## Population Annotation GDS file.
+## The SNVs (rows) are in the same order as in 
+## the Population Annotation GDS file.
+## The block groups (columns) are in the same order as in 
+## the 'block.annot' entry.
+block <- matrix(data=c(-1, -1, -1, -1, -1,
+                       -2, -2,  1, -2, -2,
+                       -2,  1,  1,  1, -2,
+                       -2,  1,  1,  1, -2,
+                       -2, -3, -2, -3, -2,
+                        1,  2,  2,  2,  1,
+                        1,  2,  2,  2,  1,
+                       -3, -4, -3, -4, -3,
+                        2, -4,  3, -4, -3,
+                        2, -4,  3, -4, -3), ncol=5, byrow=TRUE)
+add.gdsn(node=gdsRefAnnotNew, name="block", val=block, storage="int32", 
+            check=TRUE)
+
+## Show the file format
+print(gdsRefAnnotNew)
+
+closefn.gds(gdsRefAnnotNew)
+
+unlink(fileNewReferenceAnnotGDS, force=TRUE)
+
+```
+
+<br>
+<br>
 
 # Pre-processed files, from 1000 Genomes in hg38, are available
 

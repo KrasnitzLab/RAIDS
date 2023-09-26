@@ -714,6 +714,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' the super-population information from the 1KG GDS file
 #' for profiles used to generate the synthetic profiles. The \code{data.frame}
 #' must contained a column named as the \code{pedCallAncestryColumn} argument.
+#' The row names must correspond to the sample identifiers (mandatory).
 #'
 #' @param pedCallAncestryColumn a \code{character} string representing the
 #' name of the column that contains the known ancestry for the reference

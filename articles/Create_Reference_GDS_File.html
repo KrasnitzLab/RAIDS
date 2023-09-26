@@ -92,7 +92,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.11<br><strong>Compiled date</strong>: 2023-09-15<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.11<br><strong>Compiled date</strong>: 2023-09-26<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -382,7 +382,7 @@ contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp9TIsA1/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpOSU7Ef/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -550,7 +550,7 @@ would also have to contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnotNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp9TIsA1/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpOSU7Ef/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">10x10, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -607,7 +607,7 @@ which this document was compiled:</p>
 <span><span class="co">##   [1] jsonlite_1.8.7              shape_1.4.6                </span></span>
 <span><span class="co">##   [3] magrittr_2.0.3              jomo_2.7-6                 </span></span>
 <span><span class="co">##   [5] GenomicFeatures_1.52.2      logistf_1.26.0             </span></span>
-<span><span class="co">##   [7] nloptr_2.0.3                rmarkdown_2.24             </span></span>
+<span><span class="co">##   [7] nloptr_2.0.3                rmarkdown_2.25             </span></span>
 <span><span class="co">##   [9] fs_1.6.3                    BiocIO_1.10.0              </span></span>
 <span><span class="co">##  [11] zlibbioc_1.46.0             ragg_1.2.5                 </span></span>
 <span><span class="co">##  [13] vctrs_0.6.3                 memoise_2.0.1              </span></span>
@@ -626,7 +626,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [39] fastmap_1.1.1               GenomeInfoDbData_1.2.10    </span></span>
 <span><span class="co">##  [41] MatrixGenerics_1.12.3       digest_0.6.33              </span></span>
 <span><span class="co">##  [43] GWASTools_1.46.0            AnnotationDbi_1.62.2       </span></span>
-<span><span class="co">##  [45] S4Vectors_0.38.1            rprojroot_2.0.3            </span></span>
+<span><span class="co">##  [45] S4Vectors_0.38.2            rprojroot_2.0.3            </span></span>
 <span><span class="co">##  [47] textshaping_0.3.6           GenomicRanges_1.52.0       </span></span>
 <span><span class="co">##  [49] RSQLite_2.3.1               filelock_1.0.2             </span></span>
 <span><span class="co">##  [51] fansi_1.0.4                 httr_1.4.7                 </span></span>
@@ -644,7 +644,7 @@ which this document was compiled:</p>
 <span><span class="co">##  [75] generics_0.1.3              operator.tools_1.6.3       </span></span>
 <span><span class="co">##  [77] BSgenome_1.68.0             formula.tools_1.7.1        </span></span>
 <span><span class="co">##  [79] class_7.3-22                tidyr_1.3.0                </span></span>
-<span><span class="co">##  [81] ensembldb_2.24.0            hms_1.1.3                  </span></span>
+<span><span class="co">##  [81] ensembldb_2.24.1            hms_1.1.3                  </span></span>
 <span><span class="co">##  [83] data.table_1.14.8           xml2_1.3.5                 </span></span>
 <span><span class="co">##  [85] utf8_1.2.3                  XVector_0.40.0             </span></span>
 <span><span class="co">##  [87] BiocGenerics_0.46.0         GWASExactHW_1.01           </span></span>
@@ -669,7 +669,7 @@ which this document was compiled:</p>
 <span><span class="co">## [125] dbplyr_2.3.3                png_0.1-8                  </span></span>
 <span><span class="co">## [127] XML_3.99-0.14               parallel_4.3.1             </span></span>
 <span><span class="co">## [129] MatrixModels_0.5-2          pkgdown_2.0.7              </span></span>
-<span><span class="co">## [131] blob_1.2.4                  prettyunits_1.1.1          </span></span>
+<span><span class="co">## [131] blob_1.2.4                  prettyunits_1.2.0          </span></span>
 <span><span class="co">## [133] AnnotationFilter_1.24.0     bitops_1.0-7               </span></span>
 <span><span class="co">## [135] lme4_1.1-34                 glmnet_4.1-8               </span></span>
 <span><span class="co">## [137] SeqArray_1.40.1             purrr_1.0.2                </span></span>

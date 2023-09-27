@@ -319,7 +319,8 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <-
+#'         GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     ## Data frame with SNV information for the specified chromosome (chr 1)
 #'     snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
@@ -332,12 +333,13 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'             TRUE, TRUE, TRUE),
 #'         pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
 #'         snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
-#'         keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+#'         keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE,
+#'             TRUE, rep(FALSE, 2)),
 #'         homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
 #'         stringAsFactor=FALSE)
 #'
-#'     ## The function returns a data frame containing the information about the
-#'     ## LOH regions in the specified chromosome
+#'     ## The function returns a data frame containing the information about
+#'     ## the LOH regions in the specified chromosome
 #'     result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
 #'         chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
 #'     head(result)
@@ -402,7 +404,8 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                         homoBlock$nbSNV[i] <- nrow(blcCur)
                         homoBlock$nbPruned[i] <- length(which(snvH$pruned))
                         if (length(which(snvH$normal.geno != 3)) > 0) {
-                            listCount <- snvH$cnt.tot[which(snvH$normal.geno == 1)]
+                            listCount <- snvH$cnt.tot[which(snvH$normal.geno
+                                                                        == 1)]
                             homoBlock$nbNorm[i] <- length(listCount)
                             if(homoBlock$nbNorm[i] > 0){
                                 lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
@@ -413,11 +416,12 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                                                       })))
 
                                 lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                            c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                       1, FUN=function(x){
-                                                           return(dbinom((x[2] + x[2]%%2)/2, x[2], 0.5))
-                                                           #genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
-                                                       })))
+                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                            1, FUN=function(x){
+                                            return(dbinom((x[2] + x[2]%%2)/2,
+                                                          x[2], 0.5))
+                        ## genoN1 *dbinom((x[2] + x[2]%%2)/2, x[2], 0.5) + genoN
+                                            })))
                                 logLHR <- -100
                             }
 
@@ -428,7 +432,8 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                             snvR <- snvH$cnt.ref[which(snvH$pruned)] >
                                 snvH$cnt.alt[which(snvH$pruned)]
 
-                            # Check if it is unlikely the genotype are homo by error
+                            ## Check if it is unlikely the genotype are
+                            ## homo by error
                             lH1 <- -100
                             # Freq of the more likely geno
 
@@ -527,23 +532,23 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                              end=seq_len(nrow(snpPos))[which(z[,2] < 0)])
 
         listBlockAR <- lapply(seq_len(nrow(segImb)),
-                        FUN=function(i, segImb, snpPos, w,
-                            cutOff){
-                                listBlockAR <- list()
-                                j<-1
-                                listSeg <- (segImb$start[i]):(segImb$end[i])
-                                # index hetero segment
-                                listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
-                                # SNP hetero for the segment
-                                snp.hetero <- snpPos[listHetero,]
+                        FUN=function(i, segImb, snpPos, w, cutOff){
+                            listBlockAR <- list()
+                            j<-1
+                            listSeg <- (segImb$start[i]):(segImb$end[i])
+                            # index hetero segment
+                            listHetero  <- listSeg[snpPos[listSeg,"hetero"] == TRUE]
+                            # SNP hetero for the segment
+                            snp.hetero <- snpPos[listHetero,]
 
-                                if(nrow(snp.hetero) >= 2 * w) {
-                                    lapCur <- median(apply(snp.hetero[seq_len(w),
-                                                                      c("cnt.ref", "cnt.alt")], 1, min) /
-                                                         (rowSums(snp.hetero[seq_len(w),c("cnt.ref", "cnt.alt")])))
+                            if(nrow(snp.hetero) >= 2 * w) {
+                                lapCur <- median(apply(snp.hetero[seq_len(w),
+                                            c("cnt.ref", "cnt.alt")], 1, min) /
+                                            (rowSums(snp.hetero[seq_len(w),
+                                            c("cnt.ref", "cnt.alt")])))
 
-                                    start <- 1
-                                    k <- w + 1
+                                start <- 1
+                                k <- w + 1
                                     while(k < nrow(snp.hetero)) {
                                         # We have (k+w-1) <= nrow(snp.hetero)
                                         # Case 1 true because (nrow(snp.hetero) >= 2 * w
@@ -604,20 +609,21 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                                             }
                                         }
                                     }# End while
-                                }else {
+                                } else {
                                     lapCur <- median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
                                                            1, min) / (rowSums(snp.hetero[,c("cnt.ref",
                                                                                             "cnt.alt")])))
 
-                                    listBlockAR[[j]] <- c(segImb$start[i], segImb$end[i], lapCur)
+                                    listBlockAR[[j]] <- c(segImb$start[i],
+                                                            segImb$end[i],
+                                                            lapCur)
 
                                     j <- j + 1
                                 }
                                 listBlockAR <- do.call(rbind, listBlockAR)
                                 return(listBlockAR)
                             },
-                        segImb=segImb, snpPos=snpPos,
-                        w=w, cutOff=cutOff)
+                        segImb=segImb, snpPos=snpPos, w=w, cutOff=cutOff)
     }
 
     # note NULL if length(listBlockAR) == 0
@@ -1000,7 +1006,8 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
     # for each chromosome
     # listBlock <- list()
 
-    listBlock <- lapply(unique(snpPos$snp.chr), FUN = function(x, snpPos, verbose){
+    listBlock <- lapply(unique(snpPos$snp.chr),
+                            FUN=function(x, snpPos, verbose){
             if (verbose) {
                 message("chr ", x)
                 message("Step 1 ", Sys.time())
@@ -1009,7 +1016,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
             blockAF <- tableBlockAF(snpPos=snpPos[listChr,])
             blockAF$aRF[blockAF$lRhomo <= cutOffLOH] <- 0
             blockAF$aRF[blockAF$lR >= cutOffAR] <- blockAF$aFraction[blockAF$lR
-                                                                     >= cutOffAR]
+                                                                >= cutOffAR]
             blockAF$aRF[blockAF$lR < cutOffAR & blockAF$nbHetero > 1] <- 0.5
 
             #listBlock[[x]] <- blockAF
@@ -1126,8 +1133,8 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #'         lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
 #'         stringAsFactor=FALSE)
 #'
-#'     ## The function returns a data frame containing the information about the
-#'     ## LOH regions in the specified chromosome
+#'     ## The function returns a data frame containing the information about
+#'     ## the LOH regions in the specified chromosome
 #'     result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
 #'                 cutOffEmptyBox=-3)
 #'     head(result)

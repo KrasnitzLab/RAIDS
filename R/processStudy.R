@@ -1071,11 +1071,11 @@ computePCARefSample <- function(gdsProfile, currentProfile,
 #' ## demo 1KG reference PCA
 #' data(demoPCASyntheticProfiles)
 #'
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
+#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-#'
-#' ## The known ancestry for the 1KG reference profiles
-#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 #'
 #' ## Open the Profile GDS file
 #' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
@@ -1087,7 +1087,7 @@ computePCARefSample <- function(gdsProfile, currentProfile,
 #' results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
 #'     listEigenvector=demoPCASyntheticProfiles,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
-#'     spRef=refKnownSuperPop)
+#'     spRef=demoKnownSuperPop1KG)
 #'
 #' ## The inferred ancestry for the synthetic profiles for differents values
 #' ## of D and K
@@ -1238,8 +1238,8 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #' ## demo 1KG reference PCA
 #' data(demoPCASyntheticProfiles)
 #'
-#' ## Path to the demo files located in this package
-#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
 #'
 #' ## The PCA with 1 profile projected on the 1KG reference PCA
 #' ## Only one profile is retained
@@ -1247,13 +1247,10 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #' pca$sample.id <- pca$sample.id[1]
 #' pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 #'
-#' ## The known ancestry for the 1KG reference profiles
-#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
-#'
 #' ## Projects profile on 1KG PCA
 #' results <- computeKNNRefSample(listEigenvector=pca,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-#'     spRef=refKnownSuperPop, fieldPopInfAnc="SuperPop",
+#'     spRef=demoKnownSuperPop1KG, fieldPopInfAnc="SuperPop",
 #'     kList=seq(10, 15, 1), pcaList=seq(10, 15, 1))
 #'
 #' ## The assigned ancestry to the profile for different values of K and D
@@ -1421,8 +1418,9 @@ computeKNNRefSample <- function(listEigenvector,
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Path to the demo Profile GDS file is located in this package
-#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
+#'
 #'
 #' # The name of the synthetic study
 #' studyID <- "MYDATA.Synthetic"
@@ -1436,8 +1434,8 @@ computeKNNRefSample <- function(listEigenvector,
 #'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
 #'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
 #'
-#' ## The known ancestry for the 1KG reference profiles
-#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #'
 #' ## Open the Profile GDS file
 #' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
@@ -1445,7 +1443,8 @@ computeKNNRefSample <- function(listEigenvector,
 #' ## Run a PCA analysis and a K-nearest neighbors analysis on a small set
 #' ## of synthetic data
 #' results <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
-#'     sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
+#'     sampleRM=samplesRM, studyIDSyn=studyID, np=1L,
+#'     spRef=demoKnownSuperPop1KG,
 #'     kList=seq(10,15,1), pcaList=seq(10,15,1), eigenCount=15L)
 #'
 #' ## The ancestry inference for the synthetic data using
@@ -1727,6 +1726,9 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' ## Required library
 #' library(gdsfmt)
 #'
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
+#'
 #' ## The Reference GDS file
 #' path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
 #'
@@ -1742,10 +1744,6 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' # The name of the synthetic study
 #' studyID <- "MYDATA.Synthetic"
 #'
-#' ## The known ancestry for the 1KG reference profiles
-#' dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-#' refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
-#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
@@ -1759,7 +1757,7 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #'                             gdsProfile=gdsProfile,
 #'                             listFiles=listFiles,
 #'                             currentProfile=c("ex1"),
-#'                             spRef=refKnownSuperPop,
+#'                             spRef=demoKnownSuperPop1KG,
 #'                             studyIDSyn=studyID, np=1L)
 #'
 #' ## The ancestry called with the optimal D and K values

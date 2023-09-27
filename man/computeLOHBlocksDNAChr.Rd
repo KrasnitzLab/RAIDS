@@ -103,7 +103,8 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <-
+        GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     ## Data frame with SNV information for the specified chromosome (chr 1)
     snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),
@@ -116,12 +117,13 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
             TRUE, TRUE, TRUE),
         pruned=c(TRUE, TRUE, FALSE, TRUE, FALSE, rep(TRUE, 3)),
         snp.index=c(160, 162, 204, 256, 259, 288, 366, 465),
-        keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE, TRUE, rep(FALSE, 2)),
+        keep=rep(TRUE, 8), hetero=c(rep(FALSE, 4), TRUE,
+            TRUE, rep(FALSE, 2)),
         homo=c(rep(TRUE, 4), FALSE, FALSE, TRUE, TRUE),
         stringAsFactor=FALSE)
 
-    ## The function returns a data frame containing the information about the
-    ## LOH regions in the specified chromosome
+    ## The function returns a data frame containing the information about
+    ## the LOH regions in the specified chromosome
     result <- RAIDS:::computeLOHBlocksDNAChr(gdsReference=gds1KG,
         chrInfo=chrInfo, snpPos=snpInfo, chr=1L, genoN=0.0001)
     head(result)

@@ -118,8 +118,9 @@ analysis using a range of K and D values is done.
 ## Required library
 library(gdsfmt)
 
-## Path to the demo Profile GDS file is located in this package
-dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+## Load the known ancestry for the demo 1KG reference profiles
+data(demoKnownSuperPop1KG)
+
 
 # The name of the synthetic study
 studyID <- "MYDATA.Synthetic"
@@ -133,8 +134,8 @@ names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
 
-## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
@@ -142,7 +143,8 @@ gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 ## Run a PCA analysis and a K-nearest neighbors analysis on a small set
 ## of synthetic data
 results <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
-    sampleRM=samplesRM, studyIDSyn=studyID, np=1L, spRef=refKnownSuperPop,
+    sampleRM=samplesRM, studyIDSyn=studyID, np=1L,
+    spRef=demoKnownSuperPop1KG,
     kList=seq(10,15,1), pcaList=seq(10,15,1), eigenCount=15L)
 
 ## The ancestry inference for the synthetic data using

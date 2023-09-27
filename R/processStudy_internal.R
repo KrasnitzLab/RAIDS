@@ -1354,6 +1354,9 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #'
 #' @examples
 #'
+#' ## Loading demo PCA on subset of 1KG reference dataset
+#' data(demoPCA1KG)
+#'
 #' ## Path to the demo GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #' fileProfileGDS <- file.path(dataDir, "ex1.gds")
@@ -1361,11 +1364,9 @@ validateProfileGDSExist <- function(pathProfile, profile) {
 #' ## Open GDS files
 #' gdsProfile <- openfn.gds(fileProfileGDS)
 #'
-#' pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
-#'
 #' ## The function returns 0L when all parameters are valid
 #' RAIDS:::validateComputePCAMultiSynthetic(gdsProfile=gdsProfile,
-#'     listPCA=pca, sampleRef=c("HG00246", "HG00325"),
+#'     listPCA=demoPCA1KG, sampleRef=c("HG00246", "HG00325"),
 #'     studyIDSyn="MyStudy", verbose=FALSE)
 #'
 #' ## Close GDS file (it is important to always close the GDS files)

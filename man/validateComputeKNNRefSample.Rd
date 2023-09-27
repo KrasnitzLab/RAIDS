@@ -51,12 +51,15 @@ When a parameter is not as expected, an error message is generated.
 }
 \examples{
 
+## Load the demo PCA on the synthetic profiles projected on the
+## demo 1KG reference PCA
+data(demoPCASyntheticProfiles)
+
+pcaSynthetic <- demoPCASyntheticProfiles
+pcaSynthetic$sample.id <- pcaSynthetic$sample.id[1]
 
 ## Path to the demo GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-
-pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
-pcaSynthetic$sample.id <- pcaSynthetic$sample.id[1]
 
 ## The known ancestry for the 1KG reference profiles
 refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))

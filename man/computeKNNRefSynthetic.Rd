@@ -93,14 +93,12 @@ subset of the synthetic data set. The function uses the 'knn' package.
 ## Required library
 library(gdsfmt)
 
+## Load the demo PCA on the synthetic profiles projected on the
+## demo 1KG reference PCA
+data(demoPCASyntheticProfiles)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-
-# The name of the synthetic study
-studyID <- "MYDATA.Synthetic"
-
-## The PCA on the synthetic profiles projected on the 1KG reference PCA
-pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
 
 ## The known ancestry for the 1KG reference profiles
 refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
@@ -108,8 +106,12 @@ refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 
+# The name of the synthetic study
+studyID <- "MYDATA.Synthetic"
+
 ## Projects synthetic profiles on 1KG PCA
-results <- computeKNNRefSynthetic(gdsProfile=gdsProfile, listEigenvector=pca,
+results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
+    listEigenvector=demoPCASyntheticProfiles,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
     spRef=refKnownSuperPop)
 

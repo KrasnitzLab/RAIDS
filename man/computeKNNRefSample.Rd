@@ -74,12 +74,16 @@ one specific profile. The function uses the 'knn' package.
 }
 \examples{
 
+## Load the demo PCA on the synthetic profiles projected on the
+## demo 1KG reference PCA
+data(demoPCASyntheticProfiles)
+
 ## Path to the demo files located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 
 ## The PCA with 1 profile projected on the 1KG reference PCA
 ## Only one profile is retained
-pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+pca <- demoPCASyntheticProfiles
 pca$sample.id <- pca$sample.id[1]
 pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
 

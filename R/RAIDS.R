@@ -427,47 +427,53 @@ NULL
 NULL
 
 
-#' The PCA result of one demo synthetic profile projected on the demo subset
+#' The PCA result of demo synthetic profiles projected on the demo subset
 #' 1KG reference PCA.
 #'
 #' The object is a \code{list}.
 #'
 #' This object can be
-#' used to test the \code{\link{computePCAMultiSynthetic}} function.
+#' used to test the \code{\link{computeKNNRefSynthetic}} function.
 #'
-#' @name demoPCA1KG
+#' @name demoPCASyntheticProfiles
 #'
 #' @docType data
 #'
-#' @aliases demoPCA1KG
+#' @aliases demoPCASyntheticProfiles
 #'
-#' @format The \code{list} containing the PCA result of one demo synthetic
-#' profile projected on the demo subset 1KG reference PCA.
+#' @format The \code{list} containing the PCA result of demo synthetic
+#' profiles projected on the demo subset 1KG reference PCA.
 #' The \code{list} contains 3 entries:
 #' \itemize{
 #' \item{sample.id}{ a \code{character} string representing the unique
-#' identifier of the synthetic profile.}
+#' identifier of the synthetic profiles.}
 #' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
 #' the eigenvectors for the reference profiles.}
 #' \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
-#' eigenvectors for the current synthetic  profile projected on the demo
+#' eigenvectors for the current synthetic profiles projected on the demo
 #' PCA 1KG reference profiles.}
 #' }
 #'
-#' @return The \code{list} containing the PCA result of one demo synthetic
-#' profile projected on the demo subset 1KG reference PCA.
+#' @return The \code{list} containing the PCA result of demo synthetic
+#' profiles projected on the demo subset 1KG reference PCA.
 #' The \code{list} contains 3 entries:
 #' \itemize{
 #' \item{sample.id}{ a \code{character} string representing the unique
-#' identifier of the synthetic profile.}
+#' identifier of the synthetic profiles.}
 #' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
 #' the eigenvectors for the reference profiles.}
 #' \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
-#' eigenvectors for the current synthetic  profile projected on the demo
+#' eigenvectors for the current synthetic profiles projected on the demo
 #' PCA 1KG reference profiles.}
 #' }
 #'
-#' @usage data(demoPCA1KG)
+#' @seealso
+#' \itemize{
+#'     \item \code{\link{computeKNNRefSynthetic}} {for running a k-nearest
+#'     neighbors analysis on a subset of the synthetic data set.}
+#' }
+#'
+#' @usage data(demoPCASyntheticProfiles)
 #'
 #' @keywords datasets
 #'
@@ -476,34 +482,31 @@ NULL
 #' ## Required library
 #' library(gdsfmt)
 #'
-#' ## Loading demo PCA on subset of 1KG reference dataset
-#' data(demoPCA1KG)
+#' ## Load the demo PCA on the synthetic profiles projected on the
+#' ## demo 1KG reference PCA
+#' data(demoPCASyntheticProfiles)
 #'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #'
-#' # The name of the synthetic study
-#' studyID <- "MYDATA.Synthetic"
-#'
-#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
-#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
-#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
-#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
-#'     "NA19731", "NA20528", "NA20908")
-#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
-#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
-#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+#' ## The known ancestry for the 1KG reference profiles
+#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 #'
 #' ## Open the Profile GDS file
 #' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 #'
-#' ## Projects synthetic profiles on demo 1KG PCA
-#' results <- computePCAMultiSynthetic(gdsProfile=gdsProfile,
-#'     listPCA=demoPCA1KG, sampleRef=samplesRM, studyIDSyn=studyID,
-#'     verbose=FALSE)
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
 #'
-#' ## The eigenvectors for the synthetic profile
-#' head(results$eigenvector)
+#' ## Projects synthetic profiles on 1KG PCA
+#' results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
+#'     listEigenvector=demoPCASyntheticProfiles,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
+#'     spRef=refKnownSuperPop)
+#'
+#' ## The inferred ancestry for the synthetic profiles for differents values
+#' ## of D and K
+#' head(results$matKNN)
 #'
 #' ## Close Profile GDS file (important)
 #' closefn.gds(gdsProfile)

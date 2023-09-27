@@ -320,3 +320,118 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 
     return(matSample)
 }
+
+#' @title Read a VCF file with the genotypes use for the ancestry call
+#'
+#' @description The function reads VCF file and
+#' returns a data frame
+#' containing the information about the read counts for the SNVs present in
+#' the file.
+#'
+#' @param fileName a \code{character} string representing the name, including
+#' the path, of a VCF file containing the SNV read counts.
+#' The VCF must contain those genotype fields: GT, AD, DP.
+#'
+#' @param offset a \code{integer} representing the offset to be added to the
+#' position of the SNVs. The value of offset
+#' is added to the position present in the file. Default: \code{0L}.
+#'
+#' @return a \code{data.frame} containing at least:
+#' \itemize{
+#' \item{Chromosome}{ a \code{numeric} representing the name of
+#' the chromosome}
+#' \item{Position}{ a \code{numeric} representing the position on the
+#' chromosome}
+#' \item{Ref}{ a \code{character} string representing the reference nucleotide}
+#' \item{Alt}{ a \code{character} string representing the alternative
+#' nucleotide}
+#' \item{File1R} { a \code{numeric} representing the count for
+#' the reference nucleotide}
+#' \item{File1A} { a \code{numeric} representing the count for the
+#' alternative nucleotide}
+#' \item{count} { a \code{numeric} representing the total count}
+#' }
+#'
+#' @examples
+#'
+#'
+#' ## Directory where demo SNP-pileup file
+#' dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
+#'
+#' ## The SNP-pileup file
+#' snpPileupFile <- file.path(dataDir, "ex1.vcf.gz")
+#'
+#' info <- RAIDS:::readSNVVCF(fileName=snpPileupFile)
+#' head(info)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom VariantAnnotation readVcf geno
+#' @importFrom MatrixGenerics rowRanges
+#' @importFrom GenomicRanges seqnames start width
+#' @encoding UTF-8
+#' @keywords internal
+readSNVVCF <- function(fileName, genome = "hg38",
+            profileName = NULL, offset = 0L) {
+
+    vcf <- readVcf(fileName, genome)
+
+    gtCur <- geno(vcf)
+    genoPos <- 1
+    if(! is.null(profileName)){
+        listVcfSample <- colnames(gtCur$GT)
+        genoPos <- which(listVcfSample == profileName)
+    }
+
+    colChr <- as.character(seqnames(vcf))
+
+    infoPos <- rowRanges(vcf)
+    start <- start(infoPos)
+    widthRef <- width(infoPos$REF)
+    refCur <- as.character(infoPos$REF)
+    listKeep <- seq_len(length(refCur))
+    listKeep <- listKeep[which(widthRef == 1)]
+
+    countV <- as.integer(gtCur$DP)
+    countA <- gtCur$AD
+
+    # Ok
+
+    idVCF <- row.names(gtCur$GT)
+    tmp <- matrix(unlist(strsplit(idVCF, ":")),nrow=2)[2,]
+    alleleChar <- matrix(unlist(strsplit(tmp, "_")),nrow=2)[2,]
+    rm(tmp)
+
+
+
+    matCur <- lapply(listKeep, FUN=function(x, countA, alleleChar){
+
+            listAlt <- strsplit(alleleChar[x], "\\/")[[1]]
+
+            keep <- ifelse(listAlt[2] %in% c("A", "C", "G", "T"),TRUE,FALSE)
+
+            res <- data.frame( Alt = as.character(listAlt[2]),
+                        File1R = countA[[x]][1],
+                        File1A = countA[[x]][2],
+                        keep = keep)
+
+            return(res)
+        },
+        countA=countA,
+        alleleChar=alleleChar)
+
+    matCur <- do.call(rbind, matCur)
+    listTmp <- which(matCur$keep)
+    listKeep <- listKeep[listTmp]
+    matSample <- data.frame(Chromosome = as.integer(gsub("chr", "",
+                                                colChr))[listKeep],
+                            Position = start[listKeep] + offset,
+                            Ref = refCur[listKeep],
+                            Alt = matCur$Alt[listTmp],
+                            File1R = matCur$File1R[listTmp],
+                            File1A = matCur$File1A[listTmp],
+                            count = gtCur$DP[,1],
+                            stringsAsFactors = FALSE
+    )
+
+    return(matSample)
+}

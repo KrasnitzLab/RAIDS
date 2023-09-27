@@ -23,7 +23,7 @@ alterations, such as those caused by cancer.
 
 [Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),
 [Astrid Desch&ecirc;nes](https://www.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes"),
-David A. Tuveson and
+[David A. Tuveson](https://tuvesonlab.labsites.cshl.edu/) and
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
 
 

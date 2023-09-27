@@ -239,3 +239,111 @@ NULL
 #'
 NULL
 
+
+#' A small \code{data.frame} containing the
+#' SNV information.
+#'
+#' The object is a \code{data.frame} with 17 columns.
+#'
+#' This dataset can be
+#' used to test the \code{\link{calcAFMLRNA}} and \code{\link{tableBlockAF}}
+#' internal functions.
+#'
+#' @name snpPositionDemo
+#'
+#' @docType data
+#'
+#' @aliases snpPositionDemo
+#'
+#' @format The \code{data.frame} containing the information about the
+#' synthetic profiles. The \code{data.frame} contains 4 columns:
+#' \itemize{
+#' \item \code{cnt.tot} {a \code{integer} representing the number of reads at
+#' the SNV position.}
+#' \item \code{cnt.ref} {a \code{integer} representing the number of reads
+#' corresponding to the reference at the SNV position.}
+#' \item \code{cnt.alt} {a \code{integer} representing the number of reads
+#' different than the reference at the SNV position.}
+#' \item \code{snp.pos} {a \code{integer} representing the position of the
+#' SNV on the chromosome.}
+#' \item \code{snp.chr} {a \code{integer} representing the chromosome on which
+#' the SNV is located.}
+#' \item \code{normal.geno} {a \code{integer} representing the genotype
+#' (0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown).}
+#' \item \code{pruned} {a \code{logical} indicated if the SNV is pruned.}
+#' \item \code{snp.index} {a \code{integer} representing the index of the
+#' SNV in the reference SNV GDS file.}
+#' \item \code{keep} {a \code{logical} indicated if the genotype
+#' exists for the SNV.}
+#' \item \code{hetero} {a \code{logical} indicated if the SNV is heterozygote.}
+#' \item \code{homo} {a \code{logical} indicated if the SNV is homozygote.}
+#' \item \code{block.id} {a \code{integer} representing the block identifier
+#' associated to the current SNV.}
+#' \item \code{phase} {a \code{integer} representing the block identifier
+#' associated to the current SNV.}
+#' \item \code{lap} {a \code{numeric} representing the lower allelic fraction.}
+#' \item \code{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' (0=not LOH, 1=in LOH).}
+#' \item \code{imbAR} {a \code{integer} indicating if the SNV is in an
+#' imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH;
+#' 1=tested positive for imbalance in at least 1 window).}
+#' \item \code{freq} {a \code{numeric} representing the frequency of the
+#' variant in the the reference.}
+#' }
+#'
+#' @return The \code{data.frame} containing the information about the
+#' synthetic profiles. The \code{data.frame} contains 4 columns:
+#' \itemize{
+#' \item \code{cnt.tot} {a \code{integer} representing the number of reads at
+#' the SNV position.}
+#' \item \code{cnt.ref} {a \code{integer} representing the number of reads
+#' corresponding to the reference at the SNV position.}
+#' \item \code{cnt.alt} {a \code{integer} representing the number of reads
+#' different than the reference at the SNV position.}
+#' \item \code{snp.pos} {a \code{integer} representing the position of the
+#' SNV on the chromosome.}
+#' \item \code{snp.chr} {a \code{integer} representing the chromosome on which
+#' the SNV is located.}
+#' \item \code{normal.geno} {a \code{integer} representing the genotype
+#' (0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown).}
+#' \item \code{pruned} {a \code{logical} indicated if the SNV is pruned.}
+#' \item \code{snp.index} {a \code{integer} representing the index of the
+#' SNV in the reference SNV GDS file.}
+#' \item \code{keep} {a \code{logical} indicated if the genotype
+#' exists for the SNV.}
+#' \item \code{hetero} {a \code{logical} indicated if the SNV is heterozygote.}
+#' \item \code{homo} {a \code{logical} indicated if the SNV is homozygote.}
+#' \item \code{block.id} {a \code{integer} representing the block identifier
+#' associated to the current SNV.}
+#' \item \code{phase} {a \code{integer} representing the block identifier
+#' associated to the current SNV.}
+#' \item \code{lap} {a \code{numeric} representing the lower allelic fraction.}
+#' \item \code{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' (0=not LOH, 1=in LOH).}
+#' \item \code{imbAR} {a \code{integer} indicating if the SNV is in an
+#' imbalanced region (-1=not classified as imbalanced or LOH, 0=in LOH;
+#' 1=tested positive for imbalance in at least 1 window).}
+#' \item \code{freq} {a \code{numeric} representing the frequency of the
+#' variant in the the reference.}
+#' }
+#'
+#' @usage data(snpPositionDemo)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Loading demo dataset containing SNV information
+#' data(snpPositionDemo)
+#'
+#' ## Only use a subset of heterozygote SNVs related to one block
+#' subset <- snpPositionDemo[which(snpPositionDemo$block.id == 2750 &
+#'                   snpPositionDemo$hetero), c("cnt.ref", "cnt.alt", "phase")]
+#'
+#' ## Compute the log likelihood ratio based on the coverage of
+#' ## each allele in a specific block
+#' result <- RAIDS:::calcAFMLRNA(subset)
+#' head(result)
+#'
+#'
+NULL

@@ -2449,16 +2449,14 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
         study.desc=paste0(studyDF$study.id, " synthetic data"),
         study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
-
     apply(pedStudy[,"Name.ID", drop=FALSE],1,FUN=function(x,gdsReference,
                         gdsRefAnnot, studyDF,pathProfileGDS,
                         pathOut, chrInfo, syntheticRefDF, studyDFSyn,
                         listProfileRef, studyType, verbose) {
         runProfileAncestry(gdsReference, gdsRefAnnot, studyDF,
-                       currentProfile=x, pathProfileGDS, pathOut, chrInfo,
-                       syntheticRefDF, studyDFSyn, listProfileRef,
-                       studyType, np=np, blockTypeID=blockTypeID,
-                       verbose)
+            currentProfile=x, pathProfileGDS, pathOut, chrInfo,
+            syntheticRefDF, studyDFSyn, listProfileRef,
+            studyType, np=np, blockTypeID=blockTypeID, verbose=verbose)
         return(NULL)
     }, gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
         studyDF=studyDF, pathProfileGDS=pathProfileGDS, pathOut=pathOut,

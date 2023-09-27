@@ -74,22 +74,23 @@ one specific profile. The function uses the 'knn' package.
 }
 \examples{
 
-## Path to the demo files located in this package
-dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+## Load the demo PCA on the synthetic profiles projected on the
+## demo 1KG reference PCA
+data(demoPCASyntheticProfiles)
+
+## Load the known ancestry for the demo 1KG reference profiles
+data(demoKnownSuperPop1KG)
 
 ## The PCA with 1 profile projected on the 1KG reference PCA
 ## Only one profile is retained
-pca <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
+pca <- demoPCASyntheticProfiles
 pca$sample.id <- pca$sample.id[1]
 pca$eigenvector <- pca$eigenvector[1, , drop=FALSE]
-
-## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 
 ## Projects profile on 1KG PCA
 results <- computeKNNRefSample(listEigenvector=pca,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-    spRef=refKnownSuperPop, fieldPopInfAnc="SuperPop",
+    spRef=demoKnownSuperPop1KG, fieldPopInfAnc="SuperPop",
     kList=seq(10, 15, 1), pcaList=seq(10, 15, 1))
 
 ## The assigned ancestry to the profile for different values of K and D

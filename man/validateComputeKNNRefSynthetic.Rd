@@ -60,24 +60,25 @@ When a parameter is not as expected, an error message is generated.
 }
 \examples{
 
+## Load the demo PCA on the synthetic profiles projected on the
+## demo 1KG reference PCA
+data(demoPCASyntheticProfiles)
+
+## Load the known ancestry for the demo 1KG reference profiles
+data(demoKnownSuperPop1KG)
 
 ## Path to the demo GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 fileProfileGDS <- file.path(dataDir, "ex1.gds")
-
-pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
-
-## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 
 ## Open GDS files
 gdsProfile <- openfn.gds(fileProfileGDS)
 
 ## The function returns 0L when all parameters are valid
 RAIDS:::validateComputeKNNRefSynthetic(gdsProfile=gdsProfile,
-    listEigenvector=pcaSynthetic,
+    listEigenvector=demoPCASyntheticProfiles,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-    studyIDSyn="MyStudy", spRef=refKnownSuperPop,
+    studyIDSyn="MyStudy", spRef=demoKnownSuperPop1KG,
     fieldPopInfAnc="Superpop", kList=c(10, 11, 12),
     pcaList=c(13, 14, 15))
 

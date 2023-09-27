@@ -63,7 +63,8 @@ the Profile GDS file "study.annot" node. Both the "Source" and the
 "Sample.Type" entries are always set to 'Synthetic'.
 
 The synthetic profiles are assigned unique names by combining:
-\code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation number(1 to nbSim)}
+\code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation
+number(1 to nbSim)}
 }
 \examples{
 

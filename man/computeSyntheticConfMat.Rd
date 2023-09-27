@@ -54,22 +54,24 @@ on the synthetic profiles.
 }
 \examples{
 
-dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+## Loading demo dataset containing pedigree information for synthetic
+## profiles and known ancestry of the profiles used to generate the
+## synthetic profiles
+data(pedSynthetic)
+
+## Loading demo dataset containing the inferred ancestry results
+## for the synthetic data
+data(matKNNSynthetic)
 
 ## The inferred ancestry results for the synthetic data using
 ## values of D=6 and K=5
-matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
-matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
-
-## The known ancestry from the reference profiles used to generate the
-## synthetic profiles
-syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+matKNN <- matKNNSynthetic[matKNNSynthetic$K == 6 & matKNNSynthetic$D == 5, ]
 
 ## Compile the confusion matrix using the
 ## synthetic profiles for fixed values of  D and K values
 results <- RAIDS:::computeSyntheticConfMat(matKNN=matKNN,
     matKNNAncestryColumn="SuperPop",
-    pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+    pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
 
 results$confMat

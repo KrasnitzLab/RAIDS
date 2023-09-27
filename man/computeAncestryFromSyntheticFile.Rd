@@ -233,6 +233,9 @@ ancestry is inferred for the specific profile.
 ## Required library
 library(gdsfmt)
 
+## Load the known ancestry for the demo 1KG reference profiles
+data(demoKnownSuperPop1KG)
+
 ## The Reference GDS file
 path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
 
@@ -248,10 +251,6 @@ listFiles <- file.path(file.path(dataDirRes) , listFilesName)
 # The name of the synthetic study
 studyID <- "MYDATA.Synthetic"
 
-## The known ancestry for the 1KG reference profiles
-dataDir1KG <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-refKnownSuperPop <- readRDS(file.path(dataDir1KG, "knownSuperPop1KG.RDS"))
-
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 
@@ -265,7 +264,7 @@ resCall <- computeAncestryFromSyntheticFile(gdsReference=gdsRef,
                             gdsProfile=gdsProfile,
                             listFiles=listFiles,
                             currentProfile=c("ex1"),
-                            spRef=refKnownSuperPop,
+                            spRef=demoKnownSuperPop1KG,
                             studyIDSyn=studyID, np=1L)
 
 ## The ancestry called with the optimal D and K values

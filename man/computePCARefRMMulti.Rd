@@ -70,8 +70,8 @@ for a list of pruned SNVs present in a Profile GDS file. The
 ## Required library
 library(SNPRelate)
 
-## Path to the demo Profile GDS file is located in this package
-dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+## Load the known ancestry for the demo 1KG reference profiles
+data(demoKnownSuperPop1KG)
 
 # The name of the synthetic study
 studyID <- "MYDATA.Synthetic"
@@ -84,8 +84,8 @@ samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
     "NA19731", "NA20528", "NA20908")
 
-## The known ancestry for the 1KG reference profiles
-refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
+## Path to the demo Profile GDS file is located in this package
+dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
@@ -93,7 +93,7 @@ gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 ## Compute PCA for the 1KG reference profiles excluding
 ## the profiles used to generate the synthetic profiles
 results <- RAIDS:::computePCARefRMMulti(gdsProfile=gdsProfile,
-    refProfileIDs=names(refKnownSuperPop), listRM=samplesRM, np=1L,
+    refProfileIDs=names(demoKnownSuperPop1KG), listRM=samplesRM, np=1L,
     algorithm="exact", eigenCount=32L, missingRate=0.025, verbose=FALSE)
 
 ## The PCA on the pruned SNVs data set for selected profiles

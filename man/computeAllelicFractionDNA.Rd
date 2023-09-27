@@ -81,7 +81,7 @@ SNV in the Reference GDS file that contains all SNVs}
 \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-\item{lap} {a \code{numeric} indicating lower allelic fraction}
+\item{lap} {a \code{numeric} representing the lower allelic fraction}
 \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
 (0=not LOH, 1=in LOH)}
 \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced

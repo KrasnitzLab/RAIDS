@@ -46,13 +46,15 @@ haplotype are grouped together.
 }
 \examples{
 
-dataDir <- system.file("extdata", package="RAIDS")
+## Loading demo dataset containing SNV information
+data(snpPositionDemo)
 
-snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+## Only use a subset of heterozygote SNVs related to one block
+subset <- snpPositionDemo[which(snpPositionDemo$block.id == 2750 &
+                  snpPositionDemo$hetero), c("cnt.ref", "cnt.alt", "phase")]
 
-result <- RAIDS:::calcAFMLRNA(snpPos[which(snpPos$block.id == 2750 &
-                    snpPos$hetero),
-                        c("cnt.ref", "cnt.alt", "phase")])
+result <- RAIDS:::calcAFMLRNA(subset)
+
 head(result)
 
 }

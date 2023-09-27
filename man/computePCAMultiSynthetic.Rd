@@ -58,6 +58,9 @@ been removed from the set of reference profiles.
 ## Required library
 library(gdsfmt)
 
+## Loading demo PCA on subset of 1KG reference dataset
+data(demoPCA1KG)
+
 ## Path to the demo Profile GDS file is located in this package
 dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 
@@ -73,14 +76,12 @@ names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
 
-## The PCA on the 1KG reference profiles
-pca <- readRDS(file.path(dataDir, "pca1KG.RDS"))
-
 ## Open the Profile GDS file
 gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
 
 ## Projects synthetic profiles on 1KG PCA
-results <- computePCAMultiSynthetic(gdsProfile=gdsProfile, listPCA=pca,
+results <- computePCAMultiSynthetic(gdsProfile=gdsProfile,
+    listPCA=demoPCA1KG,
     sampleRef=samplesRM, studyIDSyn=studyID, verbose=FALSE)
 
 ## The eigenvectors for the synthetic profiles

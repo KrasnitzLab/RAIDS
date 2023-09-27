@@ -93,8 +93,8 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
         lap=rep(-1, 8), LOH=rep(0, 8), imbAR=rep(-1, 8),
         stringAsFactor=FALSE)
 
-    ## The function returns a data frame containing the information about the
-    ## LOH regions in the specified chromosome
+    ## The function returns a data frame containing the information about
+    ## the LOH regions in the specified chromosome
     result <- RAIDS:::computeAllelicImbDNAChr(snpPos=snpInfo, chr=1, wAR=10,
                 cutOffEmptyBox=-3)
     head(result)

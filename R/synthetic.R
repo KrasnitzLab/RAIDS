@@ -181,7 +181,8 @@ splitSelectByPop <- function(dataRef) {
 #' "Sample.Type" entries are always set to 'Synthetic'.
 #'
 #' The synthetic profiles are assigned unique names by combining:
-#' \code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation number(1 to nbSim)}
+#' \code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation
+#' number(1 to nbSim)}
 #'
 #' @param fileProfileGDS a \code{character} string representing the file name
 #' of the Profile GDS file containing the information about the reference
@@ -714,6 +715,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' the super-population information from the 1KG GDS file
 #' for profiles used to generate the synthetic profiles. The \code{data.frame}
 #' must contained a column named as the \code{pedCallAncestryColumn} argument.
+#' The row names must correspond to the sample identifiers (mandatory).
 #'
 #' @param pedCallAncestryColumn a \code{character} string representing the
 #' name of the column that contains the known ancestry for the reference
@@ -736,22 +738,24 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #'
 #' @examples
 #'
-#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#' ## Loading demo dataset containing pedigree information for synthetic
+#' ## profiles and known ancestry of the profiles used to generate the
+#' ## synthetic profiles
+#' data(pedSynthetic)
+#'
+#' ## Loading demo dataset containing the inferred ancestry results
+#' ## for the synthetic data
+#' data(matKNNSynthetic)
 #'
 #' ## The inferred ancestry results for the synthetic data using
 #' ## values of D=6 and K=5
-#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
-#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
-#'
-#' ## The known ancestry from the reference profiles used to generate the
-#' ## synthetic profiles
-#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#' matKNN <- matKNNSynthetic[matKNNSynthetic$K == 6 & matKNNSynthetic$D == 5, ]
 #'
 #' ## Compile statistics from the
 #' ## synthetic profiles for fixed values of D and K
 #' results <- RAIDS:::computeSyntheticROC(matKNN=matKNN,
 #'     matKNNAncestryColumn="SuperPop",
-#'     pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+#'     pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
 #'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
 #'
 #' results$matAUROC.All

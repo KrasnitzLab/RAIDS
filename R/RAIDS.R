@@ -349,8 +349,6 @@ NULL
 NULL
 
 
-
-
 #' The PCA results of the demo 1KG reference dataset for demonstration purpose.
 #' Beware that the PCA has been run on a very small subset of the
 #' 1KG reference dataset
@@ -391,7 +389,6 @@ NULL
 #'
 #' @examples
 #'
-#'
 #' ## Required library
 #' library(gdsfmt)
 #'
@@ -422,6 +419,90 @@ NULL
 #'     verbose=FALSE)
 #'
 #' ## The eigenvectors for the synthetic profiles
+#' head(results$eigenvector)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
+#'
+NULL
+
+
+#' The PCA result of one demo synthetic profile projected on the demo subset
+#' 1KG reference PCA.
+#'
+#' The object is a \code{list}.
+#'
+#' This object can be
+#' used to test the \code{\link{computePCAMultiSynthetic}} function.
+#'
+#' @name demoPCA1KG
+#'
+#' @docType data
+#'
+#' @aliases demoPCA1KG
+#'
+#' @format The \code{list} containing the PCA result of one demo synthetic
+#' profile projected on the demo subset 1KG reference PCA.
+#' The \code{list} contains 3 entries:
+#' \itemize{
+#' \item{sample.id}{ a \code{character} string representing the unique
+#' identifier of the synthetic profile.}
+#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
+#' the eigenvectors for the reference profiles.}
+#' \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
+#' eigenvectors for the current synthetic  profile projected on the demo
+#' PCA 1KG reference profiles.}
+#' }
+#'
+#' @return The \code{list} containing the PCA result of one demo synthetic
+#' profile projected on the demo subset 1KG reference PCA.
+#' The \code{list} contains 3 entries:
+#' \itemize{
+#' \item{sample.id}{ a \code{character} string representing the unique
+#' identifier of the synthetic profile.}
+#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
+#' the eigenvectors for the reference profiles.}
+#' \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
+#' eigenvectors for the current synthetic  profile projected on the demo
+#' PCA 1KG reference profiles.}
+#' }
+#'
+#' @usage data(demoPCA1KG)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Loading demo PCA on subset of 1KG reference dataset
+#' data(demoPCA1KG)
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' samplesRM <- c("HG00246", "HG00325", "HG00611", "HG01173", "HG02165",
+#'     "HG01112", "HG01615", "HG01968", "HG02658", "HG01850", "HG02013",
+#'     "HG02465", "HG02974", "HG03814", "HG03445", "HG03689", "HG03789",
+#'     "NA12751", "NA19107", "NA18548", "NA19075", "NA19475", "NA19712",
+#'     "NA19731", "NA20528", "NA20908")
+#' names(samplesRM) <- c("GBR", "FIN", "CHS","PUR", "CDX", "CLM", "IBS",
+#'     "PEL", "PJL", "KHV", "ACB", "GWD", "ESN", "BEB", "MSL", "STU", "ITU",
+#'     "CEU", "YRI", "CHB", "JPT", "LWK", "ASW", "MXL", "TSI", "GIH")
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' ## Projects synthetic profiles on demo 1KG PCA
+#' results <- computePCAMultiSynthetic(gdsProfile=gdsProfile,
+#'     listPCA=demoPCA1KG, sampleRef=samplesRM, studyIDSyn=studyID,
+#'     verbose=FALSE)
+#'
+#' ## The eigenvectors for the synthetic profile
 #' head(results$eigenvector)
 #'
 #' ## Close Profile GDS file (important)

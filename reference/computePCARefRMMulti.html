@@ -158,8 +158,8 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">## Required library</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/SNPRelate" class="external-link">SNPRelate</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Path to the demo Profile GDS file is located in this package</span></span></span>
-<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoKNNSynthetic"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Load the known ancestry for the demo 1KG reference profiles</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demoKnownSuperPop1KG</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The name of the synthetic study</span></span></span>
 <span class="r-in"><span><span class="va">studyID</span> <span class="op">&lt;-</span> <span class="st">"MYDATA.Synthetic"</span></span></span>
@@ -172,8 +172,8 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span>    <span class="st">"NA12751"</span>, <span class="st">"NA19107"</span>, <span class="st">"NA18548"</span>, <span class="st">"NA19075"</span>, <span class="st">"NA19475"</span>, <span class="st">"NA19712"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"NA19731"</span>, <span class="st">"NA20528"</span>, <span class="st">"NA20908"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The known ancestry for the 1KG reference profiles</span></span></span>
-<span class="r-in"><span><span class="va">refKnownSuperPop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"knownSuperPop1KG.RDS"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Path to the demo Profile GDS file is located in this package</span></span></span>
+<span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoKNNSynthetic"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open the Profile GDS file</span></span></span>
 <span class="r-in"><span><span class="va">gdsProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SNPRelate/man/snpgdsOpen.html" class="external-link">snpgdsOpen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -181,7 +181,7 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">## Compute PCA for the 1KG reference profiles excluding</span></span></span>
 <span class="r-in"><span><span class="co">## the profiles used to generate the synthetic profiles</span></span></span>
 <span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">computePCARefRMMulti</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">gdsProfile</span>,</span></span>
-<span class="r-in"><span>    refProfileIDs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">refKnownSuperPop</span><span class="op">)</span>, listRM<span class="op">=</span><span class="va">samplesRM</span>, np<span class="op">=</span><span class="fl">1L</span>,</span></span>
+<span class="r-in"><span>    refProfileIDs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">demoKnownSuperPop1KG</span><span class="op">)</span>, listRM<span class="op">=</span><span class="va">samplesRM</span>, np<span class="op">=</span><span class="fl">1L</span>,</span></span>
 <span class="r-in"><span>    algorithm<span class="op">=</span><span class="st">"exact"</span>, eigenCount<span class="op">=</span><span class="fl">32L</span>, missingRate<span class="op">=</span><span class="fl">0.025</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The PCA on the pruned SNVs data set for selected profiles</span></span></span>

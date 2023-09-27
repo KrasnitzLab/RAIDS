@@ -150,12 +150,12 @@ number of dimensions used in the PCA analysis.</p></dd>
 <span class="r-in"><span><span class="co">## demo 1KG reference PCA</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demoPCASyntheticProfiles</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load the known ancestry for the demo 1KG reference profiles</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demoKnownSuperPop1KG</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Path to the demo GDS file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/demoKNNSynthetic"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fileProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"ex1.gds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## The known ancestry for the 1KG reference profiles</span></span></span>
-<span class="r-in"><span><span class="va">refKnownSuperPop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"knownSuperPop1KG.RDS"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Open GDS files</span></span></span>
 <span class="r-in"><span><span class="va">gdsProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileProfileGDS</span><span class="op">)</span></span></span>
@@ -164,7 +164,7 @@ number of dimensions used in the PCA analysis.</p></dd>
 <span class="r-in"><span><span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">validateComputeKNNRefSynthetic</span><span class="op">(</span>gdsProfile<span class="op">=</span><span class="va">gdsProfile</span>,</span></span>
 <span class="r-in"><span>    listEigenvector<span class="op">=</span><span class="va">demoPCASyntheticProfiles</span>,</span></span>
 <span class="r-in"><span>    listCatPop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EAS"</span>, <span class="st">"EUR"</span>, <span class="st">"AFR"</span>, <span class="st">"AMR"</span>, <span class="st">"SAS"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    studyIDSyn<span class="op">=</span><span class="st">"MyStudy"</span>, spRef<span class="op">=</span><span class="va">refKnownSuperPop</span>,</span></span>
+<span class="r-in"><span>    studyIDSyn<span class="op">=</span><span class="st">"MyStudy"</span>, spRef<span class="op">=</span><span class="va">demoKnownSuperPop1KG</span>,</span></span>
 <span class="r-in"><span>    fieldPopInfAnc<span class="op">=</span><span class="st">"Superpop"</span>, kList<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">11</span>, <span class="fl">12</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    pcaList<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">14</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

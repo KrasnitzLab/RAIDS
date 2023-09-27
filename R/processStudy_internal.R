@@ -1446,12 +1446,13 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 #'
 #' @examples
 #'
+#' ## Load the demo PCA on the synthetic profiles projected on the
+#' ## demo 1KG reference PCA
+#' data(demoPCASyntheticProfiles)
 #'
 #' ## Path to the demo GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
 #' fileProfileGDS <- file.path(dataDir, "ex1.gds")
-#'
-#' pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
 #'
 #' ## The known ancestry for the 1KG reference profiles
 #' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
@@ -1461,7 +1462,7 @@ validateComputePCAMultiSynthetic <- function(gdsProfile, listPCA, sampleRef,
 #'
 #' ## The function returns 0L when all parameters are valid
 #' RAIDS:::validateComputeKNNRefSynthetic(gdsProfile=gdsProfile,
-#'     listEigenvector=pcaSynthetic,
+#'     listEigenvector=demoPCASyntheticProfiles,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
 #'     studyIDSyn="MyStudy", spRef=refKnownSuperPop,
 #'     fieldPopInfAnc="Superpop", kList=c(10, 11, 12),
@@ -1558,12 +1559,15 @@ validateComputeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #'
 #' @examples
 #'
+#' ## Load the demo PCA on the synthetic profiles projected on the
+#' ## demo 1KG reference PCA
+#' data(demoPCASyntheticProfiles)
+#'
+#' pcaSynthetic <- demoPCASyntheticProfiles
+#' pcaSynthetic$sample.id <- pcaSynthetic$sample.id[1]
 #'
 #' ## Path to the demo GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-#'
-#' pcaSynthetic <- readRDS(file.path(dataDir, "pcaSynthetic.RDS"))
-#' pcaSynthetic$sample.id <- pcaSynthetic$sample.id[1]
 #'
 #' ## The known ancestry for the 1KG reference profiles
 #' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))

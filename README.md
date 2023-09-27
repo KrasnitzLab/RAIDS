@@ -7,7 +7,7 @@
 
 # Accurate genetic ancestry inference from cancer-derived molecular data with **RAIDS** #
 
-The Robust Ancestry Inference using Data Synthesis (**_RAIDS_**) package 
+The Robust Ancestry Inference using Data Synthesis (**RAIDS**) package 
 enables accurate and robust inference of genetic 
 ancestry from various types of molecular data, including whole-genome, 
 whole-exome, targeted gene panels and RNA sequences, as described in our 
@@ -23,13 +23,13 @@ alterations, such as those caused by cancer.
 
 [Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),
 [Astrid Desch&ecirc;nes](https://www.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes"),
-David A. Tuveson and
+[David A. Tuveson](https://tuvesonlab.labsites.cshl.edu/) and
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
 
 
 ## Citing ##
 
-If you use the **_RAIDS_** package for a publication, we would ask you to cite 
+If you use the **RAIDS** package for a publication, we would ask you to cite 
 the following:
 
 >  Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson, Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1 January 2023; 83 (1): 49–58. https://doi.org/10.1158/0008-5472.CAN-22-0682

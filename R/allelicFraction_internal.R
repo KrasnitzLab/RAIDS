@@ -691,7 +691,7 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 #' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
 #' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
 #' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-#' \item{lap} {a \code{numeric} indicating lower allelic fraction}
+#' \item{lap} {a \code{numeric} representing the lower allelic fraction}
 #' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
 #' (0=not LOH, 1=in LOH)}
 #' \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
@@ -1402,13 +1402,15 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #'
 #' @examples
 #'
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Loading demo dataset containing SNV information
+#' data(snpPositionDemo)
 #'
-#' snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+#' ## Only use a subset of heterozygote SNVs related to one block
+#' subset <- snpPositionDemo[which(snpPositionDemo$block.id == 2750 &
+#'                   snpPositionDemo$hetero), c("cnt.ref", "cnt.alt", "phase")]
 #'
-#' result <- RAIDS:::calcAFMLRNA(snpPos[which(snpPos$block.id == 2750 &
-#'                     snpPos$hetero),
-#'                         c("cnt.ref", "cnt.alt", "phase")])
+#' result <- RAIDS:::calcAFMLRNA(subset)
+#'
 #' head(result)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1513,11 +1515,14 @@ calcAFMLRNA <- function(snpPosHetero) {
 #'
 #' @examples
 #'
-#' dataDir <- system.file("extdata", package="RAIDS")
+#' ## Loading demo dataset containing SNV information
+#' data(snpPositionDemo)
 #'
-#' snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+#' ## Retain SNVs on chromosome 1
+#' subset <- snpPositionDemo[which(snpPositionDemo$snp.chr == 1),]
 #'
-#' result <- RAIDS:::tableBlockAF(snpPos[which(snpPos$snp.chr == 1),])
+#' ##Compile the information about the SNVs for each block
+#' result <- RAIDS:::tableBlockAF(subset)
 #' head(result)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz

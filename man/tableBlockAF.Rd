@@ -54,11 +54,14 @@ In the case of RNA-seq, the blocks are genes.
 }
 \examples{
 
-dataDir <- system.file("extdata", package="RAIDS")
+## Loading demo dataset containing SNV information
+data(snpPositionDemo)
 
-snpPos <- readRDS(file.path(dataDir, "demoAllelicFraction", "demSnpPos.rds"))
+## Retain SNVs on chromosome 1
+subset <- snpPositionDemo[which(snpPositionDemo$snp.chr == 1),]
 
-result <- RAIDS:::tableBlockAF(snpPos[which(snpPos$snp.chr == 1),])
+##Compile the information about the SNVs for each block
+result <- RAIDS:::tableBlockAF(subset)
 head(result)
 
 }

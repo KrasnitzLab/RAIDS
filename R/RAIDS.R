@@ -60,3 +60,105 @@
 #' @encoding UTF-8
 #' @keywords package
 NULL
+
+
+#' A small \code{data.frame} containing the information related to
+#' synthetic profiles. The ancestry of the profiles used to generate the
+#' synthetic profiles must be present.
+#'
+#' The object is a \code{data.frame} with 7 columns. The row names of
+#' the \code{data.frame} must be the profile unique identifiers.
+#'
+#' This dataset can be
+#' used to test the \code{\link{computeSyntheticROC}} function.
+#'
+#' @name pedSynthetic
+#'
+#' @docType data
+#'
+#' @aliases pedSynthetic
+#'
+#' @format The \code{data.frame} containing the information about the
+#' synthetic profiles.  The row names of
+#' the \code{data.frame} correspond to the profile unique identifiers.
+#' The \code{data.frame} contains 7 columns:
+#' \itemize{
+#' \item \code{data.id} {a \code{character} string representing the unique
+#' synthetic profile identifier.}
+#' \item \code{case.id} {a \code{character} string representing the unique
+#' profile identifier that was used to generate the synthetic profile.}
+#' \item \code{sample.type} {a \code{character} string representing the type
+#' of profile. }
+#' \item \code{diagnosis} {a \code{character} string representing the
+#' diagnosis of profile that was used to generate the synthetic profile. }
+#' \item \code{source} {a \code{character} string representing the
+#' source of the synthetic profile. }
+#' \item \code{study.id} {a \code{character} string representing the
+#' name of the study to which the synthetic profile is associated. }
+#' \item \code{superPop} {a \code{character} string representing the
+#' super population of the profile that was used to generate the synthetic
+#' profile. }
+#' }
+#'
+#' @return  The \code{data.frame} containing the information about the
+#' synthetic profiles.  The row names of
+#' the \code{data.frame} correspond to the profile unique identifiers.
+#' The \code{data.frame} contains 7 columns:
+#' \itemize{
+#' \item \code{data.id} {a \code{character} string representing the unique
+#' synthetic profile identifier.}
+#' \item \code{case.id} {a \code{character} string representing the unique
+#' profile identifier that was used to generate the synthetic profile.}
+#' \item \code{sample.type} {a \code{character} string representing the type
+#' of profile. }
+#' \item \code{diagnosis} {a \code{character} string representing the
+#' diagnosis of profile that was used to generate the synthetic profile. }
+#' \item \code{source} {a \code{character} string representing the
+#' source of the synthetic profile. }
+#' \item \code{study.id} {a \code{character} string representing the
+#' name of the study to which the synthetic profile is associated. }
+#' \item \code{superPop} {a \code{character} string representing the
+#' super population of the profile that was used to generate the synthetic
+#' profile. }
+#' }
+#'
+#' @seealso
+#' \itemize{
+#'     \item \code{\link{computeSyntheticROC}} {for calculating the AUROC of
+#'     the inferences for specific values of D and K using the inferred
+#'     ancestry results from the synthetic profiles}
+#' }
+#'
+#' @usage data(pedSynthetic)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Loading demo dataset containing pedigree information for synthetic
+#' ## profiles
+#' data(pedSynthetic)
+#'
+#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#'
+#' ## The inferred ancestry results for the synthetic data using
+#' ## values of D=5 and K=5
+#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+#'
+#' ## Compile statistics from the
+#' ## synthetic profiles for fixed values of D and K
+#' results <- RAIDS:::computeSyntheticROC(matKNN=matKNN,
+#'     matKNNAncestryColumn="SuperPop",
+#'     pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
+#'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
+#'
+#' results$matAUROC.All
+#' results$matAUROC.Call
+#' results$listROC.Call
+#'
+#'
+NULL
+
+
+

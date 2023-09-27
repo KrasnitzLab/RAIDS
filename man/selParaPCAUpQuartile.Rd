@@ -111,21 +111,22 @@ accuracy.
 }
 \examples{
 
+## Loading demo dataset containing pedigree information for synthetic
+## profiles and known ancestry of the profiles used to generate the
+## synthetic profiles
+data(pedSynthetic)
+
 dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
 
 ## The inferred ancestry results for the synthetic data using different
 ## values of D and K
 matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
 
-## The known ancestry from the reference profiles used to generate the
-## synthetic profiles
-syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
-
 ## Compile all the results for ancestry inference done on the
 ## synthetic profiles for different D and K values
 ## Select the optimal D and K values
 results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
-    pedCall=syntheticInfo, refCall="superPop", predCall="SuperPop",
+    pedCall=pedSynthetic, refCall="superPop", predCall="SuperPop",
     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,15,1),
     pcaList=seq(2,15,1))
 results$D

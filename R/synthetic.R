@@ -737,6 +737,11 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #'
 #' @examples
 #'
+#' ## Loading demo dataset containing pedigree information for synthetic
+#' ## profiles and known ancestry of the profiles used to generate the
+#' ## synthetic profiles
+#' data(pedSynthetic)
+#'
 #' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
 #' ## The inferred ancestry results for the synthetic data using
@@ -744,15 +749,11 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
 #' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
 #'
-#' ## The known ancestry from the reference profiles used to generate the
-#' ## synthetic profiles
-#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
-#'
 #' ## Compile statistics from the
 #' ## synthetic profiles for fixed values of D and K
 #' results <- RAIDS:::computeSyntheticROC(matKNN=matKNN,
 #'     matKNNAncestryColumn="SuperPop",
-#'     pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+#'     pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
 #'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
 #'
 #' results$matAUROC.All

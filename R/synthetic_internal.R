@@ -266,6 +266,11 @@ validatePepSynthetic <- function(fileProfileGDS,
 #'
 #' @examples
 #'
+#' ## Loading demo dataset containing pedigree information for synthetic
+#' ## profiles and known ancestry of the profiles used to generate the
+#' ## synthetic profiles
+#' data(pedSynthetic)
+#'
 #' ## Directory where demo GDS files are located
 #' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
@@ -274,14 +279,10 @@ validatePepSynthetic <- function(fileProfileGDS,
 #' matKNN <- readRDS(file.path(dataDir, "matKNN.RDS"))
 #' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
 #'
-#' ## The known ancestry from the reference profiles used to generate the
-#' ## synthetic profiles
-#' syntheticData <- readRDS(file.path(dataDir, "pedSyn.RDS"))
-#'
 #' ## The validation should be successful
 #' RAIDS:::validateComputeSyntheticRoc(matKNN=matKNN,
 #'     matKNNAncestryColumn="SuperPop",
-#'     pedCall=syntheticData, pedCallAncestryColumn="superPop",
+#'     pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
 #'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
 #'
 #'
@@ -483,22 +484,23 @@ prepPedSynthetic1KG <- function(gdsReference, gdsSample, studyID, popName) {
 #'
 #' @examples
 #'
+#' ## Loading demo dataset containing pedigree information for synthetic
+#' ## profiles and known ancestry of the profiles used to generate the
+#' ## synthetic profiles
+#' data(pedSynthetic)
+#'
 #' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
 #'
 #' ## The inferred ancestry results for the synthetic data using
 #' ## values of D=6 and K=5
 #' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
-#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
-#'
-#' ## The known ancestry from the reference profiles used to generate the
-#' ## synthetic profiles
-#' syntheticInfo <- readRDS(file.path(dataDirRes, "pedSyn.RDS"))
+#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ])
 #'
 #' ## Compile the confusion matrix using the
 #' ## synthetic profiles for fixed values of  D and K values
 #' results <- RAIDS:::computeSyntheticConfMat(matKNN=matKNN,
 #'     matKNNAncestryColumn="SuperPop",
-#'     pedCall=syntheticInfo, pedCallAncestryColumn="superPop",
+#'     pedCall=pedSynthetic, pedCallAncestryColumn="superPop",
 #'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"))
 #'
 #' results$confMat

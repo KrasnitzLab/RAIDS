@@ -486,11 +486,11 @@ NULL
 #' ## demo 1KG reference PCA
 #' data(demoPCASyntheticProfiles)
 #'
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
+#'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-#'
-#' ## The known ancestry for the 1KG reference profiles
-#' refKnownSuperPop <- readRDS(file.path(dataDir, "knownSuperPop1KG.RDS"))
 #'
 #' ## Open the Profile GDS file
 #' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
@@ -502,7 +502,79 @@ NULL
 #' results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
 #'     listEigenvector=demoPCASyntheticProfiles,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
-#'     spRef=refKnownSuperPop)
+#'     spRef=demoKnownSuperPop1KG)
+#'
+#' ## The inferred ancestry for the synthetic profiles for differents values
+#' ## of D and K
+#' head(results$matKNN)
+#'
+#' ## Close Profile GDS file (important)
+#' closefn.gds(gdsProfile)
+#'
+NULL
+
+
+
+
+#' The known super population ancestry of the demo 1KG reference profiles.
+#'
+#' The object is a \code{vector}.
+#'
+#' This object can be
+#' used to test the \code{\link{computeKNNRefSynthetic}} and
+#' \code{\link{computePoolSyntheticAncestryGr}} functions.
+#'
+#' @name demoKnownSuperPop1KG
+#'
+#' @docType data
+#'
+#' @aliases demoKnownSuperPop1KG
+#'
+#' @format The \code{vector} containing the know super population ancestry
+#' for the demo 1KG reference profiles.
+#'
+#' @return The \code{vector} containing the know super population ancestry
+#' for the demo 1KG reference profiles.
+#'
+#' @seealso
+#' \itemize{
+#'     \item \code{\link{computeKNNRefSynthetic}} {for running a k-nearest
+#'     neighbors analysis on a subset of the synthetic data set.}
+#'     \item \code{\link{computePoolSyntheticAncestryGr}} { for running a
+#'     PCA analysis using 1 synthetic profile from each sub-continental
+#'     population.}
+#' }
+#'
+#' @usage data(demoKnownSuperPop1KG)
+#'
+#' @keywords datasets
+#'
+#' @examples
+#'
+#' ## Required library
+#' library(gdsfmt)
+#'
+#' ## Load the demo PCA on the synthetic profiles projected on the
+#' ## demo 1KG reference PCA
+#' data(demoPCASyntheticProfiles)
+#'
+#' ## Load the known ancestry for the demo 1KG reference profiles
+#' data(demoKnownSuperPop1KG)
+#'
+#' ## Path to the demo Profile GDS file is located in this package
+#' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
+#'
+#' ## Open the Profile GDS file
+#' gdsProfile <- snpgdsOpen(file.path(dataDir, "ex1.gds"))
+#'
+#' # The name of the synthetic study
+#' studyID <- "MYDATA.Synthetic"
+#'
+#' ## Projects synthetic profiles on 1KG PCA
+#' results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
+#'     listEigenvector=demoPCASyntheticProfiles,
+#'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
+#'     spRef=demoKnownSuperPop1KG)
 #'
 #' ## The inferred ancestry for the synthetic profiles for differents values
 #' ## of D and K

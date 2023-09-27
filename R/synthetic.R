@@ -181,7 +181,8 @@ splitSelectByPop <- function(dataRef) {
 #' "Sample.Type" entries are always set to 'Synthetic'.
 #'
 #' The synthetic profiles are assigned unique names by combining:
-#' \code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation number(1 to nbSim)}
+#' \code{prefix}.\code{data.id.profile}.\code{listSampleRef}.\code{simulation
+#' number(1 to nbSim)}
 #'
 #' @param fileProfileGDS a \code{character} string representing the file name
 #' of the Profile GDS file containing the information about the reference

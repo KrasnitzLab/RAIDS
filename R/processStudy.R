@@ -559,12 +559,12 @@ add1KG2SampleGDS <- function(gdsReference, fileProfileGDS, currentProfile,
                 i <- x[2]
                 j <- x[1]
 
-                g <- read.gdsn(index.gdsn(gdsReference, "genotype"), start=c(1,i),
-                               count = c(-1,1))[listSNP]
+                g <- read.gdsn(index.gdsn(gdsReference, "genotype"),
+                                start=c(1,i), count = c(-1,1))[listSNP]
 
                 if(! ("genotype" %in% ls.gdsn(gdsSample))){
                     var.geno <- add.gdsn(gdsSample, "genotype",
-                                         valdim=c(length(listSNP), 1), g, storage="bit2")
+                        valdim=c(length(listSNP), 1), g, storage="bit2")
 
                 }else {
                     if(is.null(var.geno)) {

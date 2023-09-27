@@ -2146,7 +2146,7 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
             studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
 
     fileGDSProfile <- file.path(pathProfileGDS,
-                                 paste0(currentProfile, ".gds"))
+                            paste0(currentProfile, ".gds"))
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
                     currentProfile=currentProfile, studyID=studyDF$study.id)
 
@@ -2190,15 +2190,14 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                                         gdsProfile, studyDFSyn, spRef,
                                         pathOutProfile, currentProfile) {
             synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
-                                               sampleRM=sampleRM[x,],
-                                               studyIDSyn=studyDFSyn$study.id,
-                                               np=np, spRef=spRef,
-                                               eigenCount=15L,
-                                               verbose=verbose)
+                            sampleRM=sampleRM[x,],
+                            studyIDSyn=studyDFSyn$study.id,
+                            np=np, spRef=spRef, eigenCount=15L,
+                            verbose=verbose)
 
             ## Results are saved
             saveRDS(synthKNN$matKNN, file.path(pathOutProfile,
-                           paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
+                        paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
             return(NULL)
         }, sampleRM=sampleRM, gdsProfile=gdsProfile,
         studyDFSyn=studyDFSyn, spRef=spRef, pathOutProfile=pathOutProfile,
@@ -2217,7 +2216,7 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                         studyIDSyn=studyDFSyn$study.id, np=np)
 
     saveRDS(resCall, file.path(pathOut,
-                               paste0(currentProfile, ".infoCall", ".rds")))
+                            paste0(currentProfile, ".infoCall", ".rds")))
 
     write.csv(x=resCall$Ancestry, file=file.path(pathOut,
         paste0(currentProfile, ".Ancestry",".csv")), quote=FALSE,

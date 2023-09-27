@@ -1844,16 +1844,14 @@ computePCARefRMMulti <- function(gdsProfile, refProfileIDs, listRM, np=1L,
 #' ## synthetic profiles
 #' data(pedSynthetic)
 #'
-#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
-#'
-#' ## The inferred ancestry results for the synthetic data using different
-#' ## values of D and K
-#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
+#' ## Loading demo dataset containing the inferred ancestry results
+#' ## for the synthetic data
+#' data(matKNNSynthetic)
 #'
 #' ## Compile all the results for ancestry inference done on the
 #' ## synthetic profiles for different D and K values
 #' ## Select the optimal D and K values
-#' results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNN,
+#' results <- RAIDS:::selParaPCAUpQuartile(matKNN=matKNNSynthetic,
 #'     pedCall=pedSynthetic, refCall="superPop", predCall="SuperPop",
 #'     listCall=c("EAS", "EUR", "AFR", "AMR", "SAS"), kList=seq(3,15,1),
 #'     pcaList=seq(2,15,1))

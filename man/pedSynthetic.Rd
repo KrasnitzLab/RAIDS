@@ -69,12 +69,12 @@ used to test the \code{\link{computeSyntheticROC}} function.
 ## profiles
 data(pedSynthetic)
 
-dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+## Loading demo dataset containing the inferred ancestry results
+## for the synthetic data
+data(matKNNSynthetic)
 
-## The inferred ancestry results for the synthetic data using
-## values of D=5 and K=5
-matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
-matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+## Retain one K and one D value
+matKNN <- matKNNSynthetic[matKNNSynthetic$D == 5 & matKNNSynthetic$K == 4, ]
 
 ## Compile statistics from the
 ## synthetic profiles for fixed values of D and K

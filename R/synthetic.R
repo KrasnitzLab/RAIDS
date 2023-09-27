@@ -742,12 +742,13 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' ## synthetic profiles
 #' data(pedSynthetic)
 #'
-#' dataDirRes <- system.file("extdata/demoAncestryCall", package="RAIDS")
+#' ## Loading demo dataset containing the inferred ancestry results
+#' ## for the synthetic data
+#' data(matKNNSynthetic)
 #'
 #' ## The inferred ancestry results for the synthetic data using
 #' ## values of D=6 and K=5
-#' matKNN <- readRDS(file.path(dataDirRes, "matKNN.RDS"))
-#' matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+#' matKNN <- matKNNSynthetic[matKNNSynthetic$K == 6 & matKNNSynthetic$D == 5, ]
 #'
 #' ## Compile statistics from the
 #' ## synthetic profiles for fixed values of D and K

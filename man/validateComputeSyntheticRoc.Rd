@@ -52,13 +52,13 @@ This function validates the input parameters for the
 ## synthetic profiles
 data(pedSynthetic)
 
-## Directory where demo GDS files are located
-dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
+## Loading demo dataset containing the inferred ancestry results
+## for the synthetic data
+data(matKNNSynthetic)
 
 ## The inferred ancestry results for the synthetic data using
 ## values of D=6 and K=5
-matKNN <- readRDS(file.path(dataDir, "matKNN.RDS"))
-matKNN <- matKNN[matKNN$K == 6 & matKNN$D == 5, ]
+matKNN <- matKNNSynthetic[matKNNSynthetic$K == 6 & matKNNSynthetic$D == 5, ]
 
 ## The validation should be successful
 RAIDS:::validateComputeSyntheticRoc(matKNN=matKNN,

@@ -118,12 +118,10 @@ library(SNPRelate)
 dataDir <- system.file("extdata", package="RAIDS")
 
 #################################################################
-## The path and file name for the PED RDS file
-## will the information about the analyzed samples
+## Load the information about the profile
 #################################################################
-filePED <- file.path(dataDir, "example", "pedEx.rds")
-ped <- readRDS(filePED)
-head(ped)
+data(demoPedigreeEx1)
+head(demoPedigreeEx1)
 
 #################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file
@@ -179,7 +177,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
     \dontrun{
 
-        runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+        runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,
             pathGeno=pathGeno,
             pathOut=pathOut,

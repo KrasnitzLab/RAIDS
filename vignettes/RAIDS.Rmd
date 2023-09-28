@@ -342,7 +342,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
                  syntheticRefDF=dataRef,
                  genoSource="snp-pileup")
       list.files(pathOut)
-      list.files(file.path(pathOut, ped$Name.ID[1]))
+      list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
 
       #########################################################################
       ## The file containing the ancestry inference (SuperPop column) and 
@@ -350,7 +350,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       ## optimal number of neighbours (K column)
       #########################################################################
       resAncestry <- read.csv(file.path(pathOut, 
-                                    paste0(ped$Name.ID[1], ".Ancestry.csv")))
+                        paste0(demoPedigreeEx1$Name.ID[1], ".Ancestry.csv")))
       print(resAncestry)
 
       ## Remove temporary files created for this demo
@@ -589,7 +589,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
                     genoSource="snp-pileup")
     
       list.files(pathOut)
-      list.files(file.path(pathOut, ped$Name.ID[1]))
+      list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
 
       #########################################################################
       ## The file containing the ancestry inference (SuperPop column) and 
@@ -597,7 +597,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       ## optimal number of neighbours (K column)
       #########################################################################
       resAncestry <- read.csv(file.path(pathOut, 
-                                    paste0(ped$Name.ID[1], ".Ancestry.csv")))
+                        paste0(demoPedigreeEx1$Name.ID[1], ".Ancestry.csv")))
       print(resAncestry)
 
       ## Remove temporary files created for this demo

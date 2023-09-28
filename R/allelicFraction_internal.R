@@ -455,7 +455,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                     }, homoBlock=homoBlock,
                     blcSNV=blcSNV, listAF=listAF,
                     snpPos=snpPos)
-    homoBlock = do.call(rbind,homoBlock)
+    homoBlock <- do.call(rbind,homoBlock)
 
     return(homoBlock)
 }

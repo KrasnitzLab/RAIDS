@@ -1192,11 +1192,11 @@ getBlockIDs <- function(gdsRefAnnot, snpIndex, blockTypeID) {
 
     if(length(pos) != 1) {
         stop("The following block type is not found in the ",
-             "GDS Annotation file: \'", blockTypeID, "\'")
+                "GDS Annotation file: \'", blockTypeID, "\'")
     }
 
     b <- read.gdsn(index.gdsn(gdsRefAnnot, "block"), start=c(1, pos),
-                   count = c(-1, 1))[snpIndex]
+                    count = c(-1, 1))[snpIndex]
 
     return(b)
 }

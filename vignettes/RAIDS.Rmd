@@ -244,12 +244,10 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 #############################################################################
-## The path and file name for the PED RDS file
-## will the information about the analyzed samples
+## Load the information about the profile
 #############################################################################
-filePED <- file.path(dataDir, "example", "pedEx.rds")
-ped <- readRDS(filePED)
-head(ped)
+data(demoPedigreeEx1)
+head(demoPedigreeEx1)
 
 #############################################################################
 ## The population reference GDS file and SNV Annotation GDS file
@@ -334,7 +332,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       ##   SNP pileup files have been generated: 
       ##      "snp-pileup" (snp-pileup software) or "generic" (other software)
       #########################################################################
-      runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+      runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
                  pathOut=pathOut,
@@ -491,12 +489,10 @@ library(gdsfmt)
 dataDir <- system.file("extdata", package="RAIDS")
 
 #############################################################################
-## The path and file name for the PED RDS file
-## will the information about the analyzed samples
+## Load the information about the profile
 #############################################################################
-filePED <- file.path(dataDir, "example", "pedEx.rds")
-ped <- readRDS(filePED)
-head(ped)
+data(demoPedigreeEx1)
+head(demoPedigreeEx1)
 
 #############################################################################
 ## The population reference GDS file and SNV Annotation GDS file
@@ -581,7 +577,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       ##   SNP pileup files have been generated: 
       ##      "snp-pileup" (snp-pileup software) or "generic" (other software)
       #########################################################################
-      runRNAAncestry(pedStudy=ped, studyDF=studyDF,
+      runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
                     pathProfileGDS=pathProfileGDS,
                     pathGeno=pathGeno,
                     pathOut=pathOut,

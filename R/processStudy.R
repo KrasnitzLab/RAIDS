@@ -1089,7 +1089,7 @@ computePCARefSample <- function(gdsProfile, currentProfile,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
 #'     spRef=demoKnownSuperPop1KG)
 #'
-#' ## The inferred ancestry for the synthetic profiles for differents values
+#' ## The inferred ancestry for the synthetic profiles for different values
 #' ## of D and K
 #' head(results$matKNN)
 #'
@@ -1959,12 +1959,10 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' #################################################################
-#' ## The path and file name for the PED RDS file
-#' ## will the information about the analyzed samples
+#' ## Load the information about the profile
 #' #################################################################
-#' filePED <- file.path(dataDir, "example", "pedEx.rds")
-#' ped <- readRDS(filePED)
-#' head(ped)
+#' data(demoPedigreeEx1)
+#' head(demoPedigreeEx1)
 #'
 #' #################################################################
 #' ## The 1KG GDS file and the 1KG SNV Annotation GDS file
@@ -2020,7 +2018,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'
 #'     \dontrun{
 #'
-#'         runExomeAncestry(pedStudy=ped, studyDF=studyDF,
+#'         runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             pathOut=pathOut,
@@ -2173,12 +2171,10 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
 #' #################################################################
-#' ## The path and file name for the PED RDS file
-#' ## will the information about the analyzed samples
+#' ## Load the information about the profile
 #' #################################################################
-#' filePED <- file.path(dataDir, "example", "pedEx.rds")
-#' ped <- readRDS(filePED)
-#' head(ped)
+#' data(demoPedigreeEx1)
+#' head(demoPedigreeEx1)
 #'
 #' #################################################################
 #' ## The 1KG GDS file and the 1KG SNV Annotation GDS file
@@ -2234,7 +2230,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #'     \dontrun{
 #'
-#'         runRNAAncestry(pedStudy=ped, studyDF=studyDF,
+#'         runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             pathOut=pathOut,

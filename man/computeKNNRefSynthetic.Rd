@@ -115,7 +115,7 @@ results <- computeKNNRefSynthetic(gdsProfile=gdsProfile,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"), studyIDSyn=studyID,
     spRef=demoKnownSuperPop1KG)
 
-## The inferred ancestry for the synthetic profiles for differents values
+## The inferred ancestry for the synthetic profiles for different values
 ## of D and K
 head(results$matKNN)
 

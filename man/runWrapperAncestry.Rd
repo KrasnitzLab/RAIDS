@@ -127,12 +127,10 @@ library(SNPRelate)
 dataDir <- system.file("extdata", package="RAIDS")
 
 #################################################################
-## The path and file name for the PED RDS file
-## will the information about the analyzed samples
+## Load the information about the profile
 #################################################################
-filePED <- file.path(dataDir, "example", "pedEx.rds")
-ped <- readRDS(filePED)
-head(ped)
+data(demoPedigreeEx1)
+head(demoPedigreeEx1)
 
 #################################################################
 ## The 1KG GDS file and the 1KG SNV Annotation GDS file
@@ -188,16 +186,13 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
     \dontrun{
 
-        RAIDS:::runWrapperAncestry(pedStudy=ped, studyDF=studyDF,
+        RAIDS:::runWrapperAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,
-            pathGeno=pathGeno,
-            pathOut=pathOut,
+            pathGeno=pathGeno, pathOut=pathOut,
             fileReferenceGDS=fileReferenceGDS,
             fileReferenceAnnotGDS=fileAnnotGDS,
-            chrInfo=chrInfo,
-            syntheticRefDF=dataRef,
-            studyType="DNA",
-            genoSource="snp-pileup")
+            chrInfo=chrInfo, syntheticRefDF=dataRef,
+            studyType="DNA", genoSource="snp-pileup")
 
         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
         unlink(pathOut, recursive=TRUE, force=TRUE)

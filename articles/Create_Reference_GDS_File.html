@@ -112,11 +112,11 @@ known genetic ancestry. This reference data set will be used to generate
 the simulated samples. It is also used to generate the PCA on which the
 samples of interest are going to be projected.</p>
 <p>The <em>Population Reference GDS file</em> is a GDS object of class
-<a href="https://www.bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#data-formats-used-in-snprelate" class="external-link">SNPGDSFileClass</a>
+<a href="https://www.bioconductor.org/packages/release/bioc/vignettes/" class="external-link">SNPGDSFileClass</a>
 from <a href="https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html" class="external-link">SNPRelate</a>
 package <span class="citation">(Zheng et al. 2012)</span>.</p>
-<p>Beware that only unrelated samples should be present in the GDS
-files.</p>
+<p>Beware that related profiles should be flagged in the <em>Population
+Reference GDS file</em> files.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -248,10 +248,19 @@ discarded</li>
 </ul>
 <p><br></p>
 <p>This following example shows how to create a <em>Population GDS
-Reference file</em>. This example is for demonstration purpose only. A
-working <em>Population GDS Reference file</em> would have to contain
-multiple samples from each continental population and would also have to
-contain the SNVs from the entire genome.</p>
+Reference file</em>. This example is for demonstration purpose only and
+use hard coded values. A working <em>Population GDS Reference file</em>
+would have to contain multiple samples from each continental population
+and would also have to contain the SNVs from the entire genome.</p>
+<p>To generate a real <em>Population GDS Reference file</em>, the
+pipeline to process the information would depend of the selected source.
+If the source files are in VCF format, you can use Bioconductor <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariationAnnotation</a>
+package to extract the genotypic information (beware it may use a lot of
+memory). Often, you will need to parse metadata files to get information
+such as the sex and population of the profiles. In addition, the
+Bioconductor <a href="https://bioconductor.org/packages/release/bioc/html/GENESIS.html" class="external-link">GENESIS</a>
+package can be used to compute kinship coefficients to identify the
+unrelated profiles.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -382,7 +391,7 @@ contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmpHinPDN/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpuAjjha/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -413,8 +422,12 @@ contain the SNVs from the entire genome.</p>
 </h2>
 <p>The <em>Population Reference Annotation GDS file</em> contains phase
 information and block group information for all the SNVs present in
-<em>Population Reference GDS file</em>. A block can be a linkage
-disequelibrium block relative to a population or a gene.</p>
+<em>Population Reference GDS file</em>.<br>
+If the source files are in VCF format, you can use Bioconductor <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariationAnnotation</a>
+package to extract the phase information (beware it may use a lot of
+memory). A block can be a linkage disequelibrium block relative to a
+population or a gene. A bioconductor package like <a href="https://bioconductor.org/packages/release/bioc/html/GENESIS.html" class="external-link">GENESIS</a>
+can be used to get the block information.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
@@ -550,7 +563,7 @@ would also have to contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnotNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmpHinPDN/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpuAjjha/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">10x10, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>

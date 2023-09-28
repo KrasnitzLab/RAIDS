@@ -92,7 +92,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.11<br><strong>Compiled date</strong>: 2023-09-27<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.11<br><strong>Compiled date</strong>: 2023-09-28<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -382,7 +382,7 @@ contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp56BOJR/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpXaBcVj/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -550,7 +550,7 @@ would also have to contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnotNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp56BOJR/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
+<span><span class="co">## File: /tmp/RtmpXaBcVj/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">10x10, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -642,10 +642,10 @@ which this document was compiled:</p>
 <span><span class="co">##  [71] glue_1.6.2                  restfulr_0.0.15            </span></span>
 <span><span class="co">##  [73] nlme_3.1-163                grid_4.3.1                 </span></span>
 <span><span class="co">##  [75] generics_0.1.3              operator.tools_1.6.3       </span></span>
-<span><span class="co">##  [77] BSgenome_1.68.0             formula.tools_1.7.1        </span></span>
-<span><span class="co">##  [79] class_7.3-22                tidyr_1.3.0                </span></span>
-<span><span class="co">##  [81] ensembldb_2.24.1            hms_1.1.3                  </span></span>
-<span><span class="co">##  [83] data.table_1.14.8           xml2_1.3.5                 </span></span>
+<span><span class="co">##  [77] BSgenome_1.68.0             class_7.3-22               </span></span>
+<span><span class="co">##  [79] formula.tools_1.7.1         ensembldb_2.24.1           </span></span>
+<span><span class="co">##  [81] tidyr_1.3.0                 data.table_1.14.8          </span></span>
+<span><span class="co">##  [83] hms_1.1.3                   xml2_1.3.5                 </span></span>
 <span><span class="co">##  [85] utf8_1.2.3                  XVector_0.40.0             </span></span>
 <span><span class="co">##  [87] BiocGenerics_0.46.0         GWASExactHW_1.01           </span></span>
 <span><span class="co">##  [89] foreach_1.5.2               pillar_1.9.0               </span></span>
@@ -672,9 +672,10 @@ which this document was compiled:</p>
 <span><span class="co">## [131] blob_1.2.4                  prettyunits_1.2.0          </span></span>
 <span><span class="co">## [133] AnnotationFilter_1.24.0     bitops_1.0-7               </span></span>
 <span><span class="co">## [135] lme4_1.1-34                 glmnet_4.1-8               </span></span>
-<span><span class="co">## [137] SeqArray_1.40.1             purrr_1.0.2                </span></span>
-<span><span class="co">## [139] crayon_1.5.2                rlang_1.1.1                </span></span>
-<span><span class="co">## [141] KEGGREST_1.40.0             mice_3.16.0</span></span></code></pre>
+<span><span class="co">## [137] SeqArray_1.40.1             VariantAnnotation_1.46.0   </span></span>
+<span><span class="co">## [139] purrr_1.0.2                 crayon_1.5.2               </span></span>
+<span><span class="co">## [141] rlang_1.1.1                 KEGGREST_1.40.0            </span></span>
+<span><span class="co">## [143] mice_3.16.0</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">

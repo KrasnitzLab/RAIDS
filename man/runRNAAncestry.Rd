@@ -182,7 +182,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
     ## chr23 is chrX, chr24 is chrY and chrM is 25
     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-    \dontrun{
+    \donttest{
 
         runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,

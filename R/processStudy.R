@@ -2020,7 +2020,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
 #'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
-#'     \dontrun{
+#'     \donttest{
 #'
 #'         runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
@@ -2234,7 +2234,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
 #'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
-#'     \dontrun{
+#'     \donttest{
 #'
 #'         runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,

@@ -125,6 +125,9 @@ generateGDSSNPinfo <- function(gdsReference, fileFreq, verbose) {
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Path where the demo genotype CSV files are located
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
 #' ## The RDS file containing the pedigree information
 #' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
@@ -153,7 +156,7 @@ generateGDSSNPinfo <- function(gdsReference, fileFreq, verbose) {
 #'                 verbose=FALSE)
 #'
 #' ## Add genotype information to the Reference GDS
-#' RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#' RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=pathGeno,
 #'         fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS, verbose=FALSE)
 #'
 #' ## Close file
@@ -249,6 +252,9 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Path where the demo genotype CSV files are located
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
 #' ## The RDS file containing the pedigree information
 #' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
@@ -277,12 +283,12 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #'                 verbose=FALSE)
 #'
 #' ## Add genotype information to the Reference GDS for the 3 first samples
-#' RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#' RAIDS:::generateGDSgenotype(gds=newGDS, pathGeno=pathGeno,
 #'         fileSNPsRDS=snpIndexFile, listSamples=listSampleGDS[1:3],
 #'         verbose=FALSE)
 #'
 #' ## Append genotype information to the Reference GDS for the other samples
-#' RAIDS:::appendGDSgenotype(gds=newGDS, pathGeno=dataDir,
+#' RAIDS:::appendGDSgenotype(gds=newGDS, pathGeno=pathGeno,
 #'         fileSNPsRDS=snpIndexFile,
 #'         listSample=listSampleGDS[4:length(listSampleGDS)],
 #'         verbose=FALSE)
@@ -302,7 +308,7 @@ appendGDSgenotype <- function(gds, listSample, pathGeno, fileSNPsRDS,
                                 verbose) {
 
     # File with the description of the SNP keep
-    listMatRef <- dir(pathGeno, pattern = ".+.csv.bz2")
+    listMatRef <- dir(pathGeno, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMatRef)
 
     listSNP <- readRDS(file=fileSNPsRDS)

@@ -1,14 +1,29 @@
-The files in the examples extdata/demoGenoChr.tar
-are for each chromosome the first 100 genotype of the profiles  NA12003, NA12004 and NA12005 extract from the 1KG VCF files from
+########################################################################################
+## README file
+## 
+## This file describes the objects present in the inst/extdata directory.
+########################################################################################
+
+
+#########################################################################################
+## extdata/demoGenoChr.tar
+#########################################################################################
+The files present in the extdata/demoGenoChr.tar files are the first 
+100 genotypes of 3 reference profiles (NA12003, NA12004 and NA12005) for each chromosome. 
+The genotypes are directly extracted from the 1KG VCF files that is available at:
  http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
 
-The files
-tests/ex1_good_small_1KG.gd
-tests/ex1_good_small_1KG_Annot.gds
-are base on subset of the genotype from 1000 genomes describe in
-https://wellcomeopenresearch.org/articles/4-50/
-500 SNV from each chromosome are used (11000 for the 22 autosomal chromosomes).
-For each of the 26 sub continentales population in this version of 1000 genomes, 6 profiles are randomly selected (156 profiles) to generate those gds.
+
+#########################################################################################
+## tests/ex1_good_small_1KG.gds and tests/ex1_good_small_1KG_Annot.gds
+#########################################################################################
+Both files are based on subset of the genotypes from 1000 Genomes described in:
+ https://wellcomeopenresearch.org/articles/4-50/
+
+The 500 SNVs from each chromosome habe been retained (11000 for the 
+22 autosomal chromosomes). For each of the 26 sub-continental populations in this 
+version of 1000 Genomes, 6 profiles have been randomly selected (total of 156 profiles) 
+to generate those reference GDS files.
 
 
 

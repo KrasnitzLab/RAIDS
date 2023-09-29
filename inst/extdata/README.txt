@@ -34,6 +34,7 @@ in this version of 1000 Genomes, 6 profiles have been randomly selected
 ## example/snpPileup/ex1.vcf.gz
 ## example/snpPileup/ex1.generic.txt.gz
 ## example/snpPileup/ex1.txt.gz
+## example/snpPileupRNA/ex1.vcf.gz
 ## example/snpPileupRNA/ex1.generic.txt.gz
 ## example/snpPileupRNA/ex1.txt.gz
 ## demoAncestryCall/ex1.gds

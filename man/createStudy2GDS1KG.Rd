@@ -25,7 +25,10 @@ createStudy2GDS1KG(
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
-associated SNP-pileup file called "Name.ID.txt.gz".}
+associated file called
+if genoSource is "VCF", then "Name.ID.vcf.gz",
+if genoSource is "generic", then "Name.ID.generic.txt.gz"
+if genoSource is "snp-pileup", then "Name.ID.txt.gz".}
 
 \item{filePedRDS}{a \code{character} string representing the path to the
 RDS file that contains the information about the sample to analyse.

@@ -5,12 +5,14 @@
 \alias{readSNVVCF}
 \title{Read a VCF file with the genotypes use for the ancestry call}
 \usage{
-readSNVVCF(fileName, genome = "hg38", profileName = NULL, offset = 0L)
+readSNVVCF(fileName, profileName = NULL, offset = 0L)
 }
 \arguments{
 \item{fileName}{a \code{character} string representing the name, including
 the path, of a VCF file containing the SNV read counts.
 The VCF must contain those genotype fields: GT, AD, DP.}
+
+\item{profileName}{a \code{character} with Name.ID for the genotype name}
 
 \item{offset}{a \code{integer} representing the offset to be added to the
 position of the SNVs. The value of offset

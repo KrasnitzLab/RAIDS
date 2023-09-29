@@ -67,16 +67,28 @@ This is a text file with the frequency for the 5 super populations of the
 10 first SNVs from chromosome 1 in 1000 Genomes as described in:
  https://wellcomeopenresearch.org/articles/4-50/
 
-The file:
-listSNPIndexes_Demo.rds
-mapSNVSelected_Demo.rds
-are create from matFreqSNV_Demo.txt.bz2
-listSNPIndexes_Demo.rds: is an index of the variant where the frequency of at
-least one 1000 genomes superpopulation is bigger than 1%.
-mapSNVSelected_Demo.rds: subset matFreqSNV_Demo.txt.bz2 of the SNV selected
-in listSNPIndexes_Demo.rds
 
-The file:
-unrelatedPatientsInfo_Demo.rds
-list of unrelated (the file does not represent real relation between) patient from 1000 genome describe in
-https://wellcomeopenresearch.org/articles/4-50/
+###############################################################################
+## listSNPIndexes_Demo.rds
+## mapSNVSelected_Demo.rds
+###############################################################################
+
+Those 2 files are created using the information from the
+matFreqSNV_Demo.txt.bz2 file. The listSNPIndexes_Demo.rds is an index of the
+SNVs that have a frequency for at least one of the 1000 Genomes super-population
+bigger than 1%. The mapSNVSelected_Demo.rds is a subset of
+matFreqSNV_Demo.txt.bz2 containing the selected SNVs present in
+listSNPIndexes_Demo.rds.
+
+
+###############################################################################
+## unrelatedPatientsInfo_Demo.rds
+###############################################################################
+
+The file contains the list of unrelated profiles from 1000 Genomes.
+The values does not represent the real relation between profiles; the
+values have been modified for demonstration purpose.
+The profiles from 1000 Genomes are described in:
+ https://wellcomeopenresearch.org/articles/4-50/
+
+

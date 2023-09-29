@@ -42,7 +42,10 @@ Default: \code{NULL}.}
 directory containing the VCF output of SNP-pileup for each sample. The
 SNP-pileup files must be compressed (gz files) and have the name identifiers
 of the samples. A sample with "Name.ID" identifier would have an
-associated SNP-pileup file called "Name.ID.txt.gz".}
+associated file called
+if genoSource is "VCF", then "Name.ID.vcf.gz",
+if genoSource is "generic", then "Name.ID.generic.txt.gz"
+if genoSource is "snp-pileup", then "Name.ID.txt.gz".}
 
 \item{pathOut}{a \code{character} string representing the path to
 the directory where the output files are created.}

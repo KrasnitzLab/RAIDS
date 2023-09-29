@@ -94,7 +94,7 @@ created for each entry present in the \code{listProfiles} parameter.
 
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
-fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 
 ## The data.frame containing the information about the study
 ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"

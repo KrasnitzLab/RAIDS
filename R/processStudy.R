@@ -73,7 +73,7 @@
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -273,7 +273,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
@@ -473,7 +473,7 @@ pruningSample <- function(gdsReference,
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "studyID", "study.desc", "study.platform"
@@ -1732,10 +1732,10 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' data(demoKnownSuperPop1KG)
 #'
 #' ## The Reference GDS file
-#' path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
+#' path1KG <- system.file("extdata/tests", package="RAIDS")
 #'
 #' ## Open the Reference GDS file
-#' gdsRef <- snpgdsOpen(file.path(path1KG, "ex1kg.gds"))
+#' gdsRef <- snpgdsOpen(file.path(path1KG, "ex1_good_small_1KG.gds"))
 #'
 #' ## Path to the demo synthetic results files
 #' ## List of the KNN result files from PCA run on synthetic data
@@ -1974,10 +1974,10 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' ## Note that the 1KG GDS file used for this example is a
 #' ## simplified version and CANNOT be used for any real analysis
 #' #################################################################
-#' path1KG <- file.path(dataDir, "example", "gdsRef")
+#' path1KG <- file.path(dataDir, "tests")
 #'
-#' fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
-#' fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+#' fileReferenceGDS  <- file.path(path1KG, "ex1_good_small_1KG.gds")
+#' fileAnnotGDS <- file.path(path1KG, "ex1_good_small_1KG_Annot.gds")
 #'
 #' #################################################################
 #' ## The Sample SNP pileup files (one per sample) need
@@ -2188,10 +2188,10 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ## Note that the 1KG GDS file used for this example is a
 #' ## simplified version and CANNOT be used for any real analysis
 #' #################################################################
-#' path1KG <- file.path(dataDir, "example", "gdsRef")
+#' path1KG <- file.path(dataDir, "tests")
 #'
-#' fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
-#' fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+#' fileReferenceGDS <- file.path(path1KG, "ex1_good_small_1KG.gds")
+#' fileAnnotGDS <- file.path(path1KG, "ex1_good_small_1KG_Annot.gds")
 #'
 #' #################################################################
 #' ## The Sample SNP pileup files (one per sample) need

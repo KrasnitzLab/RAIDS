@@ -115,7 +115,7 @@ library(gdsfmt)
 
 ## Path to the demo 1KG GDS file located in this package
 dataDir <- system.file("extdata/tests", package="RAIDS")
-fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 
 ## Profile GDS file for one profile
 fileProfile <- file.path(tempdir(), "ex1.gds")

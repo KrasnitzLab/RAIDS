@@ -60,7 +60,7 @@
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## Temporary Profile GDS file for one profile in temporary directory
 #' fileProfile <- file.path(tempdir(), "ex1.gds")
@@ -308,7 +308,7 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'
 #' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## Open the Reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)
@@ -712,7 +712,7 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## Temporary Profile GDS file for one profile in temporary directory
 #' fileProfile <- file.path(tempdir(), "ex1.gds")
@@ -928,8 +928,8 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #'
 #' #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
-#' fileAnnotGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
+#' fileAnnotGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot.gds")
 #'
 #' ## Temporary Profile GDS file for one profile in temporary directory
 #' fileProfile <- file.path(tempdir(), "ex1.gds")
@@ -1103,7 +1103,7 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
-#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 #'
 #' ## Open the reference GDS file (demo version)
 #' gds1KG <- snpgdsOpen(fileGDS)

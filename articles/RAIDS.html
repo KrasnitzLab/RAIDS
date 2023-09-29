@@ -204,8 +204,8 @@ files as input:</p>
 <li>The <strong>population reference SNV Annotation GDS
 file</strong>
 </li>
-<li>The <strong>Profile SNP VCF file</strong> (one per sample present in
-the study)</li>
+<li>The <strong>Profile SNP file</strong> (one per sample present in the
+study)</li>
 <li>The <strong>Profile PED RDS file</strong> (one file with information
 for all profiles in the study)</li>
 </ul>
@@ -242,18 +242,23 @@ referred to as <strong>pathReference</strong>.</p>
 <h5 id="profile-snp-file">
 <strong>Profile SNP file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-file"></a>
 </h5>
-<p>The VCF <strong>Profile SNP file</strong> file follow the VCF
-standard with at least those genotype fields: GT, AD, DP. The
-identifiant of the genotype in the VCF must be (Name.ID). The variants
-in the VCF must be germline variants and should include the genotype of
-the wild-type homozygous at the selected positions in the reference. One
-file per profile are need and must be gzipped.</p>
-<p>Note that the name assigned to the VCF <strong>Profile SNP
-file</strong> has to correspond to the profile identifier (Name.ID) in
-the following analysis. For example, a SNP file called
-“Sample.01.vcf.gz” would be associated to the “Sample.01” profile.</p>
-<p>The generic <strong>Profile SNP file</strong> format is coma
-separated and the mandatory columns are:</p>
+<p>The <strong>Profile SNP file</strong> can be either in a VCF format
+or in a generic format.</p>
+<p>The <strong>Profile SNP VCF file</strong> follows the VCF standard
+with at least those genotype fields: <em>GT</em>, <em>AD</em> and
+<em>DP</em>. The identifier of the genotype in the VCF file must
+correspond to the profile identifier <em>Name.ID</em>. The SNVs must be
+germline variants and should include the genotype of the wild-type
+homozygous at the selected positions in the reference. One file per
+profile is need and the VCF file must be gzipped.</p>
+<p>Note that the name assigned to the <strong>Profile SNP VCF
+file</strong> has to correspond to the profile identifier
+<em>Name.ID</em> in the following analysis. For example, a SNP file
+called “Sample.01.vcf.gz” would be associated to the “Sample.01”
+profile.</p>
+<p>A generic SNP file can replace the VCF file. The <strong>Profile SNP
+Generic file</strong> format is coma separated and the mandatory columns
+are:</p>
 <ul>
 <li>
 <em>Chromosome</em>: The name of the chromosome</li>
@@ -272,11 +277,12 @@ separated and the mandatory columns are:</p>
 </ul>
 <p>Beware that the starting position in the <strong>population reference
 GDS File</strong> is zero (like BED files). The <strong>Profile SNP
-file</strong> should also start at position zero.</p>
-<p>Note that the name assigned to the <strong>Profile SNP file</strong>
-has to correspond to the profile identifier (Name.ID) in the following
-analysis. For example, a SNP file called “Sample.01.generic.txt.gz”
-would be associated to the “Sample.01” profile.</p>
+Generic file</strong> should also start at position zero.</p>
+<p>Note that the name assigned to the <strong>Profile SNP Generic
+file</strong> has to correspond to the profile identifier
+<em>Name.ID</em> in the following analysis. For example, a SNP file
+called “Sample.01.generic.txt.gz” would be associated to the “Sample.01”
+profile.</p>
 <p><br></p>
 </div>
 <div class="section level5">
@@ -288,9 +294,9 @@ would be associated to the “Sample.01” profile.</p>
 mandatory columns:</p>
 <ul>
 <li>
-<em>Name.ID</em>: The unique sample identifier. The profile VCF
-file<br>
-should be called “Name.ID.txt.gz”.</li>
+<em>Name.ID</em>: The unique sample identifier. The associated
+<strong>profile SNP file</strong> should be called
+“Name.ID.txt.gz”.</li>
 <li>
 <em>Case.ID</em>: The patient identifier associated to the
 sample.</li>
@@ -304,7 +310,7 @@ source (primary tumor, metastatic tumor, normal, etc..).</li>
 dbGAP_XYZ).</li>
 </ul>
 <p>Important: The row names of the <em>data.frame</em> must be the
-profiles’ <strong>Name.ID</strong>.</p>
+profiles <em>Name.ID</em>.</p>
 <p>This file is referred to as the <strong>Profile PED RDS file</strong>
 (PED for pedigree). Alternatively, the PED information can be saved in
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
@@ -461,7 +467,8 @@ file)</li>
 <li>The inference information RDS file (<strong>“.infoCall.rds”</strong>
 file)</li>
 <li>The parameter information RDS files from the synthetic inference
-(**“KNN.synt.*.rds”** files in a sub-directory)</li>
+(<strong>“KNN.synt.</strong>*<strong>.rds”</strong> files in a
+sub-directory)</li>
 </ul>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>
@@ -534,18 +541,23 @@ referred to as <strong>pathReference</strong>.</p>
 <h5 id="profile-snp-file-1">
 <strong>Profile SNP file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-file-1"></a>
 </h5>
-<p>The VCF <strong>Profile SNP file</strong> file follow the VCF
-standard with at least those genotype fields: GT, AD, DP. The
-identifiant of the genotype in the VCF must be (Name.ID). The variants
-in the VCF must be germline variants and should include the genotype of
-the wild-type homozygous at the selected positions in the reference. One
-file per profile are need and must be gzipped.</p>
-<p>Note that the name assigned to the VCF <strong>Profile SNP
-file</strong> has to correspond to the profile identifier (Name.ID) in
-the following analysis. For example, a SNP file called
-“Sample.01.vcf.gz” would be associated to the “Sample.01” profile.</p>
-<p>The generic <strong>Profile SNP file</strong> format is coma
-separated and the mandatory columns are:</p>
+<p>The <strong>Profile SNP file</strong> can be either in a VCF format
+or in a generic format.</p>
+<p>The <strong>Profile SNP VCF file</strong> follows the VCF standard
+with at least those genotype fields: <em>GT</em>, <em>AD</em> and
+<em>DP</em>. The identifier of the genotype in the VCF file must
+correspond to the profile identifier <em>Name.ID</em>. The SNVs must be
+germline variants and should include the genotype of the wild-type
+homozygous at the selected positions in the reference. One file per
+profile is need and the VCF file must be gzipped.</p>
+<p>Note that the name assigned to the <strong>Profile SNP VCF
+file</strong> has to correspond to the profile identifier
+<em>Name.ID</em> in the following analysis. For example, a SNP file
+called “Sample.01.vcf.gz” would be associated to the “Sample.01”
+profile.</p>
+<p>A generic SNP file can replace the VCF file. The <strong>Profile SNP
+Generic file</strong> format is coma separated and the mandatory columns
+are:</p>
 <ul>
 <li>
 <em>Chromosome</em>: The name of the chromosome</li>
@@ -564,11 +576,12 @@ separated and the mandatory columns are:</p>
 </ul>
 <p>Beware that the starting position in the <strong>population reference
 GDS File</strong> is zero (like BED files). The <strong>Profile SNP
-file</strong> should also start at position zero.</p>
-<p>Note that the name assigned to the <strong>Profile SNP file</strong>
-has to correspond to the profile identifier (Name.ID) in the following
-analysis. For example, a SNP file called “Sample.01.generic.txt.gz”
-would be associated to the “Sample.01” profile.</p>
+Generic file</strong> should also start at position zero.</p>
+<p>Note that the name assigned to the <strong>Profile SNP Generic
+file</strong> has to correspond to the profile identifier
+<em>Name.ID</em> in the following analysis. For example, a SNP file
+called “Sample.01.generic.txt.gz” would be associated to the “Sample.01”
+profile.</p>
 <p><br></p>
 </div>
 <div class="section level5">
@@ -580,8 +593,8 @@ would be associated to the “Sample.01” profile.</p>
 mandatory columns:</p>
 <ul>
 <li>
-<em>Name.ID</em>: The unique sample identifier. The profile VCF
-file<br>
+<em>Name.ID</em>: The unique sample identifier. The associated
+<strong>profile SNP file</strong><br>
 should be called “Name.ID.txt.gz”.</li>
 <li>
 <em>Case.ID</em>: The patient identifier associated to the
@@ -596,7 +609,7 @@ source (primary tumor, metastatic tumor, normal, etc..).</li>
 dbGAP_XYZ).</li>
 </ul>
 <p>Important: The row names of the <em>data.frame</em> must be the
-profiles’ <strong>Name.ID</strong>.</p>
+profiles <em>Name.ID</em>.</p>
 <p>This file is referred to as the <strong>Profile PED RDS file</strong>
 (PED for pedigree). Alternatively, the PED information can be saved in
 another type of file (CVS, etc..) as long as the <em>data.frame</em>
@@ -754,7 +767,8 @@ file)</li>
 <li>The inference information RDS file (<strong>“.infoCall.rds”</strong>
 file)</li>
 <li>The parameter information RDS files from the synthetic inference
-(**“KNN.synt.*.rds”** files in a sub-directory)</li>
+(<strong>“KNN.synt.</strong>*<strong>.rds”</strong> files in a
+sub-directory)</li>
 </ul>
 <p>In addition, a sub-directory (named using the <em>profile ID</em>) is
 also created.</p>

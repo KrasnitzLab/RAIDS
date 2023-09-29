@@ -180,7 +180,7 @@ profile.</p></li>
 <span class="r-in"><span>    <span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span></span>
 <span class="r-in"><span>    <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu">GenomeInfoDb</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlengths</a></span><span class="op">(</span><span class="fu">BSgenome.Hsapiens.UCSC.hg38</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg38/man/package.html" class="external-link">Hsapiens</a></span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">demoPedigreeEx1</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>
 <span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span></span>
 <span class="r-in"><span>            pathGeno<span class="op">=</span><span class="va">pathGeno</span>, pathOut<span class="op">=</span><span class="va">pathOut</span>,</span></span>
@@ -191,7 +191,7 @@ profile.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathProfileGDS</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">pathOut</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

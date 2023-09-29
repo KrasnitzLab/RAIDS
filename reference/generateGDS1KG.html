@@ -152,6 +152,9 @@ https://bioconductor.org/packages/gdsfmt/</p>
 <span class="r-in"><span><span class="co">## Path to the demo pedigree file is located in this package</span></span></span>
 <span class="r-in"><span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Path to the CSV genoytype files</span></span></span>
+<span class="r-in"><span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"demoProfileGenotypes"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The RDS file containing the pedigree information</span></span></span>
 <span class="r-in"><span><span class="va">pedigreeFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"PedigreeReferenceDemo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -165,7 +168,7 @@ https://bioconductor.org/packages/gdsfmt/</p>
 <span class="r-in"><span><span class="va">tempRefGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"1KG_TEMP.gds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a temporary Reference GDS file</span></span></span>
-<span class="r-in"><span><span class="fu">generateGDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">dataDir</span>, filePedRDS<span class="op">=</span><span class="va">pedigreeFile</span>,</span></span>
+<span class="r-in"><span><span class="fu">generateGDS1KG</span><span class="op">(</span>pathGeno<span class="op">=</span><span class="va">pathGeno</span>, filePedRDS<span class="op">=</span><span class="va">pedigreeFile</span>,</span></span>
 <span class="r-in"><span>            fileSNVIndex<span class="op">=</span><span class="va">snpIndexFile</span>, fileSNVSelected<span class="op">=</span><span class="va">filterSNVFile</span>,</span></span>
 <span class="r-in"><span>            fileNameGDS<span class="op">=</span><span class="va">tempRefGDS</span>, listSamples<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

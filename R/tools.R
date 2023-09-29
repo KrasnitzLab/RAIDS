@@ -160,26 +160,38 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #'
 #' ## Path to the demo vcf files in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
-#' pathGeno <- file.path(dataDir, "demoGenoChr")
+#' pathGenoTar <- file.path(dataDir, "demoGenoChr", "demoGenoChr.tar")
 #'
-#' ## Path where the output vcf file will be created
-#' pathOut <- tempdir()
+#' ## Path where the chromosomes files will be located
+#' pathGeno <- file.path(tempdir(), "tempGeno")
+#' dir.create(pathGeno, showWarnings=FALSE)
+#'
+#' ## Untar the file that contains the VCF files for 3 samples split by
+#' ## chromosome (one directory per chromosome)
+#' untar(tarfile=pathGenoTar, exdir=pathGeno)
+#'
+#' ## Path where the output VCF file will be created is
+#' ## the same where the split VCF are (pathGeno)
 #'
 #' ## The files must not exist
-#' if (!file.exists(file.path(tempdir(), "NA12003.csv.bz2")) &&
-#'         !file.exists(file.path(tempdir(), "NA12004.csv.bz2")) &&
-#'         !file.exists(file.path(tempdir(), "NA12005.csv.bz2"))) {
+#' if (!file.exists(file.path(pathGeno, "NA12003.csv.bz2")) &&
+#'         !file.exists(file.path(pathGeno, "NA12004.csv.bz2")) &&
+#'         !file.exists(file.path(pathGeno, "NA12005.csv.bz2"))) {
 #'
 #'         ## Return 0 when successful
 #'         ## The files "NA12003.csv.bz2", "NA12004.csv.bz2" and
 #'         ## "NA12005.csv.bz2" should not be present in the current directory
-#'         groupChr1KGSNV(pathGenoChr=pathGeno, pathOut=pathOut)
+#'         groupChr1KGSNV(pathGenoChr=pathGeno, pathOut=pathGeno)
 #'
-#'         ## Remove temporary VCF file
-#'         unlink(file.path(tempdir(), "NA12003.csv.bz2"), force=TRUE)
-#'         unlink(file.path(tempdir(), "NA12004.csv.bz2"), force=TRUE)
-#'         unlink(file.path(tempdir(), "NA12005.csv.bz2"), force=TRUE)
+#'         ## Validate that files have been created
+#'         file.exists(file.path(pathGeno, "NA12003.csv.bz2"))
+#'         file.exists(file.path(pathGeno, "NA12004.csv.bz2"))
+#'         file.exists(file.path(pathGeno, "NA12005.csv.bz2"))
+#'
 #' }
+#'
+#' ## Remove temporary directory
+#' unlink(pathGeno, recursive=TRUE, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv2 read.csv2

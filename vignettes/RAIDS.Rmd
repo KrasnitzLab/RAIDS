@@ -152,7 +152,7 @@ The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
 
 - The **population reference GDS file**
 - The **population reference SNV Annotation GDS file**
-- The **Profile SNP pileup file** (one per sample present in the study)
+- The **Profile SNP VCF file** (one per sample present in the study)
 - The **Profile PED RDS file** (one file with information for all profiles in the study)
 
 In addition, a *data.frame* containing the general information about the 
@@ -181,9 +181,22 @@ as **pathReference**.
 
 <br>
 
-#### **Population SNP pileup file**
+#### **Profile SNP file**
 
-The generic **Profile SNP pileup file** format is coma separated and the 
+The VCF **Profile SNP file** file follow the VCF standard with at least those genotype
+fields: GT, AD, DP. The identifiant of the genotype in the VCF must 
+be (Name.ID). The variants in the VCF must be germline variants 
+and should include the genotype of the wild-type homozygous 
+at the selected positions in the reference. One file per
+profile are need and must be gzipped.
+
+Note that the name assigned to the VCF **Profile SNP file** has to 
+correspond to the profile identifier (Name.ID) in the following analysis. 
+For example, a SNP file called "Sample.01.vcf.gz" would be 
+associated to the "Sample.01" profile.
+
+
+The generic **Profile SNP file** format is coma separated and the 
 mandatory columns are:
 
 * _Chromosome_: The name of the chromosome
@@ -195,12 +208,12 @@ mandatory columns are:
 * _File1A_: The count for the alternative nucleotide
 
 Beware that the starting position in the **population reference GDS File** is 
-zero (like BED files). The **Profile SNP pileup file** should also start 
+zero (like BED files). The **Profile SNP file** should also start 
 at position zero.
 
-Note that the name assigned to the **Profile SNP pileup file** has to 
+Note that the name assigned to the **Profile SNP file** has to 
 correspond to the profile identifier (Name.ID) in the following analysis. 
-For example, a SNP pileup file called "Sample.01.txt.gz" would be 
+For example, a SNP file called "Sample.01.generic.txt.gz" would be 
 associated to the "Sample.01" profile.
 
 <br>
@@ -272,7 +285,7 @@ studyDF <- data.frame(study.id="MYDATA",
                    stringsAsFactors=FALSE)
 
 #############################################################################
-## The Sample SNP pileup files (one per sample) need
+## The Sample SNP VCF files (one per sample) need
 ## to be all located in the same directory.
 #############################################################################
 pathGeno <- file.path(dataDir, "example", "snpPileup")
@@ -323,16 +336,18 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
         dir.create(pathProfileGDS)
         dir.create(pathOut)
     
-        #######################################################################
+        #########################################################################
         ## The wrapper function generates the synthetic dataset and uses it 
         ## to selected the optimal parameters before calling the genetic 
         ## ancestry on the current profiles.
         ## All important information, for each step, are saved in 
         ## multiple output files.
         ## The 'genoSource' parameter has 2 options depending on how the 
-        ##   SNP pileup files have been generated: 
-        ##      "snp-pileup" (snp-pileup software) or "generic" (other software)
-        #######################################################################
+        ##   SNP files have been generated: 
+        ##   SNP VCF files have been generated: 
+        ##  "VCF" or "generic" (other software)
+        ##
+        #########################################################################
         runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
@@ -341,7 +356,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
                  fileReferenceAnnotGDS=fileAnnotGDS,
                  chrInfo=chrInfo,
                  syntheticRefDF=dataRef,
-                 genoSource="snp-pileup")
+                 genoSource="VCF")
         list.files(pathOut)
         list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
 
@@ -398,7 +413,7 @@ It requires 4 files as input:
 
 - The **population reference GDS file**
 - The **population reference SNV Annotation GDS file**
-- The **Profile SNP pileup file** (one per sample present in the study)
+- The **Profile SNP file** (one per sample present in the study)
 - The **Profile PED RDS file** (one file with information for all profiles in the study)
 
 A *data.frame* containing the general information about the study is 
@@ -427,9 +442,21 @@ as **pathReference**.
 
 <br>
 
-#### **Profile SNP pileup file**
+#### **Profile SNP file**
 
-The generic **Profile SNP pileup file** format is coma separated and the 
+The VCF **Profile SNP file** file follow the VCF standard with at least those genotype
+fields: GT, AD, DP. The identifiant of the genotype in the VCF must 
+be (Name.ID). The variants in the VCF must be germline variants 
+and should include the genotype of the wild-type homozygous 
+at the selected positions in the reference. One file per
+profile are need and must be gzipped.
+
+Note that the name assigned to the VCF **Profile SNP file** has to 
+correspond to the profile identifier (Name.ID) in the following analysis. 
+For example, a SNP file called "Sample.01.vcf.gz" would be 
+associated to the "Sample.01" profile.
+
+The generic **Profile SNP file** format is coma separated and the 
 mandatory columns are:
 
 * _Chromosome_: The name of the chromosome
@@ -441,12 +468,12 @@ mandatory columns are:
 * _File1A_: The count for the alternative nucleotide
 
 Beware that the starting position in the **population reference GDS File** is 
-zero (like BED files). The **Profile SNP pileup file** should also start 
+zero (like BED files). The **Profile SNP file** should also start 
 at position zero.
 
-Note that the name assigned to the **Profile SNP pileup file** has to 
+Note that the name assigned to the **Profile SNP file** has to 
 correspond to the profile identifier (Name.ID) in the following analysis. 
-For example, a SNP pileup file called "Sample.01.txt.gz" would be 
+For example, a SNP file called "Sample.01.generic.txt.gz" would be 
 associated to the "Sample.01" profile.
 
 <br>
@@ -518,7 +545,7 @@ studyDF <- data.frame(study.id="MYDATA",
                    stringsAsFactors=FALSE)
 
 #############################################################################
-## The Sample SNP pileup files (one per sample) need
+## The Sample SNP VCF files (one per sample) need
 ## to be all located in the same directory.
 #############################################################################
 pathGeno <- file.path(dataDir, "example", "snpPileupRNA")
@@ -576,8 +603,9 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       ## All important information, for each step, are saved in 
       ## multiple output files.
       ## The 'genoSource' parameter has 2 options depending on how the 
-      ##   SNP pileup files have been generated: 
-      ##      "snp-pileup" (snp-pileup software) or "generic" (other software)
+      ##   SNP files have been generated: 
+      ##   SNP VCF files have been generated: 
+      ##  "VCF" or "generic" (other software)
       #########################################################################
       runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
                     pathProfileGDS=pathProfileGDS,
@@ -588,7 +616,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
                     chrInfo=chrInfo,
                     syntheticRefDF=dataRef,
                     blockTypeID="GeneS.Ensembl.Hsapiens.v86",
-                    genoSource="snp-pileup")
+                    genoSource="VCF")
     
       list.files(pathOut)
       list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))

@@ -332,6 +332,9 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' the path, of a VCF file containing the SNV read counts.
 #' The VCF must contain those genotype fields: GT, AD, DP.
 #'
+#'
+#' @param profileName a \code{character} with Name.ID for the genotype name
+#'
 #' @param offset a \code{integer} representing the offset to be added to the
 #' position of the SNVs. The value of offset
 #' is added to the position present in the file. Default: \code{0L}.
@@ -370,10 +373,10 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' @importFrom GenomicRanges seqnames start width
 #' @encoding UTF-8
 #' @keywords internal
-readSNVVCF <- function(fileName, genome = "hg38",
+readSNVVCF <- function(fileName,
             profileName = NULL, offset = 0L) {
 
-    vcf <- readVcf(fileName, genome)
+    vcf <- readVcf(fileName)
 
     gtCur <- geno(vcf)
     genoPos <- 1

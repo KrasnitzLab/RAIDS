@@ -907,8 +907,8 @@ validateComputePCARefSample <- function(gdsProfile, currentProfile, studyIDRef,
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile, currentProfile,
-                                        studyID) {
+validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile,
+                                        currentProfile, studyID) {
 
     ## The gds must be an object of class "gds.class"
     validateGDSClass(gds=gdsReference, name="gdsReference")

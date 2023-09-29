@@ -42,12 +42,15 @@
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Path where the demo genotype CSV files are located
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
 #' ## Demo pedigree file
 #' pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 #'
 #' ## Create a data.frame containing the information of the retained
 #' ## samples (samples with existing genotyping files)
-#' prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir, batch=0L)
+#' prepPed1KG(filePed=pedDemoFile, pathGeno=pathGeno, batch=0L)
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -96,8 +99,8 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
     ## NOTE: could be done when the data.frame is created
     pedAll$sex <- as.character(pedAll$sex)
 
-    ## Only retained samples with existing genotyping file
-    listMat1k <- dir(pathGeno, pattern = ".+.csv.bz2")
+    ## Only retained samples with existing genotyping files
+    listMat1k <- dir(pathGeno, pattern=".+.csv.bz2")
     listSample1k <- gsub(".csv.bz2", "", listMat1k)
 
     pedAll <- pedAll[listSample1k, ]
@@ -274,6 +277,9 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Path to the CSV genoytype files
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
 #' ## The RDS file containing the pedigree information
 #' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
@@ -287,7 +293,7 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
 #' tempRefGDS <- file.path(tempdir(), "1KG_TEMP.gds")
 #'
 #' ## Create a temporary Reference GDS file
-#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#' generateGDS1KG(pathGeno=pathGeno, filePedRDS=pedigreeFile,
 #'             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
 #'             fileNameGDS=tempRefGDS, listSamples=NULL)
 #'
@@ -373,6 +379,9 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' ## Path to the demo pedigree file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
+#' ## Path where the demo genotype CSV files are located
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
 #' ## The RDS file containing the pedigree information
 #' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 #'
@@ -386,7 +395,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' fileReferenceGDS <- file.path(tempdir(), "1KG_TEMP_02.gds")
 #'
 #' ## Create a temporary Reference GDS file containing information from 1KG
-#' generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+#' generateGDS1KG(pathGeno=pathGeno, filePedRDS=pedigreeFile,
 #'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
 #'         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 #'
@@ -403,7 +412,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' if (FALSE) {
 #'     generatePhase1KG2GDS(gdsReference=gdsRef,
 #'             gdsReferencePhase=gdsPhase,
-#'             pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
+#'             pathGeno=pathGeno, fileSNPsRDS=filterSNVFile,
 #'             verbose=FALSE)
 #' }
 #'

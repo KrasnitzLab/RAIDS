@@ -67,6 +67,9 @@ https://bioconductor.org/packages/gdsfmt/
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
+## Path to the CSV genoytype files
+pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+
 ## The RDS file containing the pedigree information
 pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 
@@ -80,7 +83,7 @@ filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 tempRefGDS <- file.path(tempdir(), "1KG_TEMP.gds")
 
 ## Create a temporary Reference GDS file
-generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+generateGDS1KG(pathGeno=pathGeno, filePedRDS=pedigreeFile,
             fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
             fileNameGDS=tempRefGDS, listSamples=NULL)
 

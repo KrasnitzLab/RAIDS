@@ -52,12 +52,15 @@ sample be available in a specified directory.
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
+## Path where the demo genotype CSV files are located
+pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+
 ## Demo pedigree file
 pedDemoFile <- file.path(dataDir, "PedigreeDemo.ped")
 
 ## Create a data.frame containing the information of the retained
 ## samples (samples with existing genotyping files)
-prepPed1KG(filePed=pedDemoFile, pathGeno=dataDir, batch=0L)
+prepPed1KG(filePed=pedDemoFile, pathGeno=pathGeno, batch=0L)
 
 
 }

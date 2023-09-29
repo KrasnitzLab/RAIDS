@@ -394,8 +394,7 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
     homoBlock$LOH <- rep(0, nrow(homoBlock))
 
     homoBlock <- lapply(seq_len(nrow(homoBlock)),
-                    FUN=function(i, homoBlock, blcSNV,
-                                 listAF,snpPos){
+                    FUN=function(i, homoBlock, blcSNV, listAF, snpPos){
                         blcCur <- blcSNV[blcSNV$block == i, ]
                         snvH <- snpPos[blcCur$snv, ]
                         lH1 <- 0
@@ -408,12 +407,13 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                                                                         == 1)]
                             homoBlock$nbNorm[i] <- length(listCount)
                             if(homoBlock$nbNorm[i] > 0){
-                                lH1 <-sum(log10(apply(snvH[which(snvH$normal.geno == 1),
-                                                           c("cnt.ref", "cnt.tot"), drop=FALSE],
-                                                      1, FUN=function(x){
-                                                          return(dbinom(x[1], x[2], 0.5))
-                                                          # genoN1 * dbinom(x[1], x[2], 0.5) + genoN
-                                                      })))
+                                lH1 <-sum(log10(
+                                    apply(snvH[which(snvH$normal.geno == 1),
+                                        c("cnt.ref", "cnt.tot"), drop=FALSE],
+                                        1, FUN=function(x){
+                                                return(dbinom(x[1], x[2], 0.5))
+                                    ## genoN1 * dbinom(x[1], x[2], 0.5) + genoN
+                                    })))
 
                                 lM1 <- sum(log10(apply(snvH[which(snvH$normal.geno == 1),
                                         c("cnt.ref", "cnt.tot"), drop=FALSE],

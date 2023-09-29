@@ -1165,8 +1165,8 @@ addUpdateLap <- function(gdsProfile, snpLap) {
 #' ## Path to the demo 1KG Annotation GDS file located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
-#' path1KG <- file.path(dataDir, "example", "gdsRef")
-#' fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+#' path1KG <- file.path(dataDir, "tests")
+#' fileAnnotGDS <- file.path(path1KG, "ex1_good_small_1KG_Annot.gds")
 #'
 #' gdsRefAnnotation <- openfn.gds(fileAnnotGDS)
 #'

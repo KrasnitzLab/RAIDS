@@ -588,8 +588,8 @@ context("getBlockIDs() results")
 test_that("getBlockIDs() must return the expected result", {
 
     ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
-    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+    dataDir <- test_path("fixtures")
+    fileGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
 
     annotFile <- openfn.gds(fileGDS)
     defer(closefn.gds(annotFile), envir=parent.frame())
@@ -610,8 +610,8 @@ test_that("getBlockIDs() must return the expected result", {
 test_that("getBlockIDs() must return expected error", {
 
     ## Create a temporary GDS file in an test directory
-    dataDir <- system.file("extdata/example/gdsRef", package="RAIDS")
-    fileGDS <- file.path(dataDir, "exAnnot1kg.gds")
+    dataDir <- test_path("fixtures")
+    fileGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
 
     annotFile <- openfn.gds(fileGDS)
     defer(closefn.gds(annotFile), envir=parent.frame())

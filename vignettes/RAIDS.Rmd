@@ -167,8 +167,9 @@ study is also required. The *data.frame* must contain those 3 columns:
 #### **Population reference files**
 
 For demonstration purpose, a small 
-**population reference GDS file** (called _ex1kg.gds_) and a small 
-**population reference SNV Annotation GDS file** (called _exAnnot1kg.gds_) are 
+**population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
+**population reference SNV Annotation GDS file** (called 
+_ex1_good_small_1KG_Annot.gds_) are 
 included in this package. Beware that those two files should not be used to 
 run a real ancestry inference.The results obtained with those files won't be 
 reliable.
@@ -255,10 +256,10 @@ head(demoPedigreeEx1)
 ## Note that the population reference GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #############################################################################
-pathReference <- file.path(dataDir, "example", "gdsRef")
+pathReference <- file.path(dataDir, "tests")
 
-fileGDS <- file.path(pathReference, "ex1kg.gds")
-fileAnnotGDS <- file.path(pathReference, "exAnnot1kg.gds")
+fileGDS <- file.path(pathReference, "ex1_good_small_1KG.gds")
+fileAnnotGDS <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
 
 #############################################################################
 ## A data frame containing general information about the study
@@ -412,8 +413,9 @@ also required. The *data.frame* must contain those 3 columns:
 #### **Population reference files**
 
 For demonstration purpose, a small 
-**population reference GDS file** (called _ex1kg.gds_) and a small 
-**population reference SNV Annotation GDS file** (called _exAnnot1kg.gds_) are 
+**population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
+**population reference SNV Annotation GDS file** (called 
+_ex1_good_small_1KG_Annot.gds_) are 
 included in this package. Beware that those two files should not be used to 
 run a real ancestry inference.The results obtained with those files won't be 
 reliable.
@@ -500,10 +502,10 @@ head(demoPedigreeEx1)
 ## Note that the population reference GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #############################################################################
-pathReference <- file.path(dataDir, "example", "gdsRef")
+pathReference <- file.path(dataDir, "tests")
 
-fileGDS <- file.path(pathReference, "ex1kg.gds")
-fileAnnotGDS <- file.path(pathReference, "exAnnot1kg.gds")
+fileGDS <- file.path(pathReference, "ex1_good_small_1KG.gds")
+fileAnnotGDS <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
 
 #############################################################################
 ## A data frame containing general information about the study

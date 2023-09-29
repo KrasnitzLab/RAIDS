@@ -189,10 +189,10 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #'     ## Making a "short cut" on the ensDb object
 #'     edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
 #'
-#'     path1KG <- file.path(dataDir, "example", "gdsRef")
+#'     path1KG <- file.path(dataDir, "tests")
 #'
 #'     ## Reference GDS file
-#'     fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
+#'     fileReferenceGDS  <- file.path(path1KG, "ex1_good_small_1KG.gds")
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileReferenceGDS)

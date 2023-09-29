@@ -402,9 +402,9 @@ prepSynthetic <- function(fileProfileGDS, listSampleRef,
 #'
 #' ## The 1KG files
 #' gds1KG <- snpgdsOpen(file.path(dataDir,
-#'                             "ex1_good_small_1KG_GDS.gds"))
+#'                             "ex1_good_small_1KG.gds"))
 #' gds1KGAnnot <- openfn.gds(file.path(dataDir,
-#'                             "ex1_good_small_1KG_Annot_GDS.gds"))
+#'                             "ex1_good_small_1KG_Annot.gds"))
 #'
 #' ## Generate the synthetic profiles and add them into the Profile GDS
 #' syntheticGeno(gdsReference=gds1KG, gdsRefAnnot=gds1KGAnnot,

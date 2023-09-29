@@ -131,10 +131,10 @@ head(demoPedigreeEx1)
 ## Note that the 1KG GDS file used for this example is a
 ## simplified version and CANNOT be used for any real analysis
 #################################################################
-path1KG <- file.path(dataDir, "example", "gdsRef")
+path1KG <- file.path(dataDir, "tests")
 
-fileReferenceGDS  <- file.path(path1KG, "ex1kg.gds")
-fileAnnotGDS <- file.path(path1KG, "exAnnot1kg.gds")
+fileReferenceGDS  <- file.path(path1KG, "ex1_good_small_1KG.gds")
+fileAnnotGDS <- file.path(path1KG, "ex1_good_small_1KG_Annot.gds")
 
 #################################################################
 ## The Sample SNP pileup files (one per sample) need

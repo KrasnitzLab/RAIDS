@@ -237,10 +237,10 @@ library(gdsfmt)
 data(demoKnownSuperPop1KG)
 
 ## The Reference GDS file
-path1KG <- system.file("extdata/example/gdsRef", package="RAIDS")
+path1KG <- system.file("extdata/tests", package="RAIDS")
 
 ## Open the Reference GDS file
-gdsRef <- snpgdsOpen(file.path(path1KG, "ex1kg.gds"))
+gdsRef <- snpgdsOpen(file.path(path1KG, "ex1_good_small_1KG.gds"))
 
 ## Path to the demo synthetic results files
 ## List of the KNN result files from PCA run on synthetic data

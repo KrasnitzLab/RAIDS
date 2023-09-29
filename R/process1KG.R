@@ -808,7 +808,7 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #'
 #'     ## GDS Reference file
 #'     fileReferenceGDS  <- file.path(dataDir, "tests",
-#'                 "ex1_good_small_1KG_GDS.gds")
+#'                 "ex1_good_small_1KG.gds")
 #'
 #'     ## Open the reference GDS file (demo version)
 #'     gds1KG <- snpgdsOpen(fileReferenceGDS)

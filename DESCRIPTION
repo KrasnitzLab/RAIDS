@@ -9,7 +9,7 @@ Description: This package implements specialized algorithms that enable
     following publication: Belleau, P et al. Genetic Ancestry Inference from 
     Cancer-Derived Molecular Data across Genomic and Transcriptomic 
     Platforms. Cancer Res 1 January 2023; 83 (1): 49–58.
-Version: 0.99.11
+Version: 0.99.12
 Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("cre", "aut"), comment = c(ORCID = "0000-0002-0802-1071")),
     person("Astrid", "Deschênes", email="adeschen@hotmail.com",

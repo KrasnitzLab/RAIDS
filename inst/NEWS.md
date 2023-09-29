@@ -1,3 +1,12 @@
+CHANGES IN VERSION 0.99.12
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Seven new loadable objects are available in the package.
+    o The new readSNVVCF() function enable the use of VCF SNP files as input for the runExomeAncestry() and runRNAAncestry() functions.
+    
+
 CHANGES IN VERSION 0.99.11
 ------------------------
 

@@ -69,7 +69,7 @@ the file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">readSNVVCF</span><span class="op">(</span><span class="va">fileName</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, profileName <span class="op">=</span> <span class="cn">NULL</span>, offset <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">readSNVVCF</span><span class="op">(</span><span class="va">fileName</span>, profileName <span class="op">=</span> <span class="cn">NULL</span>, offset <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,6 +78,10 @@ the file.</p>
 <dd><p>a <code>character</code> string representing the name, including
 the path, of a VCF file containing the SNV read counts.
 The VCF must contain those genotype fields: GT, AD, DP.</p></dd>
+
+
+<dt>profileName</dt>
+<dd><p>a <code>character</code> with Name.ID for the genotype name</p></dd>
 
 
 <dt>offset</dt>

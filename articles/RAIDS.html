@@ -204,8 +204,8 @@ files as input:</p>
 <li>The <strong>population reference SNV Annotation GDS
 file</strong>
 </li>
-<li>The <strong>Profile SNP pileup file</strong> (one per sample present
-in the study)</li>
+<li>The <strong>Profile SNP VCF file</strong> (one per sample present in
+the study)</li>
 <li>The <strong>Profile PED RDS file</strong> (one file with information
 for all profiles in the study)</li>
 </ul>
@@ -239,10 +239,20 @@ referred to as <strong>pathReference</strong>.</p>
 <p><br></p>
 </div>
 <div class="section level5">
-<h5 id="population-snp-pileup-file">
-<strong>Population SNP pileup file</strong><a class="anchor" aria-label="anchor" href="#population-snp-pileup-file"></a>
+<h5 id="profile-snp-file">
+<strong>Profile SNP file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-file"></a>
 </h5>
-<p>The generic <strong>Profile SNP pileup file</strong> format is coma
+<p>The VCF <strong>Profile SNP file</strong> file follow the VCF
+standard with at least those genotype fields: GT, AD, DP. The
+identifiant of the genotype in the VCF must be (Name.ID). The variants
+in the VCF must be germline variants and should include the genotype of
+the wild-type homozygous at the selected positions in the reference. One
+file per profile are need and must be gzipped.</p>
+<p>Note that the name assigned to the VCF <strong>Profile SNP
+file</strong> has to correspond to the profile identifier (Name.ID) in
+the following analysis. For example, a SNP file called
+“Sample.01.vcf.gz” would be associated to the “Sample.01” profile.</p>
+<p>The generic <strong>Profile SNP file</strong> format is coma
 separated and the mandatory columns are:</p>
 <ul>
 <li>
@@ -262,11 +272,11 @@ separated and the mandatory columns are:</p>
 </ul>
 <p>Beware that the starting position in the <strong>population reference
 GDS File</strong> is zero (like BED files). The <strong>Profile SNP
-pileup file</strong> should also start at position zero.</p>
-<p>Note that the name assigned to the <strong>Profile SNP pileup
-file</strong> has to correspond to the profile identifier (Name.ID) in
-the following analysis. For example, a SNP pileup file called
-“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+file</strong> should also start at position zero.</p>
+<p>Note that the name assigned to the <strong>Profile SNP file</strong>
+has to correspond to the profile identifier (Name.ID) in the following
+analysis. For example, a SNP file called “Sample.01.generic.txt.gz”
+would be associated to the “Sample.01” profile.</p>
 <p><br></p>
 </div>
 <div class="section level5">
@@ -350,7 +360,7 @@ inference on real data will take longer to run.</p>
 <span>                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span>
+<span><span class="co">## The Sample SNP VCF files (one per sample) need</span></span>
 <span><span class="co">## to be all located in the same directory.</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span><span class="op">)</span></span>
@@ -401,16 +411,18 @@ inference on real data will take longer to run.</p>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathProfileGDS</span><span class="op">)</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>    </span>
-<span>        <span class="co">#######################################################################</span></span>
+<span>        <span class="co">#########################################################################</span></span>
 <span>        <span class="co">## The wrapper function generates the synthetic dataset and uses it </span></span>
 <span>        <span class="co">## to selected the optimal parameters before calling the genetic </span></span>
 <span>        <span class="co">## ancestry on the current profiles.</span></span>
 <span>        <span class="co">## All important information, for each step, are saved in </span></span>
 <span>        <span class="co">## multiple output files.</span></span>
 <span>        <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
-<span>        <span class="co">##   SNP pileup files have been generated: </span></span>
-<span>        <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
-<span>        <span class="co">#######################################################################</span></span>
+<span>        <span class="co">##   SNP files have been generated: </span></span>
+<span>        <span class="co">##   SNP VCF files have been generated: </span></span>
+<span>        <span class="co">##  "VCF" or "generic" (other software)</span></span>
+<span>        <span class="co">##</span></span>
+<span>        <span class="co">#########################################################################</span></span>
 <span>        <span class="fu"><a href="../reference/runExomeAncestry.html">runExomeAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">demoPedigreeEx1</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
 <span>                 pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
 <span>                 pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span>
@@ -419,7 +431,7 @@ inference on real data will take longer to run.</p>
 <span>                 fileReferenceAnnotGDS<span class="op">=</span><span class="va">fileAnnotGDS</span>,</span>
 <span>                 chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span>
 <span>                 syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
-<span>                 genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span>
+<span>                 genoSource<span class="op">=</span><span class="st">"VCF"</span><span class="op">)</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">demoPedigreeEx1</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -439,7 +451,7 @@ inference on real data will take longer to run.</p>
 <span>    <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runExomeAncestry()</em> function generates 3 types of files
 in the <em>pathOut</em> directory.</p>
@@ -484,8 +496,8 @@ differently. It requires 4 files as input:</p>
 <li>The <strong>population reference SNV Annotation GDS
 file</strong>
 </li>
-<li>The <strong>Profile SNP pileup file</strong> (one per sample present
-in the study)</li>
+<li>The <strong>Profile SNP file</strong> (one per sample present in the
+study)</li>
 <li>The <strong>Profile PED RDS file</strong> (one file with information
 for all profiles in the study)</li>
 </ul>
@@ -519,10 +531,20 @@ referred to as <strong>pathReference</strong>.</p>
 <p><br></p>
 </div>
 <div class="section level5">
-<h5 id="profile-snp-pileup-file">
-<strong>Profile SNP pileup file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-pileup-file"></a>
+<h5 id="profile-snp-file-1">
+<strong>Profile SNP file</strong><a class="anchor" aria-label="anchor" href="#profile-snp-file-1"></a>
 </h5>
-<p>The generic <strong>Profile SNP pileup file</strong> format is coma
+<p>The VCF <strong>Profile SNP file</strong> file follow the VCF
+standard with at least those genotype fields: GT, AD, DP. The
+identifiant of the genotype in the VCF must be (Name.ID). The variants
+in the VCF must be germline variants and should include the genotype of
+the wild-type homozygous at the selected positions in the reference. One
+file per profile are need and must be gzipped.</p>
+<p>Note that the name assigned to the VCF <strong>Profile SNP
+file</strong> has to correspond to the profile identifier (Name.ID) in
+the following analysis. For example, a SNP file called
+“Sample.01.vcf.gz” would be associated to the “Sample.01” profile.</p>
+<p>The generic <strong>Profile SNP file</strong> format is coma
 separated and the mandatory columns are:</p>
 <ul>
 <li>
@@ -542,11 +564,11 @@ separated and the mandatory columns are:</p>
 </ul>
 <p>Beware that the starting position in the <strong>population reference
 GDS File</strong> is zero (like BED files). The <strong>Profile SNP
-pileup file</strong> should also start at position zero.</p>
-<p>Note that the name assigned to the <strong>Profile SNP pileup
-file</strong> has to correspond to the profile identifier (Name.ID) in
-the following analysis. For example, a SNP pileup file called
-“Sample.01.txt.gz” would be associated to the “Sample.01” profile.</p>
+file</strong> should also start at position zero.</p>
+<p>Note that the name assigned to the <strong>Profile SNP file</strong>
+has to correspond to the profile identifier (Name.ID) in the following
+analysis. For example, a SNP file called “Sample.01.generic.txt.gz”
+would be associated to the “Sample.01” profile.</p>
 <p><br></p>
 </div>
 <div class="section level5">
@@ -630,7 +652,7 @@ inference on real data will take longer to run.</p>
 <span>                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The Sample SNP pileup files (one per sample) need</span></span>
+<span><span class="co">## The Sample SNP VCF files (one per sample) need</span></span>
 <span><span class="co">## to be all located in the same directory.</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">pathGeno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileupRNA"</span><span class="op">)</span></span>
@@ -688,8 +710,9 @@ inference on real data will take longer to run.</p>
 <span>      <span class="co">## All important information, for each step, are saved in </span></span>
 <span>      <span class="co">## multiple output files.</span></span>
 <span>      <span class="co">## The 'genoSource' parameter has 2 options depending on how the </span></span>
-<span>      <span class="co">##   SNP pileup files have been generated: </span></span>
-<span>      <span class="co">##      "snp-pileup" (snp-pileup software) or "generic" (other software)</span></span>
+<span>      <span class="co">##   SNP files have been generated: </span></span>
+<span>      <span class="co">##   SNP VCF files have been generated: </span></span>
+<span>      <span class="co">##  "VCF" or "generic" (other software)</span></span>
 <span>      <span class="co">#########################################################################</span></span>
 <span>      <span class="fu"><a href="../reference/runRNAAncestry.html">runRNAAncestry</a></span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">demoPedigreeEx1</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span>
 <span>                    pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
@@ -700,7 +723,7 @@ inference on real data will take longer to run.</p>
 <span>                    chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span>
 <span>                    syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
 <span>                    blockTypeID<span class="op">=</span><span class="st">"GeneS.Ensembl.Hsapiens.v86"</span>,</span>
-<span>                    genoSource<span class="op">=</span><span class="st">"snp-pileup"</span><span class="op">)</span></span>
+<span>                    genoSource<span class="op">=</span><span class="st">"VCF"</span><span class="op">)</span></span>
 <span>    </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">pathOut</span><span class="op">)</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathOut</span>, <span class="va">demoPedigreeEx1</span><span class="op">$</span><span class="va">Name.ID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -721,7 +744,7 @@ inference on real data will take longer to run.</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sample.id D  K SuperPop</span></span>
-<span><span class="co">## 1       ex1 6 14      AMR</span></span></code></pre>
+<span><span class="co">## 1       ex1 6 13      EAS</span></span></code></pre>
 <p><br><br></p>
 <p>The <em>runRNAAncestry()</em> function generates 3 types of files in
 the <em>pathOut</em> directory.</p>

@@ -227,11 +227,11 @@ RNA-seq).</li>
 <strong>Population reference files</strong><a class="anchor" aria-label="anchor" href="#population-reference-files"></a>
 </h5>
 <p>For demonstration purpose, a small <strong>population reference GDS
-file</strong> (called <em>ex1kg.gds</em>) and a small <strong>population
-reference SNV Annotation GDS file</strong> (called
-<em>exAnnot1kg.gds</em>) are included in this package. Beware that those
-two files should not be used to run a real ancestry inference.The
-results obtained with those files won’t be reliable.</p>
+file</strong> (called <em>ex1_good_small_1KG.gds</em>) and a small
+<strong>population reference SNV Annotation GDS file</strong> (called
+<em>ex1_good_small_1KG_Annot.gds</em>) are included in this package.
+Beware that those two files should not be used to run a real ancestry
+inference.The results obtained with those files won’t be reliable.</p>
 <p>The required <strong>population reference GDS file</strong> and
 <strong>population reference SNV Annotation GDS file</strong> should be
 stored in the same directory. In the example below, this directory is
@@ -334,10 +334,10 @@ inference on real data will take longer to run.</p>
 <span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
+<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"tests"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
-<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG_Annot.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## A data frame containing general information about the study</span></span>
@@ -507,11 +507,11 @@ RNA-seq).</li>
 <strong>Population reference files</strong><a class="anchor" aria-label="anchor" href="#population-reference-files-1"></a>
 </h5>
 <p>For demonstration purpose, a small <strong>population reference GDS
-file</strong> (called <em>ex1kg.gds</em>) and a small <strong>population
-reference SNV Annotation GDS file</strong> (called
-<em>exAnnot1kg.gds</em>) are included in this package. Beware that those
-two files should not be used to run a real ancestry inference.The
-results obtained with those files won’t be reliable.</p>
+file</strong> (called <em>ex1_good_small_1KG.gds</em>) and a small
+<strong>population reference SNV Annotation GDS file</strong> (called
+<em>ex1_good_small_1KG_Annot.gds</em>) are included in this package.
+Beware that those two files should not be used to run a real ancestry
+inference.The results obtained with those files won’t be reliable.</p>
 <p>The required <strong>population reference GDS file</strong> and
 <strong>population reference SNV Annotation GDS file</strong> should be
 stored in the same directory. In the example below, this directory is
@@ -614,10 +614,10 @@ inference on real data will take longer to run.</p>
 <span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
 <span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"gdsRef"</span><span class="op">)</span></span>
+<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"tests"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1kg.gds"</span><span class="op">)</span></span>
-<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG_Annot.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## A data frame containing general information about the study</span></span>

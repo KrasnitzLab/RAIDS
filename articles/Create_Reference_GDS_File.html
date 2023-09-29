@@ -391,7 +391,7 @@ unrelated profiles.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp91NL1A/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmpqj8YwB/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -435,21 +435,34 @@ can be used to get the block information.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krasnitzlab.github.io/RAIDS/" class="external-link">RAIDS</a></span><span class="op">)</span>    </span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhengxwen/SNPRelate" class="external-link">SNPRelate</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
+<span><span class="va">pathReference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tests"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fileReferenceAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"gdsRef"</span>, <span class="st">"exAnnot1kg.gds"</span><span class="op">)</span></span>
+<span><span class="va">fileReferenceAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">gdsRefAnnot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/openfn.gds.html" class="external-link">openfn.gds</a></span><span class="op">(</span><span class="va">fileReferenceAnnotGDS</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span>
-<span><span class="co">## File: /__w/_temp/Library/RAIDS/extdata/example/gdsRef/exAnnot1kg.gds <span style="color: #555555;">(159.8K)</span></span></span>
-<span><span class="co">## +    [  ]</span></span>
-<span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">11000x156</span> <span style="color: #555555;">LZ4_ra(21.5%), 90.2K</span> <span style="color: #555555;">}</span></span></span>
-<span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
-<span><span class="co">## |  |--+ block.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">7, 123B</span> <span style="color: #555555;">}</span></span></span>
-<span><span class="co">## |  \--+ block.desc   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">7, 388B</span> <span style="color: #555555;">}</span></span></span>
-<span><span class="co">## \--+ block   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000x7</span> <span style="color: #555555;">LZ4_ra(22.6%), 68.1K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## File: /__w/_temp/Library/RAIDS/extdata/tests/ex1_good_small_1KG.gds <span style="color: #555555;">(830.0K)</span></span></span>
+<span><span class="co">## +    [  ] *</span></span>
+<span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">156, 1.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
+<span><span class="co">## |  |--+ sex   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">156, 312B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  |--+ pop.group   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">156, 624B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  |--+ superPop   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">156, 624B</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |  \--+ batch   <span style="color: #555555;">{</span> <span style="color: #555555;">Float64</span> <span style="color: #555555;">156, 1.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">11000, 103.5K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.chromosome   <span style="color: #555555;">{</span> <span style="color: #555555;">UInt16</span> <span style="color: #555555;">11000, 21.5K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.position   <span style="color: #555555;">{</span> <span style="color: #555555;">Int32</span> <span style="color: #555555;">11000, 43.0K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.allele   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">11000, 43.0K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.EAS_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.EUR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AFR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.AMR_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ snp.SAS_AF   <span style="color: #555555;">{</span> <span style="color: #555555;">PackedReal24</span> <span style="color: #555555;">11000, 32.2K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## |--+ genotype   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">11000x156, 418.9K</span> <span style="color: #555555;">}</span></span></span>
+<span><span class="co">## \--+ sample.ref   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit1</span> <span style="color: #555555;">156, 20B</span> <span style="color: #555555;">}</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gdsfmt/man/closefn.gds.html" class="external-link">closefn.gds</a></span><span class="op">(</span><span class="va">gdsRefAnnot</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
@@ -563,7 +576,7 @@ would also have to contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnotNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/Rtmp91NL1A/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmpqj8YwB/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">10x10, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>

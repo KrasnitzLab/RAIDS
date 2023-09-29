@@ -313,42 +313,42 @@ closefn.gds(gds1KG)
 if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-  ## Chromosome length information
-  ## chr23 is chrX, chr24 is chrY and chrM is 25
-  chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    ## Chromosome length information
+    ## chr23 is chrX, chr24 is chrY and chrM is 25
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
-  #############################################################################
-  ## The path where the Sample GDS files (one per sample)
-  ## will be created needs to be specified.
-  #############################################################################
-  pathProfileGDS <- file.path(tempdir(), "exampleDNA", "out.tmp")
+    ###########################################################################
+    ## The path where the Sample GDS files (one per sample)
+    ## will be created needs to be specified.
+    ###########################################################################
+    pathProfileGDS <- file.path(tempdir(), "exampleDNA", "out.tmp")
 
-  #############################################################################
-  ## The path where the result files will be created needs to 
-  ## be specified
-  #############################################################################
-  pathOut <- file.path(tempdir(), "exampleDNA", "res.out")
+    ###########################################################################
+    ## The path where the result files will be created needs to 
+    ## be specified
+    ###########################################################################
+    pathOut <- file.path(tempdir(), "exampleDNA", "res.out")
 
-  ## Example can only be run if the current directory is in writing mode
-  if (!dir.exists(file.path(tempdir(), "exampleDNA"))) {
+    ## Example can only be run if the current directory is in writing mode
+    if (!dir.exists(file.path(tempdir(), "exampleDNA"))) {
 
-      dir.create(file.path(tempdir(), "exampleDNA"))
-      dir.create(pathProfileGDS)
-      dir.create(pathOut)
+        dir.create(file.path(tempdir(), "exampleDNA"))
+        dir.create(pathProfileGDS)
+        dir.create(pathOut)
     
-      #########################################################################
-      ## The wrapper function generates the synthetic dataset and uses it 
-      ## to selected the optimal parameters before calling the genetic 
-      ## ancestry on the current profiles.
-      ## All important information, for each step, are saved in 
-      ## multiple output files.
-      ## The 'genoSource' parameter has 2 options depending on how the 
-      ##   SNP files have been generated: 
-      ##   SNP VCF files have been generated: 
-      ##  "VCF" or "generic" (other software)
-      ##
-      #########################################################################
-      runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
+        #########################################################################
+        ## The wrapper function generates the synthetic dataset and uses it 
+        ## to selected the optimal parameters before calling the genetic 
+        ## ancestry on the current profiles.
+        ## All important information, for each step, are saved in 
+        ## multiple output files.
+        ## The 'genoSource' parameter has 2 options depending on how the 
+        ##   SNP files have been generated: 
+        ##   SNP VCF files have been generated: 
+        ##  "VCF" or "generic" (other software)
+        ##
+        #########################################################################
+        runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
                  pathProfileGDS=pathProfileGDS,
                  pathGeno=pathGeno,
                  pathOut=pathOut,
@@ -357,23 +357,23 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
                  chrInfo=chrInfo,
                  syntheticRefDF=dataRef,
                  genoSource="VCF")
-      list.files(pathOut)
-      list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
+        list.files(pathOut)
+        list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
 
-      #########################################################################
-      ## The file containing the ancestry inference (SuperPop column) and 
-      ## optimal number of PCA component (D column)
-      ## optimal number of neighbours (K column)
-      #########################################################################
-      resAncestry <- read.csv(file.path(pathOut, 
+        #######################################################################
+        ## The file containing the ancestry inference (SuperPop column) and 
+        ## optimal number of PCA component (D column)
+        ## optimal number of neighbours (K column)
+        #######################################################################
+        resAncestry <- read.csv(file.path(pathOut, 
                         paste0(demoPedigreeEx1$Name.ID[1], ".Ancestry.csv")))
-      print(resAncestry)
+        print(resAncestry)
 
-      ## Remove temporary files created for this demo
-      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-      unlink(pathOut, recursive=TRUE, force=TRUE)
-      unlink(file.path(tempdir(), "exampleDNA"), recursive=TRUE, force=TRUE)
-  }
+        ## Remove temporary files created for this demo
+        unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
+        unlink(pathOut, recursive=TRUE, force=TRUE)
+        unlink(file.path(tempdir(), "exampleDNA"), recursive=TRUE, force=TRUE)
+    }
 }
   
 

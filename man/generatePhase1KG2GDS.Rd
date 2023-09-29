@@ -50,6 +50,9 @@ library(gdsfmt)
 ## Path to the demo pedigree file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
 
+## Path where the demo genotype CSV files are located
+pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+
 ## The RDS file containing the pedigree information
 pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
 
@@ -63,7 +66,7 @@ filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
 fileReferenceGDS <- file.path(tempdir(), "1KG_TEMP_02.gds")
 
 ## Create a temporary Reference GDS file containing information from 1KG
-generateGDS1KG(pathGeno=dataDir, filePedRDS=pedigreeFile,
+generateGDS1KG(pathGeno=pathGeno, filePedRDS=pedigreeFile,
         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
         fileNameGDS=fileReferenceGDS, listSamples=NULL)
 
@@ -80,7 +83,7 @@ gdsRef <- openfn.gds(fileReferenceGDS)
 if (FALSE) {
     generatePhase1KG2GDS(gdsReference=gdsRef,
             gdsReferencePhase=gdsPhase,
-            pathGeno=dataDir, fileSNPsRDS=filterSNVFile,
+            pathGeno=pathGeno, fileSNPsRDS=filterSNVFile,
             verbose=FALSE)
 }
 

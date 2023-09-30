@@ -819,22 +819,24 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #'     fileReferenceGDS  <- file.path(dataDir, "tests",
 #'                 "ex1_good_small_1KG.gds")
 #'
-#'     ## Open the reference GDS file (demo version)
-#'     gds1KG <- snpgdsOpen(fileReferenceGDS)
+#'     \donttest{
+#'         ## Open the reference GDS file (demo version)
+#'         gds1KG <- snpgdsOpen(fileReferenceGDS)
 #'
-#'     ## Append information associated to blocks
-#'     addGeneBlockGDSRefAnnot(gdsReference=gds1KG,
+#'         ## Append information associated to blocks
+#'         addGeneBlockGDSRefAnnot(gdsReference=gds1KG,
 #'             gdsRefAnnotFile=fileAnnotGDS,
 #'             ensDb=edb,
 #'             suffixBlockName="EnsDb.Hsapiens.v86")
 #'
-#'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
-#'     print(gdsAnnot1KG)
-#'     print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
+#'         gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+#'         print(gdsAnnot1KG)
+#'         print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
 #'
-#'     ## Close GDS files
-#'     closefn.gds(gds1KG)
-#'     closefn.gds(gdsAnnot1KG)
+#'        ## Close GDS files
+#'        closefn.gds(gds1KG)
+#'        closefn.gds(gdsAnnot1KG)
+#'     }
 #'
 #'     ## Remove temporary file
 #'     unlink(fileAnnotGDS, force=TRUE)

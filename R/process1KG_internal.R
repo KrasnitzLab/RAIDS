@@ -194,13 +194,19 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #'     ## Reference GDS file
 #'     fileReferenceGDS  <- file.path(path1KG, "ex1_good_small_1KG.gds")
 #'
-#'     ## Open the reference GDS file (demo version)
-#'     gds1KG <- snpgdsOpen(fileReferenceGDS)
+#'     \donttest{
+#'         ## Open the reference GDS file (demo version)
+#'         gds1KG <- snpgdsOpen(fileReferenceGDS)
 #'
-#'     ## The function returns a data frame containing gene block information
-#'     matGeneBlock <- RAIDS:::generateGeneBlock(gdsReference=gds1KG, ensDb=edb)
-#'     print(head(matGeneBlock[grep("ENSG00000157152", matGeneBlock$GName),]))
-#'     closefn.gds(gds1KG)
+#'         ## The function returns a data.frame containing
+#'         ## gene block information
+#'         matGeneBlock <- RAIDS:::generateGeneBlock(gdsReference=gds1KG,
+#'                             ensDb=edb)
+#'         print(head(matGeneBlock[grep("ENSG00000157152",
+#'                             matGeneBlock$GName),]))
+#'
+#'         closefn.gds(gds1KG)
+#'     }
 #' }
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alex Krasnitz

@@ -1,3 +1,10 @@
+CHANGES IN VERSION 0.99.13
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Update in Reference GDS vignette.
+
 CHANGES IN VERSION 0.99.12
 ------------------------
 

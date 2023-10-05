@@ -91,8 +91,9 @@ Astrid Deschênes and Alexander Krasnitz</h4>
     
     
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
-[aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 0.99.13<br><strong>Compiled date</strong>: 2023-09-30<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+[aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), David A. Tuveson
+[aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
+Krasnitz [aut]<br><strong>Version</strong>: 0.99.13<br><strong>Compiled date</strong>: 2023-10-05<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <p><br><br></p>
 <p>This vignette explains, in further details, the format of the
 population reference files that are required to run the ancestry
@@ -390,7 +391,7 @@ unrelated profiles.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmprBRXL8/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmpq9fSf6/reference_DEMO.gds <span style="color: #555555;">(1.6K)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ sample.id   <span style="color: #555555;">{</span> <span style="color: #555555;">Str8</span> <span style="color: #555555;">10, 80B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ sample.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -575,7 +576,7 @@ would also have to contain the SNVs from the entire genome.</p>
 <span></span>
 <span><span class="co">## Show the file format</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gdsRefAnnotNew</span><span class="op">)</span></span>
-<span><span class="co">## File: /tmp/RtmprBRXL8/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
+<span><span class="co">## File: /tmp/Rtmpq9fSf6/reference_SNV_Annotation_DEMO.gds <span style="color: #555555;">(427B)</span></span></span>
 <span><span class="co">## +    [  ]</span></span>
 <span><span class="co">## |--+ phase   <span style="color: #555555;">{</span> <span style="color: #555555;">Bit2</span> <span style="color: #555555;">10x10, 25B</span> <span style="color: #555555;">}</span></span></span>
 <span><span class="co">## |--+ block.annot   [ <span style="color: #555555;">data.frame</span> ] *</span></span>
@@ -639,11 +640,11 @@ which this document was compiled:</p>
 <span><span class="co">##  [15] minqa_1.2.6                 Rsamtools_2.16.0           </span></span>
 <span><span class="co">##  [17] RCurl_1.98-1.12             quantsmooth_1.66.0         </span></span>
 <span><span class="co">##  [19] htmltools_0.5.6             S4Arrays_1.0.6             </span></span>
-<span><span class="co">##  [21] progress_1.2.2              curl_5.0.2                 </span></span>
+<span><span class="co">##  [21] progress_1.2.2              curl_5.1.0                 </span></span>
 <span><span class="co">##  [23] broom_1.0.5                 pROC_1.18.4                </span></span>
 <span><span class="co">##  [25] mitml_0.4-5                 sass_0.4.7                 </span></span>
 <span><span class="co">##  [27] bslib_0.5.1                 desc_1.4.2                 </span></span>
-<span><span class="co">##  [29] plyr_1.8.8                  sandwich_3.0-2             </span></span>
+<span><span class="co">##  [29] plyr_1.8.9                  sandwich_3.0-2             </span></span>
 <span><span class="co">##  [31] zoo_1.8-12                  cachem_1.0.8               </span></span>
 <span><span class="co">##  [33] GenomicAlignments_1.36.0    lifecycle_1.0.3            </span></span>
 <span><span class="co">##  [35] iterators_1.0.14            pkgconfig_2.0.3            </span></span>
@@ -686,11 +687,11 @@ which this document was compiled:</p>
 <span><span class="co">## [109] Biobase_2.60.0              matrixStats_1.0.0          </span></span>
 <span><span class="co">## [111] stringi_1.7.12              lazyeval_0.2.2             </span></span>
 <span><span class="co">## [113] yaml_2.3.7                  boot_1.3-28.1              </span></span>
-<span><span class="co">## [115] evaluate_0.21               codetools_0.2-19           </span></span>
+<span><span class="co">## [115] evaluate_0.22               codetools_0.2-19           </span></span>
 <span><span class="co">## [117] tibble_3.2.1                BiocManager_1.30.22        </span></span>
 <span><span class="co">## [119] cli_3.6.1                   rpart_4.1.19               </span></span>
 <span><span class="co">## [121] systemfonts_1.0.4           jquerylib_0.1.4            </span></span>
-<span><span class="co">## [123] Rcpp_1.0.11                 GenomeInfoDb_1.36.3        </span></span>
+<span><span class="co">## [123] Rcpp_1.0.11                 GenomeInfoDb_1.36.4        </span></span>
 <span><span class="co">## [125] dbplyr_2.3.4                png_0.1-8                  </span></span>
 <span><span class="co">## [127] XML_3.99-0.14               parallel_4.3.1             </span></span>
 <span><span class="co">## [129] MatrixModels_0.5-2          pkgdown_2.0.7              </span></span>
@@ -699,7 +700,7 @@ which this document was compiled:</p>
 <span><span class="co">## [135] lme4_1.1-34                 glmnet_4.1-8               </span></span>
 <span><span class="co">## [137] SeqArray_1.40.1             VariantAnnotation_1.46.0   </span></span>
 <span><span class="co">## [139] purrr_1.0.2                 crayon_1.5.2               </span></span>
-<span><span class="co">## [141] rlang_1.1.1                 KEGGREST_1.40.0            </span></span>
+<span><span class="co">## [141] rlang_1.1.1                 KEGGREST_1.40.1            </span></span>
 <span><span class="co">## [143] mice_3.16.0</span></span></code></pre>
 <p><br><br></p>
 </div>
@@ -730,7 +731,7 @@ component analysis of SNP data</span>.”</span> <em>Bioinformatics</em>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Pascal Belleau, Astrid Deschênes, Alexander Krasnitz.</p>
+<p>Developed by Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz.</p>
 </div>
 
 <div class="pkgdown">

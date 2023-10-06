@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.99.14
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Adding missing author David Tuveson.
+    o Updating BiocViews terms.
+
 CHANGES IN VERSION 0.99.13
 ------------------------
 

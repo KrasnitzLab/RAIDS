@@ -109,14 +109,26 @@
 </blockquote>
 </div>
 <div class="section level2">
+<h2 id="bioconductor-package">Bioconductor Package<a class="anchor" aria-label="anchor" href="#bioconductor-package"></a>
+</h2>
+<p><a href="https://bioconductor.org/packages/RAIDS" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/RAIDS.svg" alt="Bioconductor Time"></a></p>
+<p>The <strong>RAIDS</strong> package is now an official package of <a href="http://bioconductor.org/" class="external-link">Bioconductor</a>.</p>
+<p>The current Bioconductor release can be directly downloaded from their website: <a href="https://bioconductor.org/packages/RAIDS" class="external-link">Current release</a></p>
+</div>
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install the latest version accessible, the <a href="https://cran.r-project.org/web/packages/devtools/index.html" class="external-link">devtools</a> package is required.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a> <span class="do">## Load required package</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> <span class="fu">library</span>(devtools)</span>
+<p>To install this package from <a href="https://bioconductor.org/packages/CNVMetrics" class="external-link">Bioconductor</a>, start R (version “4.3” or later) and enter:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a> <span class="do">## Install the latest version of RAIDS</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a> devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">'KrasnitzLab/RAIDS'</span>)</span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"RAIDS"</span>)</span></code></pre></div>
+<p>To install the latest version accessible from Github, the <a href="https://cran.r-project.org/web/packages/devtools/index.html" class="external-link">devtools</a> package is required.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a> <span class="do">## Load required package</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a> <span class="fu">library</span>(devtools)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a> <span class="do">## Install the latest version of RAIDS</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a> devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">'KrasnitzLab/RAIDS'</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
@@ -127,7 +139,7 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>This package and the underlying <strong><em>RAIDS</em></strong> code are distributed under the Apache-2.0 license. You are free to use and redistribute this software.</p>
+<p>This package and the underlying <strong>RAIDS</strong> code are distributed under the Apache-2.0 license. You are free to use and redistribute this software.</p>
 <p>For more information on Apache-2.0 License see <a href="https://opensource.org/licenses/Apache-2.0" class="external-link">https://opensource.org/licenses/Apache-2.0</a></p>
 </div>
 <div class="section level2">
@@ -149,6 +161,7 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://www.bioconductor.org/packages/RAIDS" class="external-link">View on Bioconductor</a></li>
 <li><a href="https://github.com/KrasnitzLab/RAIDS/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/KrasnitzLab/RAIDS/issues" class="external-link">Report a bug</a></li>
 </ul>

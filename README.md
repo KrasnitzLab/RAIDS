@@ -35,9 +35,31 @@ the following:
 >  Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson, Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1 January 2023; 83 (1): 49–58. https://doi.org/10.1158/0008-5472.CAN-22-0682
 
 
+## Bioconductor Package ##
+
+[![Bioconductor Time](https://bioconductor.org/shields/years-in-bioc/RAIDS.svg)](https://bioconductor.org/packages/RAIDS)
+
+The **RAIDS** package is now an official package 
+of [Bioconductor](http://bioconductor.org/). 
+
+The current Bioconductor release can be directly downloaded from their website:
+[Current release](https://bioconductor.org/packages/RAIDS)
+
+
 ## Installation ##
 
-To install the latest version accessible, the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+To install this package 
+from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R 
+(version "4.3" or later) and enter: 
+
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+
+    BiocManager::install("RAIDS")
+    
+
+To install the latest version accessible from Github, 
+the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
 package is required.
 
      ## Load required package
@@ -56,7 +78,7 @@ package is required.
 
 ## License ##
 
-This package and the underlying **_RAIDS_** code are distributed under 
+This package and the underlying **RAIDS** code are distributed under 
 the Apache-2.0 license. You are free to use and redistribute this software. 
 
 For more information on Apache-2.0 License see

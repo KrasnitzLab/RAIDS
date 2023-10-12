@@ -87,16 +87,16 @@ accuracy estimate.
 
 # Installation
 
-To install the latest version from the 
-[RAIDS Github Website](https://github.com/KrasnitzLab/RAIDS "RAIDS Github Site"), 
-the `r CRANpkg("devtools")` package is required.
+To install this package 
+from [Bioconductor](https://bioconductor.org/packages/RAIDS), start R 
+(version 4.3 or later) and enter: 
+
 
 ```{r installDemo01, eval=FALSE, warning=FALSE, message=FALSE}
-## Load required package
-library(devtools)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
 
-## Install the latest version of RAIDS
-devtools::install_github('KrasnitzLab/RAIDS')
+BiocManager::install("RAIDS")
 ```
 
 <br>

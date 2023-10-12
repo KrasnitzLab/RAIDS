@@ -49,7 +49,7 @@ The current Bioconductor release can be directly downloaded from their website:
 ## Installation ##
 
 To install this package 
-from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R 
+from [Bioconductor](https://bioconductor.org/packages/RAIDS), start R 
 (version "4.3" or later) and enter: 
 
     if (!requireNamespace("BiocManager", quietly = TRUE))

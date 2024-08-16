@@ -11,7 +11,7 @@ validateProfileGDSExist(pathProfile, profile)
 \item{pathProfile}{a \code{character} string representing the directory
 where the Profile GDS files will be created. The directory must exist.}
 
-\item{currentProfile}{a \code{character} string
+\item{profile}{a \code{character} string
 corresponding to the profile identifier. A Profile GDS file
 corresponding to the profile identifier must exist and be located in the
 \code{pathProfile} directory.}

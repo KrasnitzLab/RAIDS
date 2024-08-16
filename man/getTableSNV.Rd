@@ -45,25 +45,25 @@ when the function is running.}
 }
 \value{
 a \code{data.frame} containing:
-\itemize{
-\item{cnt.tot} {a single \code{integer} representing the total coverage for
+\describe{
+\item{cnt.tot}{ a single \code{integer} representing the total coverage for
 the SNV.}
-\item{cnt.ref} {a single \code{integer} representing the coverage for
+\item{cnt.ref}{ a single \code{integer} representing the coverage for
 the reference allele.}
-\item{cnt.alt} {a single \code{integer} representing the coverage for
+\item{cnt.alt}{ a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{snpPos} {a single \code{integer} representing the SNV position.}
-\item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-\item{normal.geno} {a single \code{numeric} indicating the genotype of the
+\item{snpPos}{ a single \code{integer} representing the SNV position.}
+\item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+\item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 the normal genotype is unknown.}
-\item{pruned} { a \code{logical}}
-\item{snp.index} {a \code{vector} of \code{integer} representing the
+\item{pruned}{ a \code{logical}}
+\item{snp.index}{ a \code{vector} of \code{integer} representing the
 position of the SNVs in the Reference GDS file.}
-\item{keep} {a \code{logical} }
-\item{hetero} {a \code{logical} }
-\item{homo} {a \code{logical} }
+\item{keep}{ a \code{logical} }
+\item{hetero}{ a \code{logical} }
+\item{homo}{ a \code{logical} }
 }
 }
 \description{

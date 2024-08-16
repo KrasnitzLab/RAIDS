@@ -8,14 +8,14 @@ inferred ancestry on the synthetic profiles.}
 \format{
 The \code{data.frame} containing the information about the
 synthetic profiles. The \code{data.frame} contains 4 columns:
-\itemize{
-\item \code{sample.id} {a \code{character} string representing the unique
+\describe{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
 synthetic profile identifier.}
-\item \code{D} {a \code{numeric} representing the number of dimensions used
+\item{\code{D}}{ a \code{numeric} representing the number of dimensions used
 to infer the ancestry of the synthetic profile.}
-\item \code{K} {a \code{numeric} representing the number of neighbors used
+\item{\code{K}}{ a \code{numeric} representing the number of neighbors used
 to infer the ancestry of the synthetic profile.}
-\item \code{SuperPop} {a \code{character} string representing the
+\item{\code{SuperPop}}{ a \code{character} string representing the
 inferred ancestry of the synthetic profile for the specific D and K values.}
 }
 }
@@ -25,14 +25,14 @@ data(matKNNSynthetic)
 \value{
 The \code{data.frame} containing the information about the
 synthetic profiles. The \code{data.frame} contains 4 columns:
-\itemize{
-\item \code{sample.id} {a \code{character} string representing the unique
+\describe{
+\item{\code{sample.id}}{ a \code{character} string representing the unique
 synthetic profile identifier.}
-\item \code{D} {a \code{numeric} representing the number of dimensions used
+\item{\code{D}}{ a \code{numeric} representing the number of dimensions used
 to infer the ancestry of the synthetic profile.}
-\item \code{K} {a \code{numeric} representing the number of neighbors used
+\item{\code{K}}{ a \code{numeric} representing the number of neighbors used
 to infer the ancestry of the synthetic profile.}
-\item \code{SuperPop} {a \code{character} string representing the
+\item{\code{SuperPop}}{ a \code{character} string representing the
 inferred ancestry of the synthetic profile for the specific D and K values.}
 }
 }
@@ -70,8 +70,8 @@ results$listROC.Call
 
 }
 \seealso{
-\itemize{
-\item \code{\link{computeSyntheticROC}} {for calculating the AUROC of
+\describe{
+\item{\code{\link{computeSyntheticROC}}}{ for calculating the AUROC of
 the inferences for specific values of D and K using the inferred
 ancestry results from the synthetic profiles}
 }

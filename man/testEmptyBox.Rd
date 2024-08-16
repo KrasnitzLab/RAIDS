@@ -11,10 +11,10 @@ testEmptyBox(matCov, pCutOff = -3)
 \arguments{
 \item{matCov}{a \code{data.frame} containing only heterozygote SNVs. The
 \code{data.frame} must contain those columns:
-\itemize{
-\item{cnt.ref} {a single \code{integer} representing the coverage for
+\describe{
+\item{cnt.ref}{ a single \code{integer} representing the coverage for
 the reference allele.}
-\item{cnt.alt} {a single \code{integer} representing the coverage for
+\item{cnt.alt}{ a single \code{integer} representing the coverage for
 the alternative allele.}
 }}
 
@@ -24,7 +24,7 @@ likelihood not to be imbalanced. Default: \code{-3}.}
 }
 \value{
 a \code{list} containing 4 entries:
-\itemize{
+\describe{
 \item{pWin}{ a \code{vector} of \code{numeric} representing the
 probability (x2) of obtaining the current
 alternative/(alternative+reference) ratio from a 0.5 distribution.}

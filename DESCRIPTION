@@ -42,6 +42,8 @@ Imports: S4Vectors,
     rlang,
     VariantAnnotation,
     MatrixGenerics,
+    ggplot2,
+    stringr
 Suggests: testthat,
     knitr,
     rmarkdown,
@@ -55,4 +57,4 @@ URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome, PrincipalComponent, 
     GeneticVariability, DimensionReduction
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

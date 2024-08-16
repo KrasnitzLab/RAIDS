@@ -52,11 +52,11 @@ Default: \code{seq(2,15,1)}.}
 }
 \value{
 a \code{list} containing 5 entries:
-\itemize{
-\item{\code{dfPCA}} { a \code{data.frame} containing statistical results
+\describe{
+\item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
 on all combined synthetic results done with a fixed value of \code{D} (the
 number of dimensions). The \code{data.frame} contains those columns:
-\itemize{
+\describe{
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{median}}{ a \code{numeric} representing the median of the
@@ -72,11 +72,11 @@ combination of the fixed \code{D} value and all tested \code{K} values. }
 (the number of neighbors) for a fixed \code{D} value. }
 }
 }
-\item{\code{dfPop}} { a \code{data.frame} containing statistical results on
+\item{\code{dfPop}}{ a \code{data.frame} containing statistical results on
 all combined synthetic results done with different values of \code{D} (the
 number of dimensions) and \code{K} (the number of neighbors).
 The \code{data.frame} contains those columns:
-\itemize{
+\describe{
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -92,11 +92,11 @@ of the confusion matrix obtained by grouping all the synthetic results for
 the specified values of \code{D} and \code{K}.}
 }
 }
-\item{\code{D}} { a \code{numeric} representing the optimal \code{D} value
+\item{\code{D}}{ a \code{numeric} representing the optimal \code{D} value
 (the number of dimensions) for the specific profile.}
-\item{\code{K}} { a \code{numeric} representing the optimal \code{K} value
+\item{\code{K}}{ a \code{numeric} representing the optimal \code{K} value
 (the number of neighbors) for the specific profile.}
-\item{\code{listD}} { a \code{numeric} representing the optimal \code{D}
+\item{\code{listD}}{ a \code{numeric} representing the optimal \code{D}
 values (the number of dimensions) for the specific profile. More than one
 \code{D} is possible.}
 }

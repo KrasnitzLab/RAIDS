@@ -7,7 +7,7 @@
 \format{
 The \code{data.frame} containing the information about a demo
 profile called 'ex1'. the \code{data.frame} has 5 columns:
-\itemize{
+\describe{
 \item{Name.ID}{ a \code{character} string representing the unique
 identifier of the profile.}
 \item{Case.ID}{ a \code{character} string representing the unique
@@ -26,7 +26,7 @@ data(demoPedigreeEx1)
 \value{
 The \code{data.frame} containing the information about a demo
 profile called 'ex1'. the \code{data.frame} has 5 columns:
-\itemize{
+\describe{
 \item{Name.ID}{ a \code{character} string representing the unique
 identifier of the profile.}
 \item{Case.ID}{ a \code{character} string representing the unique
@@ -129,8 +129,8 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
 }
 \seealso{
-\itemize{
-\item \code{\link{runExomeAncestry}} {for running runs most
+\describe{
+\item{\code{\link{runExomeAncestry}}}{ for running runs most
 steps leading to the ancestry inference call on a specific exome
 profile.}
 }

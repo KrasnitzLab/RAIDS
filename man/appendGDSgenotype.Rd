@@ -13,6 +13,10 @@ appendGDSgenotype(gds, listSample, pathGeno, fileSNPsRDS, verbose)
 \link[gdsfmt]{gds.class} (a GDS file), the opened Population Reference
 GDS file.}
 
+\item{listSample}{a \code{character} string representing the path and file
+name of the RDS file that contains the indexes of the retained SNPs. The
+file must exist. The file must be a RDS file.}
+
 \item{pathGeno}{a \code{character} string representing the path where
 the reference genotyping files for each sample are located. The name of the
 genotyping files must correspond to
@@ -24,10 +28,6 @@ file must exist. The file must be a RDS file.}
 
 \item{verbose}{a \code{logical} indicating if the function must print
 messages when running.}
-
-\item{listSamples}{a \code{character} string representing the path and file
-name of the RDS file that contains the indexes of the retained SNPs. The
-file must exist. The file must be a RDS file.}
 }
 \value{
 The integer \code{0} when successful.

@@ -25,16 +25,16 @@
 #'
 #' @return a \code{data.frame} containing the needed pedigree information
 #' from Reference. The \code{data.frame} contains those columns:
-#' \itemize{
-#' \item{sample.id}{a \code{character} string representing the profile unique
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the profile unique
 #' ID.}
-#' \item{Name.ID}{a \code{character} string representing the profile name.}
+#' \item{Name.ID}{ a \code{character} string representing the profile name.}
 #' \item{sex}{a \code{character} string representing the sex of the profile.}
-#' \item{pop.group}{a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' sub-continental ancestry of the profile.}
-#' \item{superPop }{a \code{character} string representing the continental
+#' \item{superPop }{ a \code{character} string representing the continental
 #' ancestry of the profile.}
-#' \item{superPop }{a \code{integer} representing the batch of the profile.}
+#' \item{superPop }{ a \code{integer} representing the batch of the profile.}
 #' }
 #'
 #' @examples
@@ -138,22 +138,22 @@ prepPed1KG <- function(filePed, pathGeno=file.path("data", "sampleGeno"),
 #'
 #' The filtered SNP information RDS file (parameter \code{fileFREQ}), contains
 #' a \code{data.frame} with those columns:
-#' \itemize{
-#' \item{CHROM} {a \code{character} string representing the chromosome where
+#' \describe{
+#' \item{CHROM}{ a \code{character} string representing the chromosome where
 #' the SNV is located.}
-#' \item{POS} {a \code{character} string representing the SNV position on the
+#' \item{POS}{ a \code{character} string representing the SNV position on the
 #' chromosome.}
-#' \item{REF} {a \code{character} string representing the reference DNA base
+#' \item{REF}{ a \code{character} string representing the reference DNA base
 #' for the SNV.}
-#' \item{ALT} {a \code{character} string representing the alternative DNA base
+#' \item{ALT}{ a \code{character} string representing the alternative DNA base
 #' for the SNV.}\
-#' \item{EAS_AF} {a \code{character} string representing the allele frequency
+#' \item{EAS_AF}{ a \code{character} string representing the allele frequency
 #' of the EAS super population.}
-#' \item{AFR_AF} {a \code{character} string representing the allele frequency
+#' \item{AFR_AF}{ a \code{character} string representing the allele frequency
 #' of the AFR super population.}
-#' \item{AMR_AF} {a \code{character} string representing the allele frequency
+#' \item{AMR_AF}{ a \code{character} string representing the allele frequency
 #' of the AMR super population.}
-#' \item{SAS_AF} {a \code{character} string representing the allele frequency
+#' \item{SAS_AF}{ a \code{character} string representing the allele frequency
 #' of the SAS super population.}
 #' }
 #'

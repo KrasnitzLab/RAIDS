@@ -38,7 +38,7 @@ test_that("createAccuracyGraph() must return error when fileRDS is not RDS", {
     
     expect_error(createAccuracyGraph(fileRDS=fileGDS, title="", 
         selectD=c(3,7,11), selectColor=c("#5e688a", "#cd5700", "#CC79A7")), 
-        error_message)
+        error_message, fixed=TRUE)
 })
 
 

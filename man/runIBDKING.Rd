@@ -29,7 +29,7 @@ the process in the \code{\link[SNPRelate]{snpgdsIBDKING}}() function.}
 }
 \value{
 a \code{list} containing:
-\itemize{
+\describe{
 \item{sample.id}{a \code{character} string representing the sample
 ids used in the analysis}
 \item{snp.id}{a \code{character} string representing the SNP ids

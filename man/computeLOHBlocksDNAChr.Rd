@@ -19,26 +19,26 @@ package 'BSgenome.Hsapiens.UCSC.hg38'.}
 \item{snpPos}{a \code{data.frame} containing the SNV information for the
 chromosome specified by the \code{chr} argument. The \code{data.frame} must
 contain:
-\itemize{
-\item{cnt.tot} {a single \code{integer} representing the total coverage for
+\describe{
+\item{cnt.tot}{ a single \code{integer} representing the total coverage for
 the SNV.}
-\item{cnt.ref} {a single \code{integer} representing the coverage for
+\item{cnt.ref}{ a single \code{integer} representing the coverage for
 the reference allele.}
-\item{cnt.alt} {a single \code{integer} representing the coverage for
+\item{cnt.alt}{ a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{snp.pos} {a single \code{integer} representing the SNV position.}
-\item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-\item{normal.geno} {a single \code{numeric} indicating the genotype of the
+\item{snp.pos}{ a single \code{integer} representing the SNV position.}
+\item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+\item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 the normal genotype is unknown.}
-\item{pruned} {a \code{logical} indicating if the SNV is retained after
+\item{pruned}{ a \code{logical} indicating if the SNV is retained after
 pruning}
-\item{snp.index} {a \code{integer} representing the index position of the
+\item{snp.index}{ a \code{integer} representing the index position of the
 SNV in the Reference GDS file that contains all SNVs}
-\item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-\item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-\item{homo} {a \code{logical} indicating if the SNV is homozygote}
+\item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+\item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+\item{homo}{ a \code{logical} indicating if the SNV is homozygote}
 }}
 
 \item{chr}{a single positive \code{integer} for the current chromosome. The
@@ -51,32 +51,32 @@ probability of sequencing error. Default: \code{0.0001}.}
 \value{
 a \code{data.frame} with the informations about LOH on a specific
 chromosome. The \code{data.frame} contains those columns:
-\itemize{
-\item{chr} {a \code{integer} representing the current chromosome}
-\item{start} {a \code{integer} representing the starting position on the
+\describe{
+\item{chr}{ a \code{integer} representing the current chromosome}
+\item{start}{ a \code{integer} representing the starting position on the
 box containing only homozygote SNVs (or not SNV). The first box starts at
 position \code{1}.}
-\item{end} {a \code{integer} representing the end position on the
+\item{end}{ a \code{integer} representing the end position on the
 box containing only homozygote SNVs (or not SNV). The last box ends at the
 length of the chromosome.}
-\item{logLHR} {a \code{numeric} representing the LOH score basde on
+\item{logLHR}{ a \code{numeric} representing the LOH score basde on
 population frequencies. It is the sum of
 the log10 of the frequencies of the observed gegenotype minus the
 the sum of the log10 of the higher frequent genotype.
 (-100 when normal genotype are present)}
-\item{LH1} { a \code{numeric}  representing the probability to be
+\item{LH1}{ a \code{numeric}  representing the probability to be
 heterozygote based on the coverage of each allele when normal
 genotype is present}
-\item{LM1} {a \code{numeric} representing the max probability
+\item{LM1}{ a \code{numeric} representing the max probability
 for the read coverage at the position}
-\item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
-\item{nbSNV} {a \code{integer} representing th number of SNVs in
+\item{homoScore}{ a \code{numeric} representing \code{LH1} - \code{LM1}}
+\item{nbSNV}{ a \code{integer} representing th number of SNVs in
 the box}
-\item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
+\item{nbPruned}{ a \code{integer} representing the number of pruned SNVs in
 the box}
-\item{nbNorm} { a \code{integer} representing of the number of
+\item{nbNorm}{ a \code{integer} representing of the number of
 heterozygote genotypes for the normal SNVs in the block}
-\item{LOH} { a \code{integer} representing a flag, if \code{1} it means
+\item{LOH}{ a \code{integer} representing a flag, if \code{1} it means
 the block is satisfying the criteria to be LOH. The value is not assigned
 in this function; the value \code{0} is assigned}
 }

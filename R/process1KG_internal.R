@@ -149,18 +149,18 @@ pruning1KGbyChr <- function(gdsReference, method="corr", listSamples=NULL,
 #' annotation. By default, the \code{EnsDb.Hsapiens.v86} class has been used.
 #'
 #' @return  a \code{data.frame} with those columns:
-#' \itemize{
-#' \item{chr} {a single \code{integer} representing the SNV chromosome.}
-#' \item{pos} {a single \code{integer} representing the SNV position.}
-#' \item{snp.allele} {a \code{character} string representing the reference allele
+#' \describe{
+#' \item{chr}{ a single \code{integer} representing the SNV chromosome.}
+#' \item{pos}{ a single \code{integer} representing the SNV position.}
+#' \item{snp.allele}{ a \code{character} string representing the reference allele
 #' and alternative allele for each of the SNV}
-#' \item{Exon} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+#' \item{Exon}{ a \code{character} with the ensembl GeneId(s) if the SNV is in
 #' one exon. If more than one GeneId they are separted by ':'}
-#' \item{GName} {a \code{character} with the ensembl GeneId(s) if the SNV is in
+#' \item{GName}{ a \code{character} with the ensembl GeneId(s) if the SNV is in
 #' the gene. If more than one GeneId they are separted by ':'}
-#' \item{Gene} {A single \code{integer} specific  to the SNVs that share
+#' \item{Gene}{ a single \code{integer} specific  to the SNVs that share
 #' at least one genes}
-#' \item{GeneS} {A single \code{integer} specific  to the SNVs that share
+#' \item{GeneS}{ a single \code{integer} specific  to the SNVs that share
 #' a unique combination of genes}
 #' }
 #' "chr", "pos", "snp.allele", "Exon", "GName", "Gene", "GeneS"

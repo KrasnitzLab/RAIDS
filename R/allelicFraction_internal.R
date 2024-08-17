@@ -32,25 +32,25 @@
 #' when the function is running.
 #'
 #' @return a \code{data.frame} containing:
-#' \itemize{
-#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' \describe{
+#' \item{cnt.tot}{ a single \code{integer} representing the total coverage for
 #' the SNV.}
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{snpPos} {a single \code{integer} representing the SNV position.}
-#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' \item{snpPos}{ a single \code{integer} representing the SNV position.}
+#' \item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 #' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 #' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 #' the normal genotype is unknown.}
-#' \item{pruned} { a \code{logical}}
-#' \item{snp.index} {a \code{vector} of \code{integer} representing the
+#' \item{pruned}{ a \code{logical}}
+#' \item{snp.index}{ a \code{vector} of \code{integer} representing the
 #' position of the SNVs in the Reference GDS file.}
-#' \item{keep} {a \code{logical} }
-#' \item{hetero} {a \code{logical} }
-#' \item{homo} {a \code{logical} }
+#' \item{keep}{ a \code{logical} }
+#' \item{hetero}{ a \code{logical} }
+#' \item{homo}{ a \code{logical} }
 #' }
 #'
 #' @examples
@@ -240,26 +240,26 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #' @param snpPos a \code{data.frame} containing the SNV information for the
 #' chromosome specified by the \code{chr} argument. The \code{data.frame} must
 #' contain:
-#' \itemize{
-#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' \describe{
+#' \item{cnt.tot}{ a single \code{integer} representing the total coverage for
 #' the SNV.}
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
-#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' \item{snp.pos}{ a single \code{integer} representing the SNV position.}
+#' \item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 #' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 #' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 #' the normal genotype is unknown.}
-#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' \item{pruned}{ a \code{logical} indicating if the SNV is retained after
 #' pruning}
-#' \item{snp.index} {a \code{integer} representing the index position of the
+#' \item{snp.index}{ a \code{integer} representing the index position of the
 #' SNV in the Reference GDS file that contains all SNVs}
-#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
+#' \item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo}{ a \code{logical} indicating if the SNV is homozygote}
 #' }
 #'
 #' @param chr a single positive \code{integer} for the current chromosome. The
@@ -271,32 +271,32 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 #'
 #' @return a \code{data.frame} with the informations about LOH on a specific
 #' chromosome. The \code{data.frame} contains those columns:
-#' \itemize{
-#' \item{chr} {a \code{integer} representing the current chromosome}
-#' \item{start} {a \code{integer} representing the starting position on the
+#' \describe{
+#' \item{chr}{ a \code{integer} representing the current chromosome}
+#' \item{start}{ a \code{integer} representing the starting position on the
 #' box containing only homozygote SNVs (or not SNV). The first box starts at
 #' position \code{1}.}
-#' \item{end} {a \code{integer} representing the end position on the
+#' \item{end}{ a \code{integer} representing the end position on the
 #' box containing only homozygote SNVs (or not SNV). The last box ends at the
 #' length of the chromosome.}
-#' \item{logLHR} {a \code{numeric} representing the LOH score basde on
+#' \item{logLHR}{ a \code{numeric} representing the LOH score basde on
 #' population frequencies. It is the sum of
 #' the log10 of the frequencies of the observed gegenotype minus the
 #' the sum of the log10 of the higher frequent genotype.
 #' (-100 when normal genotype are present)}
-#' \item{LH1} { a \code{numeric}  representing the probability to be
+#' \item{LH1}{ a \code{numeric}  representing the probability to be
 #' heterozygote based on the coverage of each allele when normal
 #' genotype is present}
-#' \item{LM1} {a \code{numeric} representing the max probability
+#' \item{LM1}{ a \code{numeric} representing the max probability
 #' for the read coverage at the position}
-#' \item{homoScore} {a \code{numeric} representing \code{LH1} - \code{LM1}}
-#' \item{nbSNV} {a \code{integer} representing th number of SNVs in
+#' \item{homoScore}{ a \code{numeric} representing \code{LH1} - \code{LM1}}
+#' \item{nbSNV}{ a \code{integer} representing th number of SNVs in
 #' the box}
-#' \item{nbPruned} {a \code{integer} representing the number of pruned SNVs in
+#' \item{nbPruned}{ a \code{integer} representing the number of pruned SNVs in
 #' the box}
-#' \item{nbNorm} { a \code{integer} representing of the number of
+#' \item{nbNorm}{ a \code{integer} representing of the number of
 #' heterozygote genotypes for the normal SNVs in the block}
-#' \item{LOH} { a \code{integer} representing a flag, if \code{1} it means
+#' \item{LOH}{ a \code{integer} representing a flag, if \code{1} it means
 #' the block is satisfying the criteria to be LOH. The value is not assigned
 #' in this function; the value \code{0} is assigned}
 #' }
@@ -682,25 +682,25 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
 #' @return a \code{data.frame} containing the allelic information for the
 #' pruned SNV dataset with coverage > \code{minCov}. The \code{data.frame}
 #' contains those columns:
-#' \itemize{
-#' \item{cnt.tot} {a \code{integer} representing the total allele count}
-#' \item{cnt.ref} {a \code{integer} representing the reference allele count}
-#' \item{cnt.alt} {a \code{integer} representing the alternative allele count}
-#' \item{snp.pos} {a \code{integer} representing the position on the chromosome}
-#' \item{snp.chr} {a \code{integer} representing the chromosome}
-#' \item{normal.geno} {a \code{integer} representing the genotype
+#' \describe{
+#' \item{cnt.tot}{ a \code{integer} representing the total allele count}
+#' \item{cnt.ref}{ a \code{integer} representing the reference allele count}
+#' \item{cnt.alt}{ a \code{integer} representing the alternative allele count}
+#' \item{snp.pos}{ a \code{integer} representing the position on the chromosome}
+#' \item{snp.chr}{ a \code{integer} representing the chromosome}
+#' \item{normal.geno}{ a \code{integer} representing the genotype
 #' (0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)}
-#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' \item{pruned}{ a \code{logical} indicating if the SNV is retained after
 #' pruning}
-#' \item{snp.index} {a \code{integer} representing the index position of the
+#' \item{snp.index}{ a \code{integer} representing the index position of the
 #' SNV in the Reference GDS file that contains all SNVs}
-#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-#' \item{lap} {a \code{numeric} representing the lower allelic fraction}
-#' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' \item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo}{ a \code{logical} indicating if the SNV is homozygote}
+#' \item{lap}{ a \code{numeric} representing the lower allelic fraction}
+#' \item{LOH}{ a \code{integer} indicating if the SNV is in an LOH region
 #' (0=not LOH, 1=in LOH)}
-#' \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
+#' \item{imbAR}{ a \code{integer} indicating if the SNV is in an imbalanced
 #' region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
 #' positive for imbalance in at least 1 window)}
 #' }
@@ -891,33 +891,33 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
 #' @return a \code{data.frame} containing the allelic information for the
 #' pruned SNV dataset with coverage > \code{minCov}. The \code{data.frame}
 #' contains those columns:
-#' \itemize{
-#' \item{cnt.tot} {a \code{integer} representing the total allele count}
-#' \item{cnt.ref} {a \code{integer} representing the reference allele count}
-#' \item{cnt.alt} {a \code{integer} representing the alternative allele count}
-#' \item{snp.pos} {a \code{integer} representing the position on the chromosome}
-#' \item{snp.chr} {a \code{integer} representing the chromosome}
-#' \item{normal.geno} {a \code{integer} representing the genotype
+#' \describe{
+#' \item{cnt.tot}{ a \code{integer} representing the total allele count}
+#' \item{cnt.ref}{ a \code{integer} representing the reference allele count}
+#' \item{cnt.alt}{ a \code{integer} representing the alternative allele count}
+#' \item{snp.pos}{ a \code{integer} representing the position on the chromosome}
+#' \item{snp.chr}{ a \code{integer} representing the chromosome}
+#' \item{normal.geno}{ a \code{integer} representing the genotype
 #' (0=wild-type reference; 1=heterozygote; 2=homozygote alternative; 3=unkown)}
-#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' \item{pruned}{ a \code{logical} indicating if the SNV is retained after
 #' pruning}
-#' \item{snp.index} {a \code{integer} representing the index position of the
+#' \item{snp.index}{ a \code{integer} representing the index position of the
 #' SNV in the Reference GDS file that contains all SNVs}
-#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-#' \item{block.id} { a \code{integer} indicating the unique identifier of the
+#' \item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo}{ a \code{logical} indicating if the SNV is homozygote}
+#' \item{block.id}{ a \code{integer} indicating the unique identifier of the
 #' block in the Population Reference Annotation
 #' GDS file that contains the current SNV}
-#' \item{phase} { a \code{integer} indicating the phase of the variant
+#' \item{phase}{ a \code{integer} indicating the phase of the variant
 #' if known, \code{3} if not known}
-#' \item{lap} {a \code{numeric} indicating lower allelic fraction}
-#' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' \item{lap}{ a \code{numeric} indicating lower allelic fraction}
+#' \item{LOH}{ a \code{integer} indicating if the SNV is in an LOH region
 #' (0=not LOH, 1=in LOH)}
-#' \item{imbAR} {a \code{integer} indicating if the SNV is in an imbalanced
+#' \item{imbAR}{ a \code{integer} indicating if the SNV is in an imbalanced
 #' region (-1=not classified as imbalanced or LOH, 0=in LOH; 1=tested
 #' positive for imbalance in at least 1 window)}
-#' \item{freq} {a \code{numeric} indicating the frequency of the variant
+#' \item{freq}{ a \code{numeric} indicating the frequency of the variant
 #' in the the reference}
 #' }
 #'
@@ -1056,28 +1056,28 @@ computeAllelicFractionRNA <- function(gdsReference, gdsSample, gdsRefAnnot,
 #' @param snpPos a \code{data.frame} containing the SNV information for the
 #' chromosome specified by the \code{chr} argument. The \code{data.frame} must
 #' contain:
-#' \itemize{
-#' \item{cnt.tot} {a single \code{integer} representing the total coverage for
+#' \describe{
+#' \item{cnt.tot}{ a single \code{integer} representing the total coverage for
 #' the SNV.}
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{snp.pos} {a single \code{integer} representing the SNV position.}
-#' \item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-#' \item{normal.geno} {a single \code{numeric} indicating the genotype of the
+#' \item{snp.pos}{ a single \code{integer} representing the SNV position.}
+#' \item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+#' \item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 #' SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 #' (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 #' the normal genotype is unknown.}
-#' \item{pruned} {a \code{logical} indicating if the SNV is retained after
+#' \item{pruned}{ a \code{logical} indicating if the SNV is retained after
 #' pruning}
-#' \item{snp.index} {a \code{integer} representing the index position of the
+#' \item{snp.index}{ a \code{integer} representing the index position of the
 #' SNV in the Reference GDS file that contains all SNVs}
-#' \item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-#' \item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-#' \item{homo} {a \code{logical} indicating if the SNV is homozygote}
-#' \item{lap} {a \code{numeric} indicating lower allelic fraction}
-#' \item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+#' \item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+#' \item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+#' \item{homo}{ a \code{logical} indicating if the SNV is homozygote}
+#' \item{lap}{ a \code{numeric} indicating lower allelic fraction}
+#' \item{LOH}{ a \code{integer} indicating if the SNV is in an LOH region
 #' (0=not LOH, 1=in LOH)}
 #' }
 #'
@@ -1193,10 +1193,10 @@ computeAllelicImbDNAChr <- function(snpPos, chr, wAR=10, cutOffEmptyBox=-3) {
 #'
 #' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
 #' \code{data.frame} must contain those columns:
-#' \itemize{
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \describe{
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
 #' }
 #'
@@ -1210,16 +1210,16 @@ computeAllelicImbDNAChr <- function(snpPos, chr, wAR=10, cutOffEmptyBox=-3) {
 #' reference to see if there is a allelic fraction change.
 #'
 #' @return a \code{list} containing 4 entries:
-#' \itemize{
+#' \describe{
 #' \item{pWin}{ a \code{vector} of \code{numeric} representing the
 #' probability (x2) of obtaining the current
 #' alternative/(alternative+reference) ratio from a reference distribution
 #' specified by user.}
-#' \item{p}{a \code{integer} indicating if all SNVs tested
+#' \item{p}{ a \code{integer} indicating if all SNVs tested
 #' positive (1=TRUE, 0=FALSE). The cut-off is 0.5. }
-#' \item{pCut}{a \code{integer} indicating if all SNVs tested
+#' \item{pCut}{ a \code{integer} indicating if all SNVs tested
 #' positive (1=TRUE, 0-FALSE). }
-#' \item{pCut1}{a \code{integer} indicating if the region tested
+#' \item{pCut1}{ a \code{integer} indicating if the region tested
 #' positive (1=TRUE, 0=FALSE) for allelic ratio change.}
 #' }
 #'
@@ -1289,10 +1289,10 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #'
 #' @param matCov a \code{data.frame} containing only heterozygote SNVs. The
 #' \code{data.frame} must contain those columns:
-#' \itemize{
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \describe{
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
 #' }
 #'
@@ -1301,7 +1301,7 @@ testAlleleFractionChange <- function(matCov, pCutOff=-3, vMean) {
 #' likelihood not to be imbalanced. Default: \code{-3}.
 #'
 #' @return a \code{list} containing 4 entries:
-#' \itemize{
+#' \describe{
 #' \item{pWin}{ a \code{vector} of \code{numeric} representing the
 #' probability (x2) of obtaining the current
 #' alternative/(alternative+reference) ratio from a 0.5 distribution.}
@@ -1382,27 +1382,27 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 #' @param snpPosHetero a \code{data.frame}
 #' containing the SNV information for a specific block (gene if RNA-seq).
 #' The \code{data.frame} must contain those columns:
-#' \itemize{
-#' \item{cnt.ref} {a single \code{integer} representing the coverage for
+#' \describe{
+#' \item{cnt.ref}{ a single \code{integer} representing the coverage for
 #' the reference allele.}
-#' \item{cnt.alt} {a single \code{integer} representing the coverage for
+#' \item{cnt.alt}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{phase} { a single \code{integer} indicating the phase of the variant
+#' \item{phase}{ a single \code{integer} indicating the phase of the variant
 #' if known, \code{3} if not known}
 #' }
 #'
 #' @return a \code{list} for the block with the information
 #' relative to the heterozygotes.
 #' The \code{list} contains:
-#' \itemize{
-#' \item{lR} { a single \code{numeric} representing the sum of the log of
+#' \describe{
+#' \item{lR}{ a single \code{numeric} representing the sum of the log of
 #' read depth of the lowest depth divide by the total depth of the position
 #' minus of likelihood of the allelic fraction of 0.5.}
-#' \item{aFraction} { a single \code{numeric} representing the allele
+#' \item{aFraction}{ a single \code{numeric} representing the allele
 #' fraction estimation.}
-#' \item{sumAlleleLow} { a \code{integer} representing the
+#' \item{sumAlleleLow}{ a \code{integer} representing the
 #' sum of the allele read depth of the lowest read allele depth}
-#' \item{sumAlleleHigh} { a \code{integer} representing the
+#' \item{sumAlleleHigh}{ a \code{integer} representing the
 #' sum of the allele read depth
 #' of the highest read allele depth}
 #' }
@@ -1491,32 +1491,32 @@ calcAFMLRNA <- function(snpPosHetero) {
 #' @return a \code{data.frame} containing only heterozygote
 #' SNV information. The
 #' \code{data.frame} contain those columns:
-#' \itemize{
-#' \item{block} {a single \code{integer} representing the unique identifier
+#' \describe{
+#' \item{block}{ a single \code{integer} representing the unique identifier
 #' of the block.}
-#' \item{aRF} {a single \code{numeric} representing the final allelic
+#' \item{aRF}{ a single \code{numeric} representing the final allelic
 #' fraction; not computed yet, \code{-1} value assigned to all entries.}
-#' \item{aFraction} {a single \code{integer} representing the possible allelic
+#' \item{aFraction}{a single \code{integer} representing the possible allelic
 #' fraction in absence of loss of heterozygosity (LOH).}
-#' \item{lR} {a single \code{integer} representing the coverage for
+#' \item{lR}{ a single \code{integer} representing the coverage for
 #' the alternative allele.}
-#' \item{nPhase} {a single \code{integer} representing the number of SNV
+#' \item{nPhase}{ a single \code{integer} representing the number of SNV
 #' phases.}
-#' \item{sumAlleleLow} {a single \code{integer} representing the sum of the
+#' \item{sumAlleleLow}{ a single \code{integer} representing the sum of the
 #' alleles with the less coverage.}
-#' \item{sumAlleleHigh} {a single \code{integer} representing the sum of
+#' \item{sumAlleleHigh}{ a single \code{integer} representing the sum of
 #' the alleles with more coverage.}
-#' \item{lH} {a single \code{numeric} for the homozygotes log10 of the product
+#' \item{lH}{ a single \code{numeric} for the homozygotes log10 of the product
 #' frequencies of the allele not found in the profile (not a probability).}
-#' \item{lM} {a single \code{numeric} log10 product frequency allele
+#' \item{lM}{ a single \code{numeric} log10 product frequency allele
 #' in population.}
-#' \item{lRhomo} {a single \code{numeric} representing the score
+#' \item{lRhomo}{a single \code{numeric} representing the score
 #' \code{lH} - \code{lM}.}
-#' \item{nbHomo} {a single \code{integer} representing the number of
+#' \item{nbHomo}{ a single \code{integer} representing the number of
 #' homozygote SNVs per block.}
-#' \item{nbKeep} {a single \code{integer} representing the number of
+#' \item{nbKeep}{ a single \code{integer} representing the number of
 #' SNVs retained per block.}
-#' \item{nbHetero} {a single \code{integer} representing the number of
+#' \item{nbHetero}{ a single \code{integer} representing the number of
 #' heterozygote SNVs per block.}
 #' }
 #'

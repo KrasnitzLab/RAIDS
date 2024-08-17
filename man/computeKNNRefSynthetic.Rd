@@ -57,28 +57,28 @@ Default: \code{seq(2, 15, 1)}.}
 }
 \value{
 a \code{list} containing 4 entries:
-\itemize{
-\item{\code{sample.id}} {a \code{vector} of \code{character} strings
+\describe{
+\item{\code{sample.id}}{ a \code{vector} of \code{character} strings
 representing the identifiers of the synthetic profiles analysed.}
-\item{\code{sample1Kg}} {a \code{vector} of \code{character} strings
+\item{\code{sample1Kg}}{ a \code{vector} of \code{character} strings
 representing the identifiers of the 1KG reference profiles used to
 generate the synthetic profiles.}
-\item{\code{sp}} {a \code{vector} of \code{character} strings representing
+\item{\code{sp}}{ a \code{vector} of \code{character} strings representing
 the known super population ancestry of the 1KG reference profiles used
 to generate the synthetic profiles.}
-\item{\code{matKNN}} {a \code{data.frame} containing the super population
+\item{\code{matKNN}}{ a \code{data.frame} containing the super population
 inference for each synthetic profiles for different values of PCA
 dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 corresponds to the \code{fieldPopInfAnc} parameter.
 The \code{data.frame} contains 4 columns:
-\itemize{
-\item{\code{sample.id}} {a \code{character} string representing
+\describe{
+\item{\code{sample.id}}{ a \code{character} string representing
 the identifier of the synthetic profile analysed.}
-\item{\code{D}} {a \code{numeric} strings representing
+\item{\code{D}}{ a \code{numeric} strings representing
 the value of the PCA dimension used to infer the super population.}
-\item{\code{K}} {a \code{numeric} strings representing
+\item{\code{K}}{ a \code{numeric} strings representing
 the value of the k-neighbors used to infer the super population.}
-\item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+\item{\code{fieldPopInfAnc} value}{ a \code{character} string representing
 the inferred ancestry.}
 }
 }

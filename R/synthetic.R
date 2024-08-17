@@ -17,12 +17,12 @@
 #' subcontinental population will correspond to the size of this population.
 #'
 #' @return a \code{data.frame} containing those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -103,12 +103,12 @@ select1KGPop <- function(gdsReference, nbProfiles) {
 #' population.
 #'
 #' @param dataRef a \code{data.frame} containing those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -727,7 +727,7 @@ syntheticGeno <- function(gdsReference, gdsRefAnnot, fileProfileGDS, profileID,
 #' Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
 #' @return \code{list} containing 3 entries:
-#' \itemize{
+#' \describe{
 #' \item{\code{matAUROC.All}}{ a \code{data.frame} containing the AUROC for all
 #' the ancestry results.  }
 #' \item{\code{matAUROC.Call}}{ a \code{data.frame} containing the AUROC

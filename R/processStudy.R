@@ -767,13 +767,13 @@ addStudy1Kg <- function(gdsReference, fileProfileGDS, verbose=FALSE) {
 #' to show how the different steps in the function. Default: \code{FALSE}.
 #'
 #' @return a \code{list} containing 3 entries:
-#' \itemize{
-#' \item{sample.id} { a \code{vector} of \code{character} strings representing
+#' \describe{
+#' \item{sample.id}{ a \code{vector} of \code{character} strings representing
 #' the identifiers of the synthetic profiles that have been projected onto
 #' the 1KG PCA. }
-#' \item{eigenvector.ref} { a \code{matrix} of \code{numeric} with the
+#' \item{eigenvector.ref}{ a \code{matrix} of \code{numeric} with the
 #' eigenvectors of the 1KG reference profiles used to generate the PCA.}
-#' \item{eigenvector} { a \code{matrix} of \code{numeric} with the
+#' \item{eigenvector}{ a \code{matrix} of \code{numeric} with the
 #' eigenvectors of the synthetic profiles projected onto the 1KG PCA. }
 #' }
 #'
@@ -904,12 +904,12 @@ computePCAMultiSynthetic <- function(gdsProfile, listPCA,
 #' doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.
 #'
 #' @return a \code{list} containing 3 entries:
-#' \itemize{
-#' \item{\code{sample.id}} { a \code{character} string representing the unique
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the analyzed profile.}
-#' \item{\code{eigenvector.ref}} { a \code{matrix} of \code{numeric}
+#' \item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric}
 #' representing the eigenvectors of the reference profiles. }
-#' \item{\code{eigenvector}} { a \code{matrix} of \code{numeric} representing
+#' \item{\code{eigenvector}}{ a \code{matrix} of \code{numeric} representing
 #' the eigenvectors of the analyzed profile. }
 #' }
 #'
@@ -1040,28 +1040,28 @@ computePCARefSample <- function(gdsProfile, currentProfile,
 #' Default: \code{seq(2, 15, 1)}.
 #'
 #' @return a \code{list} containing 4 entries:
-#' \itemize{
-#' \item{\code{sample.id}} {a \code{vector} of \code{character} strings
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{vector} of \code{character} strings
 #' representing the identifiers of the synthetic profiles analysed.}
-#' \item{\code{sample1Kg}} {a \code{vector} of \code{character} strings
+#' \item{\code{sample1Kg}}{ a \code{vector} of \code{character} strings
 #' representing the identifiers of the 1KG reference profiles used to
 #' generate the synthetic profiles.}
-#' \item{\code{sp}} {a \code{vector} of \code{character} strings representing
+#' \item{\code{sp}}{ a \code{vector} of \code{character} strings representing
 #' the known super population ancestry of the 1KG reference profiles used
 #' to generate the synthetic profiles.}
-#' \item{\code{matKNN}} {a \code{data.frame} containing the super population
+#' \item{\code{matKNN}}{ a \code{data.frame} containing the super population
 #' inference for each synthetic profiles for different values of PCA
 #' dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 #' corresponds to the \code{fieldPopInfAnc} parameter.
 #' The \code{data.frame} contains 4 columns:
-#' \itemize{
-#' \item{\code{sample.id}} {a \code{character} string representing
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing
 #' the identifier of the synthetic profile analysed.}
-#' \item{\code{D}} {a \code{numeric} strings representing
+#' \item{\code{D}}{ a \code{numeric} strings representing
 #' the value of the PCA dimension used to infer the super population.}
-#' \item{\code{K}} {a \code{numeric} strings representing
+#' \item{\code{K}}{ a \code{numeric} strings representing
 #' the value of the k-neighbors used to infer the super population.}
-#' \item{\code{fieldPopInfAnc} value} {a \code{character} string representing
+#' \item{\code{fieldPopInfAnc} value}{ a \code{character} string representing
 #' the inferred ancestry.}
 #' }
 #' }
@@ -1216,22 +1216,22 @@ computeKNNRefSynthetic <- function(gdsProfile, listEigenvector,
 #' Default: \code{seq(2, 15, 1)}.
 #'
 #' @return a \code{list} containing 4 entries:
-#' \itemize{
-#' \item{\code{sample.id}} { a \code{vector} of \code{character} strings
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{vector} of \code{character} strings
 #' representing the identifier of the profile analysed.}
-#' \item{\code{matKNN}} { a \code{data.frame} containing the super population
+#' \item{\code{matKNN}}{ a \code{data.frame} containing the super population
 #' inference for the profile for different values of PCA
 #' dimensions \code{D} and k-neighbors values \code{K}. The fourth column title
 #' corresponds to the \code{fieldPopInfAnc} parameter.
 #' The \code{data.frame} contains 4 columns:
-#' \itemize{
-#' \item{\code{sample.id}} {a \code{character} string representing
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing
 #' the identifier of the profile analysed.}
-#' \item{\code{D}} { a \code{numeric} strings representing
+#' \item{\code{D}}{ a \code{numeric} strings representing
 #' the value of the PCA dimension used to infer the ancestry.}
-#' \item{\code{K}} { a \code{numeric} strings representing
+#' \item{\code{K}}{ a \code{numeric} strings representing
 #' the value of the k-neighbors used to infer the ancestry..}
-#' \item{\code{fieldPopInfAnc}} { a \code{character} string representing
+#' \item{\code{fieldPopInfAnc}}{ a \code{character} string representing
 #' the inferred ancestry.}
 #' }
 #' }
@@ -1395,16 +1395,16 @@ computeKNNRefSample <- function(listEigenvector,
 #' printed. Default: \code{FALSE}.
 #'
 #' @return a \code{list} containing the following entries:
-#' \itemize{
-#' \item{sample.id}{a \code{vector} of \code{character} strings representing
+#' \describe{
+#' \item{sample.id}{ a \code{vector} of \code{character} strings representing
 #' the identifiers of the synthetic profiles. }
-#' \item{sample1Kg}{a \code{vector} of \code{character} strings representing
+#' \item{sample1Kg}{ a \code{vector} of \code{character} strings representing
 #' the identifiers of the reference 1KG profiles used to generate the
 #' synthetic profiles. }
-#' \item{sp}{a \code{vector} of \code{character} strings representing the
+#' \item{sp}{ a \code{vector} of \code{character} strings representing the
 #' known ancestry for the reference 1KG profiles used to generate the
 #' synthetic profiles. }
-#' \item{matKNN}{a \code{data.frame} containing 4 columns. The first column
+#' \item{matKNN}{ a \code{data.frame} containing 4 columns. The first column
 #' 'sample.id' contains the name of the synthetic profile. The second column
 #' 'D' represents the dimension D used to infer the ancestry. The third column
 #' 'K' represents the number of neighbors K used to infer the ancestry. The
@@ -1591,10 +1591,10 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' to show how the different steps in the function. Default: \code{FALSE}.
 #'
 #' @return a \code{list} containing 4 entries:
-#' \itemize{
+#' \describe{
 #' \item{\code{pcaSample}}{ a \code{list} containing the information related
 #' to the eigenvectors. The \code{list} contains those 3 entries:
-#' \itemize{
+#' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the current profile.}
 #' \item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric} containing
@@ -1604,15 +1604,14 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' reference profiles.}
 #' }
 #' }
-#'
 #' \item{\code{paraSample}}{ a \code{list} containing the results with
 #' different \code{D} and \code{K} values that lead to optimal parameter
 #' selection. The \code{list} contains those entries:
-#' \itemize{
+#' \describe{
 #' \item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
 #' on all combined synthetic results done with a fixed value of \code{D} (the
 #' number of dimensions). The \code{data.frame} contains those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 #' number of dimensions).}
 #' \item{\code{median}}{ a \code{numeric} representing the median of the
@@ -1632,7 +1631,7 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' all combined synthetic results done with different values of \code{D} (the
 #' number of dimensions) and \code{K} (the number of neighbors).
 #' The \code{data.frame} contains those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 #' number of dimensions).}
 #' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -1651,7 +1650,7 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' \item{\code{dfAUROC}}{ a \code{data.frame} the summary of the results by
 #' super-population. The \code{data.frame} contains
 #' those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{pcaD}}{ a \code{numeric} representing the value of \code{D} (the
 #' number of dimensions).}
 #' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -1677,17 +1676,16 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' \code{D} is possible.}
 #' }
 #' }
-#'
 #' \item{\code{KNNSample}}{ a \code{list} containing the inferred ancestry
 #' using different \code{D} and \code{K} values. The \code{list} contains
 #' those entries:
-#' \itemize{
+#' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the current profile.}
 #' \item{\code{matKNN}}{ a \code{data.frame} containing the inferred ancestry
 #' for different values of \code{K} and \code{D}. The \code{data.frame}
 #' contains those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the current profile.}
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
@@ -1700,11 +1698,10 @@ computePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM, spRef,
 #' }
 #' }
 #' }
-#'
 #' \item{\code{Ancestry}}{ a \code{data.frame} containing the inferred
 #' ancestry for the current profile. The \code{data.frame} contains those
 #' columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the current profile.}
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
@@ -1908,12 +1905,12 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The \code{data.frame} must have those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -1941,12 +1938,12 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #'
 #' The runExomeAncestry() function generates 3 types of files
 #' in the OUTPUT directory.
-#' \itemize{
-#' \item{Ancestry Inference}{The ancestry inference CSV file
+#' \describe{
+#' \item{Ancestry Inference}{ The ancestry inference CSV file
 #' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{The inference information RDS file
+#' \item{Inference Informaton}{ The inference information RDS file
 #' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{The parameter information RDS files
+#' \item{Synthetic Information}{ The parameter information RDS files
 #' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 #' }
 #'
@@ -2121,12 +2118,12 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The \code{data.frame} must have those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -2158,12 +2155,12 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #' The runExomeAncestry() function generates 3 types of files
 #' in the OUTPUT directory.
-#' \itemize{
-#' \item{Ancestry Inference}{The ancestry inference CSV file
+#' \describe{
+#' \item{Ancestry Inference}{ The ancestry inference CSV file
 #' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{The inference information RDS file
+#' \item{Inference Informaton}{ The inference information RDS file
 #' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{The parameter information RDS files
+#' \item{Synthetic Information}{ The parameter information RDS files
 #' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 #' }
 #'

@@ -41,9 +41,9 @@ the list of possible ancestry assignations.}
 }
 \value{
 \code{list} containing 2 entries:
-\itemize{
-\item{confMat} { a \code{matrix} representing the confusion matrix }
-\item{matAccuracy} { a \code{data.frame} containing the statistics
+\describe{
+\item{confMat}{ a \code{matrix} representing the confusion matrix }
+\item{matAccuracy}{ a \code{data.frame} containing the statistics
 associated to the confusion matrix}
 }
 }

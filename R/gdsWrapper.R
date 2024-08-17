@@ -235,7 +235,7 @@ generateGDSgenotype <- function(gds, pathGeno, fileSNPsRDS, listSamples,
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
-#' @param listSamples a \code{character} string representing the path and file
+#' @param listSample a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'

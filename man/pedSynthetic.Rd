@@ -11,20 +11,20 @@ The \code{data.frame} containing the information about the
 synthetic profiles.  The row names of
 the \code{data.frame} correspond to the profile unique identifiers.
 The \code{data.frame} contains 7 columns:
-\itemize{
-\item \code{data.id} {a \code{character} string representing the unique
+\describe{
+\item{\code{data.id}}{ a \code{character} string representing the unique
 synthetic profile identifier.}
-\item \code{case.id} {a \code{character} string representing the unique
+\item{\code{case.id}}{ a \code{character} string representing the unique
 profile identifier that was used to generate the synthetic profile.}
-\item \code{sample.type} {a \code{character} string representing the type
+\item{\code{sample.type}}{ a \code{character} string representing the type
 of profile. }
-\item \code{diagnosis} {a \code{character} string representing the
+\item{\code{diagnosis}}{ a \code{character} string representing the
 diagnosis of profile that was used to generate the synthetic profile. }
-\item \code{source} {a \code{character} string representing the
+\item{\code{source}}{ a \code{character} string representing the
 source of the synthetic profile. }
-\item \code{study.id} {a \code{character} string representing the
+\item{\code{study.id}}{ a \code{character} string representing the
 name of the study to which the synthetic profile is associated. }
-\item \code{superPop} {a \code{character} string representing the
+\item{\code{superPop}}{ a \code{character} string representing the
 super population of the profile that was used to generate the synthetic
 profile. }
 }
@@ -34,23 +34,23 @@ data(pedSynthetic)
 }
 \value{
 The \code{data.frame} containing the information about the
-synthetic profiles.  The row names of
+synthetic profiles. The row names of
 the \code{data.frame} correspond to the profile unique identifiers.
 The \code{data.frame} contains 7 columns:
-\itemize{
-\item \code{data.id} {a \code{character} string representing the unique
+\describe{
+\item{\code{data.id}}{ a \code{character} string representing the unique
 synthetic profile identifier.}
-\item \code{case.id} {a \code{character} string representing the unique
+\item{\code{case.id}}{ a \code{character} string representing the unique
 profile identifier that was used to generate the synthetic profile.}
-\item \code{sample.type} {a \code{character} string representing the type
-of profile. }
-\item \code{diagnosis} {a \code{character} string representing the
+\item{\code{sample.type}}{ a \code{character} string representing the type
+of profile.}
+\item{\code{diagnosis}}{ a \code{character} string representing the
 diagnosis of profile that was used to generate the synthetic profile. }
-\item \code{source} {a \code{character} string representing the
+\item{\code{source}}{ a \code{character} string representing the
 source of the synthetic profile. }
-\item \code{study.id} {a \code{character} string representing the
+\item{\code{study.id}}{ a \code{character} string representing the
 name of the study to which the synthetic profile is associated. }
-\item \code{superPop} {a \code{character} string representing the
+\item{\code{superPop}}{ a \code{character} string representing the
 super population of the profile that was used to generate the synthetic
 profile. }
 }
@@ -90,8 +90,8 @@ results$listROC.Call
 
 }
 \seealso{
-\itemize{
-\item \code{\link{computeSyntheticROC}} {for calculating the AUROC of
+\describe{
+\item{\code{\link{computeSyntheticROC}}}{ for calculating the AUROC of
 the inferences for specific values of D and K using the inferred
 ancestry results from the synthetic profiles}
 }

@@ -9,12 +9,12 @@ splitSelectByPop(dataRef)
 }
 \arguments{
 \item{dataRef}{a \code{data.frame} containing those columns:
-\itemize{
-\item{sample.id} { a \code{character} string representing the sample
+\describe{
+\item{sample.id}{ a \code{character} string representing the sample
 identifier. }
-\item{pop.group} { a \code{character} string representing the
+\item{pop.group}{ a \code{character} string representing the
 subcontinental population assigned to the sample. }
-\item{superPop} { a \code{character} string representing the
+\item{superPop}{ a \code{character} string representing the
 super-population assigned to the sample. }
 }}
 }

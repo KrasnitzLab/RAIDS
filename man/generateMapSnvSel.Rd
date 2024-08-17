@@ -36,22 +36,22 @@ indexes of the retained SNP is also created.
 \details{
 The filtered SNP information RDS file (parameter \code{fileFREQ}), contains
 a \code{data.frame} with those columns:
-\itemize{
-\item{CHROM} {a \code{character} string representing the chromosome where
+\describe{
+\item{CHROM}{ a \code{character} string representing the chromosome where
 the SNV is located.}
-\item{POS} {a \code{character} string representing the SNV position on the
+\item{POS}{ a \code{character} string representing the SNV position on the
 chromosome.}
-\item{REF} {a \code{character} string representing the reference DNA base
+\item{REF}{ a \code{character} string representing the reference DNA base
 for the SNV.}
-\item{ALT} {a \code{character} string representing the alternative DNA base
+\item{ALT}{ a \code{character} string representing the alternative DNA base
 for the SNV.}\
-\item{EAS_AF} {a \code{character} string representing the allele frequency
+\item{EAS_AF}{ a \code{character} string representing the allele frequency
 of the EAS super population.}
-\item{AFR_AF} {a \code{character} string representing the allele frequency
+\item{AFR_AF}{ a \code{character} string representing the allele frequency
 of the AFR super population.}
-\item{AMR_AF} {a \code{character} string representing the allele frequency
+\item{AMR_AF}{ a \code{character} string representing the allele frequency
 of the AMR super population.}
-\item{SAS_AF} {a \code{character} string representing the allele frequency
+\item{SAS_AF}{ a \code{character} string representing the allele frequency
 of the SAS super population.}
 }
 }

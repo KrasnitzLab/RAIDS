@@ -95,10 +95,10 @@ to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
 a \code{list} containing 4 entries:
-\itemize{
+\describe{
 \item{\code{pcaSample}}{ a \code{list} containing the information related
 to the eigenvectors. The \code{list} contains those 3 entries:
-\itemize{
+\describe{
 \item{\code{sample.id}}{ a \code{character} string representing the unique
 identifier of the current profile.}
 \item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric} containing
@@ -108,15 +108,14 @@ eigenvectors for the current profile projected on the PCA from the
 reference profiles.}
 }
 }
-
 \item{\code{paraSample}}{ a \code{list} containing the results with
 different \code{D} and \code{K} values that lead to optimal parameter
 selection. The \code{list} contains those entries:
-\itemize{
+\describe{
 \item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
 on all combined synthetic results done with a fixed value of \code{D} (the
 number of dimensions). The \code{data.frame} contains those columns:
-\itemize{
+\describe{
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{median}}{ a \code{numeric} representing the median of the
@@ -136,7 +135,7 @@ combination of the fixed \code{D} value and all tested \code{K} values. }
 all combined synthetic results done with different values of \code{D} (the
 number of dimensions) and \code{K} (the number of neighbors).
 The \code{data.frame} contains those columns:
-\itemize{
+\describe{
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -155,7 +154,7 @@ the specified values of \code{D} and \code{K}.}
 \item{\code{dfAUROC}}{ a \code{data.frame} the summary of the results by
 super-population. The \code{data.frame} contains
 those columns:
-\itemize{
+\describe{
 \item{\code{pcaD}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -181,17 +180,16 @@ values (the number of dimensions) for the specific profile. More than one
 \code{D} is possible.}
 }
 }
-
 \item{\code{KNNSample}}{ a \code{list} containing the inferred ancestry
 using different \code{D} and \code{K} values. The \code{list} contains
 those entries:
-\itemize{
+\describe{
 \item{\code{sample.id}}{ a \code{character} string representing the unique
 identifier of the current profile.}
 \item{\code{matKNN}}{ a \code{data.frame} containing the inferred ancestry
 for different values of \code{K} and \code{D}. The \code{data.frame}
 contains those columns:
-\itemize{
+\describe{
 \item{\code{sample.id}}{ a \code{character} string representing the unique
 identifier of the current profile.}
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
@@ -204,11 +202,10 @@ ancestry for the specified \code{D} and \code{K} values.}
 }
 }
 }
-
 \item{\code{Ancestry}}{ a \code{data.frame} containing the inferred
 ancestry for the current profile. The \code{data.frame} contains those
 columns:
-\itemize{
+\describe{
 \item{\code{sample.id}}{ a \code{character} string representing the unique
 identifier of the current profile.}
 \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the

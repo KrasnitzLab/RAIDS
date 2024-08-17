@@ -1,327 +1,113 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Create_Reference_GDS_File.html</loc>
-  </url>
-  <url>
-    <loc>/articles/RAIDS.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/RAIDS-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add1KG2SampleGDS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addBlockInGDSAnnot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addGDSRef.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addGDSStudyPruning.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addGeneBlockGDSRefAnnot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addRef2GDS1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addStudy1Kg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addStudyGDSSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addUpdateLap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addUpdateSegment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendGDSRefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendGDSSampleOnly.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendGDSgenotype.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendGDSgenotypeMat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcAFMLRNA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeAlleleFraction.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeAllelicFractionDNA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeAllelicFractionRNA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeAllelicImbDNAChr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeAncestryFromSyntheticFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeKNNRefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeKNNRefSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeLOHBlocksDNAChr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePCAMultiSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePCARefRMMulti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePCARefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computePoolSyntheticAncestryGr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeSyntheticConfMat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeSyntheticROC.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createStudy2GDS1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demoKnownSuperPop1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demoPCA1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demoPCASyntheticProfiles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demoPedigreeEx1.html</loc>
-  </url>
-  <url>
-    <loc>/reference/estimateAllelicFraction.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGDS1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGDS1KGgenotypeFromSNPPileup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGDSRefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGDSSNPinfo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGDSgenotype.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateGeneBlock.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateMapSnvSel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generatePhase1KG2GDS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getBlockIDs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getRef1KGPop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getTableSNV.html</loc>
-  </url>
-  <url>
-    <loc>/reference/groupChr1KGSNV.html</loc>
-  </url>
-  <url>
-    <loc>/reference/identifyRelative.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/matKNNSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pedSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prepPed1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prepPedSynthetic1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prepSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pruning1KGbyChr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pruningSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/readSNVFileGeneric.html</loc>
-  </url>
-  <url>
-    <loc>/reference/readSNVPileupFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/readSNVVCF.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runExomeAncestry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runIBDKING.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runLDPruning.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runProfileAncestry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runRNAAncestry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runWrapperAncestry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/selParaPCAUpQuartile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/select1KGPop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/snpPositionDemo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/snvListVCF.html</loc>
-  </url>
-  <url>
-    <loc>/reference/splitSelectByPop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/syntheticGeno.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tableBlockAF.html</loc>
-  </url>
-  <url>
-    <loc>/reference/testAlleleFractionChange.html</loc>
-  </url>
-  <url>
-    <loc>/reference/testEmptyBox.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateAdd1KG2SampleGDS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateAddStudy1Kg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateCharacterString.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputeAncestryFromSyntheticFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputeKNNRefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputeKNNRefSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputePCAMultiSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputePCARefSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateComputeSyntheticRoc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateCreateStudy2GDS1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateDataRefSynParameter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateEstimateAllelicFraction.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateGDSClass.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateGenerateGDS1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateLogical.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validatePEDStudyParameter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validatePepSynthetic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validatePositiveIntegerVector.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validatePrepPed1KG.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateProfileGDSExist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validatePruningSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateRunExomeOrRNAAncestry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateSingleRatio.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateStudyDataFrameParameter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateSyntheticGeno.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/Create_Reference_GDS_File.html</loc></url>
+<url><loc>/articles/RAIDS.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/RAIDS-package.html</loc></url>
+<url><loc>/reference/add1KG2SampleGDS.html</loc></url>
+<url><loc>/reference/addBlockInGDSAnnot.html</loc></url>
+<url><loc>/reference/addGDSRef.html</loc></url>
+<url><loc>/reference/addGDSStudyPruning.html</loc></url>
+<url><loc>/reference/addGeneBlockGDSRefAnnot.html</loc></url>
+<url><loc>/reference/addRef2GDS1KG.html</loc></url>
+<url><loc>/reference/addStudy1Kg.html</loc></url>
+<url><loc>/reference/addStudyGDSSample.html</loc></url>
+<url><loc>/reference/addUpdateLap.html</loc></url>
+<url><loc>/reference/addUpdateSegment.html</loc></url>
+<url><loc>/reference/appendGDSRefSample.html</loc></url>
+<url><loc>/reference/appendGDSSampleOnly.html</loc></url>
+<url><loc>/reference/appendGDSgenotype.html</loc></url>
+<url><loc>/reference/appendGDSgenotypeMat.html</loc></url>
+<url><loc>/reference/calcAFMLRNA.html</loc></url>
+<url><loc>/reference/computeAlleleFraction.html</loc></url>
+<url><loc>/reference/computeAllelicFractionDNA.html</loc></url>
+<url><loc>/reference/computeAllelicFractionRNA.html</loc></url>
+<url><loc>/reference/computeAllelicImbDNAChr.html</loc></url>
+<url><loc>/reference/computeAncestryFromSyntheticFile.html</loc></url>
+<url><loc>/reference/computeKNNRefSample.html</loc></url>
+<url><loc>/reference/computeKNNRefSynthetic.html</loc></url>
+<url><loc>/reference/computeLOHBlocksDNAChr.html</loc></url>
+<url><loc>/reference/computePCAMultiSynthetic.html</loc></url>
+<url><loc>/reference/computePCARefRMMulti.html</loc></url>
+<url><loc>/reference/computePCARefSample.html</loc></url>
+<url><loc>/reference/computePoolSyntheticAncestryGr.html</loc></url>
+<url><loc>/reference/computeSyntheticConfMat.html</loc></url>
+<url><loc>/reference/computeSyntheticROC.html</loc></url>
+<url><loc>/reference/createAccuracyGraph.html</loc></url>
+<url><loc>/reference/createStudy2GDS1KG.html</loc></url>
+<url><loc>/reference/demoKnownSuperPop1KG.html</loc></url>
+<url><loc>/reference/demoPCA1KG.html</loc></url>
+<url><loc>/reference/demoPCASyntheticProfiles.html</loc></url>
+<url><loc>/reference/demoPedigreeEx1.html</loc></url>
+<url><loc>/reference/estimateAllelicFraction.html</loc></url>
+<url><loc>/reference/generateGDS1KG.html</loc></url>
+<url><loc>/reference/generateGDS1KGgenotypeFromSNPPileup.html</loc></url>
+<url><loc>/reference/generateGDSRefSample.html</loc></url>
+<url><loc>/reference/generateGDSSNPinfo.html</loc></url>
+<url><loc>/reference/generateGDSgenotype.html</loc></url>
+<url><loc>/reference/generateGeneBlock.html</loc></url>
+<url><loc>/reference/generateMapSnvSel.html</loc></url>
+<url><loc>/reference/generatePhase1KG2GDS.html</loc></url>
+<url><loc>/reference/getBlockIDs.html</loc></url>
+<url><loc>/reference/getRef1KGPop.html</loc></url>
+<url><loc>/reference/getTableSNV.html</loc></url>
+<url><loc>/reference/groupChr1KGSNV.html</loc></url>
+<url><loc>/reference/identifyRelative.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/matKNNSynthetic.html</loc></url>
+<url><loc>/reference/pedSynthetic.html</loc></url>
+<url><loc>/reference/prepPed1KG.html</loc></url>
+<url><loc>/reference/prepPedSynthetic1KG.html</loc></url>
+<url><loc>/reference/prepSynthetic.html</loc></url>
+<url><loc>/reference/pruning1KGbyChr.html</loc></url>
+<url><loc>/reference/pruningSample.html</loc></url>
+<url><loc>/reference/readSNVFileGeneric.html</loc></url>
+<url><loc>/reference/readSNVPileupFile.html</loc></url>
+<url><loc>/reference/readSNVVCF.html</loc></url>
+<url><loc>/reference/runExomeAncestry.html</loc></url>
+<url><loc>/reference/runIBDKING.html</loc></url>
+<url><loc>/reference/runLDPruning.html</loc></url>
+<url><loc>/reference/runProfileAncestry.html</loc></url>
+<url><loc>/reference/runRNAAncestry.html</loc></url>
+<url><loc>/reference/runWrapperAncestry.html</loc></url>
+<url><loc>/reference/selParaPCAUpQuartile.html</loc></url>
+<url><loc>/reference/select1KGPop.html</loc></url>
+<url><loc>/reference/snpPositionDemo.html</loc></url>
+<url><loc>/reference/snvListVCF.html</loc></url>
+<url><loc>/reference/splitSelectByPop.html</loc></url>
+<url><loc>/reference/syntheticGeno.html</loc></url>
+<url><loc>/reference/tableBlockAF.html</loc></url>
+<url><loc>/reference/testAlleleFractionChange.html</loc></url>
+<url><loc>/reference/testEmptyBox.html</loc></url>
+<url><loc>/reference/validateAdd1KG2SampleGDS.html</loc></url>
+<url><loc>/reference/validateAddStudy1Kg.html</loc></url>
+<url><loc>/reference/validateCharacterString.html</loc></url>
+<url><loc>/reference/validateComputeAncestryFromSyntheticFile.html</loc></url>
+<url><loc>/reference/validateComputeKNNRefSample.html</loc></url>
+<url><loc>/reference/validateComputeKNNRefSynthetic.html</loc></url>
+<url><loc>/reference/validateComputePCAMultiSynthetic.html</loc></url>
+<url><loc>/reference/validateComputePCARefSample.html</loc></url>
+<url><loc>/reference/validateComputePoolSyntheticAncestryGr.html</loc></url>
+<url><loc>/reference/validateComputeSyntheticRoc.html</loc></url>
+<url><loc>/reference/validateCreateAccuracyGraph.html</loc></url>
+<url><loc>/reference/validateCreateStudy2GDS1KG.html</loc></url>
+<url><loc>/reference/validateDataRefSynParameter.html</loc></url>
+<url><loc>/reference/validateEstimateAllelicFraction.html</loc></url>
+<url><loc>/reference/validateGDSClass.html</loc></url>
+<url><loc>/reference/validateGenerateGDS1KG.html</loc></url>
+<url><loc>/reference/validateLogical.html</loc></url>
+<url><loc>/reference/validatePEDStudyParameter.html</loc></url>
+<url><loc>/reference/validatePepSynthetic.html</loc></url>
+<url><loc>/reference/validatePositiveIntegerVector.html</loc></url>
+<url><loc>/reference/validatePrepPed1KG.html</loc></url>
+<url><loc>/reference/validateProfileGDSExist.html</loc></url>
+<url><loc>/reference/validatePruningSample.html</loc></url>
+<url><loc>/reference/validateRunExomeOrRNAAncestry.html</loc></url>
+<url><loc>/reference/validateSingleRatio.html</loc></url>
+<url><loc>/reference/validateStudyDataFrameParameter.html</loc></url>
+<url><loc>/reference/validateSyntheticGeno.html</loc></url>
 </urlset>
+

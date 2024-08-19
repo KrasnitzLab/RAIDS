@@ -10,7 +10,7 @@ and should not be used to call ancestry inference on a real profile.}
 \format{
 The \code{list} containing the PCA results for a small subset of
 the reference 1KG dataset. The \code{list} contains 2 entries:
-\itemize{
+\describe{
 \item{pruned}{ a \code{vector} of SNV identifiers specifying selected SNVs
 for the PCA analysis.}
 \item{pca.unrel}{ a \code{snpgdsPCAClass} object containing the eigenvalues
@@ -23,7 +23,7 @@ data(demoPCA1KG)
 \value{
 The \code{list} containing the PCA results for a small subset of
 the reference 1KG dataset. The \code{list} contains 2 entries:
-\itemize{
+\describe{
 \item{pruned}{ a \code{vector} of SNV identifiers specifying selected SNVs
 for the PCA analysis.}
 \item{pca.unrel}{ a \code{snpgdsPCAClass} object containing the eigenvalues

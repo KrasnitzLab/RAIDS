@@ -11,28 +11,28 @@ computeAllelicImbDNAChr(snpPos, chr, wAR = 10, cutOffEmptyBox = -3)
 \item{snpPos}{a \code{data.frame} containing the SNV information for the
 chromosome specified by the \code{chr} argument. The \code{data.frame} must
 contain:
-\itemize{
-\item{cnt.tot} {a single \code{integer} representing the total coverage for
+\describe{
+\item{cnt.tot}{ a single \code{integer} representing the total coverage for
 the SNV.}
-\item{cnt.ref} {a single \code{integer} representing the coverage for
+\item{cnt.ref}{ a single \code{integer} representing the coverage for
 the reference allele.}
-\item{cnt.alt} {a single \code{integer} representing the coverage for
+\item{cnt.alt}{ a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{snp.pos} {a single \code{integer} representing the SNV position.}
-\item{snp.chr} {a single \code{integer} representing the SNV chromosome.}
-\item{normal.geno} {a single \code{numeric} indicating the genotype of the
+\item{snp.pos}{ a single \code{integer} representing the SNV position.}
+\item{snp.chr}{ a single \code{integer} representing the SNV chromosome.}
+\item{normal.geno}{ a single \code{numeric} indicating the genotype of the
 SNV. The possibles are: \code{0} (wild-type homozygote), \code{1}
 (heterozygote), \code{2} (altenative homozygote), \code{3} indicating that
 the normal genotype is unknown.}
-\item{pruned} {a \code{logical} indicating if the SNV is retained after
+\item{pruned}{ a \code{logical} indicating if the SNV is retained after
 pruning}
-\item{snp.index} {a \code{integer} representing the index position of the
+\item{snp.index}{ a \code{integer} representing the index position of the
 SNV in the Reference GDS file that contains all SNVs}
-\item{keep} {a \code{logical} indicating if the genotype exists for the SNV}
-\item{hetero} {a \code{logical} indicating if the SNV is heterozygote}
-\item{homo} {a \code{logical} indicating if the SNV is homozygote}
-\item{lap} {a \code{numeric} indicating lower allelic fraction}
-\item{LOH} {a \code{integer} indicating if the SNV is in an LOH region
+\item{keep}{ a \code{logical} indicating if the genotype exists for the SNV}
+\item{hetero}{ a \code{logical} indicating if the SNV is heterozygote}
+\item{homo}{ a \code{logical} indicating if the SNV is homozygote}
+\item{lap}{ a \code{numeric} indicating lower allelic fraction}
+\item{LOH}{ a \code{integer} indicating if the SNV is in an LOH region
 (0=not LOH, 1=in LOH)}
 }}
 

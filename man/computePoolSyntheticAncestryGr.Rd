@@ -88,16 +88,16 @@ printed. Default: \code{FALSE}.}
 }
 \value{
 a \code{list} containing the following entries:
-\itemize{
-\item{sample.id}{a \code{vector} of \code{character} strings representing
+\describe{
+\item{sample.id}{ a \code{vector} of \code{character} strings representing
 the identifiers of the synthetic profiles. }
-\item{sample1Kg}{a \code{vector} of \code{character} strings representing
+\item{sample1Kg}{ a \code{vector} of \code{character} strings representing
 the identifiers of the reference 1KG profiles used to generate the
 synthetic profiles. }
-\item{sp}{a \code{vector} of \code{character} strings representing the
+\item{sp}{ a \code{vector} of \code{character} strings representing the
 known ancestry for the reference 1KG profiles used to generate the
 synthetic profiles. }
-\item{matKNN}{a \code{data.frame} containing 4 columns. The first column
+\item{matKNN}{ a \code{data.frame} containing 4 columns. The first column
 'sample.id' contains the name of the synthetic profile. The second column
 'D' represents the dimension D used to infer the ancestry. The third column
 'K' represents the number of neighbors K used to infer the ancestry. The

@@ -53,7 +53,7 @@ printed.}
 }
 \value{
 a \code{list} containing 2 entries:
-\itemize{
+\describe{
 \item{pruned}{ a \code{vector} of SNV identifiers specifying selected SNVs
 for the PCA analysis.}
 \item{pca.unrel}{ a \code{snpgdsPCAClass} object containing the eigenvalues

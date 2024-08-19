@@ -16,32 +16,32 @@ the SNVs with coverage > \code{minCov}, for a specific chromosome.}
 a \code{data.frame} containing only heterozygote
 SNV information. The
 \code{data.frame} contain those columns:
-\itemize{
-\item{block} {a single \code{integer} representing the unique identifier
+\describe{
+\item{block}{ a single \code{integer} representing the unique identifier
 of the block.}
-\item{aRF} {a single \code{numeric} representing the final allelic
+\item{aRF}{ a single \code{numeric} representing the final allelic
 fraction; not computed yet, \code{-1} value assigned to all entries.}
-\item{aFraction} {a single \code{integer} representing the possible allelic
+\item{aFraction}{a single \code{integer} representing the possible allelic
 fraction in absence of loss of heterozygosity (LOH).}
-\item{lR} {a single \code{integer} representing the coverage for
+\item{lR}{ a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{nPhase} {a single \code{integer} representing the number of SNV
+\item{nPhase}{ a single \code{integer} representing the number of SNV
 phases.}
-\item{sumAlleleLow} {a single \code{integer} representing the sum of the
+\item{sumAlleleLow}{ a single \code{integer} representing the sum of the
 alleles with the less coverage.}
-\item{sumAlleleHigh} {a single \code{integer} representing the sum of
+\item{sumAlleleHigh}{ a single \code{integer} representing the sum of
 the alleles with more coverage.}
-\item{lH} {a single \code{numeric} for the homozygotes log10 of the product
+\item{lH}{ a single \code{numeric} for the homozygotes log10 of the product
 frequencies of the allele not found in the profile (not a probability).}
-\item{lM} {a single \code{numeric} log10 product frequency allele
+\item{lM}{ a single \code{numeric} log10 product frequency allele
 in population.}
-\item{lRhomo} {a single \code{numeric} representing the score
+\item{lRhomo}{a single \code{numeric} representing the score
 \code{lH} - \code{lM}.}
-\item{nbHomo} {a single \code{integer} representing the number of
+\item{nbHomo}{ a single \code{integer} representing the number of
 homozygote SNVs per block.}
-\item{nbKeep} {a single \code{integer} representing the number of
+\item{nbKeep}{ a single \code{integer} representing the number of
 SNVs retained per block.}
-\item{nbHetero} {a single \code{integer} representing the number of
+\item{nbHetero}{ a single \code{integer} representing the number of
 heterozygote SNVs per block.}
 }
 }

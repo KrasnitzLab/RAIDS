@@ -978,12 +978,12 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile,
 #' representing the length of the chromosomes. See 'details' section.
 #'
 #' @param syntheticRefDF a \code{data.frame} containing those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -1292,7 +1292,7 @@ validateAddStudy1Kg <- function(gdsReference, fileProfileGDS, verbose) {
 #' @param pathProfile a \code{character} string representing the directory
 #' where the Profile GDS files will be created. The directory must exist.
 #'
-#' @param currentProfile  a \code{character} string
+#' @param profile  a \code{character} string
 #' corresponding to the profile identifier. A Profile GDS file
 #' corresponding to the profile identifier must exist and be located in the
 #' \code{pathProfile} directory.
@@ -1666,7 +1666,7 @@ validateComputeKNNRefSample <- function(listEigenvector, listCatPop, spRef,
 #' printed.
 #'
 #' @return a \code{list} containing 2 entries:
-#' \itemize{
+#' \describe{
 #' \item{pruned}{ a \code{vector} of SNV identifiers specifying selected SNVs
 #' for the PCA analysis.}
 #' \item{pca.unrel}{ a \code{snpgdsPCAClass} object containing the eigenvalues
@@ -1790,11 +1790,11 @@ computePCARefRMMulti <- function(gdsProfile, refProfileIDs, listRM, np=1L,
 #' Default: \code{seq(2,15,1)}.
 #'
 #' @return a \code{list} containing 5 entries:
-#' \itemize{
-#' \item{\code{dfPCA}} { a \code{data.frame} containing statistical results
+#' \describe{
+#' \item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
 #' on all combined synthetic results done with a fixed value of \code{D} (the
 #' number of dimensions). The \code{data.frame} contains those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 #' number of dimensions).}
 #' \item{\code{median}}{ a \code{numeric} representing the median of the
@@ -1810,11 +1810,11 @@ computePCARefRMMulti <- function(gdsProfile, refProfileIDs, listRM, np=1L,
 #' (the number of neighbors) for a fixed \code{D} value. }
 #' }
 #' }
-#' \item{\code{dfPop}} { a \code{data.frame} containing statistical results on
+#' \item{\code{dfPop}}{ a \code{data.frame} containing statistical results on
 #' all combined synthetic results done with different values of \code{D} (the
 #' number of dimensions) and \code{K} (the number of neighbors).
 #' The \code{data.frame} contains those columns:
-#' \itemize{
+#' \describe{
 #' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 #' number of dimensions).}
 #' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
@@ -1830,11 +1830,11 @@ computePCARefRMMulti <- function(gdsProfile, refProfileIDs, listRM, np=1L,
 #' the specified values of \code{D} and \code{K}.}
 #' }
 #' }
-#' \item{\code{D}} { a \code{numeric} representing the optimal \code{D} value
+#' \item{\code{D}}{ a \code{numeric} representing the optimal \code{D} value
 #' (the number of dimensions) for the specific profile.}
-#' \item{\code{K}} { a \code{numeric} representing the optimal \code{K} value
+#' \item{\code{K}}{ a \code{numeric} representing the optimal \code{K} value
 #' (the number of neighbors) for the specific profile.}
-#' \item{\code{listD}} { a \code{numeric} representing the optimal \code{D}
+#' \item{\code{listD}}{ a \code{numeric} representing the optimal \code{D}
 #' values (the number of dimensions) for the specific profile. More than one
 #' \code{D} is possible.}
 #' }
@@ -1966,12 +1966,12 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The \code{data.frame} must have those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -2006,12 +2006,12 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #'
 #' The runWrapperAncestry() function generates 3 types of files
 #' in the \code{pathOut} directory:
-#' \itemize{
-#' \item{Ancestry Inference}{The ancestry inference CSV file
+#' \describe{
+#' \item{Ancestry Inference}{ The ancestry inference CSV file
 #' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{The inference information RDS file
+#' \item{Inference Informaton}{ The inference information RDS file
 #' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{The parameter information RDS files
+#' \item{Synthetic Information}{ The parameter information RDS files
 #' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 #' }
 #'
@@ -2275,12 +2275,12 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' @param syntheticRefDF a \code{data.frame} containing a subset of
 #' reference profiles for each sub-population present in the Reference GDS
 #' file. The \code{data.frame} must have those columns:
-#' \itemize{
-#' \item{sample.id} { a \code{character} string representing the sample
+#' \describe{
+#' \item{sample.id}{ a \code{character} string representing the sample
 #' identifier. }
-#' \item{pop.group} { a \code{character} string representing the
+#' \item{pop.group}{ a \code{character} string representing the
 #' subcontinental population assigned to the sample. }
-#' \item{superPop} { a \code{character} string representing the
+#' \item{superPop}{ a \code{character} string representing the
 #' super-population assigned to the sample. }
 #' }
 #'
@@ -2316,12 +2316,12 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #'
 #' The runWrapperAncestry() function generates 3 types of files
 #' in the \code{pathOut} directory.
-#' \itemize{
-#' \item{Ancestry Inference}{The ancestry inference CSV file
+#' \describe{
+#' \item{Ancestry Inference}{ The ancestry inference CSV file
 #' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{The inference information RDS file
+#' \item{Inference Informaton}{ The inference information RDS file
 #' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{The parameter information RDS files
+#' \item{Synthetic Information}{ The parameter information RDS files
 #' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 #' }
 #'
@@ -2424,7 +2424,8 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' @keywords internal
 runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                chrInfo, syntheticRefDF, genoSource=c("snp-pileup", "generic", "VCF"),
+                chrInfo, syntheticRefDF, 
+                genoSource=c("snp-pileup", "generic", "VCF"),
                 studyType=c("DNA", "RNA"), np=1L, blockTypeID=NULL,
                 verbose=FALSE) {
 

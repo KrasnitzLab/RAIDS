@@ -9,10 +9,10 @@
 The \code{list} containing the PCA result of demo synthetic
 profiles projected on the demo subset 1KG reference PCA.
 The \code{list} contains 3 entries:
-\itemize{
+\describe{
 \item{sample.id}{ a \code{character} string representing the unique
 identifier of the synthetic profiles.}
-\item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
+\item{eigenvector.ref}{ a \code{matrix} of \code{numeric} containing
 the eigenvectors for the reference profiles.}
 \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
 eigenvectors for the current synthetic profiles projected on the demo
@@ -26,10 +26,10 @@ data(demoPCASyntheticProfiles)
 The \code{list} containing the PCA result of demo synthetic
 profiles projected on the demo subset 1KG reference PCA.
 The \code{list} contains 3 entries:
-\itemize{
+\describe{
 \item{sample.id}{ a \code{character} string representing the unique
 identifier of the synthetic profiles.}
-\item{eigenvector.ref} { a \code{matrix} of \code{numeric} containing
+\item{eigenvector.ref}{ a \code{matrix} of \code{numeric} containing
 the eigenvectors for the reference profiles.}
 \item{eigenvector}{ a \code{matrix} of \code{numeric} containing the
 eigenvectors for the current synthetic profiles projected on the demo
@@ -79,8 +79,8 @@ closefn.gds(gdsProfile)
 
 }
 \seealso{
-\itemize{
-\item \code{\link{computeKNNRefSynthetic}} {for running a k-nearest
+\describe{
+\item{\code{\link{computeKNNRefSynthetic}}}{ for running a k-nearest
 neighbors analysis on a subset of the synthetic data set.}
 }
 }

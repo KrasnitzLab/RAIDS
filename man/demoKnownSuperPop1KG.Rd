@@ -59,10 +59,10 @@ closefn.gds(gdsProfile)
 
 }
 \seealso{
-\itemize{
-\item \code{\link{computeKNNRefSynthetic}} {for running a k-nearest
+\describe{
+\item{\code{\link{computeKNNRefSynthetic}}}{ for running a k-nearest
 neighbors analysis on a subset of the synthetic data set.}
-\item \code{\link{computePoolSyntheticAncestryGr}} { for running a
+\item{\code{\link{computePoolSyntheticAncestryGr}}}{ for running a
 PCA analysis using 1 synthetic profile from each sub-continental
 population.}
 }

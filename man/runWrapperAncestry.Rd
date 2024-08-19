@@ -64,12 +64,12 @@ representing the length of the chromosomes. See 'details' section.}
 \item{syntheticRefDF}{a \code{data.frame} containing a subset of
 reference profiles for each sub-population present in the Reference GDS
 file. The \code{data.frame} must have those columns:
-\itemize{
-\item{sample.id} { a \code{character} string representing the sample
+\describe{
+\item{sample.id}{ a \code{character} string representing the sample
 identifier. }
-\item{pop.group} { a \code{character} string representing the
+\item{pop.group}{ a \code{character} string representing the
 subcontinental population assigned to the sample. }
-\item{superPop} { a \code{character} string representing the
+\item{superPop}{ a \code{character} string representing the
 super-population assigned to the sample. }
 }}
 
@@ -111,12 +111,12 @@ description file and the Population reference GDS file.
 \details{
 The runWrapperAncestry() function generates 3 types of files
 in the \code{pathOut} directory.
-\itemize{
-\item{Ancestry Inference}{The ancestry inference CSV file
+\describe{
+\item{Ancestry Inference}{ The ancestry inference CSV file
 (".Ancestry.csv" file)}
-\item{Inference Informaton}{The inference information RDS file
+\item{Inference Informaton}{ The inference information RDS file
 (".infoCall.rds" file)}
-\item{Synthetic Information}{The parameter information RDS files
+\item{Synthetic Information}{ The parameter information RDS files
 from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
 }
 

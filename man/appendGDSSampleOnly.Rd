@@ -11,7 +11,7 @@ appendGDSSampleOnly(gds, listSamples)
 \item{gds}{an object of class
 \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.}
 
-\item{listSample}{a \code{vector} of \code{character} string representing
+\item{listSamples}{a \code{vector} of \code{character} string representing
 the sample identifiers to be added to GDS file.}
 }
 \value{

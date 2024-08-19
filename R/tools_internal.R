@@ -196,7 +196,7 @@ validatePositiveIntegerVector <- function(value, name) {
 #' is added to the position present in the file. Default: \code{0L}.
 #'
 #' @return the a \code{data.frame} containing at least:
-#' \itemize{
+#' \describe{
 #' \item{Chromosome}{ a \code{numeric} representing the name of
 #' the chromosome}
 #' \item{Position}{ a \code{numeric} representing the position on the
@@ -204,15 +204,15 @@ validatePositiveIntegerVector <- function(value, name) {
 #' \item{Ref}{ a \code{character} string representing the reference nucleotide}
 #' \item{Alt}{ a \code{character} string representing the alternative
 #' nucleotide}
-#' \item{File1R} { a \code{numeric} representing the count for
+#' \item{File1R}{ a \code{numeric} representing the count for
 #' the reference nucleotide}
-#' \item{File1A} { a \code{numeric} representing the count for the
+#' \item{File1A}{ a \code{numeric} representing the count for the
 #' alternative nucleotide}
-#' \item{File1E} {a \code{numeric} representing the count for the
+#' \item{File1E}{a \code{numeric} representing the count for the
 #' errors}
-#' \item{File1D} {a \code{numeric} representing the count for the
+#' \item{File1D}{a \code{numeric} representing the count for the
 #' deletions}
-#' \item{count} { a \code{numeric} representing the total count}
+#' \item{count}{ a \code{numeric} representing the total count}
 #' }
 #'
 #' @examples
@@ -270,7 +270,7 @@ readSNVPileupFile <- function(fileName, offset = 0L) {
 #' is added to the position present in the file. Default: \code{0L}.
 #'
 #' @return a \code{data.frame} containing at least:
-#' \itemize{
+#' \describe{
 #' \item{Chromosome}{ a \code{numeric} representing the name of
 #' the chromosome}
 #' \item{Position}{ a \code{numeric} representing the position on the
@@ -278,11 +278,11 @@ readSNVPileupFile <- function(fileName, offset = 0L) {
 #' \item{Ref}{ a \code{character} string representing the reference nucleotide}
 #' \item{Alt}{ a \code{character} string representing the alternative
 #' nucleotide}
-#' \item{File1R} { a \code{numeric} representing the count for
+#' \item{File1R}{ a \code{numeric} representing the count for
 #' the reference nucleotide}
-#' \item{File1A} { a \code{numeric} representing the count for the
+#' \item{File1A}{ a \code{numeric} representing the count for the
 #' alternative nucleotide}
-#' \item{count} { a \code{numeric} representing the total count}
+#' \item{count}{ a \code{numeric} representing the total count}
 #' }
 #'
 #' @examples
@@ -340,7 +340,7 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' is added to the position present in the file. Default: \code{0L}.
 #'
 #' @return a \code{data.frame} containing at least:
-#' \itemize{
+#' \describe{
 #' \item{Chromosome}{ a \code{numeric} representing the name of
 #' the chromosome}
 #' \item{Position}{ a \code{numeric} representing the position on the
@@ -348,11 +348,11 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' \item{Ref}{ a \code{character} string representing the reference nucleotide}
 #' \item{Alt}{ a \code{character} string representing the alternative
 #' nucleotide}
-#' \item{File1R} { a \code{numeric} representing the count for
+#' \item{File1R}{ a \code{numeric} representing the count for
 #' the reference nucleotide}
-#' \item{File1A} { a \code{numeric} representing the count for the
+#' \item{File1A}{ a \code{numeric} representing the count for the
 #' alternative nucleotide}
-#' \item{count} { a \code{numeric} representing the total count}
+#' \item{count}{ a \code{numeric} representing the total count}
 #' }
 #'
 #' @examples

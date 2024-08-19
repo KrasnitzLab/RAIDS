@@ -28,16 +28,16 @@ Default: \code{0L}.}
 \value{
 a \code{data.frame} containing the needed pedigree information
 from Reference. The \code{data.frame} contains those columns:
-\itemize{
-\item{sample.id}{a \code{character} string representing the profile unique
+\describe{
+\item{sample.id}{ a \code{character} string representing the profile unique
 ID.}
-\item{Name.ID}{a \code{character} string representing the profile name.}
+\item{Name.ID}{ a \code{character} string representing the profile name.}
 \item{sex}{a \code{character} string representing the sex of the profile.}
-\item{pop.group}{a \code{character} string representing the
+\item{pop.group}{ a \code{character} string representing the
 sub-continental ancestry of the profile.}
-\item{superPop }{a \code{character} string representing the continental
+\item{superPop }{ a \code{character} string representing the continental
 ancestry of the profile.}
-\item{superPop }{a \code{integer} representing the batch of the profile.}
+\item{superPop }{ a \code{integer} representing the batch of the profile.}
 }
 }
 \description{

@@ -12,12 +12,12 @@ calcAFMLRNA(snpPosHetero)
 \item{snpPosHetero}{a \code{data.frame}
 containing the SNV information for a specific block (gene if RNA-seq).
 The \code{data.frame} must contain those columns:
-\itemize{
-\item{cnt.ref} {a single \code{integer} representing the coverage for
+\describe{
+\item{cnt.ref}{ a single \code{integer} representing the coverage for
 the reference allele.}
-\item{cnt.alt} {a single \code{integer} representing the coverage for
+\item{cnt.alt}{ a single \code{integer} representing the coverage for
 the alternative allele.}
-\item{phase} { a single \code{integer} indicating the phase of the variant
+\item{phase}{ a single \code{integer} indicating the phase of the variant
 if known, \code{3} if not known}
 }}
 }
@@ -25,15 +25,15 @@ if known, \code{3} if not known}
 a \code{list} for the block with the information
 relative to the heterozygotes.
 The \code{list} contains:
-\itemize{
-\item{lR} { a single \code{numeric} representing the sum of the log of
+\describe{
+\item{lR}{ a single \code{numeric} representing the sum of the log of
 read depth of the lowest depth divide by the total depth of the position
 minus of likelihood of the allelic fraction of 0.5.}
-\item{aFraction} { a single \code{numeric} representing the allele
+\item{aFraction}{ a single \code{numeric} representing the allele
 fraction estimation.}
-\item{sumAlleleLow} { a \code{integer} representing the
+\item{sumAlleleLow}{ a \code{integer} representing the
 sum of the allele read depth of the lowest read allele depth}
-\item{sumAlleleHigh} { a \code{integer} representing the
+\item{sumAlleleHigh}{ a \code{integer} representing the
 sum of the allele read depth
 of the highest read allele depth}
 }

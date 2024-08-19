@@ -44,7 +44,7 @@ Default: \code{c("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 }
 \value{
 \code{list} containing 3 entries:
-\itemize{
+\describe{
 \item{\code{matAUROC.All}}{ a \code{data.frame} containing the AUROC for all
 the ancestry results.  }
 \item{\code{matAUROC.Call}}{ a \code{data.frame} containing the AUROC

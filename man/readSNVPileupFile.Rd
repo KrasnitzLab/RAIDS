@@ -20,7 +20,7 @@ is added to the position present in the file. Default: \code{0L}.}
 }
 \value{
 the a \code{data.frame} containing at least:
-\itemize{
+\describe{
 \item{Chromosome}{ a \code{numeric} representing the name of
 the chromosome}
 \item{Position}{ a \code{numeric} representing the position on the
@@ -28,15 +28,15 @@ chromosome}
 \item{Ref}{ a \code{character} string representing the reference nucleotide}
 \item{Alt}{ a \code{character} string representing the alternative
 nucleotide}
-\item{File1R} { a \code{numeric} representing the count for
+\item{File1R}{ a \code{numeric} representing the count for
 the reference nucleotide}
-\item{File1A} { a \code{numeric} representing the count for the
+\item{File1A}{ a \code{numeric} representing the count for the
 alternative nucleotide}
-\item{File1E} {a \code{numeric} representing the count for the
+\item{File1E}{a \code{numeric} representing the count for the
 errors}
-\item{File1D} {a \code{numeric} representing the count for the
+\item{File1D}{a \code{numeric} representing the count for the
 deletions}
-\item{count} { a \code{numeric} representing the total count}
+\item{count}{ a \code{numeric} representing the total count}
 }
 }
 \description{

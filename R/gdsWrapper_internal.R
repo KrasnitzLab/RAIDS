@@ -749,7 +749,7 @@ addStudyGDSSample <- function(gdsProfile, pedProfile, batch, listSamples,
 #' the process in the \code{\link[SNPRelate]{snpgdsIBDKING}}() function.
 #'
 #' @return a \code{list} containing:
-#' \itemize{
+#' \describe{
 #'     \item{sample.id}{a \code{character} string representing the sample
 #'     ids used in the analysis}
 #'     \item{snp.id}{a \code{character} string representing the SNP ids
@@ -1283,7 +1283,7 @@ addUpdateSegment <- function(gdsProfile, snpSeg) {
 #' @param gds an object of class
 #' \link[gdsfmt]{gds.class} (a GDS file), the opened GDS file.
 #'
-#' @param listSample a \code{vector} of \code{character} string representing
+#' @param listSamples a \code{vector} of \code{character} string representing
 #' the sample identifiers to be added to GDS file.
 #'
 #'

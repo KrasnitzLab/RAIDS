@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.3.1
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o New function createAccuracyGraph() that creates a graphic representation of the accuracy for different values of PCA dimensions and K-neighbors through all tested ancestries.
+
 CHANGES IN VERSION 0.99.15
 ------------------------
 

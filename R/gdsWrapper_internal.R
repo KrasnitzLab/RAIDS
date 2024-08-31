@@ -646,11 +646,13 @@ addStudyGDSSample <- function(gdsProfile, pedProfile, batch, listSamples,
     if(!(is.null(listSamples))) {
         if(length(listSamples) == length(intersect(listSamples,
                                                    pedProfile$Name.ID))) {
-            # if we remove the names we should manage the order
+            # if we remove the names we should manage the listSamples order
             # something like
-            tmp1 <- order(as.character(pedProfile$Name.ID))
-            tmp2 <- order(as.character(listSamples))
-            pedProfile <- pedProfile[tmp1[which(pedProfile$Name.ID[tmp1] %in% listSamples)][order(tmp2)],]
+
+            tmp <- order(as.character(listSamples))
+            pedProfile <- pedProfile[which(pedProfile$Name.ID %in% listSamples), ]
+            pedProfile <- pedProfile[order(pedProfile$Name.ID), ][order(tmp),]
+
         } else {
             stop("List of samples includes samples not present in ",
                 "the \'pedProfile\' data frame. The sample names must be ",

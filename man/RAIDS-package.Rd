@@ -4,6 +4,7 @@
 \encoding{UTF-8}
 \name{RAIDS-package}
 \alias{RAIDS-package}
+\alias{_PACKAGE}
 \alias{RAIDS}
 \title{RAIDS: Accurate Inference of Genetic Ancestry from Cancer Sequences}
 \value{

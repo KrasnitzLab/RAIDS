@@ -197,8 +197,8 @@ generateMapSnvSel <- function(cutOff=0.01, fileSNV, fileSNPsRDS, fileFREQ) {
     }
 
     ## Read the bulk SNP information file
-    mapSNVSel <- read.csv2(fileSNV)
-
+    # mapSNVSel <- read.csv2(fileSNV)
+    mapSNVSel <- read.csv(fileSNV)
     ## Identify SNPs that have a frequency equal or superior to the cut-off
     ## in at least one super population
     listSNP <- which(rowSums(mapSNVSel[,c("EAS_AF",

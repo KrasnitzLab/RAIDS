@@ -86,9 +86,9 @@ createAccuracyGraph <- function(fileRDS, title="",
         scale_colour_manual(aesthetics = c("colour", "fill"), 
                 breaks=selectD, values=selectColor) +
         theme_classic() +
-        theme(axis.text=element_text(size=1, colour = "white"),
+        theme(axis.text=element_text(size=20, colour = "black"),
             panel.background = element_rect(color="black"),
-            axis.text.x=element_text(size=30, angle=90, 
+            axis.text.x=element_text(size=20, angle=90, 
                     vjust = 0.5, hjust=1, colour="black"),
             plot.title = element_text(size=22, face="bold", 
                     colour="gray20", hjust=0.5),

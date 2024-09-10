@@ -2207,7 +2207,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #'     \donttest{
 #'
-#'         runDNAAncestryProfile(profileFile=demoProfileEx1,
+#'         inferAncestry(profileFile=demoProfileEx1,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathOut=pathOut,
 #'             fileReferenceGDS=fileReferenceGDS,
@@ -2228,7 +2228,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @encoding UTF-8
 #' @export
 
-runDNAAncestryProfile <- function(profileFile, pathProfileGDS,
+inferAncestry <- function(profileFile, pathProfileGDS,
                                   pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                                   chrInfo, syntheticRefDF,
                                   genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,
@@ -2638,7 +2638,7 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #'     \donttest{
 #'
-#'         runRNAAncestryProfile(profileFile=demoProfileEx1,
+#'         inferAncestryGeneAware(profileFile=demoProfileEx1,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathOut=pathOut,
 #'             fileReferenceGDS=fileReferenceGDS,
@@ -2659,7 +2659,7 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
-runRNAAncestryProfile <- function(profileFile, pathProfileGDS,
+inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
                                   pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
                                   chrInfo, syntheticRefDF,
                                   genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,

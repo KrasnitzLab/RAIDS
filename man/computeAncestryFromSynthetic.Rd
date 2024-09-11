@@ -160,7 +160,7 @@ the specified values of \code{D} and \code{K}.}
 super-population. The \code{data.frame} contains
 those columns:
 \describe{
-\item{\code{pcaD}}{ a \code{numeric} representing the value of \code{D} (the
+\item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
 number of dimensions).}
 \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
 number of neighbors).}
@@ -169,7 +169,7 @@ super-population.}
 \item{\code{L}}{ a \code{numeric} representing the lower value of the 95\%
 confidence interval for the AUROC obtained for the fixed values of
 super-population, \code{D} and \code{K}.}
-\item{\code{AUR}}{ a \code{numeric} representing  the AUROC obtained for the
+\item{\code{AUROC}}{ a \code{numeric} representing  the AUROC obtained for the
 fixed values of super-population, \code{D} and \code{K}.}
 \item{\code{H}}{ a \code{numeric} representing the higher value of the 95\%
 confidence interval for the AUROC obtained for the fixed values of

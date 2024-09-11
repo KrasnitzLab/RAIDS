@@ -2427,19 +2427,8 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #'
 #' @details
 #'
-#' The runWrapperAncestry() function generates 3 types of files
-#' in the \code{pathOut} directory:
-#' \describe{
-#' \item{Ancestry Inference}{ The ancestry inference CSV file
-#' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{ The inference information RDS file
-#' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{ The parameter information RDS files
-#' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
-#' }
-#'
-#' In addition, a sub-directory (named using the profile ID) is
-#' also created.
+#' The profileAncestry() generates list \code{list}
+#' TODO update the description
 #'
 #' @references
 #'
@@ -2608,7 +2597,7 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     ## For each row of the sampleRM matrix
     resSyn <- lapply(seq_len(nrow(sampleRM)), FUN=function(x, sampleRM,
                                                            gdsProfile, studyDFSyn, spRef,
-                                                           pathOutProfile, currentProfile) {
+                                                           currentProfile) {
         synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
                                                    sampleRM=sampleRM[x,],
                                                    studyIDSyn=studyDFSyn$study.id,
@@ -2620,7 +2609,7 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
         #                                    paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
         return(synthKNN$matKNN)
     }, sampleRM=sampleRM, gdsProfile=gdsProfile,
-    studyDFSyn=studyDFSyn, spRef=spRef, pathOutProfile=pathOutProfile,
+    studyDFSyn=studyDFSyn, spRef=spRef,
     currentProfile=currentProfile)
     resSyn <- do.call(rbind, resSyn)
     ## Extract the super-population information from the 1KG GDS file

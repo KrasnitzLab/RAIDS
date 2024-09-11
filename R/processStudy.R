@@ -2383,6 +2383,8 @@ inferAncestry <- function(profileFile, pathProfileGDS,
                              pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
                              chrInfo, syntheticRefDF, genoSource, studyType="LD", np=np,
                              verbose)
+    }else{
+        stop(paste0("The format ", genoSource," is not implemented yet\n"))
     }
     ## Successful
     return(r)
@@ -2807,6 +2809,8 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
                              pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
                              chrInfo, syntheticRefDF, genoSource, studyType="GeneAware", np=np,
                              blockTypeID=blockTypeID, verbose)
+    }else{
+        stop(paste0("The format ", genoSource," is not implemented yet\n"))
     }
     ## Successful
     return(r)

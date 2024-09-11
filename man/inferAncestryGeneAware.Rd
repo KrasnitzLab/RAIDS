@@ -9,7 +9,6 @@ RNA profile}
 inferAncestryGeneAware(
   profileFile,
   pathProfileGDS,
-  pathOut,
   fileReferenceGDS,
   fileReferenceAnnotGDS,
   chrInfo,
@@ -28,9 +27,6 @@ fine extension must be .txt.gz, if VCF the extension must be .vcf.gz}
 \item{pathProfileGDS}{a \code{character} string representing the path to
 the directory where the GDS Profile files will be created.
 Default: \code{NULL}.}
-
-\item{pathOut}{a \code{character} string representing the path to
-the directory where the output files are created.}
 
 \item{fileReferenceGDS}{a \code{character} string representing the file
 name of the Population Reference GDS file. The file must exist.}
@@ -132,9 +128,6 @@ demoProfileEx1 <- file.path(dataDir, "example", "snpPileup", "ex1.txt.gz")
 #################################################################
 pathProfileGDS <- file.path(tempdir(), "out.tmp")
 
-pathOut <- file.path(tempdir(), "res.out")
-
-
 ####################################################################
 ## Fix seed to ensure reproducible results
 ####################################################################
@@ -154,9 +147,8 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
     \donttest{
 
-        inferAncestryGeneAware(profileFile=demoProfileEx1,
+        res <- inferAncestryGeneAware(profileFile=demoProfileEx1,
             pathProfileGDS=pathProfileGDS,
-            pathOut=pathOut,
             fileReferenceGDS=fileReferenceGDS,
             fileReferenceAnnotGDS=fileAnnotGDS,
             chrInfo=chrInfo,
@@ -165,7 +157,6 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
             genoSource="snp-pileup")
 
         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-        unlink(pathOut, recursive=TRUE, force=TRUE)
 
     }
 }

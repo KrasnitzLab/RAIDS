@@ -2085,9 +2085,6 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' the directory where the GDS Profile files will be created.
 #' Default: \code{NULL}.
 #'
-#' @param pathOut a \code{character} string representing the path to
-#' the directory where the output files are created.
-#'
 #' @param fileReferenceGDS  a \code{character} string representing the file
 #' name of the Population Reference GDS file. The file must exist.
 #'
@@ -2127,24 +2124,143 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
 #'
-#' @return The integer \code{0L} when successful. See details section for
-#' more information about the generated output files.
+#' @return a \code{list} containing 4 entries:
+#' \describe{
+#' \item{\code{pcaSample}}{ a \code{list} containing the information related
+#' to the eigenvectors. The \code{list} contains those 3 entries:
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{eigenvector.ref}}{ a \code{matrix} of \code{numeric} containing
+#' the eigenvectors for the reference profiles.}
+#' \item{\code{eigenvector}}{ a \code{matrix} of \code{numeric} containing the
+#' eigenvectors for the current profile projected on the PCA from the
+#' reference profiles.}
+#' }
+#' }
+#' \item{\code{paraSample}}{ a \code{list} containing the results with
+#' different \code{D} and \code{K} values that lead to optimal parameter
+#' selection. The \code{list} contains those entries:
+#' \describe{
+#' \item{\code{dfPCA}}{ a \code{data.frame} containing statistical results
+#' on all combined synthetic results done with a fixed value of \code{D} (the
+#' number of dimensions). The \code{data.frame} contains those columns:
+#' \describe{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{median}}{ a \code{numeric} representing the median of the
+#' minimum AUROC obtained (within super populations) for all combination of
+#' the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{mad}}{ a \code{numeric} representing the MAD of the minimum
+#' AUROC obtained (within super populations) for all combination of the fixed
+#' \code{D} value and all tested \code{K} values. }
+#' \item{\code{upQuartile}}{ a \code{numeric} representing the upper quartile
+#' of the minimum AUROC obtained (within super populations) for all
+#' combination of the fixed \code{D} value and all tested \code{K} values. }
+#' \item{\code{k}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for a fixed \code{D} value. }
+#' }
+#' }
+#' \item{\code{dfPop}}{ a \code{data.frame} containing statistical results on
+#' all combined synthetic results done with different values of \code{D} (the
+#' number of dimensions) and \code{K} (the number of neighbors).
+#' The \code{data.frame} contains those columns:
+#' \describe{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{AUROC.min}}{ a \code{numeric} representing the minimum accuracy
+#' obtained by grouping all the synthetic results by super-populations, for
+#' the specified values of \code{D} and \code{K}.}
+#' \item{\code{AUROC}}{ a \code{numeric} representing the accuracy obtained
+#' by grouping all the synthetic results for the specified values of \code{D}
+#' and \code{K}.}
+#' \item{\code{Accu.CM}}{ a \code{numeric} representing the value of accuracy
+#' of the confusion matrix obtained by grouping all the synthetic results for
+#' the specified values of \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{dfAUROC}}{ a \code{data.frame} the summary of the results by
+#' super-population. The \code{data.frame} contains
+#' those columns:
+#' \describe{
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions).}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors).}
+#' \item{\code{Call}}{ a \code{character} string representing the
+#' super-population.}
+#' \item{\code{L}}{ a \code{numeric} representing the lower value of the 95%
+#' confidence interval for the AUROC obtained for the fixed values of
+#' super-population, \code{D} and \code{K}.}
+#' \item{\code{AUROC}}{ a \code{numeric} representing  the AUROC obtained for the
+#' fixed values of super-population, \code{D} and \code{K}.}
+#' \item{\code{H}}{ a \code{numeric} representing the higher value of the 95%
+#' confidence interval for the AUROC obtained for the fixed values of
+#' super-population, \code{D} and \code{K}.}
+#' }
+#' }
+#' \item{\code{D}}{ a \code{numeric} representing the optimal \code{D} value
+#' (the number of dimensions) for the specific profile.}
+#' \item{\code{K}}{ a \code{numeric} representing the optimal \code{K} value
+#' (the number of neighbors) for the specific profile.}
+#' \item{\code{listD}}{ a \code{numeric} representing the optimal \code{D}
+#' values (the number of dimensions) for the specific profile. More than one
+#' \code{D} is possible.}
+#' }
+#' }
+#' \item{\code{KNNSample}}{  a \code{data.frame} containing the inferred ancestry
+#' for different values of \code{K} and \code{D}. The \code{data.frame}
+#' contains those columns:
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions) used to infer the ancestry. }
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors) used to infer the ancestry. }
+#' \item{\code{SuperPop}}{ a \code{character} string representing the inferred
+#' ancestry for the specified \code{D} and \code{K} values.}
+#' }
+#' }
+#' \item{\code{KNNSynthetic}}{  a \code{data.frame} containing the inferred ancestry
+#' for each synthetic data for different values of \code{K} and \code{D}.
+#' The \code{data.frame}
+#' contains those columns: "sample.id", "D", "K", "infer.superPop", "ref.superPop"
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current synthetic data.}
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions) used to infer the ancestry. }
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors) used to infer the ancestry. }
+#' \item{\code{infer.superPop}}{ a \code{character} string representing the inferred
+#' ancestry for the specified \code{D} and \code{K} values.}
+#' \item{\code{ref.superPop}}{ a \code{character} string representing the known
+#' ancestry from the reference}
+#' }
+#' }
+#' \item{\code{Ancestry}}{ a \code{data.frame} containing the inferred
+#' ancestry for the current profile. The \code{data.frame} contains those
+#' columns:
+#' \describe{
+#' \item{\code{sample.id}}{ a \code{character} string representing the unique
+#' identifier of the current profile.}
+#' \item{\code{D}}{ a \code{numeric} representing the value of \code{D} (the
+#' number of dimensions) used to infer the ancestry.}
+#' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
+#' number of neighbors) used to infer the ancestry.}
+#' \item{\code{SuperPop}}{ a \code{character} string representing the inferred
+#' ancestry.}
+#' }
+#' }
+#' }
 #'
 #' @details
 #'
-#' The runExomeAncestry() function generates 3 types of files
-#' in the OUTPUT directory.
-#' \describe{
-#' \item{Ancestry Inference}{ The ancestry inference CSV file
-#' (".Ancestry.csv" file)}
-#' \item{Inference Informaton}{ The inference information RDS file
-#' (".infoCall.rds" file)}
-#' \item{Synthetic Information}{ The parameter information RDS files
-#' from the synthetic inference ("KNN.synt.*.rds" files in a sub-directory)}
-#' }
-#'
-#' In addition, a sub-directory (named using the profile ID) is
-#' also created.
+#' The profileAncestry() generates list \code{list}
+#' TODO update the description
 #'
 #' @references
 #'
@@ -2185,8 +2301,6 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' #################################################################
 #' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#' pathOut <- file.path(tempdir(), "res.out")
-#'
 #'
 #' ####################################################################
 #' ## Fix seed to ensure reproducible results
@@ -2207,9 +2321,8 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #'     \donttest{
 #'
-#'         inferAncestry(profileFile=demoProfileEx1,
+#'         res <- inferAncestry(profileFile=demoProfileEx1,
 #'             pathProfileGDS=pathProfileGDS,
-#'             pathOut=pathOut,
 #'             fileReferenceGDS=fileReferenceGDS,
 #'             fileReferenceAnnotGDS=fileAnnotGDS,
 #'             chrInfo=chrInfo,
@@ -2217,7 +2330,6 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'             genoSource="snp-pileup")
 #'
 #'         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'         unlink(pathOut, recursive=TRUE, force=TRUE)
 #'
 #'     }
 #' }
@@ -2229,10 +2341,10 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @export
 
 inferAncestry <- function(profileFile, pathProfileGDS,
-                                  pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                                  chrInfo, syntheticRefDF,
-                                  genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,
-                                  verbose=FALSE) {
+                          fileReferenceGDS, fileReferenceAnnotGDS,
+                          chrInfo, syntheticRefDF,
+                          genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,
+                          verbose=FALSE) {
 
     profileBaseName <- basename(profileFile)
     pathGeno <- dirname(profileFile)
@@ -2250,16 +2362,16 @@ inferAncestry <- function(profileFile, pathProfileGDS,
                           study.platform="NotDef",
                           stringsAsFactors=FALSE)
     pedStudy <- data.frame(Name.ID = c(profileName),
-                        Case.ID = c(profileName),
-                        Sample.Type = c("DNA"),
-                        Diagnosis = "NotDef",
-                        Source = c("ENotDef"),
-                        stringsAsFactors = FALSE)
+                           Case.ID = c(profileName),
+                           Sample.Type = c("DNA"),
+                           Diagnosis = "NotDef",
+                           Source = c("ENotDef"),
+                           stringsAsFactors = FALSE)
     row.names(pedStudy) <- pedStudy$Name.ID
 
     ## Validate parameters
     validateRunExomeOrRNAAncestry(pedStudy=pedStudy, studyDF=studyDF,
-                                  pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
+                                  pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut="./",
                                   fileReferenceGDS=fileReferenceGDS,
                                   fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
                                   syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
@@ -2267,14 +2379,15 @@ inferAncestry <- function(profileFile, pathProfileGDS,
 
     if(genoSource %in% c("snp-pileup", "generic", "VCF")){
 
-        r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-                                pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                                chrInfo, syntheticRefDF, genoSource, studyType="DNA", np=np,
-                                verbose)
+        r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
+                             pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
+                             chrInfo, syntheticRefDF, genoSource, studyType="LD", np=np,
+                             verbose)
     }
     ## Successful
     return(r)
 }
+
 
 
 #' @title Run most steps leading to the ancestry inference call on a specific
@@ -2512,9 +2625,6 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' the directory where the GDS Profile files will be created.
 #' Default: \code{NULL}.
 #'
-#' @param pathOut a \code{character} string representing the path to
-#' the directory where the output files are created.
-#'
 #' @param fileReferenceGDS  a \code{character} string representing the file
 #' name of the Population Reference GDS file. The file must exist.
 #'
@@ -2616,9 +2726,6 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' #################################################################
 #' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#' pathOut <- file.path(tempdir(), "res.out")
-#'
-#'
 #' ####################################################################
 #' ## Fix seed to ensure reproducible results
 #' ####################################################################
@@ -2638,9 +2745,8 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'
 #'     \donttest{
 #'
-#'         inferAncestryGeneAware(profileFile=demoProfileEx1,
+#'         res <- inferAncestryGeneAware(profileFile=demoProfileEx1,
 #'             pathProfileGDS=pathProfileGDS,
-#'             pathOut=pathOut,
 #'             fileReferenceGDS=fileReferenceGDS,
 #'             fileReferenceAnnotGDS=fileAnnotGDS,
 #'             chrInfo=chrInfo,
@@ -2649,7 +2755,6 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #'             genoSource="snp-pileup")
 #'
 #'         unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-#'         unlink(pathOut, recursive=TRUE, force=TRUE)
 #'
 #'     }
 #' }
@@ -2660,10 +2765,10 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @encoding UTF-8
 #' @export
 inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
-                                  pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                                  chrInfo, syntheticRefDF,
-                                  genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,
-                                  blockTypeID, verbose=FALSE) {
+                                   fileReferenceGDS, fileReferenceAnnotGDS,
+                                   chrInfo, syntheticRefDF,
+                                   genoSource=c("snp-pileup", "generic", "VCF", "bam"), np=1L,
+                                   blockTypeID, verbose=FALSE) {
 
     profileBaseName <- basename(profileFile)
     pathGeno <- dirname(profileFile)
@@ -2681,16 +2786,16 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
                           study.platform="NotDef",
                           stringsAsFactors=FALSE)
     pedStudy <- data.frame(Name.ID = c(profileName),
-                        Case.ID = c(profileName),
-                        Sample.Type = c("RNA"),
-                        Diagnosis = "NotDef",
-                        Source = c("NotDef"),
-                        stringsAsFactors = FALSE)
+                           Case.ID = c(profileName),
+                           Sample.Type = c("RNA"),
+                           Diagnosis = "NotDef",
+                           Source = c("NotDef"),
+                           stringsAsFactors = FALSE)
     row.names(pedStudy) <- pedStudy$Name.ID
 
     ## Validate parameters
     validateRunExomeOrRNAAncestry(pedStudy=pedStudy, studyDF=studyDF,
-                                  pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut=pathOut,
+                                  pathProfileGDS=pathProfileGDS, pathGeno=pathGeno, pathOut="./",
                                   fileReferenceGDS=fileReferenceGDS,
                                   fileReferenceAnnotGDS=fileReferenceAnnotGDS, chrInfo=chrInfo,
                                   syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
@@ -2698,10 +2803,10 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
 
     if(genoSource %in% c("snp-pileup", "generic", "VCF")){
 
-        r <- runWrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-                                pathGeno, pathOut, fileReferenceGDS, fileReferenceAnnotGDS,
-                                chrInfo, syntheticRefDF, genoSource, studyType="RNA", np=np,
-                                blockTypeID=blockTypeID, verbose)
+        r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
+                             pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
+                             chrInfo, syntheticRefDF, genoSource, studyType="GeneAware", np=np,
+                             blockTypeID=blockTypeID, verbose)
     }
     ## Successful
     return(r)

@@ -26,6 +26,7 @@
 <url><loc>/reference/computeAllelicFractionDNA.html</loc></url>
 <url><loc>/reference/computeAllelicFractionRNA.html</loc></url>
 <url><loc>/reference/computeAllelicImbDNAChr.html</loc></url>
+<url><loc>/reference/computeAncestryFromSynthetic.html</loc></url>
 <url><loc>/reference/computeAncestryFromSyntheticFile.html</loc></url>
 <url><loc>/reference/computeKNNRefSample.html</loc></url>
 <url><loc>/reference/computeKNNRefSynthetic.html</loc></url>
@@ -36,6 +37,7 @@
 <url><loc>/reference/computePoolSyntheticAncestryGr.html</loc></url>
 <url><loc>/reference/computeSyntheticConfMat.html</loc></url>
 <url><loc>/reference/computeSyntheticROC.html</loc></url>
+<url><loc>/reference/createAUROCGraph.html</loc></url>
 <url><loc>/reference/createAccuracyGraph.html</loc></url>
 <url><loc>/reference/createStudy2GDS1KG.html</loc></url>
 <url><loc>/reference/demoKnownSuperPop1KG.html</loc></url>
@@ -57,11 +59,14 @@
 <url><loc>/reference/groupChr1KGSNV.html</loc></url>
 <url><loc>/reference/identifyRelative.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/inferAncestry.html</loc></url>
+<url><loc>/reference/inferAncestryGeneAware.html</loc></url>
 <url><loc>/reference/matKNNSynthetic.html</loc></url>
 <url><loc>/reference/pedSynthetic.html</loc></url>
 <url><loc>/reference/prepPed1KG.html</loc></url>
 <url><loc>/reference/prepPedSynthetic1KG.html</loc></url>
 <url><loc>/reference/prepSynthetic.html</loc></url>
+<url><loc>/reference/profileAncestry.html</loc></url>
 <url><loc>/reference/pruning1KGbyChr.html</loc></url>
 <url><loc>/reference/pruningSample.html</loc></url>
 <url><loc>/reference/readSNVFileGeneric.html</loc></url>
@@ -75,6 +80,7 @@
 <url><loc>/reference/runWrapperAncestry.html</loc></url>
 <url><loc>/reference/selParaPCAUpQuartile.html</loc></url>
 <url><loc>/reference/select1KGPop.html</loc></url>
+<url><loc>/reference/select1KGPopForSynthetic.html</loc></url>
 <url><loc>/reference/snpPositionDemo.html</loc></url>
 <url><loc>/reference/snvListVCF.html</loc></url>
 <url><loc>/reference/splitSelectByPop.html</loc></url>
@@ -109,5 +115,6 @@
 <url><loc>/reference/validateSingleRatio.html</loc></url>
 <url><loc>/reference/validateStudyDataFrameParameter.html</loc></url>
 <url><loc>/reference/validateSyntheticGeno.html</loc></url>
+<url><loc>/reference/wrapperAncestry.html</loc></url>
 </urlset>
 

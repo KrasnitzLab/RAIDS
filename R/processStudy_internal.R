@@ -2648,7 +2648,7 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                 paraSample=resCall$paraSample, # Result of the parameter selection
                 KNNSample=resCall$KNNSample$matKNN, # KNN for the profile
                 KNNSynthetic=resSyn, # KNN results for synthetic data
-                Ancestry=resCall) # the ancestry call fo the profile
+                Ancestry=resCall$Ancestry) # the ancestry call fo the profile
 
     return(res)
 }

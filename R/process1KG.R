@@ -766,6 +766,58 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
     return(dataRef)
 }
 
+#' @title Extract the from the 1KG GDS 'sample.ref' node
+#' for the reference profiles (real ancestry assignation)
+#'
+#' @description The function extract the specified column for the 'sample.ref'
+#' node present in the Reference GDS file. The column must be present in the
+#' \code{data.frame} saved in the 'sample.ref' node. Only the information for
+#' the reference profiles is returned. The values
+#' represent the known ancestry assignation.
+#'
+#' @param fileReferenceGDS  a \code{character} string representing the file
+#' name of the Reference GDS file. The file must exist.
+#'
+#'
+#' @return \code{vector} of \code{character} strings representing the content
+#' of the extracted column for the 1KG GDS 'sample.ref' node. The values
+#' represent the known ancestry assignation. The profile
+#' identifiers are used as names for the \code{vector}.
+#'
+#' @examples
+#'
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Open existing demo 1K GDS file with "sample.ref" node
+#' nameFileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
+#'
+#' ## Extract super population information for the 1KG profiles
+#' getRefSuperPop(fileReferenceGDS=nameFileGDS)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom stats rmultinom
+#' @importFrom SNPRelate snpgdsOpen
+#' @encoding UTF-8
+#' @export
+getRefSuperPop <- function(fileReferenceGDS) {
+
+    ## The fileReferenceGDS must be a character string and the file must exists
+    if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
+        stop("The \'fileReferenceGDS\' must be a character string ",
+             "representing the Reference GDS file. The file must exist.")
+    }
+
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS)
+    df <- getRef1KGPop(gdsReference)
+    closefn.gds(gdsReference)
+
+    return(df)
+}
+
 
 #' @title Append information associated to blocks, as indexes, into the
 #' Population Reference SNV Annotation GDS file

@@ -1101,6 +1101,29 @@ test_that("createStudy2GDS1KG() must return error when verbose is numeric", {
             genoSource="snp-pileup", verbose=22), error_message, fixed=TRUE)
 })
 
+test_that("createStudy2GDS1KG() must return error when the gdsProfile already exists", {
+
+    dataDir <- test_path("fixtures")
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+
+    pedDF <- data.frame(Name.ID=c("Sample_01", "Sample_02", "Sample_03"),
+                        Case.ID=c("Patient_h11", "Patient_h12", "Patient_h18"),
+                        Diagnosis=rep("Cancer", 3),
+                        Sample.Type=rep("Primary Tumor", 3),
+                        Source=rep("Databank B", 3), stringsAsFactors=FALSE)
+
+    studyDF <- data.frame(study.id="MYDATA", study.desc="Description",
+                          study.platform="PLATFORM", stringsAsFactors=FALSE)
+
+    error_message <- paste0("The gds file for ", "GDS_Sample_with_study_demo", " already exist.")
+
+    expect_error(createStudy2GDS1KG(pathGeno=dataDir,
+                                    filePedRDS=NULL, pedStudy=pedDF, fileNameGDS=fileGDS,
+                                    batch=1, studyDF=studyDF, listProfiles=c("GDS_Sample_with_study_demo"),
+                                    pathProfileGDS=dataDir,
+                                    genoSource="snp-pileup", verbose=FALSE), error_message, fixed=TRUE)
+})
+
 
 test_that("createStudy2GDS1KG() must return error when pathProfileGDS is numeric", {
 

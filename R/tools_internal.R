@@ -438,3 +438,111 @@ readSNVVCF <- function(fileName,
 
     return(matSample)
 }
+
+#' @title The function create a vector of integer representing the linkage
+#' disequilibrium block for each SNV in the in the same order
+#' than the variant in Population reference dataset.
+#'
+#' @description The function create a vector of integer representing the linkage
+#' disequilibrium block for each SNV in the in the same order
+#' than the variant in Population reference dataset.
+#'
+#' @param fileReferenceGDS  a \code{character} string representing the file
+#' name of the Reference GDS file. The file must exist.
+#'
+#' @param fileBlock a \code{character} string representing the file
+#' name of output file det from the plink block command for a chromosome.
+#'
+#' @return a \code{list} containing 2 entries:
+#' \describe{
+#' \item{\code{chr}}{ a \code{integer} representing a the chromosome from
+#' fileBlock.
+#' }
+#' \item{\code{block.snp}}{ the a \code{array} of integer
+#' representing the linkage disequilibrium block for
+#' each SNV in the in the same order than the variant
+#' in Population reference dataset.
+#' }
+#' }
+#'
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Demo of Reference GDS file containing reference information
+#' fileReferenceGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
+#'
+#' ## Demo of of output file det from the plink block
+#' ## command for chromosome 1
+#' fileLdBlock <- file.path(dataDir, "block.sp.EUR.Ex.chr1.blocks.det")
+#'
+#' listLdBlock <- RAIDS:::processBlockChr(fileReferenceGDS, fileLdBlock)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt read.gdsn index.gdsn closefn.gds
+#' @importFrom SNPRelate snpgdsOpen
+#' @encoding UTF-8
+#' @keywords internal
+processBlockChr <- function(fileReferenceGDS, fileBlock) {
+
+    if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
+        stop("The \'fileReferenceGDS\' must be a character string ",
+             "representing the Reference GDS file. The file must exist.")
+    }
+    if (!(is.character(fileBlock) && (file.exists(fileBlock)))) {
+        stop("The \'fileBlock\' must be a character string ",
+             "representing the file .det from plink block result. The file must exist.")
+    }
+
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS)
+    blockChr <- read.delim(fileBlock, sep="")
+
+    listChr <- unique(blockChr$CHR)
+    if(length(listChr) != 1){
+        stop(paste0("There is not just one CHR in ", fileBlock, "\n"))
+    }
+    listChr <- as.integer(gsub("chr", "", listChr))
+    listSNVChr <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
+    listSNVChr <- which(listSNVChr == listChr)
+    snp.keep <- read.gdsn(index.gdsn(gdsReference, "snp.position"))[listSNVChr]
+    closefn.gds(gdsReference)
+    z <- cbind(c(blockChr$BP1, snp.keep, blockChr$BP2+1),
+               c(seq_len(nrow(blockChr)),
+                 rep(0, length(snp.keep)), -1*seq_len(nrow(blockChr))))
+
+    z <- z[order(z[,1]),]
+    block.snp <- cumsum(z[,2])[z[,2] == 0]
+
+    curStart <- 0
+    activeBlock <- 0
+    blockState <- 0
+    block.inter <- rep(0, length(which(block.snp == 0)))
+    k <- 1
+    for(i in seq_len(length(block.snp))){
+        if(block.snp[i] == 0){
+            if(activeBlock == 1){
+                if(snp.keep[i] - curStart >= 10000) {
+                    blockState <- blockState - 1
+
+                    curStart <- snp.keep[i]
+                }
+            } else{
+                blockState <- blockState - 1
+                curStart <- snp.keep[i]
+                curStart <- snp.keep[i]
+                activeBlock <- 1
+            }
+            block.inter[k] <- blockState
+            k <- k + 1
+        }else{
+            activeBlock <- 0
+        }
+    }
+    block.snp[block.snp == 0] <- block.inter
+    res <- list(chr=listChr,
+                block.snp=block.snp)
+    return(res)
+}
+

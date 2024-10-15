@@ -616,7 +616,7 @@ test_that("generatePhase1KG2GDS() must return error when verbose is a numeric", 
                                 " (TRUE or FALSE).")
 
     expect_error(generatePhase1KG2GDS(gdsReference=gds1KG,
-            gdsReferencePhase=gds1KG, pathGeno=dataDir, fileSNPsRDS="test",
+            gdsReferencePhase=gds1KG, pathGeno=dataDir, fileSNVIndex="test",
             verbose="SAVE"), error_message,  fixed=TRUE)
 })
 

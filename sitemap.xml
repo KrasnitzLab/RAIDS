@@ -55,9 +55,11 @@
 <url><loc>/reference/generatePhase1KG2GDS.html</loc></url>
 <url><loc>/reference/getBlockIDs.html</loc></url>
 <url><loc>/reference/getRef1KGPop.html</loc></url>
+<url><loc>/reference/getRefSuperPop.html</loc></url>
 <url><loc>/reference/getTableSNV.html</loc></url>
 <url><loc>/reference/groupChr1KGSNV.html</loc></url>
 <url><loc>/reference/identifyRelative.html</loc></url>
+<url><loc>/reference/identifyRelativeRef.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/inferAncestry.html</loc></url>
 <url><loc>/reference/inferAncestryGeneAware.html</loc></url>

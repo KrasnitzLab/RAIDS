@@ -544,7 +544,8 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
 #' unlink(fileRefPhaseGDS, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
+#' @importFrom gdsfmt createfn.gds closefn.gds index.gdsn read.gdsn readmode.gdsn
+#' @importFrom SNPRelate snpgdsOpen
 #' @encoding  UTF-8
 #' @export
 generatePhaseRef <- function(fileReferenceGDS, fileReferenceAnnotGDS,
@@ -774,6 +775,8 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #'
 #' @importFrom GENESIS pcairPartition
+#' @importFrom gdsfmt closefn.gds
+#' @importFrom SNPRelate snpgdsOpen
 #' @importFrom S4Vectors isSingleNumber
 #' @importFrom methods is
 #' @encoding UTF-8
@@ -997,7 +1000,7 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom gdsfmt index.gdsn read.gdsn closefn.gds
 #' @importFrom stats rmultinom
 #' @importFrom SNPRelate snpgdsOpen
 #' @encoding UTF-8

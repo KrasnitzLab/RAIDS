@@ -12,6 +12,7 @@
 <url><loc>/reference/addGDSRef.html</loc></url>
 <url><loc>/reference/addGDSStudyPruning.html</loc></url>
 <url><loc>/reference/addGeneBlockGDSRefAnnot.html</loc></url>
+<url><loc>/reference/addGeneBlockRefAnnot.html</loc></url>
 <url><loc>/reference/addRef2GDS1KG.html</loc></url>
 <url><loc>/reference/addStudy1Kg.html</loc></url>
 <url><loc>/reference/addStudyGDSSample.html</loc></url>
@@ -69,6 +70,7 @@
 <url><loc>/reference/prepPed1KG.html</loc></url>
 <url><loc>/reference/prepPedSynthetic1KG.html</loc></url>
 <url><loc>/reference/prepSynthetic.html</loc></url>
+<url><loc>/reference/processBlockChr.html</loc></url>
 <url><loc>/reference/profileAncestry.html</loc></url>
 <url><loc>/reference/pruning1KGbyChr.html</loc></url>
 <url><loc>/reference/pruningSample.html</loc></url>

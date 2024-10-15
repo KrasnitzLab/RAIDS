@@ -571,17 +571,24 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
     validateStudyDataFrameParameter(studyDF=studyDF)
 
     ## The listProfiles must be a vector of character string
-    if (!(is.character(listProfiles) || is.null(listProfiles))) {
+    if (!(is.character(listProfiles) || is.null(listProfiles))) { #
         stop("The \'listProfiles\' must be a vector ",
                 "of character strings (1 entry or more) or NULL.")
     }
+
 
     ## The pathProfileGDS must be a character string
     if (!is.character(pathProfileGDS)) {
         stop("The \'pathProfileGDS\' must be a character string representing",
                 " the path where the Profile GDS files will be generated.")
     }
-
+    if(is.character(listProfiles)){
+        for(profileCur in listProfiles){
+            if(file.exists(file.path(pathProfileGDS, paste0(profileCur, ".gds")))){
+                stop(paste0("The gds file for ", profileCur, " already exist."))
+            }
+        }
+    }
     ## The genoSource must be a character string
     if(!(is.character(genoSource))) {
         stop("The \'genoSource\' parameter must be a character string.")
@@ -2648,7 +2655,7 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                 paraSample=resCall$paraSample, # Result of the parameter selection
                 KNNSample=resCall$KNNSample$matKNN, # KNN for the profile
                 KNNSynthetic=resSyn, # KNN results for synthetic data
-                Ancestry=resCall) # the ancestry call fo the profile
+                Ancestry=resCall$Ancestry) # the ancestry call fo the profile
 
     return(res)
 }

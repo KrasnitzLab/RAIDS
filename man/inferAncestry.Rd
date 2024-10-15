@@ -67,7 +67,7 @@ threads to be used. Default: \code{1L}.}
 to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
-a \code{list} containing 4 entries:
+TODO a \code{list} containing 4 entries:
 \describe{
 \item{\code{pcaSample}}{ a \code{list} containing the information related
 to the eigenvectors. The \code{list} contains those 3 entries:

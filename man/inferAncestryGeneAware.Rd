@@ -72,8 +72,7 @@ present in the GDS Reference Annotation file.}
 to show how the different steps in the function. Default: \code{FALSE}.}
 }
 \value{
-The integer \code{0L} when successful. See details section for
-more information about the generated output files.
+The integer \code{list} TODO see inferAncestry.
 }
 \description{
 This function runs most steps leading to the ancestry inference

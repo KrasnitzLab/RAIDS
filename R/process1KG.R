@@ -362,7 +362,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' the individual identification (Individual.ID) in the pedigree file.
 #' Default: \code{"./data/sampleGeno"}.
 #'
-#' @param fileSNPsRDS a \code{character} string representing the path and file
+#' @param fileSNVIndex a \code{character} string representing the path and file
 #' name of the RDS file that contains the indexes of the retained SNPs. The
 #' file must exist. The file must be a RDS file.
 #'
@@ -412,7 +412,7 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' if (FALSE) {
 #'     generatePhase1KG2GDS(gdsReference=gdsRef,
 #'             gdsReferencePhase=gdsPhase,
-#'             pathGeno=pathGeno, fileSNPsRDS=filterSNVFile,
+#'             pathGeno=pathGeno, fileSNVIndex=snpIndexFile,
 #'             verbose=FALSE)
 #' }
 #'
@@ -431,13 +431,13 @@ generateGDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #' @encoding  UTF-8
 #' @export
 generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
-                                    pathGeno, fileSNPsRDS, verbose=FALSE) {
+                                    pathGeno, fileSNVIndex, verbose=FALSE) {
 
     ## The verbose parameter must be a logical
     validateLogical(logical=verbose, "verbose")
 
     sample.id <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
-    listSNP <- readRDS(fileSNPsRDS)
+    listSNP <- readRDS(fileSNVIndex)
 
     var.phase <- NULL
     for(i in seq_len(length(sample.id))){
@@ -447,6 +447,7 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
         file1KG <- file.path(pathGeno, paste0(sample.id[i],".csv.bz2"))
         matSample <- read.csv2( file1KG,
                                 row.names = NULL)[listSNP,, drop=FALSE]
+
         matSample <- matrix(as.numeric(unlist(strsplit(matSample[, 1],
                                                         "\\|"))), nrow=2)[1,]
 
@@ -469,6 +470,105 @@ generatePhase1KG2GDS <- function(gdsReference, gdsReferencePhase,
     readmode.gdsn(var.phase)
 
     return(0L)
+}
+
+#' @title Adding the phase information into the Reference GDS file
+#'
+#' @description The function is adding the phase information into the
+#' Reference Phase GDS file. The phase information is extracted from a Reference
+#' GDS file and is added into a Reference Phase GDS file. An entry called
+#' 'phase' is added to the Reference Phase GDS file.
+#'
+#' @param fileReferenceGDS  a \code{character} string representing the file
+#' name of the Reference GDS file. The file must exist.
+#'
+#' @param fileReferenceAnnotGDS a \code{character} string representing the
+#' file name of the Population Reference GDS Annotation file. The file
+#' must exist.
+#'
+#' @param pathGeno a \code{character} string representing the path where
+#' the 1K genotyping files for each sample are located. The name of the
+#' genotyping files must correspond to
+#' the individual identification (Individual.ID) in the pedigree file.
+#' Default: \code{"./data/sampleGeno"}.
+#'
+#' @param fileSNVIndex a \code{character} string representing the path and file
+#' name of the RDS file that contains the indexes of the retained SNPs. The
+#' file must exist. The file must be a RDS file.
+#'
+#' @param verbose a \code{logicial} indicating if the function should
+#' print messages when running. Default: \code{FALSE}.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Path where the demo genotype CSV files are located
+#' pathGeno <- file.path(dataDir, "demoProfileGenotypes")
+#'
+#' ## The RDS file containing the pedigree information
+#' pedigreeFile <- file.path(dataDir, "PedigreeReferenceDemo.rds")
+#'
+#' ## The RDS file containing the indexes of the retained SNPs
+#' snpIndexFile <- file.path(dataDir, "listSNPIndexes_Demo.rds")
+#'
+#' ## The RDS file containing the filtered SNP information
+#' filterSNVFile <- file.path(dataDir, "mapSNVSelected_Demo.rds")
+#'
+#' ## Temporary Reference GDS file containing reference information
+#' fileReferenceGDS <- file.path(tempdir(), "1KG_TEMP_02.gds")
+#'
+#' ## Create a temporary Reference GDS file containing information from 1KG
+#' generateGDS1KG(pathGeno=pathGeno, filePedRDS=pedigreeFile,
+#'         fileSNVIndex=snpIndexFile, fileSNVSelected=filterSNVFile,
+#'         fileNameGDS=fileReferenceGDS, listSamples=NULL)
+#'
+#' ## Temporary Phase GDS file that will contain the 1KG Phase information
+#' fileRefPhaseGDS <- file.path(tempdir(), "1KG_TEMP_Phase_02.gds")
+#'
+#'
+#' ## Fill temporary Reference Phase GDS file
+#' if (FALSE) {
+#'     generatePhaseRef(fileReferenceGDS=fileReferenceGDS,
+#'             fileReferenceAnnotGDS=fileRefPhaseGDS,
+#'             pathGeno=pathGeno, fileSNVIndex=snpIndexFile,
+#'             verbose=FALSE)
+#' }
+#'
+#'
+#' ## Remove temporary files
+#' unlink(fileReferenceGDS, force=TRUE)
+#' unlink(fileRefPhaseGDS, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn readmode.gdsn
+#' @encoding  UTF-8
+#' @export
+generatePhaseRef <- function(fileReferenceGDS, fileReferenceAnnotGDS,
+                             pathGeno, fileSNVIndex, verbose=FALSE) {
+
+    if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
+        stop("The \'fileReferenceGDS\' must be a character string ",
+             "representing the Reference GDS file. The file must exist.")
+    }
+    if (!(is.character(fileReferenceAnnotGDS) && (! file.exists(fileReferenceAnnotGDS)))) {
+        stop("The \'fileReferenceAnnotGDS\' must be a character string ",
+             "representing the Reference annotation GDS file. The file must not exist.")
+    }
+
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS)
+    gdsReferencePhase <- createfn.gds(fileReferenceAnnotGDS)
+
+    res <- generatePhase1KG2GDS(gdsReference, gdsReferencePhase,
+                                pathGeno, fileSNVIndex, verbose=FALSE)
+    closefn.gds(gdsReference)
+    closefn.gds(gdsReferencePhase)
+
+
+    return(res)
 }
 
 #' @title Identify genetically unrelated patients in GDS Reference file

@@ -2,6 +2,7 @@
 
 export(add1KG2SampleGDS)
 export(addGeneBlockGDSRefAnnot)
+export(addGeneBlockRefAnnot)
 export(addRef2GDS1KG)
 export(addStudy1Kg)
 export(computeAncestryFromSynthetic)

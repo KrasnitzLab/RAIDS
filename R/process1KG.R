@@ -1143,3 +1143,95 @@ addGeneBlockGDSRefAnnot <- function(gdsReference, gdsRefAnnotFile,
     return(0L)
 }
 
+#' @title Append information associated to blocks, as indexes, into the
+#' Population Reference SNV Annotation GDS file
+#'
+#' @description The function appends the information about the blocks into
+#' the Population Reference SNV Annotation GDS file. The information is
+#' extracted from the Population Reference GDS file.
+#'
+#' @param fileReferenceGDS  a \code{character} string representing the file
+#' name of the Reference GDS file. The file must exist.
+#'
+#' @param gdsRefAnnotFile a \code{character} string representing the
+#' file name corresponding the Reference SNV
+#' Annotation GDS file. The function will
+#' open it in write mode and close it after. The file must exist.
+#'
+#' @param winSize a single positive \code{integer} representing the
+#' size of the window to use to group the SNVs when the SNVs are in a
+#' non-coding region. Default: \code{10000L}.
+#'
+#' @param ensDb An object with the ensembl genome annotation
+#' Default: \code{EnsDb.Hsapiens.v86}.
+#'
+#' @param suffixBlockName a \code{character} string that identify the source
+#' of the block and that will be added to the block description into
+#' the Reference SNV Annotation GDS file, as example: Ensembl.Hsapiens.v86.
+#'
+#' @return The integer \code{OL} when the function is successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#  ## Temporary file
+#' fileAnnotGDS <- file.path(tempdir(), "ex1_good_small_1KG_Ann_GDS.gds")
+#'
+#' ## Required library
+#' if (requireNamespace("EnsDb.Hsapiens.v86", quietly=TRUE)) {
+#'
+#'     file.copy(file.path(dataDir, "tests",
+#'         "ex1_NoBlockGene.1KG_Annot_GDS.gds"), fileAnnotGDS)
+#'
+#'     ## Making a "short cut" on the ensDb object
+#'     edb <- EnsDb.Hsapiens.v86::EnsDb.Hsapiens.v86
+#'
+#'     ## GDS Reference file
+#'     fileReferenceGDS  <- file.path(dataDir, "tests",
+#'                 "ex1_good_small_1KG.gds")
+#'
+#'     \donttest{
+#'
+#'
+#'         ## Append information associated to blocks
+#'         addGeneBlockRefAnnot(fileReferenceGDS=fileReferenceGDS,
+#'             gdsRefAnnotFile=fileAnnotGDS,
+#'             ensDb=edb,
+#'             suffixBlockName="EnsDb.Hsapiens.v86")
+#'
+#'         gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+#'         print(gdsAnnot1KG)
+#'         print(read.gdsn(index.gdsn(gdsAnnot1KG, "block.annot")))
+#'
+#'        closefn.gds(gdsAnnot1KG)
+#'     }
+#'
+#'     ## Remove temporary file
+#'     unlink(fileAnnotGDS, force=TRUE)
+#'
+#' }
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt openfn.gds closefn.gds
+#' @importFrom SNPRelate snpgdsOpen
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @export
+addGeneBlockRefAnnot <- function(fileReferenceGDS, gdsRefAnnotFile,
+                                    winSize=10000, ensDb, suffixBlockName) {
+
+
+    if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
+        stop("The \'fileReferenceGDS\' must be a character string ",
+             "representing the Reference GDS file. The file must exist.")
+    }
+
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS)
+    res <- addGeneBlockGDSRefAnnot(gdsReference, gdsRefAnnotFile,
+                                   winSize=10000, ensDb, suffixBlockName)
+    closefn.gds(gdsReference)
+    ## Success
+    return(res)
+}

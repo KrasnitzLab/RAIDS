@@ -186,8 +186,9 @@ external study</p>
 <div class="section level4">
 <h4 id="create-a-directory-structure">1.1 Create a directory structure<a class="anchor" aria-label="anchor" href="#create-a-directory-structure"></a>
 </h4>
-<p>First, a specific directory structure must be created. The structure
-must correspond to this:</p>
+<p>First, a specific directory structure should be created. The
+structure must<br>
+correspond to this:</p>
 <pre><code><span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Working directory structure</span></span>
@@ -198,8 +199,7 @@ must correspond to this:</p>
 <span>        <span class="va">profileGDS</span> </span></code></pre>
 <p><br></p>
 <p>This following running example creates a temporary working directory
-structure when the demo samples will be run. Some sub-directories in
-<em>workingDirectory/data</em> will be created in subsequent steps.</p>
+structure when the example will be run.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -212,6 +212,7 @@ structure when the demo samples will be run. Some sub-directories in
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathWorkingDirectory</span><span class="op">)</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span><span class="op">)</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span>, <span class="st">"refGDS"</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span>, <span class="st">"profileGDS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><br></p>
 </div>
@@ -289,8 +290,8 @@ required <em>data/refGDS</em> directory.</p>
 <span><span class="va">refAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG_Annot.gds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="co">## The output directories inside workingDirectory/data must be created</span></span>
-<span><span class="co">##    (pathProfileGDS will be used as input later)</span></span>
+<span><span class="co">## The output profileGDS directory, inside workingDirectory/data, must be </span></span>
+<span><span class="co">##    created (pathProfileGDS will be used as input later)</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span>, <span class="st">"profileGDS"</span><span class="op">)</span></span>
 <span></span>
@@ -305,8 +306,8 @@ required <em>data/refGDS</em> directory.</p>
 <p>With the 1KG reference, we recommend sampling 30 donor profiles per
 population. For reproducibility, be sure to use the same random-number
 generator seed.</p>
-<p>In the following code, only 2 profiles per population are
-sampled:</p>
+<p>In the following code, only 2 profiles per population are sampled
+from the demo population GDS file:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -451,9 +452,8 @@ and <em>k</em>.</p>
 RAIDS performance for the synthtic data.
 </p>
 </div>
-<p>In this specific demonstration, the performances are lower than
-expected with a real profile and a complete reference population
-file.</p>
+<p>In this specific example, the performances are lower than expected
+with a real profile and a complete reference population file.</p>
 <p><br><br></p>
 </div>
 </div>
@@ -575,7 +575,7 @@ in which this document was compiled:</p>
 <span><span class="co">##  [97] bit_4.5.0                         SparseM_1.84-2                   </span></span>
 <span><span class="co">##  [99] BSgenome.Hsapiens.UCSC.hg38_1.4.5 tidyselect_1.2.1                 </span></span>
 <span><span class="co">## [101] SeqVarTools_1.42.0                Biostrings_2.72.1                </span></span>
-<span><span class="co">## [103] bookdown_0.40                     ProtGenerics_1.36.0              </span></span>
+<span><span class="co">## [103] bookdown_0.41                     ProtGenerics_1.36.0              </span></span>
 <span><span class="co">## [105] IRanges_2.38.1                    SummarizedExperiment_1.34.0      </span></span>
 <span><span class="co">## [107] stats4_4.4.1                      xfun_0.48                        </span></span>
 <span><span class="co">## [109] Biobase_2.64.0                    matrixStats_1.4.1                </span></span>

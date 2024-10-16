@@ -1020,6 +1020,183 @@ getRefSuperPop <- function(fileReferenceGDS) {
     return(df)
 }
 
+#' @title Append information associated to ld blocks, as indexes, into the
+#' Population Reference SNV Annotation GDS file
+#'
+#' @description The function appends the information about the ld blocks into
+#' the Population Reference SNV Annotation GDS file. The information is
+#' extracted from the Population Reference GDS file and files \'.det\'.
+#'
+#' @param fileReferenceGDS a \code{character} string representing the file
+#' name of the Reference GDS file. The file must exist.
+#'
+#' @param gdsRefAnnotFile a \code{character} string representing the
+#' file name corresponding the Reference SNV
+#' Annotation GDS file. The function will
+#' open it in write mode and close it after. The file must exist.
+#'
+#' @param pathBlock a \code{character} string representing the directory
+#' where all the output file det from the plink block command are located.
+#' The directory must not include other file with the extension \'.det\'.
+#' The name of the \'.det\' must include the super-population between \'.\'
+#' and the chromosome in the form \'chrNumber.\' \( \'chr1.\'\).
+#'
+#' @param superPop a \code{character} string representing the super population.
+#'
+#' @param blockName a \code{character} string representing the id of the block.
+#' The blockName should not exist in \'gdsRefAnnotFile\'.
+#' Default: \code{"ldBlock"}.
+#'
+#' @param blockDesc a \code{character} string representing the description of
+#' the block.
+#' Default: \code{"Not Define"}
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{FALSE}.
+#'
+#' @return \code{OL} when the function is successful.
+#'
+#' @details
+#'
+#' More information about GDS file format can be found at the Bioconductor
+#' gdsfmt website:
+#' https://bioconductor.org/packages/gdsfmt/
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#  ## Temporary file
+#' fileAnnotGDS <- file.path(tempdir(), "ex1_good_small_1KG_Ann_GDS.gds")
+#'
+#' ## Demo of of output file det from the plink block
+#' ## command for chromosome 1
+#' fileLdBlock <- file.path(dirname(fileAnnotGDS), "block.sp.EUR.Ex.chr1.blocks.det")
+#'
+#'
+#' file.copy(file.path(dataDir, "tests",
+#'     "ex1_NoBlockGene.1KG_Annot_GDS.gds"), fileAnnotGDS)
+#' file.copy(file.path(dataDir, "block.sp.EUR.Ex.chr1.blocks.det"),
+#'     fileLdBlock)
+#'
+#'
+#'
+#' ## GDS Reference file
+#' fileReferenceGDS  <- file.path(dataDir, "tests",
+#'     "ex1_good_small_1KG.gds")
+#'
+#'  \donttest{
+#'
+#'
+#'     ## Append information associated to blocks
+#'     addBlockFromDetFile(fileReferenceGDS=fileReferenceGDS,
+#'         gdsRefAnnotFile=fileAnnotGDS,
+#'         pathBlock=dirname(fileAnnotGDS),
+#'         superPop="EUR")
+#'
+#'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+#'     print(gdsAnnot1KG)
+#'
+#'     closefn.gds(gdsAnnot1KG)
+#' }
+#'
+#' ## Remove temporary file
+#' unlink(fileAnnotGDS, force=TRUE)
+#' unlink(fileLdBlock, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#'
+#' @importFrom gdsfmt openfn.gds closefn.gds read.gdsn index.gdsn ls.gdsn
+#' @importFrom SNPRelate snpgdsOpen
+#' @encoding UTF-8
+#' @export
+addBlockFromDetFile <- function(fileReferenceGDS, gdsRefAnnotFile, pathBlock,
+                                superPop, blockName="ldBlock",
+                                blockDesc="Not Define", verbose=FALSE) {
+    if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
+        stop("The \'fileReferenceGDS\' must be a character string ",
+             "representing the Reference GDS file. The file must exist.")
+    }
+    if(!(is.character(blockName))){
+        stop("The \'blockName\' must be a character string ",
+             "representing the name of the block.")
+    }
+
+    if(blockName == "ldBlock"){
+        blockName <- paste0(blockName, ".", superPop)
+    }
+
+    gdsRefAnnot <- openfn.gds(gdsRefAnnotFile)
+
+    if(("block.annot" %in% ls.gdsn(gdsRefAnnot))) {
+        listAnno <- read.gdsn(index.gdsn(gdsRefAnnot, "block.annot"))
+        if(length(which(gdsRefAnnot$block.id  == blockName)) > 0){
+            stop("The \'blockName\' already exist in \'gdsRefAnnotFile\'.")
+        }
+    }
+    closefn.gds(gdsRefAnnot)
+
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS)
+
+
+
+    ## The verbose must be a logical
+    validateLogical(verbose, "verbose")
+
+    ## Extract the SNP chromosomes and positions
+    snpChromosome <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
+    #snpPosition <- read.gdsn(index.gdsn(gdsReference, "snp.position"))
+    closefn.gds(gdsReference)
+
+    listFileBlock <- dir(pathBlock, ".det")
+    listFileBlock <- listFileBlock[grep(paste0("\\.", superPop, "\\."), listFileBlock)]
+
+    listChr <- unique(snpChromosome)
+
+    #listChr <- listChr[order(listChr)]
+    #listChr <- seq_len(22)
+    listBlock <- list()
+
+    for(chr in seq_len(length(listChr))) {
+        if(verbose) { message("chr", listChr[chr], " ",Sys.time()) }
+        listChrCur <- listFileBlock[grep(paste0("chr",listChr[chr],"\\."), listFileBlock)]
+        if(length(listChrCur) == 1){
+            tmp <- processBlockChr(fileReferenceGDS, file.path(pathBlock, listChrCur))
+            listBlock[[chr]] <- tmp$block.snp
+            if(chr > 1) {
+                vMax <- max(listBlock[[chr-1]])
+                vMin <- min(listBlock[[chr-1]])
+                listBlock[[chr]][listBlock[[chr]] > 0] <-
+                    listBlock[[chr]][listBlock[[chr]] > 0] + vMax
+                if(vMin < 0) {
+                    listBlock[[chr]][listBlock[[chr]] < 0] <-
+                        listBlock[[chr]][listBlock[[chr]] < 0] + vMin
+                }
+            }
+        }else{
+
+            listBlock[[chr]] <- rep(-1, length(which(snpChromosome == listChr[chr])))
+            vMin <- 0
+            if(chr > 1){
+                vMin <- min(listBlock[[chr-1]])
+            }
+            if(vMin < 0){
+                listBlock[[chr]] <- listBlock[[chr]] + vMin
+            }
+        }
+
+    }
+    listBlock <- do.call(c, listBlock)
+
+    gdsRefAnnot <- openfn.gds(gdsRefAnnotFile, readonly = FALSE)
+
+    ## Save the information into the GDS file
+    addGDS1KGLDBlock(gdsRefAnnot, listBlock, blockName, blockDesc)
+    closefn.gds(gdsRefAnnot)
+    ## Success
+    return(0L)
+}
 
 #' @title Append information associated to blocks, as indexes, into the
 #' Population Reference SNV Annotation GDS file

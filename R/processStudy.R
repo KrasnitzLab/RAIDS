@@ -2351,7 +2351,9 @@ inferAncestry <- function(profileFile, pathProfileGDS,
 
     genoSource <- arg_match(genoSource)
 
-
+    if(genoSource == "bam"){
+        stop("The bam is not release yet look to get a \'Devel\' version or contact us")
+    }
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case = TRUE)
     for(extCur in c( "\\.vcf$", "\\.txt$", "\\.bam", "\\.tsv", "\\.csv")){
         profileName <- gsub(extCur, "", profileName, ignore.case = TRUE)
@@ -2776,6 +2778,9 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
 
     genoSource <- arg_match(genoSource)
 
+    if(genoSource == "bam"){
+        stop("The bam is not release yet look to get a \'Devel\' version or contact us")
+    }
 
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case = TRUE)
     for(extCur in c( "\\.vcf$", "\\.txt$", "\\.bam", "\\.tsv", "\\.csv")){

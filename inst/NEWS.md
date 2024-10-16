@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.3.2
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o New functions inferAncestry(), inferAncestryGeneAware() and getRefSuperPop() to simplify ancestry inference
+
 CHANGES IN VERSION 1.3.1
 ------------------------
 

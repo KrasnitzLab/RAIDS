@@ -1387,6 +1387,7 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 #'         listBlock=listBlock,
 #'         blockName="blockEmpty",
 #'         blockDesc="Example")
+#'.    closefn.gds(gdsAnnot1KG)
 #'
 #'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
 #'     print(gdsAnnot1KG)

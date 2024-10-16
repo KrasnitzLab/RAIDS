@@ -58,7 +58,8 @@ fileReferenceGDS  <- file.path(dataDir, "tests",
         listBlock=listBlock,
         blockName="blockEmpty",
         blockDesc="Example")
-.    closefn.gds(gdsAnnot1KG)
+
+    closefn.gds(gdsAnnot1KG)
 
     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
     print(gdsAnnot1KG)

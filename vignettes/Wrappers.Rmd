@@ -47,8 +47,9 @@ set.seed(121444)
 This vignette explains, in further details, the used of the wrapper functions 
 that were developed for a previous release of RAIDS.
 
-While those functions are still working, we recommend using the new 
-functions as described in the main vignette.
+<span style="color:darkred;font-weight:bold">While those functions are still 
+working, we recommend using the new functions as described in the main 
+vignette.</span>
 
 <br>
 <br>

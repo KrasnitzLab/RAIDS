@@ -22,7 +22,7 @@ a \code{list} containing 2 entries:
 \item{\code{chr}}{ a \code{integer} representing a the chromosome from
 fileBlock.
 }
-\item{\code{block.snp}}{ the a \code{array} of integer
+\item{\code{block.snp}}{ a \code{array} of integer
 representing the linkage disequilibrium block for
 each SNV in the in the same order than the variant
 in Population reference dataset.

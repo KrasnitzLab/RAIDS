@@ -1335,3 +1335,106 @@ appendGDSSampleOnly <- function(gds, listSamples) {
 
     return(0L)
 }
+
+#' @title Append information associated to ld blocks, as indexes, into the
+#' Population Reference SNV Annotation GDS file
+#'
+#' @description The function appends the information about the ld blocks into
+#' the Population Reference SNV Annotation GDS file. The information is
+#' extracted from the parameter listBlock.
+#'
+#' @param gds an object of class \link[gdsfmt]{gds.class}
+#' (GDS file), an opened Reference Annotation GDS file.
+#'
+#' @param listBlock a \code{array} of integer
+#' representing the linkage disequilibrium block for
+#' each SNV in the in the same order than the variant
+#' in Population reference dataset.
+#'
+#' @param blockName a \code{character} string representing the id of the block.
+#' The blockName should not exist in \'gdsRefAnnotFile\'.
+#'
+#' @param blockDesc a \code{character} string representing the description of
+#' the block.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Required library for GDS
+#' library(gdsfmt)
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#  ## Temporary file
+#' fileAnnotGDS <- file.path(tempdir(), "ex1_good_small_1KG_Ann_GDS.gds")
+#'
+#'
+#' file.copy(file.path(dataDir, "tests",
+#'     "ex1_NoBlockGene.1KG_Annot_GDS.gds"), fileAnnotGDS)
+#'
+#'
+#' fileReferenceGDS  <- file.path(dataDir, "tests",
+#'     "ex1_good_small_1KG.gds")
+#'  \donttest{
+#'     gdsRef <- openfn.gds(fileReferenceGDS)
+#'     listBlock <- read.gdsn(index.gdsn(gdsRef, "snp.position"))
+#'     listBlock <- rep(-1, length(listBlock))
+#'     closefn.gds(gdsRef)
+#'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS, readonly=FALSE)
+#'     ## Append information associated to blocks
+#'     RAIDS:::addGDS1KGLDBlock(gds=gdsAnnot1KG,
+#'         listBlock=listBlock,
+#'         blockName="blockEmpty",
+#'         blockDesc="Example")
+#'
+#'     gdsAnnot1KG <- openfn.gds(fileAnnotGDS)
+#'     print(gdsAnnot1KG)
+#'
+#'     closefn.gds(gdsAnnot1KG)
+#' }
+#'
+#' ## Remove temporary file
+#' unlink(fileAnnotGDS, force=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt add.gdsn index.gdsn ls.gdsn compression.gdsn
+#' @importFrom gdsfmt append.gdsn sync.gds
+#' @encoding UTF-8
+#' @keywords internal
+addGDS1KGLDBlock <- function(gds, listBlock, blockName, blockDesc) {
+
+    blockAnnot <- data.frame(block.id=blockName,
+                             block.desc=blockDesc,
+                             stringsAsFactors=FALSE)
+
+    if(! ("block.annot" %in% ls.gdsn(gds))) {
+        varBlockAnnot <- add.gdsn(gds, "block.annot", blockAnnot)
+    }else {
+        curAnnot <- index.gdsn(gds, "block.annot/block.id")
+        append.gdsn(curAnnot,blockAnnot$block.id)
+        curAnnot <- index.gdsn(gds, "block.annot/block.desc")
+        append.gdsn(curAnnot, blockAnnot$block.desc)
+    }
+
+    varBlock <- NULL
+    if(! ("block" %in% ls.gdsn(gds))){
+        varBlock <- add.gdsn(gds, "block",
+                             valdim=c(length(listBlock), 1),
+                             listBlock, storage="int32",
+                             compress = "LZ4_RA")
+        readmode.gdsn(varBlock)
+
+    }else {
+        if(is.null(varBlock)) {
+            varBlock <- index.gdsn(gds, "block")
+            varBlock <- compression.gdsn(varBlock, "")
+        }
+        append.gdsn(varBlock, listBlock)
+        varBlock <- compression.gdsn(varBlock, "LZ4_RA")
+    }
+
+    sync.gds(gds)
+
+    return(0L)
+}

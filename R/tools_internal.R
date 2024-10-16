@@ -458,7 +458,7 @@ readSNVVCF <- function(fileName,
 #' \item{\code{chr}}{ a \code{integer} representing a the chromosome from
 #' fileBlock.
 #' }
-#' \item{\code{block.snp}}{ the a \code{array} of integer
+#' \item{\code{block.snp}}{ a \code{array} of integer
 #' representing the linkage disequilibrium block for
 #' each SNV in the in the same order than the variant
 #' in Population reference dataset.
@@ -506,43 +506,46 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
     listChr <- as.integer(gsub("chr", "", listChr))
     listSNVChr <- read.gdsn(index.gdsn(gdsReference, "snp.chromosome"))
     listSNVChr <- which(listSNVChr == listChr)
-    snp.keep <- read.gdsn(index.gdsn(gdsReference, "snp.position"))[listSNVChr]
+    snpKeep <- read.gdsn(index.gdsn(gdsReference, "snp.position"))[listSNVChr]
     closefn.gds(gdsReference)
-    z <- cbind(c(blockChr$BP1, snp.keep, blockChr$BP2+1),
+    z <- cbind(c(blockChr$BP1, snpKeep, blockChr$BP2+1),
                c(seq_len(nrow(blockChr)),
-                 rep(0, length(snp.keep)), -1*seq_len(nrow(blockChr))))
+                 rep(0, length(snpKeep)), -1*seq_len(nrow(blockChr))))
 
     z <- z[order(z[,1]),]
-    block.snp <- cumsum(z[,2])[z[,2] == 0]
+    blockSnp <- cumsum(z[,2])[z[,2] == 0]
 
     curStart <- 0
     activeBlock <- 0
     blockState <- 0
-    block.inter <- rep(0, length(which(block.snp == 0)))
+    blockInter <- rep(0, length(which(blockSnp == 0)))
     k <- 1
-    for(i in seq_len(length(block.snp))){
-        if(block.snp[i] == 0){
+    for(i in seq_len(length(blockSnp))){
+        if(blockSnp[i] == 0){
             if(activeBlock == 1){
-                if(snp.keep[i] - curStart >= 10000) {
+                if(snpKeep[i] - curStart >= 10000) {
                     blockState <- blockState - 1
 
-                    curStart <- snp.keep[i]
+                    curStart <- snpKeep[i]
                 }
             } else{
                 blockState <- blockState - 1
-                curStart <- snp.keep[i]
-                curStart <- snp.keep[i]
+                curStart <- snpKeep[i]
                 activeBlock <- 1
             }
-            block.inter[k] <- blockState
+            if(blockState == 0){
+                blockState <- -1
+            }
+            blockInter[k] <- blockState
             k <- k + 1
         }else{
             activeBlock <- 0
         }
     }
-    block.snp[block.snp == 0] <- block.inter
+
+    blockSnp[blockSnp == 0] <- blockInter
     res <- list(chr=listChr,
-                block.snp=block.snp)
+                block.snp=blockSnp)
     return(res)
 }
 

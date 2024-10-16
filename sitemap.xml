@@ -9,7 +9,9 @@
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/RAIDS-package.html</loc></url>
 <url><loc>/reference/add1KG2SampleGDS.html</loc></url>
+<url><loc>/reference/addBlockFromDetFile.html</loc></url>
 <url><loc>/reference/addBlockInGDSAnnot.html</loc></url>
+<url><loc>/reference/addGDS1KGLDBlock.html</loc></url>
 <url><loc>/reference/addGDSRef.html</loc></url>
 <url><loc>/reference/addGDSStudyPruning.html</loc></url>
 <url><loc>/reference/addGeneBlockGDSRefAnnot.html</loc></url>

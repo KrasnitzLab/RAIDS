@@ -133,7 +133,7 @@ These steps are described in detail in the following.
 
 ### 1.1 Create a directory structure
 
-First, a specific directory structure must be created. The structure must 
+First, a specific directory structure should be created. The structure must  
 correspond to this:
 
 ```
@@ -151,8 +151,7 @@ workingDirectory/
 <br>
 
 This following running example creates a temporary working directory structure 
-when the demo samples will be run. Some sub-directories in 
-*workingDirectory/data* will be created in subsequent steps.
+when the example will be run. 
 
 
 ```{r createDir, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
@@ -167,6 +166,7 @@ if (!dir.exists(pathWorkingDirectory)) {
         dir.create(pathWorkingDirectory)
         dir.create(pathWorkingDirectoryData)
         dir.create(file.path(pathWorkingDirectoryData, "refGDS"))
+        dir.create(file.path(pathWorkingDirectoryData, "profileGDS"))
 }
 
 ```
@@ -252,8 +252,8 @@ refGenotype <- file.path(pathReference, "ex1_good_small_1KG.gds")
 refAnnotation <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
 
 #############################################################################
-## The output directories inside workingDirectory/data must be created
-##    (pathProfileGDS will be used as input later)
+## The output profileGDS directory, inside workingDirectory/data, must be 
+##    created (pathProfileGDS will be used as input later)
 #############################################################################
 pathProfileGDS <- file.path(pathWorkingDirectoryData, "profileGDS")
 
@@ -271,7 +271,8 @@ if (!dir.exists(pathProfileGDS)) {
 With the 1KG reference, we recommend sampling 30 donor profiles per population. 
 For reproducibility, be sure to use the same random-number generator seed.
 
-In the following code, only 2 profiles per population are sampled:
+In the following code, only 2 profiles per population are sampled from the 
+demo population GDS file:
 
 ```{r sampling, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
@@ -429,7 +430,7 @@ createAUROCGraph(dfAUROC=resOut$paraSample$dfAUROC, title="Example ex1")
 
 ```
 
-In this specific demonstration, the performances are lower than expected 
+In this specific example, the performances are lower than expected 
 with a real profile and a complete reference population file.
 
 <br>

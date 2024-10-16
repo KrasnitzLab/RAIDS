@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accurate Inference of Genetic Ancestry from Cancer-derived Sequences • RAIDS</title>
+<title>Using wrappper functions • RAIDS</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Accurate Inference of Genetic Ancestry from Cancer-derived Sequences">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Using wrappper functions">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -80,14 +80,13 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Accurate Inference of Genetic Ancestry from
-Cancer-derived Sequences</h1>
+      <h1 data-toc-skip>Using wrappper functions</h1>
                         <h4 data-toc-skip class="author">Pascal Belleau,
 Astrid Deschênes and Alexander Krasnitz</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/main/vignettes/RAIDS.Rmd" class="external-link"><code>vignettes/RAIDS.Rmd</code></a></small>
-      <div class="hidden name"><code>RAIDS.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/KrasnitzLab/RAIDS/blob/main/vignettes/Wrappers.Rmd" class="external-link"><code>vignettes/Wrappers.Rmd</code></a></small>
+      <div class="hidden name"><code>Wrappers.Rmd</code></div>
 
     </div>
 
@@ -97,68 +96,12 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), David A. Tuveson
 [aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
 Krasnitz [aut]<br><strong>Version</strong>: 1.3.1<br><strong>Compiled date</strong>: 2024-10-16<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
-<div class="section level2">
-<h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
-</h2>
-<p>The <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em>
-package and the underlying <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> code are
-distributed under<br>
-the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link uri">https://opensource.org/licenses/Apache-2.0</a> license. You
-are free to use and redistribute this software.</p>
 <p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
-</h2>
-<p>If you use the <strong>RAIDS</strong> package for a publication, we
-would ask you to cite the following:</p>
-<blockquote>
-<p>Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
-Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
-Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1
-January 2023; 83 (1): 49–58. <a href="https://doi.org/10.1158/0008-5472.CAN-22-0682" class="external-link uri">https://doi.org/10.1158/0008-5472.CAN-22-0682</a> <br><br></p>
-</blockquote>
-</div>
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>Multiple methods have been implemented to infer ancestry from
-germline DNA sequence <span class="citation">(Price et al. 2006;
-Pritchard, Stephens, and Donnelly 2000; Alexander, Novembre, and Lange
-2009)</span>. However, genotyping of DNA from matched normal specimens
-is not part of standard clinical practice and is not performed routinely
-outside academic clinical centers. In sum, matched germline DNA sequence
-is often missing for cancer-derived molecular data. In such cases,
-having the possibility to infer ancestry from tumor-derived data would
-be beneficial.</p>
-<p>The <strong>RAIDS</strong> package implements an inference procedure
-that has been specifically developed to accurately infer genetic
-ancestry from cancer-derived sequences. The current version can handle
-cancer-derived sequences of:</p>
-<ul>
-<li>tumor exomes</li>
-<li>targeted gene panels</li>
-<li>RNA</li>
-</ul>
-<p>The <strong>RAIDS</strong> package implements a data synthesis method
-that, for any given cancer-derived sequence profile, enables on the one
-hand, profile-specific inference parameter optimization and on the other
-hand, a profile-specific inference accuracy estimate.</p>
+<p>This vignette explains, in further details, the used of the wrapper
+functions that were developed for a previous release of RAIDS.</p>
+<p>While those functions are still working, we recommend using the new
+functions as described in the main vignette.</p>
 <p><br><br></p>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>To install this package from <a href="https://bioconductor.org/packages/RAIDS" class="external-link">Bioconductor</a>, start R
-(version 4.3 or later) and enter:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"RAIDS"</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-<p><a name="mains"></a></p>
-</div>
 <div class="section level2">
 <h2 id="main-steps">Main Steps<a class="anchor" aria-label="anchor" href="#main-steps"></a>
 </h2>
@@ -328,7 +271,7 @@ else).</p>
 population reference files are demonstration files and should not be
 used for a real ancestry inference. Beware that running an ancestry
 inference on real data will take longer to run.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -345,7 +288,7 @@ inference on real data will take longer to run.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demoPedigreeEx1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
 <span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
 <span><span class="co">## need to be located in the same directory.</span></span>
@@ -627,7 +570,7 @@ else).</p>
 population reference files are demonstration files and should not be
 used for a real ancestry inference. Beware that running an ancestry
 inference on real data will take longer to run.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Load required packages</span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -644,7 +587,7 @@ inference on real data will take longer to run.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demoPedigreeEx1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     Name.ID Case.ID   Sample.Type Diagnosis     Source</span></span>
 <span><span class="co">## ex1     ex1     ex1 Primary Tumor    Cancer Databank B</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
 <span><span class="co">## need to be located in the same directory.</span></span>
@@ -803,7 +746,7 @@ dataset (optional)
 </p>
 </div>
 <p>A population reference dataset with known ancestry is required to
-infer ancestry. The population must be large enough to ensure ???</p>
+infer ancestry.</p>
 <p>Three important reference files, containing formatted information
 about the reference dataset, are required:</p>
 <ul>
@@ -938,28 +881,12 @@ in which this document was compiled:</p>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Alexander2009" class="csl-entry">
-Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
-Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
-<em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
-</div>
 <div id="ref-Lowy-Gallego2019a" class="csl-entry">
 Lowy-Gallego, Ernesto, Susan Fairley, Xiangqun Zheng-Bradley, Magali
 Ruffier, Laura Clarke, and Paul Flicek. 2019. <span>“<span class="nocase">Variant calling on the grch38 assembly with the data from
 phase three of the 1000 genomes project [version 2; peer review: 1
 approved, 1 not approved]</span>.”</span> <em>Wellcome Open
 Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126.1" class="external-link">https://doi.org/10.12688/wellcomeopenres.15126.1</a>.
-</div>
-<div id="ref-Price2006" class="csl-entry">
-Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.
-Shadick, and D. Reich. 2006. <span>“Principal Components Analysis
-Corrects for Stratification in Genome-Wide Association Studies.”</span>
-<em>Nat Genet</em> 38 (8): 904–9. <a href="https://doi.org/10.1038/ng1847" class="external-link">https://doi.org/10.1038/ng1847</a>.
-</div>
-<div id="ref-Pritchard2000" class="csl-entry">
-Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference
-of Population Structure Using Multilocus Genotype Data.”</span>
-<em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
 </div>
 </div>
 </div>

@@ -24,7 +24,6 @@ BiocStyle::markdown()
 suppressPackageStartupMessages({
     library(knitr)
     library(RAIDS)
-    library(gdsfmt)
 })
 
 set.seed(121444)
@@ -106,561 +105,297 @@ BiocManager::install("RAIDS")
 
 # Main Steps
 
-
-This is an overview of genetic ancestry inference from cancer-derived 
+This is an overview of the genetic ancestry inference from cancer-derived 
 molecular data:
 
 ```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='130%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_v04.png")
+knitr::include_graphics("MainSteps_v05.png")
 ```
 
 The main steps are:
 
-**Step 1.** Format reference data from the population reference dataset (optional)
+**Step 1.** Set-up and provide population reference files
 
-**Step 2.1** Optimize ancestry inference parameters
+**Step 2** Sample the reference data for donor genotypes, to be used for synthesis and optimize ancestry inference parameters
 
-**Step 2.2** Infer ancestry for the subjects of the external study
+**Step 3** Infer ancestry for the subjects of the external study
 
-These steps are described in detail in the following. Steps 2.1 and 2.2 can be 
-run together using one wrapper function.
+**Step 4** Present and interpret the results
+
+These steps are described in detail in the following. 
 
 <br>
 <br>
 
 
-## Main Step - Ancestry Inference
+## Step 1. Set-up and provide population reference files
 
-A wrapper function encapsulates multiple steps of the workflow. 
 
-```{r graphWrapper, echo=FALSE, fig.align="center", fig.cap="Final step - The wrapper function encapsulates multiple steps of the workflow.", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Wrapper_v04.png")
+### 1.1 Create a directory structure
+
+First, a specific directory structure should be created. The structure must  
+correspond to this:
+
 ```
 
-In summary, the wrapper function generates the synthetic dataset and uses 
-it to selected the optimal parameters before calling the genetic ancestry 
-on the current profiles.
+#############################################################################
+## Working directory structure
+#############################################################################
+workingDirectory/  
+	data/  
+		refGDS  
+		profileGDS 
 
-According to the type of input data (RNA or DNA), a specific wrapper function 
+```
+
+<br>
+
+This following running example creates a temporary working directory structure 
+when the example will be run. 
+
+
+```{r createDir, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+#############################################################################
+## Create a temporary working directory structure
+#############################################################################
+pathWorkingDirectory <- file.path(tempdir(), "workingDirectory")
+pathWorkingDirectoryData <- file.path(pathWorkingDirectory, "data")
+
+if (!dir.exists(pathWorkingDirectory)) {
+        dir.create(pathWorkingDirectory)
+        dir.create(pathWorkingDirectoryData)
+        dir.create(file.path(pathWorkingDirectoryData, "refGDS"))
+        dir.create(file.path(pathWorkingDirectoryData, "profileGDS"))
+}
+
+```
+
+<br>
+
+### 1.2 Download the population reference files
+
+
+The population reference files should be downloaded in the *data/refGDS* 
+sub-directory. This following code downloads the complete pre-processed files 
+for 1000 Genomes (1KG), in hg38. The size of the 1KG GDS file is 15GB. 
+
+```
+
+#############################################################################
+## How to download the pre-processed files for 1000 Genomes (1KG) (15 GB)
+#############################################################################
+cd workingDirectory
+cd data/refGDS
+
+wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
+wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
+cd -
+
+```
+
+<br>
+
+For demonstration purpose, a small 
+**population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
+**population reference SNV Annotation GDS file** (called 
+_ex1_good_small_1KG_Annot.gds_) are 
+included in this package. Beware that those two files should not be used to 
+run a real ancestry inference. The results obtained with those files won't be 
+reliable.
+
+In this running example, the demonstration files are copied in the required 
+*data/refGDS* directory.
+
+```{r copyRefFile, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+#############################################################################
+## Load RAIDS package
+#############################################################################
+library(RAIDS)   
+
+#############################################################################
+## The population reference GDS file and SNV Annotation GDS file
+## need to be located in the same sub-directory.
+## Note that the population reference GDS file used for this example is a
+## simplified version and CANNOT be used for any real analysis
+#############################################################################
+## Path to the demo 1KG GDS file is located in this package
+dataDir <- system.file("extdata", package="RAIDS")
+pathReference <- file.path(dataDir, "tests")
+
+fileGDS <- file.path(pathReference, "ex1_good_small_1KG.gds")
+fileAnnotGDS <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
+
+file.copy(fileGDS, file.path(pathWorkingDirectoryData, "refGDS"))
+file.copy(fileAnnotGDS, file.path(pathWorkingDirectoryData, "refGDS"))
+
+```
+<br>
+<br>
+
+## Step 2 Ancestry inference with RAIDS
+
+### 2.1 Set-up required directories
+
+```{r installRaids, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+#############################################################################
+## The file path to the population reference GDS file 
+##     is required (refGenotype will be used as input later)
+## The file path to the population reference SNV Annotation GDS file
+##     is also required (refAnnotation will be used as input later)
+#############################################################################
+pathReference <- file.path(pathWorkingDirectoryData, "refGDS")
+
+refGenotype <- file.path(pathReference, "ex1_good_small_1KG.gds")
+refAnnotation <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
+
+#############################################################################
+## The output profileGDS directory, inside workingDirectory/data, must be 
+##    created (pathProfileGDS will be used as input later)
+#############################################################################
+pathProfileGDS <- file.path(pathWorkingDirectoryData, "profileGDS")
+
+if (!dir.exists(pathProfileGDS)) {
+    dir.create(pathProfileGDS)
+}
+
+```
+
+
+<br>
+
+### 2.2 Sample reference donor profiles from the reference data
+
+With the 1KG reference, we recommend sampling 30 donor profiles per population. 
+For reproducibility, be sure to use the same random-number generator seed.
+
+In the following code, only 2 profiles per population are sampled from the 
+demo population GDS file:
+
+```{r sampling, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+#############################################################################
+## Fix seed to ensure reproducible results
+#############################################################################
+set.seed(3043)
+
+#############################################################################
+## Select the profiles from the population reference GDS file for 
+## the synthetic data.
+## Here we select 2 profiles from the simplified 1KG GDS for each 
+## subcontinental-level.
+## Normally, we would use 30 profiles for each subcontinental-level.
+## The 1KG files in this example only have 6 profiles for each 
+## subcontinental-level (for demo purpose only).
+#############################################################################
+dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
+                                        nbProfiles=2L)
+
+```
+
+The output object is going to be used later at the ancestry inference step.
+
+<br>
+
+### 2.3 Perform the ancestry inference
+
+Within a single function call, data synthesis is performed, the synthetic 
+data are used to optimize the inference parameters and, with these, the 
+ancestry of the input profile donor is inferred.
+
+According to the type of input data (RNA or DNA), a specific function 
 is available.
 
-<br>
+The *inferAncestry()* function is used for DNA profiles while 
+the *inferAncestryGeneAware()* function is RNA specific.
 
-### DNA Data - Wrapper function to run ancestry inference on DNA data
+In this example, the profile is from DNA source and requires the use of the 
+*inferAncestry()* function.
 
-The wrapper function, called _runExomeAncestry()_, requires 4 files as input:
+```{r infere, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
-- The **population reference GDS file**
-- The **population reference SNV Annotation GDS file**
-- The **Profile SNP file** (one per sample present in the study)
-- The **Profile PED RDS file** (one file with information for all 
-profiles in the study)
-
-In addition, a *data.frame* containing the general information about the 
-study is also required. The *data.frame* must contain those 3 columns:
-
-- _study.id_: The study identifier (example: TCGA-BRCA).
-- _study.desc_: The description of the study.
-- _study.platform_: The type of sequencing (example: RNA-seq).
-
-<br>
-
-#### **Population reference files**
-
-For demonstration purpose, a small 
-**population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
-**population reference SNV Annotation GDS file** (called 
-_ex1_good_small_1KG_Annot.gds_) are 
-included in this package. Beware that those two files should not be used to 
-run a real ancestry inference.The results obtained with those files won't be 
-reliable.
-
-The required **population reference GDS file** and 
-**population reference SNV Annotation GDS file** should be stored in the same
-directory. In the example below, this directory is referred to 
-as **pathReference**. 
-
-<br>
-
-#### **Profile SNP file**
-
-The **Profile SNP file** can be either in a VCF format or in a generic format.
-
-The **Profile SNP VCF file**  follows the VCF standard with at least 
-those genotype fields: _GT_, _AD_ and _DP_. The identifier of the genotype 
-in the VCF file must correspond to the profile identifier _Name.ID_. 
-The SNVs  must be germline variants and should include the genotype of the 
-wild-type homozygous at the selected positions in the reference. One file per
-profile is need and the VCF file must be gzipped.
-
-Note that the name assigned to the **Profile SNP VCF file** has to 
-correspond to the profile identifier _Name.ID_ in the following analysis. 
-For example, a SNP file called "Sample.01.vcf.gz" would be 
-associated to the "Sample.01" profile.
-
-A generic SNP file can replace the VCF file. The **Profile SNP Generic file** 
-format is coma separated and the mandatory columns are:
-
-* _Chromosome_: The name of the chromosome
-* _Position_: The position on the chromosome
-* _Ref_: The reference nucleotide
-* _Alt_: The aternative nucleotide
-* _Count_: The total count
-* _File1R_: The count for the reference nucleotide
-* _File1A_: The count for the alternative nucleotide
-
-Beware that the starting position in the **population reference GDS File** is 
-zero (like BED files). The **Profile SNP Generic file** should also start 
-at position zero.
-
-Note that the name assigned to the **Profile SNP Generic file** has to 
-correspond to the profile identifier _Name.ID_ in the following analysis. 
-For example, a SNP file called "Sample.01.generic.txt.gz" would be 
-associated to the "Sample.01" profile.
-
-<br>
-
-#### **Profile PED RDS file**
-
-The **Profile PED RDS file** must contain a *data.frame* describing all 
-the profiles to be analyzed. These 5 mandatory columns: 
-
-- _Name.ID_: The unique sample identifier. The associated **profile SNP file** 
-should be called "Name.ID.txt.gz". 
-- _Case.ID_: The patient identifier associated to the sample.
-- _Sample.Type_: The information about the profile tissue source 
-(primary tumor, metastatic tumor, normal, etc..). 
-- _Diagnosis_: The donor's diagnosis.
-- _Source_: The source of the profile sequence data (example: dbGAP_XYZ).
-
-Important: The row names of the *data.frame* must be the profiles *Name.ID*.
-
-This file is referred to as the **Profile PED RDS file** (PED for pedigree). 
-Alternatively, the PED information can be saved in another type of 
-file (CVS, etc..) as long as the *data.frame* information can be regenerated 
-in R (with _read.csv()_ or else). 
-
-<br>
-
-#### **Example**
-
-This example run an ancestry inference on an exome sample. Both population 
-reference files are demonstration files and should not be 
-used for a real ancestry inference. Beware that running an ancestry inference 
-on real data will take longer to run.
-
-```{r runExomeAncestry, echo=TRUE, eval=TRUE, collapse=FALSE, warning=FALSE, message=FALSE}
-#############################################################################
-## Load required packages
-#############################################################################
-library(RAIDS)    
-library(gdsfmt)
-
-## Path to the demo 1KG GDS file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
-
-#############################################################################
-## Load the information about the profile
-#############################################################################
-data(demoPedigreeEx1)
-head(demoPedigreeEx1)
-
-#############################################################################
-## The population reference GDS file and SNV Annotation GDS file
-## need to be located in the same directory.
-## Note that the population reference GDS file used for this example is a
-## simplified version and CANNOT be used for any real analysis
-#############################################################################
-pathReference <- file.path(dataDir, "tests")
-
-fileGDS <- file.path(pathReference, "ex1_good_small_1KG.gds")
-fileAnnotGDS <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
-
-#############################################################################
-## A data frame containing general information about the study
-## is also required. The data frame must have
-## those 3 columns: "study.id", "study.desc", "study.platform"
-#############################################################################
-studyDF <- data.frame(study.id="MYDATA",
-                   study.desc="Description",
-                   study.platform="PLATFORM",
-                   stringsAsFactors=FALSE)
-
-#############################################################################
-## The Sample SNP VCF files (one per sample) need
-## to be all located in the same directory.
-#############################################################################
-pathGeno <- file.path(dataDir, "example", "snpPileup")
-
-#############################################################################
-## Fix RNG seed to ensure reproducible results
-#############################################################################
-set.seed(3043)
-
-#############################################################################
-## Select the profiles from the population reference GDS file for 
-## the synthetic data.
-## Here we select 2 profiles from the simplified 1KG GDS for each 
-## subcontinental-level.
-## Normally, we use 30 profile for each 
-## subcontinental-level but it is too big for the example.
-## The 1KG files in this example only have 6 profiles for each 
-## subcontinental-level (for demo purpose only).
-#############################################################################
-gds1KG <- snpgdsOpen(fileGDS)
-dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
-closefn.gds(gds1KG)
-
+###########################################################################
 ## GenomeInfoDb and BSgenome are required libraries to run this example
+###########################################################################
 if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
       requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
-    ## Chromosome length information
+    #######################################################################
+    ## Chromosome length information is required
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    #######################################################################
+    genome <- BSgenome.Hsapiens.UCSC.hg38::Hsapiens
+    chrInfo <- GenomeInfoDb::seqlengths(genome)[1:25]
 
-    ###########################################################################
-    ## The path where the Sample GDS files (one per sample)
-    ## will be created needs to be specified.
-    ###########################################################################
-    pathProfileGDS <- file.path(tempdir(), "exampleDNA", "out.tmp")
+    #######################################################################
+    ## The SNP VCF file of the DNA profile donor
+    #######################################################################
+    fileDonorVCF <- file.path(dataDir, "example", "snpPileup", "ex1.vcf.gz")
 
-    ###########################################################################
-    ## The path where the result files will be created needs to 
-    ## be specified
-    ###########################################################################
-    pathOut <- file.path(tempdir(), "exampleDNA", "res.out")
-
-    ## Example can only be run if the current directory is in writing mode
-    if (!dir.exists(file.path(tempdir(), "exampleDNA"))) {
-
-        dir.create(file.path(tempdir(), "exampleDNA"))
-        dir.create(pathProfileGDS)
-        dir.create(pathOut)
-    
-        #########################################################################
-        ## The wrapper function generates the synthetic dataset and uses it 
-        ## to selected the optimal parameters before calling the genetic 
-        ## ancestry on the current profiles.
-        ## All important information, for each step, are saved in 
-        ## multiple output files.
-        ## The 'genoSource' parameter has 2 options depending on how the 
-        ##   SNP files have been generated: 
-        ##   SNP VCF files have been generated: 
-        ##  "VCF" or "generic" (other software)
-        ##
-        #########################################################################
-        runExomeAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
-                 pathProfileGDS=pathProfileGDS,
-                 pathGeno=pathGeno,
-                 pathOut=pathOut,
-                 fileReferenceGDS=fileGDS,
-                 fileReferenceAnnotGDS=fileAnnotGDS,
-                 chrInfo=chrInfo,
-                 syntheticRefDF=dataRef,
-                 genoSource="VCF")
-        list.files(pathOut)
-        list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
-
-        #######################################################################
-        ## The file containing the ancestry inference (SuperPop column) and 
-        ## optimal number of PCA component (D column)
-        ## optimal number of neighbours (K column)
-        #######################################################################
-        resAncestry <- read.csv(file.path(pathOut, 
-                        paste0(demoPedigreeEx1$Name.ID[1], ".Ancestry.csv")))
-        print(resAncestry)
-
-        ## Remove temporary files created for this demo
-        unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-        unlink(pathOut, recursive=TRUE, force=TRUE)
-        unlink(file.path(tempdir(), "exampleDNA"), recursive=TRUE, force=TRUE)
-    }
+    #######################################################################
+    ## The ancestry inference call
+    #######################################################################
+    resOut <- inferAncestry(profileFile=fileDonorVCF, 
+        pathProfileGDS=pathProfileGDS,
+        fileReferenceGDS=refGenotype,
+        fileReferenceAnnotGDS=refAnnotation,
+        chrInfo=chrInfo,
+        syntheticRefDF=dataRef,
+        genoSource=c("VCF"))
 }
-  
 
+```
+
+A profile GDS file is created in the *pathProfileGDS* directory while all the 
+ancestry and optimal parameters information are integrated in the output 
+object.
+
+At last, all temporary files created in this example should be deleted.
+
+```{r removeTmp, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+#######################################################################
+## Remove temporary files created for this demo
+#######################################################################
+unlink(pathWorkingDirectory, recursive=TRUE, force=TRUE)
+      
 ```
 
 <br>
 <br>
 
-The *runExomeAncestry()* function generates 3 types of files 
-in the *pathOut* directory.
 
-* The ancestry inference CSV file (**".Ancestry.csv"** file) 
-* The inference information RDS file (**".infoCall.rds"** file)
-* The parameter information RDS files from the synthetic inference 
-(__"KNN.synt.__*__.rds"__ files in a sub-directory)
+## Step 3. Examine the value of the inference call
 
-In addition, a sub-directory (named using the *profile ID*) is 
-also created. 
-
-The inferred ancestry is stored in the ancestry inference CSV 
-file (**".Ancestry.csv"** file) which also contains those columns:
-
-* _sample.id_: The unique identifier of the sample 
-* _D_: The optimal PCA dimension value used to infer the ancestry
-* _k_: The optimal number of neighbors value used to infer the ancestry
-* _SuperPop_: The inferred ancestry
-
-<br>
-<br>
+The inferred ancestry and the optimal parameters are present in the *list* 
+object generated by the *inferAncestry()* and *inferAncestryGeneAware()* 
+functions.
 
 
+```{r printRes, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
-### RNA data - Wrapper function to run ancestry inference on RNA data 
+###########################################################################
+## The output is a list object with multiple entries
+###########################################################################
+class(resOut)
+names(resOut)
 
-The process is the same as for the DNA but use the wrapper function 
-called _runRNAAncestry()_. Internally the data is process differently.
-It requires 4 files as input:
-
-- The **population reference GDS file**
-- The **population reference SNV Annotation GDS file**
-- The **Profile SNP file** (one per sample present in the study)
-- The **Profile PED RDS file** (one file with information for all 
-profiles in the study)
-
-A *data.frame* containing the general information about the study is 
-also required. The *data.frame* must contain those 3 columns:
-
-- _study.id_: The study identifier (example: TCGA-BRCA).
-- _study.desc_: The description of the study.
-- _study.platform_: The type of sequencing (example: RNA-seq).
-
-<br>
-
-#### **Population reference files**
-
-For demonstration purpose, a small 
-**population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
-**population reference SNV Annotation GDS file** (called 
-_ex1_good_small_1KG_Annot.gds_) are 
-included in this package. Beware that those two files should not be used to 
-run a real ancestry inference.The results obtained with those files won't be 
-reliable.
-
-The required **population reference GDS file** and 
-**population reference SNV Annotation GDS file** should be stored in the same
-directory. In the example below, this directory is referred to 
-as **pathReference**.
-
-<br>
-
-#### **Profile SNP file**
-
-The **Profile SNP file** can be either in a VCF format or in a generic format.
-
-The **Profile SNP VCF file**  follows the VCF standard with at least 
-those genotype fields: _GT_, _AD_ and _DP_. The identifier of the genotype 
-in the VCF file must correspond to the profile identifier _Name.ID_. 
-The SNVs  must be germline variants and should include the genotype of the 
-wild-type homozygous at the selected positions in the reference. One file per
-profile is need and the VCF file must be gzipped.
-
-Note that the name assigned to the **Profile SNP VCF file** has to 
-correspond to the profile identifier _Name.ID_ in the following analysis. 
-For example, a SNP file called "Sample.01.vcf.gz" would be 
-associated to the "Sample.01" profile.
-
-A generic SNP file can replace the VCF file. The **Profile SNP Generic file** 
-format is coma separated and the mandatory columns are:
-
-* _Chromosome_: The name of the chromosome
-* _Position_: The position on the chromosome
-* _Ref_: The reference nucleotide
-* _Alt_: The aternative nucleotide
-* _Count_: The total count
-* _File1R_: The count for the reference nucleotide
-* _File1A_: The count for the alternative nucleotide
-
-Beware that the starting position in the **population reference GDS File** is 
-zero (like BED files). The **Profile SNP Generic file** should also start 
-at position zero.
-
-Note that the name assigned to the **Profile SNP Generic file** has to 
-correspond to the profile identifier _Name.ID_ in the following analysis. 
-For example, a SNP file called "Sample.01.generic.txt.gz" would be 
-associated to the "Sample.01" profile.
-
-<br>
-
-#### **Profile PED RDS file**
-
-The **Profile PED RDS file** must contain a *data.frame* describing all 
-the profiles to be analyzed. These 5 mandatory columns: 
-
-- _Name.ID_: The unique sample identifier. The associated **profile SNP file**  
-should be called "Name.ID.txt.gz". 
-- _Case.ID_: The patient identifier associated to the sample.
-- _Sample.Type_: The information about the profile tissue source 
-(primary tumor, metastatic tumor, normal, etc..). 
-- _Diagnosis_: The donor's diagnosis.
-- _Source_: The source of the profile sequence data (example: dbGAP_XYZ).
-
-Important: The row names of the *data.frame* must be the profiles _Name.ID_.
-
-This file is referred to as the **Profile PED RDS file** (PED for pedigree). 
-Alternatively, the PED information can be saved in another type of 
-file (CVS, etc..) as long as the *data.frame* information can be regenerated 
-in R (with _read.csv()_ or else). 
-
-<br>
-
-#### **Example**
-
-This example run an ancestry inference on an RNA sample. Both population 
-reference files are demonstration files and should not be 
-used for a real ancestry inference. Beware that running an ancestry inference 
-on real data will take longer to run.
-
-```{r runRNAAncestry, echo=TRUE, eval=TRUE, collapse=FALSE, warning=FALSE, message=FALSE}
-#############################################################################
-## Load required packages
-#############################################################################
-library(RAIDS)    
-library(gdsfmt)
-
-## Path to the demo 1KG GDS file is located in this package
-dataDir <- system.file("extdata", package="RAIDS")
-
-#############################################################################
-## Load the information about the profile
-#############################################################################
-data(demoPedigreeEx1)
-head(demoPedigreeEx1)
-
-#############################################################################
-## The population reference GDS file and SNV Annotation GDS file
-## need to be located in the same directory.
-## Note that the population reference GDS file used for this example is a
-## simplified version and CANNOT be used for any real analysis
-#############################################################################
-pathReference <- file.path(dataDir, "tests")
-
-fileGDS <- file.path(pathReference, "ex1_good_small_1KG.gds")
-fileAnnotGDS <- file.path(pathReference, "ex1_good_small_1KG_Annot.gds")
-
-#############################################################################
-## A data frame containing general information about the study
-## is also required. The data frame must have
-## those 3 columns: "study.id", "study.desc", "study.platform"
-#############################################################################
-studyDF <- data.frame(study.id="MYDATA",
-                   study.desc="Description",
-                   study.platform="PLATFORM",
-                   stringsAsFactors=FALSE)
-
-#############################################################################
-## The Sample SNP VCF files (one per sample) need
-## to be all located in the same directory.
-#############################################################################
-pathGeno <- file.path(dataDir, "example", "snpPileupRNA")
-
-#############################################################################
-## Fix RNG seed to ensure reproducible results
-#############################################################################
-set.seed(3043)
-
-#############################################################################
-## Select the profiles from the population reference GDS file for 
-## the synthetic data.
-## Here we select 2 profiles from the simplified 1KG GDS for each 
-## subcontinental-level.
-## Normally, we use 30 profile for each 
-## subcontinental-level but it is too big for the example.
-## The 1KG files in this example only have 6 profiles for each 
-## subcontinental-level (for demo purpose only).
-#############################################################################
-gds1KG <- snpgdsOpen(fileGDS)
-dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
-closefn.gds(gds1KG)
-
-## GenomeInfoDb and BSgenome are required libraries to run this example
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
-      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
-
-  ## Chromosome length information
-  ## chr23 is chrX, chr24 is chrY and chrM is 25
-  chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
-
-  #############################################################################
-  ## The path where the Sample GDS files (one per sample)
-  ## will be created needs to be specified.
-  #############################################################################
-  pathProfileGDS <- file.path(tempdir(), "exampleRNA", "outRNA.tmp")
-
-  #############################################################################
-  ## The path where the result files will be created needs to 
-  ## be specified
-  #############################################################################
-  pathOut <- file.path(tempdir(), "exampleRNA", "resRNA.out")
-
-  ## Example can only be run if the current directory is in writing mode
-  if (!dir.exists(file.path(tempdir(), "exampleRNA"))) {
-
-      dir.create(file.path(tempdir(), "exampleRNA"))
-      dir.create(pathProfileGDS)
-      dir.create(pathOut)
-    
-      #########################################################################
-      ## The wrapper function generates the synthetic dataset and uses it 
-      ## to selected the optimal parameters before calling the genetic 
-      ## ancestry on the current profiles.
-      ## All important information, for each step, are saved in 
-      ## multiple output files.
-      ## The 'genoSource' parameter has 2 options depending on how the 
-      ##   SNP files have been generated: 
-      ##   SNP VCF files have been generated: 
-      ##  "VCF" or "generic" (other software)
-      #########################################################################
-      runRNAAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
-                    pathProfileGDS=pathProfileGDS,
-                    pathGeno=pathGeno,
-                    pathOut=pathOut,
-                    fileReferenceGDS=fileGDS,
-                    fileReferenceAnnotGDS=fileAnnotGDS,
-                    chrInfo=chrInfo,
-                    syntheticRefDF=dataRef,
-                    blockTypeID="GeneS.Ensembl.Hsapiens.v86",
-                    genoSource="VCF")
-    
-      list.files(pathOut)
-      list.files(file.path(pathOut, demoPedigreeEx1$Name.ID[1]))
-
-      #########################################################################
-      ## The file containing the ancestry inference (SuperPop column) and 
-      ## optimal number of PCA component (D column)
-      ## optimal number of neighbours (K column)
-      #########################################################################
-      resAncestry <- read.csv(file.path(pathOut, 
-                        paste0(demoPedigreeEx1$Name.ID[1], ".Ancestry.csv")))
-      print(resAncestry)
-
-      ## Remove temporary files created for this demo
-      unlink(pathProfileGDS, recursive=TRUE, force=TRUE)
-      unlink(pathOut, recursive=TRUE, force=TRUE)
-      unlink(file.path(tempdir(), "example"), recursive=TRUE, force=TRUE)
-  }
-}
- 
 ```
 
+
 <br>
-<br>
 
-The *runRNAAncestry()* function generates 3 types of files 
-in the *pathOut* directory.
+### 3.1 Inspect the inference and the optimal parameters
 
-* The ancestry inference CSV file (**".Ancestry.csv"** file) 
-* The inference information RDS file (**".infoCall.rds"** file)
-* The parameter information RDS files from the synthetic inference 
-(__"KNN.synt.__*__.rds"__ files in a sub-directory)
 
-In addition, a sub-directory (named using the *profile ID*) is 
-also created. 
+For the global ancestry inference using PCA followed by nearest neighbor 
+classification these parameters are *D* (the number of the top principal 
+directions retained) and *k* (the number of nearest neighbors).  
 
-The inferred ancestry is stored in the ancestry inference CSV 
-file (**".Ancestry.csv"** file) which also contains those columns:
+The information is stored in the *Ancestry* entry as a *data.frame* object. 
+It is a contains those columns:
 
 * _sample.id_: The unique identifier of the sample 
 * _D_: The optimal PCA dimension value used to infer the ancestry
@@ -668,27 +403,56 @@ file (**".Ancestry.csv"** file) which also contains those columns:
 * _SuperPop_: The inferred ancestry
 
 
+```{r print, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+
+###########################################################################
+## The ancestry information is stored in the 'Ancestry' entry 
+###########################################################################
+print(resOut$Ancestry)
+
+```
+
+<br>
+
+### 3.2 Visualize the RAIDS performance for the synthetic data
+
+
+The *createAUROCGraph()* function enable the visualization of RAIDS 
+performance for the synthetic data, as a function of *D* and *k*.
+
+```{r visualize, echo=TRUE, eval=TRUE, fig.align="center", fig.cap="RAIDS performance for the synthtic data.", results='asis', collapse=FALSE, warning=FALSE, message=FALSE}
+
+###########################################################################
+## Create a graph showing the perfomance for the synthetic data
+## The output is a ggplot object
+###########################################################################
+createAUROCGraph(dfAUROC=resOut$paraSample$dfAUROC, title="Example ex1")
+
+```
+
+In this specific example, the performances are lower than expected 
+with a real profile and a complete reference population file.
+
 <br>
 <br>
 
+# Format population reference dataset (optional)
 
-## Format population reference dataset (optional)
 
-
-```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Formatting the information from the population reference dataset (optional)", out.width='120%', results='asis', warning=FALSE, message=FALSE}
-knitr::include_graphics("MainSteps_Step1_v04.png")
+```{r graphStep1, echo=FALSE, fig.align="center", fig.cap="Step 1 - Provide population reference data", out.width='120%', results='asis', warning=FALSE, message=FALSE}
+knitr::include_graphics("Step1_population_file_v01.png")
 ```
 
 
 A population reference dataset with known ancestry is required to infer 
-ancestry. The population must be large enough to ensure ???
+ancestry. 
 
 Three important reference files, containing formatted information about 
 the reference dataset, are required:
 
 - The population reference GDS File
 - The population reference SNV Annotation GDS file
-- The population reference SNV Retained VCF file
+- The population reference SNV Retained VCF file (optional)
 
 
 The format of those files are described 
@@ -715,7 +479,6 @@ you choose to use the pre-processed files.</span>
 
 <br>
 <br>
-
 
 
 # Session info

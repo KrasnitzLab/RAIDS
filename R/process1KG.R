@@ -1165,8 +1165,8 @@ addBlockFromDetFile <- function(fileReferenceGDS, gdsRefAnnotFile, pathBlock,
             tmp <- processBlockChr(fileReferenceGDS, file.path(pathBlock, listChrCur))
             listBlock[[chr]] <- tmp$block.snp
             if(chr > 1) {
-                vMax <- max(listBlock[[chr-1]])
-                vMin <- min(listBlock[[chr-1]])
+                vMax <- max(listBlock[[chr-1]], 0)
+                vMin <- min(listBlock[[chr-1]], 0)
                 listBlock[[chr]][listBlock[[chr]] > 0] <-
                     listBlock[[chr]][listBlock[[chr]] > 0] + vMax
                 if(vMin < 0) {

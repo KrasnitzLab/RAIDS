@@ -96,7 +96,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), David A. Tuveson
 [aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 1.3.2<br><strong>Compiled date</strong>: 2024-10-16<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 1.3.2<br><strong>Compiled date</strong>: 2024-10-21<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -187,8 +187,7 @@ external study</p>
 <h4 id="create-a-directory-structure">1.1 Create a directory structure<a class="anchor" aria-label="anchor" href="#create-a-directory-structure"></a>
 </h4>
 <p>First, a specific directory structure should be created. The
-structure must<br>
-correspond to this:</p>
+structure must correspond to this:</p>
 <pre><code><span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Working directory structure</span></span>
@@ -198,8 +197,8 @@ correspond to this:</p>
 <span>        <span class="va">refGDS</span>  </span>
 <span>        <span class="va">profileGDS</span> </span></code></pre>
 <p><br></p>
-<p>This following running example creates a temporary working directory
-structure when the example will be run.</p>
+<p>This following code creates a temporary working directory structure
+where the example will be run.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -337,11 +336,42 @@ step.</p>
 synthetic data are used to optimize the inference parameters and, with
 these, the ancestry of the input profile donor is inferred.</p>
 <p>According to the type of input data (RNA or DNA), a specific function
-is available.</p>
-<p>The <em>inferAncestry()</em> function is used for DNA profiles while
-the <em>inferAncestryGeneAware()</em> function is RNA specific.</p>
+is available. The <em>inferAncestry()</em> function is used for DNA
+profiles while the <em>inferAncestryGeneAware()</em> function is RNA
+specific.</p>
 <p>In this example, the profile is from DNA source and requires the use
 of the <em>inferAncestry()</em> function.</p>
+<p>The <em>inferAncestry()</em> function requires a specific profile
+input format. The format is set by the <em>genoSource</em>
+parameter.</p>
+<p>One of those formats is in a VCF format
+(<em>genoSource=c(“VCF”)</em>). This format follows the VCF standard
+with at least those genotype fields: <em>GT</em>, <em>AD</em> and
+<em>DP</em>. The SNVs must be germline variants and should include the
+genotype of the wild-type homozygous at the selected positions in the
+reference. The VCF file must be gzipped.</p>
+<p>A generic SNP file can replace the VCF file
+(<em>genoSource=c(“generic”)</em>). The format is coma separated and the
+mandatory columns are:</p>
+<ul>
+<li>
+<em>Chromosome</em>: The name of the chromosome</li>
+<li>
+<em>Position</em>: The position on the chromosome</li>
+<li>
+<em>Ref</em>: The reference nucleotide</li>
+<li>
+<em>Alt</em>: The aternative nucleotide</li>
+<li>
+<em>Count</em>: The total count</li>
+<li>
+<em>File1R</em>: The count for the reference nucleotide</li>
+<li>
+<em>File1A</em>: The count for the alternative nucleotide</li>
+</ul>
+<p>Beware that the starting position in the <strong>population reference
+GDS file</strong> is zero (like BED files). The generic SNP file should
+also start at position zero.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">###########################################################################</span></span>
@@ -358,7 +388,7 @@ of the <em>inferAncestry()</em> function.</p>
 <span>    <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu">GenomeInfoDb</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlengths</a></span><span class="op">(</span><span class="va">genome</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span></span>
 <span></span>
 <span>    <span class="co">#######################################################################</span></span>
-<span>    <span class="co">## The SNP VCF file of the DNA profile donor</span></span>
+<span>    <span class="co">## The demo SNP VCF file of the DNA profile donor</span></span>
 <span>    <span class="co">#######################################################################</span></span>
 <span>    <span class="va">fileDonorVCF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span>, <span class="st">"ex1.vcf.gz"</span><span class="op">)</span></span>
 <span></span>

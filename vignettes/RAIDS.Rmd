@@ -116,7 +116,7 @@ The main steps are:
 
 **Step 1.** Set-up and provide population reference files
 
-**Step 2** Sample the reference data for donor genotypes, to be used for synthesis and optimize ancestry inference parameters
+**Step 2** Sample the reference data for donor genotypes to be used for synthesis and optimize ancestry inference parameters
 
 **Step 3** Infer ancestry for the subjects of the external study
 
@@ -133,7 +133,7 @@ These steps are described in detail in the following.
 
 ### 1.1 Create a directory structure
 
-First, a specific directory structure should be created. The structure must  
+First, a specific directory structure should be created. The structure must 
 correspond to this:
 
 ```
@@ -150,8 +150,8 @@ workingDirectory/
 
 <br>
 
-This following running example creates a temporary working directory structure 
-when the example will be run. 
+This following code creates a temporary working directory structure where the 
+example will be run. 
 
 
 ```{r createDir, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
@@ -238,6 +238,9 @@ file.copy(fileAnnotGDS, file.path(pathWorkingDirectoryData, "refGDS"))
 
 ### 2.1 Set-up required directories
 
+All required directories need to be created. In addition, the path to 
+the reference files are kept in variables that will be used later.
+
 ```{r installRaids, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
 #############################################################################
@@ -295,24 +298,49 @@ dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
 
 ```
 
-The output object is going to be used later at the ancestry inference step.
+The output object is going to be used later.
 
 <br>
 
 ### 2.3 Perform the ancestry inference
 
-Within a single function call, data synthesis is performed, the synthetic 
+Ancestry inference can be done in one function call. Within a single function 
+call, data synthesis is performed, the synthetic 
 data are used to optimize the inference parameters and, with these, the 
 ancestry of the input profile donor is inferred.
 
 According to the type of input data (RNA or DNA), a specific function 
-is available.
-
-The *inferAncestry()* function is used for DNA profiles while 
+should be called. The *inferAncestry()* function is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
+
+The *inferAncestry()* function requires a specific profile input format. The 
+format is set by the *genoSource* parameter. 
+
+One of those formats is in a VCF format (*genoSource=c("VCF")*). 
+This format follows the VCF standard 
+with at least those genotype fields: _GT_, _AD_ and _DP_. 
+The SNVs  must be germline variants and should include the genotype of the 
+wild-type homozygous at the selected positions in the reference. The VCF file 
+must be gzipped.
+
+A generic SNP file can replace the VCF file (*genoSource=c("generic")*). 
+The format is coma separated and the mandatory columns are:
+
+* _Chromosome_: The name of the chromosome
+* _Position_: The position on the chromosome
+* _Ref_: The reference nucleotide
+* _Alt_: The aternative nucleotide
+* _Count_: The total count
+* _File1R_: The count for the reference nucleotide
+* _File1A_: The count for the alternative nucleotide
+
+Beware that the starting position in the **population reference GDS file** is 
+zero (like BED files). The generic SNP file should also start 
+at position zero.
 
 In this example, the profile is from DNA source and requires the use of the 
 *inferAncestry()* function.
+
 
 ```{r infere, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
@@ -330,7 +358,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
     chrInfo <- GenomeInfoDb::seqlengths(genome)[1:25]
 
     #######################################################################
-    ## The SNP VCF file of the DNA profile donor
+    ## The demo SNP VCF file of the DNA profile donor
     #######################################################################
     fileDonorVCF <- file.path(dataDir, "example", "snpPileup", "ex1.vcf.gz")
 

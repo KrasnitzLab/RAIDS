@@ -2432,11 +2432,6 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' }
 #' }
 #'
-#' @details
-#'
-#' The profileAncestry() generates list \code{list}
-#' TODO update the description
-#'
 #' @references
 #'
 #' Galinsky KJ, Bhatia G, Loh PR, Georgiev S, Mukherjee S, Patterson NJ,
@@ -2545,22 +2540,21 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @keywords internal
-
 profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
-                            currentProfile, pathProfileGDS, chrInfo, syntheticRefDF,
-                            studyDFSyn, listProfileRef, studyType=c("LD", "GeneAware"),
-                            np=1L, blockTypeID=NULL, verbose=FALSE) {
+            currentProfile, pathProfileGDS, chrInfo, syntheticRefDF,
+            studyDFSyn, listProfileRef, studyType=c("LD", "GeneAware"),
+            np=1L, blockTypeID=NULL, verbose=FALSE) {
     # This part can be share with runProfileAncestry
     studyType <- arg_match(studyType)
 
     pruningSample(gdsReference=gdsReference, currentProfile=currentProfile,
-                  studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
+        studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
 
     fileGDSProfile <- file.path(pathProfileGDS,
-                                paste0(currentProfile, ".gds"))
+                                    paste0(currentProfile, ".gds"))
 
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
-                     currentProfile=currentProfile, studyID=studyDF$study.id)
+            currentProfile=currentProfile, studyID=studyDF$study.id)
 
     addStudy1Kg(gdsReference, fileGDSProfile)
 
@@ -2568,19 +2562,19 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     # Change for the old studyType
     studyTypeLeg <- ifelse(studyType=="LD", "DNA", "RNA")
     estimateAllelicFraction(gdsReference=gdsReference, gdsProfile=gdsProfile,
-                            currentProfile=currentProfile, studyID=studyDF$study.id,
-                            chrInfo=chrInfo, studyType=studyTypeLeg, gdsRefAnnot=gdsRefAnnot,
-                            blockID=blockTypeID, verbose=verbose)
+            currentProfile=currentProfile, studyID=studyDF$study.id,
+            chrInfo=chrInfo, studyType=studyTypeLeg, gdsRefAnnot=gdsRefAnnot,
+            blockID=blockTypeID, verbose=verbose)
     closefn.gds(gdsProfile)
 
     ## Add information related to the synthetic profiles in Profile GDS file
     prepSynthetic(fileProfileGDS=fileGDSProfile,
-                  listSampleRef=listProfileRef,  profileID=currentProfile,
-                  studyDF=studyDFSyn, prefix="1", verbose=verbose)
+        listSampleRef=listProfileRef,  profileID=currentProfile,
+        studyDF=studyDFSyn, prefix="1", verbose=verbose)
 
     resG <- syntheticGeno(gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
-                          fileProfileGDS=fileGDSProfile, profileID=currentProfile,
-                          listSampleRef=listProfileRef, prefix="1")
+                fileProfileGDS=fileGDSProfile, profileID=currentProfile,
+                listSampleRef=listProfileRef, prefix="1")
 
     # if(! file.exists(pathOut)) {
     #     dir.create(pathOut)
@@ -2603,26 +2597,24 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     ## This variable will contain the results from the PCA analyses
     ## For each row of the sampleRM matrix
     resSyn <- lapply(seq_len(nrow(sampleRM)), FUN=function(x, sampleRM,
-                                                           gdsProfile, studyDFSyn, spRef,
-                                                           currentProfile) {
+                        gdsProfile, studyDFSyn, spRef, currentProfile) {
         synthKNN <- computePoolSyntheticAncestryGr(gdsProfile=gdsProfile,
-                                                   sampleRM=sampleRM[x,],
-                                                   studyIDSyn=studyDFSyn$study.id,
-                                                   np=np, spRef=spRef, eigenCount=15L,
-                                                   verbose=verbose)
-
+                            sampleRM=sampleRM[x,],
+                            studyIDSyn=studyDFSyn$study.id,
+                            np=np, spRef=spRef, eigenCount=15L,
+                            verbose=verbose)
         ## Results are saved
         # saveRDS(synthKNN$matKNN, file.path(pathOutProfile,
-        #                                    paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
+        #    paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
         return(synthKNN$matKNN)
-    }, sampleRM=sampleRM, gdsProfile=gdsProfile,
-    studyDFSyn=studyDFSyn, spRef=spRef,
-    currentProfile=currentProfile)
+    }, sampleRM=sampleRM, gdsProfile=gdsProfile, studyDFSyn=studyDFSyn, 
+            spRef=spRef, currentProfile=currentProfile)
+    
     resSyn <- do.call(rbind, resSyn)
     ## Extract the super-population information from the 1KG GDS file
     ## for profiles associated to the synthetic study
     pedSyn <- prepPedSynthetic1KG(gdsReference=gdsReference,
-                                  gdsSample=gdsProfile, studyID=studyDFSyn$study.id, popName="superPop")
+        gdsSample=gdsProfile, studyID=studyDFSyn$study.id, popName="superPop")
 
 
     # idCur <- matrix(unlist(strsplit(resSyn$sample.id, "\\.")), nr=4)
@@ -2634,28 +2626,29 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     # listFiles <- file.path(file.path(pathKNN) , listFilesName)
 
     resCall <- computeAncestryFromSynthetic(gdsReference=gdsReference,
-                                            gdsProfile=gdsProfile, syntheticKNN=resSyn,
-                                            pedSyn=pedSyn,
-                                            currentProfile=currentProfile, spRef=spRef,
-                                            studyIDSyn=studyDFSyn$study.id, np=np)
+                    gdsProfile=gdsProfile, syntheticKNN=resSyn,
+                    pedSyn=pedSyn, currentProfile=currentProfile, spRef=spRef,
+                    studyIDSyn=studyDFSyn$study.id, np=np)
 
     # saveRDS(resCall, file.path(pathOut,
     #                            paste0(currentProfile, ".infoCall", ".rds")))
     #
     # write.csv(x=resCall$Ancestry, file=file.path(pathOut,
-    #                                              paste0(currentProfile, ".Ancestry",".csv")), quote=FALSE,
+    #       paste0(currentProfile, ".Ancestry",".csv")), quote=FALSE,
     #           row.names=FALSE)
 
     ## Close Profile GDS file (important)
     closefn.gds(gdsProfile)
     resSyn[[paste0("ref.superPop")]] <- pedSyn[resSyn$sample.id, "superPop"]
 
-    colnames(resSyn) <- c("sample.id", "D", "K", "infer.superPop", "ref.superPop")
+    colnames(resSyn) <- c("sample.id", "D", "K", "infer.superPop", 
+                            "ref.superPop")
+    
     res <- list(pcaSample=resCall$pcaSample, # PCA of the profile + 1KG
-                paraSample=resCall$paraSample, # Result of the parameter selection
-                KNNSample=resCall$KNNSample$matKNN, # KNN for the profile
-                KNNSynthetic=resSyn, # KNN results for synthetic data
-                Ancestry=resCall$Ancestry) # the ancestry call fo the profile
+            paraSample=resCall$paraSample, # Result of the parameter selection
+            KNNSample=resCall$KNNSample$matKNN, # KNN for the profile
+            KNNSynthetic=resSyn, # KNN results for synthetic data
+            Ancestry=resCall$Ancestry) # the ancestry call fo the profile
 
     return(res)
 }
@@ -3454,12 +3447,6 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' }
 #' }
 #' }
-#'
-#' @details
-#'
-#' The runWrapperAncestry() generates list \code{list}
-#' TODO update the description
-#'
 #'
 #' @references
 #'

@@ -116,7 +116,7 @@ The main steps are:
 
 **Step 1.** Set-up and provide population reference files
 
-**Step 2** Sample the reference data for donor genotypes, to be used for synthesis and optimize ancestry inference parameters
+**Step 2** Sample the reference data for donor genotypes to be used for synthesis and optimize ancestry inference parameters
 
 **Step 3** Infer ancestry for the subjects of the external study
 
@@ -238,6 +238,9 @@ file.copy(fileAnnotGDS, file.path(pathWorkingDirectoryData, "refGDS"))
 
 ### 2.1 Set-up required directories
 
+All required directories need to be created. In addition, the path to 
+the reference files are kept in variables that will be used later.
+
 ```{r installRaids, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
 #############################################################################
@@ -295,22 +298,20 @@ dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
 
 ```
 
-The output object is going to be used later at the ancestry inference step.
+The output object is going to be used later.
 
 <br>
 
 ### 2.3 Perform the ancestry inference
 
-Within a single function call, data synthesis is performed, the synthetic 
+Ancestry inference can be done in one function call. Within a single function 
+call, data synthesis is performed, the synthetic 
 data are used to optimize the inference parameters and, with these, the 
 ancestry of the input profile donor is inferred.
 
 According to the type of input data (RNA or DNA), a specific function 
-is available. The *inferAncestry()* function is used for DNA profiles while 
+should be called. The *inferAncestry()* function is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
-
-In this example, the profile is from DNA source and requires the use of the 
-*inferAncestry()* function.
 
 The *inferAncestry()* function requires a specific profile input format. The 
 format is set by the *genoSource* parameter. 
@@ -336,6 +337,9 @@ The format is coma separated and the mandatory columns are:
 Beware that the starting position in the **population reference GDS file** is 
 zero (like BED files). The generic SNP file should also start 
 at position zero.
+
+In this example, the profile is from DNA source and requires the use of the 
+*inferAncestry()* function.
 
 
 ```{r infere, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}

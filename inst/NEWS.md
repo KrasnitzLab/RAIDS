@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.3.3
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o More comprehensive vignette
+
 CHANGES IN VERSION 1.3.2
 ------------------------
 

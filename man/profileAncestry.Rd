@@ -221,10 +221,6 @@ call on a specific profile. First, the function creates the Profile GDS file
 for the specific profile using the information from a RDS Sample
 description file and the Population reference GDS file.
 }
-\details{
-The profileAncestry() generates list \code{list}
-TODO update the description
-}
 \examples{
 
 ## Required library for GDS

@@ -28,7 +28,8 @@ Depends: R (>= 4.2.0),
     SNPRelate,
     stats,
     utils,
-    GENESIS
+    GENESIS,
+    dplyr
 Imports: S4Vectors,
     GenomicRanges,
     ensembldb,

@@ -469,9 +469,12 @@ readSNVVCF <- function(fileName,
 #' @encoding UTF-8
 #' @keywords internal
 extractNucleotide <- function(nucleotide, count, curNucleo) {
+
+    tmp <- which(nucleotide == curNucleo)
     res <- 0
     if(length(tmp) == 1) res <- count[tmp]
     return(res)
+    
 }
 
 

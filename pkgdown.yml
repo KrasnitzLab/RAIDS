@@ -1,8 +1,8 @@
-pandoc: '3.2'
+pandoc: '3.6'
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   Create_Reference_GDS_File: Create_Reference_GDS_File.html
   RAIDS: RAIDS.html
   Wrappers: Wrappers.html
-last_built: 2025-04-10T00:12Z
+last_built: 2025-04-10T01:26Z

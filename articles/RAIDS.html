@@ -122,27 +122,21 @@ January 2023; 83 (1): 49–58. <a href="https://doi.org/10.1158/0008-5472.CAN-22
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Multiple methods have been implemented to infer ancestry from
-germline DNA sequence <span class="citation">(Price et al. 2006;
-Pritchard, Stephens, and Donnelly 2000; Alexander, Novembre, and Lange
-2009)</span>. However, genotyping of DNA from matched normal specimens
-is not part of standard clinical practice and is not performed routinely
-outside academic clinical centers. In sum, matched germline DNA sequence
-is often missing for cancer-derived molecular data. In such cases,
-having the possibility to infer ancestry from tumor-derived data would
-be beneficial.</p>
-<p>The <strong>RAIDS</strong> package implements an inference procedure
-that has been specifically developed to accurately infer genetic
-ancestry from cancer-derived sequences. The current version can handle
-cancer-derived sequences of:</p>
+<p>The <strong>RAIDS</strong> (Robust Ancerstry Inference using Data
+Synthesis) package enables accurate and robust inference of genetic
+ancestry from human molecular data other than whole-genome or
+whole-exome sequences of cancer-free DNA. The current version can handle
+sequences of:</p>
 <ul>
-<li>tumor exomes</li>
+<li>whole genomes</li>
+<li>whole exomes</li>
 <li>targeted gene panels</li>
-<li>RNA</li>
+<li>RNA,</li>
 </ul>
-<p>The <strong>RAIDS</strong> package implements a data synthesis method
-that, for any given cancer-derived sequence profile, enables on the one
-hand, profile-specific inference parameter optimization and on the other
+<p>including those from cancer-derived nucleic acids. The
+<strong>RAIDS</strong> package implements a data synthesis method that,
+for any given molecular profile, enables, on the one hand,
+profile-specific inference parameter optimization and, on the other
 hand, a profile-specific inference accuracy estimate.</p>
 <p><br><br></p>
 </div>
@@ -160,33 +154,32 @@ hand, a profile-specific inference accuracy estimate.</p>
 <p><a name="mains"></a></p>
 </div>
 <div class="section level2">
-<h2 id="main-steps">Main Steps<a class="anchor" aria-label="anchor" href="#main-steps"></a>
+<h2 id="using-raids-step-by-step-explanation">Using RAIDS: step-by-step explanation<a class="anchor" aria-label="anchor" href="#using-raids-step-by-step-explanation"></a>
 </h2>
-<p>This is an overview of the genetic ancestry inference from
-cancer-derived molecular data:</p>
+<p>This is an overview of the RAIDS inferential framework:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v05.png" alt="An overview of the genetic ancestry inference process." width="130%"><p class="caption">
-An overview of the genetic ancestry inference process.
+<img src="MainSteps_v05.png" alt="An overview of the genetic ancestry inference procedure." width="130%"><p class="caption">
+An overview of the genetic ancestry inference procedure.
 </p>
 </div>
 <p>The main steps are:</p>
 <p><strong>Step 1.</strong> Set-up and provide population reference
 files</p>
-<p><strong>Step 2</strong> Sample the reference data for donor genotypes
-to be used for synthesis and optimize ancestry inference parameters</p>
-<p><strong>Step 3</strong> Infer ancestry for the subjects of the
-external study</p>
-<p><strong>Step 4</strong> Present and interpret the results</p>
+<p><strong>Step 2</strong> Sample the reference data for donors whose
+genotypes will be used for synthesis and optimize ancestry inference
+parameters using synthetic data</p>
+<p><strong>Step 3</strong> Infer ancestry</p>
+<p><strong>Step 4</strong> Summarize and visualize the results</p>
 <p>These steps are described in detail in the following.</p>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="step-1--set-up-and-provide-population-reference-files">Step 1. Set-up and provide population reference files<a class="anchor" aria-label="anchor" href="#step-1--set-up-and-provide-population-reference-files"></a>
 </h3>
 <div class="section level4">
-<h4 id="create-a-directory-structure">1.1 Create a directory structure<a class="anchor" aria-label="anchor" href="#create-a-directory-structure"></a>
+<h4 id="create-a-working-directory-structure">1.1 Create a working directory structure<a class="anchor" aria-label="anchor" href="#create-a-working-directory-structure"></a>
 </h4>
-<p>First, a specific directory structure should be created. The
-structure must correspond to this:</p>
+<p>First, the following working directory structure should be
+created:</p>
 <pre><code><span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Working directory structure</span></span>
@@ -196,7 +189,7 @@ structure must correspond to this:</p>
 <span>        <span class="va">refGDS</span>  </span>
 <span>        <span class="va">profileGDS</span> </span></code></pre>
 <p><br></p>
-<p>This following code creates a temporary working directory structure
+<p>The following code creates a temporary working directory structure
 where the example will be run.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -217,10 +210,11 @@ where the example will be run.</p>
 <div class="section level4">
 <h4 id="download-the-population-reference-files">1.2 Download the population reference files<a class="anchor" aria-label="anchor" href="#download-the-population-reference-files"></a>
 </h4>
-<p>The population reference files should be downloaded in the
+<p>The population reference files should be downloaded into the
 <em>data/refGDS</em> sub-directory. This following code downloads the
-complete pre-processed files for 1000 Genomes (1KG), in hg38. The size
-of the 1KG GDS file is 15GB.</p>
+complete pre-processed files for 1000 Genomes (1KG), for the hg38 build
+of the human genome, in the GDS format. The size of the 1KG GDS file is
+15GB.</p>
 <pre><code>
 #############################################################################
 ## How to download the pre-processed files for 1000 Genomes (1KG) (15 GB)
@@ -233,14 +227,14 @@ wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
 cd -
 </code></pre>
 <p><br></p>
-<p>For demonstration purpose, a small <strong>population reference GDS
+<p>For illustrative purposes, a small <strong>population reference GDS
 file</strong> (called <em>ex1_good_small_1KG.gds</em>) and a small
 <strong>population reference SNV Annotation GDS file</strong> (called
 <em>ex1_good_small_1KG_Annot.gds</em>) are included in this package.
-Beware that those two files should not be used to run a real ancestry
-inference. The results obtained with those files won’t be reliable.</p>
-<p>In this running example, the demonstration files are copied in the
-required <em>data/refGDS</em> directory.</p>
+Please note that these “mini-reference” files are for illustrative
+purposes only and cannot be used to infer genetic ancestry reliably.</p>
+<p>In this example, the mini-reference files are copied to the
+<em>data/refGDS</em> directory.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -251,8 +245,8 @@ required <em>data/refGDS</em> directory.</p>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The population reference GDS file and SNV Annotation GDS file</span></span>
 <span><span class="co">## need to be located in the same sub-directory.</span></span>
-<span><span class="co">## Note that the population reference GDS file used for this example is a</span></span>
-<span><span class="co">## simplified version and CANNOT be used for any real analysis</span></span>
+<span><span class="co">## Note that the mini-reference GDS file used for this example is</span></span>
+<span><span class="co">## NOT sufficient for reliable inference</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## Path to the demo 1KG GDS file is located in this package</span></span>
 <span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
@@ -272,10 +266,10 @@ required <em>data/refGDS</em> directory.</p>
 <h3 id="step-2-ancestry-inference-with-raids">Step 2 Ancestry inference with RAIDS<a class="anchor" aria-label="anchor" href="#step-2-ancestry-inference-with-raids"></a>
 </h3>
 <div class="section level4">
-<h4 id="set-up-required-directories">2.1 Set-up required directories<a class="anchor" aria-label="anchor" href="#set-up-required-directories"></a>
+<h4 id="set-up-the-required-directories">2.1 Set-up the required directories<a class="anchor" aria-label="anchor" href="#set-up-the-required-directories"></a>
 </h4>
-<p>All required directories need to be created. In addition, the path to
-the reference files are kept in variables that will be used later.</p>
+<p>All required directories are created at this point. In addition, the
+paths to the reference files are stored in variables for later use.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
@@ -301,45 +295,42 @@ the reference files are kept in variables that will be used later.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sample-reference-donor-profiles-from-the-reference-data">2.2 Sample reference donor profiles from the reference data<a class="anchor" aria-label="anchor" href="#sample-reference-donor-profiles-from-the-reference-data"></a>
+<h4 id="sample-the-reference-data-for-donors-whose-genotypes-will-be-used-for-synthesis-and-optimize-ancestry-inference-parameters-using-synthetic-data">2.2 Sample the reference data for donors whose genotypes will be
+used for synthesis and optimize ancestry inference parameters using
+synthetic data<a class="anchor" aria-label="anchor" href="#sample-the-reference-data-for-donors-whose-genotypes-will-be-used-for-synthesis-and-optimize-ancestry-inference-parameters-using-synthetic-data"></a>
 </h4>
 <p>With the 1KG reference, we recommend sampling 30 donor profiles per
-population. For reproducibility, be sure to use the same random-number
-generator seed.</p>
-<p>In the following code, only 2 profiles per population are sampled
-from the demo population GDS file:</p>
+sub-continental population. For reproducibility, be sure to use the same
+random-number generator seed.</p>
+<p>In the following code, only 2 individual profiles per sub-continental
+population are sampled from the demo population GDS file:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="co">## Fix seed to ensure reproducible results</span></span>
+<span><span class="co">## Set up the following random number generator seed to reproduce the expected results</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#############################################################################</span></span>
-<span><span class="co">## Select the profiles from the population reference GDS file for </span></span>
-<span><span class="co">## the synthetic data.</span></span>
-<span><span class="co">## Here we select 2 profiles from the simplified 1KG GDS for each </span></span>
-<span><span class="co">## subcontinental-level.</span></span>
-<span><span class="co">## Normally, we would use 30 profiles for each subcontinental-level.</span></span>
-<span><span class="co">## The 1KG files in this example only have 6 profiles for each </span></span>
-<span><span class="co">## subcontinental-level (for demo purpose only).</span></span>
+<span><span class="co">## Choose the profiles from the population reference GDS file for </span></span>
+<span><span class="co">## data synthesis.</span></span>
+<span><span class="co">## Here we choose 2 profiles perm subcontinental population from the mini 1KG GDS file.</span></span>
+<span><span class="co">## Normally, we would use 30 randomly chosen profiles per subcontinental population.</span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPopForSynthetic.html">select1KGPopForSynthetic</a></span><span class="op">(</span>fileReferenceGDS<span class="op">=</span><span class="va">refGenotype</span>,</span>
 <span>                                        nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span></code></pre></div>
-<p>The output object is going to be used later.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="perform-the-ancestry-inference">2.3 Perform the ancestry inference<a class="anchor" aria-label="anchor" href="#perform-the-ancestry-inference"></a>
+<h4 id="infer-ancestry">2.3 Infer ancestry<a class="anchor" aria-label="anchor" href="#infer-ancestry"></a>
 </h4>
-<p>Ancestry inference can be done in one function call. Within a single
-function call, data synthesis is performed, the synthetic data are used
-to optimize the inference parameters and, with these, the ancestry of
-the input profile donor is inferred.</p>
-<p>According to the type of input data (RNA or DNA), a specific function
-should be called. The <em>inferAncestry()</em> function is used for DNA
-profiles while the <em>inferAncestryGeneAware()</em> function is RNA
-specific.</p>
+<p>Within a single function call, data synthesis is performed, the
+synthetic data are used to optimize the inference parameters and, with
+these, the ancestry is inferred from the input sequence profile.</p>
+<p>According to the type of input data (RNA or DNA sequence), a specific
+function should be called. The <em>inferAncestry()</em> function is used
+for DNA profiles while the <em>inferAncestryGeneAware()</em> function is
+RNA specific.</p>
 <p>The <em>inferAncestry()</em> function requires a specific profile
 input format. The format is set by the <em>genoSource</em>
 parameter.</p>
@@ -350,8 +341,8 @@ with at least those genotype fields: <em>GT</em>, <em>AD</em> and
 genotype of the wild-type homozygous at the selected positions in the
 reference. The VCF file must be gzipped.</p>
 <p>A generic SNP file can replace the VCF file
-(<em>genoSource=c(“generic”)</em>). The format is coma separated and the
-mandatory columns are:</p>
+(<em>genoSource=c(“generic”)</em>). The format is comma separated and
+the mandatory columns are:</p>
 <ul>
 <li>
 <em>Chromosome</em>: The name of the chromosome</li>
@@ -484,7 +475,8 @@ RAIDS performance for the synthtic data.
 </p>
 </div>
 <p>In this specific example, the performances are lower than expected
-with a real profile and a complete reference population file.</p>
+with a realistic sequence profile and a complete reference population
+file.</p>
 <p><br><br></p>
 </div>
 </div>
@@ -634,28 +626,12 @@ in which this document was compiled:</p>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Alexander2009" class="csl-entry">
-Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
-Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
-<em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
-</div>
 <div id="ref-Lowy-Gallego2019a" class="csl-entry">
 Lowy-Gallego, Ernesto, Susan Fairley, Xiangqun Zheng-Bradley, Magali
 Ruffier, Laura Clarke, and Paul Flicek. 2019. <span>“<span class="nocase">Variant calling on the grch38 assembly with the data from
 phase three of the 1000 genomes project [version 2; peer review: 1
 approved, 1 not approved]</span>.”</span> <em>Wellcome Open
 Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126.1" class="external-link">https://doi.org/10.12688/wellcomeopenres.15126.1</a>.
-</div>
-<div id="ref-Price2006" class="csl-entry">
-Price, A. L., N. J. Patterson, R. M. Plenge, M. E. Weinblatt, N. A.
-Shadick, and D. Reich. 2006. <span>“Principal Components Analysis
-Corrects for Stratification in Genome-Wide Association Studies.”</span>
-<em>Nat Genet</em> 38 (8): 904–9. <a href="https://doi.org/10.1038/ng1847" class="external-link">https://doi.org/10.1038/ng1847</a>.
-</div>
-<div id="ref-Pritchard2000" class="csl-entry">
-Pritchard, J. K., M. Stephens, and P. Donnelly. 2000. <span>“Inference
-of Population Structure Using Multilocus Genotype Data.”</span>
-<em>Genetics</em> 155 (2): 945–59. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10835412" class="external-link">https://www.ncbi.nlm.nih.gov/pubmed/10835412</a>.
 </div>
 </div>
 </div>

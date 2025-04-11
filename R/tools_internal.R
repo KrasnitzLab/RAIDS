@@ -603,6 +603,157 @@ processPileupChrBin <- function(chr,
     return(resCur)
 }
 
+#' @title Read a VCF file with the genotypes use for the ancestry call
+#'
+#' @description The function reads VCF file and
+#' returns a data frame
+#' containing the information about the read counts for the SNVs present in
+#' the file.
+#'
+#' @param fileName a \code{character} string representing the name, including
+#' the path, of a BAM file with the index file in the same directory
+#'
+#'
+#' @param paramSNVBAM a \code{data.frame} representing the position to keep
+#'
+#' @param varSelected a \code{data.frame} representing the position to keep
+#'
+#' @param verbose a \code{logical} indicating if messages should be printed
+#' to show how the different steps in the function. Default: \code{FALSE}.
+#'
+#' @return a \code{data.frame} containing at least:
+#' \describe{
+#' \item{Chromosome}{ a \code{numeric} representing the name of
+#' the chromosome}
+#' \item{Position}{ a \code{numeric} representing the position on the
+#' chromosome}
+#' \item{Ref}{ a \code{character} string representing the reference nucleotide}
+#' \item{Alt}{ a \code{character} string representing the alternative
+#' nucleotide}
+#' \item{File1R}{ a \code{numeric} representing the count for
+#' the reference nucleotide}
+#' \item{File1A}{ a \code{numeric} representing the count for the
+#' alternative nucleotide}
+#' \item{count}{ a \code{numeric} representing the total count}
+#' }
+#'
+#' @examples
+#'
+#'
+#' ## Directory where demo SNP-pileup file
+#' dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom Rsamtools BamFile ScanBamParam PileupParam pileup
+#' @importFrom MatrixGenerics rowRanges
+#' @importFrom GenomicRanges seqnames start width
+#' @encoding UTF-8
+#' @keywords internal
+readSNVBAM <- function(fileName,
+                       varSelected,
+                       paramSNVBAM=list(ScanBamParam=NULL,
+                                        PileupParam=NULL,
+                                        yieldSize=5000000),
+                       verbose=FALSE) {
+
+    myBf <- BamFile(fileName, yieldSize=paramSNVBAM$yieldSize)
+    bf <- open(myBf)
+    # temporary before create a parameters class
+    if(is.null(paramSNVBAM$ScanBamParam)){
+        sbp <- ScanBamParam() # which=vcf_granges
+    }
+    if(is.null(paramSNVBAM$ScanBamParam)){
+        pup <- PileupParam(max_depth=5000,
+                           min_base_quality=20,
+                           min_mapq=15,
+                           min_nucleotide_depth=1,
+                           min_minor_allele_depth=0,
+                           distinguish_strands=FALSE,
+                           distinguish_nucleotides=TRUE,
+                           ignore_query_Ns=TRUE,
+                           include_deletions=FALSE,
+                           include_insertions=FALSE)
+    }
+
+
+
+    i<-1
+    res <- list()
+    vcfChr <- list()
+    k<-0
+
+    repeat {
+        tmpTime <- system.time(resPileup <- pileup(bf,
+                                                   pileupParam = pup,
+                                                   ScanBamParam=sbp))
+        if(verbose) {message("readSNVBAM pileup user ",
+                             round(tmpTime[1],3),
+                             " system ", round(tmpTime[2],3),
+                             " elapsed ", round(tmpTime[3],3))}
+
+        listChr <- unique(as.character(resPileup$seqnames))
+        #print(paste0("nb Chr ", length(listChr)))
+        res[[i]] <- NULL
+        if(length(listChr) > 0 ){
+            if(sum(!(listChr %in% names(varSelected))) == length(listChr)){
+                # message("End chromosome")
+                break
+            }
+            # print(paste0("Current chr ", listChr))
+            tmp <- lapply(listChr,
+                          FUN=function(x, res, varSelected){
+                              return(processPileupChrBin(chr=x, res, varDf=varSelected, verbose=verbose))
+                          },
+                          res=resPileup,
+                          varSelected=varSelected)
+            # print("aye2")
+            if(length(tmp) > 0){
+                res[[i]] <- do.call(rbind, tmp)
+                i <- i + 1
+                #message(nrow(res[[i]]), " rows in result data.frame")
+            }
+            # print("aye3")
+        }
+
+        if(nrow(resPileup) == 0L){
+            k <- k + 1
+            # print(paste0("Break ", k))
+            if(k > 20){
+                break
+            }
+        }else{
+            k <- 0
+            # i <- i + 1
+        }
+
+    }
+
+    resSNP <- do.call(rbind,res)
+    close(bf)
+
+
+    resSNP <- do.call(rbind, lapply(seq_len(nrow(resSNP)),
+                                    FUN=function(x, resSNP){
+
+                                        df <- data.frame(Chromosome=resSNP[x, "seqnames"],
+                                                         Position=resSNP[x, "pos"],
+                                                         Ref=resSNP[x, "REF"],
+                                                         Alt=resSNP[x, "ALT"],
+                                                         File1R=resSNP[x, resSNP[x, "REF"]],
+                                                         File1A=resSNP[x, resSNP[x, "ALT"]],
+                                                         count=resSNP[x, "count"],
+                                                         A=resSNP[x, "A"],
+                                                         C=resSNP[x, "C"],
+                                                         G=resSNP[x, "G"],
+                                                         T=resSNP[x, "T"],
+                                                         stringsAsFactors = FALSE)
+                                        return(df)
+                                    },
+                                    resSNP=resSNP))
+
+    return(resSNP)
+}
 
 
 

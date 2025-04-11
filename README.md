@@ -5,7 +5,7 @@
 <!-- badges: end -->
 
 
-# Accurate genetic ancestry inference from cancer-derived molecular data with **RAIDS** #
+# Robust genetic ancestry inference from challenging molecular data with **RAIDS** #
 
 The Robust Ancestry Inference using Data Synthesis (**RAIDS**) package 
 enables accurate and robust inference of genetic 

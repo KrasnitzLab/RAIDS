@@ -1,6 +1,3 @@
-
-
-
 #' @title Validate that the input parameter is a GDS object
 #'
 #' @description This function validates that the input parameter inherits
@@ -439,39 +436,45 @@ readSNVVCF <- function(fileName,
     return(matSample)
 }
 
-#' @title Read a VCF file with the genotypes use for the ancestry call
+#' @title Filtering the read counts for a specific nucleotide
 #'
-#' @description The function reads VCF file and
-#' returns a data frame
-#' containing the information about the read counts for the SNVs present in
-#' the file.
+#' @description The function returns the read counts for the specific 
+#' nucleotide or zero when read counts are not available.
 #'
-#' @param nucleotide a \code{vector} of  a \code{character} string representing A, C, G or T
+#' @param nucleotide a \code{vector} of  a \code{character} strings 
+#' representing the nucleotides (ex: A, C, G or T).
 #'
 #'
-#' @param count a \code{vector} of \code{numeric} with count for the nucleotide
+#' @param count a \code{vector} of \code{numeric} representing the counts for 
+#' each nucleotide listed in \code{nucleotide} parameter. 
 #'
-#' @param curNucleoa \code{character} string representing A, C, G or T
+#' @param curNucleo a \code{character} strings representing the nucleotide 
+#' that will be retained (ex: A, C, G or T).
 #'
-#' @return a \code{numeric}
+#' @return a \code{numeric} representing the counts for the selected 
+#' nucleotide. The default value is \code{0}.
 #'
 #' @examples
 #'
+#' ## Nucleotides vector
+#' nuc <- c("A", "G", "C", "T")
+#' 
+#' ## Count vector
+#' cnt <- c(100, 200, 4, 32)
 #'
-#' ## Directory where demo SNP-pileup file
-#' dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
-#'
-#'
+#' ## Return the count for the nucleotide "G"
+#' RAIDS:::extractNucleotide(nucleotide=nuc, count=cnt, curNucleo="G")
+#' 
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @encoding UTF-8
 #' @keywords internal
-extractNucleotide <- function(nucleotide,
-                              count,
-                              curNucleo) {
+extractNucleotide <- function(nucleotide, count, curNucleo) {
+
     tmp <- which(nucleotide == curNucleo)
-    res<-0
+    res <- 0
     if(length(tmp) == 1) res <- count[tmp]
     return(res)
+    
 }
 
 

@@ -142,3 +142,31 @@ test_that("validatePositiveIntegerVector() must return expected results when all
     expect_identical(result1, 0L)
 })
 
+
+#############################################################################
+### Tests extractNucleotide() results
+#############################################################################
+
+context("extractNucleotide() results")
+
+
+test_that("extractNucleotide() must return expected results when all input are valid", {
+    
+    nuc <- c("A", "G", "C", "T")
+    cnt <- c(100, 200, 4, 32)
+    result1 <- RAIDS:::extractNucleotide(nucleotide=nuc, count=cnt, 
+                                                curNucleo="C")
+    
+    expect_identical(result1, 4)
+})
+
+
+test_that("extractNucleotide() must return expected results when nucleotide not present in the input", {
+    
+    nuc <- c("A", "G",  "T")
+    cnt <- c(100, 200, 32)
+    result1 <- RAIDS:::extractNucleotide(nucleotide=nuc, count=cnt, 
+                                         curNucleo="C")
+    
+    expect_identical(result1, 0)
+})

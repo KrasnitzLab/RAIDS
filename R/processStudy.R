@@ -2331,7 +2331,7 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 inferAncestry <- function(profileFile, pathProfileGDS,
                     fileReferenceGDS, fileReferenceAnnotGDS,
                     chrInfo, syntheticRefDF,
-                    genoSource=c("snp-pileup", "generic", "VCF", "bam"), 
+                    genoSource=c("snp-pileup", "generic", "VCF", "bam"),
                     np=1L, verbose=FALSE) {
 
     profileBaseName <- basename(profileFile)
@@ -2341,16 +2341,16 @@ inferAncestry <- function(profileFile, pathProfileGDS,
 
     ## BAM format is not yet implemented
     if (genoSource == "bam") {
-        stop("The bam is not release yet look to get a \'Devel\' version ", 
+        stop("The bam is not release yet look to get a \'Devel\' version ",
                 "or contact us")
     }
-    
+
     ## Extract the name of the profile(s)
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case=TRUE)
     for (extCur in c( "\\.vcf$", "\\.txt$", "\\.bam", "\\.tsv", "\\.csv")) {
         profileName <- gsub(extCur, "", profileName, ignore.case = TRUE)
     }
-    
+
     ## Create required data frames
     studyDF <- data.frame(study.id="NotDef", study.desc="NotDef",
                             study.platform="NotDef", stringsAsFactors=FALSE)
@@ -2375,7 +2375,7 @@ inferAncestry <- function(profileFile, pathProfileGDS,
     }else{
         stop(paste0("The format ", genoSource," is not implemented yet\n"))
     }
-    
+
     ## Successful
     return(r)
 }
@@ -2730,7 +2730,7 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' \item{\code{L}}{ a \code{numeric} representing the lower value of the 95%
 #' confidence interval for the AUROC obtained for the fixed values of
 #' super-population, \code{D} and \code{K}.}
-#' \item{\code{AUROC}}{ a \code{numeric} representing  the AUROC obtained for 
+#' \item{\code{AUROC}}{ a \code{numeric} representing  the AUROC obtained for
 #' the fixed values of super-population, \code{D} and \code{K}.}
 #' \item{\code{H}}{ a \code{numeric} representing the higher value of the 95%
 #' confidence interval for the AUROC obtained for the fixed values of
@@ -2746,8 +2746,8 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' \code{D} is possible.}
 #' }
 #' }
-#' \item{\code{KNNSample}}{  a \code{data.frame} containing the inferred 
-#' ancestry for different values of \code{K} and \code{D}. The 
+#' \item{\code{KNNSample}}{  a \code{data.frame} containing the inferred
+#' ancestry for different values of \code{K} and \code{D}. The
 #' \code{data.frame} contains those columns:
 #' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
@@ -2760,11 +2760,11 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' ancestry for the specified \code{D} and \code{K} values.}
 #' }
 #' }
-#' \item{\code{KNNSynthetic}}{  a \code{data.frame} containing the inferred 
-#' ancestry for each synthetic data for different values of \code{K} and 
+#' \item{\code{KNNSynthetic}}{  a \code{data.frame} containing the inferred
+#' ancestry for each synthetic data for different values of \code{K} and
 #' \code{D}.
 #' The \code{data.frame}
-#' contains those columns: 
+#' contains those columns:
 #' \describe{
 #' \item{\code{sample.id}}{ a \code{character} string representing the unique
 #' identifier of the current synthetic data.}
@@ -2772,7 +2772,7 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' number of dimensions) used to infer the ancestry. }
 #' \item{\code{K}}{ a \code{numeric} representing the value of \code{K} (the
 #' number of neighbors) used to infer the ancestry. }
-#' \item{\code{infer.superPop}}{ a \code{character} string representing the 
+#' \item{\code{infer.superPop}}{ a \code{character} string representing the
 #' inferred ancestry for the specified \code{D} and \code{K} values.}
 #' \item{\code{ref.superPop}}{ a \code{character} string representing the known
 #' ancestry from the reference}
@@ -2899,7 +2899,7 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
     genoSource <- arg_match(genoSource)
 
     if(genoSource == "bam"){
-        stop("The bam is not release yet look to get a \'Devel\' version ", 
+        stop("The bam is not release yet look to get a \'Devel\' version ",
                 "or contact us")
     }
 

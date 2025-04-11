@@ -170,3 +170,20 @@ test_that("extractNucleotide() must return expected results when nucleotide not 
     
     expect_identical(result1, 0)
 })
+
+
+#############################################################################
+### Tests processPileupChrBin() results
+#############################################################################
+
+context("processPileupChrBin() results")
+
+
+test_that("processPileupChrBin() must return NULL when chromosome absent", {
+    
+    varDf <- c("chr1"=c(1,2,3), "chr2"=c(1,3,5))
+    result1 <- RAIDS:::processPileupChrBin(chr="chr3", resPileup=NULL, 
+                            varDf=varDf, verbose=FALSE)
+    
+    expect_identical(result1, NULL)
+})

@@ -5,7 +5,7 @@
 \alias{processPileupChrBin}
 \title{Read a VCF file with the genotypes use for the ancestry call}
 \usage{
-processPileupChrBin(chr, resPileup, varDf, verbose = FALSE)
+processPileupChrBin(chr, resPileup, varDf, verbose)
 }
 \arguments{
 \item{chr}{a \code{character} string representing the name, including
@@ -14,37 +14,30 @@ The VCF must contain those genotype fields: GT, AD, DP.}
 
 \item{resPileup}{result from pileup}
 
-\item{varDf}{a \code{data.frame} representing the position to keep}
+\item{varDf}{a \code{data.frame} representing the positions to keep}
 
-\item{verbose}{a \code{logical} indicating if messages should be printed
-to show how the different steps in the function. Default: \code{FALSE}.}
+\item{verbose}{a \code{logical} indicating if messages should be printed}
 }
 \value{
 a \code{data.frame} containing at least:
 \describe{
-\item{seqnames}{ a  \code{character} representing the name of
-the chromosome}
-\item{pos}{ a \code{numeric} representing the position on the
-chromosome}
+\item{seqnames}{ a \code{character} representing the name of the chromosome}
+\item{pos}{ a \code{numeric} representing the position on the chromosome}
 \item{REF}{ a \code{character} string representing the reference nucleotide}
 \item{ALT}{ a \code{character} string representing the alternative
 nucleotide}
-\item{A}{ a \code{numeric} representing the count for
-the A nucleotide}
-\item{C}{ a \code{numeric} representing the count for
-the C nucleotide}
-\item{G}{ a \code{numeric} representing the count for
-the G nucleotide}
-\item{T}{ a \code{numeric} representing the count for
-the T nucleotide}
+\item{A}{ a \code{numeric} representing the count for the A nucleotide}
+\item{C}{ a \code{numeric} representing the count for the C nucleotide}
+\item{G}{ a \code{numeric} representing the count for the G nucleotide}
+\item{T}{ a \code{numeric} representing the count for the T nucleotide}
 \item{count}{ a \code{numeric} representing the total count}
 }
 }
 \description{
 The function reads VCF file and
-returns a data frame
+returns a \code{data.frame}
 containing the information about the read counts for the SNVs present in
-the file.
+the VCF.
 }
 \examples{
 

@@ -29,7 +29,8 @@ Depends: R (>= 4.2.0),
     stats,
     utils,
     GENESIS,
-    dplyr
+    dplyr,
+    Rsamtools
 Imports: S4Vectors,
     GenomicRanges,
     ensembldb,

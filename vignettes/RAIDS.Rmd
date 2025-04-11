@@ -58,27 +58,17 @@ the following:
 
 # Introduction
 
-Multiple methods have been implemented to infer ancestry from germline DNA 
-sequence [@Price2006; @Pritchard2000; @Alexander2009]. However, genotyping of 
-DNA from matched normal specimens is not part of standard clinical practice
-and is not performed routinely outside academic clinical centers. 
-In sum, matched germline DNA sequence is often missing for cancer-derived 
-molecular data. In such cases, having the possibility to infer ancestry 
-from tumor-derived data would be beneficial.
-
-The **RAIDS** package implements an inference procedure that has been
-specifically developed to accurately infer genetic ancestry from 
-cancer-derived sequences. The current version can handle cancer-derived 
+The **RAIDS** (Robust Ancerstry Inference using Data Synthesis) package enables accurate and robust inference of genetic ancestry from human molecular data other than whole-genome or whole-exome sequences of cancer-free DNA. The current version can handle
 sequences of:
 
-* tumor exomes
+* whole genomes
+* whole exomes
 * targeted gene panels 
-* RNA
+* RNA,
 
-The **RAIDS** package implements a data synthesis method that, for any given
-cancer-derived sequence profile, enables 
-on the one hand, profile-specific inference
-parameter optimization and on the other hand, a profile-specific inference
+including those from cancer-derived nucleic acids. The **RAIDS** package implements a data synthesis method that, for any given
+molecular profile, enables, on the one hand, profile-specific inference
+parameter optimization and, on the other hand, a profile-specific inference
 accuracy estimate.
 
 <br>
@@ -103,12 +93,11 @@ BiocManager::install("RAIDS")
 
 <a name="mains"></a>
 
-# Main Steps
+# Using RAIDS: step-by-step explanation
 
-This is an overview of the genetic ancestry inference from cancer-derived 
-molecular data:
+This is an overview of the RAIDS inferential framework:
 
-```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference process.", out.width='130%', results='asis', warning=FALSE, message=FALSE}
+```{r graphMainSteps, echo=FALSE, fig.align="center", fig.cap="An overview of the genetic ancestry inference procedure.", out.width='130%', results='asis', warning=FALSE, message=FALSE}
 knitr::include_graphics("MainSteps_v05.png")
 ```
 
@@ -116,11 +105,11 @@ The main steps are:
 
 **Step 1.** Set-up and provide population reference files
 
-**Step 2** Sample the reference data for donor genotypes to be used for synthesis and optimize ancestry inference parameters
+**Step 2** Sample the reference data for donors whose genotypes will be used for synthesis and optimize ancestry inference parameters using synthetic data
 
-**Step 3** Infer ancestry for the subjects of the external study
+**Step 3** Infer ancestry
 
-**Step 4** Present and interpret the results
+**Step 4** Summarize and visualize the results
 
 These steps are described in detail in the following. 
 
@@ -131,10 +120,9 @@ These steps are described in detail in the following.
 ## Step 1. Set-up and provide population reference files
 
 
-### 1.1 Create a directory structure
+### 1.1 Create a working directory structure
 
-First, a specific directory structure should be created. The structure must 
-correspond to this:
+First, the following working directory structure should be created:
 
 ```
 
@@ -150,7 +138,7 @@ workingDirectory/
 
 <br>
 
-This following code creates a temporary working directory structure where the 
+The following code creates a temporary working directory structure where the 
 example will be run. 
 
 
@@ -176,9 +164,9 @@ if (!dir.exists(pathWorkingDirectory)) {
 ### 1.2 Download the population reference files
 
 
-The population reference files should be downloaded in the *data/refGDS* 
+The population reference files should be downloaded into the *data/refGDS* 
 sub-directory. This following code downloads the complete pre-processed files 
-for 1000 Genomes (1KG), in hg38. The size of the 1KG GDS file is 15GB. 
+for 1000 Genomes (1KG), for the hg38 build of the human genome, in the GDS format. The size of the 1KG GDS file is 15GB. 
 
 ```
 
@@ -196,15 +184,13 @@ cd -
 
 <br>
 
-For demonstration purpose, a small 
+For illustrative purposes, a small 
 **population reference GDS file** (called _ex1_good_small_1KG.gds_) and a small 
 **population reference SNV Annotation GDS file** (called 
 _ex1_good_small_1KG_Annot.gds_) are 
-included in this package. Beware that those two files should not be used to 
-run a real ancestry inference. The results obtained with those files won't be 
-reliable.
+included in this package. Please note that these "mini-reference" files are for illustrative purposes only and cannot be used to infer genetic ancestry reliably.
 
-In this running example, the demonstration files are copied in the required 
+In this example, the mini-reference files are copied to the 
 *data/refGDS* directory.
 
 ```{r copyRefFile, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
@@ -217,8 +203,8 @@ library(RAIDS)
 #############################################################################
 ## The population reference GDS file and SNV Annotation GDS file
 ## need to be located in the same sub-directory.
-## Note that the population reference GDS file used for this example is a
-## simplified version and CANNOT be used for any real analysis
+## Note that the mini-reference GDS file used for this example is
+## NOT sufficient for reliable inference
 #############################################################################
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
@@ -236,10 +222,10 @@ file.copy(fileAnnotGDS, file.path(pathWorkingDirectoryData, "refGDS"))
 
 ## Step 2 Ancestry inference with RAIDS
 
-### 2.1 Set-up required directories
+### 2.1 Set-up the required directories
 
-All required directories need to be created. In addition, the path to 
-the reference files are kept in variables that will be used later.
+All required directories are created at this point. In addition, the paths to 
+the reference files are stored in variables for later use.
 
 ```{r installRaids, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
@@ -269,47 +255,46 @@ if (!dir.exists(pathProfileGDS)) {
 
 <br>
 
-### 2.2 Sample reference donor profiles from the reference data
+### 2.2 Sample the reference data for donors whose genotypes will be used for synthesis and optimize ancestry inference parameters using synthetic data
 
-With the 1KG reference, we recommend sampling 30 donor profiles per population. 
+With the 1KG reference, we recommend sampling 30 donor profiles per 
+sub-continental population. 
 For reproducibility, be sure to use the same random-number generator seed.
 
-In the following code, only 2 profiles per population are sampled from the 
+In the following code, only 2 individual profiles per 
+sub-continental population are sampled from the 
 demo population GDS file:
 
 ```{r sampling, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
 #############################################################################
-## Fix seed to ensure reproducible results
+## Set up the following random number generator seed to reproduce the expected results
 #############################################################################
 set.seed(3043)
 
 #############################################################################
-## Select the profiles from the population reference GDS file for 
-## the synthetic data.
-## Here we select 2 profiles from the simplified 1KG GDS for each 
-## subcontinental-level.
-## Normally, we would use 30 profiles for each subcontinental-level.
-## The 1KG files in this example only have 6 profiles for each 
-## subcontinental-level (for demo purpose only).
+## Choose the profiles from the population reference GDS file for 
+## data synthesis.
+## Here we choose 2 profiles perm subcontinental population from the mini 1KG GDS file.
+## Normally, we would use 30 randomly chosen profiles per subcontinental population.
 #############################################################################
 dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
                                         nbProfiles=2L)
 
 ```
 
-The output object is going to be used later.
+
 
 <br>
 
-### 2.3 Perform the ancestry inference
+### 2.3 Infer ancestry
 
-Ancestry inference can be done in one function call. Within a single function 
+Within a single function 
 call, data synthesis is performed, the synthetic 
 data are used to optimize the inference parameters and, with these, the 
-ancestry of the input profile donor is inferred.
+ancestry is inferred from the input sequence profile.
 
-According to the type of input data (RNA or DNA), a specific function 
+According to the type of input data (RNA or DNA sequence), a specific function 
 should be called. The *inferAncestry()* function is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
 
@@ -324,7 +309,7 @@ wild-type homozygous at the selected positions in the reference. The VCF file
 must be gzipped.
 
 A generic SNP file can replace the VCF file (*genoSource=c("generic")*). 
-The format is coma separated and the mandatory columns are:
+The format is comma separated and the mandatory columns are:
 
 * _Chromosome_: The name of the chromosome
 * _Position_: The position on the chromosome
@@ -459,7 +444,7 @@ createAUROCGraph(dfAUROC=resOut$paraSample$dfAUROC, title="Example ex1")
 ```
 
 In this specific example, the performances are lower than expected 
-with a real profile and a complete reference population file.
+with a realistic sequence profile and a complete reference population file.
 
 <br>
 <br>

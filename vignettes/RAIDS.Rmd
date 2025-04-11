@@ -1,5 +1,5 @@
 ---
-title: "Accurate Inference of Genetic Ancestry from Cancer-derived Sequences"
+title: "Robust Ancestry Inference using Data Synthesis"
 author: Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 output:
     BiocStyle::html_document:
@@ -12,7 +12,7 @@ urlcolor: darkred
 linkcolor: darkred
 bibliography: aicsBiblio.bibtex
 vignette: >
-    %\VignetteIndexEntry{Accurate Inference of Genetic Ancestry from Cancer-derived Sequences}
+    %\VignetteIndexEntry{Robust Ancestry Inference using Data Synthesis}
     %\VignettePackage{RAIDS}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}

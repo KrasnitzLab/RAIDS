@@ -1,6 +1,6 @@
 Package: RAIDS
 Type: Package
-Title: Accurate Inference of Genetic Ancestry from Cancer Sequences
+Title: Robust Ancestry Inference using Data Synthesis
 Description: This package implements specialized algorithms that enable
     genetic ancestry inference from various cancer sequences sources (RNA,
     Exome and Whole-Genome sequences). This package also implements a
@@ -28,7 +28,9 @@ Depends: R (>= 4.2.0),
     SNPRelate,
     stats,
     utils,
-    GENESIS
+    GENESIS,
+    dplyr,
+    Rsamtools
 Imports: S4Vectors,
     GenomicRanges,
     ensembldb,

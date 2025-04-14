@@ -117,7 +117,7 @@ These steps are described in detail in the following.
 <br>
 
 
-## Step 1. Set-up and provide population reference files
+## Step 1. Set-up working directory and provide population reference files
 
 
 ### 1.1 Create a working directory structure
@@ -146,6 +146,7 @@ example will be run.
 
 #############################################################################
 ## Create a temporary working directory structure
+##    using the tempdir() function
 #############################################################################
 pathWorkingDirectory <- file.path(tempdir(), "workingDirectory")
 pathWorkingDirectoryData <- file.path(pathWorkingDirectory, "data")
@@ -166,7 +167,8 @@ if (!dir.exists(pathWorkingDirectory)) {
 
 The population reference files should be downloaded into the *data/refGDS* 
 sub-directory. This following code downloads the complete pre-processed files 
-for 1000 Genomes (1KG), for the hg38 build of the human genome, in the GDS format. The size of the 1KG GDS file is 15GB. 
+for 1000 Genomes (1KG), for the hg38 build of the human genome, in the GDS 
+format. The size of the 1KG GDS file is 15GB. 
 
 ```
 
@@ -202,9 +204,9 @@ library(RAIDS)
 
 #############################################################################
 ## The population reference GDS file and SNV Annotation GDS file
-## need to be located in the same sub-directory.
+##    need to be located in the same sub-directory.
 ## Note that the mini-reference GDS file used for this example is
-## NOT sufficient for reliable inference
+##    NOT sufficient for reliable inference.
 #############################################################################
 ## Path to the demo 1KG GDS file is located in this package
 dataDir <- system.file("extdata", package="RAIDS")
@@ -265,18 +267,21 @@ In the following code, only 2 individual profiles per
 sub-continental population are sampled from the 
 demo population GDS file:
 
-```{r sampling, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
+```{r samplingProfiles, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
 #############################################################################
-## Set up the following random number generator seed to reproduce the expected results
+## Set up the following random number generator seed to reproduce  
+##    the expected results
 #############################################################################
 set.seed(3043)
 
 #############################################################################
 ## Choose the profiles from the population reference GDS file for 
-## data synthesis.
-## Here we choose 2 profiles perm subcontinental population from the mini 1KG GDS file.
-## Normally, we would use 30 randomly chosen profiles per subcontinental population.
+##   data synthesis.
+## Here we choose 2 profiles per subcontinental population 
+##   from the mini 1KG GDS file.
+## Normally, we would use 30 randomly chosen profiles per 
+##   subcontinental population.
 #############################################################################
 dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
                                         nbProfiles=2L)
@@ -284,13 +289,11 @@ dataRef <- select1KGPopForSynthetic(fileReferenceGDS=refGenotype,
 ```
 
 
-
 <br>
 
 ### 2.3 Infer ancestry
 
-Within a single function 
-call, data synthesis is performed, the synthetic 
+Within a single function call, data synthesis is performed, the synthetic 
 data are used to optimize the inference parameters and, with these, the 
 ancestry is inferred from the input sequence profile.
 

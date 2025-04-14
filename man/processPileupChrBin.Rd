@@ -43,10 +43,10 @@ the selected chromosome.
 \examples{
 
 ## Demo pileup result data.frame
-resDemo <- data.frame(seqnames=rep("chr14", 10), 
-    pos=c(19069583, 19069584, 19069586, 19069588, 19069589, 19069590, 
-            19069591, 19069592, 19069609, 19069760), 
-    strand=c(rep("+", 5), rep("-", 5)), 
+resDemo <- data.frame(seqnames=rep("chr14", 10),
+    pos=c(19069583, 19069584, 19069586, 19069588, 19069589, 19069590,
+            19069591, 19069592, 19069609, 19069760),
+    strand=c(rep("+", 5), rep("-", 5)),
     nucleotide=c("T", "G", "G", "C", "A", "A", "C", "T", "T", "G"),
     count=c(5, 3, 2, 4, 1, 2, 1, 8, 7, 4))
 resDemo$seqnames <- factor(resDemo$seqnames)
@@ -54,7 +54,7 @@ resDemo$strand <- factor(resDemo$strand)
 resDemo$nucleotide <- factor(resDemo$nucleotide)
 
 ## Position to keep in a data.frame format
-varInfo <- list("chr14"=data.frame(chr=c("chr14", "chr14"), 
+varInfo <- list("chr14"=data.frame(chr=c("chr14", "chr14"),
     start=c(19069584, 19069609), REF=c("A", "G"), ALT=c("T", "A")))
 
 ## Extract information from pileup for selected positions

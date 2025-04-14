@@ -691,7 +691,7 @@ generateProfileGDS <- function(profileFile, profileName,
     # }
 
 
-    g <- as.matrix(rep(-1, nrow(listPos)))
+
 
     # for(i in seq_len(length(listSamples))) {
     #pos <- which(listSampleFile == listSamples[i])
@@ -710,13 +710,15 @@ generateProfileGDS <- function(profileFile, profileName,
         matSample <- readSNVVCF(profileFile,
                                 profileName=profileName, offset)
     } else if(genoSource == "bam"){
-        listPos$start <- listPos$start - offset
+
         matSample <- readSNVBAM(fileName=profileFile,
                                 varSelected=listPos,
                                 paramSNVBAM=paramProfileGDS,
+                                offset,
                                 verbose=verbose)
-        listPos$start <- listPos$start + offset
+        listPos <- do.call(rbind, listPos)
         colnames(listPos)[1:2] <- c("snp.chromosome", "snp.position")
+
     }
     # matAll <- merge(matSample[,c( "Chromosome", "Position",
     #                               "File1R",  "File1A",
@@ -729,6 +731,8 @@ generateProfileGDS <- function(profileFile, profileName,
     #
     # below same as the merge above but faster
 
+    if(verbose) {message("End read ", Sys.time())}
+    g <- as.matrix(rep(-1, nrow(listPos)))
     z <- cbind(c(listPos$snp.chromosome, matSample$Chromosome,
                  matSample$Chromosome),
                c(listPos$snp.position, matSample$Position,

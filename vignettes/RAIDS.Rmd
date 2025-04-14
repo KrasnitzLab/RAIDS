@@ -305,8 +305,8 @@ The *inferAncestry()* function requires a specific profile input format. The
 format is set by the *genoSource* parameter. 
 
 One of those formats is in a VCF format (*genoSource=c("VCF")*). 
-This format follows the VCF standard 
-with at least those genotype fields: _GT_, _AD_ and _DP_. 
+This format follows the VCF standard with at least those genotype 
+fields: _GT_, _AD_ and _DP_. 
 The SNVs  must be germline variants and should include the genotype of the 
 wild-type homozygous at the selected positions in the reference. The VCF file 
 must be gzipped.

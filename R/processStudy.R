@@ -2369,7 +2369,7 @@ inferAncestry <- function(profileFile, pathProfileGDS,
     ## Run ancestry inference
     if (genoSource %in% c("snp-pileup", "generic", "VCF")) {
         r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-                pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
+                profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
                 chrInfo, syntheticRefDF, genoSource, studyType="LD", np=np,
                 verbose)
     }else{
@@ -2931,7 +2931,7 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
     if(genoSource %in% c("snp-pileup", "generic", "VCF")){
 
         r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
-            pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
+            profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
             chrInfo, syntheticRefDF, genoSource, studyType="GeneAware", np=np,
             blockTypeID=blockTypeID, verbose)
     }else{

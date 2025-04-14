@@ -18,7 +18,7 @@ the path, of a BAM file with the index file in the same directory}
 
 \item{varSelected}{a \code{data.frame} representing the position to keep}
 
-\item{paramSNVBAM}{a \code{data.frame} representing the position to keep}
+\item{paramSNVBAM}{a \code{data.frame} representing}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}

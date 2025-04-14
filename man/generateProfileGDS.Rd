@@ -19,6 +19,7 @@ generateProfileGDS(
   studyDF,
   pathProfileGDS,
   genoSource,
+  paramProfileGDS,
   verbose
 )
 }
@@ -76,6 +77,8 @@ The 'Count' is the depth at the specified position;
 'File1A' is the depth of the specific alternative allele.
 Finally the file can be a VCF file with at least those genotype
 fields: GT, AD, DP.}
+
+\item{paramProfileGDS}{a \code{list} parameters ...}
 
 \item{verbose}{a \code{logical} indicating if the function must print
 messages when running.}

@@ -103,7 +103,7 @@ knitr::include_graphics("MainSteps_v05.png")
 
 The main steps are:
 
-**Step 1.** Set-up and provide population reference files
+**Step 1.** Set-up working directory and provide population reference files
 
 **Step 2** Sample the reference data for donors whose genotypes will be used for synthesis and optimize ancestry inference parameters using synthetic data
 

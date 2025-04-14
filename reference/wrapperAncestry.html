@@ -76,7 +76,7 @@ description file and the Population reference GDS file.</p>
 <span>  <span class="va">pedStudy</span>,</span>
 <span>  <span class="va">studyDF</span>,</span>
 <span>  <span class="va">pathProfileGDS</span>,</span>
-<span>  <span class="va">pathGeno</span>,</span>
+<span>  <span class="va">profileFile</span>,</span>
 <span>  <span class="va">fileReferenceGDS</span>,</span>
 <span>  <span class="va">fileReferenceAnnotGDS</span>,</span>
 <span>  <span class="va">chrInfo</span>,</span>
@@ -85,6 +85,7 @@ description file and the Population reference GDS file.</p>
 <span>  studyType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LD"</span>, <span class="st">"GeneAware"</span><span class="op">)</span>,</span>
 <span>  np <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  blockTypeID <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paramAncestry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ScanBamParam <span class="op">=</span> <span class="cn">NULL</span>, PileupParam <span class="op">=</span> <span class="cn">NULL</span>, yieldSize <span class="op">=</span> <span class="fl">5e+06</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -113,17 +114,6 @@ must be in <code>character</code> strings (no factor).</p></dd>
 <dd><p>a <code>character</code> string representing the path to
 the directory where the GDS Profile files will be created.
 Default: <code>NULL</code>.</p></dd>
-
-
-<dt id="arg-pathgeno">pathGeno<a class="anchor" aria-label="anchor" href="#arg-pathgeno"></a></dt>
-<dd><p>a <code>character</code> string representing the path to the
-directory containing the VCF output of SNP-pileup for each sample. The
-SNP-pileup files must be compressed (gz files) and have the name identifiers
-of the samples. A sample with "Name.ID" identifier would have an
-associated file called
-if genoSource is "VCF", then "Name.ID.vcf.gz",
-if genoSource is "generic", then "Name.ID.generic.txt.gz"
-if genoSource is "snp-pileup", then "Name.ID.txt.gz".</p></dd>
 
 
 <dt id="arg-filereferencegds">fileReferenceGDS<a class="anchor" aria-label="anchor" href="#arg-filereferencegds"></a></dt>
@@ -190,9 +180,24 @@ type used to extract the block identifiers. The block type must be
 present in the GDS Reference Annotation file.</p></dd>
 
 
+<dt id="arg-paramancestry">paramAncestry<a class="anchor" aria-label="anchor" href="#arg-paramancestry"></a></dt>
+<dd><p>a <code>list</code> parameters ...</p></dd>
+
+
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>a <code>logical</code> indicating if messages should be printed
 to show how the different steps in the function. Default: <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-pathgeno">pathGeno<a class="anchor" aria-label="anchor" href="#arg-pathgeno"></a></dt>
+<dd><p>a <code>character</code> string representing the path to the
+directory containing the VCF output of SNP-pileup for each sample. The
+SNP-pileup files must be compressed (gz files) and have the name identifiers
+of the samples. A sample with "Name.ID" identifier would have an
+associated file called
+if genoSource is "VCF", then "Name.ID.vcf.gz",
+if genoSource is "generic", then "Name.ID.generic.txt.gz"
+if genoSource is "snp-pileup", then "Name.ID.txt.gz".</p></dd>
 
 </dl></div>
     <div id="value">

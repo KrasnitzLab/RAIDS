@@ -68,9 +68,11 @@ sequences of:
 
 including those from cancer-derived nucleic acids. The **RAIDS** package implements a 
 data synthesis method that, for any given
-molecular profile, enables, on the one hand, profile-specific inference
+molecular profile of an idividual, enables, on the one hand, profile-specific inference
 parameter optimization and, on the other hand, a profile-specific inference
-accuracy estimate. 
+accuracy estimate. By the molecular profile we mean a table of the individual's 
+germline genotypes at genome positions with sufficient read coverage in the 
+individual's input data, where sequence variants are frequent in the population reference data. 
 
 <br>
 <br>
@@ -302,14 +304,12 @@ According to the type of input data (RNA or DNA sequence), a specific function
 should be called. The *inferAncestry()* function is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
 
-The *inferAncestry()* function requires a specific input format for individual 
-genotyping profiles. The format is set by the *genoSource* parameter. 
+The *inferAncestry()* function requires a specific input format for the individual's 
+genotyping profile as explained in the Introduction. The format is set by the *genoSource* parameter. 
 
 One of the allowed formats is VCF (*genoSource=c("VCF")*), with the following 
 mandatory fields: _GT_, _AD_ and _DP_. 
-The SNVs  must be germline variants and should include the genotype of the 
-wild-type homozygous at the selected positions in the reference. The VCF file 
-must be gzipped.
+The VCF file must be gzipped.
 
 Also allowed is a  "generic" file format  (*genoSource=c("generic")*), specified as 
 a comma-separated table The following columns are mandatory:
@@ -362,9 +362,6 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
 
 ```
 
-A profile GDS file is created in the *pathProfileGDS* directory while all the 
-ancestry and optimal parameters information are integrated in the output 
-object.
 
 The temporary files created in this example are deleted as follows.
 
@@ -409,12 +406,12 @@ followed by nearest neighbor classification. Two parameters are defined and opti
 *D*, the number of the top principal directions retained and *k*, the number of nearest 
 neighbors.  
 
-The results of the inference are provided, as the *Ancestry* item in the *resOut* list. 
+The results of the inference are provided as the *Ancestry* item in the *resOut* list. 
 It is a *data.frame* with the following columns:
 
 * _sample.id_: The unique identifier of the sample 
-* _D_: The optimal PCA dimension value used to infer the ancestry
-* _k_: The optimal number of neighbors value used to infer the ancestry
+* _D_: The optimal *D* inference parameter
+* _k_: The optimal *k* inference parameter
 * _SuperPop_: The inferred ancestry
 
 

@@ -336,18 +336,17 @@ these, the ancestry is inferred from the input sequence profile.</p>
 function should be called. The <em>inferAncestry()</em> function is used
 for DNA profiles while the <em>inferAncestryGeneAware()</em> function is
 RNA specific.</p>
-<p>The <em>inferAncestry()</em> function requires a specific profile
-input format. The format is set by the <em>genoSource</em>
-parameter.</p>
-<p>One of those formats is in a VCF format
-(<em>genoSource=c(“VCF”)</em>). This format follows the VCF standard
-with at least those genotype fields: <em>GT</em>, <em>AD</em> and
+<p>The <em>inferAncestry()</em> function requires a specific input
+format for individual genotyping profiles. The format is set by the
+<em>genoSource</em> parameter.</p>
+<p>One of the allowed formats is VCF (<em>genoSource=c(“VCF”)</em>),
+with the following mandatory fields: <em>GT</em>, <em>AD</em> and
 <em>DP</em>. The SNVs must be germline variants and should include the
 genotype of the wild-type homozygous at the selected positions in the
 reference. The VCF file must be gzipped.</p>
-<p>A generic SNP file can replace the VCF file
-(<em>genoSource=c(“generic”)</em>). The format is comma separated and
-the mandatory columns are:</p>
+<p>Also allowed is a “generic” file format
+(<em>genoSource=c(“generic”)</em>), specified as a comma-separated table
+The following columns are mandatory:</p>
 <ul>
 <li>
 <em>Chromosome</em>: The name of the chromosome</li>
@@ -358,15 +357,13 @@ the mandatory columns are:</p>
 <li>
 <em>Alt</em>: The aternative nucleotide</li>
 <li>
-<em>Count</em>: The total count</li>
+<em>Count</em>: The total read count</li>
 <li>
-<em>File1R</em>: The count for the reference nucleotide</li>
+<em>File1R</em>: Read count for the reference nucleotide</li>
 <li>
-<em>File1A</em>: The count for the alternative nucleotide</li>
+<em>File1A</em>: Read count for the alternative nucleotide</li>
 </ul>
-<p>Beware that the starting position in the <strong>population reference
-GDS file</strong> is zero (like BED files). The generic SNP file should
-also start at position zero.</p>
+<p>Note that the start position in each chromosome is 0.</p>
 <p>In this example, the profile is from DNA source and requires the use
 of the <em>inferAncestry()</em> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -403,7 +400,7 @@ of the <em>inferAncestry()</em> function.</p>
 <p>A profile GDS file is created in the <em>pathProfileGDS</em>
 directory while all the ancestry and optimal parameters information are
 integrated in the output object.</p>
-<p>At last, all temporary files created in this example should be
+<p>Finally, all temporary files created in this example should be
 deleted.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -434,12 +431,13 @@ deleted.</p>
 <div class="section level4">
 <h4 id="inspect-the-inference-and-the-optimal-parameters">3.1 Inspect the inference and the optimal parameters<a class="anchor" aria-label="anchor" href="#inspect-the-inference-and-the-optimal-parameters"></a>
 </h4>
-<p>For the global ancestry inference using PCA followed by nearest
-neighbor classification these parameters are <em>D</em> (the number of
-the top principal directions retained) and <em>k</em> (the number of
-nearest neighbors).</p>
+<p>Global ancestry is inferred inference using principal-component
+decomposition followed by nearest neighbor classification. Two
+parameters are defined and optimized: <em>D</em>, the number of the top
+principal directions retained and <em>k</em>, the number of nearest
+neighbors.</p>
 <p>The information is stored in the <em>Ancestry</em> entry as a
-<em>data.frame</em> object. It is a contains those columns:</p>
+<em>data.frame</em> object. It contains the following columns:</p>
 <ul>
 <li>
 <em>sample.id</em>: The unique identifier of the sample</li>
@@ -479,9 +477,9 @@ and <em>k</em>.</p>
 RAIDS performance for the synthtic data.
 </p>
 </div>
-<p>In this specific example, the performances are lower than expected
-with a realistic sequence profile and a complete reference population
-file.</p>
+<p>In this illustrative example, the performance estimates are lower
+than expected with a realistic sequence profile and a complete reference
+population file.</p>
 <p><br><br></p>
 </div>
 </div>
@@ -503,7 +501,7 @@ about the reference dataset, are required:</p>
 <li>The population reference SNV Annotation GDS file</li>
 <li>The population reference SNV Retained VCF file (optional)</li>
 </ul>
-<p>The format of those files are described the <a href="Create_Reference_GDS_File.html">Population reference dataset GDS
+<p>The formats of those files are described in the <a href="Create_Reference_GDS_File.html">Population reference dataset GDS
 files</a> vignette.</p>
 <p><span style="color:darkred;font-weight:bold">The reference files
 associated to the Cancer Research associated paper are available. Note

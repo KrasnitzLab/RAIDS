@@ -301,30 +301,27 @@ According to the type of input data (RNA or DNA sequence), a specific function
 should be called. The *inferAncestry()* function is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
 
-The *inferAncestry()* function requires a specific profile input format. The 
-format is set by the *genoSource* parameter. 
+The *inferAncestry()* function requires a specific input format for individual 
+genotyping profiles. The format is set by the *genoSource* parameter. 
 
-One of those formats is in a VCF format (*genoSource=c("VCF")*). 
-This format follows the VCF standard with at least those genotype 
-fields: _GT_, _AD_ and _DP_. 
+One of the allowed formats is VCF (*genoSource=c("VCF")*), with the following 
+mandatory fields: _GT_, _AD_ and _DP_. 
 The SNVs  must be germline variants and should include the genotype of the 
 wild-type homozygous at the selected positions in the reference. The VCF file 
 must be gzipped.
 
-A generic SNP file can replace the VCF file (*genoSource=c("generic")*). 
-The format is comma separated and the mandatory columns are:
+Also allowed is a  "generic" file format  (*genoSource=c("generic")*), specified as 
+a comma-separated table The following columns are mandatory:
 
 * _Chromosome_: The name of the chromosome
 * _Position_: The position on the chromosome
 * _Ref_: The reference nucleotide
 * _Alt_: The aternative nucleotide
-* _Count_: The total count
-* _File1R_: The count for the reference nucleotide
-* _File1A_: The count for the alternative nucleotide
+* _Count_: The total read count
+* _File1R_: Read count for the reference nucleotide
+* _File1A_: Read count for the alternative nucleotide
 
-Beware that the starting position in the **population reference GDS file** is 
-zero (like BED files). The generic SNP file should also start 
-at position zero.
+Note that the start position in each chromosome is 0. 
 
 In this example, the profile is from DNA source and requires the use of the 
 *inferAncestry()* function.
@@ -368,7 +365,7 @@ A profile GDS file is created in the *pathProfileGDS* directory while all the
 ancestry and optimal parameters information are integrated in the output 
 object.
 
-At last, all temporary files created in this example should be deleted.
+Finally, all temporary files created in this example should be deleted.
 
 ```{r removeTmp, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
@@ -406,12 +403,13 @@ names(resOut)
 ### 3.1 Inspect the inference and the optimal parameters
 
 
-For the global ancestry inference using PCA followed by nearest neighbor 
-classification these parameters are *D* (the number of the top principal 
-directions retained) and *k* (the number of nearest neighbors).  
+Global ancestry is inferred inference using principal-component decomposition
+followed by nearest neighbor classification. Two parameters are defined and optimized: 
+*D*, the number of the top principal directions retained and *k*, the number of nearest 
+neighbors.  
 
 The information is stored in the *Ancestry* entry as a *data.frame* object. 
-It is a contains those columns:
+It contains the following columns:
 
 * _sample.id_: The unique identifier of the sample 
 * _D_: The optimal PCA dimension value used to infer the ancestry
@@ -446,7 +444,7 @@ createAUROCGraph(dfAUROC=resOut$paraSample$dfAUROC, title="Example ex1")
 
 ```
 
-In this specific example, the performances are lower than expected 
+In this illustrative example, the performance estimates are lower than expected 
 with a realistic sequence profile and a complete reference population file.
 
 <br>
@@ -471,7 +469,7 @@ the reference dataset, are required:
 - The population reference SNV Retained VCF file (optional)
 
 
-The format of those files are described 
+The formats of those files are described in 
 the [Population reference dataset GDS files](Create_Reference_GDS_File.html) 
 vignette.
 

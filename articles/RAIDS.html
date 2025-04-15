@@ -135,9 +135,13 @@ sequences of:</p>
 </ul>
 <p>including those from cancer-derived nucleic acids. The
 <strong>RAIDS</strong> package implements a data synthesis method that,
-for any given molecular profile, enables, on the one hand,
-profile-specific inference parameter optimization and, on the other
-hand, a profile-specific inference accuracy estimate.</p>
+for any given molecular profile of an idividual, enables, on the one
+hand, profile-specific inference parameter optimization and, on the
+other hand, a profile-specific inference accuracy estimate. By the
+molecular profile we mean a table of the individual’s germline genotypes
+at genome positions with sufficient read coverage in the individual’s
+input data, where sequence variants are frequent in the population
+reference data.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
@@ -337,13 +341,12 @@ function should be called. The <em>inferAncestry()</em> function is used
 for DNA profiles while the <em>inferAncestryGeneAware()</em> function is
 RNA specific.</p>
 <p>The <em>inferAncestry()</em> function requires a specific input
-format for individual genotyping profiles. The format is set by the
-<em>genoSource</em> parameter.</p>
+format for the individual’s genotyping profile as explained in the
+Introduction. The format is set by the <em>genoSource</em>
+parameter.</p>
 <p>One of the allowed formats is VCF (<em>genoSource=c(“VCF”)</em>),
 with the following mandatory fields: <em>GT</em>, <em>AD</em> and
-<em>DP</em>. The SNVs must be germline variants and should include the
-genotype of the wild-type homozygous at the selected positions in the
-reference. The VCF file must be gzipped.</p>
+<em>DP</em>. The VCF file must be gzipped.</p>
 <p>Also allowed is a “generic” file format
 (<em>genoSource=c(“generic”)</em>), specified as a comma-separated table
 The following columns are mandatory:</p>
@@ -397,9 +400,6 @@ of the <em>inferAncestry()</em> function.</p>
 <span>        syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
 <span>        genoSource<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VCF"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>A profile GDS file is created in the <em>pathProfileGDS</em>
-directory while all the ancestry and optimal parameters information are
-integrated in the output object.</p>
 <p>The temporary files created in this example are deleted as
 follows.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -435,18 +435,16 @@ follows.</p>
 followed by nearest neighbor classification. Two parameters are defined
 and optimized: <em>D</em>, the number of the top principal directions
 retained and <em>k</em>, the number of nearest neighbors.</p>
-<p>The results of the inference are provided, as the <em>Ancestry</em>
+<p>The results of the inference are provided as the <em>Ancestry</em>
 item in the <em>resOut</em> list. It is a <em>data.frame</em> with the
 following columns:</p>
 <ul>
 <li>
 <em>sample.id</em>: The unique identifier of the sample</li>
 <li>
-<em>D</em>: The optimal PCA dimension value used to infer the
-ancestry</li>
+<em>D</em>: The optimal <em>D</em> inference parameter</li>
 <li>
-<em>k</em>: The optimal number of neighbors value used to infer the
-ancestry</li>
+<em>k</em>: The optimal <em>k</em> inference parameter</li>
 <li>
 <em>SuperPop</em>: The inferred ancestry</li>
 </ul>

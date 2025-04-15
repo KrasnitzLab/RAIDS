@@ -404,13 +404,13 @@ names(resOut)
 ### 3.1 Inspect the inference and the optimal parameters
 
 
-Global ancestry is inferred inference using principal-component decomposition
+Global ancestry is inferred using principal-component decomposition
 followed by nearest neighbor classification. Two parameters are defined and optimized: 
 *D*, the number of the top principal directions retained and *k*, the number of nearest 
 neighbors.  
 
-The information is stored in the *Ancestry* entry as a *data.frame* object. 
-It contains the following columns:
+The results of the inference are provided, as the *Ancestry* item in the *resOut* list. 
+It is a *data.frame* with the following columns:
 
 * _sample.id_: The unique identifier of the sample 
 * _D_: The optimal PCA dimension value used to infer the ancestry

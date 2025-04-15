@@ -2340,10 +2340,10 @@ inferAncestry <- function(profileFile, pathProfileGDS,
     genoSource <- arg_match(genoSource)
 
     ## BAM format is not yet implemented
-    if (genoSource == "bam") {
-        stop("The bam is not release yet look to get a \'Devel\' version ",
-                "or contact us")
-    }
+    # if (genoSource == "bam") {
+    #     stop("The bam is not release yet look to get a \'Devel\' version ",
+    #             "or contact us")
+    # }
 
     ## Extract the name of the profile(s)
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case=TRUE)
@@ -2367,11 +2367,11 @@ inferAncestry <- function(profileFile, pathProfileGDS,
         syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
 
     ## Run ancestry inference
-    if (genoSource %in% c("snp-pileup", "generic", "VCF")) {
+    if (genoSource %in% c("snp-pileup", "generic", "VCF", "bam")) {
         r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
                 profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
-                chrInfo, syntheticRefDF, genoSource, studyType="LD", np=np,
-                verbose)
+                chrInfo, syntheticRefDF, genoSource=genoSource, studyType="LD", np=np,
+                verbose=verbose)
     }else{
         stop(paste0("The format ", genoSource," is not implemented yet\n"))
     }
@@ -2898,10 +2898,10 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
 
     genoSource <- arg_match(genoSource)
 
-    if(genoSource == "bam"){
-        stop("The bam is not release yet look to get a \'Devel\' version ",
-                "or contact us")
-    }
+    # if(genoSource == "bam"){
+    #     stop("The bam is not release yet look to get a \'Devel\' version ",
+    #             "or contact us")
+    # }
 
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case = TRUE)
     for(extCur in c( "\\.vcf$", "\\.txt$", "\\.bam", "\\.tsv", "\\.csv")){
@@ -2928,12 +2928,12 @@ inferAncestryGeneAware <- function(profileFile, pathProfileGDS,
         syntheticRefDF=syntheticRefDF, genoSource=genoSource, verbose=verbose)
 
 
-    if(genoSource %in% c("snp-pileup", "generic", "VCF")){
+    if(genoSource %in% c("snp-pileup", "generic", "VCF", "bam")){
 
         r <- wrapperAncestry(pedStudy, studyDF, pathProfileGDS,
             profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
-            chrInfo, syntheticRefDF, genoSource, studyType="GeneAware", np=np,
-            blockTypeID=blockTypeID, verbose)
+            chrInfo, syntheticRefDF, genoSource=genoSource, studyType="GeneAware", np=np,
+            blockTypeID=blockTypeID, verbose=verbose)
     }else{
         stop(paste0("The format ", genoSource," is not implemented yet\n"))
     }

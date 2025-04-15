@@ -18,7 +18,7 @@ createProfile(
   listProfiles = NULL,
   pathProfileGDS = NULL,
   genoSource = c("snp-pileup", "generic", "VCF", "bam"),
-  paramProfile = list(ScanBamParam = NULL, PileupParam = NULL, yieldSize = 5e+06),
+  paramProfile = list(ScanBamParam = NULL, PileupParam = NULL, yieldSize = 1e+07),
   verbose = FALSE
 )
 }

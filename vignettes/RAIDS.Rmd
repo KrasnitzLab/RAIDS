@@ -66,10 +66,11 @@ sequences of:
 * targeted gene panels 
 * RNA,
 
-including those from cancer-derived nucleic acids. The **RAIDS** package implements a data synthesis method that, for any given
+including those from cancer-derived nucleic acids. The **RAIDS** package implements a 
+data synthesis method that, for any given
 molecular profile, enables, on the one hand, profile-specific inference
 parameter optimization and, on the other hand, a profile-specific inference
-accuracy estimate.
+accuracy estimate. 
 
 <br>
 <br>
@@ -365,7 +366,7 @@ A profile GDS file is created in the *pathProfileGDS* directory while all the
 ancestry and optimal parameters information are integrated in the output 
 object.
 
-Finally, all temporary files created in this example should be deleted.
+The temporary files created in this example are deleted as follows.
 
 ```{r removeTmp, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 

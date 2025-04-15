@@ -431,13 +431,13 @@ follows.</p>
 <div class="section level4">
 <h4 id="inspect-the-inference-and-the-optimal-parameters">3.1 Inspect the inference and the optimal parameters<a class="anchor" aria-label="anchor" href="#inspect-the-inference-and-the-optimal-parameters"></a>
 </h4>
-<p>Global ancestry is inferred inference using principal-component
-decomposition followed by nearest neighbor classification. Two
-parameters are defined and optimized: <em>D</em>, the number of the top
-principal directions retained and <em>k</em>, the number of nearest
-neighbors.</p>
-<p>The information is stored in the <em>Ancestry</em> entry as a
-<em>data.frame</em> object. It contains the following columns:</p>
+<p>Global ancestry is inferred using principal-component decomposition
+followed by nearest neighbor classification. Two parameters are defined
+and optimized: <em>D</em>, the number of the top principal directions
+retained and <em>k</em>, the number of nearest neighbors.</p>
+<p>The results of the inference are provided, as the <em>Ancestry</em>
+item in the <em>resOut</em> list. It is a <em>data.frame</em> with the
+following columns:</p>
 <ul>
 <li>
 <em>sample.id</em>: The unique identifier of the sample</li>

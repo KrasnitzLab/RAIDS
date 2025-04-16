@@ -8,7 +8,8 @@
 readSNVBAM(
   fileName,
   varSelected,
-  paramSNVBAM = list(ScanBamParam = NULL, PileupParam = NULL, yieldSize = 5e+06),
+  offset = 0L,
+  paramSNVBAM = list(ScanBamParam = NULL, PileupParam = NULL, yieldSize = 1e+07),
   verbose = FALSE
 )
 }
@@ -18,7 +19,11 @@ the path, of a BAM file with the index file in the same directory}
 
 \item{varSelected}{a \code{data.frame} representing the position to keep}
 
-\item{paramSNVBAM}{a \code{data.frame} representing the position to keep}
+\item{offset}{a \code{integer} representing the offset to be added to the
+position of the SNVs. The value of offset
+is added to the position present in the file. Default: \code{0L}.}
+
+\item{paramSNVBAM}{a \code{data.frame} representing}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}

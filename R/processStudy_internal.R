@@ -600,6 +600,133 @@ validateCreateStudy2GDS1KG <- function(pathGeno, pedStudy, fileNameGDS, batch,
     return(0L)
 }
 
+#' @title Validate input parameters for createProfile() function
+#'
+#' @description This function validates the input parameters for the
+#' \code{\link{createStudy2GDS1KG}} function.
+#'
+#' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings (no factor). The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param fileNameGDS a \code{character} string representing the file name of
+#' the Population Reference GDS file. The file must exist.
+#'
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
+#'
+#' @param listProfiles a \code{vector} of \code{character} string corresponding
+#' to the profile identifiers that will have a GDS Sample file created. The
+#' profile identifiers must be present in the "Name.ID" column of the RDS file
+#' passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all profiles in the \code{filePedRDS} are selected.
+#'
+#' @param pathProfileGDS a \code{character} string representing the path to
+#' the directory where the Profile GDS files will be created.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo pedigree file is located in this package
+#' dataDir <- system.file("extdata", package="RAIDS")
+#'
+#' ## Demo 1KG Population Reference GDS file
+#' gds1KG <- file.path(dataDir, "PopulationReferenceDemo.gds")
+#'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyInfo <- data.frame(study.id="Pancreatic.WES",
+#'                 study.desc="Pancreatic study",
+#'                 study.platform="WES",
+#'                 stringsAsFactors=FALSE)
+#'
+#' ## PED Study
+#' ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
+#'             Case.ID=c("TCGA-H01", "TCGA-H02"),
+#'             Sample.Type=c("DNA", "DNA"),
+#'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
+#'
+#' ## The validation should be successful
+#' RAIDS:::validateCreateStudy2GDS1KG(pathGeno=dataDir, pedStudy=ped,
+#'             fileNameGDS=gds1KG, batch=1, studyDF=studyInfo,
+#'             listProfiles=c("Sample_01", "Sample_02"),
+#'             pathProfileGDS=dataDir,
+#'             genoSource="snp-pileup", verbose=TRUE)
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom S4Vectors isSingleNumber
+#' @encoding UTF-8
+#' @keywords internal
+validatecreateProfile <- function(pedStudy,
+                                  fileNameGDS, batch,
+                                  studyDF, listProfiles, pathProfileGDS,
+                                  genoSource, verbose) {
+    # profileFile, profileName,
+    # filePedRDS=NULL, pedStudy=NULL, fileNameGDS,
+    # batch=1, studyDF, listProfiles=NULL,
+    # pathProfileGDS=NULL,
+    # genoSource=c("snp-pileup", "generic", "VCF", "bam"),
+    # paramProfile=list(ScanBamParam=NULL,
+    #                   PileupParam=NULL,
+    #                   yieldSize=10000000),
+    # verbose=FALSE
+    ## The pathGeno must be a existing directory
+
+
+    ## The PED study must have the mandatory columns
+    validatePEDStudyParameter(pedStudy=pedStudy)
+
+    ## The fileNameGDS must be a character string and the file must exists
+    if (!(is.character(fileNameGDS) && (file.exists(fileNameGDS)))) {
+        stop("The \'fileNameGDS\' must be a character string representing ",
+             "the Population Reference GDS file. The file must exist.")
+    }
+
+    ## The batch must be a single numeric
+    if(!(isSingleNumber(batch))) {
+        stop("The \'batch\' must be a single integer.")
+    }
+
+    ## The Study DF must have the mandatory columns
+    validateStudyDataFrameParameter(studyDF=studyDF)
+
+    ## The listProfiles must be a vector of character string
+    if (!(is.character(listProfiles) || is.null(listProfiles))) { #
+        stop("The \'listProfiles\' must be a vector ",
+             "of character strings (1 entry or more) or NULL.")
+    }
+
+
+    ## The pathProfileGDS must be a character string
+    if (!is.character(pathProfileGDS)) {
+        stop("The \'pathProfileGDS\' must be a character string representing",
+             " the path where the Profile GDS files will be generated.")
+    }
+
+    ## The genoSource must be a character string
+    if(!(is.character(genoSource))) {
+        stop("The \'genoSource\' parameter must be a character string.")
+    }
+
+    ## The verbose parameter must be a logical
+    validateLogical(logical=verbose, "verbose")
+
+    return(0L)
+}
+
 
 #' @title Validate input parameters for computeAncestryFromSyntheticFile()
 #' function
@@ -2546,16 +2673,22 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
             np=1L, blockTypeID=NULL, verbose=FALSE) {
     # This part can be share with runProfileAncestry
     studyType <- arg_match(studyType)
-
+    if(verbose){
+        message("pruningSample start ", Sys.time())
+    }
     pruningSample(gdsReference=gdsReference, currentProfile=currentProfile,
         studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
-
+    if(verbose){
+        message("pruningSample end ", Sys.time())
+    }
     fileGDSProfile <- file.path(pathProfileGDS,
                                     paste0(currentProfile, ".gds"))
 
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
             currentProfile=currentProfile, studyID=studyDF$study.id)
-
+    if(verbose){
+        message("add1KG start ", Sys.time())
+    }
     addStudy1Kg(gdsReference, fileGDSProfile)
 
     gdsProfile <- openfn.gds(fileGDSProfile, readonly=FALSE)
@@ -2571,7 +2704,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     prepSynthetic(fileProfileGDS=fileGDSProfile,
         listSampleRef=listProfileRef,  profileID=currentProfile,
         studyDF=studyDFSyn, prefix="1", verbose=verbose)
-
+    if(verbose){
+        message("syntheticGeno start ", Sys.time())
+    }
     resG <- syntheticGeno(gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
                 fileProfileGDS=fileGDSProfile, profileID=currentProfile,
                 listSampleRef=listProfileRef, prefix="1")
@@ -2593,7 +2728,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     ## Open the Profile GDS file
     gdsProfile <- snpgdsOpen(fileGDSProfile)
 
-
+    if(verbose){
+        message("SyntheticAncestry start ", Sys.time())
+    }
     ## This variable will contain the results from the PCA analyses
     ## For each row of the sampleRM matrix
     resSyn <- lapply(seq_len(nrow(sampleRM)), FUN=function(x, sampleRM,
@@ -2607,9 +2744,12 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
         # saveRDS(synthKNN$matKNN, file.path(pathOutProfile,
         #    paste0("KNN.synt.", currentProfile, ".", x, ".rds")))
         return(synthKNN$matKNN)
-    }, sampleRM=sampleRM, gdsProfile=gdsProfile, studyDFSyn=studyDFSyn, 
+    }, sampleRM=sampleRM, gdsProfile=gdsProfile, studyDFSyn=studyDFSyn,
             spRef=spRef, currentProfile=currentProfile)
-    
+
+    if(verbose){
+        message("SyntheticAncestry end ", Sys.time())
+    }
     resSyn <- do.call(rbind, resSyn)
     ## Extract the super-population information from the 1KG GDS file
     ## for profiles associated to the synthetic study
@@ -2629,7 +2769,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                     gdsProfile=gdsProfile, syntheticKNN=resSyn,
                     pedSyn=pedSyn, currentProfile=currentProfile, spRef=spRef,
                     studyIDSyn=studyDFSyn$study.id, np=np)
-
+    if(verbose){
+        message("Ancestry end ", Sys.time())
+    }
     # saveRDS(resCall, file.path(pathOut,
     #                            paste0(currentProfile, ".infoCall", ".rds")))
     #
@@ -2641,9 +2783,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     closefn.gds(gdsProfile)
     resSyn[[paste0("ref.superPop")]] <- pedSyn[resSyn$sample.id, "superPop"]
 
-    colnames(resSyn) <- c("sample.id", "D", "K", "infer.superPop", 
+    colnames(resSyn) <- c("sample.id", "D", "K", "infer.superPop",
                             "ref.superPop")
-    
+
     res <- list(pcaSample=resCall$pcaSample, # PCA of the profile + 1KG
             paraSample=resCall$paraSample, # Result of the parameter selection
             KNNSample=resCall$KNNSample$matKNN, # KNN for the profile
@@ -3236,6 +3378,224 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
     return(0L)
 }
 
+#' @title Create the Profile GDS file(s) for one or multiple specific profiles
+#' using the information from a RDS Sample description file and the 1KG
+#' GDS file
+#'
+#' @description The function uses the information for the Reference GDS file
+#' and the RDS Sample Description file to create the Profile GDS file. One
+#' Profile GDS file is created per profile. One Profile GDS file will be
+#' created for each entry present in the \code{listProfiles} parameter.
+#'
+#' @param profileFile a \code{character} string representing the path to the
+#' file: with genotype and the allele information of the profile A profile would have an
+#' associated file called
+#' if genoSource is "VCF", then "*vcf.gz",
+#' if genoSource is "generic", then "*.txt.gz"
+#' if genoSource is "snp-pileup", then "*.txt.gz".
+#' if genoSource is "bam", then "*.bam" and "*.bai".
+#'
+#' @param profileName a \code{character} string representing the the profile Name.ID
+#'
+#' @param filePedRDS a \code{character} string representing the path to the
+#' RDS file that contains the information about the sample to analyse.
+#' The RDS file must
+#' include a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings. The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param pedStudy a \code{data.frame} with those mandatory columns: "Name.ID",
+#' "Case.ID", "Sample.Type", "Diagnosis", "Source". All columns must be in
+#' \code{character} strings (no factor). The \code{data.frame}
+#' must contain the information for all the samples passed in the
+#' \code{listSamples} parameter. Only \code{filePedRDS} or \code{pedStudy}
+#' can be defined.
+#'
+#' @param fileNameGDS a \code{character} string representing the file name of
+#' the Reference GDS file. The file must exist.
+#'
+#' @param batch a single positive \code{integer} representing the current
+#' identifier for the batch. Beware, this field is not stored anymore.
+#' Default: \code{1}.
+#'
+#' @param studyDF a \code{data.frame} containing the information about the
+#' study associated to the analysed sample(s). The \code{data.frame} must have
+#' those 3 columns: "study.id", "study.desc", "study.platform". All columns
+#' must be in \code{character} strings (no factor).
+#'
+#' @param listProfiles a \code{vector} of \code{character} string corresponding
+#' to the profile identifiers that will have a Profile GDS file created. The
+#' profile identifiers must be present in the "Name.ID" column of the Profile
+#' RDS file passed to the \code{filePedRDS} parameter.
+#' If \code{NULL}, all profiles present in the \code{filePedRDS} are selected.
+#' Default: \code{NULL}.
+#'
+#' @param pathProfileGDS a \code{character} string representing the path to
+#' the directory where the Profile GDS files will be created.
+#' Default: \code{NULL}.
+#'
+#' @param genoSource a \code{character} string with two possible values:
+#' 'snp-pileup', 'generic' or 'VCF'. It specifies if the genotype files
+#' are generated by snp-pileup (Facets) or are a generic format CSV file
+#' with at least those columns:
+#' 'Chromosome', 'Position', 'Ref', 'Alt', 'Count', 'File1R' and 'File1A'.
+#' The 'Count' is the depth at the specified position;
+#' 'FileR' is the depth of the reference allele and
+#' 'File1A' is the depth of the specific alternative allele.
+#' Finally the file can be a VCF file with at least those genotype
+#' fields: GT, AD, DP.
+#'
+#' @param verbose a \code{logical} indicating if message information should be
+#' printed. Default: \code{FALSE}.
+#'
+#' @return The function returns \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## Path to the demo 1KG GDS file is located in this package
+#' dataDir <- system.file("extdata/tests", package="RAIDS")
+#' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
+#'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyDF <- data.frame(study.id = "MYDATA",
+#'                         study.desc = "Description",
+#'                         study.platform = "PLATFORM",
+#'                         stringsAsFactors = FALSE)
+#'
+#' ## The data.frame containing the information about the samples
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' samplePED <- data.frame(Name.ID=c("ex1"),
+#'                     Case.ID=c("Patient_h11"),
+#'                     Diagnosis=rep("Cancer"),
+#'                     Sample.Type=c("Primary Tumor"),
+#'                     Source=c("Databank B"), stringsAsFactors=FALSE,
+#'                     drop=FALSE)
+#' rownames(samplePED) <- samplePED$Name.ID
+#'
+#' ## Create the Profile GDS File for samples in 'listSamples' vector
+#' ## (in this case, samples "ex1")
+#' ## The Profile GDS file is created in the pathProfileGDS directory
+#' result <- RAIDS:::createProfile(profileFile=file.path(dataDir, "ex1.txt.gz"),
+#'             profileName="ex1",
+#'             pedStudy=samplePED, fileNameGDS=fileGDS,
+#'             studyDF=studyDF, listProfiles=c("ex1"),
+#'             pathProfileGDS=tempdir(),
+#'             genoSource="snp-pileup",
+#'             verbose=FALSE)
+#'
+#' ## The function returns OL when successful
+#' result
+#'
+#' ## The Profile GDS file 'ex1.gds' has been created in the
+#' ## specified directory
+#' list.files(tempdir())
+#'
+#' ## Remove Profile GDS file (created for demo purpose)
+#' unlink(file.path(tempdir(), "ex1.gds"), force=TRUE)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt createfn.gds put.attr.gdsn closefn.gds read.gdsn
+#' @importFrom S4Vectors isSingleNumber
+#' @importFrom rlang arg_match
+#' @encoding UTF-8
+#' @keywords internal
+
+createProfile <- function(profileFile, profileName,
+                          filePedRDS=NULL, pedStudy=NULL, fileNameGDS,
+                          batch=1, studyDF, listProfiles=NULL,
+                          pathProfileGDS=NULL,
+                          genoSource=c("snp-pileup", "generic", "VCF", "bam"),
+                          paramProfile=list(ScanBamParam=NULL,
+                                            PileupParam=NULL,
+                                            yieldSize=10000000),
+                          verbose=FALSE) {
+
+    ## When filePedRDS is defined and pedStudy is null
+    if (!(is.null(filePedRDS)) && is.null(pedStudy)) {
+        ## The filePedRDS must be a character string and the file must exists
+        if (!(is.character(filePedRDS) && (file.exists(filePedRDS)))) {
+            stop("The \'filePedRDS\' must be a character string representing",
+                 " the RDS Sample information file. The file must exist.")
+        }
+        ## Open the RDS Sample information file
+        pedStudy <- readRDS(file=filePedRDS)
+    } else if (!(is.null(filePedRDS) || is.null(pedStudy))) {
+        stop("Both \'filePedRDS\' and \'pedStudy\' parameters cannot be ",
+             "defined at the same time.")
+    } else if (is.null(filePedRDS) && is.null(pedStudy)) {
+        stop("One of the parameter \'fineNamePED\' of \'pedStudy\' must ",
+             "be defined.")
+    }
+
+    ## Validate input parameters
+    validatecreateProfile( pedStudy=pedStudy,
+                               fileNameGDS=fileNameGDS, batch=batch, studyDF=studyDF,
+                               listProfiles=listProfiles, pathProfileGDS=pathProfileGDS,
+                               genoSource=genoSource, verbose=verbose)
+
+    genoSource <- arg_match(genoSource)
+
+    ## Read the Reference GDS file
+    gdsReference <- snpgdsOpen(filename=fileNameGDS)
+
+    ## Extract the chromosome and position information for all SNPs in 1KG GDS
+
+    listPos <- NULL
+    if(genoSource == "bam"){
+        alDf <- read.gdsn(index.gdsn(gdsReference, "snp.allele"))
+        alDf <- matrix(unlist(strsplit(alDf,"\\/")),nrow=2)
+        listPos <- data.frame(chr = read.gdsn(index.gdsn(gdsReference, "snp.chromosome")),
+                            start = read.gdsn(index.gdsn(gdsReference, "snp.position")),
+                            REF = alDf[1,],
+                            ALT = alDf[2,],
+                            stringsAsFactors = FALSE
+        )
+        # listChr <- unique(listPos$chr)
+        # We can optimize
+        # listPos <- lapply(listChr,
+        #                 FUN=function(x, varDf){
+        #                     return(varDf[which(varDf$chr == x),])
+        #                 },
+        #                 varDf=listPos)
+        # names(listPos) <- paste0("chr", listChr)
+        rm(alDf)
+    } else{
+        listPos <- data.frame(snp.chromosome=read.gdsn(index.gdsn(node=gdsReference, "snp.chromosome")),
+                              snp.position=read.gdsn(index.gdsn(node=gdsReference, "snp.position")))
+    }
+    ## Create a data.frame containing the information
+
+    # Need to reformat for bam in varDf
+
+    if(verbose) {
+        message("Start ", Sys.time())
+        message("Sample info DONE ", Sys.time())
+    }
+
+    generateProfileGDS(profileFile=profileFile, profileName=profileName,
+                       listPos=listPos, offset=-1, minCov=10,
+                       minProb=0.999, seqError=0.001, dfPedProfile=pedStudy, batch=batch,
+                       studyDF=studyDF, pathProfileGDS=pathProfileGDS,
+                       genoSource=genoSource, paramProfileGDS=paramProfile, verbose=verbose)
+
+    if(verbose) {
+        message("Genotype DONE ", Sys.time())
+    }
+
+    ## Close 1KG GDS file
+    closefn.gds(gdsReference)
+
+    ## Return successful code
+    return(0L)
+}
+
+
 #' @title Run most steps leading to the ancestry inference call
 #' on a specific profile (RNA or DNA)
 #'
@@ -3295,7 +3655,7 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
 #'
 #' @param genoSource a \code{character} string with two possible values:
-#' 'snp-pileup', 'generic' or 'VCF'. It specifies if the genotype files
+#' 'snp-pileup', 'generic' or 'VCF', "bam". It specifies if the genotype files
 #' are generated by snp-pileup (Facets) or are a generic format CSV file
 #' with at least those columns:
 #' 'Chromosome', 'Position', 'Ref', 'Alt', 'Count', 'File1R' and 'File1A'.
@@ -3311,6 +3671,8 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @param blockTypeID a \code{character} string corresponding to the block
 #' type used to extract the block identifiers. The block type must be
 #' present in the GDS Reference Annotation file.
+#'
+#' @param paramAncestry a \code{list} parameters ...
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
@@ -3541,20 +3903,52 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' @encoding UTF-8
 #' @keywords internal
 wrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
-                            pathGeno, fileReferenceGDS, fileReferenceAnnotGDS,
+                            profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
                             chrInfo, syntheticRefDF,
-                            genoSource=c("snp-pileup", "generic", "VCF"),
+                            genoSource=c("snp-pileup", "generic", "VCF", "bam"),
                             studyType=c("LD", "GeneAware"), np=1L, blockTypeID=NULL,
+                            paramAncestry=list(ScanBamParam=NULL,
+                                               PileupParam=NULL,
+                                               yieldSize=10000000),
                             verbose=FALSE) {
 
+    if(genoSource == "bam") {
+        message("Process from bam is a new feature;",
+                    " if you have an issue, please let us know")
+    }
     genoSource <- arg_match(genoSource)
 
     listProfiles <- pedStudy[, "Name.ID"]
+    # createProfile <- function(profileFile, profileName,
+    #                           filePedRDS=NULL, pedStudy=NULL, fileNameGDS,
+    #                           batch=1, studyDF, listProfiles=NULL,
+    #                           pathProfileGDS=NULL,
+    #                           genoSource=c("snp-pileup", "generic", "VCF", "bam"),
+    #                           paramProfile=list(ScanBamParam=NULL,
+    #                                             PileupParam=NULL,
+    #                                             yieldSize=5000000),
+    #                           verbose=FALSE)
+    if(is.character(listProfiles)){
+        for(profileCur in listProfiles){
+            if(file.exists(file.path(pathProfileGDS, paste0(profileCur, ".gds")))){
+                stop(paste0("The gds file for ", profileCur, " already exist."))
+            }
+        }
+    }
+    if(file.exists(file.path(pathProfileGDS, paste0(pedStudy$Name.ID[1], ".gds")))){
+        stop(paste0("The gds file for ", pedStudy$Name.ID[1], " already exist."))
+    }
+    createProfile(profileFile=profileFile, profileName=pedStudy$Name.ID[1],
+                  pedStudy=pedStudy, fileNameGDS=fileReferenceGDS,
+                  studyDF=studyDF, pathProfileGDS=pathProfileGDS,
+                  genoSource=genoSource, paramProfile=paramAncestry,
+                  verbose=verbose)
+    # createStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
+    #                    fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
+    #                    studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
+    #                    verbose=verbose)
 
-    createStudy2GDS1KG(pathGeno=pathGeno, pedStudy=pedStudy,
-                       fileNameGDS=fileReferenceGDS, listProfiles=listProfiles,
-                       studyDF=studyDF, pathProfileGDS=pathProfileGDS, genoSource=genoSource,
-                       verbose=verbose)
+
 
     ## Open the 1KG GDS file (demo version)
     gdsReference <- snpgdsOpen(fileReferenceGDS)

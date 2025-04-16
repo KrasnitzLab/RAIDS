@@ -184,11 +184,12 @@ estimateAllelicFraction <- function(gdsReference, gdsProfile,
     # Find segment with same lap
     snpPos$seg <- rep(0, nrow(snpPos))
     k <- 1
-    for(chr in unique(snpPos$snp.chr)) {
+    for(i in seq_len(length(unique(snpPos$snp.chr)))) {
         ##snpChr <- snpPos[snpPos$snp.chr == chr, ]
         ##tmp <- c(0, abs(snpChr[2:nrow(snpChr), "lap"] -
         ##                snpChr[seq_len(nrow(snpChr)- 1),  "lap"]) > 1e-3)
-        snpPos$seg[snpPos$snp.chr == chr] <- cumSumResult[[chr]] + k
+        chr <- unique(snpPos$snp.chr)[i]
+        snpPos$seg[snpPos$snp.chr == chr] <- cumSumResult[[i]] + k
         k <- max(snpPos$seg[snpPos$snp.chr == chr]) + 1
     }
 

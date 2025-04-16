@@ -612,6 +612,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' Finally the file can be a VCF file with at least those genotype
 #' fields: GT, AD, DP.
 #'
+#' @param paramProfileGDS a \code{list} parameters ...
+#'
 #' @param verbose a \code{logical} indicating if the function must print
 #' messages when running.
 #'
@@ -677,7 +679,7 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 generateProfileGDS <- function(profileFile, profileName,
                             listPos, offset, minCov=10, minProb=0.999,
                             seqError=0.001, dfPedProfile, batch, studyDF, pathProfileGDS,
-                            genoSource, verbose) {
+                            genoSource, paramProfileGDS, verbose) {
 
     # File with the description of the SNP keep
     # if(genoSource == "VCF"){
@@ -689,7 +691,7 @@ generateProfileGDS <- function(profileFile, profileName,
     # }
 
 
-    g <- as.matrix(rep(-1, nrow(listPos)))
+
 
     # for(i in seq_len(length(listSamples))) {
     #pos <- which(listSampleFile == listSamples[i])
@@ -708,7 +710,15 @@ generateProfileGDS <- function(profileFile, profileName,
         matSample <- readSNVVCF(profileFile,
                                 profileName=profileName, offset)
     } else if(genoSource == "bam"){
-        #tmpProfile <- gsub(".vcf.gz", "",listMat[pos])
+
+        matSample <- readSNVBAM(fileName=profileFile,
+                                varSelected=listPos,
+                                paramSNVBAM=paramProfileGDS,
+                                offset,
+                                verbose=verbose)
+        # listPos <- do.call(rbind, listPos)
+        colnames(listPos)[1:2] <- c("snp.chromosome", "snp.position")
+
     }
     # matAll <- merge(matSample[,c( "Chromosome", "Position",
     #                               "File1R",  "File1A",
@@ -721,6 +731,8 @@ generateProfileGDS <- function(profileFile, profileName,
     #
     # below same as the merge above but faster
 
+    if(verbose) {message("End read ", Sys.time())}
+    g <- as.matrix(rep(-1, nrow(listPos)))
     z <- cbind(c(listPos$snp.chromosome, matSample$Chromosome,
                  matSample$Chromosome),
                c(listPos$snp.position, matSample$Position,

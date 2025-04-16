@@ -96,7 +96,7 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), David A. Tuveson
 [aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 1.5.1<br><strong>Compiled date</strong>: 2025-04-15<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 1.5.1<br><strong>Compiled date</strong>: 2025-04-16<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -337,9 +337,10 @@ population are sampled from the demo population GDS file:</p>
 synthetic data are used to optimize the inference parameters and, with
 these, the ancestry is inferred from the input sequence profile.</p>
 <p>According to the type of input data (RNA or DNA sequence), a specific
-function should be called. The <em>inferAncestry()</em> function is used
-for DNA profiles while the <em>inferAncestryGeneAware()</em> function is
-RNA specific.</p>
+function should be called. The <em>inferAncestry()</em> function
+(<em>inferAncestryDNA()</em> is the same as <em>inferAncestry()</em> )
+is used for DNA profiles while the <em>inferAncestryGeneAware()</em>
+function is RNA specific.</p>
 <p>The <em>inferAncestry()</em> function requires a specific input
 format for the individual’s genotyping profile as explained in the
 Introduction. The format is set by the <em>genoSource</em>
@@ -352,13 +353,14 @@ with the following mandatory fields: <em>GT</em>, <em>AD</em> and
 The following columns are mandatory:</p>
 <ul>
 <li>
-<em>Chromosome</em>: The name of the chromosome</li>
+<em>Chromosome</em>: The name of the chromosome can be formatted as
+chr1 or 1</li>
 <li>
 <em>Position</em>: The position on the chromosome</li>
 <li>
 <em>Ref</em>: The reference nucleotide</li>
 <li>
-<em>Alt</em>: The aternative nucleotide</li>
+<em>Alt</em>: The alternative nucleotide</li>
 <li>
 <em>Count</em>: The total read count</li>
 <li>
@@ -366,7 +368,7 @@ The following columns are mandatory:</p>
 <li>
 <em>File1A</em>: Read count for the alternative nucleotide</li>
 </ul>
-<p>Note that the start position in each chromosome is 0.</p>
+<p>Note: a header with identical column names is required.</p>
 <p>In this example, the profile is from DNA source and requires the use
 of the <em>inferAncestry()</em> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">

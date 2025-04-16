@@ -716,7 +716,7 @@ generateProfileGDS <- function(profileFile, profileName,
                                 paramSNVBAM=paramProfileGDS,
                                 offset,
                                 verbose=verbose)
-        listPos <- do.call(rbind, listPos)
+        # listPos <- do.call(rbind, listPos)
         colnames(listPos)[1:2] <- c("snp.chromosome", "snp.position")
 
     }

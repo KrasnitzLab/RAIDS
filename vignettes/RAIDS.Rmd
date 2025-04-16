@@ -301,11 +301,13 @@ data are used to optimize the inference parameters and, with these, the
 ancestry is inferred from the input sequence profile.
 
 According to the type of input data (RNA or DNA sequence), a specific function 
-should be called. The *inferAncestry()* function is used for DNA profiles while 
+should be called. The *inferAncestry()* function (*inferAncestryDNA()* is 
+the same as *inferAncestry()* ) is used for DNA profiles while 
 the *inferAncestryGeneAware()* function is RNA specific.
 
 The *inferAncestry()* function requires a specific input format for the individual's 
-genotyping profile as explained in the Introduction. The format is set by the *genoSource* parameter. 
+genotyping profile as explained in the Introduction. The format is set by 
+the *genoSource* parameter. 
 
 One of the allowed formats is VCF (*genoSource=c("VCF")*), with the following 
 mandatory fields: _GT_, _AD_ and _DP_. 
@@ -314,15 +316,15 @@ The VCF file must be gzipped.
 Also allowed is a  "generic" file format  (*genoSource=c("generic")*), specified as 
 a comma-separated table The following columns are mandatory:
 
-* _Chromosome_: The name of the chromosome
+* _Chromosome_: The name of the chromosome can be formatted as chr1 or 1
 * _Position_: The position on the chromosome
 * _Ref_: The reference nucleotide
-* _Alt_: The aternative nucleotide
+* _Alt_: The alternative nucleotide
 * _Count_: The total read count
 * _File1R_: Read count for the reference nucleotide
 * _File1A_: Read count for the alternative nucleotide
-
-Note that the start position in each chromosome is 0. 
+ 
+Note: a header with identical column names is required.
 
 In this example, the profile is from DNA source and requires the use of the 
 *inferAncestry()* function.

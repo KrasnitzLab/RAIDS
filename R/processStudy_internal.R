@@ -2673,16 +2673,22 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
             np=1L, blockTypeID=NULL, verbose=FALSE) {
     # This part can be share with runProfileAncestry
     studyType <- arg_match(studyType)
-
+    if(verbose){
+        message("pruningSample start ", Sys.time())
+    }
     pruningSample(gdsReference=gdsReference, currentProfile=currentProfile,
         studyID=studyDF$study.id, pathProfileGDS=pathProfileGDS, np=np)
-
+    if(verbose){
+        message("pruningSample end ", Sys.time())
+    }
     fileGDSProfile <- file.path(pathProfileGDS,
                                     paste0(currentProfile, ".gds"))
 
     add1KG2SampleGDS(gdsReference=gdsReference, fileProfileGDS=fileGDSProfile,
             currentProfile=currentProfile, studyID=studyDF$study.id)
-
+    if(verbose){
+        message("add1KG start ", Sys.time())
+    }
     addStudy1Kg(gdsReference, fileGDSProfile)
 
     gdsProfile <- openfn.gds(fileGDSProfile, readonly=FALSE)
@@ -2698,7 +2704,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     prepSynthetic(fileProfileGDS=fileGDSProfile,
         listSampleRef=listProfileRef,  profileID=currentProfile,
         studyDF=studyDFSyn, prefix="1", verbose=verbose)
-
+    if(verbose){
+        message("syntheticGeno start ", Sys.time())
+    }
     resG <- syntheticGeno(gdsReference=gdsReference, gdsRefAnnot=gdsRefAnnot,
                 fileProfileGDS=fileGDSProfile, profileID=currentProfile,
                 listSampleRef=listProfileRef, prefix="1")
@@ -2720,7 +2728,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     ## Open the Profile GDS file
     gdsProfile <- snpgdsOpen(fileGDSProfile)
 
-
+    if(verbose){
+        message("SyntheticAncestry start ", Sys.time())
+    }
     ## This variable will contain the results from the PCA analyses
     ## For each row of the sampleRM matrix
     resSyn <- lapply(seq_len(nrow(sampleRM)), FUN=function(x, sampleRM,
@@ -2737,6 +2747,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
     }, sampleRM=sampleRM, gdsProfile=gdsProfile, studyDFSyn=studyDFSyn,
             spRef=spRef, currentProfile=currentProfile)
 
+    if(verbose){
+        message("SyntheticAncestry end ", Sys.time())
+    }
     resSyn <- do.call(rbind, resSyn)
     ## Extract the super-population information from the 1KG GDS file
     ## for profiles associated to the synthetic study
@@ -2756,7 +2769,9 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
                     gdsProfile=gdsProfile, syntheticKNN=resSyn,
                     pedSyn=pedSyn, currentProfile=currentProfile, spRef=spRef,
                     studyIDSyn=studyDFSyn$study.id, np=np)
-
+    if(verbose){
+        message("Ancestry end ", Sys.time())
+    }
     # saveRDS(resCall, file.path(pathOut,
     #                            paste0(currentProfile, ".infoCall", ".rds")))
     #
@@ -3541,15 +3556,15 @@ createProfile <- function(profileFile, profileName,
                             ALT = alDf[2,],
                             stringsAsFactors = FALSE
         )
-        listChr <- unique(listPos$chr)
+        # listChr <- unique(listPos$chr)
         # We can optimize
-        listPos <- lapply(listChr,
-                        FUN=function(x, varDf){
-                            return(varDf[which(varDf$chr == x),])
-                        },
-                        varDf=listPos)
-        names(listPos) <- paste0("chr", listChr)
-        rm(alDf,listChr)
+        # listPos <- lapply(listChr,
+        #                 FUN=function(x, varDf){
+        #                     return(varDf[which(varDf$chr == x),])
+        #                 },
+        #                 varDf=listPos)
+        # names(listPos) <- paste0("chr", listChr)
+        rm(alDf)
     } else{
         listPos <- data.frame(snp.chromosome=read.gdsn(index.gdsn(node=gdsReference, "snp.chromosome")),
                               snp.position=read.gdsn(index.gdsn(node=gdsReference, "snp.position")))

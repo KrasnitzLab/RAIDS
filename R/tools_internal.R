@@ -678,14 +678,24 @@ readSNVBAM <- function(fileName,
                                         yieldSize=10000000),
                        verbose=FALSE) {
     # Note the offset is apply to the ref not the sequemce (snp-pileup and vcf)
-    listChr <- names(varSelected)
-    varSelected <- lapply(seq_len(length(varSelected)),
-                          FUN=function(x, varSelected){
-                              varSelected[[x]]$chr <- paste0("chr", varSelected[[x]]$chr)
-                              varSelected[[x]]$start <- varSelected[[x]]$start - offset
-                              return(varSelected[[x]])
-                          },
-                          varSelected=varSelected)
+    varSelected$chr <- paste0("chr", varSelected$chr)
+    varSelected$start <- varSelected$start - offset
+    listChr <- unique(varSelected$chr)
+    # listChr <- names(varSelected)
+    varSelected <- lapply(listChr,
+                    FUN=function(x, varDf){
+                        return(varDf[which(varDf$chr == x),])
+                    },
+                    varDf=varSelected)
+
+    # names(listPos) <- paste0("chr", listChr)
+    # varSelected <- lapply(seq_len(length(varSelected)),
+    #                       FUN=function(x, varSelected){
+    #                           varSelected[[x]]$chr <- paste0("chr", varSelected[[x]]$chr)
+    #                           varSelected[[x]]$start <- varSelected[[x]]$start + offset
+    #                           return(varSelected[[x]])
+    #                       },
+    #                       varSelected=varSelected)
     names(varSelected) <- listChr
     #varSelected$chr <- paste0("chr", varSelected$chr)
     #varSelected$start <- varSelected$start - offset
@@ -800,7 +810,7 @@ readSNVBAM <- function(fileName,
     }
     resSNP <- resSNP[, c("seqnames", "pos", "REF", "ALT", "File1R", "File1A", "count", "A", "C", "G", "T")]
     colnames(resSNP) <- c("Chromosome", "Position", "Ref", "Alt", "File1R", "File1A", "count", "A", "C", "G", "T")
-
+    resSNP$Position <- resSNP$Position  + offset
 
     if(verbose) {message("readSNVBAM pileup format Done ",
                          Sys.time())}

@@ -3,7 +3,7 @@ CHANGES IN VERSION 1.5.1
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o Intagration of Rsamtools
+    o Integration of Rsamtools
 
 CHANGES IN VERSION 1.3.3
 ------------------------

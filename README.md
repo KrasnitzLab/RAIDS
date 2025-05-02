@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![codecov](https://codecov.io/gh/krasnitzlab/RAIDS/branch/main/graph/badge.svg?token=LPFLOMUDVT)](https://codecov.io/gh/krasnitzlab/RAIDS)
+[![codecov](https://codecov.io/gh/adeschen/RAIDS/graph/badge.svg?token=JTTO1CH8AZ)](https://codecov.io/gh/adeschen/RAIDS)
 [![R-CMD-check-bioc](https://github.com/krasnitzlab/RAIDS/actions/workflows/check-bioc.yaml/badge.svg)](https://github.com/krasnitzlab/RAIDS/actions/workflows/check-bioc.yaml)
 <!-- badges: end -->
 

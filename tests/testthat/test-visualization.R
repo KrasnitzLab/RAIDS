@@ -158,7 +158,7 @@ test_that("createAccuracyGraph() must return a gglot object when successful", {
     
     
     graphE <-createAUROCGraph(dfAUROC=dfAuroc, title="", 
-        selectD=c(2,3), selectColor=c("#5e688a", "#cd5700", "#CC79A7"))
+        selectD=c(2,3), selectColor=c("#5e688a", "#CC79A7"))
     
     testthat::expect_is(graphE, "ggplot")
 })

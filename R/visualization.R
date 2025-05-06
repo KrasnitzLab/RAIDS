@@ -166,12 +166,8 @@ createAUROCGraph <- function(dfAUROC, title="",
         selectD=c(3,7,11), selectColor=c("#5e688a", "#cd5700", "#CC79A7")) {
 
     ## Validate parameters
-    # validateCreateAccuracyGraph(fileRDS=fileRDS, title=title, selectD=selectD,
-    #                             selectColor=selectColor)
-    #
-    ## Extract required information from RDS file
-    # info <- readRDS(fileRDS)
-    # dfAUROC <- info$paraSample$dfAUROC
+    validatecreateAUROCGraph(dfAUROC=dfAUROC, title=title, selectD=selectD,
+                                    selectColor=selectColor)
 
     if (!all(selectD %in% unique(dfAUROC$D))) {
         stop("Not all values in \'selectD\' are present in the RDS file.")

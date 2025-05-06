@@ -91,6 +91,18 @@ test_that("createAccuracyGraph() must return error when selectD has 6 elements",
 })
 
 
+test_that("createAccuracyGraph() must return error when selectD value not in the file", {
+    
+    fileGDS <- test_path("fixtures", "TEST_01.infoCall.RDS")
+    
+    error_message <- paste0("Not all values in \'selectD\' are present in the RDS file.")
+    
+    expect_error(createAccuracyGraph(fileRDS=fileGDS, title="", 
+                    selectD=c(32,32,34), selectColor=c("#5e688a", "#cd5700", "#CC79A7")), 
+                 error_message)
+})
+
+
 test_that("createAccuracyGraph() must return error when selectColor shorter than selectD", {
     
     fileGDS <- test_path("fixtures", "TEST_01.infoCall.RDS")

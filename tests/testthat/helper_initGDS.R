@@ -8,7 +8,7 @@ library(gdsfmt)
 ## The file will be removed automatically
 local_GDS_Sample_file <- function(path, env = parent.frame()) {
     GDS_file_tmp  <- createfn.gds(filename=path)
-    defer(unlink(x=path, force=TRUE), envir = env)
+    withr::defer(unlink(x=path, force=TRUE), envir = env)
 
     add.gdsn(GDS_file_tmp, "Ref.count", rep(10L, 12))
     add.gdsn(GDS_file_tmp, "Alt.count", rep(12L, 12))
@@ -24,7 +24,7 @@ local_GDS_Sample_file <- function(path, env = parent.frame()) {
 ## The file will be removed automatically
 local_GDS_1KG_file <- function(path, env = parent.frame()) {
     GDS_file_tmp  <- createfn.gds(filename=path)
-    defer(unlink(x=path, force=TRUE), envir = env)
+    withr::defer(unlink(x=path, force=TRUE), envir = env)
 
     ## Create sample information initial
     add.gdsn(GDS_file_tmp, "sample.id", c("HTT101", "HTT102", "HTT103"))

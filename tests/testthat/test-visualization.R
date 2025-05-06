@@ -102,3 +102,14 @@ test_that("createAccuracyGraph() must return error when selectColor shorter than
         selectD=c(1,2,3,4), selectColor=c("#5e688a", "#cd5700", "#CC79A7")), 
                  error_message)
 })
+
+
+test_that("createAccuracyGraph() must return a gglot object when successful", {
+    
+    fileGDS <- test_path("fixtures", "TEST_01.infoCall.RDS")
+    
+    graphE <-createAccuracyGraph(fileRDS=fileGDS, title="", 
+                selectD=c(7,8,9), selectColor=c("#5e688a", "#cd5700", "#CC79A7"))
+    
+    testthat::expect_is(graphE, "ggplot")
+})

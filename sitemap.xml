@@ -102,6 +102,7 @@
 <url><loc>/reference/tableBlockAF.html</loc></url>
 <url><loc>/reference/testAlleleFractionChange.html</loc></url>
 <url><loc>/reference/testEmptyBox.html</loc></url>
+<url><loc>/reference/validateAccuracyGraphInternal.html</loc></url>
 <url><loc>/reference/validateAdd1KG2SampleGDS.html</loc></url>
 <url><loc>/reference/validateAddStudy1Kg.html</loc></url>
 <url><loc>/reference/validateCharacterString.html</loc></url>
@@ -129,6 +130,7 @@
 <url><loc>/reference/validateSingleRatio.html</loc></url>
 <url><loc>/reference/validateStudyDataFrameParameter.html</loc></url>
 <url><loc>/reference/validateSyntheticGeno.html</loc></url>
+<url><loc>/reference/validatecreateAUROCGraph.html</loc></url>
 <url><loc>/reference/validatecreateProfile.html</loc></url>
 <url><loc>/reference/wrapperAncestry.html</loc></url>
 </urlset>

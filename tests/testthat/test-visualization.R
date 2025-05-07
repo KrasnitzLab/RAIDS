@@ -205,3 +205,34 @@ test_that("createAccuracyGraph() must return error when dfAUROC is an integer", 
             selectD=c(2, 3), selectColor=c("#cd5700", "#CC79A7")), 
                  error_message)
 })
+
+
+test_that("createAccuracyGraph() must return error when selectD not in the data frame", {
+    
+    dfAuroc <- data.frame(D=c(rep(2, 15), rep(3, 15)),
+                          K=c(rep(c(2, 3, 4), 10)), 
+                          Call=c("EUR", "EUR", "EUR", "AMR", "AMR", "AMR",
+                                 "EAS", "EAS", "EAS", "SAS", "SAS", "SAS", 
+                                 "AFR", "AFR", "AFR",
+                                 "EUR", "EUR", "EUR", "AMR", "AMR", "AMR",
+                                 "EAS", "EAS", "EAS", "SAS", "SAS", "SAS", 
+                                 "AFR", "AFR", "AFR"),
+                          AUROC=c(0.95000, 0.9628737, 0.9701246, 0.8337130,
+                                  0.8509514, 0.9800000, 0.9158718, 0.9267399,
+                                  0.9386384, 0.7484138, 0.9000000, 0.9892067,
+                                  0.88000, 0.8758737, 0.9021246,
+                                  0.99000, 0.9888737, 0.9931246, 0.8837130,
+                                  0.8959514, 1.0000000, 0.9788718, 0.9977399,
+                                  0.9886384, 0.8244138, 1.0000000, 0.9982067,
+                                  0.92000, 0.8998737, 0.9251246))
+    dfAuroc$L <- dfAuroc$AUROC - 0.03
+    dfAuroc$H <- dfAuroc$AUROC + 0.02
+    dfAuroc$H[which(dfAuroc$H > 1.0000)] <- 1.0000000
+    
+    error_message <- paste0("Not all values in \'selectD\' are present in ", 
+                                "the \'dfAUROC\' data frame.")
+    
+    expect_error(createAUROCGraph(dfAUROC=dfAuroc, title="", 
+            selectD=c(2, 4), selectColor=c("#cd5700", "#CC79A7")), 
+                 error_message)
+})

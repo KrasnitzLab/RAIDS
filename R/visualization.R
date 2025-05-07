@@ -78,14 +78,13 @@ createAccuracyGraph <- function(fileRDS, title="",
     ## Generate graph
     accuracy <- ggplot(dfAUROC, aes(x=.data$K, y=.data$AUC, group=.data$D,
                                 color=.data$D, linetype=.data$D)) +
-        ylab(label = "AUROC") +
         geom_ribbon(aes(ymin=.data$L, ymax=.data$H, group=.data$D),
                 linetype="dotted", linewidth=2, alpha=0.1) +
         geom_line(linewidth=2) + facet_grid(. ~ Call) +
-        ylim(c(ymin, 1)) + ggtitle(title) +
+        ylim(c(ymin, 1)) + ggtitle(title) + ylab(label = "AUROC") +
         scale_colour_manual(aesthetics = c("colour", "fill"),
                 breaks=selectD, values=selectColor) +
-        theme_classic() +
+        theme_classic() + 
         theme(axis.text=element_text(size=20, colour = "black"),
             panel.background = element_rect(color="black"),
             axis.text.x=element_text(size=20, angle=90,
@@ -176,8 +175,6 @@ createAUROCGraph <- function(dfAUROC, title="",
     ## Retained selected dimensions
     dfAUROC <- dfAUROC[which(dfAUROC$D %in% selectD), ]
     dfAUROC$D <- as.factor(dfAUROC$D)
-
-    colnames(dfAUROC)[colnames(dfAUROC) == "D"] <- "D"
 
     ## Set y axis minimum value
     ymin <- min(c(dfAUROC$L)) - 0.008

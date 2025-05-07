@@ -91,10 +91,8 @@ createAccuracyGraph <- function(fileRDS, title="",
                     vjust = 0.5, hjust=1, colour="black"),
             plot.title = element_text(size=22, face="bold",
                     colour="gray20", hjust=0.5),
-            axis.title.x=element_text(size=30,face="bold.italic"),
-            axis.title.y=element_text(size=30,face="bold.italic"),
-            strip.text.x  = element_text(size=20, face="bold"),
-            strip.text.y  = element_text(size=20, face="bold"),
+            axis.title=element_text(size=30,face="bold.italic"),
+            strip.text  = element_text(size=20, face="bold"),
             strip.background = element_rect(fill="gray90"),
             legend.text=element_text(size=19),
             legend.title=element_text(size=22, face="bold.italic"))
@@ -169,7 +167,8 @@ createAUROCGraph <- function(dfAUROC, title="",
                                     selectColor=selectColor)
 
     if (!all(selectD %in% unique(dfAUROC$D))) {
-        stop("Not all values in \'selectD\' are present in the RDS file.")
+        stop("Not all values in \'selectD\' are present in the \'dfAUROC\' ", 
+                "data frame.")
     }
 
     ## Retained selected dimensions
@@ -182,27 +181,24 @@ createAUROCGraph <- function(dfAUROC, title="",
     ## Generate graph
     accuracy <- ggplot(dfAUROC, aes(x=.data$K, y=.data$AUROC, group=.data$D,
                                     color=.data$D, linetype=.data$D)) +
-        ylab(label = "AUROC") +
         geom_ribbon(aes(ymin=.data$L, ymax=.data$H, group=.data$D),
                     linetype="dotted", linewidth=2, alpha=0.1) +
         geom_line(linewidth=2) + facet_grid(. ~ Call) +
-        ylim(c(ymin, 1)) + ggtitle(title) +
         scale_colour_manual(aesthetics = c("colour", "fill"),
                             breaks=selectD, values=selectColor) +
+        ylim(c(ymin, 1)) + ggtitle(title) + ylab(label = "AUROC") + 
         theme_classic() +
-        theme(axis.text=element_text(size=20, colour = "black"),
-              panel.background = element_rect(color="black"),
-              axis.text.x=element_text(size=20, angle=90,
+        theme(axis.text=element_text(size=20, colour="black"),
+            panel.background = element_rect(color="black"),
+            axis.text.x=element_text(size=20, angle=90,
                                        vjust = 0.5, hjust=1, colour="black"),
-              plot.title = element_text(size=22, face="bold",
+            plot.title=element_text(size=22, face="bold",
                                         colour="gray20", hjust=0.5),
-              axis.title.x=element_text(size=30,face="bold.italic"),
-              axis.title.y=element_text(size=30,face="bold.italic"),
-              strip.text.x  = element_text(size=20, face="bold"),
-              strip.text.y  = element_text(size=20, face="bold"),
-              strip.background = element_rect(fill="gray90"),
-              legend.text=element_text(size=19),
-              legend.title=element_text(size=22, face="bold.italic"))
+            axis.title=element_text(size=30, face="bold.italic"),
+            strip.text=element_text(size=20, face="bold"),
+            strip.background = element_rect(fill="gray90"),
+            legend.text=element_text(size=19),
+            legend.title=element_text(size=22, face="bold.italic"))
 
     ## Successful
     return(accuracy)

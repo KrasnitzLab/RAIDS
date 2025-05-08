@@ -3,7 +3,7 @@
 library(RAIDS)
 library(withr)
 library(gdsfmt)
-
+library(Rsamtools)
 
 #############################################################################
 ### Tests validateGDSClass() results
@@ -280,4 +280,26 @@ test_that("readSNVVCF() must return expected results", {
     expect_equal(nrow(result1), 60)
     expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 
                                       "File1R", "File1A", "count"))
+})
+
+
+#############################################################################
+### Tests readSNVVCF() results
+#############################################################################
+
+context("readSNVBAM")
+
+
+test_that("readSNVBAM() must return expected results", {
+    
+    fileTxt <- system.file("extdata", "no_which_buffered_pileup.bam", 
+                            package="Rsamtools", mustWork=TRUE)
+    
+    result1 <- RAIDS:::readSNVBAM(fileTxt, varSelected=data.frame(chr=c(1,1), 
+                        start=c(3,5), REF=c("A", "A"), ALT=c("C", "C")))
+    
+    expect_equal(ncol(result1), 11)
+    expect_equal(nrow(result1), 2)
+    expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 
+                        "File1R", "File1A", "count", "A", "C", "G", "T"))
 })

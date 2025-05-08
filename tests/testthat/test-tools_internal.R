@@ -276,7 +276,6 @@ test_that("readSNVVCF() must return expected results", {
     
     result1 <- RAIDS:::readSNVVCF(fileName=fileTxt, profileName=NULL, offset=0L)
     
-    
     expect_equal(ncol(result1), 7)
     expect_equal(nrow(result1), 60)
     expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 

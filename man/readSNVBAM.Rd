@@ -23,7 +23,9 @@ the path, of a BAM file with the index file in the same directory}
 position of the SNVs. The value of offset
 is added to the position present in the file. Default: \code{0L}.}
 
-\item{paramSNVBAM}{a \code{data.frame} representing}
+\item{paramSNVBAM}{a \code{list} containing the parameters passed to the
+BamFile() function. Default: \code{list(ScanBamParam=NULL, PileupParam=NULL, 
+yieldSize=10000000)}.}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}
@@ -54,9 +56,15 @@ the file.
 \examples{
 
 
-## Directory where demo SNP-pileup file
-dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
-
+## Required library for this example to run correctly
+if (requireNamespace("Rsamtools", quietly=TRUE)) {
+    ## Demo bam
+    fl <- system.file("extdata", "no_which_buffered_pileup.bam", 
+            package="Rsamtools", mustWork=TRUE)
+          
+    RAIDS:::readSNVBAM(fl, varSelected=data.frame(chr=c(1,1), 
+                start=c(3,5), REF=c("A", "A"), ALT=c("C", "C")))
+}
 
 }
 \author{

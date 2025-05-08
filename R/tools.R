@@ -120,13 +120,13 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
     ##                            in the range (0,1)">
     #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
 
-    cat(paste0('##fileformat=VCFv4.3', "\n"), file = fileOut)
+    cat(paste0('##fileformat=VCFv4.3', "\n"), file=fileOut)
     cat(paste0('##FILTER=<ID=PASS,Description="All filters passed">',
-                "\n"), file = fileOut, append=TRUE)
+                "\n"), file=fileOut, append=TRUE)
     cat(paste0('##INFO=<ID=AF,Number=A,Type=Float,',
                 'Description="Estimated allele frequency in the range (0,1)">',
-                "\n"), file = fileOut, append=TRUE)
-    cat('#', file = fileOut, append=TRUE)
+                "\n"), file=fileOut, append=TRUE)
+    cat('#', file=fileOut, append=TRUE)
 
     write.table(df, file=fileOut, sep="\t", append=TRUE, row.names=FALSE,
                     col.names=TRUE, quote=FALSE)

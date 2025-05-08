@@ -620,7 +620,9 @@ processPileupChrBin <- function(chr, resPileup, varDf, verbose) {
 #' the path, of a BAM file with the index file in the same directory
 #'
 #'
-#' @param paramSNVBAM a \code{data.frame} representing
+#' @param paramSNVBAM a \code{list} containing the parameters passed to the 
+#' BamFile() function. Default: \code{list(ScanBamParam=NULL, PileupParam=NULL, 
+#' yieldSize=10000000)}.
 #'
 #' @param varSelected a \code{data.frame} representing the position to keep
 #'
@@ -650,23 +652,25 @@ processPileupChrBin <- function(chr, resPileup, varDf, verbose) {
 #' @examples
 #'
 #'
-#' ## Directory where demo SNP-pileup file
-#' dataDir <- system.file("extdata/example/snpPileup", package="RAIDS")
-#'
-#'
+#' ## Required library for this example to run correctly
+#' if (requireNamespace("Rsamtools", quietly=TRUE)) {
+#'     ## Demo bam
+#'     fl <- system.file("extdata", "no_which_buffered_pileup.bam", 
+#'             package="Rsamtools", mustWork=TRUE)
+#'           
+#'     RAIDS:::readSNVBAM(fl, varSelected=data.frame(chr=c(1,1), 
+#'                 start=c(3,5), REF=c("A", "A"), ALT=c("C", "C")))
+#' }
+#' 
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom Rsamtools BamFile ScanBamParam PileupParam pileup
 #' @importFrom MatrixGenerics rowRanges
 #' @importFrom GenomicRanges seqnames start width
 #' @encoding UTF-8
 #' @keywords internal
-readSNVBAM <- function(fileName,
-                       varSelected,
-                       offset = 0L,
-                       paramSNVBAM=list(ScanBamParam=NULL,
-                                        PileupParam=NULL,
-                                        yieldSize=10000000),
-                       verbose=FALSE) {
+readSNVBAM <- function(fileName, varSelected, offset=0L,
+                        paramSNVBAM=list(ScanBamParam=NULL, PileupParam=NULL,
+                            yieldSize=10000000), verbose=FALSE) {
     # Note the offset is apply to the ref not the sequemce (snp-pileup and vcf)
     varSelected$chr <- paste0("chr", varSelected$chr)
     varSelected$start <- varSelected$start - offset
@@ -709,8 +713,6 @@ readSNVBAM <- function(fileName,
                            include_insertions=FALSE)
     }
 
-
-
     i<-1
     res <- list()
     vcfChr <- list()
@@ -732,59 +734,55 @@ readSNVBAM <- function(fileName,
 
         #print(paste0("nb Chr ", length(listChr)))
         res[[i]] <- NULL
-        if(length(listChr) > 0 ){
+        if(length(listChr) > 0 ) {
             tmpChr <- grep("chr", listChr)
             if(length(tmpChr) != length(listChr)){
                 listChg <- listChr[-1* tmpChr]
                 for(i in seq_len(length(listChg))){
-                    resPileup$seqnames[resPileup$seqnames == listChg[i]] = paste0("chr", listChg[i])
+                    resPileup$seqnames[resPileup$seqnames == listChg[i]] <- 
+                            paste0("chr", listChg[i])
                 }
                 listChr <- unique(as.character(resPileup$seqnames))
             }
-            if(sum(!(listChr %in% names(varSelected))) == length(listChr)){
+            if(sum(!(listChr %in% names(varSelected))) == length(listChr)) {
                 # message("End chromosome")
                 break
             }
             # print(paste0("Current chr ", listChr))
-            if(verbose) {message("readSNVBAM processPileupChrBin start ",
-                                 Sys.time())}
+            if(verbose) { message("readSNVBAM processPileupChrBin start ",
+                                 Sys.time()) }
             tmp <- lapply(listChr,
-                          FUN=function(x, res, varSelected){
-                              return(processPileupChrBin(chr=x, res, varDf=varSelected, verbose=verbose))
-                          },
-                          res=resPileup,
+                    FUN=function(x, res, varSelected){
+                            return(processPileupChrBin(chr=x, res, 
+                                varDf=varSelected, verbose=verbose))
+                          }, res=resPileup,
                           varSelected=varSelected)
-            if(verbose) {message("readSNVBAM processPileupChrBin end ",
-                                 Sys.time())}
-            # print("aye2")
-            if(length(tmp) > 0){
+            if(verbose) { message("readSNVBAM processPileupChrBin end ",
+                                 Sys.time()) }
+            
+            if(length(tmp) > 0) {
                 res[[i]] <- do.call(rbind, tmp)
                 i <- i + 1
                 #message(nrow(res[[i]]), " rows in result data.frame")
             }
-            # print("aye3")
         }
 
         if(nrow(resPileup) == 0L){
             k <- k + 1
-            # print(paste0("Break ", k))
-            if(k > 20){
+            if(k > 20) {
                 break
             }
         }else{
             k <- 0
             # i <- i + 1
         }
-        if(verbose) {message("readSNVBAM pileup end repeat ",
-                             Sys.time())}
+        if(verbose) { message("readSNVBAM pileup end repeat ", Sys.time()) }
     }
-    if(verbose) {message("readSNVBAM pileup Done ",
-                         Sys.time())}
+    if(verbose) {message("readSNVBAM pileup Done ", Sys.time())}
     resSNP <- do.call(rbind,res)
     close(bf)
 
-    if(verbose) {message("readSNVBAM pileup user ",
-                         k, " i ", i)}
+    if(verbose) {message("readSNVBAM pileup user ", k, " i ", i)}
 
     resSNP$File1R <- rep(0, nrow(resSNP))
     resSNP$File1A <- rep(0, nrow(resSNP))
@@ -798,12 +796,13 @@ readSNVBAM <- function(fileName,
             resSNP$File1A[tmp] <- resSNP[tmp, nuc]
         }
     }
-    resSNP <- resSNP[, c("seqnames", "pos", "REF", "ALT", "File1R", "File1A", "count", "A", "C", "G", "T")]
-    colnames(resSNP) <- c("Chromosome", "Position", "Ref", "Alt", "File1R", "File1A", "count", "A", "C", "G", "T")
+    resSNP <- resSNP[, c("seqnames", "pos", "REF", "ALT", "File1R", "File1A", 
+                                "count", "A", "C", "G", "T")]
+    colnames(resSNP) <- c("Chromosome", "Position", "Ref", "Alt", "File1R", 
+                                "File1A", "count", "A", "C", "G", "T")
     resSNP$Position <- resSNP$Position  + offset
 
-    if(verbose) {message("readSNVBAM pileup format Done ",
-                         Sys.time())}
+    if(verbose) {message("readSNVBAM pileup format Done ", Sys.time())}
     return(resSNP)
 }
 

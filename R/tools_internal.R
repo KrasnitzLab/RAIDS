@@ -320,8 +320,7 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 
 #' @title Read a VCF file with the genotypes use for the ancestry call
 #'
-#' @description The function reads VCF file and
-#' returns a data frame
+#' @description The function reads VCF file and returns a data frame
 #' containing the information about the read counts for the SNVs present in
 #' the file.
 #'
@@ -329,8 +328,8 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' the path, of a VCF file containing the SNV read counts.
 #' The VCF must contain those genotype fields: GT, AD, DP.
 #'
-#'
-#' @param profileName a \code{character} with Name.ID for the genotype name
+#' @param profileName a \code{character} with Name.ID for the genotype name.
+#' Default: \code{NULL}.
 #'
 #' @param offset a \code{integer} representing the offset to be added to the
 #' position of the SNVs. The value of offset
@@ -370,8 +369,7 @@ readSNVFileGeneric <- function(fileName, offset = 0L) {
 #' @importFrom GenomicRanges seqnames start width
 #' @encoding UTF-8
 #' @keywords internal
-readSNVVCF <- function(fileName,
-            profileName = NULL, offset = 0L) {
+readSNVVCF <- function(fileName, profileName=NULL, offset=0L) {
 
     vcf <- readVcf(fileName)
 
@@ -394,25 +392,20 @@ readSNVVCF <- function(fileName,
     countV <- as.integer(gtCur$DP)
     countA <- gtCur$AD
 
-    # Ok
-
     idVCF <- row.names(gtCur$GT)
-    tmp <- matrix(unlist(strsplit(idVCF, ":")),nrow=2)[2,]
-    alleleChar <- matrix(unlist(strsplit(tmp, "_")),nrow=2)[2,]
+    tmp <- matrix(unlist(strsplit(idVCF, ":")), nrow=2)[2,]
+    alleleChar <- matrix(unlist(strsplit(tmp, "_")), nrow=2)[2,]
     rm(tmp)
-
-
 
     matCur <- lapply(listKeep, FUN=function(x, countA, alleleChar){
 
             listAlt <- strsplit(alleleChar[x], "\\/")[[1]]
 
-            keep <- ifelse(listAlt[2] %in% c("A", "C", "G", "T"),TRUE,FALSE)
+            keep <- ifelse(listAlt[2] %in% c("A", "C", "G", "T"), TRUE, FALSE)
 
-            res <- data.frame( Alt = as.character(listAlt[2]),
-                        File1R = countA[[x]][1],
-                        File1A = countA[[x]][2],
-                        keep = keep)
+            res <- data.frame(Alt=as.character(listAlt[2]),
+                        File1R=countA[[x]][1], File1A=countA[[x]][2], 
+                        keep=keep)
 
             return(res)
         },
@@ -422,16 +415,13 @@ readSNVVCF <- function(fileName,
     matCur <- do.call(rbind, matCur)
     listTmp <- which(matCur$keep)
     listKeep <- listKeep[listTmp]
-    matSample <- data.frame(Chromosome = as.integer(gsub("chr", "",
-                                                colChr))[listKeep],
-                            Position = start[listKeep] + offset,
-                            Ref = refCur[listKeep],
-                            Alt = matCur$Alt[listTmp],
-                            File1R = matCur$File1R[listTmp],
-                            File1A = matCur$File1A[listTmp],
-                            count = gtCur$DP[,1],
-                            stringsAsFactors = FALSE
-    )
+    matSample <- data.frame(Chromosome=as.integer(gsub("chr", "",
+                                                        colChr))[listKeep],
+                    Position=start[listKeep] + offset,
+                    Ref=refCur[listKeep], Alt=matCur$Alt[listTmp],
+                    File1R=matCur$File1R[listTmp],
+                    File1A=matCur$File1A[listTmp],
+                    count=gtCur$DP[,1], stringsAsFactors=FALSE)
 
     return(matSample)
 }

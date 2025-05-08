@@ -247,7 +247,7 @@ test_that("readSNVFileGeneric() must return error when file does not content exp
 })
 
 
-test_that("readSNVPileupFile() must return expected value when all parameters are valid", {
+test_that("readSNVFileGeneric() must return expected value when all parameters are valid", {
     
     data.dir <- test_path("fixtures")
     fileTxt <- file.path(data.dir, "ex1.generic.txt.gz")
@@ -259,4 +259,26 @@ test_that("readSNVPileupFile() must return expected value when all parameters ar
     expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 
                                         "File1R", "File1A", "count"))
     
+})
+
+
+#############################################################################
+### Tests readSNVVCF() results
+#############################################################################
+
+context("readSNVVCF")
+
+
+test_that("readSNVVCF() must return expected results", {
+    
+    data.dir <- test_path("fixtures")
+    fileTxt <- file.path(data.dir, "ex1_small.vcf.gz")
+    
+    result1 <- RAIDS:::readSNVVCF(fileName=fileTxt, profileName=NULL, offset=0L)
+    
+    
+    expect_equal(ncol(result1), 7)
+    expect_equal(nrow(result1), 60)
+    expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 
+                                      "File1R", "File1A", "count"))
 })

@@ -861,8 +861,8 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
              "representing the Reference GDS file. The file must exist.")
     }
     if (!(is.character(fileBlock) && (file.exists(fileBlock)))) {
-        stop("The \'fileBlock\' must be a character string ",
-             "representing the file .det from plink block result. The file must exist.")
+        stop("The \'fileBlock\' must be a character string representing the", 
+                " file .det from plink block result. The file must exist.")
     }
 
     gdsReference <- snpgdsOpen(filename=fileReferenceGDS)

@@ -3,7 +3,8 @@
 library(RAIDS)
 library(withr)
 library(gdsfmt)
-
+library(GenomeInfoDb)
+library(BSgenome.Hsapiens.UCSC.hg38)
 
 #############################################################################
 ### Tests testEmptyBox() results
@@ -90,4 +91,49 @@ test_that("computeLOHBlocksDNAChr() must return expected results", {
                     LOH=c(rep(0, 12)))
 
     expect_equal(result, expected)
+})
+
+
+#############################################################################
+### Tests computeAllelicFractionRNA() results
+#############################################################################
+
+context("computeAllelicFractionRNA() results")
+
+
+test_that("computeAllelicFractionRNA() must return expected results", {
+    
+    dataDir <- testthat::test_path("fixtures")
+    fileGDS <- file.path(dataDir, "ex1_good_small_1KG_GDS.gds")
+    fileAnnotGDS <- file.path(dataDir, "ex1_good_small_1KG_Annot_GDS.gds")
+    
+    ## Open the reference GDS file
+    gds1KG <- snpgdsOpen(fileGDS)
+    withr::defer((gdsfmt::closefn.gds(gds1KG)), envir = parent.frame())
+    
+    ## Open the reference GDS file
+    gds1_Annot_KG <- openfn.gds(fileAnnotGDS)
+    withr::defer((gdsfmt::closefn.gds(gds1_Annot_KG)), envir = parent.frame())
+    
+    ## Open Profile GDS file for one profile
+    dataDir <- system.file("extdata/tests", package="RAIDS")
+    fileProfile <- file.path(tempdir(), "ex1.gds")
+    file.copy(file.path(dataDir, "ex1_demo_with_pruning_and_1KG_annot.gds"),
+                            fileProfile)
+    profileGDS <- openfn.gds(fileProfile)
+    withr::defer((gdsfmt::closefn.gds(profileGDS)), envir = parent.frame())
+    
+    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    
+    result <- RAIDS:::computeAllelicFractionRNA(gdsReference=gds1KG,
+        gdsSample=profileGDS, gdsRefAnnot=gds1_Annot_KG, currentProfile="ex1", 
+        studyID="MYDATA", blockID="GeneS.Ensembl.Hsapiens.v86", 
+        chrInfo=chrInfo, minCov=35L, minProb=0.999, eProb=0.001,
+        cutOffLOH=-5, cutOffAR=3, verbose=FALSE)
+    
+    expect_equal(nrow(result), 49)
+    expect_equal(ncol(result), 17)
+    expect_equal(colnames(result), c("cnt.tot", "cnt.ref", "cnt.alt", 
+        "snp.pos", "snp.chr", "normal.geno", "pruned", "snp.index", "keep", 
+        "hetero", "homo", "block.id", "phase", "lap", "LOH", "imbAR", "freq"))
 })

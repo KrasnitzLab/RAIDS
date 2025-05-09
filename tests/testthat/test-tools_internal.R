@@ -222,7 +222,7 @@ test_that("readSNVPileupFile() must return error when file does not content expe
 ### Tests readSNVFileGeneric() results
 #############################################################################
 
-context("readSNVFileGeneric")
+context("readSNVFileGeneric() results")
 
 
 test_that("readSNVFileGeneric() must return error when file does not content expected columns", {
@@ -266,7 +266,7 @@ test_that("readSNVFileGeneric() must return expected value when all parameters a
 ### Tests readSNVVCF() results
 #############################################################################
 
-context("readSNVVCF")
+context("readSNVVCF() results")
 
 
 test_that("readSNVVCF() must return expected results", {
@@ -287,7 +287,7 @@ test_that("readSNVVCF() must return expected results", {
 ### Tests readSNVVCF() results
 #############################################################################
 
-context("readSNVBAM")
+context("readSNVBAM() results")
 
 
 test_that("readSNVBAM() must return expected results", {
@@ -302,4 +302,52 @@ test_that("readSNVBAM() must return expected results", {
     expect_equal(nrow(result1), 2)
     expect_equal(colnames(result1), c("Chromosome", "Position", "Ref", "Alt", 
                         "File1R", "File1A", "count", "A", "C", "G", "T"))
+})
+
+
+
+#############################################################################
+### Tests processBlockChr() results
+#############################################################################
+
+context("processBlockChr() results")
+
+
+test_that("processBlockChr() must return expected results", {
+    
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    
+    fileLdBlock <- test_path("fixtures", "ThisFileDoesntExist.txt")
+    
+    error_message <- paste0("The \'fileBlock\' must be a character string ", 
+        "representing the file .det from plink block result. ", 
+        "The file must exist.")
+
+    expect_error(RAIDS:::processBlockChr(fileReferenceGDS=fileGDS, 
+        fileBlock=fileLdBlock), error_message)
+})
+
+
+test_that("processBlockChr() must return expected results", {
+    
+    fileGDS <- test_path("fixtures", "1KG_Test.gds")
+    
+    blockChr <- data.frame(CHR=c(rep(1, 4)), BP1=c(51897, 54707, 55544, 61986),
+        BP2=c(51927, 54715, 59039, 66506), KB=c(0.031, 0.009, 3.496, 4.521),
+        NSNPS=c(2, 2, 2, 3), SNPS=c("s3|s4", "s6|s7", "s14|s15", 
+                            "s17|s18|s31"), stringsAsFactors=FALSE)
+    
+    
+    tmpF3 <- tempfile("block.DEMO", fileext = c(".det"))
+    
+    withr::defer(if(file.exists(tmpF3)) unlink(tmpF3), envir=parent.frame())
+    
+    write.table(x=blockChr, file=tmpF3, sep=" ")
+    
+    results <- RAIDS:::processBlockChr(fileReferenceGDS=fileGDS, 
+        fileBlock=tmpF3)
+    
+    expect_equal(length(results), 2)
+    expect_equal(results$chr, c(1))
+    expect_equal(results$block.snp, c(-1, -2, 1, 1, -3, 2, 2))
 })

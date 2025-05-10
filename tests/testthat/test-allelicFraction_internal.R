@@ -137,3 +137,27 @@ test_that("computeAllelicFractionRNA() must return expected results", {
         "snp.pos", "snp.chr", "normal.geno", "pruned", "snp.index", "keep", 
         "hetero", "homo", "block.id", "phase", "lap", "LOH", "imbAR", "freq"))
 })
+
+
+#############################################################################
+### Tests calcAFMLRNA() results
+#############################################################################
+
+context("calcAFMLRNA() results")
+
+
+test_that("calcAFMLRNA() must return expected results", {
+    
+    subset <- data.frame(cnt.ref=c(31, 31, 28, 17), cnt.alt=c(16, 16, 11, 27),
+                    phase=c(3, 3, 3, 3))
+    
+    result <- RAIDS:::calcAFMLRNA(subset)
+    
+    expect_equal(length(result), 5)
+    expect_equal(result$lR, 4.057862, tolerance=1e-7)
+    expect_equal(result$aFraction, 0.3389831, tolerance=1e-7)
+    expect_equal(result$nPhase, 0)
+    expect_equal(result$sumAlleleLow, 60)
+    expect_equal(result$sumAlleleHigh, 117)
+    
+})

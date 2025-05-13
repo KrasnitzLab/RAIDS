@@ -582,6 +582,11 @@ test_that("addUpdateLap() must copy the expected entry in \"lap\" node of the GD
 })
 
 
+#############################################################################
+### Tests getBlockIDs() results
+#############################################################################
+
+
 context("getBlockIDs() results")
 
 
@@ -730,6 +735,4 @@ test_that("appendGDSSampleOnly() must copy the expected entry in \"sample.id\" n
 
     expect_equal(results, expected)
 })
-
-
 

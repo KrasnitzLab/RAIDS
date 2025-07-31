@@ -261,13 +261,13 @@ gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
 
-## GenomeInfoDb and BSgenome are required libraries to run this example
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+## Seqinfo and BSgenome are required libraries to run this example
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
       requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     ###########################################################################
     ## The path where the Sample GDS files (one per sample)
@@ -525,13 +525,13 @@ gds1KG <- snpgdsOpen(fileGDS)
 dataRef <- select1KGPop(gds1KG, nbProfiles=2L)
 closefn.gds(gds1KG)
 
-## GenomeInfoDb and BSgenome are required libraries to run this example
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+## Seqinfo and BSgenome are required libraries to run this example
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
       requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
   ## Chromosome length information
   ## chr23 is chrX, chr24 is chrY and chrM is 25
-  chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+  chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
   #############################################################################
   ## The path where the Sample GDS files (one per sample)

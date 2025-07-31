@@ -103,12 +103,12 @@ ped <- data.frame(Name.ID=c("Sample_01", "Sample_02"),
             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 
 ## Required library for this example to run correctly
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     ## Profiles used for synthetic data set
     syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",

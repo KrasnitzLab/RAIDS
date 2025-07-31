@@ -333,9 +333,9 @@ In this example, the profile is from DNA source and requires the use of the
 ```{r infere, echo=TRUE, eval=TRUE, collapse=TRUE, warning=FALSE, message=FALSE}
 
 ###########################################################################
-## GenomeInfoDb and BSgenome are required libraries to run this example
+## Seqinfo and BSgenome are required libraries to run this example
 ###########################################################################
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
       requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     #######################################################################
@@ -343,7 +343,7 @@ if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
     ## chr23 is chrX, chr24 is chrY and chrM is 25
     #######################################################################
     genome <- BSgenome.Hsapiens.UCSC.hg38::Hsapiens
-    chrInfo <- GenomeInfoDb::seqlengths(genome)[1:25]
+    chrInfo <- Seqinfo::seqlengths(genome)[1:25]
 
     #######################################################################
     ## The demo SNP VCF file of the DNA profile donor

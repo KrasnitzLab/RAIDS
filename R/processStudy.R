@@ -2013,12 +2013,12 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \donttest{
 #'
@@ -2301,12 +2301,12 @@ runExomeAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \donttest{
 #'
@@ -2616,12 +2616,12 @@ inferAncestry <- function(profileFile, pathProfileGDS,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \donttest{
 #'
@@ -2823,12 +2823,12 @@ inferAncestryDNA <- function(profileFile, pathProfileGDS,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \donttest{
 #'
@@ -3136,12 +3136,12 @@ runRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \donttest{
 #'

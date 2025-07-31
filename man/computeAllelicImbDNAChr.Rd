@@ -69,12 +69,12 @@ fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
 gds1KG <- snpgdsOpen(fileGDS)
 
 ## Required library for this example to run correctly
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     ## Data frame with SNV information for the specified chromosome (chr 1)
     snpInfo <- data.frame(cnt.tot=c(41, 17, 27, 15, 11, 37, 16, 32),

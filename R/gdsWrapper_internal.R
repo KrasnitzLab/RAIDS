@@ -1095,7 +1095,7 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 
     ## Calculate IBD coefficients by KING method of moment
     ibd.robust <- snpgdsIBDKING(gdsobj=gds, sample.id=profileID,
-                        snp.id=snpID, maf=maf,
+                        snp.id=snpID, maf=maf, missing.rate=0.01,
                         type="KING-robust",
                         verbose=verbose)
 

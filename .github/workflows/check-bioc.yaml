@@ -51,11 +51,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-         ##- { os: ubuntu-latest, r: '4.5.0', bioc: '3.21', cont: "bioconductor/bioconductor_docker:RELEASE_3_21", rspm: "https://packagemanager.posit.co/cran/__linux__/jammy/latest" }
          - { os: ubuntu-latest, r: 'devel', bioc: '3.22', cont: "bioconductor/bioconductor_docker:RELEASE_3_22", rspm: "https://packagemanager.posit.co/cran/__linux__/jammy/latest" }
-        ## - { os: macOS-latest, r: '4.4', bioc: '3.19'}
+         - { os: ubuntu-latest, r: '4.5.1', bioc: '3.21'}
          - { os: macOS-latest, r: '4.5.1', bioc: '3.21'}
-         ## - { os: windows-latest, r: '4.2.2', bioc: '3.16'}
          - { os: windows-latest, r: '4.5.1', bioc: '3.21'}
          
     env:

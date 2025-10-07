@@ -676,10 +676,9 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @importFrom utils read.csv
 #' @encoding UTF-8
 #' @keywords internal
-generateProfileGDS <- function(profileFile, profileName,
-                            listPos, offset, minCov=10, minProb=0.999,
-                            seqError=0.001, dfPedProfile, batch, studyDF, pathProfileGDS,
-                            genoSource, paramProfileGDS, verbose) {
+generateProfileGDS <- function(profileFile, profileName, listPos, offset, 
+    minCov=10, minProb=0.999, seqError=0.001, dfPedProfile, batch, studyDF, 
+    pathProfileGDS, genoSource, paramProfileGDS, verbose) {
 
     # File with the description of the SNP keep
     # if(genoSource == "VCF"){
@@ -712,12 +711,10 @@ generateProfileGDS <- function(profileFile, profileName,
     } else if(genoSource == "bam"){
 
         matSample <- readSNVBAM(fileName=profileFile,
-                                varSelected=listPos,
-                                paramSNVBAM=paramProfileGDS,
-                                offset,
-                                verbose=verbose)
+                        varSelected=listPos, paramSNVBAM=paramProfileGDS,
+                        offset, verbose=verbose)
         # listPos <- do.call(rbind, listPos)
-        colnames(listPos)[1:2] <- c("snp.chromosome", "snp.position")
+        colnames(listPos)[seq_len(2)] <- c("snp.chromosome", "snp.position")
 
     }
     # matAll <- merge(matSample[,c( "Chromosome", "Position",
@@ -731,7 +728,7 @@ generateProfileGDS <- function(profileFile, profileName,
     #
     # below same as the merge above but faster
 
-    if(verbose) {message("End read ", Sys.time())}
+    if(verbose) { message("End read ", Sys.time()) }
     g <- as.matrix(rep(-1, nrow(listPos)))
     z <- cbind(c(listPos$snp.chromosome, matSample$Chromosome,
                  matSample$Chromosome),
@@ -748,22 +745,20 @@ generateProfileGDS <- function(profileFile, profileName,
     rm(matSample)
     z <- z[order(z[,1], z[,2], z[,3]),]
 
-    matAll <- data.frame(Chromosome=z[z[, 3] == 1, 1],
-                         Position=z[z[, 3] == 1, 2], File1R=cumsum(z[, 4])[z[, 3] == 1],
-                         File1A=cumsum(z[,5])[z[, 3] == 1],
-                         count=cumsum(z[, 6])[z[, 3] == 1])
+    matAll <- data.frame(Chromosome=z[z[, 3] == 1, 1], 
+                Position=z[z[, 3] == 1, 2], File1R=cumsum(z[, 4])[z[, 3] == 1],
+                File1A=cumsum(z[,5])[z[, 3] == 1], 
+                count=cumsum(z[, 6])[z[, 3] == 1])
     rm(z)
 
     if(is.null(pathProfileGDS)){
         stop("pathProfileGDS is NULL in ",
-             "generateGDS1KGgenotypeFromSNPPileup\n")
+                "generateGDS1KGgenotypeFromSNPPileup\n")
     } else{
-        if(! dir.exists(pathProfileGDS)) {
-            dir.create(pathProfileGDS)
-        }
+        if(!dir.exists(pathProfileGDS)) { dir.create(pathProfileGDS) }
     }
-    fileGDSSample <- file.path(pathProfileGDS,
-                               paste0(profileName, ".gds"))
+    fileGDSSample <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
+    
     if(file.exists(fileGDSSample)) {
         gdsSample <- openfn.gds(fileGDSSample, readonly=FALSE)
     } else{
@@ -772,38 +767,37 @@ generateProfileGDS <- function(profileFile, profileName,
 
     if (! "Ref.count" %in% ls.gdsn(gdsSample)) {
         var.Ref <- add.gdsn(gdsSample, "Ref.count", matAll$File1R,
-                            valdim=c( nrow(listPos), 1),
-                            storage="sp.int16")
+                            valdim=c( nrow(listPos), 1), storage="sp.int16")
         var.Alt <- add.gdsn(gdsSample, "Alt.count", matAll$File1A,
-                            valdim=c( nrow(listPos), 1),
-                            storage="sp.int16")
-        var.Count <- add.gdsn(gdsSample, "Total.count",
-                              matAll$count, valdim=c( nrow(listPos), 1),
-                              storage="sp.int16")
+                            valdim=c( nrow(listPos), 1), storage="sp.int16")
+        var.Count <- add.gdsn(gdsSample, "Total.count", matAll$count, 
+                            valdim=c( nrow(listPos), 1), storage="sp.int16")
     } else {
         # you must append
         var.Ref <- append.gdsn(index.gdsn(gdsSample, "Ref.count"),
-                               matAll$File1R)
+                                    matAll$File1R)
         var.Alt <- append.gdsn(index.gdsn(gdsSample, "Alt.count"),
-                               matAll$File1A)
+                                    matAll$File1A)
         var.Count <- append.gdsn(index.gdsn(gdsSample, "Total.count"),
-                                 matAll$count)
+                                    matAll$count)
     }
 
-    listSampleGDS <- addStudyGDSSample(gdsSample,
-                                       pedProfile=dfPedProfile, batch=batch,
-                                       listSamples=c(profileName), studyDF=studyDF, verbose=verbose)
+    listSampleGDS <- addStudyGDSSample(gdsSample, pedProfile=dfPedProfile, 
+        batch=batch, listSamples=c(profileName), studyDF=studyDF, 
+        verbose=verbose)
 
     listCount <- table(matAll$count[matAll$count >= minCov])
     cutOffA <-
         data.frame(count=unlist(vapply(as.integer(names(listCount)),
-                                       FUN=function(x, minProb, eProb){
-                                           return(max(2,qbinom(minProb, x, eProb))) },
-                                       FUN.VALUE=numeric(1), minProb=minProb, eProb=2 * seqError)),
-                   allele=unlist(vapply(as.integer(names(listCount)),
-                                        FUN=function(x, minProb, eProb){
-                                            return(max(2,qbinom(minProb, x, eProb))) },
-                                        FUN.VALUE=numeric(1), minProb=minProb, eProb=seqError)))
+            FUN=function(x, minProb, eProb){
+                    return(max(2,qbinom(minProb, x, eProb))) },
+                        FUN.VALUE=numeric(1), minProb=minProb, 
+                        eProb=2 * seqError)),
+                        allele=unlist(vapply(as.integer(names(listCount)),
+                            FUN=function(x, minProb, eProb){
+                                return(max(2,qbinom(minProb, x, eProb))) },
+                                    FUN.VALUE=numeric(1), minProb=minProb, 
+                                    eProb=seqError)))
 
     row.names(cutOffA) <- names(listCount)
     # Initialize the genotype array at -1
@@ -845,18 +839,15 @@ generateProfileGDS <- function(profileFile, profileName,
         readmode.gdsn(var.geno)
 
     }else{
-        var.geno <- add.gdsn(gdsSample, "geno.ref",
-                             valdim=c(length(g), 1),
-                             g, storage="bit2", compress = "LZMA_RA.fast")
+        var.geno <- add.gdsn(gdsSample, "geno.ref", valdim=c(length(g), 1),
+                                g, storage="bit2", compress = "LZMA_RA.fast")
         readmode.gdsn(var.geno)
     }
 
     rm(g)
     closefn.gds(gdsfile=gdsSample)
 
-    if (verbose) {
-        message("End ", profileName, " ",  Sys.time())
-    }
+    if (verbose) { message("End ", profileName, " ",  Sys.time()) }
 
     ## Success
     return(0L)
@@ -1104,7 +1095,7 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 
     ## Calculate IBD coefficients by KING method of moment
     ibd.robust <- snpgdsIBDKING(gdsobj=gds, sample.id=profileID,
-                        snp.id=snpID, maf=maf,
+                        snp.id=snpID, maf=maf, missing.rate=0.01,
                         type="KING-robust",
                         verbose=verbose)
 

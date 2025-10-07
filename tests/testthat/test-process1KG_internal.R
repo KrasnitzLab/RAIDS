@@ -46,3 +46,37 @@ test_that("validateGenerateGDS1KG() must return expected results when all input 
 
     expect_identical(result1, 0L)
 })
+
+
+
+
+#############################################################################
+### Tests pruning1KGbyChr() results
+#############################################################################
+
+context("pruning1KGbyChr() results")
+
+
+test_that("pruning1KGbyChr() must return expected results when all input are valid", {
+    
+    set.seed(121)
+    
+    dataDir <- test_path("fixtures")
+    
+    gds1KG <- snpgdsOpen(file.path(dataDir, "1KG_Test.gds"))
+    withr::defer((snpgdsClose(gds1KG)), envir = parent.frame())
+    
+    outPrefix <- file.path(tempdir(), "Pruned_Test")
+    result1 <- RAIDS:::pruning1KGbyChr(gdsReference=gds1KG, 
+                                                    outPrefix=outPrefix)
+    withr::defer(if(file.exists(paste0(outPrefix, ".rds"))) 
+                    {unlink(paste0(outPrefix, ".rds"), force=TRUE)}, 
+                    envir=parent.frame())
+    
+    expect_identical(result1, 0L)
+    expect_true(file.exists(paste0(outPrefix, ".rds")))
+    
+    test <- readRDS(paste0(outPrefix, ".rds"))
+    
+    expect_identical(test, c("s5", "s7"))
+})

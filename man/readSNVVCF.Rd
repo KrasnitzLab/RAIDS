@@ -12,7 +12,8 @@ readSNVVCF(fileName, profileName = NULL, offset = 0L)
 the path, of a VCF file containing the SNV read counts.
 The VCF must contain those genotype fields: GT, AD, DP.}
 
-\item{profileName}{a \code{character} with Name.ID for the genotype name}
+\item{profileName}{a \code{character} with Name.ID for the genotype name.
+Default: \code{NULL}.}
 
 \item{offset}{a \code{integer} representing the offset to be added to the
 position of the SNVs. The value of offset
@@ -36,8 +37,7 @@ alternative nucleotide}
 }
 }
 \description{
-The function reads VCF file and
-returns a data frame
+The function reads VCF file and returns a data frame
 containing the information about the read counts for the SNVs present in
 the file.
 }

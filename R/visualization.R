@@ -78,24 +78,21 @@ createAccuracyGraph <- function(fileRDS, title="",
     ## Generate graph
     accuracy <- ggplot(dfAUROC, aes(x=.data$K, y=.data$AUC, group=.data$D,
                                 color=.data$D, linetype=.data$D)) +
-        ylab(label = "AUROC") +
         geom_ribbon(aes(ymin=.data$L, ymax=.data$H, group=.data$D),
-                linetype="dotted", cex=2, alpha=0.1) +
-        geom_line(cex=2) + facet_grid(. ~ Call) +
-        ylim(c(ymin, 1)) + ggtitle(title) +
+                linetype="dotted", linewidth=2, alpha=0.1) +
+        geom_line(linewidth=2) + facet_grid(. ~ Call) +
+        ylim(c(ymin, 1)) + ggtitle(title) + ylab(label = "AUROC") +
         scale_colour_manual(aesthetics = c("colour", "fill"),
                 breaks=selectD, values=selectColor) +
-        theme_classic() +
+        theme_classic() + 
         theme(axis.text=element_text(size=20, colour = "black"),
             panel.background = element_rect(color="black"),
             axis.text.x=element_text(size=20, angle=90,
                     vjust = 0.5, hjust=1, colour="black"),
             plot.title = element_text(size=22, face="bold",
                     colour="gray20", hjust=0.5),
-            axis.title.x=element_text(size=30,face="bold.italic"),
-            axis.title.y=element_text(size=30,face="bold.italic"),
-            strip.text.x  = element_text(size=20, face="bold"),
-            strip.text.y  = element_text(size=20, face="bold"),
+            axis.title=element_text(size=30,face="bold.italic"),
+            strip.text  = element_text(size=20, face="bold"),
             strip.background = element_rect(fill="gray90"),
             legend.text=element_text(size=19),
             legend.title=element_text(size=22, face="bold.italic"))
@@ -112,7 +109,8 @@ createAccuracyGraph <- function(fileRDS, title="",
 #' all tested ancestries.
 #'
 #' @param dfAUROC a \code{data.frame} corresponding to res$paraSample$dfAUROC
-#' where res is the result of inferAncestry or inferAncestryGeneAware.
+#' where res is the result of inferAncestry() or inferAncestryGeneAware() 
+#' functions.
 #'
 #' @param title a \code{character} string representing the title of the graph.
 #' Default: \code{""}.
@@ -143,11 +141,14 @@ createAccuracyGraph <- function(fileRDS, title="",
 #' fileRDS <- file.path(dataDir, "TEST_01.infoCall.RDS")
 #' info <- readRDS(fileRDS)
 #' dfAUROC <- info$paraSample$dfAUROC
+#' 
+#' ## Some of the column names must be updated to fit new standards
 #' colnames(dfAUROC) <- c("D", "K", "Call", "L", "AUROC", "H")
+#' 
 #' ## Create accuracy graph
 #' accuracyGraph <- createAUROCGraph(dfAUROC=dfAUROC, title="Test 01",
-#'     selectD=c(3,6,9,12,15),
-#'     selectColor=c("steelblue", "darkorange", "violet", "pink", "gray80"))
+#'     selectD=c(3, 6, 9, 12, 15),
+#'     selectColor=c("steelblue", "darkorange", "violet", "pink", "gray40"))
 #'
 #' accuracyGraph
 #'
@@ -159,25 +160,20 @@ createAccuracyGraph <- function(fileRDS, title="",
 #' @encoding UTF-8
 #' @export
 createAUROCGraph <- function(dfAUROC, title="",
-                             selectD=c(3,7,11), selectColor=c("#5e688a", "#cd5700", "#CC79A7")) {
+        selectD=c(3,7,11), selectColor=c("#5e688a", "#cd5700", "#CC79A7")) {
 
     ## Validate parameters
-    # validateCreateAccuracyGraph(fileRDS=fileRDS, title=title, selectD=selectD,
-    #                             selectColor=selectColor)
-    #
-    ## Extract required information from RDS file
-    # info <- readRDS(fileRDS)
-    # dfAUROC <- info$paraSample$dfAUROC
+    validatecreateAUROCGraph(dfAUROC=dfAUROC, title=title, selectD=selectD,
+                                    selectColor=selectColor)
 
     if (!all(selectD %in% unique(dfAUROC$D))) {
-        stop("Not all values in \'selectD\' are present in the RDS file.")
+        stop("Not all values in \'selectD\' are present in the \'dfAUROC\' ", 
+                "data frame.")
     }
 
     ## Retained selected dimensions
     dfAUROC <- dfAUROC[which(dfAUROC$D %in% selectD), ]
     dfAUROC$D <- as.factor(dfAUROC$D)
-
-    colnames(dfAUROC)[colnames(dfAUROC) == "D"] <- "D"
 
     ## Set y axis minimum value
     ymin <- min(c(dfAUROC$L)) - 0.008
@@ -185,27 +181,24 @@ createAUROCGraph <- function(dfAUROC, title="",
     ## Generate graph
     accuracy <- ggplot(dfAUROC, aes(x=.data$K, y=.data$AUROC, group=.data$D,
                                     color=.data$D, linetype=.data$D)) +
-        ylab(label = "AUROC") +
         geom_ribbon(aes(ymin=.data$L, ymax=.data$H, group=.data$D),
-                    linetype="dotted", cex=2, alpha=0.1) +
-        geom_line(cex=2) + facet_grid(. ~ Call) +
-        ylim(c(ymin, 1)) + ggtitle(title) +
+                    linetype="dotted", linewidth=2, alpha=0.1) +
+        geom_line(linewidth=2) + facet_grid(. ~ Call) +
         scale_colour_manual(aesthetics = c("colour", "fill"),
                             breaks=selectD, values=selectColor) +
+        ylim(c(ymin, 1)) + ggtitle(title) + ylab(label = "AUROC") + 
         theme_classic() +
-        theme(axis.text=element_text(size=20, colour = "black"),
-              panel.background = element_rect(color="black"),
-              axis.text.x=element_text(size=20, angle=90,
+        theme(axis.text=element_text(size=20, colour="black"),
+            panel.background = element_rect(color="black"),
+            axis.text.x=element_text(size=20, angle=90,
                                        vjust = 0.5, hjust=1, colour="black"),
-              plot.title = element_text(size=22, face="bold",
+            plot.title=element_text(size=22, face="bold",
                                         colour="gray20", hjust=0.5),
-              axis.title.x=element_text(size=30,face="bold.italic"),
-              axis.title.y=element_text(size=30,face="bold.italic"),
-              strip.text.x  = element_text(size=20, face="bold"),
-              strip.text.y  = element_text(size=20, face="bold"),
-              strip.background = element_rect(fill="gray90"),
-              legend.text=element_text(size=19),
-              legend.title=element_text(size=22, face="bold.italic"))
+            axis.title=element_text(size=30, face="bold.italic"),
+            strip.text=element_text(size=20, face="bold"),
+            strip.background = element_rect(fill="gray90"),
+            legend.text=element_text(size=19),
+            legend.title=element_text(size=22, face="bold.italic"))
 
     ## Successful
     return(accuracy)

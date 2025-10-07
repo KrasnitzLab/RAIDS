@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.7.3
+------------------------
+
+BUG FIXES
+
+    o Change default parameters for snpgdsIBDKING() function
+
 CHANGES IN VERSION 1.5.1
 ------------------------
 

@@ -386,12 +386,12 @@ validateComputePoolSyntheticAncestryGr <- function(gdsProfile, sampleRM,
 #'                     "GDS_Sample_with_study_demo.gds"), readonly=TRUE)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     ## The validation should be successful
 #'     RAIDS:::validateEstimateAllelicFraction(gdsReference=gds1KG,
@@ -1152,12 +1152,12 @@ validateAdd1KG2SampleGDS <- function(gdsReference, gdsProfileFile,
 #'             Diagnosis=c("Cancer", "Cancer"), Source=c("TCGA", "TCGA"))
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     ## Profiles used for synthetic data set
 #'     syntheticRefDF <- data.frame(sample.id=c("HG00150", "HG00138", "HG00330",
@@ -2219,12 +2219,12 @@ selParaPCAUpQuartile <- function(matKNN, pedCall, refCall,
 #' closefn.gds(gdsReference)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
 #'         study.desc=paste0(studyDF$study.id, " synthetic data"),
@@ -2623,12 +2623,12 @@ runProfileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' dataRef <- select1KGPopForSynthetic(fileReferenceGDS, nbProfiles=2L)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
 #'         study.desc=paste0(studyDF$study.id, " synthetic data"),
@@ -3301,12 +3301,12 @@ computeAncestryFromSynthetic <- function(gdsReference, gdsProfile,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \dontrun{
 #'
@@ -3875,12 +3875,12 @@ createProfile <- function(profileFile, profileName,
 #' closefn.gds(gds1KG)
 #'
 #' ## Required library for this example to run correctly
-#' if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+#' if (requireNamespace("Seqinfo", quietly=TRUE) &&
 #'      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 #'
 #'     ## Chromosome length information
 #'     ## chr23 is chrX, chr24 is chrY and chrM is 25
-#'     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+#'     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 #'
 #'     \dontrun{
 #'

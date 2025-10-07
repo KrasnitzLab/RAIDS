@@ -95,15 +95,15 @@ the type of study (DNA or RNA).
 \details{
 The \code{chrInfo} parameter contains the length of the chromosomes. The
 length of the chromosomes can be obtain through the
-\code{\link[GenomeInfoDb]{seqlengths}}
+\code{\link[Seqinfo]{seqlengths}}
 library.
 
 As example, for hg38 genome:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) \{
-     chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+     chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 \}
 
 }\if{html}{\out{</div>}}
@@ -132,12 +132,12 @@ gds1KG <- snpgdsOpen(fileGDS)
 profileGDS <- openfn.gds(fileProfile, readonly=FALSE)
 
 ## Required library for this example to run correctly
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     ## Estimate the allelic fraction of the pruned SNVs
     estimateAllelicFraction(gdsReference=gds1KG, gdsProfile=profileGDS,

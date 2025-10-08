@@ -278,12 +278,12 @@ set.seed(3043)
 dataRef <- select1KGPopForSynthetic(fileReferenceGDS, nbProfiles=2L)
 
 ## Required library for this example to run correctly
-if (requireNamespace("GenomeInfoDb", quietly=TRUE) &&
+if (requireNamespace("Seqinfo", quietly=TRUE) &&
      requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly=TRUE)) {
 
     ## Chromosome length information
     ## chr23 is chrX, chr24 is chrY and chrM is 25
-    chrInfo <- GenomeInfoDb::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
+    chrInfo <- Seqinfo::seqlengths(BSgenome.Hsapiens.UCSC.hg38::Hsapiens)[1:25]
 
     studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
         study.desc=paste0(studyDF$study.id, " synthetic data"),

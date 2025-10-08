@@ -51,7 +51,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-         - { os: ubuntu-latest, r: 'devel', bioc: '3.22'}
+         - { os: ubuntu-latest, r: '4.5.1', bioc: 'devel', cont: "bioconductor/bioconductor_docker:devel-R-4.5.1"}
          - { os: ubuntu-latest, r: '4.5.1', bioc: '3.21', cont: "bioconductor/bioconductor_docker:RELEASE_3_21"}
          - { os: macOS-latest, r: '4.5.1', bioc: '3.21'}
          - { os: windows-latest, r: '4.5.1', bioc: '3.21'}

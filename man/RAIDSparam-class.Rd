@@ -130,7 +130,8 @@ Default: \code{1L}.}
 beginning of the synthetic name id. Default: \code{"1"}.}
 
 \item{\code{nbSim}}{a positive \code{integer} representing number of
-replicated synthitic data. Default: \code{1L}.}
+replicated synthitic data (restricted to 1 for
+the moment). Default: \code{1L}.}
 
 \item{\code{posOffset}}{a single \code{integer} that is added to the SNP position to
 switch from 0-based to 1-based coordinate when needed (or reverse).

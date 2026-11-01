@@ -8,8 +8,8 @@
 syntheticJSD(syntheticQ, pRAIDS)
 }
 \arguments{
-\item{syntheticQ}{a \code{data.frame} an object with all the RAIDS
-parameters}
+\item{syntheticQ}{a \code{data.frame} an with the adixmture proportions
+results for the synthetic data.}
 
 \item{pRAIDS}{a \code{RAIDSparam} an object with all the RAIDS
 parameters}

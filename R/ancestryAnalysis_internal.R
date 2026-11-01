@@ -731,8 +731,8 @@ generateProfilePlinkFiles <- function(pathOut, pRAIDS) {
 #' @description TODO
 #'
 #' 
-#' @param syntheticQ a \code{data.frame} an object with all the RAIDS
-#' parameters
+#' @param syntheticQ a \code{data.frame} an with the adixmture proportions 
+#' results for the synthetic data.
 #'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
@@ -763,7 +763,9 @@ syntheticJSD <- function(syntheticQ, pRAIDS) {
     popSelected <- popSelected[popSelected$id.seq == pos,]
     
     snpgdsClose(gdsReference)
-    
+    if(! nrow(syntheticQ) > 1){
+        stop("Can't run syntheticJSD with only one synthetic data.")
+    }
     matR <- rbind(as.matrix(syntheticQ[,popSelected$ag]),
                                             as.matrix(syntheticQ[,paste0(popSelected$ag, ".p")]))
     
@@ -840,7 +842,7 @@ specificSNVColKeep <- function(pRAIDS){
             snpgdsClose(gdsReference)
             df <- specificSNV(pRAIDS)
             df$snp.chromosome <- as.integer(gsub("chr", "", df$snp.chromosome))
-            
+
             df <- df[!duplicated(df[,c("snp.chromosome", "snp.position")]),]
             z <- cbind(c(df$snp.chromosome,
                          snp.chromosome,

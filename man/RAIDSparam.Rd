@@ -169,7 +169,7 @@ Default: \code{"1"}.}
 
 \item{nbSim}{a positive \code{integer} representing the number
 of replicated simulation (Only 1 is supported for the
-moment).Default: \code{1L}.}
+moment). Default: \code{1L}.}
 
 \item{posOffset}{a single \code{integer} that is added to the SNP position
 to switch from 0-based to 1-based coordinate when needed (or reverse).

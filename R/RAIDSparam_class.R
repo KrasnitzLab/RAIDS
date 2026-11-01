@@ -132,7 +132,8 @@ setClassUnion("CharacterOrNULL", members = c("character", "NULL"))
 #' beginning of the synthetic name id. Default: \code{"1"}.
 #' 
 #' @slot nbSim a positive \code{integer} representing number of 
-#' replicated synthitic data. Default: \code{1L}.
+#' replicated synthitic data (restricted to 1 for 
+#' the moment). Default: \code{1L}.
 #' 
 #' @slot posOffset a single \code{integer} that is added to the SNP position to
 #' switch from 0-based to 1-based coordinate when needed (or reverse).
@@ -582,7 +583,7 @@ setValidity("RAIDSparam",
         }
 
         ## Validate the nbSim parameter
-        if (length(object@nbSim) != 1 || object@nbSim != 1L) { # || object@nbSim < 1L
+        if ( length(object@nbSim) != 1 || is.na(object@nbSim) || object@nbSim != 1L) { # || object@nbSim < 1L
             return("'nbSim' slot must be 1 for the moment.")# have one positive integer
         }
 
@@ -6739,7 +6740,7 @@ setMethod("verbose<-", "RAIDSparam", function(x, value) {
 #' 
 #' @param nbSim a positive \code{integer} representing the number  
 #' of replicated simulation (Only 1 is supported for the 
-#' moment).Default: \code{1L}.
+#' moment). Default: \code{1L}.
 #' 
 #' @param posOffset a single \code{integer} that is added to the SNP position 
 #' to switch from 0-based to 1-based coordinate when needed (or reverse).

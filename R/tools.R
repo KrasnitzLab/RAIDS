@@ -133,9 +133,9 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
                                 stringsAsFactors=FALSE)
         }
     }
-    df <- df[df$REF %in% c("A", "C", "G", "T") & df$ALT %in% 
+    df <- df[df$REF %in% c("A", "C", "G", "T") & df$ALT %in%
                     c("A", "C", "G", "T"),]
-    
+
     df$CHROM <- paste0("chr", df$CHROM)
 
     ## Add the header
@@ -173,7 +173,7 @@ snvListVCF <- function(gdsReference, fileOut, offset=0L, freqCutoff=NULL) {
 #' @param fileOut a \code{character} string representing the path and file
 #' name of the VCF file that will be created wit the retained SNP information.
 #' The file should have the ".vcf" extension.
-#' 
+#'
 #' @param freqCutoff a single positive \code{numeric} specifying the cut-off to
 #' keep a SNP. If \code{NULL}, all SNPs are retained. Default: \code{NULL}.
 #'
@@ -280,7 +280,7 @@ snvListVCFRef <- function(pRAIDS, fileOut, freqCutoff=NULL) {
                         stringsAsFactors=FALSE)
         }
     }
-    df <- df[df$REF %in% c("A", "C", "G", "T") & df$ALT %in% 
+    df <- df[df$REF %in% c("A", "C", "G", "T") & df$ALT %in%
                                 c("A", "C", "G", "T"),]
     df$CHROM <- paste0("chr", df$CHROM)
 
@@ -604,14 +604,14 @@ generateVCF <- function(freqCutoff=NULL, chr=NULL , fileOut, pRAIDS) {
 #'                       fileReferenceGDS=fileReferenceGDS,
 #'                       fieldPopInfAnc="SuperPop")
 #'
-#' 
+#'
 #' writeBimPruned(file.path(pathOut, "test.bim"), pRAIDS)
 #'
 #' dir(file.path(pathOut))
 #'
 #' unlink(file.path(pathOut, "test.bim"))
 #' unlink(file.path(pathOut), recursive=TRUE)
-#' 
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
@@ -652,7 +652,7 @@ writeBimPruned <- function(fileOut, pRAIDS){
 #' of profile from gdsProfile to keep
 #'
 #' @param listRM a \code{list} TODO. Default: \code{NULL}.
-#' 
+#'
 #' @param profileOnly a \code{boolean} TODO. Default: \code{FALSE}.
 #'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
@@ -717,10 +717,10 @@ writeBimPruned <- function(fileOut, pRAIDS){
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @export
-writeBedProfile <- function(fileOut, listProfile, listRM=NULL, 
+writeBedProfile <- function(fileOut, listProfile, listRM=NULL,
     profileOnly=FALSE, pRAIDS) {
-    
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                                     paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
     snpId <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
@@ -734,12 +734,12 @@ writeBedProfile <- function(fileOut, listProfile, listRM=NULL,
         if(! is.null(listRM)){
             sampleId <- sampleId[! sampleId %in% listRM]
         }
-        g <- snpgdsGetGeno(gdsReference, sample.id=sampleId, snp.id=snpId, 
+        g <- snpgdsGetGeno(gdsReference, sample.id=sampleId, snp.id=snpId,
                                 snpfirstdim=TRUE)
         snpgdsClose(gdsReference)
     }
     #studyAn <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
-    gS <- snpgdsGetGeno(gdsProfile, sample.id=listProfile, snp.id=snpId, 
+    gS <- snpgdsGetGeno(gdsProfile, sample.id=listProfile, snp.id=snpId,
                                 snpfirstdim=TRUE)
     if( profileOnly){
         g<- gS
@@ -768,7 +768,7 @@ writeBedProfile <- function(fileOut, listProfile, listRM=NULL,
 #' of profile from gdsProfile to keep.
 #'
 #' @param listRM a TODO. Default: \code{NULL}.
-#' 
+#'
 #' @param profileOnly a \code{integer} TODO. Default: \code{FALSE}.
 #'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
@@ -833,10 +833,10 @@ writeBedProfile <- function(fileOut, listProfile, listRM=NULL,
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @export
-writeFamProfile <- function(fileOut, listProfile, listRM=NULL, 
+writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
     profileOnly=FALSE, pRAIDS){
-    
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                             paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
     sampleId <- NULL
@@ -869,18 +869,18 @@ writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
 #' @description This function write with P-matrix
 #'
 #' @param anchor a \code{vector} of \code{character} representing the
-#' ancestral group for each profile from the reference 
-#' where sample.ref == 1. If the admixture proportion is higher than 
-#' the threshold for one ancestral group, the value is the name 
+#' ancestral group for each profile from the reference
+#' where sample.ref == 1. If the admixture proportion is higher than
+#' the threshold for one ancestral group, the value is the name
 #' of the ancestral group; else "-".
 #'
 #' @param snpId a \code{vector} of \code{character} representing the list
 #' of snp.id from gdsReference to keep.
-#' 
+#'
 #' @param matGr a \code{matrix} containing the sample identifiers and where
 #' each column is the name of a subcontinental population. The number of
 #' row corresponds to the number of samples for each subcontinental population.
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters.
 #'
@@ -888,17 +888,17 @@ writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
 #' \describe{
 #' \item{\code{ancestral group}}{ a \code{list} contenains 2 entries:
 #' \describe{
-#' \item{\code{f}}{ a \code{list} contenains number of rows in 
-#' matGr + 1 entries: 
+#' \item{\code{f}}{ a \code{list} contenains number of rows in
+#' matGr + 1 entries:
 #' \describe{
-#' \item{\code{vector}}{ the first is frequency for all the anchor of 
+#' \item{\code{vector}}{ the first is frequency for all the anchor of
 #' each snpId}
-#' \item{\code{vector}}{ the other is frequency for all the anchor 
+#' \item{\code{vector}}{ the other is frequency for all the anchor
 #' minus one row of matGr of each snpId}
 #' }
 #' }
-#' \item{\code{index}}{ a \code{vector} contenains 2 entriescontenains 
-#' number of rows in matGr entries. Each value is the index of the row 
+#' \item{\code{index}}{ a \code{vector} contenains 2 entriescontenains
+#' number of rows in matGr entries. Each value is the index of the row
 #' for which the f of this index corresponds.}
 #' }
 #' }
@@ -912,8 +912,8 @@ writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
 #'
 #' ## Path to the demo Profile GDS file is located in this package
 #' dataDir <- system.file("extdata/demoAncestryCall", package="RAIDS")
-#' 
-#' 
+#'
+#'
 #' # The name of the synthetic study
 #' studyID <- "MYDATA"
 #'
@@ -936,28 +936,28 @@ writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
 #'                       pathProfileGDS=pathProfileGDS,
 #'                       fileReferenceGDS=fileReferenceGDS,
 #'                       fieldPopInfAnc="SuperPop")
-#'                       
-#'                       
+#'
+#'
 #' matGr <- getMatrixPopSynthetic(pRAIDS=pRAIDS)
 #' fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
 #'                             paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
-#' 
-#' 
+#'
+#'
 #' gdsProfile <- snpgdsOpen(fileGDSProfile)
 #' pruned <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
 #' snpgdsClose(gdsProfile)
 #' gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
-#' 
+#'
 #' admixDesc <- read.gdsn(index.gdsn(gdsReference, "admixture.desc"))
 #' pos <- admixDesc[admixDesc$id == anchorId(pRAIDS), "id.seq"]
-#' 
+#'
 #' anchor <- read.gdsn(index.gdsn(gdsReference, "anchor.ref"),
 #'                     start=c(1, pos), count=c(-1,1))
 #' snpgdsClose(gdsReference)
-#' 
+#'
 #' rowF <- prepPMatrix( anchor=anchor, snpId = pruned, matGr=matGr, pRAIDS=pRAIDS)
 #' names(rowF)
-#' 
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn
@@ -968,35 +968,42 @@ writeFamProfile <- function(fileOut, listProfile, listRM=NULL,
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @export
-prepPMatrix <- function( anchor, 
+prepPMatrix <- function( anchor,
         snpId, matGr=NULL, pRAIDS) {
     # c("EURag", "EASag", "AMRag", "AFRag", "SASag")
     tmpTime <- system.time({ag <- unique(anchor)
-    ag <- ag[ag != "-"]
+    ag <- ag[ag != "-"] # Ancestry group with an anchor
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
     profileRef <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
     profileRef <- profileRef[which(read.gdsn(index.gdsn(gdsReference, "sample.ref"))==1)]
     rowF <- lapply( ag,
-        FUN=function(x,gdsReference,profileRef, 
+        FUN=function(x,gdsReference,profileRef,
                     pruned, anchor, matGr){
             keepProfiles <- profileRef[which(anchor == x)]
-            matGeno <- snpgdsGetGeno(gdsReference, 
-                    sample.id=keepProfiles, 
+            matGeno <- snpgdsGetGeno(gdsReference,
+                    sample.id=keepProfiles,
                     snp.id=pruned, snpfirstdim=FALSE)
             f <- list()
+            # f[[1]] frequencies of SNPs based on all pseudo no-admix
             f[[1]]  <- colSums(matGeno)/ (2*dim(matGeno)[1])
             k<-1
+
             matchinF <- NULL
             if(! is.null(matGr)){
+                # vector of integer with  length of nb groups
+                # it contains the position in f
+                # for the specific group
                 matchinF <- integer(nrow(matGr))
-                for(i in seq_len(nrow(matGr))){
+                for(i in seq_len(nrow(matGr))){ # each group
+                    # By default use f[[1]]
                     matchinF[i] <- 1
                     tmp <- which(keepProfiles %in% matGr[i,])
-                    if(length(tmp) > 0){ 
+                    if(length(tmp) > 0){
                         # remove some anchors for the freq
                         k <- k + 1
-                        f[[k]]  <- colSums(matGeno[-1 * tmp, ]) / 
+                        f[[k]]  <- colSums(matGeno[-1 * tmp, ]) /
                             (2*dim(matGeno[ -1 * tmp, ])[1])
+                        # The group i use f[[k]]
                         matchinF[i] <- k
                     }
                 }
@@ -1010,8 +1017,8 @@ prepPMatrix <- function( anchor,
         anchor = anchor,
         matGr = matGr)})
     if(verbose(pRAIDS)) print(paste0("Time to prepare P-matrices ",
-        " user ", unname(tmpTime[1]), 
-        " system ", unname(tmpTime[2]), 
+        " user ", unname(tmpTime[1]),
+        " system ", unname(tmpTime[2]),
         " elapsed ", unname(tmpTime[3])
     ))
     names(rowF) <- ag
@@ -1025,11 +1032,11 @@ prepPMatrix <- function( anchor,
 #'
 #' @param pathOut a \code{character} representing the output
 #' path
-#' 
-#' @param rowF a \code{list} containing allele frequencies for each 
+#'
+#' @param rowF a \code{list} containing allele frequencies for each
 #' population and and for a subset if intersect quasi-no admix subset
 #' intersect the synthetic
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters.
 #'
@@ -1050,8 +1057,9 @@ prepPMatrix <- function( anchor,
 #' @export
 writePMatrix <- function( pathOut,rowF, pRAIDS) {
     # c("EURag", "EASag", "AMRag", "AFRag", "SASag")
+    #  nb is the number of group with a matrix different of rowF[[x]]$f[[1]]
     nb <- length(rowF[[1]]$index)
-    
+
     k <- 0
     matPIndex <- integer(nb)
     matP <- lapply(seq_len(length(rowF)),
@@ -1062,9 +1070,10 @@ writePMatrix <- function( pathOut,rowF, pRAIDS) {
         )
     matP <- t(do.call(rbind, matP))
     write.table(round(1-matP, 5), file.path(pathOut, paste0( pedStudy(pRAIDS)$Name.ID[1], ".P.in")),row.names = FALSE,col.names = FALSE, sep=" ")
-    
+
     for(i in seq_len(nb)){
         flag <- FALSE
+        # vector of length number ancestry groups
         matI <- integer(length(rowF))
         for(j in seq_len(length(rowF))){
             matI[j] <- rowF[[j]]$index[i]
@@ -1084,8 +1093,8 @@ writePMatrix <- function( pathOut,rowF, pRAIDS) {
             k<-k+1
             write.table(round(1-matP, 5), file.path(pathOut, paste0( pedStudy(pRAIDS)$Name.ID[1],".syn.", k, ".P.in")),row.names = FALSE,col.names = FALSE, sep=" ")
         }
-        matPIndex[i] <- ifelse(! flag,1, k)
-        
+        matPIndex[i] <- ifelse(! flag,0, k)
+
     }
     return(matPIndex)
 }
@@ -1105,12 +1114,12 @@ writePMatrix <- function( pathOut,rowF, pRAIDS) {
 #' row corresponds to the number of samples for each subcontinental population.
 #'
 #' @examples
-#' 
+#'
 #' dataDir <- system.file("extdata/demoKNNSynthetic", package="RAIDS")
-#' 
+#'
 #' # The name of the synthetic study
 #' studyID <- "MYDATA"
-#' 
+#'
 #' studyDF <- data.frame(study.id=studyID,
 #'                       study.desc=studyID,
 #'                       study.platform="NotDef",
@@ -1124,14 +1133,14 @@ writePMatrix <- function( pathOut,rowF, pRAIDS) {
 #'                        Source=c("NotDef"),
 #'                        stringsAsFactors=FALSE)
 #' row.names(pedStudy) <- pedStudy$Name.ID
-#' 
+#'
 #' pRAIDS <- RAIDSparam(studyDF=studyDF,
 #'                      pedStudy=pedStudy,
 #'                      pathProfileGDS=pathProfileGDS,
 #'                      fileReferenceGDS=fileReferenceGDS)
 #' matGr <- getMatrixPopSynthetic(pRAIDS)
 #' dim(matGr)
-#' 
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn
@@ -1142,7 +1151,7 @@ writePMatrix <- function( pathOut,rowF, pRAIDS) {
 #' @encoding UTF-8
 #' @export
 getMatrixPopSynthetic <- function(pRAIDS) {
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                                 paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
@@ -1153,7 +1162,7 @@ getMatrixPopSynthetic <- function(pRAIDS) {
     # studySyn <- read.gdsn(index.gdsn(gdsProfile,""))
     # pRAIDS$studyDFSyn$study.id[1]
     profileSyn <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
-    profileSyn <- profileSyn[profileSyn$study.id == 
+    profileSyn <- profileSyn[profileSyn$study.id ==
                                         studyDFSyn(pRAIDS)$study.id[1],]
 
     tmp <- which(sampleId %in% profileSyn$case.id)
@@ -1174,23 +1183,23 @@ getMatrixPopSynthetic <- function(pRAIDS) {
 
 
 #' @title Call ADMIXTURE
-#' 
+#'
 #' @description TODO
 #'
-#' 
-#' @param pathOut  a \code{character} representing path 
-#' where the file for ADMIXTURE (BED,BIM, FAM, and P.in) 
-#' are located and where the output of ADMIXTURE 
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the file for ADMIXTURE (BED,BIM, FAM, and P.in)
+#' are located and where the output of ADMIXTURE
 #' will be generated.
-#' 
-#' @param fileBed  a \code{character} represented 
+#'
+#' @param fileBed  a \code{character} represented
 #' the BED file name (without path) for a
-#' 
+#'
 #'
 #' @param seedAdmix  a \code{integer} representing the seed
 #' pass to ADMIXTURE.
 #' Default: \code{3435L}.
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
 #'
@@ -1230,10 +1239,10 @@ getMatrixPopSynthetic <- function(pRAIDS) {
 #'                              Source=c("NotDef"),
 #'                              stringsAsFactors=FALSE)
 #'      row.names(pedStudy) <- pedStudy$Name.ID
-#' 
+#'
 #' ## Path to admixture
 #' ## pathADMIXTURE <- "PATH/admixture"
-#' 
+#'
 #' pRAIDS <- RAIDSparam(studyDF=studyDF,
 #'                       pedStudy=pedStudy,
 #'                       pathProfileGDS=pathProfileGDS,
@@ -1247,7 +1256,7 @@ getMatrixPopSynthetic <- function(pRAIDS) {
 #'     fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".bed"),
 #'     seedAdmix=seedADMIXTURE(pRAIDS), pRAIDS)
 #'
-#' 
+#'
 #' dir(file.path(pathOut,"profileAdmixture"))
 #' print(profileQ)
 #' unlink(file.path(pathOut), recursive = TRUE)
@@ -1259,17 +1268,17 @@ getMatrixPopSynthetic <- function(pRAIDS) {
 #' @encoding UTF-8
 #' @export
 runADMIXTURE <- function( pathOut, fileBed, seedAdmix=3435L, pRAIDS) {
-    
+
     if(is.null(pathADMIXTURE(pRAIDS)) || ! file.exists(pathADMIXTURE(pRAIDS))){
         stop("Fatal, you need to defined pathADMIXTURE in RAIDSparam to use ADMIXTURE")
     }
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
-    
+
     admixDesc <- read.gdsn(index.gdsn(gdsReference, "admixture.desc"))
     pos <- admixDesc[admixDesc$id == anchorId(pRAIDS), "id.seq"]
     popSelected <- read.gdsn(index.gdsn(gdsReference, "admixture.ag"))
     popSelected <- popSelected[popSelected$id.seq == pos,]
-    
+
     snpgdsClose(gdsReference)
 
     pathCur <- getwd()
@@ -1278,20 +1287,20 @@ runADMIXTURE <- function( pathOut, fileBed, seedAdmix=3435L, pRAIDS) {
     cmdAdmix <- c("-s", seedAdmix, "-P",
             fileBed,
             nrow(popSelected))
-    
+
     # cmdAdmix <- c("-s", seedAdmix, "-P",
     #         pathBed,
     #          "--out", outPref,
     #     5)
     # TODO select the population group
-    
+
     res <- system2(command = pathADMIXTURE(pRAIDS), args = cmdAdmix,
         stdout=TRUE)
-    matQ <- read.delim(gsub(".bed$", 
+    matQ <- read.delim(gsub(".bed$",
                     paste0(".", nrow(popSelected), ".Q"), fileBed),
                 header = FALSE, sep=" ")
     colnames(matQ) <- popSelected[order(popSelected$column), "ag"]
-    famF <- read.delim(gsub(".bed$", 
+    famF <- read.delim(gsub(".bed$",
                     paste0(".fam"), fileBed),
                 header = FALSE, sep="\t")
     rownames(matQ) <- famF[,2]
@@ -1302,16 +1311,16 @@ runADMIXTURE <- function( pathOut, fileBed, seedAdmix=3435L, pRAIDS) {
 
 
 #' @title run ADMIXTURE for the synthetic data
-#' 
+#'
 #' @description TODO
 #'
-#' 
-#' @param pathOut  a \code{character} representing path 
-#' where the directory for the synthetic admixture 
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the directory for the synthetic admixture
 #' will be processed
-#' 
+#'
 #' @param matPIndex a \code{array} of the frequency matrix.
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
 #'
@@ -1363,7 +1372,7 @@ runADMIXTURE <- function( pathOut, fileBed, seedAdmix=3435L, pRAIDS) {
 #' RAIDS:::generateProfilePlinkFiles(pathOut, pRAIDS)
 #'
 #' syntheticQ <- runSynADMIXTURE(pathOut=pathOut, matPIndex=matPIndex, pRAIDS=pRAIDS)
-#' 
+#'
 #' dir(file.path(pathOut))
 #' head(syntheticQ)
 #' unlink(file.path(pathOut), recursive = TRUE)
@@ -1376,9 +1385,9 @@ runADMIXTURE <- function( pathOut, fileBed, seedAdmix=3435L, pRAIDS) {
 #' @encoding UTF-8
 #' @export
 runSynADMIXTURE <- function( pathOut, matPIndex, pRAIDS) {
-    
+
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
-    
+
     admixDesc <- read.gdsn(index.gdsn(gdsReference, "admixture.desc"))
     pos <- admixDesc[admixDesc$id == anchorId(pRAIDS), "id.seq"]
     popSelected <- read.gdsn(index.gdsn(gdsReference, "admixture.ag"))
@@ -1393,10 +1402,10 @@ runSynADMIXTURE <- function( pathOut, matPIndex, pRAIDS) {
     if(np(pRAIDS) == 1){
         res <- lapply(seq_len(nrow(matGr)),
             FUN=function(x, pathOut, matGr, matPIndex, matQGS, pRAIDS){
-                matQ <- runGrSynADMIXTURE(pathOut=pathOut, gr=x, 
-                    matGr=matGr, matPIndex=matPIndex, 
+                matQ <- runGrSynADMIXTURE(pathOut=pathOut, gr=x,
+                    matGr=matGr, matPIndex=matPIndex,
                     matQGS=matQGS, pRAIDS=pRAIDS)
-                
+
                 return(matQ)
             },
             pathOut=pathOut,
@@ -1408,10 +1417,10 @@ runSynADMIXTURE <- function( pathOut, matPIndex, pRAIDS) {
         param <- MulticoreParam(workers = np(pRAIDS))
         res <- bplapply(seq_len(nrow(matGr)),
             FUN=function(x, pathOut, matGr, matPIndex, matQGS, pRAIDS){
-                matQ <- runGrSynADMIXTURE(pathOut=pathOut, gr=x, 
-                    matGr=matGr, matPIndex=matPIndex, 
+                matQ <- runGrSynADMIXTURE(pathOut=pathOut, gr=x,
+                    matGr=matGr, matPIndex=matPIndex,
                     matQGS=matQGS, pRAIDS=pRAIDS)
-                
+
                 return(matQ)
             },
         pathOut=pathOut,

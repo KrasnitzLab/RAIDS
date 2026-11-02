@@ -763,6 +763,10 @@ syntheticJSD <- function(syntheticQ, pRAIDS) {
     popSelected <- popSelected[popSelected$id.seq == pos,]
     
     snpgdsClose(gdsReference)
+    # With only one synthetic profile, matR below has two rows and
+    # philentropy::JSD() returns a single value instead of a matrix,
+    # so the diag(jsd.m[...]) indexing fails. Stop with a clear message
+    # instead. Note: this is reached after all ADMIXTURE runs are done.
     if(! nrow(syntheticQ) > 1){
         stop("Can't run syntheticJSD with only one synthetic data.")
     }

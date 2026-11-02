@@ -28,7 +28,7 @@
 #' }
 #'
 #' @examples
-#' 
+#'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -57,12 +57,12 @@
 #' ## The number of samples needed by subcontinental population
 #' ## The number is small for demonstration purpose
 #' nbProfiles <- 5L
-#' 
+#'
 #' ## Extract a selected number of random samples
 #' ## for each subcontinental population
 #' ## In the 1KG GDS Demo file, there is one subcontinental population
 #' dataR <- selectForSynthetic(pRAIDS=pRAIDS, nbProfiles=nbProfiles)
-#' 
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn
@@ -193,7 +193,7 @@ select1KGPopForSynthetic <- function(fileReferenceGDS, nbProfiles) {
 #'
 #' ## Profile GDS file (temporary)
 #' pathProfileGDS <- tempdir()
-#' 
+#'
 #' fileNameGDS <- file.path(pathProfileGDS, "ex1.gds")
 #'
 #' ## Copy the Profile GDS file demo that has been pruned and annotated
@@ -210,7 +210,7 @@ select1KGPopForSynthetic <- function(fileReferenceGDS, nbProfiles) {
 #'                         Sample.Type = rep("Primary Tumor", 2),
 #'                         Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
-#' 
+#'
 #' pRAIDS <- RAIDSparam(profileFile=file.path(dataDir, "ex1.txt.gz"),
 #'                      genoSource="snp-pileup",
 #'                      studyDF=studyDF,
@@ -222,14 +222,14 @@ select1KGPopForSynthetic <- function(fileReferenceGDS, nbProfiles) {
 #'                      fileReferenceAnnotGDS=file.path(dataDir,
 #'                                                      "ex1_good_small_1KG_Annot.gds")
 #' )
-#' 
+#'
 #' syntheticRefDF(pRAIDS) <- selectForSynthetic(pRAIDS = pRAIDS,
 #'                           nbProfiles=30L)
-#' 
+#'
 #' ## Generate the synthetic profiles and add them into the Profile GDS
 #' syntheticGeno2(pRAIDS)
-#' 
-#' 
+#'
+#'
 #' profileGDS <- openfn.gds(fileNameGDS)
 #'
 #' tail(read.gdsn(index.gdsn(profileGDS, "sample.id")))
@@ -542,81 +542,3 @@ syntheticGeno2 <- function(pRAIDS) {
     return(0L)
 }
 
-#' @title Group samples per populations group
-#'
-#' @description The function groups the samples per subcontinental
-#' population and generates a matrix containing the sample identifiers and
-#' where each column is a populations group.
-#'
-#'
-#' @param dataRef a \code{data.frame} containing those columns:
-#' \describe{
-#' \item{sample.id}{ a \code{character} string representing the sample
-#' identifier. }
-#' \item{popGr}{ a \code{character} string representing the
-#' group of populations assigned to the sample. }
-#' \item{superPop}{ a \code{character} string representing the
-#' super-population assigned to the sample. }
-#' }
-#'
-#' @return a \code{matrix} containing the sample identifiers and where
-#' each column is the name of a subcontinental population. The number of
-#' row corresponds to the number of samples for each subcontinental population.
-#'
-#' @examples
-#' ## TODO
-#' ## A data.frame containing samples from 2 subcontinental populations
-#' demo <- data.frame(sample.id=c("SampleA", "SampleB", "SampleC", "SampleD"),
-#'     pop.group=c("TSI", "TSI", "YRI", "YRI"),
-#'     superPop=c("EUR", "EUR", "AFR", "AFR"))
-#'
-#' ## Generate a matrix populated with the sample identifiers and where
-#' ## each row is a subcontinental population
-#' splitSelectByPop(dataRef=demo)
-#'
-#'
-#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @encoding UTF-8
-#' @export
-splitSelectByGr <- function(dataRef) {
-
-    ## The dataRef must be an data.frame object
-    if (!is.data.frame(dataRef)) {
-        stop("The \'dataRef\' must be a data.frame object.")
-    }
-
-    ## The dataRef must have a pop.group column
-    if (!("popGr" %in% colnames(dataRef))) {
-        stop("The \'dataRef\' must have a column named \'pop.group\'.")
-    }
-
-    ## The dataRef must have a sample.id column
-    if (!("sample.id" %in% colnames(dataRef))) {
-        stop("The \'dataRef\' must have a column named \'sample.id\'.")
-    }
-
-    tmp <- table(dataRef$popGr)
-    nbGr <- length(tmp)
-
-    if(length(which(tmp != tmp[1])) != 0) {
-        stop("The number of samples in each subcontinental population ",
-             "has to be the same.\n")
-    }
-
-    listPOP <- unique(dataRef$popGr)
-
-    ## Generate a matrix where each column is a subcontinental population
-    sampleRM <- vapply(listPOP, function(x, dataRef){
-        cur <- dataRef[which(dataRef$popGr == x), "sample.id"]
-        df <- matrix("", nrow=length(cur)/5, ncol=5)
-        for(i in seq_len(5)){
-            df[,i] <- cur[seq_len(length(cur)) %% 5 == (i-1)]
-        }
-
-        return(df)
-    }, FUN.VALUE = matrix("",nrow=tmp[1]/5, ncol=5), dataRef = dataRef)
-    sampleRM <- cbind(sampleRM[,,1], sampleRM[,,2],
-                        sampleRM[,,3], sampleRM[,,4],
-                        sampleRM[,,5], sampleRM[,,6])
-    return(sampleRM)
-}

@@ -932,7 +932,7 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
 #'
-#' @return a \code{list} 
+#' @return a \code{list}
 #' \describe{
 #' \item{matProfile}{
 #' a \code{data.frame} containing at least:
@@ -955,9 +955,9 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
 #' parameters
 #' }
 #' }
-#' 
+#'
 #' @examples
-#' 
+#'
 #' ## Current directory
 #' dataDir <- file.path(tempdir())
 #'
@@ -1027,24 +1027,24 @@ dispatchParseReadCov <- function(pRAIDS){
 }
 
 #' @title run ADMIXTURE for the synthetic data
-#' 
+#'
 #' @description TODO
 #'
-#' 
-#' @param pathOut  a \code{character} representing path 
-#' where the directory for the synthetic admixture 
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the directory for the synthetic admixture
 #' will be processed
 #'
-#' @param gr  a \code{integer} representing the group 
+#' @param gr  a \code{integer} representing the group
 #' (row matGr from getMatrixPopSynthetic) of
-#' synthetic data to run together  
-#' 
+#' synthetic data to run together
+#'
 #' @param matGr a \code{matrix} containing the sample identifiers and where
 #' each column is the name of a subcontinental population. The number of
 #' row corresponds to the number of samples for each subcontinental population.
-#' 
+#'
 #' @param matPIndex a \code{array} of the frequency matrix.
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
 #'
@@ -1073,14 +1073,14 @@ prepSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, pRAIDS){
         dir.create(file.path(pathSyn))
     }
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
-    
+
     admixDesc <- read.gdsn(index.gdsn(gdsReference, "admixture.desc"))
     pos <- admixDesc[admixDesc$id == anchorId(pRAIDS), "id.seq"]
     popSelected <- read.gdsn(index.gdsn(gdsReference, "admixture.ag"))
     popSelected <- popSelected[popSelected$id.seq == pos,]
-    
+
     snpgdsClose(gdsReference)
-    
+
     matGrDataId <- getMatrixDataId(matGr=matGr, pRAIDS=pRAIDS)
 
     writeBedRef(fileOut=file.path(pathSyn, paste0(pedStudy(pRAIDS)$Name.ID[1], ".synRef.bed")),
@@ -1092,9 +1092,12 @@ prepSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, pRAIDS){
 
     writeFamProfile(fileOut=file.path(pathSyn, paste0(pedStudy(pRAIDS)$Name.ID[1], ".syn.fam")),
                     listProfile=matGrDataId[gr,], listRM=NULL, profileOnly=TRUE, pRAIDS)
-    
-    file.copy(file.path(pathOut, "matP", paste0( pedStudy(pRAIDS)$Name.ID[1],
-                                               ".syn.", matPIndex[gr], ".P.in")),
+    matPFile <- ifelse(matPIndex[gr] == 0,
+                       file.path(pathOut, "matP", paste0( pedStudy(pRAIDS)$Name.ID[1],
+                                                          ".P.in")),
+                       file.path(pathOut, "matP", paste0( pedStudy(pRAIDS)$Name.ID[1],
+                                                          ".syn.", matPIndex[gr], ".P.in")))
+    file.copy(matPFile,
               file.path(pathSyn,
                         paste0(pedStudy(pRAIDS)$Name.ID[1],
                                ".synRef.", nrow(popSelected), ".P.in")))
@@ -1115,27 +1118,27 @@ prepSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, pRAIDS){
 }
 
 #' @title run ADMIXTURE for the synthetic data
-#' 
+#'
 #' @description TODO
 #'
-#' 
-#' @param pathOut  a \code{character} representing path 
-#' where the directory for the synthetic admixture 
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the directory for the synthetic admixture
 #' will be processed
-#' 
-#' @param gr  a \code{integer} representing the group 
+#'
+#' @param gr  a \code{integer} representing the group
 #' (row matGr from getMatrixPopSynthetic) of
-#' synthetic data to run together  
-#' 
+#' synthetic data to run together
+#'
 #' @param matGr a \code{matrix} containing the sample identifiers and where
 #' each column is the name of a subcontinental population. The number of
 #' row corresponds to the number of samples for each subcontinental population.
-#' 
+#'
 #' @param matPIndex a \code{array} of the frequency matrix.
-#' 
+#'
 #' @param matQGS a \code{matrix} containing contening the admixture gold standard
 #' from the gdsReference
-#' 
+#'
 #' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
 #' parameters
 #'
@@ -1158,27 +1161,27 @@ prepSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, pRAIDS){
 #' @encoding UTF-8
 #' @keywords internal
 runGrSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, matQGS, pRAIDS) {
-    
+
     if(verbose(pRAIDS)) print(paste0("Syn Admixture ", gr))
-    
+
     prepSynADMIXTURE(pathOut=pathOut, gr=gr, matGr=matGr, matPIndex=matPIndex, pRAIDS)
-    
+
     matQSynRef <- runADMIXTURE(pathOut = file.path(pathOut, paste0("syn.", gr)),
         fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".synRef.bed"),
         seedAdmix=seedADMIXTURE(pRAIDS) + gr, pRAIDS)
-    
+
     matQSyn <- runADMIXTURE(pathOut = file.path(pathOut, paste0("syn.", gr)),
         fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".syn.bed"),
         seedAdmix=seedADMIXTURE(pRAIDS) + gr, pRAIDS)
-    
+
     matQ <- data.frame(id=row.names(matQSynRef),
                 idSyn=row.names(matQSyn),
             stringsAsFactors = FALSE)
     colnames(matQSynRef) <- paste0(colnames(matQSynRef), ".p")
-    
+
     row.names(matQ) <- NULL
     row.names(matQSynRef) <- NULL
-    
+
     matQ <- cbind(matQ, matQSyn, matQSynRef, matQGS[matQ$id,])
     row.names(matQ) <- matQ$id
     return(matQ)
@@ -1209,7 +1212,7 @@ runGrSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, matQGS, pRAIDS) {
 #'
 #' @examples
 #'
-#' ## see runSynADMIXTURE in tools.R and 
+#' ## see runSynADMIXTURE in tools.R and
 #' ## prepSynADMIXTURE in tools_internal.R
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1270,7 +1273,7 @@ writeFamRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
 #'
 #' @examples
 #'
-#' ## see runSynADMIXTURE in tools.R and 
+#' ## see runSynADMIXTURE in tools.R and
 #' ## prepSynADMIXTURE in tools_internal.R
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1280,7 +1283,7 @@ writeFamRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
 #' @encoding UTF-8
 #' @keywords internal
 writeBedRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                             paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
     gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
@@ -1297,7 +1300,7 @@ writeBedRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
             sampleId <- sampleId[! sampleId %in% listRM]
         }
     }
-    g <- snpgdsGetGeno(gdsReference, sample.id=sampleId, snp.id=snpId, 
+    g <- snpgdsGetGeno(gdsReference, sample.id=sampleId, snp.id=snpId,
             snpfirstdim=TRUE)
 
     write_bed(fileOut, g, verbose=TRUE, append=FALSE)
@@ -1327,7 +1330,7 @@ writeBedRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
 #'
 #' @examples
 #'
-#' ## see runSynADMIXTURE in tools.R and 
+#' ## see runSynADMIXTURE in tools.R and
 #' ## prepSynADMIXTURE in tools_internal.R
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1336,25 +1339,25 @@ writeBedRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
 #' @encoding UTF-8
 #' @keywords internal
 getMatrixDataId <- function(matGr, pRAIDS){
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                             paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
 
     profileSyn <- read.gdsn(index.gdsn(gdsProfile,"study.annot"))
-    profileSyn <- profileSyn[profileSyn$study.id == 
+    profileSyn <- profileSyn[profileSyn$study.id ==
                                         studyDFSyn(pRAIDS)$study.id[1],]
     sampleId <- read.gdsn(index.gdsn(gdsProfile,"sample.id"))
 
     listGr <- lapply(seq_len(nrow(matGr)),
                      FUN=function(x,matGr, profileSyn, sampleId){
-                         return(sampleId[ sampleId %in% profileSyn$data.id[profileSyn$case.id %in% 
+                         return(sampleId[ sampleId %in% profileSyn$data.id[profileSyn$case.id %in%
                                                         matGr[x,]]])
                      },
                      matGr=matGr,
                      profileSyn=profileSyn,
                      sampleId=sampleId)
     matGrDataId <- do.call(rbind, listGr)
-    
+
     snpgdsClose(gdsProfile)
 
     return(matGrDataId)
@@ -1370,10 +1373,10 @@ getMatrixDataId <- function(matGr, pRAIDS){
 #'
 #' @param pathOut a \code{character} string representing the path where
 #' to save the output
-#' 
+#'
 #' @param prefOut a \code{character} string representing the prefix of
 #' file name of the new bed, bim, and P.in files.
-#' 
+#'
 #' @param fileP a \code{character} string representing the path and
 #' the file name of the new bim file.
 #'
@@ -1387,7 +1390,7 @@ getMatrixDataId <- function(matGr, pRAIDS){
 #'
 #' @examples
 #'
-#' ## see runSynADMIXTURE in tools.R and 
+#' ## see runSynADMIXTURE in tools.R and
 #' ## prepSynADMIXTURE in tools_internal.R
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1399,17 +1402,17 @@ getMatrixDataId <- function(matGr, pRAIDS){
 #' @importFrom utils write.table
 #' @encoding UTF-8
 #' @keywords internal
-writeBedBimFilesProfileFilter <- function(pathOut, prefOut, fileP, listProfile, 
+writeBedBimFilesProfileFilter <- function(pathOut, prefOut, fileP, listProfile,
     pRAIDS) {
-    
-    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS), 
+
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                                     paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(fileGDSProfile)
     snpId <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
     g <- NULL
 
     #studyAn <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
-    gS <- snpgdsGetGeno(gdsProfile, sample.id=listProfile, snp.id=snpId, 
+    gS <- snpgdsGetGeno(gdsProfile, sample.id=listProfile, snp.id=snpId,
                             snpfirstdim=TRUE)
     nbS <- ncol(gS)
     list2RM <- which(rowSums(is.na(gS))/nbS > 0.25)
@@ -1428,9 +1431,9 @@ writeBedBimFilesProfileFilter <- function(pathOut, prefOut, fileP, listProfile,
     if(length(list2RM) > 0){
         snpInfo <- snpInfo[-1 * list2RM,]
     }
-    write_bim(file.path(pathOut, paste0(prefOut, 
+    write_bim(file.path(pathOut, paste0(prefOut,
         ".bim")), snpInfo)
-    write_bed(file.path(pathOut, paste0(prefOut, 
+    write_bed(file.path(pathOut, paste0(prefOut,
         ".bed")), gS, verbose=TRUE, append=FALSE)
 
     snpgdsClose(gdsProfile)
@@ -1440,10 +1443,10 @@ writeBedBimFilesProfileFilter <- function(pathOut, prefOut, fileP, listProfile,
         resP <- resP[-1 * list2RM,]
     }
     # 068ba2ae-288c-446d-8d17-72445ce4f788.syn.1.sv.5.P.in
-    write.table(resP, file.path(pathOut, paste0(prefOut , 
+    write.table(resP, file.path(pathOut, paste0(prefOut ,
         ".", ncol(resP), ".P.in")),
                 col.names=FALSE, row.names=FALSE, quote=FALSE, sep=" ")
-    # write.table(resP, file.path(pathOut, paste0(pRAIDS$pedStudy$Name.ID[1], 
+    # write.table(resP, file.path(pathOut, paste0(pRAIDS$pedStudy$Name.ID[1],
     #                                     ".syn.", indexS,".sv.5.P.in")),
     #             col.names=FALSE, row.names=FALSE, quote=FALSE, sep=" ")
     return(0)

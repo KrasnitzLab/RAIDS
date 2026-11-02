@@ -28,7 +28,7 @@ a VCF file.
 }
 \examples{
 
-## see runSynADMIXTURE in tools.R and 
+## see runSynADMIXTURE in tools.R and
 ## prepSynADMIXTURE in tools_internal.R
 
 }

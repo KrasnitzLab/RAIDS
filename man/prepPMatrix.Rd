@@ -80,8 +80,8 @@ pRAIDS <- RAIDSparam(studyDF=studyDF,
                       pathProfileGDS=pathProfileGDS,
                       fileReferenceGDS=fileReferenceGDS,
                       fieldPopInfAnc="SuperPop")
-                      
-                      
+
+
 matGr <- getMatrixPopSynthetic(pRAIDS=pRAIDS)
 fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
                             paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))

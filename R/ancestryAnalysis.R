@@ -17,11 +17,11 @@
 #' parameters updated.
 #'
 #' @examples
-#' 
+#'
 #' ## Path to the demo Reference GDS file is located in this package
 #' dataDir <- system.file("extdata/tests", package="RAIDS")
 #' fileGDS <- file.path(dataDir, "ex1_good_small_1KG.gds")
-#' 
+#'
 #' ## The data.frame containing the information about the study
 #' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
@@ -29,7 +29,7 @@
 #'                         study.desc = "Description",
 #'                         study.platform = "PLATFORM",
 #'                         stringsAsFactors = FALSE)
-#' 
+#'
 #' ## The data.frame containing the information about the samples
 #' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
 #' samplePED <- data.frame(Name.ID = c("ex1", "ex2"),
@@ -38,37 +38,37 @@
 #'                     Sample.Type = rep("Primary Tumor", 2),
 #'                     Source = rep("Databank B", 2), stringsAsFactors = FALSE)
 #' rownames(samplePED) <- samplePED$Name.ID
-#' 
+#'
 #' ## Temporary Profile GDS file
 #' pathProfileGDS <- tempdir()
 #' profileFile <- file.path(pathProfileGDS, "ex1.gds")
-#' 
+#'
 #' pRAIDS <- RAIDSparam( studyDF=studyDF,
-#'                       profileFile=file.path(dataDir, "ex1.txt.gz"), 
+#'                       profileFile=file.path(dataDir, "ex1.txt.gz"),
 #'                       genoSource = "snp-pileup",
 #'                       pedStudy=samplePED,
 #'                       pathProfileGDS=pathProfileGDS,
 #'                       fileReferenceGDS=fileGDS)
-#' 
+#'
 #' ## Copy the Profile GDS file demo that has not been pruned yet
 #' file.copy(file.path(dataDir, "ex1_demo.gds"), profileFile)
-#' 
-#' 
+#'
+#'
 #' ## Compute the list of pruned SNVs for a specific profile 'ex1'
 #' ## and save it in the Profile GDS file 'ex1.gds'
 #' pRAIDS <- pruningProfile2(pRAIDS)
-#' 
-#' 
+#'
+#'
 #' ## Check content of Profile GDS file
 #' ## The 'pruned.study' entry should be present
 #' content <- openfn.gds(profileFile)
 #' content
-#' 
+#'
 #' ## Close the Profile GDS file (important)
 #' closefn.gds(content)
-#' 
+#'
 #' ## Remove Profile GDS file (created for demo purpose)
-#' unlink(profileFile, force=TRUE) 
+#' unlink(profileFile, force=TRUE)
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt index.gdsn read.gdsn openfn.gds ls.gdsn closefn.gds
@@ -96,6 +96,9 @@ pruningProfile2 <- function(pRAIDS) {
         keepPos <- read.gdsn(index.gdsn(gdsReference, "snp.KeepDefault"))
     }
     snp.id <- snp.id[keepPos]
+    sample.ref <- read.gdsn(index.gdsn(gdsReference, "sample.ref"))
+    listSamples <- sample.id[which(sample.ref == 1)]
+    snpgdsClose(gdsReference)
     ## Open the GDS Sample file
     gdsSample <- openfn.gds(filename=fileGDSSample)
 
@@ -121,6 +124,7 @@ pruningProfile2 <- function(pRAIDS) {
                        start=c(1, posSample), count=c(-1,1))
 
     }else{
+        closefn.gds(gdsSample)
         stop("The genotype type don't exists")
     }
 
@@ -133,7 +137,7 @@ pruningProfile2 <- function(pRAIDS) {
     listKeepPos <- listGeno
 
     if(!is.null(specificSNV(pRAIDS))){
-        # we need to intersect 
+        # we need to intersect
         if(!("snvKeep" %in% colnames(specificSNV(pRAIDS)))){
             pRAIDS <- specificSNVColKeep(pRAIDS)
         }
@@ -149,20 +153,21 @@ pruningProfile2 <- function(pRAIDS) {
     # Not snp.id match keepPos
     listKeep <- snp.id[listKeepPos]
 
-    sample.ref <- read.gdsn(index.gdsn(gdsReference, "sample.ref"))
-    listSamples <- sample.id[which(sample.ref == 1)]
 
+    gdsReference <- snpgdsOpen(filename=fileReferenceGDS(pRAIDS))
+    on.exit(snpgdsClose(gdsReference), add=TRUE)
     ## Use a LD analysis to generate a subset of SNPs
     snpset <- runLDPruning(gds=gdsReference, method=pruningMethod(pRAIDS),
                            listSamples=listSamples, listKeep=listKeep,
                            slideWindowMaxBP=slideWindowMaxBP(pRAIDS), thresholdLD=thresholdLD(pRAIDS),
                            np=np(pRAIDS), verbose=verbose(pRAIDS))
+    #snpgdsClose(gdsReference)
     pruned <- unlist(snpset, use.names=FALSE)
 
     gdsProfile <- openfn.gds(filename=fileGDSSample, readonly=FALSE)
     addGDSStudyPruning(gdsProfile=gdsProfile, pruned=pruned)
     closefn.gds(gdsfile=gdsProfile)
-    snpgdsClose(gdsReference)
+
 
     return(pRAIDS)
 }
@@ -310,8 +315,8 @@ pruningProfile2 <- function(pRAIDS) {
 #' ancestry.}
 #' }
 #' }
-#' \item{\code{pRAIDS}}{ a \code{list} of class \code{RAIDSparam} a list of 
-#' the parameters.} 
+#' \item{\code{pRAIDS}}{ a \code{list} of class \code{RAIDSparam} a list of
+#' the parameters.}
 #' }
 #'
 #' @details
@@ -339,7 +344,7 @@ pruningProfile2 <- function(pRAIDS) {
 #'
 #' @examples
 #'
-#' 
+#'
 #' ## Path to the demo 1KG GDS file is located in this package
 #' dataDir <- system.file("extdata", package="RAIDS")
 #'
@@ -380,19 +385,19 @@ pruningProfile2 <- function(pRAIDS) {
 #'     fileReferenceGDS=fileReferenceGDS,
 #'     fileReferenceAnnotGDS=fileAnnotGDS
 #'     )
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' res <- ancestryInferencePCAKNN(pRAIDS=pRAIDS)
-#' 
+#'
 #' res$Ancestry
-#' 
+#'
 #' unlink(file.path(pathProfileGDS, paste0(pedStudy(res$pRAIDS)$Name.ID[1], ".gds")) , force=TRUE)
 #' if (length(dir(pathProfileGDS)) == 0) {
 #' unlink(pathProfileGDS, recursive = TRUE)
 #' }
-#' 
-#' 
+#'
+#'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv
 #' @importFrom gdsfmt index.gdsn read.gdsn openfn.gds ls.gdsn closefn.gds
@@ -403,18 +408,18 @@ pruningProfile2 <- function(pRAIDS) {
 ancestryInferencePCAKNN <- function(pRAIDS=RAIDSparam()) {
 
     pRAIDS <- profileGenoSynthesis(pRAIDS=pRAIDS)
-    
+
     ##########################
     ## Section ancestry
     ##########################
 
-    
+
     spRef <- getRefSuperPop2(pRAIDS)
-    
+
     # get a list of each pop.group in pRAIDS$syntheticRefDF
     sampleRM <- splitSelectByPop(syntheticRefDF(pRAIDS))
 
-    
+
 
     if(verbose(pRAIDS)){
         message("SyntheticAncestry start ", Sys.time())
@@ -427,9 +432,9 @@ ancestryInferencePCAKNN <- function(pRAIDS=RAIDSparam()) {
                          synthKNN <- computePoolSyntheticAncestryGr2(sampleRM=sampleRM[x,],
                                                                      spRef=spRef,
                                                                      pRAIDS = pRAIDS)
-                         # If modify to keep the order in parallel                                            
+                         # If modify to keep the order in parallel
                          # synthKNN$matKNN$pos <- rep(x, nrow(synthKNN$matKNN))
-                         # synthKNN$matKNN$spos <- seq_len(nrow(synthKNN$matKNN)) 
+                         # synthKNN$matKNN$spos <- seq_len(nrow(synthKNN$matKNN))
                          return(synthKNN$matKNN)
                      }, sampleRM=sampleRM, pRAIDS=pRAIDS,
                      spRef=spRef)
@@ -442,7 +447,7 @@ ancestryInferencePCAKNN <- function(pRAIDS=RAIDSparam()) {
     # resSyn <- resSyn[order(resSyn$pos, resSyn$spos),]
     # resSyn <- resSyn[,-1 * which(colnames(resSyn) %in% c("pos", "spos"))]
     pedSyn <- prepPedSyntheticRef(pRAIDS)
-    
+
     resCall <- computeAncestryFromSynthetic2(syntheticKNN=resSyn,
                             pedSyn=pedSyn,
                             spRef=spRef,
@@ -452,7 +457,7 @@ ancestryInferencePCAKNN <- function(pRAIDS=RAIDSparam()) {
     if(verbose(pRAIDS)){
         message("Ancestry end ", Sys.time())
     }
-    
+
 
     resSyn[[paste0("ref.superPop")]] <- pedSyn[resSyn$sample.id, "superPop"]
 
@@ -533,8 +538,8 @@ ancestryInferencePCAKNN <- function(pRAIDS=RAIDSparam()) {
 #' if (length(dir(pathProfileGDS)) == 0) {
 #' unlink(pathProfileGDS, recursive = TRUE)
 #' }
-#' 
-#' 
+#'
+#'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom utils write.csv
 #' @importFrom gdsfmt index.gdsn read.gdsn openfn.gds ls.gdsn closefn.gds
@@ -551,7 +556,7 @@ profileGenoSynthesis <- function(pRAIDS) {
         stop("The study must be specify as LD or GeneAware in the studyType or paramRAIDS.\n")
     }
 
-    
+
 
     profileName <- gsub("\\.gz$", "", profileBaseName, ignore.case = TRUE)
     for(extCur in c( "\\.vcf$", "\\.txt$", "\\.bam", "\\.tsv", "\\.csv")){
@@ -562,9 +567,9 @@ profileGenoSynthesis <- function(pRAIDS) {
     tmp$Name.ID[1] <- profileName
     tmp$Case.ID[1] <- profileName
     rownames(tmp) <- tmp$Name.ID
-    
+
     pedStudy(pRAIDS) <- tmp
-    
+
 
     if(file.exists(file.path(pathProfileGDS(pRAIDS), paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds")))){
         stop(paste0("The gds file for ", pedStudy(pRAIDS)$Name.ID[1], " already exist."))
@@ -576,9 +581,9 @@ profileGenoSynthesis <- function(pRAIDS) {
                                                     nbProfiles=30L)
     }
 
-    
 
-    
+
+
     ##########################
     ## Create profile section
     ##########################
@@ -635,10 +640,10 @@ profileGenoSynthesis <- function(pRAIDS) {
         message("syntheticGeno start ", Sys.time())
     }
 
-    
+
     resG <-syntheticGeno2(pRAIDS)
 
-    
+
     ## Successful
     return(pRAIDS)
 }
@@ -728,7 +733,7 @@ profileGenoSynthesis <- function(pRAIDS) {
 #' ## The inferred ancestry for the synthetic profiles for different values
 #' ## of D and K
 #' head(results$matKNN)
-#' 
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom gdsfmt read.gdsn index.gdsn openfn.gds closefn.gds
@@ -742,7 +747,7 @@ computeKNNRefSyn <- function(listEigenvector, pRAIDS) {
                                     paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
     gdsProfile <- snpgdsOpen(filename=fileGDSProfile)
 
-    
+
     gdsReference <- snpgdsOpen(filename=fileReferenceGDS(pRAIDS))
     dfRef <- read.gdsn(index.gdsn(gdsReference, "sample.annot"))
     row.names(dfRef) <- read.gdsn(index.gdsn(gdsReference, "sample.id"))
@@ -750,7 +755,7 @@ computeKNNRefSyn <- function(listEigenvector, pRAIDS) {
     if(! is.null(sampleRef(pRAIDS))){
         dfRef <- dfRef[sampleRef(pRAIDS),]
     }
-    
+
     # listCatPop <- unique(spRef)
     snpgdsClose(gdsReference)
 
@@ -768,7 +773,7 @@ computeKNNRefSyn <- function(listEigenvector, pRAIDS) {
                         resMat <- lapply(kList(pRAIDS),
                             FUN=function(kV, pcaD, listEigenvector,
                                     dfRef, pRAIDS){
-                                return(computeKNNProfileSubSet(listEigenvector, 
+                                return(computeKNNProfileSubSet(listEigenvector,
                                                 kV, pcaD,dfRef, pRAIDS))
                             },
                             pcaD=pcaD,
@@ -890,8 +895,8 @@ computeKNNRefSyn <- function(listEigenvector, pRAIDS) {
 #' ## The ancestry inference for the synthetic data using
 #' ## different K and D values
 #' head(result$matKNN)
-#' 
-#' 
+#'
+#'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match
 #' @importFrom gdsfmt openfn.gds closefn.gds
@@ -917,7 +922,7 @@ computePoolSyntheticAncestryGr2 <- function(sampleRM, spRef,
         eigenCount=eigenCountSyn(pRAIDS),
         missingRate=PCAmissingRate(pRAIDS),
         verbose=verbose(pRAIDS))
-    
+
     if(verbose(pRAIDS)){
         message("computePoolSyntheticAncestryGr2 p1 ", Sys.time())
     }
@@ -1163,10 +1168,10 @@ computePoolSyntheticAncestryGr2 <- function(sampleRM, spRef,
 #'                       spRef=spRef,
 #'                       listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
 #'                       pRAIDS=pRAIDS)
-#' 
+#'
 #' resCall$Ancestry
-#' 
-#' 
+#'
+#'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom rlang arg_match
@@ -1177,7 +1182,7 @@ computeAncestryFromSynthetic2 <- function(syntheticKNN,
                                          spRef,
                                          listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
                                          pRAIDS=pRAIDS) {
-    
+
     ## Validate input parameters
     # validateComputeAncestryFromSynthetic(gdsReference=gdsReference,
     #                                          gdsProfile=gdsProfile, syntheticKNN=syntheticKNN,
@@ -1263,8 +1268,8 @@ computeAncestryFromSynthetic2 <- function(syntheticKNN,
 #'
 #'
 #' @examples
-#' 
-#' 
+#'
+#'
 #' ## Load the known ancestry for the demo 1KG reference profiles
 #' data(demoKnownSuperPop1KG)
 #'
@@ -1307,7 +1312,7 @@ computeAncestryFromSynthetic2 <- function(syntheticKNN,
 #' @encoding UTF-8
 #' @export
 prepPedSyntheticRef <- function(pRAIDS) {
-    
+
     studyID <- studyDFSyn(pRAIDS)$study.id
     popName <- fieldPopInRef(pRAIDS)
     fileProfileGDS <-  validateProfileGDSExist(pathProfile=pathProfileGDS(pRAIDS),
@@ -1340,11 +1345,11 @@ prepPedSyntheticRef <- function(pRAIDS) {
 
     studyCur[[popName]] <- dataRef[studyCur$case.id, popName]
     rownames(studyCur) <- studyCur$data.id
-    
+
     ## Important to close the files
     closefn.gds(gdsProfile)
     closefn.gds(gdsReference)
-    
+
     return(studyCur)
 }
 
@@ -1358,22 +1363,22 @@ prepPedSyntheticRef <- function(pRAIDS) {
 #'
 #' @return a \code{list} containing 2 entries:
 #' \describe{
-#' \item{\code{profileQ}}{ a \code{matrix} containing the admixture 
+#' \item{\code{profileQ}}{ a \code{matrix} containing the admixture
 #' proportions of the profile }
 #' \item{\code{syntheticQ}}{ a \code{matrix} containing for each
 #' synthetic profile the admixture proportions of the synthetic profile,
-#' the synthetic proportions of the reference using the same position as 
+#' the synthetic proportions of the reference using the same position as
 #' the profile, and the admixture proportion of the gold standard}
 #' }
 #'
 #'
 #' @details TODO
 #'
-#' 
+#'
 #'
 #'
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' ## Load the known ancestry for the demo 1KG reference profiles
 #' data(demoKnownSuperPop1KG)
@@ -1405,7 +1410,7 @@ prepPedSyntheticRef <- function(pRAIDS) {
 #'      row.names(pedStudy) <- pedStudy$Name.ID
 #' ## Path to admixture
 #' ## pathADMIXTURE <- "PATH/admixture"
-#' 
+#'
 #' pRAIDS <- RAIDSparam(studyDF=studyDF,
 #'                       pedStudy=pedStudy,
 #'                       pathProfileGDS=pathProfileGDS,
@@ -1413,13 +1418,13 @@ prepPedSyntheticRef <- function(pRAIDS) {
 #'                       fieldPopInfAnc="SuperPop",
 #'                       pathADMIXTURE=pathADMIXTURE)
 #' res <- computeAdmixtureProportions(pRAIDS=pRAIDS)
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' dir(file.path(pathProfileGDS))
 #' head(res$profileQ)
 #' head(res$syntheticQ)
-#' 
+#'
 #' unlink(file.path(pathOut), recursive = TRUE)#'
 #' }
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
@@ -1434,7 +1439,7 @@ computeAdmixtureProportions <- function(pRAIDS) {
 
     fileProfileGDS <-  validateProfileGDSExist(pathProfile=pathProfileGDS(pRAIDS),
                                     profile=pedStudy(pRAIDS)$Name.ID[1])
-    
+
     pathOut <- file.path(pathProfileGDS(pRAIDS), paste0("tmp.", pedStudy(pRAIDS)$Name.ID[1]))
     if(! dir.exists(pathOut)){
         dir.create(pathOut)
@@ -1445,7 +1450,7 @@ computeAdmixtureProportions <- function(pRAIDS) {
     profileQ <- runADMIXTURE(pathOut = file.path(pathOut, "profileAdmixture"),
             fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".bed"),
             seedAdmix=seedADMIXTURE(pRAIDS), pRAIDS)
-    
+
     syntheticQ <- runSynADMIXTURE(pathOut=pathOut, matPIndex=matPIndex, pRAIDS=pRAIDS)
     syntheticQ <- syntheticJSD(syntheticQ=syntheticQ, pRAIDS=pRAIDS)
     if(cleanADMIXTUREFiles(pRAIDS)){

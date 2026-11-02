@@ -3347,6 +3347,7 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     ## Open the 1KG GDS file (demo version)
     gdsReference <- snpgdsOpen(fileReferenceGDS)
+
     ## Open the 1KG GDS file and 1KG SNV Annotation file
     gdsRefAnnot <- openfn.gds(fileReferenceAnnotGDS)
 
@@ -3621,7 +3622,7 @@ createProfile <- function(profileFile, profileName,
 #' Default: \code{NULL}.
 #'
 #' @param profileFile a TODO.
-#' 
+#'
 #' @param fileReferenceGDS  a \code{character} string representing the file
 #' name of the Reference GDS file. The file must exist.
 #'
@@ -3657,7 +3658,7 @@ createProfile <- function(profileFile, profileName,
 #' @param studyType a \code{character} string representing the type of study.
 #' The possible choices are: "DNA" and "RNA". The type of study affects the
 #' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
-#' 
+#'
 #' @param np a single positive \code{integer} specifying the number of
 #' threads to be used. Default: \code{1L}.
 #'
@@ -3876,7 +3877,7 @@ createProfile <- function(profileFile, profileName,
 #'
 #'     \dontrun{
 #'
-#'         res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1, 
+#'         res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1,
 #'             studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,

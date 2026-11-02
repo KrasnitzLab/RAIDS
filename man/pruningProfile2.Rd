@@ -54,7 +54,7 @@ pathProfileGDS <- tempdir()
 profileFile <- file.path(pathProfileGDS, "ex1.gds")
 
 pRAIDS <- RAIDSparam( studyDF=studyDF,
-                      profileFile=file.path(dataDir, "ex1.txt.gz"), 
+                      profileFile=file.path(dataDir, "ex1.txt.gz"),
                       genoSource = "snp-pileup",
                       pedStudy=samplePED,
                       pathProfileGDS=pathProfileGDS,
@@ -78,7 +78,7 @@ content
 closefn.gds(content)
 
 ## Remove Profile GDS file (created for demo purpose)
-unlink(profileFile, force=TRUE) 
+unlink(profileFile, force=TRUE)
 
 }
 \author{

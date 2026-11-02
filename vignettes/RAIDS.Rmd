@@ -562,6 +562,8 @@ you choose to use the pre-processed files.</span>
 This work was supported by a National Institutes of Health award U01 
 CA289357 to AK.
 
+Claude Opus 5.5, through Claude Code, was used to assist with code maintenance
+and unit test writing on the supervision of the maintainer.
 <br>
 <br>
 

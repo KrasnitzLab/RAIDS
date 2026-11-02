@@ -296,7 +296,7 @@ if (requireNamespace("Seqinfo", quietly=TRUE) &&
 
     \dontrun{
 
-        res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1, 
+        res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1,
             studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,
             pathGeno=pathGeno,

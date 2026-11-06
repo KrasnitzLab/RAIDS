@@ -110,6 +110,14 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 
     ## Only retained the SNV with the minimum required coverage
     listKeep <- cnt.total@i[which(cnt.total@x >= minCov)] + 1
+    listKeepRef <- listKeep
+    keepPos <- NULL
+    ## If snp.KeepDefault is in the gdsReference cnt.total
+    ## correspond to snp.KeepDefault
+    if("snp.KeepDefault" %in% ls.gdsn(gdsReference) ){
+        keepPos <- read.gdsn(index.gdsn(gdsReference, "snp.KeepDefault"))
+        listKeepRef <- keepPos[listKeep]
+    }
 
     ## Create the data.frame with the required information
     snpPos <- data.frame(cnt.tot=cnt.total[listKeep],
@@ -118,16 +126,16 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
                     cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count"),
                         start=c(1, posCur), count=c(-1, 1))[listKeep],
                     snp.pos=read.gdsn(index.gdsn(node=gdsReference,
-                                    "snp.position"))[listKeep],
+                                    "snp.position"))[listKeepRef],
                     snp.chr=read.gdsn(index.gdsn(node=gdsReference,
-                                    "snp.chromosome"))[listKeep],
+                                    "snp.chromosome"))[listKeepRef],
                     normal.geno=rep(3, length(listKeep)),#Norm genotype unknown
                     pruned=rep(FALSE, length(listKeep)), #bit(length(listKeep))
                     snp.index=listKeep, stringsAsFactors=FALSE)
 
     snp.pruned <- read.gdsn(index.gdsn(node=gdsSample, "snp.index"))
 
-    listKeepPruned <- which(listKeep %in% snp.pruned)
+    listKeepPruned <- which(listKeepRef %in% snp.pruned)
     snpPos$pruned[listKeepPruned] <- TRUE
 
     rm(cnt.total, snp.pruned, listKeepPruned)
@@ -142,14 +150,17 @@ getTableSNV <- function(gdsReference, gdsSample, currentProfile, studyID,
 
         cnt.total <- read.gdsn(index.gdsn(gdsSample, "Total.count.o"))
         listKeep.o <- which(cnt.total >= minCov)
-
+        listKeepRef.o <- listKeepRef.o
+        if("snp.KeepDefault" %in% ls.gdsn(gdsReference) ){
+            listKeepRef.o <- keepPos[listKeep.o]
+        }
         snpPosO <- data.frame(cnt.tot=cnt.total[listKeep.o],
             cnt.ref=read.gdsn(index.gdsn(gdsSample, "Ref.count.o"))[listKeep.o],
             cnt.alt=read.gdsn(index.gdsn(gdsSample, "Alt.count.o"))[listKeep.o],
             snp.pos=read.gdsn(index.gdsn(gdsReference,
-                "snp.position.o"))[listKeep.o],
+                "snp.position.o"))[listKeepRef.o],
             snp.chr=read.gdsn(index.gdsn(gdsReference,
-                "snp.chromosome.o"))[listKeep.o],
+                "snp.chromosome.o"))[listKeepRef.o],
             normal.geno=read.gdsn(index.gdsn(gdsSample,
                 "normal.geno"))[listKeep.o], pruned=rep(0, length(listKeep)),
             snp.index=rep(0, length(listKeep.o)), stringsAsFactors=FALSE)
@@ -438,14 +449,14 @@ computeLOHBlocksDNAChr <- function(gdsReference, chrInfo, snpPos, chr,
                             # Freq of the more likely geno
 
                             tmp <- apply(matrix(afSNV, ncol=1), 1,
-                                         FUN=function(x){max(max(x, 1-x)^2, 
+                                         FUN=function(x){max(max(x, 1-x)^2,
                                                             2* x *(1-x)) })
-                            # log10 (prod(FreqAllele^2) / prod(freq of more 
+                            # log10 (prod(FreqAllele^2) / prod(freq of more
                             #     likely genotype))
                             # snvR * 1 + (-1)^snvR * afSNV freq of the genotype
                             # (snvR = 1 homo ref
                             # and 0 if homo alt)
-                            logLHR <- sum(2 * log10(snvR * 1 + 
+                            logLHR <- sum(2 * log10(snvR * 1 +
                                         (-1)^snvR * afSNV)) - sum(log10(tmp))
                         }
 
@@ -602,13 +613,13 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                                     c("cnt.ref", "cnt.alt")], 1, min) /
                                     (rowSums(snp.hetero[start:k,c("cnt.ref",
                                         "cnt.alt")])))
-                                            
+
                                 k <- k + 1
                             }
                         }
                     }# End while
                 } else {
-                    lapCur <- 
+                    lapCur <-
                         median(apply(snp.hetero[, c("cnt.ref", "cnt.alt")],
                             1, min) / (rowSums(snp.hetero[,c("cnt.ref",
                             "cnt.alt")])))
@@ -622,7 +633,7 @@ computeAlleleFraction <- function(snpPos, w=10, cutOff=-3) {
                 return(listBlockAR)
             }, segImb=segImb, snpPos=snpPos, w=w, cutOff=cutOff)
     }
-    
+
     # note NULL if length(listBlockAR) == 0
     listBlockAR <- do.call(rbind, listBlockAR)
     # print(all.equal(listBlockAR, listBlockAR1))
@@ -779,7 +790,7 @@ computeAllelicFractionDNA <- function(gdsReference, gdsSample, currentProfile,
                 listChr <- which(snpPos$snp.chr == chr)
                 ## Identify LOH regions
                 homoBlock[[chr]] <- computeLOHBlocksDNAChr(
-                    gdsReference=gdsReference, chrInfo=chrInfo, 
+                    gdsReference=gdsReference, chrInfo=chrInfo,
                     snpPos=snpPos[listChr,], chr=chr)
 
                 if (verbose) { message("Step 2 ", Sys.time()) }
@@ -1409,7 +1420,7 @@ testEmptyBox <- function(matCov, pCutOff=-3) {
 calcAFMLRNA <- function(snpPosHetero) {
 
     listPhase <- which(snpPosHetero$phase < 2)
-    m <- data.frame(aL=rep(0, nrow(snpPosHetero)), 
+    m <- data.frame(aL=rep(0, nrow(snpPosHetero)),
                         aH=rep(0, nrow(snpPosHetero)))
     # For the vairants phase
     # sum the coverage for each haplotype
@@ -1588,12 +1599,12 @@ tableBlockAF <- function(snpPos) {
                 lH <- lH + ifelse(length(listAlt) > 0, sum(log10(tmp)*2), 0)
 
                 lM <- sum(log10(apply(snpPos[which(snpPos$block.id ==
-                        resBlock$block[1] & snpPos$homo), "freq", drop=FALSE], 
+                        resBlock$block[1] & snpPos$homo), "freq", drop=FALSE],
                         1, FUN=function(x) {
                                 return(max(x^2, 2*(x * (1-x)), (1-x)^2))})))
                     resBlock$sumAlleleLow[1] <- 0
-                    resBlock$sumAlleleHigh[1] <- 
-                        sum(snpPos[listRef, "cnt.ref"]) + 
+                    resBlock$sumAlleleHigh[1] <-
+                        sum(snpPos[listRef, "cnt.ref"]) +
                         sum(snpPos[listAlt, "cnt.alt"])
                 }
             }

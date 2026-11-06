@@ -186,11 +186,11 @@ validatePruningSample <- function(gdsReference, method, currentProfile, studyID,
 #' the column that will contain the inferred ancestry for the specified
 #' dataset.
 #'
-#' @param kList a \code{vector} of \code{integer} representing  the list of
+#' @param kList a \code{vector} of \code{integer} representing the list of
 #' values tested for the  _K_ parameter. The _K_ parameter represents the
 #' number of neighbors used in the K-nearest neighbor analysis.
 #'
-#' @param pcaList a \code{vector} of \code{integer} representing  the list of
+#' @param pcaList a \code{vector} of \code{integer} representing the list of
 #' values tested for the  _D_ parameter. The _D_ parameter represents the
 #' number of dimensions used in the PCA analysis.
 #'
@@ -762,7 +762,7 @@ validatecreateProfile <- function(pedStudy,
 #' @param listCatPop a \code{vector} of \code{character} string
 #' representing the list of possible ancestry assignations.
 #'
-#' @param fieldPopIn1KG a \code{character} string representing the name of the
+#' @param fieldPopInRef a \code{character} string representing the name of the
 #' column that contains the known ancestry for the reference profiles in
 #' the Reference GDS file.
 #'
@@ -825,7 +825,7 @@ validatecreateProfile <- function(pedStudy,
 #'     gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
 #'     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
 #'     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-#'     fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
+#'     fieldPopInRef="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
 #'     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2,
 #'     verbose=FALSE)
 #'
@@ -839,7 +839,7 @@ validatecreateProfile <- function(pedStudy,
 #' @keywords internal
 validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
                 listFiles, currentProfile, spRef, studyIDSyn, np, listCatPop,
-                fieldPopIn1KG, fieldPopInfAnc, kList, pcaList,
+                fieldPopInRef, fieldPopInfAnc, kList, pcaList,
                 algorithm, eigenCount, missingRate, verbose) {
 
     ## The gdsReference and gdsProfile must be objects of class "gds.class"
@@ -860,7 +860,7 @@ validateComputeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     }
 
     ## The parameters are character strings (vector of 1 entry)
-    validateCharacterString(value=fieldPopIn1KG, "fieldPopIn1KG")
+    validateCharacterString(value=fieldPopInRef, "fieldPopInRef")
     validateCharacterString(value=fieldPopInfAnc, "fieldPopInfAnc")
     validateCharacterString(value=studyIDSyn, "studyIDSyn")
 
@@ -1197,7 +1197,7 @@ validateRunExomeOrRNAAncestry <- function(pedStudy, studyDF, pathProfileGDS,
                 " the path where the output files will be generated.")
     }
 
-    ## The fileReferenceGDS must be a character string and the file must exists
+    ## The fileReferenceGDS must be a character string and the file must exist
     if (!(is.character(fileReferenceGDS) && (file.exists(fileReferenceGDS)))) {
         stop("The \'fileReferenceGDS\' must be a character string ",
                 "representing the Reference GDS file. The file must exist.")
@@ -2835,7 +2835,7 @@ profileAncestry <- function(gdsReference, gdsRefAnnot, studyDF,
 #' representing the list of possible ancestry assignations. Default:
 #' \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.
 #'
-#' @param fieldPopIn1KG a \code{character} string representing the name of the
+#' @param fieldPopInRef a \code{character} string representing the name of the
 #' column that contains the known ancestry for the reference profiles in
 #' the Reference GDS file.
 #'
@@ -3072,7 +3072,7 @@ computeAncestryFromSynthetic <- function(gdsReference, gdsProfile,
                                             studyIDSyn,
                                             np=1L,
                                             listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-                                            fieldPopIn1KG="superPop",
+                                            fieldPopInRef="superPop",
                                             fieldPopInfAnc="SuperPop",
                                             kList=seq(2, 15, 1),
                                             pcaList=seq(2, 15, 1),
@@ -3093,7 +3093,7 @@ computeAncestryFromSynthetic <- function(gdsReference, gdsProfile,
     #                                          gdsProfile=gdsProfile, syntheticKNN=syntheticKNN,
     #                                          pedSyn=pedSyn,
     #                                          currentProfile=currentProfile, spRef=spRef, studyIDSyn=studyIDSyn,
-    #                                          np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+    #                                          np=np, listCatPop=listCatPop, fieldPopInRef=fieldPopInRef,
     #                                          fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
     #                                          algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
     #                                          verbose=verbose)
@@ -3106,7 +3106,7 @@ computeAncestryFromSynthetic <- function(gdsReference, gdsProfile,
     ## Compile all the inferred ancestry results for different values of
     ## D and K to select the optimal parameters
     listParaSample <- selParaPCAUpQuartile(matKNN=syntheticKNN,
-                                           pedCall=pedSyn, refCall=fieldPopIn1KG, predCall=fieldPopInfAnc,
+                                           pedCall=pedSyn, refCall=fieldPopInRef, predCall=fieldPopInfAnc,
                                            listCall=listCatPop)
 
     ## Project profile on the PCA created with the reference profiles
@@ -3347,6 +3347,7 @@ runWrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     ## Open the 1KG GDS file (demo version)
     gdsReference <- snpgdsOpen(fileReferenceGDS)
+
     ## Open the 1KG GDS file and 1KG SNV Annotation file
     gdsRefAnnot <- openfn.gds(fileReferenceAnnotGDS)
 
@@ -3620,14 +3621,7 @@ createProfile <- function(profileFile, profileName,
 #' the directory where the GDS Profile files will be created.
 #' Default: \code{NULL}.
 #'
-#' @param pathGeno a \code{character} string representing the path to the
-#' directory containing the VCF output of SNP-pileup for each sample. The
-#' SNP-pileup files must be compressed (gz files) and have the name identifiers
-#' of the samples. A sample with "Name.ID" identifier would have an
-#' associated file called
-#' if genoSource is "VCF", then "Name.ID.vcf.gz",
-#' if genoSource is "generic", then "Name.ID.generic.txt.gz"
-#' if genoSource is "snp-pileup", then "Name.ID.txt.gz".
+#' @param profileFile a TODO.
 #'
 #' @param fileReferenceGDS  a \code{character} string representing the file
 #' name of the Reference GDS file. The file must exist.
@@ -3650,10 +3644,6 @@ createProfile <- function(profileFile, profileName,
 #' super-population assigned to the sample. }
 #' }
 #'
-#' @param studyType a \code{character} string representing the type of study.
-#' The possible choices are: "DNA" and "RNA". The type of study affects the
-#' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
-#'
 #' @param genoSource a \code{character} string with two possible values:
 #' 'snp-pileup', 'generic' or 'VCF', "bam". It specifies if the genotype files
 #' are generated by snp-pileup (Facets) or are a generic format CSV file
@@ -3665,6 +3655,10 @@ createProfile <- function(profileFile, profileName,
 #' Finally the file can be a VCF file with at least those genotype
 #' fields: GT, AD, DP.
 #'
+#' @param studyType a \code{character} string representing the type of study.
+#' The possible choices are: "DNA" and "RNA". The type of study affects the
+#' way the estimation of the allelic fraction is done. Default: \code{"DNA"}.
+#'
 #' @param np a single positive \code{integer} specifying the number of
 #' threads to be used. Default: \code{1L}.
 #'
@@ -3672,7 +3666,7 @@ createProfile <- function(profileFile, profileName,
 #' type used to extract the block identifiers. The block type must be
 #' present in the GDS Reference Annotation file.
 #'
-#' @param paramAncestry a \code{list} parameters ...
+#' @param paramAncestry a \code{list} parameters TODO...
 #'
 #' @param verbose a \code{logical} indicating if messages should be printed
 #' to show how the different steps in the function. Default: \code{FALSE}.
@@ -3854,7 +3848,6 @@ createProfile <- function(profileFile, profileName,
 #' #################################################################
 #' pathProfileGDS <- file.path(tempdir(), "out.tmp")
 #'
-#'
 #' #################################################################
 #' ## A data frame containing general information about the study
 #' ## is also required. The data frame must have
@@ -3884,7 +3877,8 @@ createProfile <- function(profileFile, profileName,
 #'
 #'     \dontrun{
 #'
-#'         res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
+#'         res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1,
+#'             studyDF=studyDF,
 #'             pathProfileGDS=pathProfileGDS,
 #'             pathGeno=pathGeno,
 #'             fileReferenceGDS=fileReferenceGDS,
@@ -3903,14 +3897,14 @@ createProfile <- function(profileFile, profileName,
 #' @encoding UTF-8
 #' @keywords internal
 wrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
-                            profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
-                            chrInfo, syntheticRefDF,
-                            genoSource=c("snp-pileup", "generic", "VCF", "bam"),
-                            studyType=c("LD", "GeneAware"), np=1L, blockTypeID=NULL,
-                            paramAncestry=list(ScanBamParam=NULL,
-                                               PileupParam=NULL,
-                                               yieldSize=10000000),
-                            verbose=FALSE) {
+    profileFile, fileReferenceGDS, fileReferenceAnnotGDS,
+    chrInfo, syntheticRefDF,
+    genoSource=c("snp-pileup", "generic", "VCF", "bam"),
+    studyType=c("LD", "GeneAware"), np=1L, blockTypeID=NULL,
+    paramAncestry=list(ScanBamParam=NULL,
+                            PileupParam=NULL,
+                            yieldSize=10000000),
+    verbose=FALSE) {
 
     if(genoSource == "bam") {
         message("Process from bam is a new feature;",
@@ -3957,14 +3951,13 @@ wrapperAncestry <- function(pedStudy, studyDF, pathProfileGDS,
 
     listProfileRef <- syntheticRefDF$sample.id
     studyDFSyn <- data.frame(study.id=paste0(studyDF$study.id, ".Synthetic"),
-                             study.desc=paste0(studyDF$study.id, " synthetic data"),
-                             study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
+            study.desc=paste0(studyDF$study.id, " synthetic data"),
+            study.platform=studyDF$study.platform, stringsAsFactors=FALSE)
 
     res <- profileAncestry(gdsReference, gdsRefAnnot, studyDF,
-                           currentProfile=pedStudy[1,"Name.ID"], pathProfileGDS, chrInfo,
-                           syntheticRefDF, studyDFSyn, listProfileRef,
-                           studyType, np=np, blockTypeID=blockTypeID, verbose=verbose)
-
+            currentProfile=pedStudy[1,"Name.ID"], pathProfileGDS, chrInfo,
+            syntheticRefDF, studyDFSyn, listProfileRef,
+            studyType, np=np, blockTypeID=blockTypeID, verbose=verbose)
 
     ## Close all GDS files
     closefn.gds(gdsReference)

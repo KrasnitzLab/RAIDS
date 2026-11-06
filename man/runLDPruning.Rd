@@ -7,7 +7,7 @@
 \usage{
 runLDPruning(
   gds,
-  method,
+  method = "corr",
   listSamples = NULL,
   listKeep = NULL,
   slideWindowMaxBP = 500000L,
@@ -23,7 +23,8 @@ runLDPruning(
 \item{method}{a \code{character} string that represents the method that will
 be used to calculate the linkage disequilibrium in the
 \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
-are: "corr", "r", "dprime" and "composite".}
+are: "corr", "r", "dprime" and "composite"Default: \code{"corrv5t1030p
+"}.}
 
 \item{listSamples}{a \code{vector} of \code{character} strings
 corresponding to the sample identifiers used in LD pruning done by the

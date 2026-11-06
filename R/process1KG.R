@@ -737,7 +737,6 @@ identifyRelative <- function(gds, maf=0.05, thresh=2^(-11/2),
 #' ## Open existing demo Reference GDS file
 #' fileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 #'
-#'
 #' ## Temporary output files
 #' ## The first RDS file will contain the list of unrelated patients
 #' ## The second RDS file will contain the kinship information between patients
@@ -997,11 +996,10 @@ getRef1KGPop <- function(gdsReference, popName="superPop") {
 #'
 #' ## Extract super population information for the 1KG profiles
 #' getRefSuperPop(fileReferenceGDS=nameFileGDS)
-#'
+#' 
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn closefn.gds
-#' @importFrom stats rmultinom
+#' @importFrom gdsfmt closefn.gds
 #' @importFrom SNPRelate snpgdsOpen
 #' @encoding UTF-8
 #' @export

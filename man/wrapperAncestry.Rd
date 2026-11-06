@@ -40,6 +40,8 @@ must be in \code{character} strings (no factor).}
 the directory where the GDS Profile files will be created.
 Default: \code{NULL}.}
 
+\item{profileFile}{a TODO.}
+
 \item{fileReferenceGDS}{a \code{character} string representing the file
 name of the Reference GDS file. The file must exist.}
 
@@ -83,19 +85,10 @@ threads to be used. Default: \code{1L}.}
 type used to extract the block identifiers. The block type must be
 present in the GDS Reference Annotation file.}
 
-\item{paramAncestry}{a \code{list} parameters ...}
+\item{paramAncestry}{a \code{list} parameters TODO...}
 
 \item{verbose}{a \code{logical} indicating if messages should be printed
 to show how the different steps in the function. Default: \code{FALSE}.}
-
-\item{pathGeno}{a \code{character} string representing the path to the
-directory containing the VCF output of SNP-pileup for each sample. The
-SNP-pileup files must be compressed (gz files) and have the name identifiers
-of the samples. A sample with "Name.ID" identifier would have an
-associated file called
-if genoSource is "VCF", then "Name.ID.vcf.gz",
-if genoSource is "generic", then "Name.ID.generic.txt.gz"
-if genoSource is "snp-pileup", then "Name.ID.txt.gz".}
 }
 \value{
 a \code{list} containing 4 entries:
@@ -274,7 +267,6 @@ pathGeno <- file.path(dataDir, "example", "snpPileup")
 #################################################################
 pathProfileGDS <- file.path(tempdir(), "out.tmp")
 
-
 #################################################################
 ## A data frame containing general information about the study
 ## is also required. The data frame must have
@@ -304,7 +296,8 @@ if (requireNamespace("Seqinfo", quietly=TRUE) &&
 
     \dontrun{
 
-        res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1, studyDF=studyDF,
+        res <- RAIDS:::wrapperAncestry(pedStudy=demoPedigreeEx1,
+            studyDF=studyDF,
             pathProfileGDS=pathProfileGDS,
             pathGeno=pathGeno,
             fileReferenceGDS=fileReferenceGDS,

@@ -1745,7 +1745,7 @@ test_that(paste0("computeAncestryFromSyntheticFile() must return error when fiel
     gdsF <- openfn.gds(fileGDS)
     withr::defer(closefn.gds(gdsF), envir=parent.frame())
 
-    error_message <- paste0("The \'fieldPopIn1KG\' parameter must be a ",
+    error_message <- paste0("The \'fieldPopInRef\' parameter must be a ",
                                 "character string.")
 
     expect_error(computeAncestryFromSyntheticFile(gdsReference=gdsF, gdsProfile=gdsF,

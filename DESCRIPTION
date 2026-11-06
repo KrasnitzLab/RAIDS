@@ -9,7 +9,7 @@ Description: This package implements specialized algorithms that enable
     following publication: Belleau, P et al. Genetic Ancestry Inference from 
     Cancer-Derived Molecular Data across Genomic and Transcriptomic 
     Platforms. Cancer Res 1 January 2023; 83 (1): 49–58.
-Version: 1.7.3
+Version: 1.11.1
 Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     role=c("cre", "aut"), comment = c(ORCID = "0000-0002-0802-1071")),
     person("Astrid", "Deschênes", email="adeschen@hotmail.com",
@@ -18,7 +18,9 @@ Authors@R: c(person("Pascal", "Belleau", email="pascal_belleau@hotmail.com",
     email="dtuveson@cshl.edu", 
     role=c("aut"), comment=c(ORCID="0000-0002-8017-2712")),
     person("Alexander", "Krasnitz", email="krasnitz@cshl.edu",
-    role=c("aut")))
+    role=c("aut")),
+    person(given="National Institutes of Health", role="fnd", 
+    comment=c(ROR="https://ror.org/01cwqze88")))
 License: Apache License (>= 2)
 Encoding: UTF-8
 NeedsCompilation: no
@@ -30,7 +32,10 @@ Depends: R (>= 4.2.0),
     utils,
     GENESIS,
     dplyr,
-    Rsamtools
+    Rsamtools,
+    BiocParallel,
+    genio,
+    philentropy
 Imports: S4Vectors,
     GenomicRanges,
     ensembldb,
@@ -38,6 +43,8 @@ Imports: S4Vectors,
     AnnotationDbi,
     methods,
     class,
+    BSgenome.Hsapiens.UCSC.hg38,
+    Seqinfo,
     pROC,
     IRanges,
     AnnotationFilter,
@@ -51,12 +58,11 @@ Suggests: testthat,
     rmarkdown,
     BiocStyle,
     withr,
-    Seqinfo,
-    BSgenome.Hsapiens.UCSC.hg38,
-    EnsDb.Hsapiens.v86
+    EnsDb.Hsapiens.v86,
+    GenomeInfoDb
 BugReports: https://github.com/KrasnitzLab/RAIDS/issues
 URL: https://krasnitzlab.github.io/RAIDS/
 biocViews: Genetics, Software, Sequencing, WholeGenome, PrincipalComponent, 
     GeneticVariability, DimensionReduction, BiocViews
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.1.0

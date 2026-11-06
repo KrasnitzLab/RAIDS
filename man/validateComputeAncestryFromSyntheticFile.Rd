@@ -15,7 +15,7 @@ validateComputeAncestryFromSyntheticFile(
   studyIDSyn,
   np,
   listCatPop,
-  fieldPopIn1KG,
+  fieldPopInRef,
   fieldPopInfAnc,
   kList,
   pcaList,
@@ -54,7 +54,7 @@ threads.}
 \item{listCatPop}{a \code{vector} of \code{character} string
 representing the list of possible ancestry assignations.}
 
-\item{fieldPopIn1KG}{a \code{character} string representing the name of the
+\item{fieldPopInRef}{a \code{character} string representing the name of the
 column that contains the known ancestry for the reference profiles in
 the Reference GDS file.}
 
@@ -115,7 +115,7 @@ RAIDS:::validateComputeAncestryFromSyntheticFile(gdsReference=gds1KG,
     gdsProfile=gdsSample, listFiles=listFiles, currentProfile="sample01",
     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-    fieldPopIn1KG="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
+    fieldPopInRef="superpop", fieldPopInfAnc="Superpop", kList=c(2, 3, 4),
     pcaList=c(3, 4, 5), algorithm="exact", eigenCount=32L, missingRate=0.2,
     verbose=FALSE)
 

@@ -676,8 +676,8 @@ generateGDS1KGgenotypeFromSNPPileup <- function(pathGeno,
 #' @importFrom utils read.csv
 #' @encoding UTF-8
 #' @keywords internal
-generateProfileGDS <- function(profileFile, profileName, listPos, offset, 
-    minCov=10, minProb=0.999, seqError=0.001, dfPedProfile, batch, studyDF, 
+generateProfileGDS <- function(profileFile, profileName, listPos, offset,
+    minCov=10, minProb=0.999, seqError=0.001, dfPedProfile, batch, studyDF,
     pathProfileGDS, genoSource, paramProfileGDS, verbose) {
 
     # File with the description of the SNP keep
@@ -745,9 +745,9 @@ generateProfileGDS <- function(profileFile, profileName, listPos, offset,
     rm(matSample)
     z <- z[order(z[,1], z[,2], z[,3]),]
 
-    matAll <- data.frame(Chromosome=z[z[, 3] == 1, 1], 
+    matAll <- data.frame(Chromosome=z[z[, 3] == 1, 1],
                 Position=z[z[, 3] == 1, 2], File1R=cumsum(z[, 4])[z[, 3] == 1],
-                File1A=cumsum(z[,5])[z[, 3] == 1], 
+                File1A=cumsum(z[,5])[z[, 3] == 1],
                 count=cumsum(z[, 6])[z[, 3] == 1])
     rm(z)
 
@@ -758,7 +758,7 @@ generateProfileGDS <- function(profileFile, profileName, listPos, offset,
         if(!dir.exists(pathProfileGDS)) { dir.create(pathProfileGDS) }
     }
     fileGDSSample <- file.path(pathProfileGDS, paste0(profileName, ".gds"))
-    
+
     if(file.exists(fileGDSSample)) {
         gdsSample <- openfn.gds(fileGDSSample, readonly=FALSE)
     } else{
@@ -770,7 +770,7 @@ generateProfileGDS <- function(profileFile, profileName, listPos, offset,
                             valdim=c( nrow(listPos), 1), storage="sp.int16")
         var.Alt <- add.gdsn(gdsSample, "Alt.count", matAll$File1A,
                             valdim=c( nrow(listPos), 1), storage="sp.int16")
-        var.Count <- add.gdsn(gdsSample, "Total.count", matAll$count, 
+        var.Count <- add.gdsn(gdsSample, "Total.count", matAll$count,
                             valdim=c( nrow(listPos), 1), storage="sp.int16")
     } else {
         # you must append
@@ -782,8 +782,8 @@ generateProfileGDS <- function(profileFile, profileName, listPos, offset,
                                     matAll$count)
     }
 
-    listSampleGDS <- addStudyGDSSample(gdsSample, pedProfile=dfPedProfile, 
-        batch=batch, listSamples=c(profileName), studyDF=studyDF, 
+    listSampleGDS <- addStudyGDSSample(gdsSample, pedProfile=dfPedProfile,
+        batch=batch, listSamples=c(profileName), studyDF=studyDF,
         verbose=verbose)
 
     listCount <- table(matAll$count[matAll$count >= minCov])
@@ -791,12 +791,12 @@ generateProfileGDS <- function(profileFile, profileName, listPos, offset,
         data.frame(count=unlist(vapply(as.integer(names(listCount)),
             FUN=function(x, minProb, eProb){
                     return(max(2,qbinom(minProb, x, eProb))) },
-                        FUN.VALUE=numeric(1), minProb=minProb, 
+                        FUN.VALUE=numeric(1), minProb=minProb,
                         eProb=2 * seqError)),
                         allele=unlist(vapply(as.integer(names(listCount)),
                             FUN=function(x, minProb, eProb){
                                 return(max(2,qbinom(minProb, x, eProb))) },
-                                    FUN.VALUE=numeric(1), minProb=minProb, 
+                                    FUN.VALUE=numeric(1), minProb=minProb,
                                     eProb=seqError)))
 
     row.names(cutOffA) <- names(listCount)
@@ -1116,7 +1116,8 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 #' @param method a \code{character} string that represents the method that will
 #' be used to calculate the linkage disequilibrium in the
 #' \code{\link[SNPRelate]{snpgdsLDpruning}}() function. The 4 possible values
-#' are: "corr", "r", "dprime" and "composite".
+#' are: "corr", "r", "dprime" and "composite"Default: \code{"corrv5t1030p
+#' "}.
 #'
 #' @param listSamples a \code{vector} of \code{character} strings
 #' corresponding to the sample identifiers used in LD pruning done by the
@@ -1177,14 +1178,15 @@ runIBDKING <- function(gds, profileID=NULL, snpID=NULL, maf=0.05, verbose) {
 #'
 #' @importFrom SNPRelate snpgdsOpen snpgdsLDpruning
 #' @importFrom gdsfmt closefn.gds
+#' @importFrom BiocParallel bplapply
 #' @encoding UTF-8
 #' @keywords internal
-runLDPruning <- function(gds, method,
+runLDPruning <- function(gds, method="corr",
         listSamples=NULL, listKeep=NULL, slideWindowMaxBP=500000L,
         thresholdLD=sqrt(0.1), np=1L, verbose) {
 
     ## Call SNP LD pruning
-    result <- snpgdsLDpruning(gdsobj=gds, method="corr",
+    result <- snpgdsLDpruning(gdsobj=gds, method=method,
                                 sample.id=listSamples,
                                 snp.id=listKeep, slide.max.bp=slideWindowMaxBP,
                                 ld.threshold=thresholdLD, num.thread=np,

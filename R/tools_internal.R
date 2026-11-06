@@ -404,7 +404,7 @@ readSNVVCF <- function(fileName, profileName=NULL, offset=0L) {
             keep <- ifelse(listAlt[2] %in% c("A", "C", "G", "T"), TRUE, FALSE)
 
             res <- data.frame(Alt=as.character(listAlt[2]),
-                        File1R=countA[[x]][1], File1A=countA[[x]][2], 
+                        File1R=countA[x,genoPos][[1]][1], File1A=countA[x,genoPos][[1]][2],
                         keep=keep)
 
             return(res)
@@ -421,10 +421,14 @@ readSNVVCF <- function(fileName, profileName=NULL, offset=0L) {
                     Ref=refCur[listKeep], Alt=matCur$Alt[listTmp],
                     File1R=matCur$File1R[listTmp],
                     File1A=matCur$File1A[listTmp],
-                    count=gtCur$DP[,1], stringsAsFactors=FALSE)
+                    count=unname(gtCur$DP[listKeep,genoPos]),
+                    stringsAsFactors=FALSE)
 
     return(matSample)
 }
+
+
+
 
 #' @title Filtering the read counts for a specific nucleotide
 #'
@@ -620,8 +624,8 @@ processPileupChrBin <- function(chr, resPileup, varDf, verbose) {
 #' the path, of a BAM file with the index file in the same directory
 #'
 #'
-#' @param paramSNVBAM a \code{list} containing the parameters passed to the 
-#' BamFile() function. Default: \code{list(ScanBamParam=NULL, PileupParam=NULL, 
+#' @param paramSNVBAM a \code{list} containing the parameters passed to the
+#' BamFile() function. Default: \code{list(ScanBamParam=NULL, PileupParam=NULL,
 #' yieldSize=10000000)}.
 #'
 #' @param varSelected a \code{data.frame} representing the position to keep
@@ -655,13 +659,13 @@ processPileupChrBin <- function(chr, resPileup, varDf, verbose) {
 #' ## Required library for this example to run correctly
 #' if (requireNamespace("Rsamtools", quietly=TRUE)) {
 #'     ## Demo bam
-#'     fl <- system.file("extdata", "no_which_buffered_pileup.bam", 
+#'     fl <- system.file("extdata", "no_which_buffered_pileup.bam",
 #'             package="Rsamtools", mustWork=TRUE)
-#'           
-#'     RAIDS:::readSNVBAM(fl, varSelected=data.frame(chr=c(1,1), 
+#'
+#'     RAIDS:::readSNVBAM(fl, varSelected=data.frame(chr=c(1,1),
 #'                 start=c(3,5), REF=c("A", "A"), ALT=c("C", "C")))
 #' }
-#' 
+#'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
 #' @importFrom Rsamtools BamFile ScanBamParam PileupParam pileup
 #' @importFrom MatrixGenerics rowRanges
@@ -739,7 +743,7 @@ readSNVBAM <- function(fileName, varSelected, offset=0L,
             if(length(tmpChr) != length(listChr)){
                 listChg <- listChr[-1* tmpChr]
                 for(i in seq_len(length(listChg))){
-                    resPileup$seqnames[resPileup$seqnames == listChg[i]] <- 
+                    resPileup$seqnames[resPileup$seqnames == listChg[i]] <-
                             paste0("chr", listChg[i])
                 }
                 listChr <- unique(as.character(resPileup$seqnames))
@@ -753,13 +757,13 @@ readSNVBAM <- function(fileName, varSelected, offset=0L,
                                  Sys.time()) }
             tmp <- lapply(listChr,
                     FUN=function(x, res, varSelected){
-                            return(processPileupChrBin(chr=x, res, 
+                            return(processPileupChrBin(chr=x, res,
                                 varDf=varSelected, verbose=verbose))
                           }, res=resPileup,
                           varSelected=varSelected)
             if(verbose) { message("readSNVBAM processPileupChrBin end ",
                                  Sys.time()) }
-            
+
             if(length(tmp) > 0) {
                 res[[i]] <- do.call(rbind, tmp)
                 i <- i + 1
@@ -796,9 +800,9 @@ readSNVBAM <- function(fileName, varSelected, offset=0L,
             resSNP$File1A[tmp] <- resSNP[tmp, nuc]
         }
     }
-    resSNP <- resSNP[, c("seqnames", "pos", "REF", "ALT", "File1R", "File1A", 
+    resSNP <- resSNP[, c("seqnames", "pos", "REF", "ALT", "File1R", "File1A",
                                 "count", "A", "C", "G", "T")]
-    colnames(resSNP) <- c("Chromosome", "Position", "Ref", "Alt", "File1R", 
+    colnames(resSNP) <- c("Chromosome", "Position", "Ref", "Alt", "File1R",
                                 "File1A", "count", "A", "C", "G", "T")
     resSNP$Position <- resSNP$Position  + offset
 
@@ -861,7 +865,7 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
              "representing the Reference GDS file. The file must exist.")
     }
     if (!(is.character(fileBlock) && (file.exists(fileBlock)))) {
-        stop("The \'fileBlock\' must be a character string representing the", 
+        stop("The \'fileBlock\' must be a character string representing the",
                 " file .det from plink block result. The file must exist.")
     }
 
@@ -918,3 +922,532 @@ processBlockChr <- function(fileReferenceGDS, fileBlock) {
     return(res)
 }
 
+
+#' @title Read a VCF file with the genotypes use for the ancestry call
+#'
+#' @description The function reads VCF file and returns a data frame
+#' containing the information about the read counts for the SNVs present in
+#' the file.
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return a \code{list}
+#' \describe{
+#' \item{matProfile}{
+#' a \code{data.frame} containing at least:
+#' \describe{
+#' \item{Chromosome}{ a \code{numeric} representing the name of
+#' the chromosome}
+#' \item{Position}{ a \code{numeric} representing the position on the
+#' chromosome}
+#' \item{Ref}{ a \code{character} string representing the reference nucleotide}
+#' \item{Alt}{ a \code{character} string representing the alternative
+#' nucleotide}
+#' \item{File1R}{ a \code{numeric} representing the count for
+#' the reference nucleotide}
+#' \item{File1A}{ a \code{numeric} representing the count for the
+#' alternative nucleotide}
+#' \item{count}{ a \code{numeric} representing the total count}
+#' }}
+#' \item{pRAIDS}{
+#' a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#' }
+#' }
+#'
+#' @examples
+#'
+#' ## Current directory
+#' dataDir <- file.path(tempdir())
+#'
+#' fileGDS <- file.path(system.file("extdata/tests", package="RAIDS"), "ex1_good_small_1KG.gds")
+#'
+#' ## Copy required file into current directory
+#' file.copy(from=file.path(system.file("extdata/tests", package="RAIDS"),
+#'                     "ex1.txt.gz"), to=dataDir)
+#'
+#' ## The data.frame containing the information about the study
+#' ## The 3 mandatory columns: "study.id", "study.desc", "study.platform"
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' studyDF <- data.frame(study.id = "MYDATA",
+#'                         study.desc = "Description",
+#'                         study.platform = "PLATFORM",
+#'                         stringsAsFactors = FALSE)
+#'
+#' ## The data.frame containing the information about the samples
+#' ## The entries should be strings, not factors (stringsAsFactors=FALSE)
+#' samplePED <- data.frame(Name.ID=c("ex1", "ex2"),
+#'                     Case.ID=c("Patient_h11", "Patient_h12"),
+#'                     Diagnosis=rep("Cancer", 2),
+#'                     Sample.Type=rep("Primary Tumor", 2),
+#'                     Source=rep("Databank B", 2), stringsAsFactors=FALSE)
+#' rownames(samplePED) <- samplePED$Name.ID
+#'
+#' pRAIDS <- RAIDSparam(profileFile=file.path(dataDir, "ex1.txt.gz"),
+#'     studyDF=studyDF,
+#'     genoSource="snp-pileup",
+#'     pedStudy=samplePED,
+#'     pathProfileGDS=dataDir,
+#'     fileReferenceGDS=fileGDS
+#'     )
+#' infoCov <- RAIDS:::dispatchParseReadCov(pRAIDS)
+#' names(infoCov)
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @encoding UTF-8
+#' @keywords internal
+dispatchParseReadCov <- function(pRAIDS){
+
+    matSample <- NULL
+    if(genoSource(pRAIDS) == "snp-pileup") {
+        matSample <- readSNVPileupFile(profileFile(pRAIDS), posOffset(pRAIDS))
+    } else if(genoSource(pRAIDS) == "generic") {
+        matSample <- readSNVFileGeneric(profileFile(pRAIDS), posOffset(pRAIDS))
+    } else if(genoSource(pRAIDS) == "VCF") {
+        # tmpProfile <- gsub(".vcf.gz", "",listMat[pos])
+        matSample <- readSNVVCF(profileFile(pRAIDS),
+                                profileName=pedStudy(pRAIDS)$Name.ID[1], posOffset(pRAIDS))
+    } else if(genoSource(pRAIDS)== "bam"){
+        colnames(listPos(pRAIDS))[seq_len(2)] <- c("chr", "start")
+        matSample <- readSNVBAM(fileName=profileFile(pRAIDS),
+                                varSelected=listPos(pRAIDS), paramSNVBAM=paramAncestry(pRAIDS),
+                                posOffset(pRAIDS),
+                                verbose=verbose(pRAIDS))
+        # listPos <- do.call(rbind, listPos)
+        tmp <- listPos(pRAIDS)
+        colnames(tmp)[seq_len(2)] <- c("snp.chromosome", "snp.position")
+        listPos(pRAIDS) <- tmp
+        rm(tmp)
+
+    }
+    return(list(matProfile = matSample,
+                pRAIDS=pRAIDS))
+}
+
+#' @title run ADMIXTURE for the synthetic data
+#'
+#' @description TODO
+#'
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the directory for the synthetic admixture
+#' will be processed
+#'
+#' @param gr  a \code{integer} representing the group
+#' (row matGr from getMatrixPopSynthetic) of
+#' synthetic data to run together
+#'
+#' @param matGr a \code{matrix} containing the sample identifiers and where
+#' each column is the name of a subcontinental population. The number of
+#' row corresponds to the number of samples for each subcontinental population.
+#'
+#' @param matPIndex a \code{array} of the frequency matrix.
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return \code{0L} when successful.
+#'
+#'
+#' @details TODO
+#'
+#'
+#' @examples
+#'
+#'
+#' ### runSynADMIXTURE in tools.R
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn closefn.gds
+#' @importFrom SNPRelate snpgdsOpen snpgdsClose
+#' @importFrom BiocParallel MulticoreParam bplapply
+#' @encoding UTF-8
+#' @keywords internal
+prepSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, pRAIDS){
+
+    pathSyn <- file.path(pathOut, paste0("syn.", gr))
+    if(!dir.exists(file.path(pathSyn))){
+        dir.create(file.path(pathSyn))
+    }
+    gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
+
+    admixDesc <- read.gdsn(index.gdsn(gdsReference, "admixture.desc"))
+    pos <- admixDesc[admixDesc$id == anchorId(pRAIDS), "id.seq"]
+    popSelected <- read.gdsn(index.gdsn(gdsReference, "admixture.ag"))
+    popSelected <- popSelected[popSelected$id.seq == pos,]
+
+    snpgdsClose(gdsReference)
+
+    matGrDataId <- getMatrixDataId(matGr=matGr, pRAIDS=pRAIDS)
+
+    writeBedRef(fileOut=file.path(pathSyn, paste0(pedStudy(pRAIDS)$Name.ID[1], ".synRef.bed")),
+                listRM=matGr[gr,], subset=TRUE, pRAIDS=pRAIDS)
+    # writeBedProfile(fileOut=file.path(pathOut, paste0(pRAIDS$pedStudy$Name.ID[1], ".syn.bed")),
+    #                 listProfile=matGrDataId[i,], listRM=NULL, profileOnly=TRUE, pRAIDS=pRAIDS)
+    writeFamRef(fileOut=file.path(pathSyn, paste0(pedStudy(pRAIDS)$Name.ID[1], ".synRef.fam")),
+                listRM=matGr[gr,], subset=TRUE, pRAIDS=pRAIDS)
+
+    writeFamProfile(fileOut=file.path(pathSyn, paste0(pedStudy(pRAIDS)$Name.ID[1], ".syn.fam")),
+                    listProfile=matGrDataId[gr,], listRM=NULL, profileOnly=TRUE, pRAIDS)
+    matPFile <- ifelse(matPIndex[gr] == 0,
+                       file.path(pathOut, "matP", paste0( pedStudy(pRAIDS)$Name.ID[1],
+                                                          ".P.in")),
+                       file.path(pathOut, "matP", paste0( pedStudy(pRAIDS)$Name.ID[1],
+                                                          ".syn.", matPIndex[gr], ".P.in")))
+    file.copy(matPFile,
+              file.path(pathSyn,
+                        paste0(pedStudy(pRAIDS)$Name.ID[1],
+                               ".synRef.", nrow(popSelected), ".P.in")))
+    file.copy(file.path(pathOut, "profileAdmixture", paste0( pedStudy(pRAIDS)$Name.ID[1],
+                                               ".bim")),
+              file.path(pathSyn,
+                        paste0(pedStudy(pRAIDS)$Name.ID[1],
+                               ".synRef.bim")))
+    writeBedBimFilesProfileFilter(pathOut=pathSyn,
+                                  prefOut=paste0(pedStudy(pRAIDS)$Name.ID[1],
+                                                 ".syn"),
+                                  fileP=file.path(pathSyn,
+                                        paste0(pedStudy(pRAIDS)$Name.ID[1],
+                                        ".synRef.", nrow(popSelected), ".P.in")),
+                                  listProfile=matGrDataId[gr,],
+                                  pRAIDS=pRAIDS)
+    return(0L)
+}
+
+#' @title run ADMIXTURE for the synthetic data
+#'
+#' @description TODO
+#'
+#'
+#' @param pathOut  a \code{character} representing path
+#' where the directory for the synthetic admixture
+#' will be processed
+#'
+#' @param gr  a \code{integer} representing the group
+#' (row matGr from getMatrixPopSynthetic) of
+#' synthetic data to run together
+#'
+#' @param matGr a \code{matrix} containing the sample identifiers and where
+#' each column is the name of a subcontinental population. The number of
+#' row corresponds to the number of samples for each subcontinental population.
+#'
+#' @param matPIndex a \code{array} of the frequency matrix.
+#'
+#' @param matQGS a \code{matrix} containing contening the admixture gold standard
+#' from the gdsReference
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return \code{0L} when successful.
+#'
+#'
+#' @details TODO
+#'
+#'
+#' @examples
+#'
+#'
+#' ### see runSynADMIXTURE in tools.R
+#'
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt index.gdsn read.gdsn closefn.gds
+#' @importFrom SNPRelate snpgdsOpen snpgdsClose
+#' @importFrom BiocParallel MulticoreParam bplapply
+#' @encoding UTF-8
+#' @keywords internal
+runGrSynADMIXTURE <- function(pathOut, gr, matGr, matPIndex, matQGS, pRAIDS) {
+
+    if(verbose(pRAIDS)) print(paste0("Syn Admixture ", gr))
+
+    prepSynADMIXTURE(pathOut=pathOut, gr=gr, matGr=matGr, matPIndex=matPIndex, pRAIDS)
+
+    matQSynRef <- runADMIXTURE(pathOut = file.path(pathOut, paste0("syn.", gr)),
+        fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".synRef.bed"),
+        seedAdmix=seedADMIXTURE(pRAIDS) + gr, pRAIDS)
+
+    matQSyn <- runADMIXTURE(pathOut = file.path(pathOut, paste0("syn.", gr)),
+        fileBed = paste0(pedStudy(pRAIDS)$Name.ID[1], ".syn.bed"),
+        seedAdmix=seedADMIXTURE(pRAIDS) + gr, pRAIDS)
+
+    matQ <- data.frame(id=row.names(matQSynRef),
+                idSyn=row.names(matQSyn),
+            stringsAsFactors = FALSE)
+    colnames(matQSynRef) <- paste0(colnames(matQSynRef), ".p")
+
+    row.names(matQ) <- NULL
+    row.names(matQSynRef) <- NULL
+
+    matQ <- cbind(matQ, matQSyn, matQSynRef, matQGS[matQ$id,])
+    row.names(matQ) <- matQ$id
+    return(matQ)
+
+}
+
+#' @title Generate a plink fam file
+#'
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
+#'
+#' @param fileOut a \code{character} string representing the path and
+#' the file name of the new fam file.
+#'
+#' @param listRM a \code{vector} of \code{character} strings containing the
+#' identifiers for the reference samples that need to be removed for the
+#' PCA analysis.
+#'
+#' @param subset a \code{logical} extract the profiles from the reference in
+#' listRM (TRUE) or extract from the reference not in listRM (FALSE).
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## see runSynADMIXTURE in tools.R and
+#' ## prepSynADMIXTURE in tools_internal.R
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt read.gdsn index.gdsn
+#' @importFrom genio write_fam
+#' @importFrom SNPRelate snpgdsOpen snpgdsClose
+#' @encoding UTF-8
+#' @keywords internal
+writeFamRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
+
+    gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
+
+    sampleId <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[read.gdsn(index.gdsn(gdsReference, "sample.ref")) == 1]
+    if(subset){
+        if(! is.null(listRM)){
+            sampleId <- sampleId[sampleId %in% listRM ]
+        }
+    } else{
+        if(! is.null(listRM)){
+            sampleId <- sampleId[! sampleId %in% listRM ]
+        }
+    }
+
+    sujetFam <- data.frame(fam=seq_len(length(sampleId)),
+                           id=c(sampleId),
+                           pat=0,
+                           mat=0,
+                           sex=1,
+                           pheno=0,
+                           stringsAsFactors=FALSE)
+
+    write_fam(fileOut, sujetFam)
+    snpgdsClose(gdsReference)
+    return(0)
+}
+
+#' @title Generate a plink bed file
+#'
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
+#'
+#' @param fileOut a \code{character} string representing the path and
+#' the file name of the new bim file.
+#'
+#' @param listRM a \code{vector} of \code{character} strings containing the
+#' identifiers for the reference samples that need to be removed for the
+#' PCA analysis.
+#'
+#' @param subset a \code{logical} extract the genotypes from the reference in
+#' listRM (TRUE) or extract from the reference not in listRM (FALSE).
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## see runSynADMIXTURE in tools.R and
+#' ## prepSynADMIXTURE in tools_internal.R
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt read.gdsn index.gdsn
+#' @importFrom genio write_bed
+#' @importFrom SNPRelate snpgdsOpen snpgdsClose snpgdsGetGeno
+#' @encoding UTF-8
+#' @keywords internal
+writeBedRef <- function(fileOut, listRM=NULL, subset=FALSE, pRAIDS){
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
+                            paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
+    gdsProfile <- snpgdsOpen(fileGDSProfile)
+    gdsReference <- snpgdsOpen(fileReferenceGDS(pRAIDS))
+
+    snpId <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
+    sampleId <- read.gdsn(index.gdsn(gdsReference, "sample.id"))[
+                        read.gdsn(index.gdsn(gdsReference, "sample.ref")) == 1]
+    if(subset){
+        if(! is.null(listRM)){
+            sampleId <- sampleId[sampleId %in% listRM]
+        }
+    } else{
+        if(! is.null(listRM)){
+            sampleId <- sampleId[! sampleId %in% listRM]
+        }
+    }
+    g <- snpgdsGetGeno(gdsReference, sample.id=sampleId, snp.id=snpId,
+            snpfirstdim=TRUE)
+
+    write_bed(fileOut, g, verbose=TRUE, append=FALSE)
+    snpgdsClose(gdsProfile)
+    snpgdsClose(gdsReference)
+    return(0)
+}
+
+
+#' @title Generate a matrix of synthetic group per pop
+#'
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
+#'
+#' @param matGr a \code{matrix} containing the sample identifiers and where
+#' each column is the name of a subcontinental population. The number of
+#' row corresponds to the number of samples for each subcontinental population.
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters
+#'
+#' @return a \code{matrix} containing the data.id for synthetic data and where
+#' each column is the name of a subcontinental population. The number of
+#' row corresponds to the number of samples for each subcontinental population.
+#'
+#' @examples
+#'
+#' ## see runSynADMIXTURE in tools.R and
+#' ## prepSynADMIXTURE in tools_internal.R
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt read.gdsn
+#' @importFrom SNPRelate snpgdsOpen snpgdsClose
+#' @encoding UTF-8
+#' @keywords internal
+getMatrixDataId <- function(matGr, pRAIDS){
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
+                            paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
+    gdsProfile <- snpgdsOpen(fileGDSProfile)
+
+    profileSyn <- read.gdsn(index.gdsn(gdsProfile,"study.annot"))
+    profileSyn <- profileSyn[profileSyn$study.id ==
+                                        studyDFSyn(pRAIDS)$study.id[1],]
+    sampleId <- read.gdsn(index.gdsn(gdsProfile,"sample.id"))
+
+    listGr <- lapply(seq_len(nrow(matGr)),
+                     FUN=function(x,matGr, profileSyn, sampleId){
+                         return(sampleId[ sampleId %in% profileSyn$data.id[profileSyn$case.id %in%
+                                                        matGr[x,]]])
+                     },
+                     matGr=matGr,
+                     profileSyn=profileSyn,
+                     sampleId=sampleId)
+    matGrDataId <- do.call(rbind, listGr)
+
+    snpgdsClose(gdsProfile)
+
+    return(matGrDataId)
+}
+
+
+#' @title Generate a plink bed file TODO
+#'
+#' @description This function extract the SNPs that pass a frequency cut-off
+#' in at least one super population
+#' from a GDS SNP information file and save the retained SNP information into
+#' a VCF file.
+#'
+#' @param pathOut a \code{character} string representing the path where
+#' to save the output
+#'
+#' @param prefOut a \code{character} string representing the prefix of
+#' file name of the new bed, bim, and P.in files.
+#'
+#' @param fileP a \code{character} string representing the path and
+#' the file name of the new bim file.
+#'
+#' @param listProfile a \code{vector} of \code{character} representing the list
+#' of profiles from gdsProfile to keep.
+#'
+#' @param pRAIDS a \code{RAIDSparam} an object with all the RAIDS
+#' parameters.
+#'
+#' @return The integer \code{0L} when successful.
+#'
+#' @examples
+#'
+#' ## see runSynADMIXTURE in tools.R and
+#' ## prepSynADMIXTURE in tools_internal.R
+#'
+#' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
+#' @importFrom gdsfmt read.gdsn index.gdsn
+#' @importFrom genio write_bed write_bim
+#' @importFrom methods is
+#' @importFrom SNPRelate snpgdsGetGeno snpgdsOpen snpgdsClose
+#' @importFrom S4Vectors isSingleNumber
+#' @importFrom utils write.table
+#' @encoding UTF-8
+#' @keywords internal
+writeBedBimFilesProfileFilter <- function(pathOut, prefOut, fileP, listProfile,
+    pRAIDS) {
+
+    fileGDSProfile <- file.path(pathProfileGDS(pRAIDS),
+                                    paste0(pedStudy(pRAIDS)$Name.ID[1], ".gds"))
+    gdsProfile <- snpgdsOpen(fileGDSProfile)
+    snpId <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
+    g <- NULL
+
+    #studyAn <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
+    gS <- snpgdsGetGeno(gdsProfile, sample.id=listProfile, snp.id=snpId,
+                            snpfirstdim=TRUE)
+    nbS <- ncol(gS)
+    list2RM <- which(rowSums(is.na(gS))/nbS > 0.25)
+    if(length(list2RM) > 0){
+        gS <- gS[-1 * list2RM,]
+    }
+
+    snpInfo <- data.frame(chr=read.gdsn(index.gdsn(gdsProfile,
+                                                "snp.chromosome")),
+                          id=read.gdsn(index.gdsn(gdsProfile, "snp.id")),
+                          posg=0,
+                          pos=read.gdsn(index.gdsn(gdsProfile, "snp.position")),
+                          alt="A",
+                          ref="B",
+                          stringsAsFactors=FALSE)
+    if(length(list2RM) > 0){
+        snpInfo <- snpInfo[-1 * list2RM,]
+    }
+    write_bim(file.path(pathOut, paste0(prefOut,
+        ".bim")), snpInfo)
+    write_bed(file.path(pathOut, paste0(prefOut,
+        ".bed")), gS, verbose=TRUE, append=FALSE)
+
+    snpgdsClose(gdsProfile)
+
+    resP <- read.delim(fileP, sep=" ", header=FALSE)
+    if(length(list2RM) > 0){
+        resP <- resP[-1 * list2RM,]
+    }
+    # 068ba2ae-288c-446d-8d17-72445ce4f788.syn.1.sv.5.P.in
+    write.table(resP, file.path(pathOut, paste0(prefOut ,
+        ".", ncol(resP), ".P.in")),
+                col.names=FALSE, row.names=FALSE, quote=FALSE, sep=" ")
+    # write.table(resP, file.path(pathOut, paste0(pRAIDS$pedStudy$Name.ID[1],
+    #                                     ".syn.", indexS,".sv.5.P.in")),
+    #             col.names=FALSE, row.names=FALSE, quote=FALSE, sep=" ")
+    return(0)
+    }

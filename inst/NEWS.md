@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.11.1
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Integration of ADMIXTURE
+    o New RAIDSparam object that contains all the parameters needed to run the pipeline
+    o Update vignette to showcase how to use the RAIDSparam object
+
 CHANGES IN VERSION 1.7.3
 ------------------------
 

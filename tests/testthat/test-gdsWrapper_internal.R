@@ -162,7 +162,7 @@ test_that("runLDPruning() must return expected results", {
 
     set.seed(121)
 
-    result <- RAIDS:::runLDPruning(gds=genoFile, verbose=FALSE)
+    result <- RAIDS:::runLDPruning(gds=genoFile, method = "corr", verbose=FALSE)
 
     expect_equal(class(result), "list")
     expect_equal(length(result), 22)

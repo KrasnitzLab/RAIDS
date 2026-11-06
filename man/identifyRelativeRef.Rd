@@ -55,7 +55,6 @@ dataDir <- system.file("extdata", package="RAIDS")
 ## Open existing demo Reference GDS file
 fileGDS <- file.path(dataDir, "PopulationReferenceDemo.gds")
 
-
 ## Temporary output files
 ## The first RDS file will contain the list of unrelated patients
 ## The second RDS file will contain the kinship information between patients

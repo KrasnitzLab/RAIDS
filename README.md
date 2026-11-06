@@ -34,6 +34,10 @@ the following:
 
 >  Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson, Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1 January 2023; 83 (1): 49–58. https://doi.org/10.1158/0008-5472.CAN-22-0682
 
+If you follow the protocol from Cancer Bioinformatics, you can cite the
+following: 
+
+> Belleau, P., Deschênes, A., Tuveson, D.A., Krasnitz, A. (2025). Inference of Genetic Ancestry from Cancer-Derived Molecular Data with RAIDS. In: Krasnitz, A., Belleau, P. (eds) Cancer Bioinformatics. Methods in Molecular Biology, vol 2932. Humana, New York, NY. https://doi.org/10.1007/978-1-0716-4566-6_8
 
 ## Bioconductor Package ##
 

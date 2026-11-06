@@ -16,7 +16,7 @@ computeAncestryFromSynthetic(
   studyIDSyn,
   np = 1L,
   listCatPop = c("EAS", "EUR", "AFR", "AMR", "SAS"),
-  fieldPopIn1KG = "superPop",
+  fieldPopInRef = "superPop",
   fieldPopInfAnc = "SuperPop",
   kList = seq(2, 15, 1),
   pcaList = seq(2, 15, 1),
@@ -59,7 +59,7 @@ threads. Default: \code{1L}.}
 representing the list of possible ancestry assignations. Default:
 \code{("EAS", "EUR", "AFR", "AMR", "SAS")}.}
 
-\item{fieldPopIn1KG}{a \code{character} string representing the name of the
+\item{fieldPopInRef}{a \code{character} string representing the name of the
 column that contains the known ancestry for the reference profiles in
 the Reference GDS file.}
 

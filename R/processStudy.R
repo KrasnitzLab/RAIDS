@@ -325,7 +325,7 @@ createStudy2GDS1KG <- function(pathGeno=file.path("data", "sampleGeno"),
 #'
 #'
 #' @author Pascal Belleau, Astrid Deschênes and Alexander Krasnitz
-#' @importFrom gdsfmt index.gdsn read.gdsn
+#' @importFrom gdsfmt index.gdsn read.gdsn ls.gdsn
 #' @importFrom rlang arg_match
 #' @encoding UTF-8
 #' @export
@@ -403,14 +403,32 @@ pruningSample <- function(gdsReference,
 
     ## Select SNVs based on the minimum allele frequency in the populations
     if (!is.null(superPopMinAF)) {
-        listTMP <- NULL
-        for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
-            snpAF <- read.gdsn(index.gdsn(gdsReference,
-                                            paste0("snp.", sp, "_AF")))
-            listTMP <- union(listTMP,
-                which(snpAF >= superPopMinAF & snpAF <= 1 - superPopMinAF))
+        if( length(which(paste0("snp.",
+                                c("EAS", "EUR",
+                                  "AFR", "AMR",
+                                  "SAS"),
+                                "_AF") %in% ls.gdsn(gdsReference))) == 5){
+            listTMP <- NULL
+            for(sp in c("EAS", "EUR", "AFR", "AMR", "SAS")) {
+                snpAF <- read.gdsn(index.gdsn(gdsReference,
+                                                paste0("snp.", sp, "_AF")))
+                listTMP <- union(listTMP,
+                    which(snpAF >= superPopMinAF & snpAF <= 1 - superPopMinAF))
+            }
+            listKeepPos <- intersect(listTMP, listKeepPos)
+        }else if("AF.superPop" %in% ls.gdsn(gdsReference)){
+            # TODO
+            matAF <- index.gdsn(gdsReference, "AF.superPop")
+            nbDim <- objdesp.gdsn(matAF)$dim
+            listTMP <- NULL
+            for(sp in seq_len(nbDim[2])){
+                snpAF <- read.gdsn(matAF,
+                               start=c(1,sp), count = c(-1,1))
+                listTMP <- union(listTMP,
+                                 which(snpAF >= superPopMinAF & snpAF <= 1 - superPopMinAF))
+            }
+            listKeepPos <- intersect(listTMP, listKeepPos)
         }
-        listKeepPos <- intersect(listTMP, listKeepPos)
     }
 
     if (length(listKeepPos) == 0) {
@@ -1798,7 +1816,7 @@ computeAncestryFromSyntheticFile <- function(gdsReference, gdsProfile,
     validateComputeAncestryFromSyntheticFile(gdsReference=gdsReference,
         gdsProfile=gdsProfile, listFiles=listFiles,
         currentProfile=currentProfile, spRef=spRef, studyIDSyn=studyIDSyn,
-        np=np, listCatPop=listCatPop, fieldPopIn1KG=fieldPopIn1KG,
+        np=np, listCatPop=listCatPop, fieldPopInRef=fieldPopIn1KG,
         fieldPopInfAnc=fieldPopInfAnc, kList=kList, pcaList=pcaList,
         algorithm=algorithm, eigenCount=eigenCount, missingRate=missingRate,
         verbose=verbose)

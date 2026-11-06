@@ -351,3 +351,129 @@ test_that("processBlockChr() must return expected results", {
     expect_equal(results$chr, c(1))
     expect_equal(results$block.snp, c(-1, -2, 1, 1, -3, 2, 2))
 })
+
+
+#############################################################################
+### Tests getMatrixDataId() results
+#############################################################################
+
+context("getMatrixDataId() results")
+
+
+test_that("getMatrixDataId() must return the synthetic profile of each reference profile", {
+
+    pRAIDS <- local_admixture_pRAIDS()
+    matGr <- getMatrixPopSynthetic(pRAIDS)
+
+    result <- RAIDS:::getMatrixDataId(matGr=matGr, pRAIDS=pRAIDS)
+
+    gdsProfile <- openfn.gds(file.path(pathProfileGDS(pRAIDS), "ex1.gds"))
+    studyAnnot <- read.gdsn(index.gdsn(gdsProfile, "study.annot"))
+    closefn.gds(gdsProfile)
+    studyAnnot <- studyAnnot[studyAnnot$study.id == "MYDATA.Synthetic", ]
+
+    expect_equal(dim(result), dim(matGr))
+    for (i in seq_len(nrow(matGr))) {
+        expect_setequal(studyAnnot$case.id[match(result[i, ],
+                                            studyAnnot$data.id)], matGr[i, ])
+    }
+    expect_true(noOpenGDS())
+})
+
+
+#############################################################################
+### Tests writeBedRef() and writeFamRef() results
+#############################################################################
+
+context("writeBedRef() and writeFamRef() results")
+
+
+test_that("writeBedRef() and writeFamRef() must keep only the profiles in listRM when subset is TRUE", {
+
+    pRAIDS <- local_admixture_pRAIDS()
+    pathOut <- withr::local_tempdir()
+    prefix <- file.path(pathOut, "ex1.synRef")
+    listRM <- c("HG00246", "HG00138")
+
+    quietly(writeBimPruned(fileOut=paste0(prefix, ".bim"), pRAIDS=pRAIDS))
+    quietly(RAIDS:::writeBedRef(fileOut=paste0(prefix, ".bed"),
+                    listRM=listRM, subset=TRUE, pRAIDS=pRAIDS))
+    quietly(RAIDS:::writeFamRef(fileOut=paste0(prefix, ".fam"),
+                    listRM=listRM, subset=TRUE, pRAIDS=pRAIDS))
+
+    result <- genio::read_plink(prefix, verbose=FALSE)
+
+    gdsRef <- snpgdsOpen(fileReferenceGDS(pRAIDS))
+    geno <- quietly(snpgdsGetGeno(gdsRef, sample.id=result$fam$id,
+                            snp.id=result$bim$id, snpfirstdim=TRUE))
+    closefn.gds(gdsRef)
+
+    expect_equal(dim(result$X), c(61, 2))
+    expect_setequal(result$fam$id, listRM)
+    expect_equal(unname(result$X), geno, ignore_attr=TRUE)
+    expect_true(noOpenGDS())
+})
+
+
+test_that("writeBedRef() and writeFamRef() must remove the profiles in listRM when subset is FALSE", {
+
+    pRAIDS <- local_admixture_pRAIDS()
+    pathOut <- withr::local_tempdir()
+    prefix <- file.path(pathOut, "ex1.ref")
+    listRM <- c("HG00246", "HG00138")
+
+    quietly(writeBimPruned(fileOut=paste0(prefix, ".bim"), pRAIDS=pRAIDS))
+    quietly(RAIDS:::writeBedRef(fileOut=paste0(prefix, ".bed"),
+                    listRM=listRM, subset=FALSE, pRAIDS=pRAIDS))
+    quietly(RAIDS:::writeFamRef(fileOut=paste0(prefix, ".fam"),
+                    listRM=listRM, subset=FALSE, pRAIDS=pRAIDS))
+
+    result <- genio::read_plink(prefix, verbose=FALSE)
+
+    expect_equal(dim(result$X), c(61, 154))
+    expect_false(any(listRM %in% result$fam$id))
+    expect_true(noOpenGDS())
+})
+
+
+#############################################################################
+### Tests writeBedBimFilesProfileFilter() results
+#############################################################################
+
+context("writeBedBimFilesProfileFilter() results")
+
+
+test_that("writeBedBimFilesProfileFilter() must remove the same SNVs in the bed, bim and P files", {
+
+    pRAIDS <- local_admixture_pRAIDS()
+    pathOut <- withr::local_tempdir()
+    listProfile <- c("1.ex1.HG00246.1", "1.ex1.HG00330.1")
+
+    ## P matrix with the SNV position in the first column
+    fileP <- file.path(pathOut, "in.P")
+    write.table(cbind(seq_len(61), matrix(0.5, nrow=61, ncol=4)), fileP,
+                    row.names=FALSE, col.names=FALSE)
+
+    result <- quietly(RAIDS:::writeBedBimFilesProfileFilter(pathOut=pathOut,
+                    prefOut="ex1.syn", fileP=fileP, listProfile=listProfile,
+                    pRAIDS=pRAIDS))
+    quietly(writeFamProfile(fileOut=file.path(pathOut, "ex1.syn.fam"),
+                    listProfile=listProfile, profileOnly=TRUE, pRAIDS=pRAIDS))
+
+    ## SNVs with more than 25% of missing genotypes are removed
+    gdsProfile <- snpgdsOpen(file.path(pathProfileGDS(pRAIDS), "ex1.gds"))
+    pruned <- read.gdsn(index.gdsn(gdsProfile, "pruned.study"))
+    geno <- quietly(snpgdsGetGeno(gdsProfile, sample.id=listProfile,
+                                    snp.id=pruned, snpfirstdim=TRUE))
+    closefn.gds(gdsProfile)
+    kept <- which(rowSums(is.na(geno)) / ncol(geno) <= 0.25)
+
+    plink <- genio::read_plink(file.path(pathOut, "ex1.syn"), verbose=FALSE)
+    matP <- read.table(file.path(pathOut, "ex1.syn.5.P.in"))
+
+    expect_equal(result, 0)
+    expect_equal(plink$bim$id, pruned[kept])
+    expect_equal(unname(plink$X), unname(geno[kept, ]), ignore_attr=TRUE)
+    expect_equal(matP[, 1], kept)
+    expect_true(noOpenGDS())
+})

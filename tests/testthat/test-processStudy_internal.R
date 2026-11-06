@@ -121,7 +121,7 @@ test_that("validateComputeAncestryFromSyntheticFile() must return expected resul
                     gdsProfile=gdsF, listFiles, currentProfile="test",
                     spRef=c("EUR", "AFR"), studyIDSyn="Synthetic", np=1L,
                     listCatPop=c("EAS", "EUR", "AFR", "AMR", "SAS"),
-                    fieldPopIn1KG="superPop", fieldPopInfAnc="SuperPop",
+                    fieldPopInRef="superPop", fieldPopInfAnc="SuperPop",
                     kList=c(3,4,5), pcaList=c(4,5,6), algorithm="exact",
                     eigenCount=32L, missingRate=0.02, verbose=FALSE)
 

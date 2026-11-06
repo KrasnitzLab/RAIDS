@@ -528,7 +528,7 @@ computeSyntheticConfMat <- function(matKNN, matKNNAncestryColumn,
                             levels=listCall, labels=listCall)
 
     fP <- factor(matKNN[[matKNNAncestryColumn]][listKeep],
-                            levels = listCall, labels = listCall)
+                            levels=listCall, labels=listCall)
 
     cm <- table(fCall, fP)
 
@@ -545,3 +545,6 @@ computeSyntheticConfMat <- function(matKNN, matKNNAncestryColumn,
 
     return(res)
 }
+
+
+

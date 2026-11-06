@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAIDS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1</span>
       </span>
     </div>
 
@@ -96,52 +96,69 @@ Astrid Deschênes and Alexander Krasnitz</h4>
 <p><br><strong>Package</strong>: <em>RAIDS</em><br><strong>Authors</strong>: Pascal Belleau [cre, aut] (ORCID: <a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), Astrid Deschênes
 [aut] (ORCID: <a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), David A. Tuveson
 [aut] (ORCID: <a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 1.7.3<br><strong>Compiled date</strong>: 2025-10-08<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+Krasnitz [aut], National Institutes of Health [fnd] (ROR: <a href="https://ror.org/01cwqze88" class="external-link uri">https://ror.org/01cwqze88</a>)<br><strong>Version</strong>:
+1.11.1<br><strong>Compiled date</strong>: 2026-11-06<br><strong>License</strong>: Apache License (&gt;= 2)<br></p>
+<p><br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
-<p>The <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em>
-package and the underlying <em><a href="https://github.com/KrasnitzLab/RAIDS" class="external-link">RAIDS</a></em> code are
-distributed under<br>
-the <a href="https://opensource.org/licenses/Apache-2.0" class="external-link uri">https://opensource.org/licenses/Apache-2.0</a> license. You
-are free to use and redistribute this software.</p>
+<p>The <strong>RAIDS</strong> package and the underlying
+<strong>RAIDS</strong> code are distributed under the <a href="https://opensource.org/licenses/Apache-2.0" title="Apache License 2.0" class="external-link">Apache License 2.0</a>. You are free to use
+and redistribute this software.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
 </h2>
 <p>If you use the <strong>RAIDS</strong> package for a publication, we
-would ask you to cite the following:</p>
+would ask you to cite one of the following.</p>
+<p>If you use a more recent version (Bioconductor release 3.24 or
+later):</p>
+<blockquote>
+<p>Pascal Belleau, Xintong Li, Astrid Deschênes, Laine Marrah, Alexander
+Krasnitz. A versatile set of computational tools for inference of
+genetic ancestry from human molecular data. bioRxiv 2026.10.09.758080;
+doi: <a href="https://doi.org/10.64898/2026.10.09.758080" class="external-link uri">https://doi.org/10.64898/2026.10.09.758080</a></p>
+</blockquote>
+<p>If you use the legacy version (Bioconductor release 3.23 or
+earlier):</p>
 <blockquote>
 <p>Pascal Belleau, Astrid Deschênes, Nyasha Chambwe, David A. Tuveson,
 Alexander Krasnitz; Genetic Ancestry Inference from Cancer-Derived
 Molecular Data across Genomic and Transcriptomic Platforms. Cancer Res 1
-January 2023; 83 (1): 49–58. <a href="https://doi.org/10.1158/0008-5472.CAN-22-0682" class="external-link uri">https://doi.org/10.1158/0008-5472.CAN-22-0682</a> <br><br></p>
+January 2023; 83 (1): 49–58. <a href="https://doi.org/10.1158/0008-5472.CAN-22-0682" class="external-link uri">https://doi.org/10.1158/0008-5472.CAN-22-0682</a></p>
 </blockquote>
+<p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <strong>RAIDS</strong> (Robust Ancerstry Inference using Data
-Synthesis) package enables accurate and robust inference of genetic
-ancestry from human molecular data other than whole-genome or
-whole-exome sequences of cancer-free DNA. The current version can handle
-sequences of:</p>
+<p>The <strong>RAIDS</strong> (<strong>R</strong>obust
+<strong>A</strong>ncestry <strong>I</strong>nference using
+<strong>D</strong>ata <strong>S</strong>ynthesis) package enables
+accurate and robust inference of genetic ancestry from human molecular
+data other than whole-genome or whole-exome sequences of cancer-free
+DNA. The current version can handle sequences of:</p>
 <ul>
 <li>whole genomes</li>
 <li>whole exomes</li>
 <li>targeted gene panels</li>
-<li>RNA,</li>
+<li>RNA-Seq</li>
+<li>scRNA-Seq</li>
+<li>ATAC-Seq</li>
+<li>ChIP-Seq</li>
 </ul>
 <p>including those from cancer-derived nucleic acids. The
 <strong>RAIDS</strong> package implements a data synthesis method that,
-for any given molecular profile of an idividual, enables, on the one
+for any given molecular profile of an individual, enables, on the one
 hand, profile-specific inference parameter optimization and, on the
 other hand, a profile-specific inference accuracy estimate. By the
 molecular profile we mean a table of the individual’s germline genotypes
 at genome positions with sufficient read coverage in the individual’s
 input data, where sequence variants are frequent in the population
 reference data.</p>
+<p>In addition, the <strong>RAIDS</strong> package can now infer both
+global ancestry and admixture proportions of the individual.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
@@ -155,29 +172,29 @@ reference data.</p>
 <span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"RAIDS"</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
-<p><a name="mains"></a></p>
 </div>
 <div class="section level2">
 <h2 id="using-raids-step-by-step-explanation">Using RAIDS: step-by-step explanation<a class="anchor" aria-label="anchor" href="#using-raids-step-by-step-explanation"></a>
 </h2>
-<p>This is an overview of the RAIDS inferential framework:</p>
+<p>This is an overview of the <strong>RAIDS</strong> inferential
+framework:</p>
 <div class="figure" style="text-align: center">
-<img src="MainSteps_v05.png" alt="An overview of the genetic ancestry inference procedure." width="130%"><p class="caption">
+<img src="MainSteps_v05.png" class="r-plt" alt="An overview of the genetic ancestry inference procedure." width="130%"><p class="caption">
 An overview of the genetic ancestry inference procedure.
 </p>
 </div>
 <p>The main steps are:</p>
-<p><strong>Step 1.</strong> Set-up working directory and provide
+<p><strong>Step 1.</strong> Set up working directory and provide
 population reference files</p>
-<p><strong>Step 2</strong> Sample the reference data for donors whose
-genotypes will be used for synthesis and optimize ancestry inference
-parameters using synthetic data</p>
-<p><strong>Step 3</strong> Infer ancestry</p>
-<p><strong>Step 4</strong> Summarize and visualize the results</p>
+<p><strong>Step 2.</strong> Pre-process sequence read data into a
+profile genotype file</p>
+<p><strong>Step 3.</strong> Infer genetic ancestry</p>
+<p><strong>Post-Analysis.</strong> Summarize and visualize the
+results</p>
 <p>These steps are described in detail in the following.</p>
 <p><br><br></p>
 <div class="section level3">
-<h3 id="step-1--set-up-working-directory-and-provide-population-reference-files">Step 1. Set-up working directory and provide population reference
+<h3 id="step-1--set-up-working-directory-and-provide-population-reference-files">Step 1. Set up working directory and provide population reference
 files<a class="anchor" aria-label="anchor" href="#step-1--set-up-working-directory-and-provide-population-reference-files"></a>
 </h3>
 <div class="section level4">
@@ -185,14 +202,15 @@ files<a class="anchor" aria-label="anchor" href="#step-1--set-up-working-directo
 </h4>
 <p>First, the following working directory structure should be
 created:</p>
-<pre><code><span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## Working directory structure</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">workingDirectory</span><span class="op">/</span>  </span>
-<span>    <span class="va">data</span><span class="op">/</span>  </span>
-<span>        <span class="va">refGDS</span>  </span>
-<span>        <span class="va">profileGDS</span> </span></code></pre>
+<pre><code>
+#############################################################################
+## Working directory structure
+#############################################################################
+workingDirectory/  
+    data/  
+        refGDS/  
+        profileGDS/ 
+</code></pre>
 <p><br></p>
 <p>The following code creates a temporary working directory structure
 where the example will be run.</p>
@@ -216,11 +234,11 @@ where the example will be run.</p>
 <div class="section level4">
 <h4 id="download-the-population-reference-files">1.2 Download the population reference files<a class="anchor" aria-label="anchor" href="#download-the-population-reference-files"></a>
 </h4>
-<p>The population reference files should be downloaded into the
-<em>data/refGDS</em> sub-directory. This following code downloads the
-complete pre-processed files for 1000 Genomes (1KG), for the hg38 build
-of the human genome, in the GDS format. The size of the 1KG GDS file is
-15GB.</p>
+<p>The <strong>population reference files</strong> should be downloaded
+into the <em>data/refGDS</em> sub-directory. The following code
+downloads the complete pre-processed files for 1000 Genomes (1KG), for
+the hg38 build of the human genome, in the GDS format. The size of the
+1KG GDS file is 15GB.</p>
 <pre><code>
 #############################################################################
 ## How to download the pre-processed files for 1000 Genomes (1KG) (15 GB)
@@ -228,8 +246,8 @@ of the human genome, in the GDS format. The size of the 1KG GDS file is
 cd workingDirectory
 cd data/refGDS
 
-wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matGeno1000g.gds
-wget https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper/matAnnot1000g.gds
+wget https://labshare.cshl.edu/shares/krasnitzlab/RAIDSpopRef/v0.2.0/matGeno1000gV0.2.0.gds
+wget  https://labshare.cshl.edu/shares/krasnitzlab/RAIDSref/v0.2.0/matAnnot1000gV0.2.0.gds
 cd -
 </code></pre>
 <p><br></p>
@@ -261,22 +279,93 @@ purposes only and cannot be used to infer genetic ancestry reliably.</p>
 <span><span class="va">fileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG.gds"</span><span class="op">)</span></span>
 <span><span class="va">fileAnnotGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathReference</span>, <span class="st">"ex1_good_small_1KG_Annot.gds"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">## The 'pathWorkingDirectoryData' variable has been set in a previous step</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="va">fileGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span>, <span class="st">"refGDS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="va">fileAnnotGDS</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">pathWorkingDirectoryData</span>, <span class="st">"refGDS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
+<p><br></p>
+</div>
+<div class="section level4">
+<h4 id="install-admixture-for-admixture-proportion-inference">1.3 Install ADMIXTURE for admixture proportion inference<a class="anchor" aria-label="anchor" href="#install-admixture-for-admixture-proportion-inference"></a>
+</h4>
+<p>If you plan to infer admixture proportions, you need to install
+ADMIXTURE version 1.3.0 or later (earlier versions may work but have not
+been tested) <span class="citation">(Alexander et al. 2009)</span>. You
+can download it from: <a href="https://dalexander.github.io/admixture/download.html" class="external-link uri">https://dalexander.github.io/admixture/download.html</a></p>
+<p>Example for Linux and Mac:</p>
+<pre><code>
+#############################################################################
+## How to download and install the ADMIXTURE software
+#############################################################################
+cd workingDirectory
+mkdir admixture
+cd admixture
+
+wget https://dalexander.github.io/admixture/binaries/admixture_linux-1.4.0.tar.gz
+tar -xzvf admixture_linux-1.4.0.tar.gz
+ADMIX=$(pwd)/admixture_linux-1.4.0/admixture
+
+# For Mac:
+# wget https://dalexander.github.io/admixture/binaries/admixture_macosx-1.3.0.tar.gz
+# tar -xzvf admixture_macosx-1.3.0.tar.gz
+# export ADMIX=$(pwd)/dist/admixture_macosx-1.3.0/admixture
+cd -
+</code></pre>
 <p><br><br></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-2-ancestry-inference-with-raids">Step 2 Ancestry inference with RAIDS<a class="anchor" aria-label="anchor" href="#step-2-ancestry-inference-with-raids"></a>
+<h3 id="step-2--pre-process-sequence-read-data-into-a-profile-genotype-file">Step 2. Pre-process sequence read data into a profile genotype
+file<a class="anchor" aria-label="anchor" href="#step-2--pre-process-sequence-read-data-into-a-profile-genotype-file"></a>
+</h3>
+<p>A formatted profile genotype file, associated with the sample whose
+genetic ancestry will be inferred, is required as input to
+<strong>RAIDS</strong>.</p>
+<p>The genotype file can be in a VCF format, with the following
+mandatory fields: <em>GT</em>, <em>AD</em> and <em>DP</em>. The VCF file
+must be gzipped.</p>
+<p>Also allowed is a “generic” file format, specified as a
+comma-separated table. The following columns are mandatory:</p>
+<ul>
+<li>
+<em>Chromosome</em>: The name of the chromosome can be formatted as
+chr1 or 1</li>
+<li>
+<em>Position</em>: The position on the chromosome</li>
+<li>
+<em>Ref</em>: The reference nucleotide</li>
+<li>
+<em>Alt</em>: The alternative nucleotide</li>
+<li>
+<em>Count</em>: The total read count</li>
+<li>
+<em>File1R</em>: Read count for the reference nucleotide</li>
+<li>
+<em>File1A</em>: Read count for the alternative nucleotide</li>
+</ul>
+<p>Note: a header with identical column names is required.</p>
+<p>For demonstration purposes, the <strong>RAIDS</strong> package
+includes a SNP VCF file generated from a DNA sequencing profile.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Path to the demo files inside this package</span></span>
+<span><span class="va">dataDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"RAIDS"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#######################################################################</span></span>
+<span><span class="co">## The demo SNP VCF file of the DNA profile donor</span></span>
+<span><span class="co">#######################################################################</span></span>
+<span><span class="va">fileDonorVCF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span>, <span class="st">"ex1.vcf.gz"</span><span class="op">)</span></span></code></pre></div>
+<p><br><br></p>
+</div>
+<div class="section level3">
+<h3 id="step-3--ancestry-inference-with-raids">Step 3. Ancestry inference with RAIDS<a class="anchor" aria-label="anchor" href="#step-3--ancestry-inference-with-raids"></a>
 </h3>
 <div class="section level4">
-<h4 id="set-up-the-required-directories">2.1 Set-up the required directories<a class="anchor" aria-label="anchor" href="#set-up-the-required-directories"></a>
+<h4 id="define-the-input-file-paths">3.1 Define the input file paths<a class="anchor" aria-label="anchor" href="#define-the-input-file-paths"></a>
 </h4>
-<p>All required directories are created at this point. In addition, the
-paths to the reference files are stored in variables for later use.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>All required directories have been created in Step 1. The paths to
+the reference files should be stored in variables for later use.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#############################################################################</span></span>
 <span><span class="co">## The file path to the population reference GDS file </span></span>
@@ -301,77 +390,41 @@ paths to the reference files are stored in variables for later use.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="sample-the-reference-data-for-donors-whose-genotypes-will-be-used-for-synthesis-and-optimize-ancestry-inference-parameters-using-synthetic-data">2.2 Sample the reference data for donors whose genotypes will be
-used for synthesis and optimize ancestry inference parameters using
-synthetic data<a class="anchor" aria-label="anchor" href="#sample-the-reference-data-for-donors-whose-genotypes-will-be-used-for-synthesis-and-optimize-ancestry-inference-parameters-using-synthetic-data"></a>
-</h4>
-<p>With the 1KG reference, we recommend sampling 30 donor profiles per
-sub-continental population. For reproducibility, be sure to use the same
-random-number generator seed.</p>
-<p>In the following code, only 2 individual profiles per sub-continental
-population are sampled from the demo population GDS file:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## Set up the following random number generator seed to reproduce  </span></span>
-<span><span class="co">##    the expected results</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3043</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="co">## Choose the profiles from the population reference GDS file for </span></span>
-<span><span class="co">##   data synthesis.</span></span>
-<span><span class="co">## Here we choose 2 profiles per subcontinental population </span></span>
-<span><span class="co">##   from the mini 1KG GDS file.</span></span>
-<span><span class="co">## Normally, we would use 30 randomly chosen profiles per </span></span>
-<span><span class="co">##   subcontinental population.</span></span>
-<span><span class="co">#############################################################################</span></span>
-<span><span class="va">dataRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select1KGPopForSynthetic.html">select1KGPopForSynthetic</a></span><span class="op">(</span>fileReferenceGDS<span class="op">=</span><span class="va">refGenotype</span>,</span>
-<span>                                        nbProfiles<span class="op">=</span><span class="fl">2L</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="infer-ancestry">2.3 Infer ancestry<a class="anchor" aria-label="anchor" href="#infer-ancestry"></a>
+<h4 id="infer-genetic-ancestry">3.2 Infer genetic ancestry<a class="anchor" aria-label="anchor" href="#infer-genetic-ancestry"></a>
 </h4>
 <p>Within a single function call, data synthesis is performed, the
 synthetic data are used to optimize the inference parameters and, with
 these, the ancestry is inferred from the input sequence profile.</p>
-<p>According to the type of input data (RNA or DNA sequence), a specific
-function should be called. The <em>inferAncestry()</em> function
-(<em>inferAncestryDNA()</em> is the same as <em>inferAncestry()</em> )
-is used for DNA profiles while the <em>inferAncestryGeneAware()</em>
-function is RNA specific.</p>
-<p>The <em>inferAncestry()</em> function requires a specific input
-format for the individual’s genotyping profile as explained in the
-Introduction. The format is set by the <em>genoSource</em>
-parameter.</p>
-<p>One of the allowed formats is VCF (<em>genoSource=c(“VCF”)</em>),
-with the following mandatory fields: <em>GT</em>, <em>AD</em> and
-<em>DP</em>. The VCF file must be gzipped.</p>
-<p>Also allowed is a “generic” file format
-(<em>genoSource=c(“generic”)</em>), specified as a comma-separated table
-The following columns are mandatory:</p>
+<p>The function to infer categorical ancestry is
+<em>ancestryInferencePCAKNN()</em>.</p>
+<p>The parameters for <strong>RAIDS</strong> are now all kept in a
+<em>RAIDSparam</em> object.</p>
+<p>The principal parameters are:</p>
 <ul>
 <li>
-<em>Chromosome</em>: The name of the chromosome can be formatted as
-chr1 or 1</li>
+<em>profileFile</em>: The file with the read depth information.</li>
 <li>
-<em>Position</em>: The position on the chromosome</li>
+<em>genoSource</em>: The format of file used in the
+<em>profileFile</em> parameter; it can be “VCF”, “bam”, “generic”, or
+“snp-pileup”.</li>
 <li>
-<em>Ref</em>: The reference nucleotide</li>
+<em>pathProfileGDS</em>: The path where the GDS specific to the
+profile will be saved.</li>
 <li>
-<em>Alt</em>: The alternative nucleotide</li>
+<em>fileReferenceGDS</em>: The path to the population reference GDS
+file.</li>
 <li>
-<em>Count</em>: The total read count</li>
+<em>fileReferenceAnnotGDS</em>: The path to the population reference
+GDS annotation file.</li>
 <li>
-<em>File1R</em>: Read count for the reference nucleotide</li>
-<li>
-<em>File1A</em>: Read count for the alternative nucleotide</li>
+<em>studyType</em>: The valid options are “LD” or “GeneAware”; “LD”
+is used in the case of DNA and ChIP-Seq, and “GeneAware” for RNA-Seq,
+scRNA-Seq, and ATAC-Seq.</li>
 </ul>
-<p>Note: a header with identical column names is required.</p>
-<p>In this example, the profile is from DNA source and requires the use
-of the <em>inferAncestry()</em> function.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>See <code><a href="../reference/RAIDSparam.html">?RAIDSparam</a></code> for the complete list of parameters.</p>
+<p>In this demonstration, the demo SNP VCF profile included in the
+package is used.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">###########################################################################</span></span>
 <span><span class="co">## Seqinfo and BSgenome are required libraries to run this example</span></span>
@@ -381,7 +434,7 @@ of the <em>inferAncestry()</em> function.</p>
 <span></span>
 <span>    <span class="co">#######################################################################</span></span>
 <span>    <span class="co">## Chromosome length information is required</span></span>
-<span>    <span class="co">## chr23 is chrX, chr24 is chrY and chrM is 25</span></span>
+<span>    <span class="co">## chr23 is chrX, chr24 is chrY and chrM is chr25</span></span>
 <span>    <span class="co">#######################################################################</span></span>
 <span>    <span class="va">genome</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg38</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg38/man/package.html" class="external-link">Hsapiens</a></span></span>
 <span>    <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu">Seqinfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">seqlengths</a></span><span class="op">(</span><span class="va">genome</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span></span>
@@ -392,19 +445,34 @@ of the <em>inferAncestry()</em> function.</p>
 <span>    <span class="va">fileDonorVCF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dataDir</span>, <span class="st">"example"</span>, <span class="st">"snpPileup"</span>, <span class="st">"ex1.vcf.gz"</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co">#######################################################################</span></span>
-<span>    <span class="co">## The ancestry inference call</span></span>
+<span>    <span class="co">## The parameter object required to run the ancestry inference</span></span>
 <span>    <span class="co">#######################################################################</span></span>
-<span>    <span class="va">resOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inferAncestry.html">inferAncestry</a></span><span class="op">(</span>profileFile<span class="op">=</span><span class="va">fileDonorVCF</span>, </span>
+<span>    <span class="va">paramRAIDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RAIDSparam.html">RAIDSparam</a></span><span class="op">(</span>profileFile<span class="op">=</span><span class="va">fileDonorVCF</span>,</span>
+<span>        genoSource<span class="op">=</span><span class="st">"VCF"</span>,</span>
+<span>        studyType<span class="op">=</span><span class="st">"LD"</span>,</span>
 <span>        pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span>
 <span>        fileReferenceGDS<span class="op">=</span><span class="va">refGenotype</span>,</span>
 <span>        fileReferenceAnnotGDS<span class="op">=</span><span class="va">refAnnotation</span>,</span>
-<span>        chrInfo<span class="op">=</span><span class="va">chrInfo</span>,</span>
-<span>        syntheticRefDF<span class="op">=</span><span class="va">dataRef</span>,</span>
-<span>        genoSource<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VCF"</span><span class="op">)</span><span class="op">)</span></span>
+<span>        chrInfo<span class="op">=</span><span class="va">chrInfo</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co">#######################################################################</span></span>
+<span>    <span class="co">## The ancestry inference call</span></span>
+<span>    <span class="co">#######################################################################</span></span>
+<span>    <span class="va">resOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestryInferencePCAKNN.html">ancestryInferencePCAKNN</a></span><span class="op">(</span>pRAIDS<span class="op">=</span><span class="va">paramRAIDS</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co">#######################################################################</span></span>
+<span>    <span class="co">## The admixture proportions inference</span></span>
+<span>    <span class="co">## you have to uncomment this section</span></span>
+<span>    <span class="co">## and specify the path of ADMIXTURE software</span></span>
+<span>    <span class="co">#######################################################################</span></span>
+<span>    <span class="co"># paramRAIDS &lt;- resOut$pRAIDS</span></span>
+<span>    <span class="co"># pathADMIXTURE(paramRAIDS) &lt;- "PATH/admixture"</span></span>
+<span>    <span class="co"># resAdmixture &lt;- computeAdmixtureProportions(pRAIDS=paramRAIDS)</span></span>
+<span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>The temporary files created in this example are deleted as
 follows.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">#######################################################################</span></span>
 <span><span class="co">## Remove temporary files created for this demo</span></span>
@@ -415,12 +483,12 @@ follows.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-3--examine-the-value-of-the-inference-call">Step 3. Examine the value of the inference call<a class="anchor" aria-label="anchor" href="#step-3--examine-the-value-of-the-inference-call"></a>
+<h3 id="post-analysis--examine-the-output-of-the-inference-call">Post-Analysis. Examine the output of the inference call<a class="anchor" aria-label="anchor" href="#post-analysis--examine-the-output-of-the-inference-call"></a>
 </h3>
 <p>The inferred ancestry and the optimal parameters are present in the
-<em>list</em> object generated by the <em>inferAncestry()</em> and
-<em>inferAncestryGeneAware()</em> functions.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<em>list</em> object generated by the <em>ancestryInferencePCAKNN()</em>
+function.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">###########################################################################</span></span>
 <span><span class="co">## The output is a list object with multiple entries</span></span>
@@ -428,14 +496,15 @@ follows.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">resOut</span><span class="op">)</span></span>
 <span><span class="co">## [1] "list"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">resOut</span><span class="op">)</span></span>
-<span><span class="co">## [1] "pcaSample"    "paraSample"   "KNNSample"    "KNNSynthetic" "Ancestry"</span></span></code></pre></div>
+<span><span class="co">## [1] "pcaSample"    "paraSample"   "KNNSample"    "KNNSynthetic" "Ancestry"    </span></span>
+<span><span class="co">## [6] "pRAIDS"</span></span></code></pre></div>
 <p><br></p>
 <div class="section level4">
-<h4 id="inspect-the-inference-and-the-optimal-parameters">3.1 Inspect the inference and the optimal parameters<a class="anchor" aria-label="anchor" href="#inspect-the-inference-and-the-optimal-parameters"></a>
+<h4 id="inspect-the-inference-and-the-optimal-parameters">Inspect the inference and the optimal parameters<a class="anchor" aria-label="anchor" href="#inspect-the-inference-and-the-optimal-parameters"></a>
 </h4>
 <p>Global ancestry is inferred using principal-component decomposition
-followed by nearest neighbor classification. Two parameters are defined
-and optimized: <em>D</em>, the number of the top principal directions
+followed by nearest-neighbor classification. Two parameters are defined
+and optimized: <em>D</em>, the number of top principal directions
 retained and <em>k</em>, the number of nearest neighbors.</p>
 <p>The results of the inference are provided as the <em>Ancestry</em>
 item in the <em>resOut</em> list. It is a <em>data.frame</em> with the
@@ -450,36 +519,36 @@ following columns:</p>
 <li>
 <em>SuperPop</em>: The inferred ancestry</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">###########################################################################</span></span>
 <span><span class="co">## The ancestry information is stored in the 'Ancestry' entry </span></span>
 <span><span class="co">###########################################################################</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resOut</span><span class="op">$</span><span class="va">Ancestry</span><span class="op">)</span></span>
-<span><span class="co">##     sample.id  D K SuperPop</span></span>
-<span><span class="co">## 173       ex1 14 6      AFR</span></span></code></pre></div>
+<span><span class="co">##     sample.id  D K superPop</span></span>
+<span><span class="co">## 113       ex1 10 2      AMR</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="visualize-the-raids-performance-for-the-synthetic-data">3.2 Visualize the RAIDS performance for the synthetic data<a class="anchor" aria-label="anchor" href="#visualize-the-raids-performance-for-the-synthetic-data"></a>
+<h4 id="visualize-the-raids-performance-for-the-synthetic-data">Visualize the RAIDS performance for the synthetic data<a class="anchor" aria-label="anchor" href="#visualize-the-raids-performance-for-the-synthetic-data"></a>
 </h4>
-<p>The <em>createAUROCGraph()</em> function enable the visualization of
+<p>The <em>createAUROCGraph()</em> function enables the visualization of
 RAIDS performance for the synthetic data, as a function of <em>D</em>
 and <em>k</em>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">###########################################################################</span></span>
-<span><span class="co">## Create a graph showing the perfomance for the synthetic data</span></span>
+<span><span class="co">## Create a graph showing the performance for the synthetic data</span></span>
 <span><span class="co">## The output is a ggplot object</span></span>
 <span><span class="co">###########################################################################</span></span>
 <span><span class="fu"><a href="../reference/createAUROCGraph.html">createAUROCGraph</a></span><span class="op">(</span>dfAUROC<span class="op">=</span><span class="va">resOut</span><span class="op">$</span><span class="va">paraSample</span><span class="op">$</span><span class="va">dfAUROC</span>, title<span class="op">=</span><span class="st">"Example ex1"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="RAIDS_files/figure-html/visualize-1.png" alt="RAIDS performance for the synthtic data." width="700"><p class="caption">
-RAIDS performance for the synthtic data.
+<img src="RAIDS_files/figure-html/visualize-1.png" class="r-plt" alt="Visualization of RAIDS performance for the synthetic data." width="700"><p class="caption">
+Visualization of RAIDS performance for the synthetic data.
 </p>
 </div>
 <p>In this illustrative example, the performance estimates are lower
-than expected with a realistic sequence profile and a complete reference
-population file.</p>
+than would be expected with a realistic sequence profile and a complete
+reference population file.</p>
 <p><br><br></p>
 </div>
 </div>
@@ -488,44 +557,53 @@ population file.</p>
 <h2 id="format-population-reference-dataset-optional">Format population reference dataset (optional)<a class="anchor" aria-label="anchor" href="#format-population-reference-dataset-optional"></a>
 </h2>
 <div class="figure" style="text-align: center">
-<img src="Step1_population_file_v01.png" alt="Step 1 - Provide population reference data" width="120%"><p class="caption">
-Step 1 - Provide population reference data
+<img src="Step1_population_file_v01.png" class="r-plt" alt="Provide population reference data" width="120%"><p class="caption">
+Provide population reference data
 </p>
 </div>
 <p>A population reference dataset with known ancestry is required to
 infer ancestry.</p>
-<p>Three important reference files, containing formatted information
-about the reference dataset, are required:</p>
+<p>Important reference files, containing formatted information about the
+reference dataset, are required:</p>
 <ul>
-<li>The population reference GDS File</li>
+<li>The population reference GDS file</li>
 <li>The population reference SNV Annotation GDS file</li>
 <li>The population reference SNV Retained VCF file (optional)</li>
 </ul>
 <p>The formats of those files are described in the <a href="Create_Reference_GDS_File.html">Population reference dataset GDS
 files</a> vignette.</p>
 <p><span style="color:darkred;font-weight:bold">The reference files
-associated to the Cancer Research associated paper are available. Note
-that these pre-processed files are for 1000 Genomes (1KG), in hg38. The
-files are available here:</span></p>
+associated with the Cancer Research paper are available. Note that these
+pre-processed files are for 1000 Genomes (1KG), in hg38. The files are
+available here:</span></p>
 <p><span style="color:red"> <a href="https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper" class="external-link">https://labshare.cshl.edu/shares/krasnitzlab/aicsPaper</a>
 </span></p>
 <p><span style="color:darkred;font-weight:bold">The size of the 1KG GDS
 file is 15GB.</span></p>
 <p><span style="color:darkred;font-weight:bold">The 1KG GDS file is
-mapped on hg38 <span class="citation">(Lowy-Gallego et al.
+mapped to hg38 <span class="citation">(Lowy-Gallego et al.
 2019)</span>.</span></p>
 <p><span style="color:darkred;font-weight:bold">This section can be
 skipped if you choose to use the pre-processed files.</span></p>
 <p><br><br></p>
 </div>
 <div class="section level2">
+<h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+</h2>
+<p>This work was supported by a National Institutes of Health award U01
+CA289357 to AK.</p>
+<p>Claude Opus 5.5, through Claude Code, was used to assist with code
+maintenance and unit test writing on the supervision of the maintainer.
+<br><br></p>
+</div>
+<div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> in the environment
 in which this document was compiled:</p>
-<pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2026-11-04 r90836)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.5 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -547,86 +625,94 @@ in which this document was compiled:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] Matrix_1.7-3         RAIDS_1.7.3          Rsamtools_2.25.3    </span></span>
-<span><span class="co">##  [4] Biostrings_2.77.2    XVector_0.49.1       GenomicRanges_1.61.5</span></span>
-<span><span class="co">##  [7] IRanges_2.43.5       S4Vectors_0.47.4     Seqinfo_0.99.2      </span></span>
-<span><span class="co">## [10] BiocGenerics_0.55.1  generics_0.1.4       dplyr_1.1.4         </span></span>
-<span><span class="co">## [13] GENESIS_2.39.3       SNPRelate_1.43.1     gdsfmt_1.45.1       </span></span>
-<span><span class="co">## [16] knitr_1.50           BiocStyle_2.37.1    </span></span>
+<span><span class="co">##  [1] Matrix_1.7-6         RAIDS_1.11.1         philentropy_0.10.0  </span></span>
+<span><span class="co">##  [4] genio_1.1.2          BiocParallel_1.47.0  Rsamtools_2.29.0    </span></span>
+<span><span class="co">##  [7] Biostrings_2.81.9    XVector_0.53.0       GenomicRanges_1.65.4</span></span>
+<span><span class="co">## [10] IRanges_2.47.5       S4Vectors_0.51.10    Seqinfo_1.3.2       </span></span>
+<span><span class="co">## [13] BiocGenerics_0.59.12 generics_0.1.4       dplyr_1.2.1         </span></span>
+<span><span class="co">## [16] GENESIS_2.43.0       SNPRelate_1.47.0     gdsfmt_1.49.12      </span></span>
+<span><span class="co">## [19] knitr_1.52           BiocStyle_2.41.0    </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] RColorBrewer_1.1-3                jsonlite_2.0.0                   </span></span>
-<span><span class="co">##   [3] shape_1.4.6.1                     magrittr_2.0.4                   </span></span>
-<span><span class="co">##   [5] jomo_2.7-6                        GenomicFeatures_1.61.6           </span></span>
+<span><span class="co">##   [3] shape_1.4.6.1                     magrittr_2.0.5                   </span></span>
+<span><span class="co">##   [5] GenomicFeatures_1.65.0            jomo_2.7-6                       </span></span>
 <span><span class="co">##   [7] farver_2.1.2                      logistf_1.26.1                   </span></span>
-<span><span class="co">##   [9] nloptr_2.2.1                      rmarkdown_2.30                   </span></span>
-<span><span class="co">##  [11] fs_1.6.6                          BiocIO_1.19.0                    </span></span>
-<span><span class="co">##  [13] ragg_1.5.0                        vctrs_0.6.5                      </span></span>
+<span><span class="co">##   [9] nloptr_2.2.1                      rmarkdown_2.32                   </span></span>
+<span><span class="co">##  [11] fs_2.1.0                          BiocIO_1.23.3                    </span></span>
+<span><span class="co">##  [13] ragg_1.5.2                        vctrs_0.7.3                      </span></span>
 <span><span class="co">##  [15] memoise_2.0.1                     minqa_1.2.8                      </span></span>
-<span><span class="co">##  [17] RCurl_1.98-1.17                   quantsmooth_1.75.0               </span></span>
-<span><span class="co">##  [19] htmltools_0.5.8.1                 S4Arrays_1.9.1                   </span></span>
-<span><span class="co">##  [21] curl_7.0.0                        broom_1.0.10                     </span></span>
-<span><span class="co">##  [23] pROC_1.19.0.1                     SparseArray_1.9.1                </span></span>
-<span><span class="co">##  [25] mitml_0.4-5                       sass_0.4.10                      </span></span>
-<span><span class="co">##  [27] bslib_0.9.0                       desc_1.4.3                       </span></span>
-<span><span class="co">##  [29] sandwich_3.1-1                    zoo_1.8-14                       </span></span>
-<span><span class="co">##  [31] cachem_1.1.0                      GenomicAlignments_1.45.4         </span></span>
-<span><span class="co">##  [33] lifecycle_1.0.4                   iterators_1.0.14                 </span></span>
-<span><span class="co">##  [35] pkgconfig_2.0.3                   R6_2.6.1                         </span></span>
-<span><span class="co">##  [37] fastmap_1.2.0                     rbibutils_2.3                    </span></span>
-<span><span class="co">##  [39] MatrixGenerics_1.21.0             digest_0.6.37                    </span></span>
-<span><span class="co">##  [41] GWASTools_1.55.0                  AnnotationDbi_1.71.1             </span></span>
-<span><span class="co">##  [43] textshaping_1.0.3                 RSQLite_2.4.3                    </span></span>
-<span><span class="co">##  [45] labeling_0.4.3                    httr_1.4.7                       </span></span>
-<span><span class="co">##  [47] abind_1.4-8                       mgcv_1.9-3                       </span></span>
-<span><span class="co">##  [49] compiler_4.5.1                    withr_3.0.2                      </span></span>
-<span><span class="co">##  [51] bit64_4.6.0-1                     S7_0.2.0                         </span></span>
-<span><span class="co">##  [53] backports_1.5.0                   BiocParallel_1.43.4              </span></span>
-<span><span class="co">##  [55] DBI_1.2.3                         pan_1.9                          </span></span>
-<span><span class="co">##  [57] MASS_7.3-65                       quantreg_6.1                     </span></span>
-<span><span class="co">##  [59] DelayedArray_0.35.3               rjson_0.2.23                     </span></span>
-<span><span class="co">##  [61] DNAcopy_1.83.0                    tools_4.5.1                      </span></span>
-<span><span class="co">##  [63] lmtest_0.9-40                     nnet_7.3-20                      </span></span>
-<span><span class="co">##  [65] glue_1.8.0                        restfulr_0.0.16                  </span></span>
-<span><span class="co">##  [67] nlme_3.1-168                      grid_4.5.1                       </span></span>
-<span><span class="co">##  [69] gtable_0.3.6                      operator.tools_1.6.3             </span></span>
-<span><span class="co">##  [71] BSgenome_1.77.2                   formula.tools_1.7.1              </span></span>
-<span><span class="co">##  [73] class_7.3-23                      tidyr_1.3.1                      </span></span>
-<span><span class="co">##  [75] ensembldb_2.33.2                  data.table_1.17.8                </span></span>
-<span><span class="co">##  [77] GWASExactHW_1.2                   stringr_1.5.2                    </span></span>
-<span><span class="co">##  [79] foreach_1.5.2                     pillar_1.11.1                    </span></span>
-<span><span class="co">##  [81] splines_4.5.1                     lattice_0.22-7                   </span></span>
-<span><span class="co">##  [83] survival_3.8-3                    rtracklayer_1.69.1               </span></span>
-<span><span class="co">##  [85] bit_4.6.0                         SparseM_1.84-2                   </span></span>
-<span><span class="co">##  [87] BSgenome.Hsapiens.UCSC.hg38_1.4.5 tidyselect_1.2.1                 </span></span>
-<span><span class="co">##  [89] SeqVarTools_1.47.0                reformulas_0.4.1                 </span></span>
-<span><span class="co">##  [91] bookdown_0.45                     ProtGenerics_1.41.0              </span></span>
-<span><span class="co">##  [93] SummarizedExperiment_1.39.2       RhpcBLASctl_0.23-42              </span></span>
-<span><span class="co">##  [95] xfun_0.53                         Biobase_2.69.1                   </span></span>
-<span><span class="co">##  [97] matrixStats_1.5.0                 stringi_1.8.7                    </span></span>
-<span><span class="co">##  [99] UCSC.utils_1.5.0                  lazyeval_0.2.2                   </span></span>
-<span><span class="co">## [101] yaml_2.3.10                       boot_1.3-31                      </span></span>
-<span><span class="co">## [103] evaluate_1.0.5                    codetools_0.2-20                 </span></span>
-<span><span class="co">## [105] tibble_3.3.0                      BiocManager_1.30.26              </span></span>
-<span><span class="co">## [107] cli_3.6.5                         rpart_4.1.24                     </span></span>
-<span><span class="co">## [109] systemfonts_1.3.1                 Rdpack_2.6.4                     </span></span>
-<span><span class="co">## [111] jquerylib_0.1.4                   Rcpp_1.1.0                       </span></span>
-<span><span class="co">## [113] GenomeInfoDb_1.45.12              png_0.1-8                        </span></span>
-<span><span class="co">## [115] XML_3.99-0.19                     parallel_4.5.1                   </span></span>
-<span><span class="co">## [117] MatrixModels_0.5-4                ggplot2_4.0.0                    </span></span>
-<span><span class="co">## [119] pkgdown_2.1.3                     blob_1.2.4                       </span></span>
-<span><span class="co">## [121] AnnotationFilter_1.33.0           bitops_1.0-9                     </span></span>
-<span><span class="co">## [123] lme4_1.1-37                       glmnet_4.1-10                    </span></span>
-<span><span class="co">## [125] SeqArray_1.49.8                   VariantAnnotation_1.55.1         </span></span>
-<span><span class="co">## [127] scales_1.4.0                      purrr_1.1.0                      </span></span>
-<span><span class="co">## [129] crayon_1.5.3                      rlang_1.1.6                      </span></span>
-<span><span class="co">## [131] KEGGREST_1.49.1                   mice_3.18.0</span></span></code></pre>
+<span><span class="co">##  [17] RCurl_1.98-1.20                   quantsmooth_1.79.0               </span></span>
+<span><span class="co">##  [19] htmltools_0.5.9                   S4Arrays_1.13.2                  </span></span>
+<span><span class="co">##  [21] BiocBaseUtils_1.15.1              curl_8.1.0                       </span></span>
+<span><span class="co">##  [23] broom_1.0.13                      pROC_1.19.1                      </span></span>
+<span><span class="co">##  [25] SparseArray_1.13.4                mitml_0.4-5                      </span></span>
+<span><span class="co">##  [27] sass_0.4.10                       bslib_0.12.0                     </span></span>
+<span><span class="co">##  [29] desc_1.4.3                        sandwich_3.1-3                   </span></span>
+<span><span class="co">##  [31] zoo_1.9-1                         cachem_1.1.0                     </span></span>
+<span><span class="co">##  [33] GenomicAlignments_1.49.2          lifecycle_1.0.5                  </span></span>
+<span><span class="co">##  [35] iterators_1.0.14                  pkgconfig_2.0.3                  </span></span>
+<span><span class="co">##  [37] R6_2.6.1                          fastmap_1.2.0                    </span></span>
+<span><span class="co">##  [39] rbibutils_2.4.1                   MatrixGenerics_1.25.0            </span></span>
+<span><span class="co">##  [41] digest_0.6.39                     GWASTools_1.59.0                 </span></span>
+<span><span class="co">##  [43] AnnotationDbi_1.75.2              textshaping_1.0.5                </span></span>
+<span><span class="co">##  [45] RSQLite_3.53.3                    labeling_0.4.3                   </span></span>
+<span><span class="co">##  [47] httr_1.4.9                        abind_1.4-8                      </span></span>
+<span><span class="co">##  [49] mgcv_1.9-5                        compiler_4.7.0                   </span></span>
+<span><span class="co">##  [51] withr_3.0.3                       bit64_4.8.6                      </span></span>
+<span><span class="co">##  [53] S7_0.2.2                          backports_1.5.1                  </span></span>
+<span><span class="co">##  [55] DBI_1.3.0                         pan_2.0                          </span></span>
+<span><span class="co">##  [57] MASS_7.3-66                       quantreg_6.1                     </span></span>
+<span><span class="co">##  [59] DelayedArray_0.39.8               rjson_0.2.23                     </span></span>
+<span><span class="co">##  [61] DNAcopy_1.87.0                    tools_4.7.0                      </span></span>
+<span><span class="co">##  [63] lmtest_0.9-40                     otel_0.2.0                       </span></span>
+<span><span class="co">##  [65] nnet_7.3-21                       glue_1.8.1                       </span></span>
+<span><span class="co">##  [67] restfulr_0.0.17                   nlme_3.1-172                     </span></span>
+<span><span class="co">##  [69] grid_4.7.0                        gtable_0.3.6                     </span></span>
+<span><span class="co">##  [71] operator.tools_1.6.3.1            BSgenome_1.81.1                  </span></span>
+<span><span class="co">##  [73] class_7.3-24                      formula.tools_1.7.1              </span></span>
+<span><span class="co">##  [75] ensembldb_2.37.3                  tidyr_1.3.2                      </span></span>
+<span><span class="co">##  [77] data.table_1.18.6.1               GWASExactHW_1.2                  </span></span>
+<span><span class="co">##  [79] stringr_1.6.0                     foreach_1.5.2                    </span></span>
+<span><span class="co">##  [81] pillar_1.11.1                     splines_4.7.0                    </span></span>
+<span><span class="co">##  [83] lattice_0.23-1                    survival_3.8-12                  </span></span>
+<span><span class="co">##  [85] rtracklayer_1.73.0                bit_4.6.0                        </span></span>
+<span><span class="co">##  [87] SparseM_1.84-2                    BSgenome.Hsapiens.UCSC.hg38_1.4.5</span></span>
+<span><span class="co">##  [89] tidyselect_1.2.1                  SeqVarTools_1.51.3               </span></span>
+<span><span class="co">##  [91] reformulas_0.4.4                  bookdown_0.48                    </span></span>
+<span><span class="co">##  [93] ProtGenerics_1.45.0               SummarizedExperiment_1.43.0      </span></span>
+<span><span class="co">##  [95] RhpcBLASctl_0.23-42               xfun_0.62                        </span></span>
+<span><span class="co">##  [97] Biobase_2.73.2                    matrixStats_1.5.0                </span></span>
+<span><span class="co">##  [99] stringi_1.8.9                     UCSC.utils_1.9.0                 </span></span>
+<span><span class="co">## [101] lazyeval_0.2.3                    yaml_2.3.12                      </span></span>
+<span><span class="co">## [103] boot_1.3-32                       evaluate_1.0.5                   </span></span>
+<span><span class="co">## [105] codetools_0.2-20                  cigarillo_1.3.1                  </span></span>
+<span><span class="co">## [107] tibble_3.3.1                      BiocManager_1.30.27              </span></span>
+<span><span class="co">## [109] cli_3.6.6                         RcppParallel_6.2.1               </span></span>
+<span><span class="co">## [111] rpart_4.1.27                      systemfonts_1.3.2                </span></span>
+<span><span class="co">## [113] Rdpack_2.6.6                      jquerylib_0.1.4                  </span></span>
+<span><span class="co">## [115] GenomeInfoDb_1.49.1               Rcpp_1.1.2                       </span></span>
+<span><span class="co">## [117] png_0.1-9                         XML_3.99-0.25                    </span></span>
+<span><span class="co">## [119] parallel_4.7.0                    MatrixModels_0.5-4               </span></span>
+<span><span class="co">## [121] ggplot2_4.0.3                     pkgdown_2.2.1                    </span></span>
+<span><span class="co">## [123] blob_1.3.0                        AnnotationFilter_1.37.0          </span></span>
+<span><span class="co">## [125] bitops_1.1-0                      lme4_2.1-0                       </span></span>
+<span><span class="co">## [127] glmnet_5.2                        SeqArray_1.53.6                  </span></span>
+<span><span class="co">## [129] VariantAnnotation_1.59.4          scales_1.4.0                     </span></span>
+<span><span class="co">## [131] purrr_1.2.2                       crayon_1.5.3                     </span></span>
+<span><span class="co">## [133] rlang_1.3.0                       KEGGREST_1.53.6                  </span></span>
+<span><span class="co">## [135] mice_3.19.0</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Alexander2009" class="csl-entry">
+Alexander, D. H., J. Novembre, and K. Lange. 2009. <span>“Fast
+Model-Based Estimation of Ancestry in Unrelated Individuals.”</span>
+<em>Genome Res</em> 19 (9): 1655–64. <a href="https://doi.org/10.1101/gr.094052.109" class="external-link">https://doi.org/10.1101/gr.094052.109</a>.
+</div>
 <div id="ref-Lowy-Gallego2019a" class="csl-entry">
 Lowy-Gallego, Ernesto, Susan Fairley, Xiangqun Zheng-Bradley, Magali
 Ruffier, Laura Clarke, and Paul Flicek. 2019. <span>“<span class="nocase">Variant calling on the grch38 assembly with the data from
@@ -648,12 +734,12 @@ Research</em> 4: 1–42. <a href="https://doi.org/10.12688/wellcomeopenres.15126
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz.</p>
+<p>Developed by Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz, National Institutes of Health.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer>

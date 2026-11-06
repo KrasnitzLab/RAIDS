@@ -20,7 +20,7 @@ description file and the Population reference GDS file."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAIDS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1</span>
       </span>
     </div>
 
@@ -116,6 +116,10 @@ the directory where the GDS Profile files will be created.
 Default: <code>NULL</code>.</p></dd>
 
 
+<dt id="arg-profilefile">profileFile<a class="anchor" aria-label="anchor" href="#arg-profilefile"></a></dt>
+<dd><p>a TODO.</p></dd>
+
+
 <dt id="arg-filereferencegds">fileReferenceGDS<a class="anchor" aria-label="anchor" href="#arg-filereferencegds"></a></dt>
 <dd><p>a <code>character</code> string representing the file
 name of the Reference GDS file. The file must exist.</p></dd>
@@ -181,23 +185,12 @@ present in the GDS Reference Annotation file.</p></dd>
 
 
 <dt id="arg-paramancestry">paramAncestry<a class="anchor" aria-label="anchor" href="#arg-paramancestry"></a></dt>
-<dd><p>a <code>list</code> parameters ...</p></dd>
+<dd><p>a <code>list</code> parameters TODO...</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>a <code>logical</code> indicating if messages should be printed
 to show how the different steps in the function. Default: <code>FALSE</code>.</p></dd>
-
-
-<dt id="arg-pathgeno">pathGeno<a class="anchor" aria-label="anchor" href="#arg-pathgeno"></a></dt>
-<dd><p>a <code>character</code> string representing the path to the
-directory containing the VCF output of SNP-pileup for each sample. The
-SNP-pileup files must be compressed (gz files) and have the name identifiers
-of the samples. A sample with "Name.ID" identifier would have an
-associated file called
-if genoSource is "VCF", then "Name.ID.vcf.gz",
-if genoSource is "generic", then "Name.ID.generic.txt.gz"
-if genoSource is "snp-pileup", then "Name.ID.txt.gz".</p></dd>
 
 </dl></div>
     <div id="value">
@@ -455,7 +448,6 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
 <span class="r-in"><span><span class="va">pathProfileGDS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"out.tmp"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#################################################################</span></span></span>
 <span class="r-in"><span><span class="co">## A data frame containing general information about the study</span></span></span>
 <span class="r-in"><span><span class="co">## is also required. The data frame must have</span></span></span>
@@ -485,7 +477,8 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">wrapperAncestry</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">demoPedigreeEx1</span>, studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>
+<span class="r-in"><span>        <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">RAIDS</span><span class="fu">:::</span><span class="fu">wrapperAncestry</span><span class="op">(</span>pedStudy<span class="op">=</span><span class="va">demoPedigreeEx1</span>,</span></span>
+<span class="r-in"><span>            studyDF<span class="op">=</span><span class="va">studyDF</span>,</span></span>
 <span class="r-in"><span>            pathProfileGDS<span class="op">=</span><span class="va">pathProfileGDS</span>,</span></span>
 <span class="r-in"><span>            pathGeno<span class="op">=</span><span class="va">pathGeno</span>,</span></span>
 <span class="r-in"><span>            fileReferenceGDS<span class="op">=</span><span class="va">fileReferenceGDS</span>,</span></span>
@@ -508,11 +501,11 @@ doi: 10.1016/j.ajhg.2015.12.022. Epub 2016 Feb 25.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz.</p>
+  <p></p><p>Developed by Pascal Belleau, Astrid Deschênes, David A. Tuveson, Alexander Krasnitz, National Institutes of Health.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
